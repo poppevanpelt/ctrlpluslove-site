@@ -1,0 +1,22 @@
+node_modules
+.next
+/src/generated/prisma
+
+# Environment and secrets
+.env
+.env.local
+.env.production
+
+# Database
+dev.db
+dev.db-journal
+prisma/dev.db
+prisma/dev.db-journal
+
+# OS
+.DS_Store
+Thumbs.db
+
+.vercel
+ctrllove-handoff.zip
+private-prototype
