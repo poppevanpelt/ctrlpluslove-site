@@ -1,95 +1,149 @@
-import Image from "next/image";
-
 export default function Home() {
   return (
     <main className="site-shell">
       <section className="hero-section">
         <div className="hero-copy">
-          <h1 className="sr-only">ctrl+love</h1>
-          <div className="hero-logo" aria-hidden="true">
-            <Image
-              className="hero-logo-image"
-              src="/ctrl-love-logo-gradient-master.png"
-              alt=""
-              width={1548}
-              height={366}
-              priority
-              unoptimized
-            />
-          </div>
+          <h1 className="hero-logo">ctrl+love</h1>
           <p className="hero-line">
-            AI made answers abundant.
-            <br />
-            <span>Judgment became the bottleneck.</span>
+            Shortcut to reality.
           </p>
-          <p className="subtle-line">
-            Most AI smooths tension.
-            <br />
-            We bring it back.
-          </p>
-          <p className="access-note">
-            Half a deck is enough.
-          </p>
+          <p className="subtle-line">Powered by billions of human signals.</p>
           <a
             href="mailto:hello@ctrlpluslove.com"
-            className="button-link hero-cta"
+            className="text-link hero-cta"
           >
-            hello@ctrlpluslove.com
+            hello@ctrlpluslove.com →
           </a>
         </div>
-        <a href="#intro" className="scroll-cue" aria-label="Scroll to intro">
-          <span />
-        </a>
       </section>
 
       <section className="content-section" id="intro">
         <div className="content-block statement-block">
-          <h2 className="statement-title">Ideas are not scarce. Judgment is.</h2>
-          <div className="prose">
-            <p>
-              Good ideas rarely fail because nobody liked them.
-              <br />
-              They fail after too many people make them safer.
+          <div className="opening-flow">
+            <p className="opening-line">
+              Enter the room of people you&apos;ll want to meet early.
             </p>
-            <p>
-              <span className="logo-text">ctrl+love</span> is a private room
-              of synthetic personas built to disagree with the work while it
-              can still change.
-              <br />
-              The pressure comes before the market.
+            <p className="bridge-line">
+              The people who make the answer harder.
             </p>
-            <p className="muted">
-              Nobody leaves with exactly what they brought in.
-            </p>
+          </div>
+          <div className="room-preview" aria-label="Room preview">
+            <div className="persona-card">
+              <p>The Critic</p>
+              <span>Simon Cross</span>
+              <em>Challenges the answer everyone already agreed on.</em>
+            </div>
+            <div className="persona-card">
+              <p>The Commercial Realist</p>
+              <span>Nick Deckman</span>
+              <em>Sees the cost of being wrong.</em>
+            </div>
+            <div className="persona-card">
+              <p>The Cultural Lens</p>
+              <span>Lexi Arden</span>
+              <em>Spots what others miss.</em>
+            </div>
+            <div className="persona-card">
+              <p>The Consequence Keeper</p>
+              <span>Akiko Hayashi</span>
+              <em>Looks beyond the next decision.</em>
+            </div>
+            <div className="persona-card">
+              <p>The Truth Teller</p>
+              <span>Maya Elise Harper</span>
+              <em>Protects emotional truth.</em>
+            </div>
+            <div className="persona-card">
+              <p>The Reality Check</p>
+              <span>Adrian Mbeki</span>
+              <em>Tests what survives outside the room.</em>
+            </div>
           </div>
         </div>
       </section>
 
       <section className="content-section ruled">
-        <div className="content-block statement-block">
-          <h2 className="statement-title centered">
+        <div className="content-block surfaced-section">
+          <div className="section-heading quiet-heading">
+            <div>
+              <p className="section-kicker">From early rooms</p>
+              <h2>What the room surfaced.</h2>
+            </div>
+            <p>
+              A few early stress-tests.
+              <br />
+              Shared anonymously.
+            </p>
+          </div>
+
+          <div className="case-grid" aria-label="Anonymous room findings">
+            <article className="case-card">
+              <p>FINTECH LENDER</p>
+              <h3>
+                The rejection experience may matter more than the approval
+                experience.
+              </h3>
+            </article>
+            <article className="case-card">
+              <p>HOMECARE BRAND</p>
+              <h3>
+                Nobody wanted a chair.
+                <br />
+                They wanted their life back.
+              </h3>
+            </article>
+            <article className="case-card">
+              <p>FASHION BRAND</p>
+              <h3>
+                People weren&apos;t buying apparel.
+                <br />
+                They were buying freedom.
+              </h3>
+            </article>
+            <article className="case-card">
+              <p>BREWING GROUP</p>
+              <h3>
+                Cost-cutting revealed a deeper organizational question.
+              </h3>
+            </article>
+          </div>
+
+          <p className="case-close">
+            From the first rooms.
+            <br />
+            Nothing left exactly as it entered.
+          </p>
+        </div>
+      </section>
+
+      <section className="content-section ruled">
+        <div className="content-block statement-block team-section">
+          <p className="bridge-line">
+            The room pushed back.
+          </p>
+          <h2 className="team-title">
             Two teams.
             <br />
             Two temperatures.
           </h2>
 
           <div className="team-manifesto">
-            <p>Not everyone agrees.</p>
-            <p className="bright">Good.</p>
-            <p>Some protect the idea.</p>
-            <p>Some attack it.</p>
-            <p>Some discover the stronger version.</p>
-            <p className="bright">
-              Enter the room of people you&apos;ll want to meet early.
-            </p>
+            <p>Some ideas need protection.</p>
+            <p>Some need pressure.</p>
+            <p>Most need both.</p>
           </div>
 
           <div className="team-grid">
             <div className="team-block">
               <h3 className="team-warm">ctrl+love</h3>
-              <p>
-                The warm side. It protects the original impulse, the craft, and
-                the feeling that made the idea worth fighting for.
+              <p className="team-lines">
+                The original impulse.
+                <br />
+                The craft.
+                <br />
+                The thing worth saving.
+                <br />
+                The future worth protecting.
               </p>
               <p className="muted">
                 It asks what should stay alive.
@@ -98,9 +152,14 @@ export default function Home() {
 
             <div className="team-block">
               <h3 className="team-cold">cmd+hmm</h3>
-              <p>
-                The cold side. It checks the claim, the logic, the risk, and
-                the cost of being wrong.
+              <p className="team-lines">
+                The claim.
+                <br />
+                The logic.
+                <br />
+                The risk.
+                <br />
+                The cost of being wrong.
               </p>
               <p className="muted">
                 It says what will break first.
@@ -111,92 +170,103 @@ export default function Home() {
       </section>
 
       <section className="content-section ruled">
-        <div className="content-block wide">
-          <div className="section-heading">
-            <h2>Three ways to apply pressure.</h2>
-            <p>Start anywhere.</p>
+        <div className="content-block why-block">
+          <p className="section-kicker">Why this exists</p>
+          <div className="why-lines">
+            <div className="why-core">
+              <p>AI made answers abundant.</p>
+              <p>Judgment did not.</p>
+            </div>
+            <p>Strategies multiplied.</p>
+            <p>Decks multiplied.</p>
+            <p>Options multiplied.</p>
+            <p className="bright">That&apos;s the bottleneck.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="content-section ruled">
+        <div className="content-block wide poster-block">
+          <div className="ways-heading">
+            <p className="section-kicker">Three ways in</p>
+            <h2>Start where the decision is.</h2>
           </div>
 
           <div className="offer-grid">
             <article className="offer-block">
-              <h3>On-Call Room&trade;</h3>
-              <p className="offer-lead">When the work keeps moving.</p>
-              <p>
-                A room available around live work, late doubts, and decisions
-                that keep changing.
-              </p>
-              <p className="muted">Bad decisions escalate quickly.</p>
-            </article>
-
-            <article className="offer-block">
               <h3>Decision Stress-Test&trade;</h3>
-              <p className="offer-lead">
-                When an idea feels too easy to defend.
+              <p className="muted">
+                See what survives.
+                <br />
+                Before it gets expensive.
               </p>
-              <p>
-                We test the claim, the audience, the tension, and what the work
-                is asking people to believe.
-              </p>
-              <p className="muted">What survives gets sharper.</p>
             </article>
 
             <article className="offer-block">
-              <h3>Kill or Scale&trade;</h3>
-              <p className="offer-lead">When maybe has become expensive.</p>
-              <p>
-                We look for the reason to continue, stop, or change direction.
+              <h3>On-Call Room&trade;</h3>
+              <p className="muted">
+                Keep pressure close.
+                <br />
+                While the work keeps moving.
               </p>
-              <p className="muted">No soft landings. No maybe.</p>
+            </article>
+
+            <article className="offer-block offer-featured">
+              <h3>Kill or Scale&trade;</h3>
+              <p className="muted">
+                No soft landings.
+                <br />
+                No maybe.
+              </p>
             </article>
           </div>
         </div>
       </section>
 
       <section className="content-section ruled">
-        <div className="content-block">
-          <h2>A simple stress-test.</h2>
+        <div className="content-block poster-block">
+          <h2 className="display-title">Change it while it is still cheap.</h2>
           <div className="process-list">
             <p>A launch plan enters.</p>
-            <p>The main claim is too polite.</p>
-            <p>The audience has no reason to care yet.</p>
-            <p>The sharper tension appears.</p>
-            <p className="bright">The launch changes.</p>
+            <p>The claim is too polite.</p>
+            <p>The audience has no reason to care.</p>
+            <p>The tension sharpens.</p>
+            <p>The launch changes.</p>
           </div>
           <div className="outcome-note">
-            <p>The idea is not discarded. The weak promise is.</p>
-            <p>
-              Change the decision while it is still cheap to change.
-            </p>
+            <p>The idea survives. The weak promise does not.</p>
           </div>
         </div>
       </section>
 
       <section className="content-section ruled">
-        <div className="content-block founder-note">
+        <div className="content-block poster-block founder-note">
+          <h2 className="label-title">Built by observation.</h2>
           <p>
-            Created by Poppe van Pelt, an Amsterdam-based creative leader and
-            ADCN Dutch Hall of Fame member.
+            Poppe van Pelt.
+            <br />
+            ADCN Hall of Fame.
           </p>
           <p>
-            Decades of creative judgment, rebuilt as{" "}
-            <span className="logo-text">ctrl+love</span>. Pressure, taste,
-            doubt, and pushback before the market makes the decision for you.
+            Three decades of changing minds.
+            <br />
+            Now rebuilt for a world with AI.
           </p>
         </div>
       </section>
 
       <section className="content-section ruled">
-        <div className="content-block statement-block centered">
+        <div className="content-block statement-block centered final-cta">
           <h2 className="statement-title cta-title">
-            Designed for conflict,
+            DESIGNED FOR CONFLICT.
             <br />
-            <span>not comfort.</span>
+            <span>NOT COMFORT.</span>
           </h2>
           <a
             href="mailto:hello@ctrlpluslove.com"
-            className="button-link"
+            className="text-link"
           >
-            hello@ctrlpluslove.com
+            Start a conversation →
           </a>
         </div>
       </section>
