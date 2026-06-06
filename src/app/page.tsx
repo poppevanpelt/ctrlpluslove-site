@@ -30,33 +30,33 @@ export default function Home() {
           <div className="room-preview" aria-label="Room preview">
             <div className="persona-card">
               <p>The Critic</p>
-              <span>Simon Cross</span>
               <em>Challenges the answer everyone already agreed on.</em>
+              <span>Simon Cross</span>
             </div>
             <div className="persona-card">
               <p>The Commercial Realist</p>
-              <span>Nick Deckman</span>
               <em>Sees the cost of being wrong.</em>
+              <span>Nick Deckman</span>
             </div>
             <div className="persona-card">
               <p>The Cultural Lens</p>
-              <span>Lexi Arden</span>
               <em>Spots what others miss.</em>
+              <span>Lexi Arden</span>
             </div>
             <div className="persona-card">
               <p>The Consequence Keeper</p>
-              <span>Akiko Hayashi</span>
               <em>Looks beyond the next decision.</em>
+              <span>Akiko Hayashi</span>
             </div>
             <div className="persona-card">
               <p>The Truth Teller</p>
-              <span>Maya Elise Harper</span>
               <em>Protects emotional truth.</em>
+              <span>Maya Elise Harper</span>
             </div>
             <div className="persona-card">
               <p>The Reality Check</p>
-              <span>Adrian Mbeki</span>
               <em>Tests what survives outside the room.</em>
+              <span>Adrian Mbeki</span>
             </div>
           </div>
         </div>
@@ -131,6 +131,9 @@ export default function Home() {
             <p>Some ideas need protection.</p>
             <p>Some need pressure.</p>
             <p>Most need both.</p>
+            <p className="stress-line">
+              That&apos;s where the <span>stress-test</span> happens.
+            </p>
           </div>
 
           <div className="team-grid">
@@ -175,7 +178,9 @@ export default function Home() {
           <div className="why-lines">
             <div className="why-core">
               <p>AI made answers abundant.</p>
-              <p>Judgment did not.</p>
+              <p>
+                <span>Judgment</span> did not.
+              </p>
             </div>
             <p>Strategies multiplied.</p>
             <p>Decks multiplied.</p>
@@ -225,13 +230,14 @@ export default function Home() {
 
       <section className="content-section ruled">
         <div className="content-block poster-block">
-          <h2 className="display-title">Change it while it is still cheap.</h2>
+          <h2 className="display-title">
+            <span className="change-word">Change</span> it before the market does.
+          </h2>
           <div className="process-list">
             <p>A launch plan enters.</p>
             <p>The claim is too polite.</p>
             <p>The audience has no reason to care.</p>
             <p>The tension sharpens.</p>
-            <p>The launch changes.</p>
           </div>
           <div className="outcome-note">
             <p>The idea survives. The weak promise does not.</p>
@@ -248,7 +254,7 @@ export default function Home() {
             ADCN Hall of Fame.
           </p>
           <p>
-            Three decades of changing minds.
+            Three decades of <span className="changing-word">changing</span> minds.
             <br />
             Now rebuilt for a world with AI.
           </p>
@@ -258,7 +264,7 @@ export default function Home() {
       <section className="content-section ruled">
         <div className="content-block statement-block centered final-cta">
           <h2 className="statement-title cta-title">
-            DESIGNED FOR CONFLICT.
+            DESIGNED FOR <span className="conflict-word">CONFLICT.</span>
             <br />
             <span>NOT COMFORT.</span>
           </h2>
