@@ -457,13 +457,23 @@ h3 {
   letter-spacing: 0;
 }
 
+.team-title,
+.team-manifesto p {
+  font-size: var(--type-section);
+  font-weight: 600;
+  line-height: var(--leading-section);
+}
+
 .team-manifesto {
   display: grid;
   gap: 0.7rem;
   width: min(100%, 44rem);
   color: var(--ink);
+}
+
+.team-manifesto .team-warm,
+.team-manifesto .team-cold {
   font-size: var(--type-section);
-  font-weight: 600;
   line-height: var(--leading-section);
 }
 
