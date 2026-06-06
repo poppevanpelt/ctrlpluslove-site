@@ -14,6 +14,9 @@ export default function Home() {
           >
             hello@ctrlpluslove.com →
           </a>
+          <a href="#intro" className="scroll-cue" aria-label="Scroll to the first section">
+            <span aria-hidden="true" />
+          </a>
         </div>
       </section>
 
@@ -24,7 +27,7 @@ export default function Home() {
               Enter the room of people you&apos;ll want to meet early.
             </p>
             <p className="bridge-line">
-              The people who make the answer harder.
+              A few of the people who make the answer harder.
             </p>
           </div>
           <div className="room-preview" aria-label="Room preview">
@@ -128,8 +131,8 @@ export default function Home() {
           </h2>
 
           <div className="team-manifesto">
-            <p>Some ideas need protection.</p>
-            <p>Some need pressure.</p>
+            <p className="team-warm">Some ideas need protection.</p>
+            <p className="team-cold">Some need pressure.</p>
             <p>Most need both.</p>
             <p className="stress-line">
               That&apos;s where the <span>stress-test</span> happens.

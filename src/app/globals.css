@@ -238,18 +238,33 @@ h3 {
   bottom: 3.5rem;
   left: 50%;
   display: grid;
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2.75rem;
+  height: 2.75rem;
   place-items: center;
   transform: translateX(-50%);
+  text-decoration: none;
+  animation: scroll-pulse 2.4s ease-in-out infinite;
 }
 
 .scroll-cue span {
   width: 1.05rem;
   height: 1.05rem;
-  border-bottom: 4px solid var(--soft);
-  border-right: 4px solid var(--soft);
+  border-bottom: 3px solid color-mix(in srgb, var(--team-warm) 58%, var(--team-cold));
+  border-right: 3px solid color-mix(in srgb, var(--team-warm) 58%, var(--team-cold));
   transform: rotate(45deg);
+}
+
+@keyframes scroll-pulse {
+  0%,
+  100% {
+    opacity: 0.38;
+    transform: translate(-50%, 0);
+  }
+
+  48% {
+    opacity: 1;
+    transform: translate(-50%, 0.55rem);
+  }
 }
 
 .content-section {
@@ -335,6 +350,7 @@ h3 {
 
 .persona-card {
   position: relative;
+  --persona-accent: var(--team-warm);
   display: grid;
   grid-template-rows: minmax(3.4em, auto) minmax(3.4em, auto) auto;
   gap: 0.72rem;
@@ -349,24 +365,44 @@ h3 {
   top: -1px;
   left: 0;
   width: 3.25rem;
-  height: 1px;
-  background: var(--team-warm);
+  height: 2px;
+  background: var(--persona-accent);
   content: "";
 }
 
-.persona-card:nth-child(even)::before {
-  background: var(--team-cold);
+.persona-card:nth-child(1) {
+  --persona-accent: var(--team-cold);
+}
+
+.persona-card:nth-child(2) {
+  --persona-accent: var(--team-warm);
+}
+
+.persona-card:nth-child(3) {
+  --persona-accent: var(--cyan);
+}
+
+.persona-card:nth-child(4) {
+  --persona-accent: var(--indigo);
+}
+
+.persona-card:nth-child(5) {
+  --persona-accent: var(--pink);
+}
+
+.persona-card:nth-child(6) {
+  --persona-accent: var(--green);
 }
 
 .persona-card p {
-  color: var(--ink);
+  color: color-mix(in srgb, var(--persona-accent) 74%, var(--ink));
   font-size: var(--type-intro);
   font-weight: 600;
   line-height: var(--leading-body);
 }
 
 .persona-card span {
-  color: var(--muted);
+  color: color-mix(in srgb, var(--persona-accent) 54%, var(--muted));
   font-size: var(--type-secondary);
   font-weight: 700;
   line-height: var(--leading-secondary);
@@ -864,8 +900,12 @@ h3 {
     scroll-behavior: auto;
   }
 
-  .hero-logo {
+  .hero-logo,
+  .scroll-cue {
     animation: none;
+  }
+
+  .hero-logo {
     background-position: 50% 50%;
   }
 }
