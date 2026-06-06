@@ -479,9 +479,9 @@ h3 {
 
 .stress-line {
   color: var(--ink);
-  font-size: var(--type-body);
+  font-size: var(--type-body) !important;
   font-weight: 600;
-  line-height: var(--leading-body);
+  line-height: var(--leading-body) !important;
   margin-top: 0.75rem;
 }
 
