@@ -7,12 +7,13 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint"
+  },
   "dependencies": {
-  "@vercel/analytics": "latest",
-  "next": "16.2.1",
-  "react": "19.2.4",
-  "react-dom": "19.2.4"
-}
+    "@vercel/analytics": "latest",
+    "next": "16.2.1",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
   "devDependencies": {
     "@next/swc-wasm-nodejs": "16.2.1",
     "@types/node": "^20",
