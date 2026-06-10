@@ -10,7 +10,7 @@ export default function RobPage() {
     <main className="document-page">
       <Image
         className="document-image"
-        src="/dear-rob.png.png"
+        src="/src="/rob/raincoat.png"
         alt="Dear Rob"
         width={1024}
         height={1536}
