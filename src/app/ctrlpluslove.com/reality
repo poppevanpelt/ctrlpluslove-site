@@ -1,0 +1,17 @@
+import Image from "next/image";
+
+export default function RealityPage() {
+  return (
+    <main className="document-page">
+      <Image
+        className="document-image"
+        src="/reality-poster.png"
+        alt="Department of Reality Preservation"
+        width={1920}
+        height={1080}
+        priority
+        unoptimized
+      />
+    </main>
+  );
+}
