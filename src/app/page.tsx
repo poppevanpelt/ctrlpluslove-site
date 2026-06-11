@@ -133,7 +133,7 @@ export default function Home() {
           <div className="team-manifesto">
             <p className="team-warm">Some ideas need protection.</p>
             <p className="team-cold">Some need pressure.</p>
-            <p>Most need both.</p>
+            <p className="team-both">Most need both.</p>
             <p className="stress-line">
               That&apos;s where the <span>stress-test</span> happens.
             </p>

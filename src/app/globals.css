@@ -520,6 +520,11 @@ h3 {
   line-height: var(--leading-section);
 }
 
+.team-manifesto .team-both {
+  font-size: clamp(1.75rem, 3.7vw, 2.85rem);
+  line-height: var(--leading-section);
+}
+
 .stress-line {
   color: var(--ink);
   font-size: var(--type-body) !important;
