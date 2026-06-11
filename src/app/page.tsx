@@ -1,309 +1,93 @@
-export default function Home() {
-  return (
-    <main className="site-shell">
-      <section className="hero-section">
-        <div className="hero-copy">
-          <h1 className="hero-logo">ctrl+love</h1>
-          <p className="hero-line">
-            Shortcut to reality.
-          </p>
-          <p className="subtle-line">Powered by billions of human signals.</p>
-          <a
-            href="mailto:hello@ctrlpluslove.com"
-            className="text-link hero-cta"
-          >
-            hello@ctrlpluslove.com →
-          </a>
-          <a href="#intro" className="scroll-cue" aria-label="Scroll to the first section">
-            <span aria-hidden="true" />
-          </a>
-        </div>
-      </section>
+.museum-page {
+  min-height: 100vh;
+  background: var(--paper);
+  padding: 2rem 1.5rem 7rem;
+}
 
-      <section className="content-section" id="intro">
-        <div className="content-block statement-block">
-          <div className="opening-flow">
-            <p className="opening-line">
-              Enter the room of people you&apos;ll want to meet early.
-            </p>
-            <p className="bridge-line">
-              A few of the people who make the answer harder.
-            </p>
-          </div>
-          <div className="room-preview" aria-label="Room preview">
-            <div className="persona-card">
-              <p>The Critic</p>
-              <em>Challenges the answer everyone already agreed on.</em>
-              <span>Simon Cross</span>
-            </div>
-            <div className="persona-card">
-              <p>The Commercial Realist</p>
-              <em>Sees the cost of being wrong.</em>
-              <span>Nick Deckman</span>
-            </div>
-            <div className="persona-card">
-              <p>The Cultural Lens</p>
-              <em>Spots what others miss.</em>
-              <span>Lexi Arden</span>
-            </div>
-            <div className="persona-card">
-              <p>The Consequence Keeper</p>
-              <em>Looks beyond the next decision.</em>
-              <span>Akiko Hayashi</span>
-            </div>
-            <div className="persona-card">
-              <p>The Truth Teller</p>
-              <em>Protects emotional truth.</em>
-              <span>Maya Elise Harper</span>
-            </div>
-            <div className="persona-card">
-              <p>The Reality Check</p>
-              <em>Tests what survives outside the room.</em>
-              <span>Adrian Mbeki</span>
-            </div>
-          </div>
-        </div>
-      </section>
+.museum-back {
+  position: fixed;
+  top: 1.5rem;
+  left: 1.5rem;
+  color: var(--muted);
+  font-size: var(--type-secondary);
+  font-weight: 700;
+  text-decoration: none;
+}
 
-      <section className="content-section ruled">
-        <div className="content-block surfaced-section">
-          <div className="section-heading quiet-heading">
-            <div>
-              <p className="section-kicker">From early rooms</p>
-              <h2>What the room surfaced.</h2>
-            </div>
-            <p>
-              A few early stress-tests.
-              <br />
-              Shared anonymously.
-            </p>
-          </div>
+.museum-back:hover {
+  color: var(--ink);
+}
 
-          <div className="case-grid" aria-label="Anonymous room findings">
-            <article className="case-card">
-              <p>FINTECH LENDER</p>
-              <h3>
-                The rejection experience may matter more than the approval
-                experience.
-              </h3>
-            </article>
-            <article className="case-card">
-              <p>HOMECARE BRAND</p>
-              <h3>
-                Nobody wanted a chair.
-                <br />
-                They wanted their life back.
-              </h3>
-            </article>
-            <article className="case-card">
-              <p>FASHION BRAND</p>
-              <h3>
-                People weren&apos;t buying apparel.
-                <br />
-                They were buying freedom.
-              </h3>
-            </article>
-            <article className="case-card">
-              <p>BREWING GROUP</p>
-              <h3>
-                Cost-cutting revealed a deeper organizational question.
-              </h3>
-            </article>
-          </div>
+.museum-hero {
+  display: grid;
+  gap: 1.4rem;
+  width: min(100%, 64rem);
+  margin: 10rem auto 6rem;
+}
 
-          <p className="case-close">
-            From the first rooms.
-            <br />
-            Nothing left exactly as it entered.
-          </p>
-        </div>
-      </section>
+.museum-hero h1 {
+  color: var(--ink);
+  font-size: var(--type-display);
+  font-weight: 600;
+  line-height: var(--leading-display);
+}
 
-      <section className="content-section ruled">
-        <div className="content-block statement-block team-section">
-          <p className="bridge-line">
-            The room pushed back.
-          </p>
-          <h2 className="team-title">
-            Two teams.
-            <br />
-            Two temperatures.
-          </h2>
+.museum-hero > p:last-child {
+  color: var(--soft);
+  font-size: var(--type-body);
+  line-height: var(--leading-body);
+}
 
-          <div className="team-manifesto">
-            <p className="team-warm">Some ideas need protection.</p>
-            <p className="team-cold">Some need pressure.</p>
-            <p className="team-both">Most need both.</p>
-            <p className="stress-line">
-              That&apos;s where the <span>stress-test</span> happens.
-            </p>
-          </div>
+.museum-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4rem 3rem;
+  width: min(100%, 72rem);
+  margin: 0 auto;
+}
 
-          <div className="team-grid">
-            <div className="team-block">
-              <h3 className="team-warm">ctrl+love</h3>
-              <p className="team-lines">
-                The original impulse.
-                <br />
-                The craft.
-                <br />
-                The thing worth saving.
-                <br />
-                The future worth protecting.
-              </p>
-              <p className="muted">
-                It asks what should stay alive.
-              </p>
-            </div>
+.museum-card {
+  display: grid;
+  gap: 0.85rem;
+  border-top: 1px solid var(--rule);
+  padding-top: 1.35rem;
+}
 
-            <div className="team-block">
-              <h3 className="team-cold">cmd+hmm</h3>
-              <p className="team-lines">
-                The claim.
-                <br />
-                The logic.
-                <br />
-                The risk.
-                <br />
-                The cost of being wrong.
-              </p>
-              <p className="muted">
-                It says what will break first.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+.museum-price {
+  color: var(--team-warm);
+  font-size: var(--type-secondary);
+  font-weight: 700;
+}
 
-      <section className="content-section ruled">
-        <div className="content-block why-block">
-          <p className="section-kicker">Why this exists</p>
-          <div className="why-lines">
-            <div className="why-core">
-              <p>AI made answers abundant.</p>
-              <p>
-                <span>Judgment</span> did not.
-              </p>
-            </div>
-            <p>Strategies multiplied.</p>
-            <p>Decks multiplied.</p>
-            <p>Options multiplied.</p>
-            <p className="bright">That&apos;s the bottleneck.</p>
-          </div>
-        </div>
-      </section>
+.museum-card h2 {
+  color: var(--ink);
+  font-size: var(--type-body);
+  font-weight: 600;
+  line-height: var(--leading-body);
+}
 
-      <section className="content-section ruled">
-        <div className="content-block wide poster-block">
-          <div className="ways-heading">
-            <p className="section-kicker">Three ways in</p>
-            <h2>Start where the decision is.</h2>
-          </div>
+.museum-line {
+  color: var(--ink);
+  font-size: var(--type-body);
+  line-height: var(--leading-body);
+}
 
-          <div className="offer-grid">
-            <article className="offer-block">
-              <h3>Decision Stress-Test&trade;</h3>
-              <p className="muted">
-                See what survives.
-                <br />
-                Before it gets expensive.
-              </p>
-            </article>
+.museum-note {
+  color: var(--soft);
+  font-size: 1rem;
+  line-height: 1.45;
+}
 
-            <article className="offer-block">
-              <h3>On-Call Room&trade;</h3>
-              <p className="muted">
-                Keep pressure close.
-                <br />
-                While the work keeps moving.
-              </p>
-            </article>
+.museum-card a {
+  width: fit-content;
+  margin-top: 0.35rem;
+  border-bottom: 1px solid rgba(26, 24, 21, 0.35);
+  color: var(--ink);
+  font-size: var(--type-secondary);
+  font-weight: 700;
+  text-decoration: none;
+}
 
-            <article className="offer-block offer-featured">
-              <h3>Kill or Scale&trade;</h3>
-              <p className="muted">
-                No soft landings.
-                <br />
-                No maybe.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section className="content-section ruled">
-        <div className="content-block poster-block">
-          <h2 className="display-title">
-            <span className="change-word">Change</span> it before the market does.
-          </h2>
-          <div className="process-list">
-            <p>A launch plan enters.</p>
-            <p>The claim is too polite.</p>
-            <p>The audience has no reason to care.</p>
-            <p>The tension sharpens.</p>
-          </div>
-          <div className="outcome-note">
-            <p>The idea survives. The weak promise does not.</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="content-section ruled">
-        <div className="content-block poster-block founder-note">
-          <h2 className="label-title">Built by observation.</h2>
-          <p>
-            Poppe van Pelt.
-            <br />
-            ADCN Hall of Fame.
-          </p>
-          <p>
-            Three decades of <span className="changing-word">changing</span> minds.
-            <br />
-            Now rebuilt for a world with AI.
-          </p>
-        </div>
-      </section>
-
-      <section className="content-section ruled">
-        <div className="content-block statement-block centered final-cta">
-          <h2 className="statement-title cta-title">
-            DESIGNED FOR <span className="conflict-word">CONFLICT.</span>
-            <br />
-            <span>NOT COMFORT.</span>
-          </h2>
-          <a
-            href="mailto:hello@ctrlpluslove.com"
-            className="text-link"
-          >
-            Start a conversation →
-          </a>
-        </div>
-      </section>
-
-      <footer className="site-footer">
-        <div className="footer-copy">
-          <p>Conversations on request</p>
-          <p>
-            <a
-              href="mailto:hello@ctrlpluslove.com"
-            >
-              hello@ctrlpluslove.com
-            </a>{" "}
-            <br />
-            <a
-              href="tel:+31625279867"
-            >
-              +31 6 2527 9867
-            </a>
-          </p>
-          <p>
-            <a href="https://nl.linkedin.com/in/poppevanpelt">
-              Poppe van Pelt · LinkedIn
-            </a>
-          </p>
-          <p className="copyright">ctrl+love/2026</p>
-        </div>
-      </footer>
-    </main>
-  );
+.museum-card a:hover {
+  color: var(--soft);
 }
