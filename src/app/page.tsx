@@ -7,27 +7,72 @@ export default function Home() {
           <p className="hero-line">
             Shortcut to reality.
           </p>
-          <p className="subtle-line">Powered by billions of human signals.</p>
+          <p className="subtle-line">
+            A decision stress-test room for strategies, launches, and
+            high-stakes ideas.
+          </p>
           <a
             href="mailto:hello@ctrlpluslove.com"
             className="text-link hero-cta"
           >
             hello@ctrlpluslove.com →
           </a>
-          <a href="#intro" className="scroll-cue" aria-label="Scroll to the first section">
+          <a
+            href="#ways-in"
+            className="scroll-cue"
+            aria-label="Scroll to the first section"
+          >
             <span aria-hidden="true" />
           </a>
         </div>
       </section>
 
-      <section className="content-section" id="intro">
+      <section className="content-section" id="ways-in">
+        <div className="content-block wide poster-block">
+          <div className="ways-heading">
+            <p className="section-kicker">Three ways in</p>
+            <h2>Start where the decision is.</h2>
+          </div>
+
+          <div className="offer-grid">
+            <article className="offer-block">
+              <h3>Decision Stress-Test&trade;</h3>
+              <p className="muted">
+                One important decision.
+                <br />
+                Before money and time commit.
+              </p>
+            </article>
+
+            <article className="offer-block">
+              <h3>On-Call Room&trade;</h3>
+              <p className="muted">
+                Recurring pressure.
+                <br />
+                While the work keeps moving.
+              </p>
+            </article>
+
+            <article className="offer-block offer-featured">
+              <h3>Kill or Scale&trade;</h3>
+              <p className="muted">
+                Stop, reshape, or accelerate.
+                <br />
+                No soft landing.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="content-section ruled" id="intro">
         <div className="content-block statement-block">
           <div className="opening-flow">
             <p className="opening-line">
               Enter the room of people you&apos;ll want to meet early.
             </p>
             <p className="bridge-line">
-              A few of the people who make the answer harder.
+              Once the decision is named, the room makes the answer harder.
             </p>
           </div>
           <div className="room-preview" aria-label="Room preview">
@@ -120,62 +165,6 @@ export default function Home() {
       </section>
 
       <section className="content-section ruled">
-        <div className="content-block statement-block team-section">
-          <p className="bridge-line">
-            The room pushed back.
-          </p>
-          <h2 className="team-title">
-            Two teams.
-            <br />
-            Two temperatures.
-          </h2>
-
-          <div className="team-manifesto">
-            <p className="team-warm">Some ideas need protection.</p>
-            <p className="team-cold">Some need pressure.</p>
-            <p className="team-both">Most need both.</p>
-            <p className="stress-line">
-              That&apos;s where the <span>stress-test</span> happens.
-            </p>
-          </div>
-
-          <div className="team-grid">
-            <div className="team-block">
-              <h3 className="team-warm">ctrl+love</h3>
-              <p className="team-lines">
-                The original impulse.
-                <br />
-                The craft.
-                <br />
-                The thing worth saving.
-                <br />
-                The future worth protecting.
-              </p>
-              <p className="muted">
-                It asks what should stay alive.
-              </p>
-            </div>
-
-            <div className="team-block">
-              <h3 className="team-cold">cmd+hmm</h3>
-              <p className="team-lines">
-                The claim.
-                <br />
-                The logic.
-                <br />
-                The risk.
-                <br />
-                The cost of being wrong.
-              </p>
-              <p className="muted">
-                It says what will break first.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="content-section ruled">
         <div className="content-block why-block">
           <p className="section-kicker">Why this exists</p>
           <div className="why-lines">
@@ -189,61 +178,6 @@ export default function Home() {
             <p>Decks multiplied.</p>
             <p>Options multiplied.</p>
             <p className="bright">That&apos;s the bottleneck.</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="content-section ruled">
-        <div className="content-block wide poster-block">
-          <div className="ways-heading">
-            <p className="section-kicker">Three ways in</p>
-            <h2>Start where the decision is.</h2>
-          </div>
-
-          <div className="offer-grid">
-            <article className="offer-block">
-              <h3>Decision Stress-Test&trade;</h3>
-              <p className="muted">
-                See what survives.
-                <br />
-                Before it gets expensive.
-              </p>
-            </article>
-
-            <article className="offer-block">
-              <h3>On-Call Room&trade;</h3>
-              <p className="muted">
-                Keep pressure close.
-                <br />
-                While the work keeps moving.
-              </p>
-            </article>
-
-            <article className="offer-block offer-featured">
-              <h3>Kill or Scale&trade;</h3>
-              <p className="muted">
-                No soft landings.
-                <br />
-                No maybe.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section className="content-section ruled">
-        <div className="content-block poster-block">
-          <h2 className="display-title">
-            <span className="change-word">Change</span> it before the market does.
-          </h2>
-          <div className="process-list">
-            <p>A launch plan enters.</p>
-            <p>The claim is too polite.</p>
-            <p>The audience has no reason to care.</p>
-            <p>The tension sharpens.</p>
-          </div>
-          <div className="outcome-note">
-            <p>The idea survives. The weak promise does not.</p>
           </div>
         </div>
       </section>

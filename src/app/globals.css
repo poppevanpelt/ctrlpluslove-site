@@ -127,6 +127,7 @@ p {
   justify-self: center;
   display: inline-block;
   max-width: 100%;
+  color: var(--ink);
   background: linear-gradient(
     100deg,
     var(--pink) 0%,
@@ -148,12 +149,23 @@ p {
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
-  color: transparent;
   font-size: clamp(5rem, 15.5vw, 12.25rem);
   font-weight: 600;
   line-height: 0.86;
   letter-spacing: 0;
   animation: logo-shimmer 12s linear infinite;
+}
+
+@supports (-webkit-background-clip: text) {
+  .hero-logo {
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+@supports not (-webkit-background-clip: text) {
+  .hero-logo {
+    background: none;
+  }
 }
 
 @keyframes logo-shimmer {
@@ -223,6 +235,8 @@ h3 {
 }
 
 .subtle-line {
+  max-width: 38rem;
+  justify-self: center;
   color: var(--ink);
   font-size: var(--type-body);
   font-weight: 500;
@@ -269,6 +283,11 @@ h3 {
 
 .content-section {
   padding: 7.5rem 1.5rem;
+}
+
+.content-section#ways-in {
+  padding-top: 6.5rem;
+  padding-bottom: 6.5rem;
 }
 
 .content-section#intro {
@@ -905,6 +924,7 @@ h3 {
   }
 
   .content-section#intro,
+  .content-section#ways-in,
   .content-section:nth-of-type(3),
   .content-section:nth-of-type(4),
   .content-section:nth-of-type(6),

@@ -5,7 +5,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: "ctrl+love",
-  description: "AI made answers abundant. Judgment became the bottleneck.",
+  description:
+    "A decision stress-test room for strategies, launches, and high-stakes ideas.",
 };
 
 export default function RootLayout({
