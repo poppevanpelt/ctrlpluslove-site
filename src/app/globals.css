@@ -486,8 +486,8 @@ h3 {
   position: relative;
   --persona-accent: var(--team-warm);
   display: grid;
-  grid-template-rows: minmax(3.4em, auto) minmax(3.4em, auto) auto;
-  gap: 0.52rem;
+  grid-template-rows: auto auto minmax(3.4em, auto);
+  gap: 0.46rem;
   min-height: 9.8rem;
   align-content: start;
   border-top: 1px solid var(--rule);
@@ -529,18 +529,19 @@ h3 {
 }
 
 .persona-card p {
-  color: color-mix(in srgb, var(--persona-accent) 74%, var(--ink));
-  font-size: var(--type-intro);
-  font-weight: 600;
-  line-height: var(--leading-body);
+  color: color-mix(in srgb, var(--persona-accent) 58%, var(--muted));
+  font-size: var(--type-secondary);
+  font-weight: 800;
+  line-height: var(--leading-secondary);
+  text-transform: uppercase;
 }
 
 .persona-card span {
-  color: color-mix(in srgb, var(--persona-accent) 54%, var(--muted));
-  font-size: var(--type-secondary);
+  color: color-mix(in srgb, var(--persona-accent) 76%, var(--ink));
+  font-size: clamp(2rem, 3.6vw, 3.35rem);
   font-weight: 700;
-  line-height: var(--leading-secondary);
-  margin-top: 0.55rem;
+  line-height: 0.98;
+  letter-spacing: 0;
 }
 
 .persona-card em {
