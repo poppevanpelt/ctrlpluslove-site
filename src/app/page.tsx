@@ -193,7 +193,7 @@ export default function Home() {
               </p>
             </div>
             <p className="ai-bridge">
-              AI generates perspectives. The room turns them into meaning.
+              AI generates perspectives. The room creates meaning.
             </p>
           </div>
         </div>
