@@ -187,12 +187,11 @@ export default function Home() {
             <div className="why-core">
               <p>AI made answers abundant.</p>
               <p>
-                <span>Judgment</span> did not.
+                <span>Meaning</span> became valuable.
               </p>
             </div>
             <p className="ai-bridge">
-              AI generates perspectives. Humans remain responsible for the
-              decision.
+              AI generates perspectives. The room turns them into meaning.
             </p>
             <p>Strategies multiplied.</p>
             <p>Decks multiplied.</p>
