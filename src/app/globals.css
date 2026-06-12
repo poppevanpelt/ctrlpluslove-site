@@ -64,10 +64,10 @@ a {
 .hero-section {
   position: relative;
   isolation: isolate;
-  min-height: 100vh;
+  min-height: 82vh;
   display: grid;
   place-items: center;
-  padding: 4.5rem 1.5rem 7rem;
+  padding: 4.5rem 1.5rem 4.75rem;
   text-align: center;
 }
 
@@ -249,7 +249,7 @@ h3 {
 
 .scroll-cue {
   position: absolute;
-  bottom: 3.5rem;
+  bottom: 1.7rem;
   left: 50%;
   display: grid;
   width: 2.75rem;
@@ -357,7 +357,7 @@ h3 {
 }
 
 .content-section#intro {
-  padding-top: 6.5rem;
+  padding-top: 4rem;
   padding-bottom: 6.35rem;
 }
 
@@ -1006,7 +1006,8 @@ h3 {
 
 @media (max-width: 680px) {
   .hero-section {
-    min-height: 100vh;
+    min-height: 78vh;
+    padding-bottom: 4.25rem;
   }
 
   .content-section {
@@ -1022,6 +1023,10 @@ h3 {
   .content-section:nth-of-type(8) {
     padding-top: 4.55rem;
     padding-bottom: 4.7rem;
+  }
+
+  .content-section#intro {
+    padding-top: 3.35rem;
   }
 
   .content-section:nth-of-type(9) {
