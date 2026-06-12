@@ -153,7 +153,7 @@ p {
   font-weight: 600;
   line-height: 0.86;
   letter-spacing: 0;
-  animation: logo-shimmer 12s linear infinite;
+  animation: logo-shimmer 16s ease-in-out infinite alternate;
 }
 
 @supports (-webkit-background-clip: text) {
