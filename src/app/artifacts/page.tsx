@@ -54,75 +54,72 @@ availability: "In stock",
 ];
 
 export default function ArtifactsPage() {
-return ( <main className="museum-page"> <a className="museum-back" href="/">
-ctrl+love </a>
+  return (
+    <main className="museum-page">
+      <a className="museum-back" href="/">
+        ctrl+love
+      </a>
 
-```
-  <section className="museum-hero">
-    <p className="section-kicker">The Artifact Registry</p>
+      <section className="museum-hero">
+        <p className="section-kicker">The Artifact Registry</p>
 
-    <h1>
-      Ordinary objects.
-      <br />
-      Extraordinary memories.
-    </h1>
+        <h1>
+          Ordinary objects.
+          <br />
+          Extraordinary memories.
+        </h1>
 
-    <p>
-      Artifacts from a life in service of Reality.
-    </p>
-  </section>
+        <p>Artifacts from a life in service of Reality.</p>
+      </section>
 
-  <section className="museum-grid">
-    {artifacts.map((artifact) => (
-      <article className="museum-card" key={artifact.code}>
-        <div className="artifact-image-placeholder">
-          <div className="artifact-badge">
-            {artifact.availability}
-          </div>
+      <section className="museum-grid">
+        {artifacts.map((artifact) => (
+          <article className="museum-card" key={artifact.code}>
+            <div className="artifact-image-placeholder">
+              <div className="artifact-badge">
+                {artifact.availability}
+              </div>
 
-          <button className="artifact-cart">
-            🛍️
-          </button>
-        </div>
+              <button className="artifact-cart">
+                🛍️
+              </button>
+            </div>
 
-        <p className="museum-price">{artifact.code}</p>
+            <p className="museum-price">{artifact.code}</p>
 
-        <h2>{artifact.name}</h2>
+            <h2>{artifact.name}</h2>
 
-        <p className="museum-line">
-          {artifact.line}
-        </p>
+            <p className="museum-line">
+              {artifact.line}
+            </p>
 
-        <p className="museum-note">
-          {artifact.status}
-        </p>
+            <p className="museum-note">
+              {artifact.status}
+            </p>
 
-        <div
-          style={{
-            marginTop: "1rem",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <strong>{artifact.price}</strong>
+            <div
+              style={{
+                marginTop: "1rem",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <strong>{artifact.price}</strong>
 
-          {artifact.availability ===
-          "Out of stock" ? (
-            <button>
-              Notify me
-            </button>
-          ) : (
-            <button>
-              Add to cart
-            </button>
-          )}
-        </div>
-      </article>
-    ))}
-  </section>
-</main>
-```
-
-);
+              {artifact.availability === "Out of stock" ? (
+                <button>
+                  Notify me
+                </button>
+              ) : (
+                <button>
+                  Add to cart
+                </button>
+              )}
+            </div>
+          </article>
+        ))}
+      </section>
+    </main>
+  );
 }
