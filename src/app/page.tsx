@@ -1,3 +1,5 @@
+import { LivingTicker } from "./living-ticker";
+
 export default function Home() {
   return (
     <main className="site-shell">
@@ -26,6 +28,8 @@ export default function Home() {
           </a>
         </div>
       </section>
+
+      <LivingTicker />
 
       <section className="content-section" id="ways-in">
         <div className="content-block wide poster-block">

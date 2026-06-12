@@ -281,6 +281,63 @@ h3 {
   }
 }
 
+.living-ticker {
+  overflow: hidden;
+  border-top: 1px solid color-mix(in srgb, var(--rule) 72%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--rule) 72%, transparent);
+  background: color-mix(in srgb, var(--paper-soft) 38%, var(--paper));
+  color: color-mix(in srgb, var(--muted) 82%, var(--ink));
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker-scroll 58s linear infinite;
+}
+
+.ticker-run {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 1.2rem;
+  padding: 0.72rem 0;
+}
+
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem;
+  white-space: nowrap;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.ticker-item::after {
+  width: 0.22rem;
+  height: 0.22rem;
+  border-radius: 999px;
+  background: currentColor;
+  opacity: 0.28;
+  content: "";
+}
+
+.ticker-accent {
+  color: color-mix(in srgb, var(--team-warm) 52%, var(--ink));
+}
+
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 .content-section {
   padding: 7.5rem 1.5rem;
 }
@@ -1023,7 +1080,8 @@ h3 {
   }
 
   .hero-logo,
-  .scroll-cue {
+  .scroll-cue,
+  .ticker-track {
     animation: none;
   }
 
