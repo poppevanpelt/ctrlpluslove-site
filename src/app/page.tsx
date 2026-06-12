@@ -95,31 +95,37 @@ export default function Home() {
             <div className="persona-card">
               <p>The Critic</p>
               <em>Challenges the answer everyone already agreed on.</em>
+              {" "}
               <span>Simon Cross</span>
             </div>
             <div className="persona-card">
               <p>The Commercial Realist</p>
               <em>Sees the cost of being wrong.</em>
+              {" "}
               <span>Nick Deckman</span>
             </div>
             <div className="persona-card">
               <p>The Cultural Lens</p>
               <em>Spots what others miss.</em>
+              {" "}
               <span>Lexi Arden</span>
             </div>
             <div className="persona-card">
               <p>The Consequence Keeper</p>
               <em>Looks beyond the next decision.</em>
+              {" "}
               <span>Akiko Hayashi</span>
             </div>
             <div className="persona-card">
               <p>The Truth Teller</p>
               <em>Protects emotional truth.</em>
+              {" "}
               <span>Maya Elise Harper</span>
             </div>
             <div className="persona-card">
               <p>The Reality Check</p>
               <em>Tests what survives outside the room.</em>
+              {" "}
               <span>Adrian Mbeki</span>
             </div>
           </div>

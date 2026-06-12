@@ -11,7 +11,6 @@ const tickerItems: Array<{ text: string; tone: TickerTone }> = [
   { text: "SHORTCUT TO REALITY", tone: "neutral" },
   { text: "POWERED BY BILLIONS OF HUMAN SIGNALS", tone: "neutral" },
   { text: "SOMEONE JUST SAID \"LET'S CIRCLE BACK\"", tone: "neutral" },
-  { text: "CYBERTRUCK STEEL BALL STATUS: UNRESOLVED", tone: "neutral" },
   { text: "SIGNAL QUALITY: RESTLESS", tone: "odd" },
   { text: "ROOM TEMPERATURE: ARGUMENTATIVE", tone: "neutral" },
   { text: "ONE PROMISE IS LOSING SHAPE", tone: "neutral" },
