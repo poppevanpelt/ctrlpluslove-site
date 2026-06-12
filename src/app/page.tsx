@@ -62,6 +62,18 @@ export default function Home() {
               </p>
             </article>
           </div>
+
+          <div className="process-path" aria-label="Decision room path">
+            <span>Decision</span>
+            <span aria-hidden="true">↓</span>
+            <span>Room</span>
+            <span aria-hidden="true">↓</span>
+            <span>Disagreement</span>
+            <span aria-hidden="true">↓</span>
+            <span>Insight</span>
+            <span aria-hidden="true">↓</span>
+            <span>Decision</span>
+          </div>
         </div>
       </section>
 
@@ -110,7 +122,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="content-section ruled">
+      <section className="content-section ruled proof-section">
         <div className="content-block surfaced-section">
           <div className="section-heading quiet-heading">
             <div>
@@ -174,6 +186,10 @@ export default function Home() {
                 <span>Judgment</span> did not.
               </p>
             </div>
+            <p className="ai-bridge">
+              AI generates perspectives. Humans remain responsible for the
+              decision.
+            </p>
             <p>Strategies multiplied.</p>
             <p>Decks multiplied.</p>
             <p>Options multiplied.</p>
@@ -189,6 +205,8 @@ export default function Home() {
             Poppe van Pelt.
             <br />
             ADCN Hall of Fame.
+            <br />
+            Apple. TBWA. Selmore.
           </p>
           <p>
             Three decades of <span className="changing-word">changing</span> minds.
@@ -209,7 +227,7 @@ export default function Home() {
             href="mailto:hello@ctrlpluslove.com"
             className="text-link"
           >
-            Start a conversation →
+            Bring a decision →
           </a>
         </div>
       </section>
