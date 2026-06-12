@@ -1,18 +1,20 @@
-const tickerItems = [
-  "REALITY PRESSURE: HIGH",
-  "CONFIDENCE DECREASING",
-  "7 NEW CONTRADICTIONS DETECTED",
-  "ONE ASSUMPTION UNDER INVESTIGATION",
-  "WAITING FOR A BETTER QUESTION",
-  "USEFUL DISAGREEMENT NEARBY",
-  "THIS NUMBER MAY BE INACCURATE",
-  "SHORTCUT TO REALITY",
-  "POWERED BY BILLIONS OF HUMAN SIGNALS",
-  "SOMEONE JUST SAID \"LET'S CIRCLE BACK\"",
-  "CYBERTRUCK STEEL BALL STATUS: UNRESOLVED",
-  "SIGNAL QUALITY: RESTLESS",
-  "ROOM TEMPERATURE: ARGUMENTATIVE",
-  "ONE PROMISE IS LOSING SHAPE",
+type TickerTone = "neutral" | "warm" | "alert" | "odd";
+
+const tickerItems: Array<{ text: string; tone: TickerTone }> = [
+  { text: "REALITY PRESSURE: HIGH", tone: "alert" },
+  { text: "CONFIDENCE DECREASING", tone: "neutral" },
+  { text: "7 NEW CONTRADICTIONS DETECTED", tone: "neutral" },
+  { text: "ONE ASSUMPTION UNDER INVESTIGATION", tone: "neutral" },
+  { text: "WAITING FOR A BETTER QUESTION", tone: "neutral" },
+  { text: "USEFUL DISAGREEMENT NEARBY", tone: "warm" },
+  { text: "THIS NUMBER MAY BE INACCURATE", tone: "neutral" },
+  { text: "SHORTCUT TO REALITY", tone: "neutral" },
+  { text: "POWERED BY BILLIONS OF HUMAN SIGNALS", tone: "neutral" },
+  { text: "SOMEONE JUST SAID \"LET'S CIRCLE BACK\"", tone: "neutral" },
+  { text: "CYBERTRUCK STEEL BALL STATUS: UNRESOLVED", tone: "neutral" },
+  { text: "SIGNAL QUALITY: RESTLESS", tone: "odd" },
+  { text: "ROOM TEMPERATURE: ARGUMENTATIVE", tone: "neutral" },
+  { text: "ONE PROMISE IS LOSING SHAPE", tone: "neutral" },
 ];
 
 export function LivingTicker() {
@@ -30,12 +32,12 @@ function TickerRun({ ariaHidden = false }: { ariaHidden?: boolean }) {
   return (
     <div className="ticker-run" aria-hidden={ariaHidden}>
       {tickerItems.map((item, index) => (
-        <span className="ticker-item" key={`${item}-${index}`}>
-          {index === 0 || index === 10 ? (
-            <span className="ticker-accent">{item}</span>
-          ) : (
-            item
-          )}
+        <span
+          className="ticker-item"
+          data-tone={item.tone}
+          key={`${item.text}-${index}`}
+        >
+          {item.text}
         </span>
       ))}
     </div>
