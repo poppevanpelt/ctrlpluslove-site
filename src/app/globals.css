@@ -64,10 +64,10 @@ a {
 .hero-section {
   position: relative;
   isolation: isolate;
-  min-height: 82vh;
+  min-height: 48vh;
   display: grid;
   place-items: center;
-  padding: 4.5rem 1.5rem 4.75rem;
+  padding: 3.5rem 1.5rem 3.25rem;
   text-align: center;
 }
 
@@ -249,7 +249,7 @@ h3 {
 
 .scroll-cue {
   position: absolute;
-  bottom: 1.7rem;
+  bottom: 0.85rem;
   left: 50%;
   display: grid;
   width: 2.75rem;
@@ -357,8 +357,8 @@ h3 {
 }
 
 .content-section#intro {
-  padding-top: 4rem;
-  padding-bottom: 6.35rem;
+  padding-top: 2.5rem;
+  padding-bottom: 5.75rem;
 }
 
 .content-section.proof-section {
@@ -410,7 +410,7 @@ h3 {
 }
 
 .content-section#intro .content-block.statement-block {
-  gap: 2.65rem;
+  gap: 2.15rem;
 }
 
 .content-block.poster-block {
@@ -1006,8 +1006,9 @@ h3 {
 
 @media (max-width: 680px) {
   .hero-section {
-    min-height: 78vh;
-    padding-bottom: 4.25rem;
+    min-height: 58vh;
+    padding-top: 3.25rem;
+    padding-bottom: 3.75rem;
   }
 
   .content-section {
@@ -1026,7 +1027,7 @@ h3 {
   }
 
   .content-section#intro {
-    padding-top: 3.35rem;
+    padding-top: 2.55rem;
   }
 
   .content-section:nth-of-type(9) {
