@@ -195,10 +195,6 @@ export default function Home() {
             <p className="ai-bridge">
               AI generates perspectives. The room turns them into meaning.
             </p>
-            <p>Strategies multiplied.</p>
-            <p>Decks multiplied.</p>
-            <p>Options multiplied.</p>
-            <p className="bright">That&apos;s the bottleneck.</p>
           </div>
         </div>
       </section>
