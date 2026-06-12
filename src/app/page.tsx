@@ -20,7 +20,7 @@ export default function Home() {
             hello@ctrlpluslove.com →
           </a>
           <a
-            href="#ways-in"
+            href="#intro"
             className="scroll-cue"
             aria-label="Scroll to the first section"
           >
@@ -30,6 +30,59 @@ export default function Home() {
       </section>
 
       <LivingTicker />
+
+      <section className="content-section ruled" id="intro">
+        <div className="content-block statement-block">
+          <div className="opening-flow">
+            <p className="opening-line">
+              Meet the room.
+            </p>
+            <p className="bridge-line">
+              Named minds.
+              <br />
+              Built to disagree before the world does.
+            </p>
+          </div>
+          <div className="room-preview" aria-label="Room preview">
+            <div className="persona-card">
+              <p>The Critic</p>
+              <em>Challenges the answer everyone already agreed on.</em>
+              {" "}
+              <span>Simon Cross</span>
+            </div>
+            <div className="persona-card">
+              <p>The Commercial Realist</p>
+              <em>Sees the cost of being wrong.</em>
+              {" "}
+              <span>Nick Deckman</span>
+            </div>
+            <div className="persona-card">
+              <p>The Cultural Lens</p>
+              <em>Spots what others miss.</em>
+              {" "}
+              <span>Lexi Arden</span>
+            </div>
+            <div className="persona-card">
+              <p>The Consequence Keeper</p>
+              <em>Looks beyond the next decision.</em>
+              {" "}
+              <span>Akiko Hayashi</span>
+            </div>
+            <div className="persona-card">
+              <p>The Truth Teller</p>
+              <em>Protects emotional truth.</em>
+              {" "}
+              <span>Maya Elise Harper</span>
+            </div>
+            <div className="persona-card">
+              <p>The Reality Check</p>
+              <em>Tests what survives outside the room.</em>
+              {" "}
+              <span>Adrian Mbeki</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section className="content-section" id="ways-in">
         <div className="content-block wide poster-block">
@@ -77,57 +130,6 @@ export default function Home() {
             <span>Insight</span>
             <span aria-hidden="true">↓</span>
             <span>Decision</span>
-          </div>
-        </div>
-      </section>
-
-      <section className="content-section ruled" id="intro">
-        <div className="content-block statement-block">
-          <div className="opening-flow">
-            <p className="opening-line">
-              Enter the room of people you&apos;ll want to meet early.
-            </p>
-            <p className="bridge-line">
-              Once the decision is named, the room makes the answer harder.
-            </p>
-          </div>
-          <div className="room-preview" aria-label="Room preview">
-            <div className="persona-card">
-              <p>The Critic</p>
-              <em>Challenges the answer everyone already agreed on.</em>
-              {" "}
-              <span>Simon Cross</span>
-            </div>
-            <div className="persona-card">
-              <p>The Commercial Realist</p>
-              <em>Sees the cost of being wrong.</em>
-              {" "}
-              <span>Nick Deckman</span>
-            </div>
-            <div className="persona-card">
-              <p>The Cultural Lens</p>
-              <em>Spots what others miss.</em>
-              {" "}
-              <span>Lexi Arden</span>
-            </div>
-            <div className="persona-card">
-              <p>The Consequence Keeper</p>
-              <em>Looks beyond the next decision.</em>
-              {" "}
-              <span>Akiko Hayashi</span>
-            </div>
-            <div className="persona-card">
-              <p>The Truth Teller</p>
-              <em>Protects emotional truth.</em>
-              {" "}
-              <span>Maya Elise Harper</span>
-            </div>
-            <div className="persona-card">
-              <p>The Reality Check</p>
-              <em>Tests what survives outside the room.</em>
-              {" "}
-              <span>Adrian Mbeki</span>
-            </div>
           </div>
         </div>
       </section>
