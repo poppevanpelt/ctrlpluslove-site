@@ -31,7 +31,7 @@ export default function Home() {
         <div className="content-block wide poster-block">
           <div className="ways-heading">
             <p className="section-kicker">Three ways in</p>
-            <h2>Start where the decision is.</h2>
+            <h2>Bring the decision into the room.</h2>
           </div>
 
           <div className="offer-grid">
