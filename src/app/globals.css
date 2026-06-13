@@ -292,7 +292,7 @@ h3 {
 .ticker-track {
   display: flex;
   width: max-content;
-  animation: ticker-scroll 58s linear infinite;
+  animation: ticker-scroll 165s linear infinite;
 }
 
 .ticker-run {
