@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "next dev --webpack",
     "build": "next build --webpack",
+    "export": "next build --webpack",
+    "preview:static": "next build --webpack && node scripts/make-static-preview.mjs",
     "start": "next start",
     "lint": "eslint"
   },

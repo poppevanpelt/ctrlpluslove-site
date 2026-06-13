@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export const metadata = {
 title: "The Artifact Registry — ctrl+love",
 };
@@ -56,9 +58,9 @@ availability: "In stock",
 export default function ArtifactsPage() {
   return (
     <main className="museum-page">
-      <a className="museum-back" href="/">
+      <Link className="museum-back" href="/">
         ctrl+love
-      </a>
+      </Link>
 
       <section className="museum-hero">
         <p className="section-kicker">The Artifact Registry</p>

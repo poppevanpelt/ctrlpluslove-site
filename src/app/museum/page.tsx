@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export const metadata = {
   title: "Museum Shop — ctrl+love",
 };
@@ -38,9 +40,9 @@ const artifacts = [
 export default function MuseumPage() {
   return (
     <main className="museum-page">
-      <a className="museum-back" href="/">
+      <Link className="museum-back" href="/">
         ctrl+love
-      </a>
+      </Link>
 
       <section className="museum-hero">
         <p className="section-kicker">Museum Shop</p>

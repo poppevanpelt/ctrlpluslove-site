@@ -3,22 +3,33 @@ import { LivingTicker } from "./living-ticker";
 export default function Home() {
   return (
     <main className="site-shell">
+      <button
+        className="theme-toggle"
+        type="button"
+        data-theme-toggle
+        aria-label="Switch to night mode"
+        aria-pressed="false"
+      >
+        Night
+      </button>
+
       <section className="hero-section">
         <div className="hero-copy">
-          <h1 className="hero-logo">ctrl+love</h1>
-          <p className="hero-line">
+          <p className="hero-logo hero-logo-mark" aria-label="ctrl+love">
+            ctrl+love
+          </p>
+          <h1 className="hero-line">
             Shortcut to reality.
+          </h1>
+          <p className="hero-proof">
+            Powered by billions of human signals.
           </p>
-          <p className="subtle-line">
-            A decision stress-test room for strategies, launches, and
-            high-stakes ideas.
+          <h2 className="hero-invitation">
+            Bring the decision into the room.
+          </h2>
+          <p className="hero-stakes">
+            For decisions you only want to make once.
           </p>
-          <a
-            href="mailto:hello@ctrlpluslove.com"
-            className="text-link hero-cta"
-          >
-            hello@ctrlpluslove.com →
-          </a>
           <a
             href="#intro"
             className="scroll-cue"
@@ -30,6 +41,22 @@ export default function Home() {
       </section>
 
       <LivingTicker />
+
+      <section className="explore-section ruled" aria-labelledby="explore-title">
+        <div className="explore-block">
+          <p className="section-kicker" id="explore-title">
+            Explore
+          </p>
+          <div className="explore-list" aria-label="Explore destinations">
+            <a href="/reality">Department of Reality Preservation</a>
+            <a href="/unfinished-thoughts">
+              Department of Unfinished Thoughts
+            </a>
+            <a href="#intro">Meet the Room</a>
+            <a href="/museum">Museum Shop</a>
+          </div>
+        </div>
+      </section>
 
       <section className="content-section ruled" id="intro">
         <div className="content-block statement-block">
@@ -119,11 +146,11 @@ export default function Home() {
             <span aria-hidden="true">↓</span>
             <span>Room</span>
             <span aria-hidden="true">↓</span>
-            <span>Disagreement</span>
+            <span>Friction</span>
             <span aria-hidden="true">↓</span>
             <span>Insight</span>
             <span aria-hidden="true">↓</span>
-            <span>Decision</span>
+            <span>Better decision</span>
           </div>
         </div>
       </section>
