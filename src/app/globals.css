@@ -348,12 +348,12 @@ h3 {
 }
 
 .content-section {
-  padding: 7.5rem 1.5rem;
+  padding: 6.9rem 1.5rem;
 }
 
 .content-section#ways-in {
-  padding-top: 6.5rem;
-  padding-bottom: 6.5rem;
+  padding-top: 6rem;
+  padding-bottom: 6.1rem;
 }
 
 .content-section#intro {
@@ -362,36 +362,36 @@ h3 {
 }
 
 .content-section.proof-section {
-  padding-top: 5.5rem;
+  padding-top: 5.2rem;
 }
 
 .content-section:nth-of-type(3) {
-  padding-top: 6.1rem;
-  padding-bottom: 6.6rem;
+  padding-top: 5.75rem;
+  padding-bottom: 6.05rem;
 }
 
 .content-section:nth-of-type(4) {
-  padding-top: 6.15rem;
-  padding-bottom: 6.1rem;
+  padding-top: 5.75rem;
+  padding-bottom: 5.85rem;
 }
 
 .content-section:nth-of-type(6) {
-  padding-top: 6.05rem;
-  padding-bottom: 6rem;
+  padding-top: 5.65rem;
+  padding-bottom: 5.7rem;
 }
 
 .content-section:nth-of-type(7) {
-  padding-top: 6.05rem;
-  padding-bottom: 6.1rem;
+  padding-top: 5.65rem;
+  padding-bottom: 5.75rem;
 }
 
 .content-section:nth-of-type(8) {
-  padding-top: 5.8rem;
-  padding-bottom: 6.15rem;
+  padding-top: 5.45rem;
+  padding-bottom: 5.75rem;
 }
 
 .content-section:nth-of-type(9) {
-  padding-top: 6rem;
+  padding-top: 5.7rem;
 }
 
 .ruled,

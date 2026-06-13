@@ -207,10 +207,10 @@ export default function Home() {
             <br />
             ADCN Hall of Fame.
             <br />
-            Apple. TBWA. Selmore.
+            Apple. Saint. TBWA. Selmore.
           </p>
           <p>
-            Three decades of <span className="changing-word">changing</span> minds.
+            Three decades of seeing what <span className="changing-word">changes</span> minds.
             <br />
             Now rebuilt for a world with AI.
           </p>
