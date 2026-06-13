@@ -307,7 +307,7 @@ h3 {
   max-width: 34rem;
   justify-self: center;
   color: var(--muted);
-  font-size: clamp(0.98rem, 1.08vw, 1.12rem);
+  font-size: clamp(1.18rem, 1.28vw, 1.32rem);
   font-weight: 700;
   line-height: var(--leading-secondary);
 }
