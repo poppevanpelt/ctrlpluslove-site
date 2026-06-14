@@ -325,6 +325,25 @@ h3 {
   margin-top: 1.2rem;
 }
 
+.hero-email {
+  justify-self: center;
+  width: fit-content;
+  margin-top: 0.2rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 28%, transparent);
+  color: var(--ink);
+  padding-bottom: 0.12rem;
+  font-size: clamp(0.92rem, 1.08vw, 1rem);
+  font-weight: 700;
+  line-height: var(--leading-secondary);
+  text-decoration: none;
+  transition: border-color 160ms ease, color 160ms ease;
+}
+
+.hero-email:hover {
+  border-color: var(--ink);
+  color: var(--soft);
+}
+
 .hero-invitation {
   max-width: 58rem;
   justify-self: center;
@@ -1187,6 +1206,10 @@ h3 {
   .hero-stakes {
     max-width: 22rem;
     font-size: 1rem;
+  }
+
+  .hero-email {
+    font-size: 0.92rem;
   }
 
   .ticker-track {

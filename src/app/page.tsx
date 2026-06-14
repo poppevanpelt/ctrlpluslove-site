@@ -28,6 +28,12 @@ export default function Home() {
             </p>
           </div>
           <a
+            href="mailto:hello@ctrlpluslove.com"
+            className="hero-email"
+          >
+            hello@ctrlpluslove.com →
+          </a>
+          <a
             href="#intro"
             className="scroll-cue"
             aria-label="Scroll to the first section"
