@@ -11,19 +11,22 @@ export default function Home() {
           <p className="hero-logo hero-logo-mark" aria-label="ctrl+love">
             ctrl+love
           </p>
-          <h1 className="hero-line">
-            Shortcut to reality.
-          </h1>
-          <p className="hero-proof">
-            A decision stress-test room for strategies, launches, and high-stakes
-            ideas.
-          </p>
-          <a
-            href="mailto:hello@ctrlpluslove.com"
-            className="hero-email"
-          >
-            hello@ctrlpluslove.com →
-          </a>
+          <div className="hero-message">
+            <h1 className="hero-line">
+              Shortcut to reality.
+            </h1>
+            <p className="hero-proof">
+              Powered by billions of human signals.
+            </p>
+          </div>
+          <div className="hero-message hero-message-secondary">
+            <h2 className="hero-invitation">
+              Bring the decision into the room.
+            </h2>
+            <p className="hero-stakes">
+              For decisions you only want to make once.
+            </p>
+          </div>
           <a
             href="#intro"
             className="scroll-cue"
