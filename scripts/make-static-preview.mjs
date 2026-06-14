@@ -11,6 +11,7 @@ const pages = [
   "rob.html",
   "marjan.html",
   "reality.html",
+  "unfinished-thoughts.html",
 ];
 
 const assets = [
@@ -18,6 +19,7 @@ const assets = [
   "dear-rob.png",
   "dear-marjan.png",
   "reality-poster.png",
+  "unfinished-thoughts.png",
 ];
 
 const themeHeadScript = `<script>
@@ -114,12 +116,14 @@ function removeRuntime(html) {
     .replace(/<div hidden="">\s*<\/div>/g, "")
     .replace(/<link rel="icon" href="\/favicon\.ico\?[^"]*"([^>]*)>/g, '<link rel="icon" href="favicon.ico"$1>')
     .replace(/href="\//g, 'href="')
+    .replace(/src="\//g, 'src="')
     .replace(/href=""/g, 'href="index.html"')
     .replace(/href="museum"/g, 'href="museum.html"')
     .replace(/href="artifacts"/g, 'href="artifacts.html"')
     .replace(/href="rob"/g, 'href="rob.html"')
     .replace(/href="marjan"/g, 'href="marjan.html"')
-    .replace(/href="reality"/g, 'href="reality.html"');
+    .replace(/href="reality"/g, 'href="reality.html"')
+    .replace(/href="unfinished-thoughts"/g, 'href="unfinished-thoughts.html"');
 }
 
 const cssDir = new URL("_next/static/css/", sourceDir);

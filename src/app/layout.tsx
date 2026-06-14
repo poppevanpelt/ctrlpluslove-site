@@ -12,22 +12,13 @@ export const metadata: Metadata = {
     description: "Shortcut to reality. Powered by billions of human signals.",
     url: "https://www.ctrlpluslove.com",
     siteName: "ctrl+love",
-    images: [
-      {
-        url: "/reality-poster.png",
-        width: 1672,
-        height: 941,
-        alt: "ctrl+love",
-      },
-    ],
     locale: "en_US",
     type: "website",
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary",
     title: "ctrl+love",
     description: "Shortcut to reality. Powered by billions of human signals.",
-    images: ["/reality-poster.png"],
   },
 };
 
@@ -44,6 +35,24 @@ export default function RootLayout({
             __html: `
               (function () {
                 var storageKey = "ctrl-love-theme";
+
+                try {
+                  if ("serviceWorker" in navigator) {
+                    navigator.serviceWorker.getRegistrations().then(function (registrations) {
+                      registrations.forEach(function (registration) {
+                        registration.unregister();
+                      });
+                    });
+                  }
+
+                  if ("caches" in window) {
+                    caches.keys().then(function (keys) {
+                      keys.forEach(function (key) {
+                        caches.delete(key);
+                      });
+                    });
+                  }
+                } catch (error) {}
 
                 function preferredTheme() {
                   try {

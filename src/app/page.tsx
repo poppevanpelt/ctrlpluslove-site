@@ -33,31 +33,89 @@ export default function Home() {
           >
             hello@ctrlpluslove.com →
           </a>
-          <a
-            href="#intro"
-            className="scroll-cue"
-            aria-label="Scroll to the first section"
-          >
-            <span aria-hidden="true" />
-          </a>
         </div>
+
       </section>
 
-      <LivingTicker />
-
-      <section className="explore-section ruled" aria-labelledby="explore-title">
+      <nav
+        className="explore-section hero-explore"
+        id="explore"
+        aria-labelledby="explore-title"
+      >
         <div className="explore-block">
           <p className="section-kicker" id="explore-title">
             Explore
           </p>
           <div className="explore-list" aria-label="Explore destinations">
-            <a href="/reality">Department of Reality Preservation</a>
-            <a href="/unfinished-thoughts">
-              Department of Unfinished Thoughts
+            <a className="explore-destination" href="/reality">
+              <strong>Department of Reality Preservation →</strong>
+              <em>Cornelis van Loon</em>
             </a>
-            <a href="#intro">Meet the Room</a>
-            <a href="/museum">Museum Shop</a>
+            <a
+              className="explore-destination"
+              href="/unfinished-thoughts"
+            >
+              <strong>Department of Unfinished Thoughts →</strong>
+              <em>Nora Veld</em>
+            </a>
+            <div className="explore-destination">
+              <a href="#intro">Meet the Room →</a>
+            </div>
+            <div className="explore-destination">
+              <a href="#museum-shop">Museum Shop →</a>
+            </div>
           </div>
+        </div>
+      </nav>
+
+      <LivingTicker />
+
+      <section className="content-section ruled departments-section" id="departments">
+        <div className="content-block departments-block">
+          <div className="departments-heading">
+            <p className="section-kicker">Departments</p>
+            <h2>Departments</h2>
+            <p>Small institutions built to protect important things.</p>
+          </div>
+
+          <div className="department-grid" aria-label="Departments">
+            <a className="department-card" href="/reality">
+              <div className="department-copy">
+                <p className="department-label">
+                  Department of Reality Preservation
+                </p>
+                <h3>Cornelis van Loon</h3>
+                <p>Protects contact with the real world.</p>
+                <span>Visit Department →</span>
+              </div>
+            </a>
+
+            <a className="department-card" href="/unfinished-thoughts">
+              <div className="department-copy">
+                <p className="department-label">
+                  Department of Unfinished Thoughts
+                </p>
+                <h3>Nora Veld</h3>
+                <p>Keeps important questions open.</p>
+                <span>Visit Department →</span>
+              </div>
+            </a>
+          </div>
+
+          <p className="departments-close">More departments opening soon.</p>
+        </div>
+      </section>
+
+      <section className="content-section ruled museum-shop-section" id="museum-shop">
+        <div className="content-block museum-shop-block">
+          <p className="section-kicker">Museum Shop</p>
+          <h2>
+            We don&apos;t sell products.
+            <br />
+            We sell evidence.
+          </h2>
+          <p>Replicas of tiny moments when reality interrupted the room.</p>
+          <a href="/museum">Visit Museum Shop →</a>
         </div>
       </section>
 

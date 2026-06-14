@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { DocumentViewer } from "../document-viewer";
 
 export const metadata: Metadata = {
   title: "Department of Unanswered Questions — ctrl+love",
@@ -6,16 +7,14 @@ export const metadata: Metadata = {
 
 export default function UnfinishedThoughtsPage() {
   return (
-    <main className="document-page">
-      {/* Plain img keeps the exported file:// preview self-contained. */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        className="document-image"
-        src="/unfinished-thoughts.png"
-        alt="Department of Unanswered Questions"
-        width={1792}
-        height={1024}
-      />
-    </main>
+    <DocumentViewer
+      src="/unfinished-thoughts.png"
+      alt="Department of Unanswered Questions"
+      width={1536}
+      height={1024}
+      initialScale={2.05}
+      initialX={33}
+      initialY={32}
+    />
   );
 }
