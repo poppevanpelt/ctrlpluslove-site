@@ -62,62 +62,13 @@ export default function Home() {
               <a href="#intro">Meet the Room →</a>
             </div>
             <div className="explore-destination">
-              <a href="#museum-shop">Museum Shop →</a>
+              <a href="/museum">Museum Shop →</a>
             </div>
           </div>
         </div>
       </nav>
 
       <LivingTicker />
-
-      <section className="content-section ruled departments-section" id="departments">
-        <div className="content-block departments-block">
-          <div className="departments-heading">
-            <p className="section-kicker">Departments</p>
-            <h2>Departments</h2>
-            <p>Small institutions built to protect important things.</p>
-          </div>
-
-          <div className="department-grid" aria-label="Departments">
-            <a className="department-card" href="/reality">
-              <div className="department-copy">
-                <p className="department-label">
-                  Department of Reality Preservation
-                </p>
-                <h3>Cornelis van Loon</h3>
-                <p>Protects contact with the real world.</p>
-                <span>Visit Department →</span>
-              </div>
-            </a>
-
-            <a className="department-card" href="/unfinished-thoughts">
-              <div className="department-copy">
-                <p className="department-label">
-                  Department of Unfinished Thoughts
-                </p>
-                <h3>Nora Veld</h3>
-                <p>Keeps important questions open.</p>
-                <span>Visit Department →</span>
-              </div>
-            </a>
-          </div>
-
-          <p className="departments-close">More departments opening soon.</p>
-        </div>
-      </section>
-
-      <section className="content-section ruled museum-shop-section" id="museum-shop">
-        <div className="content-block museum-shop-block">
-          <p className="section-kicker">Museum Shop</p>
-          <h2>
-            We don&apos;t sell products.
-            <br />
-            We sell evidence.
-          </h2>
-          <p>Replicas of tiny moments when reality interrupted the room.</p>
-          <a href="/museum">Visit Museum Shop →</a>
-        </div>
-      </section>
 
       <section className="content-section ruled" id="intro">
         <div className="content-block statement-block">
