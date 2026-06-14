@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -39,48 +38,78 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
-        <Script id="theme-mode" strategy="beforeInteractive">
-          {`
-            (function () {
-              function preferredTheme() {
-                try {
-                  return localStorage.getItem("ctrl-love-theme") || "day";
-                } catch (error) {
-                  return "day";
-                }
-              }
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function () {
+                var storageKey = "ctrl-love-theme";
 
-              function applyTheme(theme) {
-                var isNight = theme === "night";
-                document.documentElement.dataset.theme = theme;
-                document.documentElement.style.colorScheme = isNight ? "dark" : "light";
-                var toggle = document.querySelector("[data-theme-toggle]");
-                if (toggle) {
-                  toggle.textContent = isNight ? "Day" : "Night";
-                  toggle.setAttribute("aria-label", isNight ? "Switch to day mode" : "Switch to night mode");
-                  toggle.setAttribute("aria-pressed", String(isNight));
-                }
-              }
-
-              applyTheme(preferredTheme());
-
-              document.addEventListener("DOMContentLoaded", function () {
-                applyTheme(preferredTheme());
-                var toggle = document.querySelector("[data-theme-toggle]");
-                if (!toggle) return;
-
-                toggle.addEventListener("click", function () {
-                  var nextTheme = document.documentElement.dataset.theme === "night" ? "day" : "night";
+                function preferredTheme() {
                   try {
-                    localStorage.setItem("ctrl-love-theme", nextTheme);
+                    return localStorage.getItem(storageKey) === "night" ? "night" : "day";
+                  } catch (error) {
+                    return "day";
+                  }
+                }
+
+                function applyTheme(theme) {
+                  var isNight = theme === "night";
+                  document.documentElement.dataset.theme = theme;
+                  document.documentElement.style.colorScheme = isNight ? "dark" : "light";
+                  var toggles = document.querySelectorAll("[data-theme-toggle]");
+                  toggles.forEach(function (toggle) {
+                    toggle.textContent = isNight ? "Day mode" : "Night mode";
+                    toggle.setAttribute("aria-label", isNight ? "Switch to day mode" : "Switch to night mode");
+                    toggle.setAttribute("aria-pressed", String(isNight));
+                  });
+                }
+
+                function setTheme(theme) {
+                  try {
+                    localStorage.setItem(storageKey, theme);
                   } catch (error) {}
-                  applyTheme(nextTheme);
+                  applyTheme(theme);
+                  window.dispatchEvent(new Event("ctrl-love-theme-change"));
+                }
+
+                function toggleTheme() {
+                  setTheme(document.documentElement.dataset.theme === "night" ? "day" : "night");
+                }
+
+                window.ctrlLoveTheme = {
+                  get: preferredTheme,
+                  apply: applyTheme,
+                  set: setTheme,
+                  toggle: toggleTheme,
+                  storageKey: storageKey
+                };
+
+                applyTheme(preferredTheme());
+
+                if (document.readyState === "loading") {
+                  document.addEventListener("DOMContentLoaded", function () {
+                    applyTheme(preferredTheme());
+                  });
+                } else {
+                  applyTheme(preferredTheme());
+                }
+
+                document.addEventListener("click", function (event) {
+                  if (event.defaultPrevented) return;
+                  var target = event.target;
+                  if (!target || !target.closest) return;
+                  var toggle = target.closest("[data-theme-toggle]");
+                  if (!toggle) return;
+                  event.preventDefault();
+                  toggleTheme();
                 });
-              });
-            })();
-          `}
-        </Script>
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body>
         {children}
         <Analytics />
         <SpeedInsights />

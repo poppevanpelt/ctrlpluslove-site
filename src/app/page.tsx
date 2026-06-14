@@ -1,17 +1,10 @@
 import { LivingTicker } from "./living-ticker";
+import { ThemeToggle } from "./theme-toggle";
 
 export default function Home() {
   return (
     <main className="site-shell">
-      <button
-        className="theme-toggle"
-        type="button"
-        data-theme-toggle
-        aria-label="Switch to night mode"
-        aria-pressed="false"
-      >
-        Night
-      </button>
+      <ThemeToggle />
 
       <section className="hero-section">
         <div className="hero-copy">

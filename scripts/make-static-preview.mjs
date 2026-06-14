@@ -22,19 +22,11 @@ const assets = [
 
 const themeHeadScript = `<script>
 (function () {
-  try {
-    var theme = localStorage.getItem("ctrl-love-theme") || "day";
-    document.documentElement.dataset.theme = theme;
-    document.documentElement.style.colorScheme = theme === "night" ? "dark" : "light";
-  } catch (error) {}
-})();
-</script>`;
+  var storageKey = "ctrl-love-theme";
 
-const themeBodyScript = `<script>
-(function () {
   function currentTheme() {
     try {
-      return localStorage.getItem("ctrl-love-theme") || "day";
+      return localStorage.getItem(storageKey) === "night" ? "night" : "day";
     } catch (error) {
       return "day";
     }
@@ -44,26 +36,59 @@ const themeBodyScript = `<script>
     var isNight = theme === "night";
     document.documentElement.dataset.theme = theme;
     document.documentElement.style.colorScheme = isNight ? "dark" : "light";
-    var toggle = document.querySelector("[data-theme-toggle]");
-    if (toggle) {
-      toggle.textContent = isNight ? "Day" : "Night";
+  }
+
+  try {
+    applyTheme(currentTheme());
+  } catch (error) {}
+})();
+</script>`;
+
+const themeBodyScript = `<script>
+(function () {
+  var storageKey = "ctrl-love-theme";
+
+  function currentTheme() {
+    try {
+      return localStorage.getItem(storageKey) === "night" ? "night" : "day";
+    } catch (error) {
+      return "day";
+    }
+  }
+
+  function applyTheme(theme) {
+    var isNight = theme === "night";
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = isNight ? "dark" : "light";
+    var toggles = document.querySelectorAll("[data-theme-toggle], .theme-toggle");
+    toggles.forEach(function (toggle) {
+      toggle.textContent = isNight ? "Day mode" : "Night mode";
       toggle.setAttribute("aria-label", isNight ? "Switch to day mode" : "Switch to night mode");
       toggle.setAttribute("aria-pressed", String(isNight));
-    }
+    });
+  }
+
+  function setTheme(theme) {
+    try {
+      localStorage.setItem(storageKey, theme);
+    } catch (error) {}
+    applyTheme(theme);
+  }
+
+  function toggleTheme() {
+    setTheme(document.documentElement.dataset.theme === "night" ? "day" : "night");
   }
 
   applyTheme(currentTheme());
 
-  var toggle = document.querySelector("[data-theme-toggle]");
-  if (toggle) {
-    toggle.addEventListener("click", function () {
-      var nextTheme = document.documentElement.dataset.theme === "night" ? "day" : "night";
-      try {
-        localStorage.setItem("ctrl-love-theme", nextTheme);
-      } catch (error) {}
-      applyTheme(nextTheme);
-    });
-  }
+  document.addEventListener("click", function (event) {
+    var target = event.target;
+    if (!target || !target.closest) return;
+    var toggle = target.closest("[data-theme-toggle], .theme-toggle");
+    if (!toggle) return;
+    event.preventDefault();
+    toggleTheme();
+  });
 })();
 </script>`;
 
