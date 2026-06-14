@@ -527,7 +527,7 @@ h3 {
 }
 
 .explore-section {
-  padding: clamp(9rem, 14vw, 14rem) 1.5rem clamp(6.4rem, 10vw, 9rem);
+  padding: 3.35rem 1.5rem 3.65rem;
 }
 
 .hero-explore {
