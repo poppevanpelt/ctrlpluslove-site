@@ -37,6 +37,8 @@ export default function Home() {
 
       </section>
 
+      <LivingTicker />
+
       <nav
         className="explore-section hero-explore"
         id="explore"
@@ -67,8 +69,6 @@ export default function Home() {
           </div>
         </div>
       </nav>
-
-      <LivingTicker />
 
       <section className="content-section ruled" id="intro">
         <div className="content-block statement-block">
