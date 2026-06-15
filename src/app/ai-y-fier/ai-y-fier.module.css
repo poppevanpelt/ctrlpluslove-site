@@ -373,12 +373,13 @@
 
 .resultActions {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   margin-top: 14px;
 }
 
 .resultActions button {
-  flex: 1;
+  flex: 1 1 190px;
 }
 
 .metricsBand {
@@ -409,6 +410,12 @@
   font-family: "Space Grotesk", Inter, sans-serif;
   font-size: clamp(2rem, 5vw, 4.4rem);
   line-height: 0.9;
+}
+
+.metricsBand .emptyMetric {
+  max-width: 14rem;
+  font-size: clamp(1.45rem, 2.4vw, 2.15rem);
+  line-height: 1;
 }
 
 .metricsBand article:nth-child(1) strong {
@@ -449,6 +456,16 @@
   place-items: center;
   min-height: 64px;
   color: #f8fbff;
+  font-weight: 800;
+}
+
+.disclaimer {
+  margin-top: 34px;
+  padding: 18px 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  color: #a7b2c8;
+  text-align: center;
+  font-size: 0.86rem;
   font-weight: 800;
 }
 

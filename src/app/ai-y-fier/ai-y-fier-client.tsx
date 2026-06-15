@@ -33,6 +33,12 @@ const buzzwords = [
   "compounding",
   "mission-critical",
   "alignment layer",
+  "thought leadership",
+  "creator economy",
+  "magic quadrant",
+  "marketecture",
+  "executive presence",
+  "signal liquidity",
 ];
 
 const actionVerbs = [
@@ -77,6 +83,27 @@ const stylesByMode = {
     close:
       "This positions the organization to accelerate adoption, reduce cognitive load, and establish an AI-native foundation for durable digital excellence.",
   },
+  linkedin: {
+    opener: "Hot take: the highest-leverage operators will be the ones brave enough to",
+    frame:
+      "This is not about productivity. It is about showing up with compounding context, radical ownership, and a comment-section-ready point of view.",
+    close:
+      "Agree? Repost if your team is ready to stop confusing motion with momentum.",
+  },
+  category: {
+    opener: "The market does not need another feature; it needs a new category that can",
+    frame:
+      "The move is to name the problem before buyers can describe it, then make every alternative look like legacy behavior.",
+    close:
+      "Once the language lands, the category stops being explained and starts being budgeted.",
+  },
+  gartner: {
+    opener: "Organizations seeking durable advantage should evaluate a maturity-aligned capability to",
+    frame:
+      "Leaders should prioritize a phased adoption model that balances innovation appetite, governance posture, and measurable ambiguity reduction.",
+    close:
+      "By 2028, successful enterprises will have moved this from exploratory initiative to normalized executive ritual.",
+  },
 };
 
 type Mode = keyof typeof stylesByMode;
@@ -86,6 +113,9 @@ const modeNames: Record<Mode, string> = {
   founder: "Founder Mode",
   consultant: "Consultant Fog",
   enterprise: "Enterprise AI",
+  linkedin: "LinkedIn Operator",
+  category: "Category Designer",
+  gartner: "Gartner Fog",
 };
 
 function cleanInput(text: string) {
@@ -137,6 +167,79 @@ function aiYfy(text: string, mode: Mode, level: number) {
     ],
     seed
   );
+
+  if (mode === "linkedin") {
+    const lessons = Array.from({ length: level }, (_, index) =>
+      pickOne(
+        [
+          `Lesson ${index + 1}: ${picked[(index + 2) % picked.length]} is not a tactic. It is a posture.`,
+          `${index + 1}. The best teams do not wait for clarity; they ${verbs[index]} it into existence and call the residue learning.`,
+          `Operator note ${index + 1}: if this feels obvious, that is usually because the hard part has been renamed as ${picked[(index + 4) % picked.length]}.`,
+          `Reminder ${index + 1}: your calendar is not busy, it is under-monetized attention pretending to be ${picked[(index + 6) % picked.length]}.`,
+        ],
+        seed,
+        index
+      )
+    );
+
+    return [
+      originalSentence,
+      `I have seen too many teams treat ${picked[0]} like a workflow when it is actually a mirror.`,
+      `The uncomfortable truth: ${picked[1]} only compounds when someone is willing to make the obvious thing sound like a breakthrough.`,
+      ...lessons,
+      reminder,
+      config.close,
+    ].join(" ");
+  }
+
+  if (mode === "category") {
+    const categoryMoves = Array.from({ length: level }, (_, index) =>
+      pickOne(
+        [
+          `Category move ${index + 1}: rename ${picked[(index + 2) % picked.length]} as the enemy, then position ${picked[(index + 5) % picked.length]} as the only sane response.`,
+          `Narrative law ${index + 1}: if buyers can compare it, the category is too small.`,
+          `Design principle ${index + 1}: make the old behavior feel expensive, slow, and faintly embarrassing.`,
+          `Market language ${index + 1}: ${verbs[index]} the familiar need until it becomes a board-level conversation with its own acronym.`,
+        ],
+        seed,
+        index
+      )
+    );
+
+    return [
+      originalSentence,
+      `First, stop describing the task. Name the absence. The absence is ${picked[0]}.`,
+      `Second, make ${picked[1]} feel inevitable enough that competitors accidentally validate the frame while arguing with it.`,
+      ...categoryMoves,
+      reminder,
+      config.close,
+    ].join(" ");
+  }
+
+  if (mode === "gartner") {
+    const findings = Array.from({ length: level }, (_, index) =>
+      pickOne(
+        [
+          `Finding ${index + 1}: ${picked[(index + 3) % picked.length]} maturity remains uneven across functions, creating a near-term imperative for calibrated enablement.`,
+          `Planning assumption ${index + 1}: by next quarter, leaders who fail to ${verbs[index]} ${picked[(index + 6) % picked.length]} will over-index on dashboards while under-investing in judgment.`,
+          `Recommendation ${index + 1}: establish a lightweight center of excellence, then let it become heavyweight through meeting gravity.`,
+          `Risk note ${index + 1}: insufficient ${picked[(index + 4) % picked.length]} governance may result in duplicated effort, executive enthusiasm, and no measurable change.`,
+        ],
+        seed,
+        index
+      )
+    );
+
+    return [
+      `Strategic imperative: ${normalized}.`,
+      `Market context indicates that ${picked[0]} is moving from emerging practice to executive expectation.`,
+      config.frame,
+      ...findings,
+      `Recommended KPI cluster: ${metricList([picked[1], picked[5], picked[9]])}. Interpret cautiously until confidence becomes budget.`,
+      reminder,
+      config.close,
+    ].join(" ");
+  }
 
   if (mode === "vc") {
     const proofTemplates = [
@@ -313,9 +416,10 @@ function aiYfy(text: string, mode: Mode, level: number) {
 function scoreOutput(text: string, source: string) {
   if (!text.trim()) {
     return {
-      bullshit: "0",
-      density: "0%",
-      synergy: "0x",
+      bullshit: "Awaiting inflation",
+      density: "Under-leveraged",
+      synergy: "Not yet cross-functional",
+      isEmpty: true,
     };
   }
 
@@ -331,6 +435,7 @@ function scoreOutput(text: string, source: string) {
     bullshit: String(Math.min(99, Math.round(46 + buzzwordHits * 3.2 + lengthMultiplier * 4))),
     density: `${Math.min(88, Math.round((buzzwordHits / Math.max(words.length, 1)) * 1000))}%`,
     synergy: `${Math.min(12.8, 1.4 + buzzwordHits * 0.32 + lengthMultiplier * 0.28).toFixed(1)}x`,
+    isEmpty: false,
   };
 }
 
@@ -441,6 +546,9 @@ export default function AiYFierClient() {
                   "founder",
                   "consultant",
                   "enterprise",
+                  "linkedin",
+                  "category",
+                  "gartner",
                 ].map((value) => (
                   <label key={value}>
                     <input
@@ -488,7 +596,10 @@ export default function AiYFierClient() {
           </article>
           <div className={styles.resultActions}>
             <button type="button" onClick={() => navigator.clipboard.writeText(output)}>
-              Copy deck-ready copy
+              Copy for stakeholder alignment
+            </button>
+            <button type="button" onClick={() => setOutput(source)}>
+              Strip Confidence Layer
             </button>
             <button type="button" onClick={clearAll}>
               Clear all
@@ -512,17 +623,17 @@ export default function AiYFierClient() {
       <section className={styles.metricsBand} id="metrics" aria-label="Generated metrics">
         <article>
           <span>Bullshit Score</span>
-          <strong>{scores.bullshit}</strong>
+          <strong className={scores.isEmpty ? styles.emptyMetric : undefined}>{scores.bullshit}</strong>
           <span>Investor-grade certainty</span>
         </article>
         <article>
           <span>Buzzword Density</span>
-          <strong>{scores.density}</strong>
+          <strong className={scores.isEmpty ? styles.emptyMetric : undefined}>{scores.density}</strong>
           <span>Jargon per useful noun</span>
         </article>
         <article>
           <span>Synergy Index</span>
-          <strong>{scores.synergy}</strong>
+          <strong className={scores.isEmpty ? styles.emptyMetric : undefined}>{scores.synergy}</strong>
           <span>Cross-functional aura</span>
         </article>
       </section>
@@ -541,6 +652,10 @@ export default function AiYFierClient() {
           <span>Roadmap-positive</span>
         </div>
       </section>
+
+      <footer className={styles.disclaimer}>
+        No meaning was added in the making of this narrative.
+      </footer>
     </main>
   );
 }
