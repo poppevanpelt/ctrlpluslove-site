@@ -63,7 +63,7 @@ export default function Home() {
             <div className="explore-destination">
               <a href="#intro">Meet the Room →</a>
             </div>
-            <a className="explore-destination" href="/ai-y-fier/">
+            <a className="explore-destination" href="/ai-y-fier">
               <strong>AI-y-fier →</strong>
               <em>Jargon in. Gravity out.</em>
             </a>
