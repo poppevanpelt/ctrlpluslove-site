@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI-y-fier</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css?v=2" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar" aria-label="AI-y-fier header">
+        <a class="site-link" href="/">ctrl+love</a>
+        <a class="brand" href="#" aria-label="AI-y-fier home">
+          <span class="brand-mark">A</span>
+          <span>AI-y-fier</span>
+        </a>
+        <nav class="nav-actions" aria-label="Company links">
+          <a href="#product">Product</a>
+          <a href="#metrics">Metrics</a>
+          <a href="#waitlist">Enterprise</a>
+        </nav>
+        <button class="demo-button" type="button" id="demoButton">Book a demo</button>
+      </header>
+
+      <a class="home-ribbon" href="/">
+        Part of ctrl+love. Return to the main site →
+      </a>
+
+      <section class="hero" id="product">
+        <div class="hero-copy">
+          <p class="eyebrow">Narrative infrastructure for modern teams</p>
+          <h1>Turn perfectly normal sentences into board-approved AI gravity.</h1>
+          <p class="lede">
+            Paste mundane text. Select a transformation style. Receive a maximally confident,
+            abstract, lengthened artifact that preserves the original meaning while
+            radiating funded inevitability.
+          </p>
+          <div class="trust-row" aria-label="Investor confidence indicators">
+            <span>Backed by vibes</span>
+            <span>0 patents pending</span>
+            <span>SOC 2 adjacent</span>
+          </div>
+        </div>
+
+        <section class="terminal-panel" aria-label="Live funding signal">
+          <img
+            class="hero-visual"
+            src="assets/hero-dashboard.png"
+            alt="Glossy abstract AI dashboard panels for AI-y-fier"
+          />
+          <div class="terminal-header">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <p class="terminal-kicker">LIVE MODEL OUTPUT</p>
+          <p class="terminal-line">
+            We are operationalizing semantic surplus through a venture-native
+            confidence layer.
+          </p>
+          <div class="funding-meter" aria-hidden="true">
+            <span></span>
+          </div>
+          <p class="terminal-footnote">Confidence allocated across every clause.</p>
+        </section>
+      </section>
+
+      <section class="workspace" aria-label="AI-y-fier generator">
+        <div class="composer">
+          <div class="section-heading">
+            <p class="eyebrow">Input</p>
+            <h2>Mundane text</h2>
+          </div>
+          <textarea
+            id="sourceText"
+            spellcheck="true"
+            aria-label="Mundane text to transform"
+            placeholder="Paste something mundane, then press AI-y-fy this."
+          ></textarea>
+
+          <div class="controls">
+            <fieldset>
+              <legend>Transformation style</legend>
+              <div class="style-grid" id="styleGrid">
+                <label>
+                  <input type="radio" name="style" value="vc" checked />
+                  <span>VC Memo</span>
+                </label>
+                <label>
+                  <input type="radio" name="style" value="founder" />
+                  <span>Founder Mode</span>
+                </label>
+                <label>
+                  <input type="radio" name="style" value="consultant" />
+                  <span>Consultant Fog</span>
+                </label>
+                <label>
+                  <input type="radio" name="style" value="enterprise" />
+                  <span>Enterprise AI</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <label class="intensity-control" for="intensity">
+              <span>Inflation intensity</span>
+              <input id="intensity" type="range" min="1" max="5" value="4" />
+            </label>
+          </div>
+
+          <button class="primary-action" id="transformButton" type="button">
+            AI-y-fy this
+          </button>
+        </div>
+
+        <aside class="results" aria-live="polite">
+          <div class="section-heading">
+            <p class="eyebrow">Output</p>
+            <h2>Strategic narrative</h2>
+          </div>
+          <article class="output-card">
+            <textarea
+              id="outputText"
+              spellcheck="true"
+              aria-label="Generated strategic narrative"
+            ></textarea>
+          </article>
+          <div class="result-actions">
+            <button type="button" id="copyButton">Copy deck-ready copy</button>
+            <button type="button" id="clearButton">Clear all</button>
+            <button type="button" id="resetButton">Reset</button>
+          </div>
+        </aside>
+      </section>
+
+      <section class="metrics-band" id="metrics" aria-label="Generated metrics">
+        <article>
+          <span class="metric-label">Bullshit Score</span>
+          <strong id="bullshitScore">0</strong>
+          <span class="metric-note">Investor-grade certainty</span>
+        </article>
+        <article>
+          <span class="metric-label">Buzzword Density</span>
+          <strong id="buzzwordDensity">0%</strong>
+          <span class="metric-note">Jargon per useful noun</span>
+        </article>
+        <article>
+          <span class="metric-label">Synergy Index</span>
+          <strong id="synergyIndex">0x</strong>
+          <span class="metric-note">Cross-functional aura</span>
+        </article>
+      </section>
+
+      <section class="investor-proof" id="waitlist">
+        <div>
+          <p class="eyebrow">Enterprise-ready theater</p>
+          <h2>The only platform purpose-built to add length without adding accountability.</h2>
+        </div>
+        <div class="proof-grid">
+          <span>Agentic</span>
+          <span>Composable</span>
+          <span>Outcome-aligned</span>
+          <span>Paradigm-safe</span>
+          <span>AI-native</span>
+          <span>Roadmap-positive</span>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js?v=7"></script>
+  </body>
+</html>
