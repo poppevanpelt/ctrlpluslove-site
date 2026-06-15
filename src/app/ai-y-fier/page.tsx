@@ -5,5 +5,5 @@ export const metadata = {
 };
 
 export default function AiYFierPage() {
-  redirect("/ai-y-fier/index.html");
+  redirect("/tools/ai-y-fier/index.html");
 }
