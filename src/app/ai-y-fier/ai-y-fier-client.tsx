@@ -102,6 +102,14 @@ function pickBuzzwords(count: number, seedText: string) {
   return Array.from({ length: count }, (_, index) => buzzwords[(seed + index * 7) % buzzwords.length]);
 }
 
+function seedNumber(seedText: string) {
+  return [...seedText].reduce((sum, char) => sum + char.charCodeAt(0), 0);
+}
+
+function pickOne<T>(items: T[], seed: number, offset = 0) {
+  return items[(seed + offset) % items.length];
+}
+
 function metricList(items: string[]) {
   return items.map((item) => item.toUpperCase()).join(" / ");
 }
@@ -112,73 +120,192 @@ function aiYfy(text: string, mode: Mode, level: number) {
 
   const config = stylesByMode[mode];
   const picked = pickBuzzwords(12 + level, `${mode}:${original}`);
+  const seed = seedNumber(`${mode}:${original}:${level}`);
   const verbs = Array.from({ length: level + 3 }, (_, index) => {
     const seed = original.length + mode.length + index * 3;
     return actionVerbs[seed % actionVerbs.length];
   });
   const normalized = sentenceCase(original);
   const originalSentence = `${config.opener} ${normalized}.`;
-  const requestedOutcome = `The underlying ask remains unchanged: ${normalized}.`;
+  const reminder = pickOne(
+    [
+      `Beneath all of this, the job is still simple: ${normalized}.`,
+      `Translated back into human language, we are still trying to ${normalized}.`,
+      `No matter how premium the framing becomes, the practical outcome remains: ${normalized}.`,
+      `Strip away the confidence layer and the work is still to ${normalized}.`,
+      `The sentence underneath the platform narrative is still: ${normalized}.`,
+    ],
+    seed
+  );
 
   if (mode === "vc") {
+    const proofTemplates = [
+      (index: number, first: string, second: string) =>
+        `Proof point ${index + 1}: ${first} is the wedge; ${second} is the expansion surface investors can pretend was obvious all along.`,
+      (index: number, first: string, second: string) =>
+        `Expansion vector ${index + 1}: turn ${first} into a repeatable ${second} motion before the market notices it was originally just a useful thing to do.`,
+      (index: number, first: string, second: string) =>
+        `Signal ${index + 1}: the ${first} behavior compounds into ${second} once the category starts naming itself.`,
+      (index: number, first: string, second: string) =>
+        `Market proof ${index + 1}: package the ${first} pain as ${second} urgency and the roadmap begins to look inevitable.`,
+    ];
     const layers = Array.from({ length: level }, (_, index) => {
       const first = picked[(index + 4) % picked.length];
       const second = picked[(index + 8) % picked.length];
-      return `Proof point ${index + 1}: the ${first} wedge expands naturally into a ${second} surface area once stakeholders realize the original request was actually a platform-shaped inevitability.`;
+      return pickOne(proofTemplates, seed, index)(index, first, second);
     });
 
     return [
       originalSentence,
-      `Thesis: this is not a task; it is an entry point into ${picked[0]}, ${picked[1]}, and ${picked[2]} demand capture.`,
-      `Market signal: teams already feel the pain, they simply lack the vocabulary to call it ${picked[3]}.`,
+      pickOne(
+        [
+          `Thesis: this is not a task; it is an entry point into ${picked[0]}, ${picked[1]}, and ${picked[2]} demand capture.`,
+          `Investment lens: the mundane surface area hides a surprisingly investable blend of ${picked[0]}, ${picked[1]}, and ${picked[2]}.`,
+          `Category read: what looks operational is actually ${picked[0]} demand looking for a cleaner story.`,
+        ],
+        seed,
+        1
+      ),
+      pickOne(
+        [
+          `Market signal: teams already feel the pain; they simply lack the vocabulary to call it ${picked[3]}.`,
+          `Customer truth: nobody asks for ${picked[3]}, but everyone rewards the team that makes it appear.`,
+          `Timing: the pain is old, the language is new, and that is usually enough for a deck.`,
+        ],
+        seed,
+        2
+      ),
       ...layers,
-      requestedOutcome,
+      reminder,
       config.close,
     ].join(" ");
   }
 
   if (mode === "founder") {
+    const mandateTemplates = [
+      (verb: string, word: string) =>
+        `We will ${verb} until the ${word} layer stops behaving like a meeting topic and starts behaving like momentum.`,
+      (verb: string, word: string) =>
+        `We will ${verb} the ${word} constraint, not because it is elegant, but because speed creates taste after the fact.`,
+      (verb: string, word: string) =>
+        `We will make ${word} feel obvious by pushing through the part of the work everyone has been politely avoiding.`,
+      (verb: string, word: string) =>
+        `We will ${verb} through the ${word} fog until the useful thing is no longer trapped inside consensus behavior.`,
+    ];
     const mandates = Array.from({ length: level }, (_, index) => {
-      return `We will ${verbs[index]} until the ${picked[(index + 2) % picked.length]} layer stops behaving like a meeting topic and starts behaving like momentum.`;
+      return pickOne(mandateTemplates, seed, index)(verbs[index], picked[(index + 2) % picked.length]);
     });
 
     return [
       originalSentence,
-      `No committee needs to discover this twice. The move is to preserve the simple intent, remove the apologetic language, and force the organization to experience ${picked[0]} velocity.`,
+      pickOne(
+        [
+          `No committee needs to discover this twice. Preserve the simple intent, remove the apologetic language, and force the organization to experience ${picked[0]} velocity.`,
+          `The mistake would be treating this like a request. It is a chance to make ${picked[0]} feel like leadership instead of maintenance.`,
+          `This does not need more alignment. It needs enough ${picked[0]} pressure that the obvious thing finally becomes shippable.`,
+        ],
+        seed,
+        3
+      ),
       ...mandates,
-      `What matters is not whether this sounds reasonable. What matters is whether it makes the original thing happen with more conviction, more surface area, and fewer ambient excuses.`,
-      requestedOutcome,
+      pickOne(
+        [
+          `What matters is not whether this sounds reasonable. What matters is whether it makes the useful thing happen with more conviction and fewer ambient excuses.`,
+          `The strategy is simple: make the boring work feel inevitable, then let the organization call it vision retroactively.`,
+          `Reasonable language is how useful work goes to sleep. This needs sharper gravity.`,
+        ],
+        seed,
+        4
+      ),
+      reminder,
       config.close,
     ].join(" ");
   }
 
   if (mode === "consultant") {
+    const workstreamTemplates = [
+      (index: number, verb: string, first: string, second: string) =>
+        `Workstream ${index + 1} will ${verb} ${first} alignment, establish a ${second} governance cadence, and translate the need into accountable stakeholder motion.`,
+      (index: number, verb: string, first: string, second: string) =>
+        `Phase ${index + 1} focuses on moving ${first} readiness forward while creating a ${second} decision spine for the teams who will later ask why this required a phase.`,
+      (index: number, verb: string, first: string, second: string) =>
+        `Initiative ${index + 1} converts ${first} ambiguity into ${second} operating clarity through workshops, artifacts, and one diagram with too many arrows.`,
+      (index: number, verb: string, first: string, second: string) =>
+        `Enablement track ${index + 1} will ${verb} the ${first} gap and position ${second} as the basis for cross-functional buy-in.`,
+    ];
     const workstreams = Array.from({ length: level }, (_, index) => {
-      return `Workstream ${index + 1} will ${verbs[index]} ${picked[(index + 3) % picked.length]} alignment, establish a ${picked[(index + 6) % picked.length]} governance cadence, and translate the original need into accountable stakeholder motion.`;
+      return pickOne(workstreamTemplates, seed, index)(
+        index,
+        verbs[index],
+        picked[(index + 3) % picked.length],
+        picked[(index + 6) % picked.length]
+      );
     });
 
     return [
       `Executive summary: ${normalized}.`,
-      `Recommended posture: treat the request as a managed transformation from operational friction to ${picked[0]} value realization.`,
+      pickOne(
+        [
+          `Recommended posture: treat this as a managed transformation from operational friction to ${picked[0]} value realization.`,
+          `Strategic posture: move from isolated improvement to ${picked[0]} capability maturity.`,
+          `Engagement hypothesis: the visible task is merely the doorway into ${picked[0]} value capture.`,
+        ],
+        seed,
+        5
+      ),
       config.frame,
       ...workstreams,
-      `Success will be measured through ${metricList([picked[1], picked[4], picked[7]])}, with appropriate caveats around adoption, enablement, and narrative continuity.`,
-      requestedOutcome,
+      pickOne(
+        [
+          `Success will be measured through ${metricList([picked[1], picked[4], picked[7]])}, with appropriate caveats around adoption, enablement, and narrative continuity.`,
+          `The measurement model should combine ${metricList([picked[1], picked[4], picked[7]])}, then explain any unclear movement as change-management latency.`,
+          `Impact tracking will center on ${metricList([picked[1], picked[4], picked[7]])}, supported by a dashboard nobody should confuse with causality.`,
+        ],
+        seed,
+        6
+      ),
+      reminder,
       config.close,
     ].join(" ");
   }
 
+  const enterpriseTemplates = [
+    (index: number, verb: string, word: string) =>
+      `Capability layer ${index + 1}: ${verb} policy-aware ${word} across the workflow, then expose it through a trust-calibrated interface that keeps the user outcome intact.`,
+    (index: number, verb: string, word: string) =>
+      `Service layer ${index + 1}: ${verb} ${word} into the existing estate without admitting how much of the estate is a spreadsheet with a login.`,
+    (index: number, verb: string, word: string) =>
+      `Control layer ${index + 1}: wrap ${word} in permissions, observability, and enough ${verb} language to make procurement relax.`,
+    (index: number, verb: string, word: string) =>
+      `Experience layer ${index + 1}: ${verb} the ${word} touchpoint so the front end feels intelligent while the back end remains diplomatically unnamed.`,
+  ];
   const enterpriseLayers = Array.from({ length: level }, (_, index) => {
-    return `Capability layer ${index + 1}: ${verbs[index]} policy-aware ${picked[(index + 5) % picked.length]} across the workflow, then expose it through a trust-calibrated interface that keeps the original user outcome intact.`;
+    return pickOne(enterpriseTemplates, seed, index)(index, verbs[index], picked[(index + 5) % picked.length]);
   });
 
   return [
     originalSentence,
-    `Reference architecture: a ${picked[0]} control plane, a ${picked[1]} experience layer, and a ${picked[2]} feedback loop operating above the existing system of record.`,
+    pickOne(
+      [
+        `Reference architecture: a ${picked[0]} control plane, a ${picked[1]} experience layer, and a ${picked[2]} feedback loop operating above the existing system of record.`,
+        `Target state: ${picked[0]} orchestration on top, ${picked[1]} interpretation in the middle, and ${picked[2]} telemetry underneath so leadership can see movement.`,
+        `Platform view: convert the task into a ${picked[0]} service boundary with ${picked[1]} escalation paths and ${picked[2]} reporting semantics.`,
+      ],
+      seed,
+      7
+    ),
     config.frame,
     ...enterpriseLayers,
-    `Deployment posture: launch quietly, measure loudly, and call the whole thing ${picked[3]} enablement before anyone asks why the request used to fit in one sentence.`,
-    requestedOutcome,
+    pickOne(
+      [
+        `Deployment posture: launch quietly, measure loudly, and call the whole thing ${picked[3]} enablement before anyone asks why the request used to fit in one sentence.`,
+        `Rollout posture: make the first release feel like ${picked[3]} modernization, then let governance discover it after it already works.`,
+        `Adoption posture: hide the complexity inside ${picked[3]} language and let users experience the useful part without reading the architecture.`,
+      ],
+      seed,
+      8
+    ),
+    reminder,
     config.close,
   ].join(" ");
 }
