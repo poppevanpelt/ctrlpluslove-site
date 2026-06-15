@@ -81,6 +81,13 @@ const stylesByMode = {
 
 type Mode = keyof typeof stylesByMode;
 
+const modeNames: Record<Mode, string> = {
+  vc: "VC Memo",
+  founder: "Founder Mode",
+  consultant: "Consultant Fog",
+  enterprise: "Enterprise AI",
+};
+
 function cleanInput(text: string) {
   return text.trim().replace(/\s+/g, " ");
 }
@@ -95,31 +102,85 @@ function pickBuzzwords(count: number, seedText: string) {
   return Array.from({ length: count }, (_, index) => buzzwords[(seed + index * 7) % buzzwords.length]);
 }
 
+function metricList(items: string[]) {
+  return items.map((item) => item.toUpperCase()).join(" / ");
+}
+
 function aiYfy(text: string, mode: Mode, level: number) {
   const original = cleanInput(text);
   if (!original) return "";
 
   const config = stylesByMode[mode];
-  const picked = pickBuzzwords(6 + level, original);
+  const picked = pickBuzzwords(12 + level, `${mode}:${original}`);
   const verbs = Array.from({ length: level + 3 }, (_, index) => {
-    const seed = original.length + index * 3;
+    const seed = original.length + mode.length + index * 3;
     return actionVerbs[seed % actionVerbs.length];
   });
   const normalized = sentenceCase(original);
-  const expansion = [
-    `${config.opener} ${normalized}.`,
-    `In practical terms, this means converting the existing request into a capability shaped by ${picked[0]}, ${picked[1]}, and ${picked[2]}, helping stakeholders experience the original outcome with substantially more confidence and ceremonial altitude.`,
-    config.frame,
-  ];
+  const originalSentence = `${config.opener} ${normalized}.`;
+  const requestedOutcome = `The underlying ask remains unchanged: ${normalized}.`;
 
-  for (let i = 0; i < level; i += 1) {
-    expansion.push(
-      `At layer ${i + 1}, we ${verbs[i]} the ${picked[(i + 5) % picked.length]} operating model so the organization can ${verbs[i + 1]} a measurable ${picked[(i + 8) % picked.length]} outcome without losing fidelity to the simple thing that needed to happen in the first place.`
-    );
+  if (mode === "vc") {
+    const layers = Array.from({ length: level }, (_, index) => {
+      const first = picked[(index + 4) % picked.length];
+      const second = picked[(index + 8) % picked.length];
+      return `Proof point ${index + 1}: the ${first} wedge expands naturally into a ${second} surface area once stakeholders realize the original request was actually a platform-shaped inevitability.`;
+    });
+
+    return [
+      originalSentence,
+      `Thesis: this is not a task; it is an entry point into ${picked[0]}, ${picked[1]}, and ${picked[2]} demand capture.`,
+      `Market signal: teams already feel the pain, they simply lack the vocabulary to call it ${picked[3]}.`,
+      ...layers,
+      requestedOutcome,
+      config.close,
+    ].join(" ");
   }
 
-  expansion.push(config.close);
-  return expansion.join(" ");
+  if (mode === "founder") {
+    const mandates = Array.from({ length: level }, (_, index) => {
+      return `We will ${verbs[index]} until the ${picked[(index + 2) % picked.length]} layer stops behaving like a meeting topic and starts behaving like momentum.`;
+    });
+
+    return [
+      originalSentence,
+      `No committee needs to discover this twice. The move is to preserve the simple intent, remove the apologetic language, and force the organization to experience ${picked[0]} velocity.`,
+      ...mandates,
+      `What matters is not whether this sounds reasonable. What matters is whether it makes the original thing happen with more conviction, more surface area, and fewer ambient excuses.`,
+      requestedOutcome,
+      config.close,
+    ].join(" ");
+  }
+
+  if (mode === "consultant") {
+    const workstreams = Array.from({ length: level }, (_, index) => {
+      return `Workstream ${index + 1} will ${verbs[index]} ${picked[(index + 3) % picked.length]} alignment, establish a ${picked[(index + 6) % picked.length]} governance cadence, and translate the original need into accountable stakeholder motion.`;
+    });
+
+    return [
+      `Executive summary: ${normalized}.`,
+      `Recommended posture: treat the request as a managed transformation from operational friction to ${picked[0]} value realization.`,
+      config.frame,
+      ...workstreams,
+      `Success will be measured through ${metricList([picked[1], picked[4], picked[7]])}, with appropriate caveats around adoption, enablement, and narrative continuity.`,
+      requestedOutcome,
+      config.close,
+    ].join(" ");
+  }
+
+  const enterpriseLayers = Array.from({ length: level }, (_, index) => {
+    return `Capability layer ${index + 1}: ${verbs[index]} policy-aware ${picked[(index + 5) % picked.length]} across the workflow, then expose it through a trust-calibrated interface that keeps the original user outcome intact.`;
+  });
+
+  return [
+    originalSentence,
+    `Reference architecture: a ${picked[0]} control plane, a ${picked[1]} experience layer, and a ${picked[2]} feedback loop operating above the existing system of record.`,
+    config.frame,
+    ...enterpriseLayers,
+    `Deployment posture: launch quietly, measure loudly, and call the whole thing ${picked[3]} enablement before anyone asks why the request used to fit in one sentence.`,
+    requestedOutcome,
+    config.close,
+  ].join(" ");
 }
 
 function scoreOutput(text: string, source: string) {
@@ -249,11 +310,11 @@ export default function AiYFierClient() {
               <legend>Transformation style</legend>
               <div className={styles.styleGrid}>
                 {[
-                  ["vc", "VC Memo"],
-                  ["founder", "Founder Mode"],
-                  ["consultant", "Consultant Fog"],
-                  ["enterprise", "Enterprise AI"],
-                ].map(([value, label]) => (
+                  "vc",
+                  "founder",
+                  "consultant",
+                  "enterprise",
+                ].map((value) => (
                   <label key={value}>
                     <input
                       type="radio"
@@ -262,7 +323,7 @@ export default function AiYFierClient() {
                       checked={mode === value}
                       onChange={() => setMode(value as Mode)}
                     />
-                    <span>{label}</span>
+                    <span>{modeNames[value as Mode]}</span>
                   </label>
                 ))}
               </div>
