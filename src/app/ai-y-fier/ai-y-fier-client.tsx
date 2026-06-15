@@ -144,6 +144,12 @@ function metricList(items: string[]) {
   return items.map((item) => item.toUpperCase()).join(" / ");
 }
 
+function plainSummary(text: string) {
+  const summary = cleanInput(text);
+  if (!summary) return "";
+  return /[.!?]$/.test(summary) ? summary : `${summary}.`;
+}
+
 function aiYfy(text: string, mode: Mode, level: number) {
   const original = cleanInput(text);
   if (!original) return "";
@@ -419,25 +425,75 @@ function scoreOutput(text: string, source: string) {
       bullshit: "Awaiting inflation",
       density: "Under-leveraged",
       synergy: "Not yet cross-functional",
+      bullshitStatus: "",
+      densityStatus: "",
+      lengthStatus: "",
       isEmpty: true,
     };
   }
 
   const words = text.match(/[A-Za-z-]+/g) || [];
   const sourceWords = source.match(/[A-Za-z-]+/g) || [];
+  const seed = seedNumber(`${text}:${source}`);
   const buzzwordHits = buzzwords.reduce((total, word) => {
     const pattern = new RegExp(`\\b${word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "gi");
     return total + (text.match(pattern) || []).length;
   }, 0);
   const lengthMultiplier = Math.max(1, words.length / Math.max(sourceWords.length, 1));
+  const bullshit = Math.min(99, Math.round(46 + buzzwordHits * 3.2 + lengthMultiplier * 4));
+  const density = Math.min(88, Math.round((buzzwordHits / Math.max(words.length, 1)) * 1000));
 
   return {
-    bullshit: String(Math.min(99, Math.round(46 + buzzwordHits * 3.2 + lengthMultiplier * 4))),
-    density: `${Math.min(88, Math.round((buzzwordHits / Math.max(words.length, 1)) * 1000))}%`,
+    bullshit: String(bullshit),
+    density: `${density}%`,
     synergy: `${Math.min(12.8, 1.4 + buzzwordHits * 0.32 + lengthMultiplier * 0.28).toFixed(1)}x`,
+    bullshitStatus:
+      bullshit >= 85
+        ? pickOne(
+            [
+              "Investor-ready.",
+              "Meaning successfully abstracted.",
+              "Narrative now exceeds operational reality.",
+            ],
+            seed
+          )
+        : "",
+    densityStatus:
+      density >= 42
+        ? pickOne(
+            [
+              "Category creation event detected.",
+              "Strategic fog approaching.",
+              "Signal successfully replaced by positioning.",
+            ],
+            seed,
+            1
+          )
+        : "",
+    lengthStatus:
+      lengthMultiplier >= 5
+        ? pickOne(
+            [
+              "Narrative leverage achieved.",
+              "Confidence scaled faster than substance.",
+              "Expansion surface identified.",
+            ],
+            seed,
+            2
+          )
+        : "",
     isEmpty: false,
   };
 }
+
+const footerDisclaimers = [
+  "No meaning was added in the making of this narrative.",
+  "Past performance is not indicative of future thought leadership.",
+  "This output contains confidence but may contain no new information.",
+  "Category leadership not guaranteed.",
+  "Generated using 100% recycled buzzwords.",
+  "Investor enthusiasm simulated.",
+];
 
 export default function AiYFierClient() {
   const [source, setSource] = useState("");
@@ -445,6 +501,8 @@ export default function AiYFierClient() {
   const [mode, setMode] = useState<Mode>("vc");
   const [intensity, setIntensity] = useState(4);
   const scores = useMemo(() => scoreOutput(output, source), [output, source]);
+  const executiveSummary = plainSummary(source);
+  const footerDisclaimer = pickOne(footerDisclaimers, seedNumber(`${source}:${output}`));
 
   function transform() {
     setOutput(aiYfy(source, mode, intensity));
@@ -594,6 +652,12 @@ export default function AiYFierClient() {
               aria-label="Generated strategic narrative"
             />
           </article>
+          {output.trim() && executiveSummary ? (
+            <section className={styles.executiveSummary} aria-label="Executive Summary">
+              <p>Executive Summary</p>
+              <strong>“{executiveSummary}”</strong>
+            </section>
+          ) : null}
           <div className={styles.resultActions}>
             <button type="button" onClick={() => navigator.clipboard.writeText(output)}>
               Copy for stakeholder alignment
@@ -625,11 +689,13 @@ export default function AiYFierClient() {
           <span>Bullshit Score</span>
           <strong className={scores.isEmpty ? styles.emptyMetric : undefined}>{scores.bullshit}</strong>
           <span>Investor-grade certainty</span>
+          {scores.bullshitStatus ? <em>{scores.bullshitStatus}</em> : null}
         </article>
         <article>
           <span>Buzzword Density</span>
           <strong className={scores.isEmpty ? styles.emptyMetric : undefined}>{scores.density}</strong>
           <span>Jargon per useful noun</span>
+          {scores.densityStatus ? <em>{scores.densityStatus}</em> : null}
         </article>
         <article>
           <span>Synergy Index</span>
@@ -637,6 +703,12 @@ export default function AiYFierClient() {
           <span>Cross-functional aura</span>
         </article>
       </section>
+
+      {scores.lengthStatus ? (
+        <aside className={styles.escalationBand}>
+          {scores.lengthStatus}
+        </aside>
+      ) : null}
 
       <section className={styles.investorProof} id="waitlist">
         <div>
@@ -654,7 +726,7 @@ export default function AiYFierClient() {
       </section>
 
       <footer className={styles.disclaimer}>
-        No meaning was added in the making of this narrative.
+        {footerDisclaimer}
       </footer>
     </main>
   );
