@@ -469,11 +469,11 @@ h3 {
 
 @keyframes ticker-scroll {
   from {
-    transform: translateX(-50%);
+    transform: translateX(0);
   }
 
   to {
-    transform: translateX(0);
+    transform: translateX(-50%);
   }
 }
 
@@ -494,6 +494,11 @@ h3 {
 .content-section.proof-section {
   padding-top: 5.2rem;
   padding-bottom: 6.9rem;
+}
+
+.meeting-filter-section {
+  padding-top: 5.85rem;
+  padding-bottom: 6.25rem;
 }
 
 .content-section:nth-of-type(3) {
@@ -519,6 +524,26 @@ h3 {
 .content-section:nth-of-type(10) {
   padding-top: 5.45rem;
   padding-bottom: 5.75rem;
+}
+
+.content-section.meeting-filter-section {
+  padding-top: 5.85rem;
+  padding-bottom: 6.25rem;
+}
+
+.content-section#ways-in {
+  padding-top: 5.75rem;
+  padding-bottom: 6.05rem;
+}
+
+.content-section.proof-section {
+  padding-top: 5.75rem;
+  padding-bottom: 5.85rem;
+}
+
+.content-section.final-cta-section {
+  padding-top: 6.9rem;
+  padding-bottom: 6.9rem;
 }
 
 .ruled,
@@ -637,6 +662,151 @@ h3 {
 
 .content-block.wide {
   width: min(100%, 58rem);
+}
+
+.meeting-filter-block {
+  width: min(100%, 64rem);
+  gap: 2.45rem;
+}
+
+.meeting-filter-heading {
+  display: grid;
+  grid-template-columns: minmax(14rem, 0.45fr) minmax(0, 1fr);
+  gap: 1.15rem 2.75rem;
+  align-items: start;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 2rem;
+}
+
+.meeting-filter-heading .section-kicker {
+  grid-row: span 2;
+  color: color-mix(in srgb, var(--team-cold) 72%, var(--muted));
+}
+
+.meeting-filter-heading h2 {
+  color: var(--ink);
+  font-size: clamp(2.35rem, 5vw, 4.65rem);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.meeting-filter-heading p:not(.section-kicker) {
+  max-width: 34rem;
+  color: var(--muted);
+  font-size: var(--type-intro);
+  font-weight: 500;
+  line-height: var(--leading-body);
+}
+
+.meeting-filter-questions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  padding: 1px;
+  background: var(--rule);
+  list-style: none;
+}
+
+.meeting-filter-questions li {
+  display: grid;
+  min-height: 10.4rem;
+  align-content: end;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 1.35rem;
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  font-weight: 600;
+  line-height: 1.18;
+}
+
+.meeting-filter-questions li::before {
+  align-self: start;
+  width: 2.5rem;
+  height: 2px;
+  margin-bottom: 2.4rem;
+  background: color-mix(in srgb, var(--team-warm) 52%, var(--team-cold));
+  content: "";
+}
+
+.meeting-filter-support {
+  max-width: 44rem;
+  color: var(--ink);
+  font-size: var(--type-body);
+  line-height: var(--leading-body);
+}
+
+.meeting-filter-outcomes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.meeting-filter-card {
+  --room-accent: var(--team-cold);
+  display: grid;
+  gap: 0.95rem;
+  min-height: 17rem;
+  align-content: start;
+  border: 1px solid color-mix(in srgb, var(--rule) 82%, transparent);
+  border-top: 2px solid var(--room-accent);
+  background: color-mix(in srgb, var(--paper-soft) 48%, var(--paper));
+  padding: 1.35rem;
+}
+
+.meeting-filter-card[data-room="green"] {
+  --room-accent: var(--green);
+}
+
+.meeting-filter-card[data-room="amber"] {
+  --room-accent: var(--yellow);
+}
+
+.meeting-filter-card[data-room="red"] {
+  --room-accent: var(--red);
+}
+
+.meeting-filter-card p {
+  color: color-mix(in srgb, var(--room-accent) 64%, var(--ink));
+  font-size: var(--type-secondary);
+  font-weight: 800;
+  line-height: var(--leading-secondary);
+  text-transform: uppercase;
+}
+
+.meeting-filter-card h3 {
+  color: var(--ink);
+  font-size: clamp(1.45rem, 2.35vw, 2rem);
+  font-weight: 600;
+  line-height: 1.14;
+}
+
+.meeting-filter-card span {
+  color: var(--soft);
+  font-size: clamp(1.02rem, 1.2vw, 1.14rem);
+  font-weight: 500;
+  line-height: var(--leading-body);
+}
+
+.meeting-filter-close {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  border-top: 1px solid var(--rule);
+  padding-top: 1.8rem;
+}
+
+.meeting-filter-close p {
+  color: var(--ink);
+  font-size: var(--type-body);
+  font-weight: 600;
+  line-height: var(--leading-body);
+}
+
+.meeting-filter-close .text-link {
+  justify-self: end;
+  flex: 0 0 auto;
 }
 
 .prose {
@@ -1404,6 +1574,7 @@ h3 {
 
   .content-section#intro,
   .content-section#ways-in,
+  .content-section.meeting-filter-section,
   .content-section:nth-of-type(3),
   .content-section:nth-of-type(4),
   .content-section:nth-of-type(5),
@@ -1419,6 +1590,11 @@ h3 {
     padding-top: 2.55rem;
   }
 
+  .content-section.meeting-filter-section {
+    padding-top: 4.85rem;
+    padding-bottom: 4.95rem;
+  }
+
   .content-block.statement-block {
     gap: 2.25rem;
   }
@@ -1427,6 +1603,50 @@ h3 {
   .team-section {
     grid-template-columns: 1fr;
     gap: 1.95rem !important;
+  }
+
+  .meeting-filter-block {
+    gap: 2rem;
+  }
+
+  .meeting-filter-heading {
+    grid-template-columns: 1fr;
+    gap: 0.95rem;
+    padding-bottom: 1.65rem;
+  }
+
+  .meeting-filter-heading .section-kicker {
+    grid-row: auto;
+  }
+
+  .meeting-filter-heading h2 {
+    font-size: clamp(2.15rem, 9.5vw, 3.35rem);
+  }
+
+  .meeting-filter-heading p:not(.section-kicker) {
+    font-size: clamp(1.12rem, 4.6vw, 1.32rem);
+  }
+
+  .meeting-filter-questions,
+  .meeting-filter-outcomes {
+    grid-template-columns: 1fr;
+  }
+
+  .meeting-filter-questions li {
+    min-height: 8.6rem;
+  }
+
+  .meeting-filter-card {
+    min-height: auto;
+  }
+
+  .meeting-filter-close {
+    display: grid;
+    align-items: start;
+  }
+
+  .meeting-filter-close .text-link {
+    justify-self: start;
   }
 
   .room-preview {

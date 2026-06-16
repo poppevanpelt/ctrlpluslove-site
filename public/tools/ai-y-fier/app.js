@@ -10,125 +10,158 @@ const bullshitScore = document.querySelector("#bullshitScore");
 const buzzwordDensity = document.querySelector("#buzzwordDensity");
 const synergyIndex = document.querySelector("#synergyIndex");
 
-const buzzwords = [
-  "agentic",
-  "AI-native",
-  "composable",
-  "outcome-aligned",
-  "zero-friction",
-  "full-stack",
-  "semantic",
-  "operating layer",
-  "category-defining",
-  "human-in-the-loop",
-  "strategic",
-  "autonomous",
-  "cross-functional",
-  "enterprise-grade",
-  "flywheel",
-  "modalities",
-  "workflow fabric",
-  "velocity",
-  "platform shift",
-  "north star",
-  "paradigm",
-  "latent value",
-  "knowledge graph",
-  "decision intelligence",
-  "compounding",
-  "mission-critical",
-  "alignment layer",
-];
+const conservativeEditorPrompt = `You are a conservative human editor. Your job is to lightly improve the user's text while preserving the original meaning, intent, topic, speaker, and tone.
 
-const actionVerbs = [
-  "operationalize",
-  "orchestrate",
+Do not add new ideas.
+Do not add business jargon.
+Do not add thought leadership.
+Do not add a call to action unless the input already has one.
+Do not turn the text into a LinkedIn influencer post.
+Do not use numbered lists unless the input already contains a list.
+Do not repeat the input inside the output.
+
+Make the text clearer, smoother, and more natural.
+Stay close to the source.
+When in doubt, change less.`;
+
+const bannedTerms = [
+  "operator",
   "leverage",
-  "unlock",
-  "accelerate",
-  "de-risk",
-  "replatform",
-  "synthesize",
-  "institutionalize",
-  "productize",
+  "AI-native",
+  "momentum",
+  "magic quadrant",
+  "workflow",
+  "velocity",
+  "high-performing teams",
 ];
-
-const styleConfig = {
-  vc: {
-    title: "VC Memo",
-    opener: "We believe this represents a category-defining opportunity to",
-    frame:
-      "By reframing the underlying user intent as a scalable market primitive, the initiative becomes a high-conviction wedge into a much larger workflow fabric.",
-    close:
-      "The result is a venture-scale narrative with clear expansion potential, measurable urgency, and the kind of inevitable momentum that sophisticated capital can underwrite.",
-  },
-  founder: {
-    title: "Founder Mode",
-    opener: "We are not merely executing; we are personally bending reality to",
-    frame:
-      "This demands extreme ownership, taste, speed, and a refusal to accept the legacy assumption that practical work should be described practically.",
-    close:
-      "We will ship the wedge, own the narrative, and turn every mundane constraint into an unfair advantage.",
-  },
-  consultant: {
-    title: "Consultant Fog",
-    opener: "Our recommendation is to initiate a phased transformation program that will",
-    frame:
-      "The path forward requires stakeholder calibration, capability mapping, and a governance-backed operating model to ensure value capture across the end-to-end journey.",
-    close:
-      "This creates a durable transformation architecture while preserving optionality for future workstreams, steering committees, and premium advisory extensions.",
-  },
-  enterprise: {
-    title: "Enterprise AI",
-    opener: "The platform should deploy an enterprise-grade AI orchestration layer to",
-    frame:
-      "By embedding policy-aware automation into the system of record, teams can operationalize knowledge assets without compromising trust, controls, or quarterly roadmap theater.",
-    close:
-      "This positions the organization to accelerate adoption, reduce cognitive load, and establish an AI-native foundation for durable digital excellence.",
-  },
-};
 
 function cleanInput(text) {
   return text.trim().replace(/\s+/g, " ");
 }
 
-function sentenceCase(text) {
-  if (!text) return "";
-  return text.charAt(0).toLowerCase() + text.slice(1).replace(/[.!?]+$/, "");
+function escapeRegExp(text) {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-function pickBuzzwords(count, seedText) {
-  const seed = [...seedText].reduce((sum, char) => sum + char.charCodeAt(0), 0);
-  return Array.from({ length: count }, (_, index) => buzzwords[(seed + index * 7) % buzzwords.length]);
+function normalizeForComparison(text) {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 }
 
-function aiYfy(text, style, level) {
-  const original = cleanInput(text);
-  if (!original) {
-    return "";
-  }
+function wordCount(text) {
+  return (text.match(/[A-Za-z0-9'-]+/g) || []).length;
+}
 
-  const config = styleConfig[style];
-  const picked = pickBuzzwords(6 + Number(level), original);
-  const verbs = Array.from({ length: Number(level) + 3 }, (_, index) => {
-    const seed = original.length + index * 3;
-    return actionVerbs[seed % actionVerbs.length];
+function outputHasNewBannedTerms(output, source) {
+  return bannedTerms.some((term) => {
+    const pattern = new RegExp(`\\b${escapeRegExp(term)}\\b`, "i");
+    return pattern.test(output) && !pattern.test(source);
   });
-  const normalized = sentenceCase(original);
-  const expansion = [
-    `${config.opener} ${normalized}.`,
-    `In practical terms, this means converting the existing request into a capability shaped by ${picked[0]}, ${picked[1]}, and ${picked[2]}, helping stakeholders experience the original outcome with substantially more confidence and ceremonial altitude.`,
-    config.frame,
-  ];
+}
 
-  for (let i = 0; i < Number(level); i += 1) {
-    expansion.push(
-      `At layer ${i + 1}, we ${verbs[i]} the ${picked[(i + 5) % picked.length]} operating model so the organization can ${verbs[i + 1]} a measurable ${picked[(i + 8) % picked.length]} outcome without losing fidelity to the simple thing that needed to happen in the first place.`
-    );
+function isTooLong(output, source) {
+  const sourceWords = Math.max(wordCount(source), 1);
+  return wordCount(output) > sourceWords * 1.5;
+}
+
+function repeatsLongSourceRun(output, source) {
+  const sourceWords = normalizeForComparison(source).split(/\s+/).filter(Boolean);
+  const normalizedOutput = ` ${normalizeForComparison(output)} `;
+
+  if (wordCount(output) <= wordCount(source) * 1.5) {
+    return false;
   }
 
-  expansion.push(config.close);
-  return expansion.join(" ");
+  for (let index = 0; index <= sourceWords.length - 9; index += 1) {
+    const phrase = sourceWords.slice(index, index + 9).join(" ");
+    if (normalizedOutput.includes(` ${phrase} `)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function splitGreeting(text) {
+  const greetingMatch = text.match(/^(hey|hi|hello)\s+(guys|everyone|all|folks|team)[,!]?\s+/i);
+
+  if (!greetingMatch) {
+    return { greeting: "", body: text };
+  }
+
+  const greeting = `${greetingMatch[1][0].toUpperCase()}${greetingMatch[1].slice(1).toLowerCase()} ${greetingMatch[2].toLowerCase()},`;
+  return {
+    greeting,
+    body: text.slice(greetingMatch[0].length).trim(),
+  };
+}
+
+function lightlyEditBody(text, strict = false) {
+  let edited = text
+    .replace(/\ball the newbies here wanting to\b/gi, "anyone who's new and wants to")
+    .replace(/\ball the newbies here wanting\b/gi, "anyone who's new and wants")
+    .replace(/\bnewbies here wanting to\b/gi, "anyone who's new and wants to")
+    .replace(/\bnewbies\b/gi, "anyone who's new")
+    .replace(/\balways ongoing\b/gi, "ongoing")
+    .replace(/\bAI-discussion\b/g, "AI discussion")
+    .replace(/\bai-discussion\b/gi, "AI discussion")
+    .replace(/\bAI and wants to catch up on the ongoing AI discussion\b/g, "AI and wants a quick way to catch up on the ongoing AI discussion")
+    .replace(/\bAI discussion on LinkedIn\b/g, "AI discussion here on LinkedIn")
+    .replace(
+      /\bsimple tool for anyone who's new and wants to catch up on the ongoing AI discussion here on LinkedIn\b/gi,
+      "simple tool for anyone who's new to AI and wants a quick way to catch up on the ongoing discussion here on LinkedIn"
+    )
+    .replace(/\s+([,.!?])/g, "$1")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (!/[.!?]$/.test(edited)) {
+    edited = `${edited}.`;
+  }
+
+  if (strict && wordCount(edited) > wordCount(text) * 1.25) {
+    edited = text.replace(/\s+/g, " ").trim();
+    if (!/[.!?]$/.test(edited)) edited = `${edited}.`;
+  }
+
+  return edited;
+}
+
+function editTextConservatively(text, strict = false) {
+  const source = cleanInput(text);
+  if (!source) return "";
+
+  const { greeting, body } = splitGreeting(source);
+  const editedBody = lightlyEditBody(body || source, strict);
+  const shouldAddSoftClose =
+    !strict &&
+    /linkedin/i.test(source) &&
+    /^hey\s+(guys|everyone|all|folks|team)\b/i.test(source) &&
+    !/[?]/.test(source);
+
+  return [greeting, editedBody, shouldAddSoftClose ? "Curious what you think." : ""]
+    .filter(Boolean)
+    .join("\n\n");
+}
+
+function sanitizeGeneratedCopy(text, source) {
+  const needsRegeneration =
+    outputHasNewBannedTerms(text, source) ||
+    isTooLong(text, source) ||
+    repeatsLongSourceRun(text, source);
+
+  if (!needsRegeneration) {
+    return text;
+  }
+
+  const shouldChangeLess = conservativeEditorPrompt.includes("When in doubt, change less.");
+  const regenerated = editTextConservatively(source, shouldChangeLess).trim();
+
+  return regenerated || cleanInput(source);
+}
+
+function aiYfy(text) {
+  const edited = editTextConservatively(text);
+  return sanitizeGeneratedCopy(edited, text);
 }
 
 function scoreOutput(text, source) {
@@ -141,7 +174,7 @@ function scoreOutput(text, source) {
 
   const words = text.match(/[A-Za-z-]+/g) || [];
   const sourceWords = source.match(/[A-Za-z-]+/g) || [];
-  const buzzwordHits = buzzwords.reduce((total, word) => {
+  const buzzwordHits = bannedTerms.reduce((total, word) => {
     const pattern = new RegExp(`\\b${word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "gi");
     return total + (text.match(pattern) || []).length;
   }, 0);

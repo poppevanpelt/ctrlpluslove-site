@@ -1,8 +1,10 @@
-import { copyFile, mkdir, readdir, readFile, writeFile } from "node:fs/promises";
+import { cp, copyFile, mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import { basename, join } from "node:path";
 
 const sourceDir = new URL("../out/", import.meta.url);
 const previewDir = new URL("../static-preview/", import.meta.url);
+const aiYFierToolDir = new URL("../public/tools/ai-y-fier/", import.meta.url);
+const previewAiYFierToolDir = new URL("tools/ai-y-fier/", previewDir);
 
 const pages = [
   "index.html",
@@ -16,6 +18,7 @@ const pages = [
 
 const assets = [
   "favicon.ico",
+  "sw.js",
   "dear-rob.png",
   "dear-marjan.png",
   "reality-poster.png",
@@ -123,7 +126,8 @@ function removeRuntime(html) {
     .replace(/href="rob"/g, 'href="rob.html"')
     .replace(/href="marjan"/g, 'href="marjan.html"')
     .replace(/href="reality"/g, 'href="reality.html"')
-    .replace(/href="unfinished-thoughts"/g, 'href="unfinished-thoughts.html"');
+    .replace(/href="unfinished-thoughts"/g, 'href="unfinished-thoughts.html"')
+    .replace(/href="ai-y-fier"/g, 'href="tools/ai-y-fier/index.html"');
 }
 
 const cssDir = new URL("_next/static/css/", sourceDir);
@@ -136,6 +140,7 @@ if (!cssFile) {
 const cssPath = new URL(cssFile, cssDir);
 const css = await readFile(cssPath, "utf8");
 
+await rm(previewDir, { recursive: true, force: true });
 await mkdir(previewDir, { recursive: true });
 
 for (const page of pages) {
@@ -149,6 +154,18 @@ for (const page of pages) {
 for (const asset of assets) {
   await copyFile(new URL(asset, sourceDir), new URL(asset, previewDir));
 }
+
+await cp(aiYFierToolDir, previewAiYFierToolDir, { recursive: true, force: true });
+
+const aiYFierIndexPath = new URL("index.html", previewAiYFierToolDir);
+const aiYFierIndex = await readFile(aiYFierIndexPath, "utf8");
+await writeFile(
+  aiYFierIndexPath,
+  aiYFierIndex
+    .replace(/href="http:\/\/localhost:3000\/"/g, 'href="../../index.html"')
+    .replace(/href="#"/g, 'href="index.html"'),
+  "utf8"
+);
 
 console.log(
   `Created standalone preview at ${join(previewDir.pathname, basename("index.html"))}`

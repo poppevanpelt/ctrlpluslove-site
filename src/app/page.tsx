@@ -1,4 +1,5 @@
 import { LivingTicker } from "./living-ticker";
+import { MeetingFilterSection } from "./meeting-filter-section";
 import { ThemeToggle } from "./theme-toggle";
 
 export default function Home() {
@@ -63,6 +64,9 @@ export default function Home() {
             <div className="explore-destination">
               <a href="#intro">Meet the Room →</a>
             </div>
+            <div className="explore-destination">
+              <a href="#meeting-filter">The Meeting Filter™ →</a>
+            </div>
             <a className="explore-destination" href="/ai-y-fier">
               <strong>AI-y-fier →</strong>
               <em>Jargon in. Gravity out.</em>
@@ -120,6 +124,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <MeetingFilterSection />
 
       <section className="content-section" id="ways-in">
         <div className="content-block wide poster-block">
@@ -260,7 +266,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="content-section ruled">
+      <section className="content-section ruled final-cta-section">
         <div className="content-block statement-block centered final-cta">
           <h2 className="statement-title cta-title">
             DESIGNED FOR <span className="conflict-word">CONFLICT.</span>
