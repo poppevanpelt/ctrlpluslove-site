@@ -259,6 +259,9 @@ export default function AiYFierClient() {
       <Link className={styles.homeRibbon} href="/">
         Part of ctrl+love. Return to the main site →
       </Link>
+      <div className={styles.quickLinks} aria-label="Related tools">
+        <Link href="/meeting-filter">Open the Meeting Filter →</Link>
+      </div>
       <p className={styles.versionStamp}>final copy - 16 june 2026</p>
 
       <section className={styles.hero} id="product">

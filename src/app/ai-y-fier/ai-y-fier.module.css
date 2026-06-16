@@ -108,6 +108,38 @@
   font-weight: 900;
 }
 
+.quickLinks {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.quickLinks a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 9px 13px;
+  border: 1px solid rgba(93, 228, 255, 0.36);
+  border-radius: 8px;
+  color: #f8fbff;
+  background: rgba(255, 255, 255, 0.07);
+  text-align: center;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+
+.versionStamp {
+  margin: 10px 0 0;
+  color: #48f0ad;
+  text-align: center;
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1.18fr) minmax(320px, 0.82fr);
