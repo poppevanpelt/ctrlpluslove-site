@@ -31,6 +31,7 @@
       <a class="home-ribbon" href="/">
         Part of ctrl+love. Return to the main site →
       </a>
+      <p class="version-stamp">engine v10</p>
 
       <section class="hero" id="product">
         <div class="hero-copy">
@@ -172,6 +173,93 @@
       </section>
     </main>
 
-    <script src="app.js?v=8"></script>
+    <script src="app-v10.js"></script>
+    <script>
+      (function () {
+        window.AIYFIER_INLINE_VERSION = "inline-v11";
+
+        function words(text) {
+          return (text.match(/[A-Za-z0-9'-]+/g) || []).length;
+        }
+
+        function selectedStyle() {
+          var selected = document.querySelector("input[name='style']:checked");
+          return selected ? selected.value : "vc";
+        }
+
+        function selectedIntensity() {
+          var slider = document.querySelector("#intensity");
+          return slider ? slider.value : "4";
+        }
+
+        function inflate(text) {
+          var source = text.trim() || "No input provided.";
+          var style = selectedStyle();
+          var level = selectedIntensity();
+
+          return [
+            "AI-Y-FIER FINAL FUNNY COPY",
+            "",
+            "Mode: " + style + " | Intensity: " + level,
+            "",
+            "Original signal, prior to strategic altitude correction:",
+            '"' + source + '"',
+            "",
+            "Board-approved translation:",
+            "ctrl+love is no longer merely a baby. It has entered its institution-shaped toddler phase: larger, louder, more spatially opinionated, and now apparently capable of generating departments as a side effect of emotional and epistemic growth.",
+            "",
+            "The move into a new place should not be mistaken for a real-estate event. It is better understood as a material upgrade to the ctrl+love ambiguity stack: more walls to disagree near, more air for unfinished arguments to circulate through, and more square footage in which learning can pretend, briefly, to have a floor plan.",
+            "",
+            "The opening of two new departments indicates that the original operating organism has begun to subdivide itself into specialized zones of purposeful uncertainty. This is not scale in the conventional sense. It is more like a houseplant becoming a governance model: unexpected, slightly damp, difficult to summarize, and somehow still alive.",
+            "",
+            "The continued absence of parking spaces should be read as a disciplined refusal to over-serve the arrival layer. ctrl+love is not optimizing for vehicles. It is optimizing for threshold energy: the small existential pause before someone steps inside and realizes the building may have a position on their assumptions.",
+            "",
+            "The door being open is therefore not hospitality copy. It is an architectural thesis. It says the system is still under construction, still arguing with itself, still learning in public, and still willing to let reality wander in without first completing a brand platform.",
+            "",
+            "Current status: spatially upgraded, emotionally under-documented, epistemically noisy, allergic to premature polish, and open in the specific sense that a door can be open while the people behind it are still moving furniture and disagreeing about what the furniture means."
+          ].join("\n");
+        }
+
+        function render() {
+          var source = document.querySelector("#sourceText");
+          var output = document.querySelector("#outputText");
+          var bullshit = document.querySelector("#bullshitScore");
+          var density = document.querySelector("#buzzwordDensity");
+          var synergy = document.querySelector("#synergyIndex");
+          if (!source || !output) return;
+
+          var result = inflate(source.value);
+          output.value = result;
+          if (bullshit) bullshit.textContent = "91";
+          if (density) density.textContent = Math.min(88, Math.max(42, words(result) - words(source.value))) + "%";
+          if (synergy) synergy.textContent = "7.4x";
+        }
+
+        window.addEventListener("DOMContentLoaded", function () {
+          var transform = document.querySelector("#transformButton");
+          var reset = document.querySelector("#resetButton");
+
+          if (transform) {
+            transform.addEventListener("click", function (event) {
+              event.preventDefault();
+              event.stopImmediatePropagation();
+              render();
+            }, true);
+          }
+
+          if (reset) {
+            reset.addEventListener("click", function (event) {
+              var source = document.querySelector("#sourceText");
+              event.preventDefault();
+              event.stopImmediatePropagation();
+              if (source) {
+                source.value = "We need to update the customer dashboard so people can find their invoices faster.";
+              }
+              render();
+            }, true);
+          }
+        });
+      })();
+    </script>
   </body>
 </html>

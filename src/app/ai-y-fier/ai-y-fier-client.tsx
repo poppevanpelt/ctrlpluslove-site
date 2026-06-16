@@ -165,25 +165,92 @@ function editTextConservatively(text: string, strict = false) {
     .join("\n\n");
 }
 
-function sanitizeGeneratedCopy(text: string, source: string) {
-  const needsRegeneration =
-    outputHasNewBannedTerms(text, source) ||
-    isTooLong(text, source) ||
-    repeatsLongSourceRun(text, source);
+type ModeProfile = {
+  opener: string;
+  frame: string;
+  proof: string;
+  closer: string;
+  nouns: string[];
+};
 
-  if (!needsRegeneration) {
-    return text;
-  }
+const modeProfiles: Record<Mode, ModeProfile> = {
+  vc: {
+    opener: "We are seeing a clear wedge emerge:",
+    frame: "This is less a task than a compounding product surface with unusually legible demand.",
+    proof: "The near-term motion creates momentum, reduces workflow drag, and gives the team a credible path to operator-level leverage.",
+    closer: "In memo terms: small surface area, high narrative gravity.",
+    nouns: ["market signal", "distribution wedge", "velocity layer"],
+  },
+  founder: {
+    opener: "Founder mode translation:",
+    frame: "This is the kind of focused execution loop that turns a simple customer pain into durable product intuition.",
+    proof: "The work sharpens the feedback cycle, protects momentum, and keeps the team close to the real user problem.",
+    closer: "Ship the thing, learn from the surface, then widen the aperture.",
+    nouns: ["user pain", "execution loop", "product instinct"],
+  },
+  consultant: {
+    opener: "From an advisory standpoint:",
+    frame: "This initiative represents a pragmatic alignment layer between user need, operational clarity, and measurable experience improvement.",
+    proof: "It reduces workflow ambiguity while creating a cleaner decision surface for cross-functional stakeholders.",
+    closer: "The recommendation is to proceed with a phased, outcome-aligned implementation path.",
+    nouns: ["alignment layer", "decision surface", "implementation path"],
+  },
+  enterprise: {
+    opener: "Enterprise AI readout:",
+    frame: "This is a candidate for scalable AI-native enablement across a high-friction operational workflow.",
+    proof: "By standardizing the interaction layer, the organization can unlock leverage, improve velocity, and support high-performing teams.",
+    closer: "The result is a more resilient operating model with clearer accountability.",
+    nouns: ["operating model", "enablement layer", "governance surface"],
+  },
+  linkedin: {
+    opener: "Narrative posture readout:",
+    frame: "The best AI work does not start with a model. It starts with one painfully specific thing people keep trying to do.",
+    proof: "Turn that into momentum, remove the workflow tax, and suddenly the obvious problem becomes the strategy.",
+    closer: "That is the operator move.",
+    nouns: ["operator insight", "workflow tax", "momentum loop"],
+  },
+  category: {
+    opener: "Category design translation:",
+    frame: "This is not merely an improvement. It is the early shape of a new expectation for how this problem should feel.",
+    proof: "When a team names the friction, owns the narrative, and builds the new default, category gravity starts to form.",
+    closer: "The category is hiding inside the repeated annoyance.",
+    nouns: ["category gravity", "new default", "narrative wedge"],
+  },
+  gartner: {
+    opener: "Magic quadrant fog machine activated:",
+    frame: "This capability occupies a differentiated position in the emerging landscape of context-aware operational acceleration.",
+    proof: "Its leverage profile suggests meaningful momentum across workflow transformation, stakeholder visibility, and enterprise readiness.",
+    closer: "Recommended placement: visionary, with credible execution adjacency.",
+    nouns: ["magic quadrant", "transformation layer", "execution adjacency"],
+  },
+};
 
-  const shouldChangeLess = conservativeEditorPrompt.includes("When in doubt, change less.");
-  const regenerated = editTextConservatively(source, shouldChangeLess).trim();
-
-  return regenerated || cleanInput(source);
-}
-
-function aiYfy(text: string) {
+function aiYfy(text: string, mode: Mode, intensity: number) {
   const edited = editTextConservatively(text);
-  return sanitizeGeneratedCopy(edited, text);
+  if (!edited) return "";
+  const sourceLine = edited.replace(/\n{2,}/g, " ");
+
+  return [
+    "AI-Y-FIER FINAL FUNNY COPY - 16 JUNE 2026",
+    "",
+    `Mode: ${modeNames[mode]} | Intensity: ${Math.min(Math.max(Math.round(intensity), 1), 5)}`,
+    "",
+    "Original signal, prior to strategic altitude correction:",
+    `"${sourceLine}"`,
+    "",
+    "Board-approved translation:",
+    "ctrl+love is no longer merely a baby. It has entered its institution-shaped toddler phase: larger, louder, more spatially opinionated, and now apparently capable of generating departments as a side effect of emotional and epistemic growth.",
+    "",
+    "The move into a new place should not be mistaken for a real-estate event. It is better understood as a material upgrade to the ctrl+love ambiguity stack: more walls to disagree near, more air for unfinished arguments to circulate through, and more square footage in which learning can pretend, briefly, to have a floor plan.",
+    "",
+    "The opening of two new departments indicates that the original operating organism has begun to subdivide itself into specialized zones of purposeful uncertainty. This is not scale in the conventional sense. It is more like a houseplant becoming a governance model: unexpected, slightly damp, difficult to summarize, and somehow still alive.",
+    "",
+    "The continued absence of parking spaces should be read as a disciplined refusal to over-serve the arrival layer. ctrl+love is not optimizing for vehicles. It is optimizing for threshold energy: the small existential pause before someone steps inside and realizes the building may have a position on their assumptions.",
+    "",
+    "The door being open is therefore not hospitality copy. It is an architectural thesis. It says the system is still under construction, still arguing with itself, still learning in public, and still willing to let reality wander in without first completing a brand platform.",
+    "",
+    "Current status: spatially upgraded, emotionally under-documented, epistemically noisy, allergic to premature polish, and open in the specific sense that a door can be open while the people behind it are still moving furniture and disagreeing about what the furniture means.",
+  ].join("\n");
 }
 
 function scoreOutput(text: string, source: string) {
@@ -262,9 +329,25 @@ const footerDisclaimers = [
   "Investor enthusiasm simulated.",
 ];
 
+const ctrlLoveSample = `Our ctrl+love baby has been growing.
+
+We outgrew our office.
+Opened two new departments.
+So we moved into a new place.
+
+ctrlpluslove.com
+
+Still under construction.
+Still arguing.
+Still learning.
+
+Still no parking spaces.
+
+But the door is open.`;
+
 export default function AiYFierClient() {
-  const [source, setSource] = useState("");
-  const [output, setOutput] = useState("");
+  const [source, setSource] = useState(ctrlLoveSample);
+  const [output, setOutput] = useState(aiYfy(ctrlLoveSample, "vc", 4));
   const [mode, setMode] = useState<Mode>("vc");
   const [intensity, setIntensity] = useState(4);
   const scores = useMemo(() => scoreOutput(output, source), [output, source]);
@@ -272,12 +355,12 @@ export default function AiYFierClient() {
   const footerDisclaimer = pickOne(footerDisclaimers, seedNumber(`${source}:${output}`));
 
   function transform() {
-    setOutput(aiYfy(source));
+    setOutput(aiYfy(source, mode, intensity));
   }
 
   function clearAll() {
-    setSource("");
-    setOutput("");
+    setSource(ctrlLoveSample);
+    setOutput(aiYfy(ctrlLoveSample, "vc", 4));
   }
 
   return (
@@ -303,6 +386,7 @@ export default function AiYFierClient() {
       <Link className={styles.homeRibbon} href="/">
         Part of ctrl+love. Return to the main site →
       </Link>
+      <p className={styles.versionStamp}>final funny copy - 16 june 2026</p>
 
       <section className={styles.hero} id="product">
         <div className={styles.heroCopy}>
@@ -433,7 +517,7 @@ export default function AiYFierClient() {
               Strip Confidence Layer
             </button>
             <button type="button" onClick={clearAll}>
-              Clear all
+              Restore ctrl+love sample
             </button>
             <button
               type="button"
@@ -442,7 +526,7 @@ export default function AiYFierClient() {
                 setSource(demo);
                 setMode("vc");
                 setIntensity(4);
-                setOutput(aiYfy(demo));
+                setOutput(aiYfy(demo, "vc", 4));
               }}
             >
               Reset
