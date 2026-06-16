@@ -157,9 +157,79 @@ function lowercaseFirst(text: string) {
   return text ? `${text[0].toLowerCase()}${text.slice(1)}` : text;
 }
 
+function frameSignal(text: string) {
+  if (/^(Musk|[A-Z]{2,})\b/.test(text)) return text;
+  return lowercaseFirst(text);
+}
+
+function splitSentences(text: string) {
+  return cleanInput(text)
+    .split(/(?<=[.!?])\s+/)
+    .map((sentence) => stripFinalPunctuation(sentence))
+    .filter(Boolean);
+}
+
+function uniqueItems(items: string[]) {
+  return [...new Set(items.map((item) => item.trim()).filter(Boolean))];
+}
+
+function extractEntities(text: string) {
+  const matches =
+    text.match(/\b(?:[A-Z][\p{L}'-]*|[A-Z]{2,})(?:\s+(?:[A-Z][\p{L}'-]*|[A-Z]{2,}|für|van|de|der|of|the))*\b/gu) ?? [];
+
+  return uniqueItems(matches)
+    .filter((entity) => !["Original", "Board", "Confidence", "Recommended"].includes(entity))
+    .slice(0, 4);
+}
+
+function summarizeSignalForInflation(sourceLine: string) {
+  const compactSource = stripFinalPunctuation(sourceLine);
+  const sentences = splitSentences(compactSource);
+  const entities = extractEntities(compactSource);
+
+  if (
+    /\bmusk\b/i.test(compactSource) &&
+    /\bzdf\b/i.test(compactSource) &&
+    /juridische stappen|legal action|legal steps/i.test(compactSource)
+  ) {
+    const politicalSupport = /alternatieven für deutschland|alternative für deutschland|\bafd\b/i.test(compactSource)
+      ? "AfD's support as a sharper political layer"
+      : "outside support as a sharper political layer";
+
+    return `Musk's escalation of a public dispute with ZDF into potential legal action, ${politicalSupport}, and his accusation that the broadcaster falsely linked him to the riots`;
+  }
+
+  if (/juridische stappen|legal action|legal steps|lawsuit|sue\b|sued\b/i.test(compactSource)) {
+    const actorList = entities.length >= 2 ? entities.join(", ") : "the named parties";
+    return `a legal escalation involving ${actorList}, with reputational risk and public accountability now moving into the foreground`;
+  }
+
+  if (sentences.length >= 2 && entities.length >= 2) {
+    return `developments involving ${entities.join(", ")}, creating a broader reputational and operational context that now needs careful positioning`;
+  }
+
+  return compactSource;
+}
+
 function makeBoardApprovedSentence(sourceLine: string, seed: number) {
   const compactSource = stripFinalPunctuation(sourceLine);
   const lowerSource = compactSource.toLowerCase();
+  const signal = summarizeSignalForInflation(compactSource);
+
+  if (
+    /\bmusk\b/i.test(compactSource) &&
+    /\bzdf\b/i.test(compactSource) &&
+    /juridische stappen|legal action|legal steps/i.test(compactSource)
+  ) {
+    return pickOne(
+      [
+        "The situation is being repositioned as a high-visibility media-accountability escalation, with Musk's threatened legal action against ZDF, AfD's supportive posture, and the contested link to the riots creating a more complex reputational operating environment.",
+        "What began as a broadcaster dispute is now taking shape as a broader narrative-risk moment, combining Musk's potential legal response to ZDF, political amplification from AfD, and a contested claim about responsibility for the riots.",
+        "We are looking at a reputational escalation cycle in which Musk's threatened action against ZDF, the supportive signal from AfD, and the disputed association with the riots are converging into a board-relevant media trust issue.",
+      ],
+      seed
+    );
+  }
 
   if (/\b(we|i)\s+(do not|don't)\s+know\b/.test(lowerSource) || /\bnot sure\b/.test(lowerSource)) {
     return "We are actively exploring multiple future-oriented pathways while maintaining the flexibility required to convert emerging uncertainty into a more actionable strategic position.";
@@ -188,22 +258,20 @@ function makeBoardApprovedSentence(sourceLine: string, seed: number) {
   }
 
   const statusFrames = [
-    "We are reframing the current signal",
-    "We have identified a strategically relevant indicator",
-    "We are elevating the underlying observation",
-    "We are converting the operational update",
+    "We are positioning",
+    "We are recasting",
+    "We are translating",
+    "We are maturing",
   ];
 
   const outcomes = [
-    "into a clearer basis for alignment, prioritization, and future-facing momentum",
-    "into a stakeholder-legible narrative that supports confident decision-making",
-    "into a more scalable framework for interpreting near-term organizational reality",
-    "into an executive-ready signal with stronger strategic altitude",
+    "a clearer basis for alignment, prioritization, and future-facing momentum",
+    "a stakeholder-legible narrative that supports confident decision-making",
+    "a more scalable framework for interpreting near-term organizational reality",
+    "an executive-ready signal with stronger strategic altitude",
   ];
 
-  return `${pickOne(statusFrames, seed)} that ${lowercaseFirst(
-    compactSource
-  )} ${pickOne(outcomes, seed, 1)}.`;
+  return `${pickOne(statusFrames, seed)} ${frameSignal(signal)} as ${pickOne(outcomes, seed, 1)}.`;
 }
 
 function aiYfy(text: string) {
