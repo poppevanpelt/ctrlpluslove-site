@@ -231,7 +231,7 @@ function aiYfy(text: string, mode: Mode, intensity: number) {
   const sourceLine = edited.replace(/\n{2,}/g, " ");
 
   return [
-    "AI-Y-FIER FINAL FUNNY COPY - 16 JUNE 2026",
+    "AI-Y-FIER FINAL COPY - 16 JUNE 2026",
     "",
     `Mode: ${modeNames[mode]} | Intensity: ${Math.min(Math.max(Math.round(intensity), 1), 5)}`,
     "",
@@ -346,8 +346,8 @@ Still no parking spaces.
 But the door is open.`;
 
 export default function AiYFierClient() {
-  const [source, setSource] = useState(ctrlLoveSample);
-  const [output, setOutput] = useState(aiYfy(ctrlLoveSample, "vc", 4));
+  const [source, setSource] = useState("");
+  const [output, setOutput] = useState("");
   const [mode, setMode] = useState<Mode>("vc");
   const [intensity, setIntensity] = useState(4);
   const scores = useMemo(() => scoreOutput(output, source), [output, source]);
@@ -359,8 +359,8 @@ export default function AiYFierClient() {
   }
 
   function clearAll() {
-    setSource(ctrlLoveSample);
-    setOutput(aiYfy(ctrlLoveSample, "vc", 4));
+    setSource("");
+    setOutput("");
   }
 
   return (
@@ -386,7 +386,7 @@ export default function AiYFierClient() {
       <Link className={styles.homeRibbon} href="/">
         Part of ctrl+love. Return to the main site →
       </Link>
-      <p className={styles.versionStamp}>final funny copy - 16 june 2026</p>
+      <p className={styles.versionStamp}>final copy - 16 june 2026</p>
 
       <section className={styles.hero} id="product">
         <div className={styles.heroCopy}>
@@ -517,7 +517,7 @@ export default function AiYFierClient() {
               Strip Confidence Layer
             </button>
             <button type="button" onClick={clearAll}>
-              Restore ctrl+love sample
+              Clear all
             </button>
             <button
               type="button"
