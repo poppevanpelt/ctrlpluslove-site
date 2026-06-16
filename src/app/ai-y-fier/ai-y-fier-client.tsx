@@ -14,6 +14,54 @@ const bannedTerms = [
   "workflow",
   "velocity",
   "high-performing teams",
+  "alignment",
+  "aligned",
+  "strategic",
+  "framework",
+  "stakeholder",
+  "future-facing",
+  "scalable",
+  "narrative",
+  "confidence",
+];
+
+const liveModelOutputs = [
+  "We have identified a scalable opportunity to leverage alignment around narrative-enabled value realization.",
+  "Following a strategic language uplift, the statement now better reflects the ambition embedded within its future-facing potential.",
+  "This initiative creates a framework for unlocking stakeholder-aligned momentum at scale.",
+  "The observation has been reframed as an enterprise-ready signal with expanded confidence architecture.",
+  "We are activating a language layer that increases perceived clarity without materially altering the underlying facts.",
+];
+
+const tickerMessages = [
+  "CONFIDENCE LAYER DETECTED",
+  "MEANING UNCHANGED",
+  "LENGTH UP 340%",
+  "ACCOUNTABILITY DOWN 12%",
+  "EXECUTIVE APPROVAL PROBABILITY INCREASING",
+  "STRATEGIC ALTITUDE ACHIEVED",
+  "4 EXECUTIVES CURRENTLY NODDING",
+  "INVESTOR VOICE SIMULATED",
+  "SYNERGY EVENT ACTIVE",
+  "NARRATIVE INFLATION DETECTED",
+  "THIS SENTENCE HAS BEEN FUTURE-PROOFED",
+  "REALITY VISIBILITY REDUCED",
+  "BOARDROOM GRAVITY INCREASING",
+];
+
+const confidenceExamples = [
+  {
+    reality: "We don't know yet.",
+    aiYfied: "We are actively exploring multiple future-oriented pathways.",
+  },
+  {
+    reality: "Sales are down.",
+    aiYfied: "We are navigating temporary market headwinds.",
+  },
+  {
+    reality: "This campaign isn't working.",
+    aiYfied: "We are still building awareness.",
+  },
 ];
 
 function cleanInput(text: string) {
@@ -101,29 +149,104 @@ function editTextConservatively(text: string, strict = false) {
     .join("\n\n");
 }
 
+function stripFinalPunctuation(text: string) {
+  return text.replace(/[.!?]+$/g, "").trim();
+}
+
+function lowercaseFirst(text: string) {
+  return text ? `${text[0].toLowerCase()}${text.slice(1)}` : text;
+}
+
+function makeBoardApprovedSentence(sourceLine: string, seed: number) {
+  const compactSource = stripFinalPunctuation(sourceLine);
+  const lowerSource = compactSource.toLowerCase();
+
+  if (/\b(we|i)\s+(do not|don't)\s+know\b/.test(lowerSource) || /\bnot sure\b/.test(lowerSource)) {
+    return "We are actively exploring multiple future-oriented pathways while maintaining the flexibility required to convert emerging uncertainty into a more actionable strategic position.";
+  }
+
+  if (/\bsales\s+(are|were|is)\s+down\b/.test(lowerSource)) {
+    return "We are navigating temporary market headwinds while strengthening the commercial learning loop required to restore stakeholder-aligned revenue momentum.";
+  }
+
+  if (/\b(isn't|is not|aren't|are not|wasn't|was not)\s+working\b/.test(lowerSource)) {
+    return "The initiative is still building awareness, generating directional learning, and creating the conditions for a more scalable performance narrative over time.";
+  }
+
+  const needMatch = compactSource.match(/^we\s+need\s+to\s+(.+)$/i);
+  if (needMatch) {
+    return `We are advancing a strategically aligned effort to ${lowercaseFirst(
+      stripFinalPunctuation(needMatch[1])
+    )}, creating a clearer foundation for cross-functional prioritization, stakeholder confidence, and future-ready execution.`;
+  }
+
+  const shouldMatch = compactSource.match(/^(we|i|the team)\s+should\s+(.+)$/i);
+  if (shouldMatch) {
+    return `We have identified an opportunity to ${lowercaseFirst(
+      stripFinalPunctuation(shouldMatch[2])
+    )}, positioning the organization to move with greater clarity, confidence, and narrative consistency.`;
+  }
+
+  const statusFrames = [
+    "We are reframing the current signal",
+    "We have identified a strategically relevant indicator",
+    "We are elevating the underlying observation",
+    "We are converting the operational update",
+  ];
+
+  const outcomes = [
+    "into a clearer basis for alignment, prioritization, and future-facing momentum",
+    "into a stakeholder-legible narrative that supports confident decision-making",
+    "into a more scalable framework for interpreting near-term organizational reality",
+    "into an executive-ready signal with stronger strategic altitude",
+  ];
+
+  return `${pickOne(statusFrames, seed)} that ${lowercaseFirst(
+    compactSource
+  )} ${pickOne(outcomes, seed, 1)}.`;
+}
+
 function aiYfy(text: string) {
   const edited = editTextConservatively(text);
   if (!edited) return "";
   const sourceLine = edited.replace(/\n{2,}/g, " ");
+  const seed = seedNumber(sourceLine);
+  const boardApprovedSentence = makeBoardApprovedSentence(sourceLine, seed);
+  const interpretation = pickOne(
+    [
+      "This preserves the original operational meaning while increasing its perceived maturity, altitude, and executive survivability.",
+      "No additional facts have been introduced; the sentence has simply been equipped with a higher-confidence operating posture.",
+      "The core claim remains materially unchanged, but the surrounding language now reduces reality visibility in a stakeholder-safe way.",
+    ],
+    seed,
+    2
+  );
+  const recommendedUse = pickOne(
+    [
+      "Suitable for roadmap updates, investor notes, and meetings where precision may create unnecessary surface area.",
+      "Suitable for steering committees, quarterly reflections, and any room where uncertainty needs a blazer.",
+      "Suitable for decks, all-hands updates, and situations where the sentence must arrive with more authority than evidence.",
+    ],
+    seed,
+    3
+  );
 
   return [
-    "AI-Y-FIER FINAL COPY - 16 JUNE 2026",
+    "AI-Y-FIER CONFIDENCE LAYER OUTPUT",
     "",
     "Original signal, prior to strategic altitude correction:",
     `"${sourceLine}"`,
     "",
     "Board-approved translation:",
-    "ctrl+love is no longer merely a baby. It has entered its institution-shaped toddler phase: larger, louder, more spatially opinionated, and now apparently capable of generating departments as a side effect of emotional and epistemic growth.",
+    boardApprovedSentence,
     "",
-    "The move into a new place should not be mistaken for a real-estate event. It is better understood as a material upgrade to the ctrl+love ambiguity stack: more walls to disagree near, more air for unfinished arguments to circulate through, and more square footage in which learning can pretend, briefly, to have a floor plan.",
+    "Confidence layer analysis:",
+    interpretation,
     "",
-    "The opening of two new departments indicates that the original operating organism has begun to subdivide itself into specialized zones of purposeful uncertainty. This is not scale in the conventional sense. It is more like a houseplant becoming a governance model: unexpected, slightly damp, difficult to summarize, and somehow still alive.",
+    "Recommended organizational use:",
+    recommendedUse,
     "",
-    "The continued absence of parking spaces should be read as a disciplined refusal to over-serve the arrival layer. ctrl+love is not optimizing for vehicles. It is optimizing for threshold energy: the small existential pause before someone steps inside and realizes the building may have a position on their assumptions.",
-    "",
-    "The door being open is therefore not hospitality copy. It is an architectural thesis. It says the system is still under construction, still arguing with itself, still learning in public, and still willing to let reality wander in without first completing a brand platform.",
-    "",
-    "Current status: spatially upgraded, emotionally under-documented, epistemically noisy, allergic to premature polish, and open in the specific sense that a door can be open while the people behind it are still moving furniture and disagreeing about what the furniture means.",
+    "Meaning delta: approximately zero.",
   ].join("\n");
 }
 
@@ -133,6 +256,7 @@ function scoreOutput(text: string, source: string) {
       bullshit: "Awaiting inflation",
       density: "Under-leveraged",
       synergy: "Not yet cross-functional",
+      confidence: "Awaiting layer",
       bullshitStatus: "",
       densityStatus: "",
       lengthStatus: "",
@@ -155,6 +279,7 @@ function scoreOutput(text: string, source: string) {
     bullshit: String(bullshit),
     density: `${density}%`,
     synergy: `${Math.min(12.8, 1.4 + buzzwordHits * 0.32 + lengthMultiplier * 0.28).toFixed(1)}x`,
+    confidence: `+${Math.min(98, Math.round(67 + lengthMultiplier * 4 + buzzwordHits * 1.7))}%`,
     bullshitStatus:
       bullshit >= 85
         ? pickOne(
@@ -203,29 +328,14 @@ const footerDisclaimers = [
   "Investor enthusiasm simulated.",
 ];
 
-const ctrlLoveSample = `Our ctrl+love baby has been growing.
-
-We outgrew our office.
-Opened two new departments.
-So we moved into a new place.
-
-ctrlpluslove.com
-
-Still under construction.
-Still arguing.
-Still learning.
-
-Still no parking spaces.
-
-But the door is open.`;
-
 export default function AiYFierClient() {
   const [source, setSource] = useState("");
   const [output, setOutput] = useState("");
   const [copyStatus, setCopyStatus] = useState("");
+  const [liveModelOutput] = useState(() => pickOne(liveModelOutputs, Math.floor(Math.random() * 1000)));
   const scores = useMemo(() => scoreOutput(output, source), [output, source]);
   const executiveSummary = plainSummary(source);
-  const footerDisclaimer = pickOne(footerDisclaimers, seedNumber(`${source}:${output}`));
+  const footerDisclaimer = footerDisclaimers[0];
 
   function transform() {
     setOutput(aiYfy(source));
@@ -277,7 +387,6 @@ export default function AiYFierClient() {
         <nav className={styles.navActions} aria-label="Company links">
           <a href="#product">Product</a>
           <a href="#metrics">Metrics</a>
-          <Link href="/meeting-filter">Meeting Filter</Link>
           <a href="#waitlist">Enterprise</a>
         </nav>
         <button className={styles.demoButton} type="button" onClick={() => setSource("We need to update the customer dashboard so people can find their invoices faster.")}>
@@ -288,9 +397,6 @@ export default function AiYFierClient() {
       <Link className={styles.homeRibbon} href="/">
         Part of ctrl+love. Return to the main site →
       </Link>
-      <div className={styles.quickLinks} aria-label="Related tools">
-        <Link href="/meeting-filter">Open the Meeting Filter →</Link>
-      </div>
       <p className={styles.versionStamp}>final copy - 16 june 2026</p>
 
       <section className={styles.hero} id="product">
@@ -298,21 +404,23 @@ export default function AiYFierClient() {
           <p className={styles.eyebrow}>Narrative infrastructure for modern teams</p>
           <h1>Turn perfectly normal sentences into board-approved AI gravity.</h1>
           <p className={styles.lede}>
-            Paste mundane text. Receive a maximally confident, abstract, lengthened artifact
-            that preserves the original meaning while radiating funded inevitability.
+            Paste a perfectly normal sentence. Receive a longer, more confident version that
+            sounds expensive, future-proof and strategically aligned while preserving
+            approximately the same amount of meaning.
           </p>
           <div className={styles.trustRow}>
             <span>Backed by vibes</span>
-            <span>0 patents pending</span>
+            <span>Confidence layer enabled</span>
             <span>SOC 2 adjacent</span>
+            <span>Randomly Gartner-shaped</span>
           </div>
         </div>
 
         <section className={styles.terminalPanel} aria-label="Live funding signal">
           <Image
             className={styles.heroVisual}
-            src="/ai-y-fier-hero.png"
-            alt="Glossy abstract AI dashboard panels for AI-y-fier"
+            src="/ai-y-fier-hero-inflation-engine.png?v=confidence-layer"
+            alt="A sentence entering a dark machine and exiting as a much larger hollow language bubble"
             width={1280}
             height={720}
             priority
@@ -323,9 +431,7 @@ export default function AiYFierClient() {
             <span />
           </div>
           <p className={styles.terminalKicker}>LIVE MODEL OUTPUT</p>
-          <p className={styles.terminalLine}>
-            We are operationalizing semantic surplus through a venture-native confidence layer.
-          </p>
+          <p className={styles.terminalLine}>{liveModelOutput}</p>
           <div className={styles.fundingMeter} aria-hidden="true">
             <span />
           </div>
@@ -379,9 +485,9 @@ export default function AiYFierClient() {
           ) : null}
           <div className={styles.resultActions}>
             <button type="button" onClick={copyOutput}>
-              {copyStatus === "Copied." ? "Copied" : "Copy for stakeholder alignment"}
+              {copyStatus === "Copied." ? "Copied" : "Copy"}
             </button>
-            <button type="button" onClick={() => setOutput(source)}>
+            <button className={styles.stripAction} type="button" onClick={() => setOutput(source)}>
               Strip Confidence Layer
             </button>
             <button type="button" onClick={clearAll}>
@@ -407,23 +513,35 @@ export default function AiYFierClient() {
         </aside>
       </section>
 
+      <section className={styles.aiTicker} aria-label="AI-y-fier live signals">
+        <div className={styles.aiTickerTrack}>
+          <TickerRun />
+          <TickerRun ariaHidden />
+        </div>
+      </section>
+
       <section className={styles.metricsBand} id="metrics" aria-label="Generated metrics">
         <article>
-          <span>Bullshit Score</span>
-          <strong className={scores.isEmpty ? styles.emptyMetric : undefined}>{scores.bullshit}</strong>
           <span>Investor-grade certainty</span>
+          <strong className={scores.isEmpty ? styles.emptyMetric : undefined}>{scores.bullshit}</strong>
+          <span>Formerly Bullshit Score</span>
           {scores.bullshitStatus ? <em>{scores.bullshitStatus}</em> : null}
         </article>
         <article>
-          <span>Buzzword Density</span>
-          <strong className={scores.isEmpty ? styles.emptyMetric : undefined}>{scores.density}</strong>
           <span>Jargon per useful noun</span>
+          <strong className={scores.isEmpty ? styles.emptyMetric : undefined}>{scores.density}</strong>
+          <span>Formerly Buzzword Density</span>
           {scores.densityStatus ? <em>{scores.densityStatus}</em> : null}
         </article>
         <article>
-          <span>Synergy Index</span>
-          <strong className={scores.isEmpty ? styles.emptyMetric : undefined}>{scores.synergy}</strong>
           <span>Cross-functional aura</span>
+          <strong className={scores.isEmpty ? styles.emptyMetric : undefined}>{scores.synergy}</strong>
+          <span>Formerly Synergy Index</span>
+        </article>
+        <article>
+          <span>Confidence Layer</span>
+          <strong className={scores.isEmpty ? styles.emptyMetric : undefined}>{scores.confidence}</strong>
+          <span>Meaning unchanged</span>
         </article>
       </section>
 
@@ -433,10 +551,35 @@ export default function AiYFierClient() {
         </aside>
       ) : null}
 
+      <section className={styles.confidenceLayer} aria-label="Confidence Layer">
+        <div className={styles.confidenceCopy}>
+          <p className={styles.eyebrow}>Language inflation module</p>
+          <h2>Confidence Layer™</h2>
+          <p>
+            Most organizations don&apos;t suffer from a lack of intelligence.
+            They suffer from a surplus of confidence.
+          </p>
+          <p>
+            AI-y-fier identifies and amplifies the invisible layer that turns observations
+            into narratives, assumptions into frameworks, and uncertainty into strategic certainty.
+          </p>
+        </div>
+        <div className={styles.confidenceGrid}>
+          {confidenceExamples.map((example) => (
+            <article key={example.reality}>
+              <span>Reality:</span>
+              <p>{example.reality}</p>
+              <span>AI-y-fied:</span>
+              <strong>{example.aiYfied}</strong>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section className={styles.investorProof} id="waitlist">
         <div>
           <p className={styles.eyebrow}>Enterprise-ready theater</p>
-          <h2>The only platform purpose-built to add length without adding accountability.</h2>
+          <h2>The world&apos;s leading confidence layer management platform.</h2>
         </div>
         <div className={styles.proofGrid}>
           <span>Agentic</span>
@@ -452,5 +595,15 @@ export default function AiYFierClient() {
         {footerDisclaimer}
       </footer>
     </main>
+  );
+}
+
+function TickerRun({ ariaHidden = false }: { ariaHidden?: boolean }) {
+  return (
+    <div className={styles.aiTickerRun} aria-hidden={ariaHidden}>
+      {tickerMessages.map((message) => (
+        <span key={message}>{message}</span>
+      ))}
+    </div>
   );
 }
