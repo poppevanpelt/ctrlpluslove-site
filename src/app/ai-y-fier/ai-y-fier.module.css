@@ -438,6 +438,13 @@
   flex: 1 1 190px;
 }
 
+.copyStatus {
+  margin: 10px 0 0;
+  color: #48f0ad;
+  font-size: 0.86rem;
+  font-weight: 900;
+}
+
 .metricsBand {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

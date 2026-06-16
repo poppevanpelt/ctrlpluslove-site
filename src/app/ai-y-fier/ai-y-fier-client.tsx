@@ -222,17 +222,46 @@ But the door is open.`;
 export default function AiYFierClient() {
   const [source, setSource] = useState("");
   const [output, setOutput] = useState("");
+  const [copyStatus, setCopyStatus] = useState("");
   const scores = useMemo(() => scoreOutput(output, source), [output, source]);
   const executiveSummary = plainSummary(source);
   const footerDisclaimer = pickOne(footerDisclaimers, seedNumber(`${source}:${output}`));
 
   function transform() {
     setOutput(aiYfy(source));
+    setCopyStatus("");
   }
 
   function clearAll() {
     setSource("");
     setOutput("");
+    setCopyStatus("");
+  }
+
+  async function copyOutput() {
+    if (!output.trim()) {
+      setCopyStatus("Nothing to copy yet.");
+      return;
+    }
+
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(output);
+      } else {
+        const fallbackTextarea = document.createElement("textarea");
+        fallbackTextarea.value = output;
+        fallbackTextarea.setAttribute("readonly", "");
+        fallbackTextarea.style.position = "fixed";
+        fallbackTextarea.style.opacity = "0";
+        document.body.appendChild(fallbackTextarea);
+        fallbackTextarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(fallbackTextarea);
+      }
+      setCopyStatus("Copied.");
+    } catch {
+      setCopyStatus("Select the output text and copy it manually.");
+    }
   }
 
   return (
@@ -334,7 +363,10 @@ export default function AiYFierClient() {
           <article className={styles.outputCard}>
             <textarea
               value={output}
-              onChange={(event) => setOutput(event.target.value)}
+              onChange={(event) => {
+                setOutput(event.target.value);
+                setCopyStatus("");
+              }}
               spellCheck
               aria-label="Generated strategic narrative"
             />
@@ -346,8 +378,8 @@ export default function AiYFierClient() {
             </section>
           ) : null}
           <div className={styles.resultActions}>
-            <button type="button" onClick={() => navigator.clipboard.writeText(output)}>
-              Copy for stakeholder alignment
+            <button type="button" onClick={copyOutput}>
+              {copyStatus === "Copied." ? "Copied" : "Copy for stakeholder alignment"}
             </button>
             <button type="button" onClick={() => setOutput(source)}>
               Strip Confidence Layer
@@ -361,11 +393,17 @@ export default function AiYFierClient() {
                 const demo = "We need to update the customer dashboard so people can find their invoices faster.";
                 setSource(demo);
                 setOutput(aiYfy(demo));
+                setCopyStatus("");
               }}
             >
               Reset
             </button>
           </div>
+          {copyStatus ? (
+            <p className={styles.copyStatus} aria-live="polite">
+              {copyStatus}
+            </p>
+          ) : null}
         </aside>
       </section>
 
