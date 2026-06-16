@@ -527,8 +527,50 @@ h3 {
 }
 
 .content-section.meeting-filter-section {
+  display: none;
   padding-top: 5.85rem;
   padding-bottom: 6.25rem;
+}
+
+.content-section.meeting-filter-section[hidden] {
+  display: none !important;
+}
+
+.content-section.meeting-filter-section.is-open,
+.content-section.meeting-filter-section:target {
+  display: block;
+}
+
+.meeting-filter-return {
+  position: sticky;
+  top: 1rem;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 3rem;
+  margin: 0 0 2rem max(1.5rem, calc((100vw - 64rem) / 2));
+  border: 2px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.9rem 1.1rem;
+  font-size: var(--type-secondary);
+  font-weight: 900;
+  line-height: 1;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.meeting-filter-return:hover {
+  background: transparent;
+  color: var(--ink);
+}
+
+.meeting-filter-return:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--team-warm) 72%, transparent);
+  outline-offset: 0.2rem;
 }
 
 .content-section#ways-in {
@@ -711,7 +753,8 @@ h3 {
 .meeting-filter-questions li {
   display: grid;
   min-height: 10.4rem;
-  align-content: end;
+  align-content: space-between;
+  gap: 1.4rem;
   background: var(--paper);
   color: var(--ink);
   padding: 1.35rem;
@@ -729,11 +772,70 @@ h3 {
   content: "";
 }
 
+.meeting-filter-choice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.meeting-filter-choice button,
+.meeting-filter-status button {
+  min-height: 2.75rem;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  padding: 0.72rem 1rem;
+  font: inherit;
+  font-size: var(--type-secondary);
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.meeting-filter-choice button:hover,
+.meeting-filter-status button:hover {
+  transform: translateY(-0.08rem);
+}
+
+.meeting-filter-choice button[data-selected="true"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.meeting-filter-choice button:focus-visible,
+.meeting-filter-status button:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--team-warm) 72%, transparent);
+  outline-offset: 0.2rem;
+}
+
+.meeting-filter-result {
+  display: grid;
+  gap: 1.1rem;
+}
+
 .meeting-filter-support {
   max-width: 44rem;
   color: var(--ink);
   font-size: var(--type-body);
   line-height: var(--leading-body);
+}
+
+.meeting-filter-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.meeting-filter-status span {
+  color: var(--soft);
+  font-size: var(--type-secondary);
+  font-weight: 900;
+  line-height: var(--leading-secondary);
+  text-transform: uppercase;
 }
 
 .meeting-filter-outcomes {
@@ -752,6 +854,15 @@ h3 {
   border-top: 2px solid var(--room-accent);
   background: color-mix(in srgb, var(--paper-soft) 48%, var(--paper));
   padding: 1.35rem;
+  opacity: 0.58;
+  transition: border-color 160ms ease, box-shadow 160ms ease, opacity 160ms ease, transform 160ms ease;
+}
+
+.meeting-filter-card[data-active="true"] {
+  border-color: color-mix(in srgb, var(--room-accent) 72%, var(--ink));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--room-accent) 56%, transparent);
+  opacity: 1;
+  transform: translateY(-0.12rem);
 }
 
 .meeting-filter-card[data-room="green"] {
@@ -1624,6 +1735,7 @@ h3 {
   }
 
   .meeting-filter-heading p:not(.section-kicker) {
+    grid-column: auto;
     font-size: clamp(1.12rem, 4.6vw, 1.32rem);
   }
 
@@ -1638,6 +1750,15 @@ h3 {
 
   .meeting-filter-card {
     min-height: auto;
+  }
+
+  .meeting-filter-status {
+    display: grid;
+    align-items: start;
+  }
+
+  .meeting-filter-status button {
+    justify-self: start;
   }
 
   .meeting-filter-close {

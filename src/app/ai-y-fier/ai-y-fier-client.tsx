@@ -5,20 +5,6 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import styles from "./ai-y-fier.module.css";
 
-const conservativeEditorPrompt = `You are a conservative human editor. Your job is to lightly improve the user's text while preserving the original meaning, intent, topic, speaker, and tone.
-
-Do not add new ideas.
-Do not add business jargon.
-Do not add thought leadership.
-Do not add a call to action unless the input already has one.
-Do not turn the text into a LinkedIn influencer post.
-Do not use numbered lists unless the input already contains a list.
-Do not repeat the input inside the output.
-
-Make the text clearer, smoother, and more natural.
-Stay close to the source.
-When in doubt, change less.`;
-
 const bannedTerms = [
   "operator",
   "leverage",
@@ -29,18 +15,6 @@ const bannedTerms = [
   "velocity",
   "high-performing teams",
 ];
-
-type Mode = "vc" | "founder" | "consultant" | "enterprise" | "linkedin" | "category" | "gartner";
-
-const modeNames: Record<Mode, string> = {
-  vc: "VC Memo",
-  founder: "Founder Mode",
-  consultant: "Consultant Fog",
-  enterprise: "Enterprise AI",
-  linkedin: "LinkedIn Operator",
-  category: "Category Designer",
-  gartner: "Gartner Fog",
-};
 
 function cleanInput(text: string) {
   return text.trim().replace(/\s+/g, " ");
@@ -60,46 +34,8 @@ function plainSummary(text: string) {
   return /[.!?]$/.test(summary) ? summary : `${summary}.`;
 }
 
-function escapeRegExp(text: string) {
-  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-function normalizeForComparison(text: string) {
-  return text.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
-}
-
 function wordCount(text: string) {
   return text.match(/[A-Za-z0-9'-]+/g)?.length ?? 0;
-}
-
-function outputHasNewBannedTerms(output: string, source: string) {
-  return bannedTerms.some((term) => {
-    const pattern = new RegExp(`\\b${escapeRegExp(term)}\\b`, "i");
-    return pattern.test(output) && !pattern.test(source);
-  });
-}
-
-function isTooLong(output: string, source: string) {
-  const sourceWords = Math.max(wordCount(source), 1);
-  return wordCount(output) > sourceWords * 1.5;
-}
-
-function repeatsLongSourceRun(output: string, source: string) {
-  const sourceWords = normalizeForComparison(source).split(/\s+/).filter(Boolean);
-  const normalizedOutput = ` ${normalizeForComparison(output)} `;
-
-  if (wordCount(output) <= wordCount(source) * 1.5) {
-    return false;
-  }
-
-  for (let index = 0; index <= sourceWords.length - 9; index += 1) {
-    const phrase = sourceWords.slice(index, index + 9).join(" ");
-    if (normalizedOutput.includes(` ${phrase} `)) {
-      return true;
-    }
-  }
-
-  return false;
 }
 
 function splitGreeting(text: string) {
@@ -165,75 +101,13 @@ function editTextConservatively(text: string, strict = false) {
     .join("\n\n");
 }
 
-type ModeProfile = {
-  opener: string;
-  frame: string;
-  proof: string;
-  closer: string;
-  nouns: string[];
-};
-
-const modeProfiles: Record<Mode, ModeProfile> = {
-  vc: {
-    opener: "We are seeing a clear wedge emerge:",
-    frame: "This is less a task than a compounding product surface with unusually legible demand.",
-    proof: "The near-term motion creates momentum, reduces workflow drag, and gives the team a credible path to operator-level leverage.",
-    closer: "In memo terms: small surface area, high narrative gravity.",
-    nouns: ["market signal", "distribution wedge", "velocity layer"],
-  },
-  founder: {
-    opener: "Founder mode translation:",
-    frame: "This is the kind of focused execution loop that turns a simple customer pain into durable product intuition.",
-    proof: "The work sharpens the feedback cycle, protects momentum, and keeps the team close to the real user problem.",
-    closer: "Ship the thing, learn from the surface, then widen the aperture.",
-    nouns: ["user pain", "execution loop", "product instinct"],
-  },
-  consultant: {
-    opener: "From an advisory standpoint:",
-    frame: "This initiative represents a pragmatic alignment layer between user need, operational clarity, and measurable experience improvement.",
-    proof: "It reduces workflow ambiguity while creating a cleaner decision surface for cross-functional stakeholders.",
-    closer: "The recommendation is to proceed with a phased, outcome-aligned implementation path.",
-    nouns: ["alignment layer", "decision surface", "implementation path"],
-  },
-  enterprise: {
-    opener: "Enterprise AI readout:",
-    frame: "This is a candidate for scalable AI-native enablement across a high-friction operational workflow.",
-    proof: "By standardizing the interaction layer, the organization can unlock leverage, improve velocity, and support high-performing teams.",
-    closer: "The result is a more resilient operating model with clearer accountability.",
-    nouns: ["operating model", "enablement layer", "governance surface"],
-  },
-  linkedin: {
-    opener: "Narrative posture readout:",
-    frame: "The best AI work does not start with a model. It starts with one painfully specific thing people keep trying to do.",
-    proof: "Turn that into momentum, remove the workflow tax, and suddenly the obvious problem becomes the strategy.",
-    closer: "That is the operator move.",
-    nouns: ["operator insight", "workflow tax", "momentum loop"],
-  },
-  category: {
-    opener: "Category design translation:",
-    frame: "This is not merely an improvement. It is the early shape of a new expectation for how this problem should feel.",
-    proof: "When a team names the friction, owns the narrative, and builds the new default, category gravity starts to form.",
-    closer: "The category is hiding inside the repeated annoyance.",
-    nouns: ["category gravity", "new default", "narrative wedge"],
-  },
-  gartner: {
-    opener: "Magic quadrant fog machine activated:",
-    frame: "This capability occupies a differentiated position in the emerging landscape of context-aware operational acceleration.",
-    proof: "Its leverage profile suggests meaningful momentum across workflow transformation, stakeholder visibility, and enterprise readiness.",
-    closer: "Recommended placement: visionary, with credible execution adjacency.",
-    nouns: ["magic quadrant", "transformation layer", "execution adjacency"],
-  },
-};
-
-function aiYfy(text: string, mode: Mode, intensity: number) {
+function aiYfy(text: string) {
   const edited = editTextConservatively(text);
   if (!edited) return "";
   const sourceLine = edited.replace(/\n{2,}/g, " ");
 
   return [
     "AI-Y-FIER FINAL COPY - 16 JUNE 2026",
-    "",
-    `Mode: ${modeNames[mode]} | Intensity: ${Math.min(Math.max(Math.round(intensity), 1), 5)}`,
     "",
     "Original signal, prior to strategic altitude correction:",
     `"${sourceLine}"`,
@@ -348,14 +222,12 @@ But the door is open.`;
 export default function AiYFierClient() {
   const [source, setSource] = useState("");
   const [output, setOutput] = useState("");
-  const [mode, setMode] = useState<Mode>("vc");
-  const [intensity, setIntensity] = useState(4);
   const scores = useMemo(() => scoreOutput(output, source), [output, source]);
   const executiveSummary = plainSummary(source);
   const footerDisclaimer = pickOne(footerDisclaimers, seedNumber(`${source}:${output}`));
 
   function transform() {
-    setOutput(aiYfy(source, mode, intensity));
+    setOutput(aiYfy(source));
   }
 
   function clearAll() {
@@ -376,6 +248,7 @@ export default function AiYFierClient() {
         <nav className={styles.navActions} aria-label="Company links">
           <a href="#product">Product</a>
           <a href="#metrics">Metrics</a>
+          <Link href="/meeting-filter">Meeting Filter</Link>
           <a href="#waitlist">Enterprise</a>
         </nav>
         <button className={styles.demoButton} type="button" onClick={() => setSource("We need to update the customer dashboard so people can find their invoices faster.")}>
@@ -393,9 +266,8 @@ export default function AiYFierClient() {
           <p className={styles.eyebrow}>Narrative infrastructure for modern teams</p>
           <h1>Turn perfectly normal sentences into board-approved AI gravity.</h1>
           <p className={styles.lede}>
-            Paste mundane text. Select a transformation style. Receive a maximally confident,
-            abstract, lengthened artifact that preserves the original meaning while radiating
-            funded inevitability.
+            Paste mundane text. Receive a maximally confident, abstract, lengthened artifact
+            that preserves the original meaning while radiating funded inevitability.
           </p>
           <div className={styles.trustRow}>
             <span>Backed by vibes</span>
@@ -446,45 +318,6 @@ export default function AiYFierClient() {
             placeholder="Paste something mundane, then press AI-y-fy this."
           />
 
-          <div className={styles.controls}>
-            <fieldset>
-              <legend>Transformation style</legend>
-              <div className={styles.styleGrid}>
-                {[
-                  "vc",
-                  "founder",
-                  "consultant",
-                  "enterprise",
-                  "linkedin",
-                  "category",
-                  "gartner",
-                ].map((value) => (
-                  <label key={value}>
-                    <input
-                      type="radio"
-                      name="style"
-                      value={value}
-                      checked={mode === value}
-                      onChange={() => setMode(value as Mode)}
-                    />
-                    <span>{modeNames[value as Mode]}</span>
-                  </label>
-                ))}
-              </div>
-            </fieldset>
-
-            <label className={styles.intensityControl}>
-              <span>Inflation intensity</span>
-              <input
-                type="range"
-                min="1"
-                max="5"
-                value={intensity}
-                onChange={(event) => setIntensity(Number(event.target.value))}
-              />
-            </label>
-          </div>
-
           <button className={styles.primaryAction} type="button" onClick={transform}>
             AI-y-fy this
           </button>
@@ -524,9 +357,7 @@ export default function AiYFierClient() {
               onClick={() => {
                 const demo = "We need to update the customer dashboard so people can find their invoices faster.";
                 setSource(demo);
-                setMode("vc");
-                setIntensity(4);
-                setOutput(aiYfy(demo, "vc", 4));
+                setOutput(aiYfy(demo));
               }}
             >
               Reset

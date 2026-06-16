@@ -1,11 +1,12 @@
 import { LivingTicker } from "./living-ticker";
-import { MeetingFilterSection } from "./meeting-filter-section";
+import { MeetingFilterController } from "./meeting-filter-controller";
 import { ThemeToggle } from "./theme-toggle";
 
 export default function Home() {
   return (
     <main className="site-shell">
       <ThemeToggle />
+      <MeetingFilterController />
 
       <section className="hero-section">
         <div className="hero-copy">
@@ -64,12 +65,13 @@ export default function Home() {
             <div className="explore-destination">
               <a href="#intro">Meet the Room →</a>
             </div>
-            <div className="explore-destination">
-              <a href="#meeting-filter">The Meeting Filter™ →</a>
-            </div>
             <a className="explore-destination" href="/ai-y-fier">
               <strong>AI-y-fier →</strong>
               <em>Jargon in. Gravity out.</em>
+            </a>
+            <a className="explore-destination" href="/meeting-filter">
+              <strong>Meeting Filter →</strong>
+              <em>Should we be in this meeting?</em>
             </a>
             <div className="explore-destination">
               <a href="/museum">Museum Shop →</a>
@@ -124,8 +126,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      <MeetingFilterSection />
 
       <section className="content-section" id="ways-in">
         <div className="content-block wide poster-block">
