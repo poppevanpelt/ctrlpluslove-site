@@ -303,6 +303,11 @@ export default function Home() {
               Poppe van Pelt · LinkedIn
             </a>
           </p>
+          <p>
+            <a href="/constitution">
+              ctrl+love constitution
+            </a>
+          </p>
           <p className="copyright">ctrl+love/2026</p>
         </div>
       </footer>

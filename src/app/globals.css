@@ -1455,6 +1455,85 @@ h3 {
   color: var(--soft);
 }
 
+.constitution-page {
+  min-height: 100svh;
+}
+
+.constitution-home {
+  position: fixed;
+  z-index: 20;
+  top: 1.12rem;
+  left: 1rem;
+  color: var(--muted);
+  font-size: var(--type-secondary);
+  font-weight: 700;
+  line-height: var(--leading-secondary);
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.constitution-home:hover {
+  color: var(--ink);
+}
+
+.constitution-section {
+  display: grid;
+  min-height: 100svh;
+  place-items: center;
+  padding: clamp(6rem, 12vh, 9rem) 1.5rem;
+}
+
+.constitution-block {
+  display: grid;
+  width: min(100%, 54rem);
+  gap: clamp(1.35rem, 3vw, 2.2rem);
+  text-align: center;
+}
+
+.constitution-block h1 {
+  font-size: var(--type-section);
+  font-weight: 650;
+  line-height: var(--leading-section);
+  letter-spacing: 0;
+}
+
+.constitution-intro {
+  color: var(--soft);
+  font-size: var(--type-intro);
+  line-height: var(--leading-body);
+}
+
+.constitution-download {
+  justify-self: center;
+  display: inline-flex;
+  align-items: center;
+  min-height: 3.15rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 72%, transparent);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.82rem 1.15rem;
+  font-size: var(--type-secondary);
+  font-weight: 750;
+  line-height: 1;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background-color 160ms ease, color 160ms ease,
+    border-color 160ms ease;
+}
+
+.constitution-download:hover {
+  border-color: var(--ink);
+  background: transparent;
+  color: var(--ink);
+}
+
+.constitution-download:focus-visible,
+.constitution-home:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--team-warm) 72%, transparent);
+  outline-offset: 0.2rem;
+}
+
 .site-footer {
   padding: 3rem 1.5rem;
   text-align: center;
