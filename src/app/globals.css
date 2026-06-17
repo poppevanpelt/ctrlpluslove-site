@@ -588,6 +588,11 @@ h3 {
   padding-bottom: 6.9rem;
 }
 
+.content-section.archive-section {
+  padding-top: 4.3rem;
+  padding-bottom: 4.7rem;
+}
+
 .ruled,
 .site-footer {
   border-top: 1px solid var(--rule);
@@ -1438,6 +1443,62 @@ h3 {
   gap: 2.75rem !important;
 }
 
+.archive-block {
+  width: min(100%, 38rem);
+  gap: 1.75rem;
+}
+
+.archive-heading {
+  display: grid;
+  gap: 0.38rem;
+}
+
+.archive-heading p:not(.section-kicker) {
+  color: var(--muted);
+  font-size: var(--type-secondary);
+  font-weight: 600;
+  line-height: var(--leading-secondary);
+}
+
+.archive-list {
+  display: grid;
+  border-top: 1px solid var(--rule);
+}
+
+.archive-list a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem 1.5rem;
+  align-items: baseline;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink);
+  padding: 0.82rem 0;
+  font-size: clamp(0.95rem, 1.08vw, 1.02rem);
+  font-weight: 600;
+  line-height: 1.42;
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.archive-list a:hover {
+  color: var(--soft);
+}
+
+.archive-list em {
+  color: var(--muted);
+  font-size: var(--type-secondary);
+  font-style: normal;
+  font-weight: 700;
+  line-height: var(--leading-secondary);
+}
+
+.archive-footnote {
+  color: var(--faint);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: var(--leading-secondary);
+}
+
 .text-link {
   justify-self: center;
   display: inline-block;
@@ -1885,6 +1946,16 @@ h3 {
 
   .case-card {
     min-height: auto;
+  }
+
+  .content-section.archive-section {
+    padding-top: 3.6rem;
+    padding-bottom: 3.8rem;
+  }
+
+  .archive-list a {
+    grid-template-columns: 1fr;
+    gap: 0.16rem;
   }
 
 }

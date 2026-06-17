@@ -286,6 +286,60 @@ export default function Home() {
         </div>
       </section>
 
+      <section
+        id="archive"
+        className="content-section ruled archive-section"
+        aria-labelledby="archive-title"
+      >
+        <div className="content-block archive-block">
+          <div className="archive-heading">
+            <p className="section-kicker" id="archive-title">
+              Archive
+            </p>
+            <p>A few artifacts from before the move.</p>
+          </div>
+
+          <div className="archive-list" aria-label="Archive artifacts">
+            <a
+              href="https://www.youtube.com/watch?v=hbsINkeRA_U"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span>100 People</span>
+              <em>United Nations</em>
+            </a>
+            <a
+              href="https://www.youtube.com/watch?v=zeCSDR0Emfk"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span>Loods</span>
+              <em>New York Pizza</em>
+            </a>
+            <a
+              href="https://www.youtube.com/watch?v=_SAEa1DQuho"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span>
+                Observing How a North Korean Protestor Changed His Mind
+              </span>
+            </a>
+            <a
+              href="https://www.youtube.com/watch?v=A4GrksEEm_w"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span>Delta Lloyd</span>
+            </a>
+          </div>
+
+          <p className="archive-footnote">
+            Evidence that I occasionally left the room.
+          </p>
+        </div>
+      </section>
+
       <footer className="site-footer">
         <div className="footer-copy">
           <p>Conversations on request</p>
