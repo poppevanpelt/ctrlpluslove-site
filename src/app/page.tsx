@@ -305,24 +305,56 @@ export default function Home() {
               target="_blank"
               rel="noreferrer"
             >
-              <span>100 people</span>
-              <em>UN</em>
+              <span>100 People</span>
+              <em>United Nations</em>
+              <p className="archive-caption">
+                Eight billion people.
+                <br />
+                One village.
+                <br />
+                <br />
+                An experiment in reducing humanity to a sample size of 100.
+                <br />
+                <br />
+                Long before &quot;billions of human signals&quot;
+                <br />
+                became part of our vocabulary.
+              </p>
             </a>
             <a
               href="https://www.youtube.com/watch?v=iiaj2xrgvNw"
               target="_blank"
               rel="noreferrer"
             >
-              <span>ASN</span>
-              <em>Creature of Habit</em>
+              <span>Creature of Habit</span>
+              <em>ASN Bank</em>
+              <p className="archive-caption">
+                Complexity enters disguised as a story.
+                <br />
+                <br />
+                Sometimes the fastest route to understanding
+                <br />
+                isn&apos;t data.
+                <br />
+                <br />
+                It&apos;s a character.
+              </p>
             </a>
             <a
               href="https://www.youtube.com/watch?v=zeCSDR0Emfk"
               target="_blank"
               rel="noreferrer"
             >
-              <span>L.A.A.F.</span>
-              <em>Fireworks</em>
+              <span>Fireworks</span>
+              <em>L.A.A.F.</em>
+              <p className="archive-caption">
+                Reality leaves clues.
+                <br />
+                <br />
+                While most people watched the fireworks,
+                <br />
+                someone else was watching the supply chain.
+              </p>
             </a>
             <a
               href="https://www.youtube.com/watch?v=hbsINkeRA_U"
@@ -331,19 +363,42 @@ export default function Home() {
             >
               <span>Disobedient North-Korean Protester</span>
               <em>Delta Lloyd</em>
+              <p className="archive-caption">
+                Every system contains its opposite.
+                <br />
+                <br />
+                Even on the most choreographed day imaginable,
+                <br />
+                someone eventually asks a different question.
+              </p>
             </a>
             <a
               href="https://www.youtube.com/watch?v=Xw9Y-lh_OFE"
               target="_blank"
               rel="noreferrer"
             >
-              <span>New York Pizza</span>
-              <em>&quot;You need protection.&quot;</em>
+              <span>You Need Protection</span>
+              <em>New York Pizza</em>
+              <p className="archive-caption">
+                Culture is what happens when nobody is watching.
+                <br />
+                <br />
+                A pizza company.
+                <br />
+                A helmet.
+                <br />
+                A manager who cares more than necessary.
+                <br />
+                <br />
+                Those details tend to matter.
+              </p>
             </a>
           </div>
 
           <p className="archive-footnote">
-            Evidence that I occasionally left the room.
+            We didn&apos;t invent these questions.
+            <br />
+            We&apos;ve just been following them for a very long time.
           </p>
         </div>
       </section>

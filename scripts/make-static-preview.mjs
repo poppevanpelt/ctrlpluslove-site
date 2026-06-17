@@ -14,6 +14,7 @@ const pages = [
   "marjan.html",
   "reality.html",
   "unfinished-thoughts.html",
+  "ai-y-fier.html",
 ];
 
 const assets = [
@@ -23,6 +24,7 @@ const assets = [
   "dear-marjan.png",
   "reality-poster.png",
   "unfinished-thoughts.png",
+  "ai-y-fier-hero-inflation-engine.png",
 ];
 
 const themeHeadScript = `<script>
@@ -97,17 +99,125 @@ const themeBodyScript = `<script>
 })();
 </script>`;
 
+const documentViewerScript = `<script>
+(function () {
+  var steps = [1, 0.82, 0.62, 0.42, 0];
+  var image = document.querySelector(".document-image[style*='scale']");
+  var controls = document.querySelector(".document-controls");
+
+  if (!image || !controls) return;
+
+  var zoomOut = controls.querySelector("[aria-label='Zoom out']");
+  var zoomIn = controls.querySelector("[aria-label='Zoom in']");
+  var transform = image.style.transform || "";
+  var match = transform.match(/translate\\((-?\\d+(?:\\.\\d+)?)vw,\\s*(-?\\d+(?:\\.\\d+)?)vh\\)\\s*scale\\((-?\\d+(?:\\.\\d+)?)\\)/);
+
+  if (!zoomOut || !zoomIn || !match) return;
+
+  var initialX = parseFloat(match[1]);
+  var initialY = parseFloat(match[2]);
+  var initialScale = parseFloat(match[3]);
+  var currentStep = 0;
+
+  function render() {
+    var progress = steps[currentStep];
+    var scale = 1 + (initialScale - 1) * progress;
+    var x = initialX * progress;
+    var y = initialY * progress;
+
+    image.style.transform = "translate(-50%, -50%) translate(" + x + "vw, " + y + "vh) scale(" + scale + ")";
+    zoomOut.disabled = currentStep === steps.length - 1;
+    zoomIn.disabled = currentStep === 0;
+  }
+
+  zoomOut.addEventListener("click", function () {
+    currentStep = Math.min(currentStep + 1, steps.length - 1);
+    render();
+  });
+
+  zoomIn.addEventListener("click", function () {
+    currentStep = Math.max(currentStep - 1, 0);
+    render();
+  });
+
+  render();
+})();
+</script>`;
+
+const meetingFilterScript = `<script>
+(function () {
+  var filter = document.querySelector("#meeting-filter");
+  var intro = document.querySelector("#intro");
+
+  if (!filter) return;
+
+  function openFilter() {
+    filter.classList.add("is-open");
+    filter.setAttribute("aria-hidden", "false");
+    filter.scrollIntoView({ block: "start" });
+  }
+
+  function closeFilter() {
+    filter.classList.remove("is-open");
+    filter.setAttribute("aria-hidden", "true");
+    if (intro) intro.scrollIntoView({ block: "start" });
+  }
+
+  function syncFromHash() {
+    if (window.location.hash === "#meeting-filter") {
+      openFilter();
+    } else {
+      closeFilter();
+    }
+  }
+
+  document.addEventListener("click", function (event) {
+    var target = event.target;
+    if (!target || !target.closest) return;
+
+    var link = target.closest('a[href="#meeting-filter"], a[href="#intro"].meeting-filter-return');
+    if (!link) return;
+
+    event.preventDefault();
+
+    if (link.hash === "#meeting-filter") {
+      window.history.replaceState(null, "", "#meeting-filter");
+      openFilter();
+      return;
+    }
+
+    window.history.replaceState(null, "", "#intro");
+    closeFilter();
+  });
+
+  window.addEventListener("hashchange", syncFromHash);
+  syncFromHash();
+})();
+</script>`;
+
 function inlineCss(html, css) {
+  let injected = false;
+
   return html.replace(
-    /<link rel="stylesheet" href="(?:\.\/|\/)?_next\/static\/css\/[^"]+"[^>]*>/,
-    `<style>${css}</style>`
+    /<link rel="stylesheet" href="(?:\.\/|\/)?_next\/static\/css\/[^"]+"[^>]*>/g,
+    () => {
+      if (injected) {
+        return "";
+      }
+
+      injected = true;
+      return `<style>${css}</style>`;
+    }
   );
 }
 
 function addThemeScripts(html) {
   return html
     .replace("<head>", `<head>${themeHeadScript}`)
-    .replace("</body>", `${themeBodyScript}</body>`);
+    .replace(
+      "</body>",
+      `${themeBodyScript}${documentViewerScript}${meetingFilterScript}</body>`
+    );
 }
 
 function removeRuntime(html) {
@@ -131,14 +241,15 @@ function removeRuntime(html) {
 }
 
 const cssDir = new URL("_next/static/css/", sourceDir);
-const cssFile = (await readdir(cssDir)).find((file) => file.endsWith(".css"));
+const cssFiles = (await readdir(cssDir)).filter((file) => file.endsWith(".css")).sort();
 
-if (!cssFile) {
+if (cssFiles.length === 0) {
   throw new Error("No exported CSS file found.");
 }
 
-const cssPath = new URL(cssFile, cssDir);
-const css = await readFile(cssPath, "utf8");
+const css = (
+  await Promise.all(cssFiles.map((file) => readFile(new URL(file, cssDir), "utf8")))
+).join("\n");
 
 await rm(previewDir, { recursive: true, force: true });
 await mkdir(previewDir, { recursive: true });
@@ -166,6 +277,64 @@ await writeFile(
     .replace(/href="#"/g, 'href="index.html"'),
   "utf8"
 );
+
+const aiYFierToolRedirect = `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-store, max-age=0" />
+    <meta http-equiv="refresh" content="0; url=../../ai-y-fier.html" />
+    <title>AI-y-fier</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: #f8fbff;
+        background:
+          linear-gradient(135deg, rgba(93, 228, 255, 0.18), transparent 34%),
+          linear-gradient(225deg, rgba(72, 240, 173, 0.13), transparent 30%),
+          #070a12;
+      }
+
+      body {
+        display: grid;
+        min-height: 100vh;
+        margin: 0;
+        place-items: center;
+      }
+
+      main {
+        width: min(34rem, calc(100% - 32px));
+      }
+
+      a {
+        color: #48f0ad;
+        font-weight: 900;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p>Redirecting to the current AI-y-fier preview.</p>
+      <p><a href="../../ai-y-fier.html">Open the current AI-y-fier</a></p>
+    </main>
+    <script>
+      window.location.replace("../../ai-y-fier.html");
+    </script>
+  </body>
+</html>
+`;
+
+for (const staleAiYFierPage of [
+  "index.html",
+  "index-v11.html",
+  "index-v12.html",
+  "index-v13.html",
+  "index-v14.html",
+]) {
+  await writeFile(new URL(staleAiYFierPage, previewAiYFierToolDir), aiYFierToolRedirect, "utf8");
+}
 
 console.log(
   `Created standalone preview at ${join(previewDir.pathname, basename("index.html"))}`
