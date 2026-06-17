@@ -73,6 +73,10 @@ export default function Home() {
               <strong>Meeting Filter →</strong>
               <em>Should we be in this meeting?</em>
             </a>
+            <a className="explore-destination" href="/constitution">
+              <strong>ctrl+love constitution →</strong>
+              <em>Governance archive.</em>
+            </a>
             <div className="explore-destination">
               <a href="/museum">Museum Shop →</a>
             </div>
