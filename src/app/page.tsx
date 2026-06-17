@@ -301,36 +301,44 @@ export default function Home() {
 
           <div className="archive-list" aria-label="Archive artifacts">
             <a
-              href="https://www.youtube.com/watch?v=hbsINkeRA_U"
+              href="https://www.youtube.com/watch?v=6cSVEYtbAZU"
               target="_blank"
               rel="noreferrer"
             >
-              <span>100 People</span>
-              <em>United Nations</em>
+              <span>100 people</span>
+              <em>UN</em>
+            </a>
+            <a
+              href="https://www.youtube.com/watch?v=iiaj2xrgvNw"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span>ASN</span>
+              <em>Creature of Habit</em>
             </a>
             <a
               href="https://www.youtube.com/watch?v=zeCSDR0Emfk"
               target="_blank"
               rel="noreferrer"
             >
-              <span>Loods</span>
-              <em>New York Pizza</em>
+              <span>L.A.A.F.</span>
+              <em>Fireworks</em>
             </a>
             <a
-              href="https://www.youtube.com/watch?v=_SAEa1DQuho"
+              href="https://www.youtube.com/watch?v=hbsINkeRA_U"
               target="_blank"
               rel="noreferrer"
             >
-              <span>
-                Observing How a North Korean Protestor Changed His Mind
-              </span>
+              <span>Disobedient North-Korean Protester</span>
+              <em>Delta Lloyd</em>
             </a>
             <a
-              href="https://www.youtube.com/watch?v=A4GrksEEm_w"
+              href="https://www.youtube.com/watch?v=Xw9Y-lh_OFE"
               target="_blank"
               rel="noreferrer"
             >
-              <span>Delta Lloyd</span>
+              <span>New York Pizza</span>
+              <em>&quot;You need protection.&quot;</em>
             </a>
           </div>
 
