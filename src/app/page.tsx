@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { LivingTicker } from "./living-ticker";
 import { MeetingFilterController } from "./meeting-filter-controller";
 import { ThemeToggle } from "./theme-toggle";
@@ -305,7 +307,16 @@ export default function Home() {
               target="_blank"
               rel="noreferrer"
             >
-              <span>100 People</span>
+              <span className="archive-thumbnail" aria-hidden="true">
+                <Image
+                  src="https://i.ytimg.com/vi/6cSVEYtbAZU/hqdefault.jpg"
+                  alt=""
+                  width={118}
+                  height={66}
+                  loading="lazy"
+                />
+              </span>
+              <span className="archive-title">100 People</span>
               <em>United Nations</em>
               <p className="archive-caption">
                 Eight billion people.
@@ -326,7 +337,16 @@ export default function Home() {
               target="_blank"
               rel="noreferrer"
             >
-              <span>Creature of Habit</span>
+              <span className="archive-thumbnail" aria-hidden="true">
+                <Image
+                  src="https://i.ytimg.com/vi/iiaj2xrgvNw/hqdefault.jpg"
+                  alt=""
+                  width={118}
+                  height={66}
+                  loading="lazy"
+                />
+              </span>
+              <span className="archive-title">Creature of Habit</span>
               <em>ASN Bank</em>
               <p className="archive-caption">
                 Complexity enters disguised as a story.
@@ -345,7 +365,16 @@ export default function Home() {
               target="_blank"
               rel="noreferrer"
             >
-              <span>Fireworks</span>
+              <span className="archive-thumbnail" aria-hidden="true">
+                <Image
+                  src="https://i.ytimg.com/vi/zeCSDR0Emfk/hqdefault.jpg"
+                  alt=""
+                  width={118}
+                  height={66}
+                  loading="lazy"
+                />
+              </span>
+              <span className="archive-title">Fireworks</span>
               <em>L.A.A.F.</em>
               <p className="archive-caption">
                 Reality leaves clues.
@@ -361,7 +390,16 @@ export default function Home() {
               target="_blank"
               rel="noreferrer"
             >
-              <span>Disobedient North-Korean Protester</span>
+              <span className="archive-thumbnail" aria-hidden="true">
+                <Image
+                  src="https://i.ytimg.com/vi/hbsINkeRA_U/hqdefault.jpg"
+                  alt=""
+                  width={118}
+                  height={66}
+                  loading="lazy"
+                />
+              </span>
+              <span className="archive-title">Disobedient North-Korean Protester</span>
               <em>Delta Lloyd</em>
               <p className="archive-caption">
                 Every system contains its opposite.
@@ -377,7 +415,16 @@ export default function Home() {
               target="_blank"
               rel="noreferrer"
             >
-              <span>You Need Protection</span>
+              <span className="archive-thumbnail" aria-hidden="true">
+                <Image
+                  src="https://i.ytimg.com/vi/Xw9Y-lh_OFE/hqdefault.jpg"
+                  alt=""
+                  width={118}
+                  height={66}
+                  loading="lazy"
+                />
+              </span>
+              <span className="archive-title">You Need Protection</span>
               <em>New York Pizza</em>
               <p className="archive-caption">
                 Culture is what happens when nobody is watching.

@@ -1467,8 +1467,8 @@ h3 {
 
 .archive-list a {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.75rem 1.5rem;
+  grid-template-columns: 5.2rem minmax(0, 1fr) auto;
+  gap: 0.75rem 1.2rem;
   align-items: baseline;
   border-bottom: 1px solid var(--rule);
   color: var(--ink);
@@ -1480,12 +1480,63 @@ h3 {
   transition: color 160ms ease;
 }
 
+.archive-thumbnail {
+  position: relative;
+  align-self: start;
+  display: block;
+  width: 5.2rem;
+  aspect-ratio: 16 / 9;
+  border: 1px solid rgba(26, 24, 21, 0.26);
+  background:
+    linear-gradient(135deg, rgba(26, 24, 21, 0.08), transparent 54%),
+    var(--paper);
+  overflow: hidden;
+}
+
+.archive-thumbnail::after {
+  position: absolute;
+  right: 0.22rem;
+  bottom: 0.18rem;
+  z-index: 1;
+  color: rgba(255, 252, 246, 0.9);
+  content: "watch";
+  font-size: 0.48rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1;
+  text-shadow: 0 1px 2px rgba(26, 24, 21, 0.72);
+  text-transform: uppercase;
+}
+
+.archive-thumbnail img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: grayscale(0.72) contrast(1.04);
+  object-fit: cover;
+  opacity: 0.96;
+  transition:
+    filter 160ms ease,
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
 .archive-list a:hover .archive-caption {
   color: var(--muted);
 }
 
 .archive-list a:hover {
   color: var(--soft);
+}
+
+.archive-list a:hover .archive-thumbnail img {
+  filter: grayscale(0.15) contrast(1.03);
+  opacity: 1;
+  transform: scale(1.04);
+}
+
+.archive-title {
+  min-width: 0;
 }
 
 .archive-list em {
@@ -1497,7 +1548,7 @@ h3 {
 }
 
 .archive-caption {
-  grid-column: 1 / -1;
+  grid-column: 2 / -1;
   max-width: 32rem;
   color: var(--muted);
   font-size: var(--type-secondary);
@@ -1959,8 +2010,19 @@ h3 {
   }
 
   .archive-list a {
-    grid-template-columns: 1fr;
-    gap: 0.16rem;
+    grid-template-columns: 4.4rem minmax(0, 1fr);
+    gap: 0.16rem 0.8rem;
+  }
+
+  .archive-thumbnail {
+    grid-row: span 3;
+    width: 4.4rem;
+    margin-top: 0.12rem;
+  }
+
+  .archive-list em,
+  .archive-caption {
+    grid-column: 2;
   }
 
 }
