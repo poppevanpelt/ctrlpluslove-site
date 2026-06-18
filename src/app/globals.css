@@ -211,22 +211,22 @@ p {
   background: linear-gradient(
     100deg,
     var(--pink) 0%,
-    var(--orange) 8%,
-    var(--yellow) 16%,
-    var(--green) 24%,
-    var(--cyan) 32%,
-    var(--indigo) 40%,
-    var(--violet) 47%,
-    var(--pink) 50%,
-    var(--orange) 58%,
-    var(--yellow) 66%,
-    var(--green) 74%,
-    var(--cyan) 82%,
-    var(--indigo) 90%,
-    var(--violet) 97%,
+    var(--orange) 7%,
+    var(--yellow) 14%,
+    var(--green) 21%,
+    var(--cyan) 28%,
+    var(--indigo) 35%,
+    var(--violet) 42%,
+    var(--pink) 49%,
+    var(--orange) 56%,
+    var(--yellow) 63%,
+    var(--green) 70%,
+    var(--cyan) 77%,
+    var(--indigo) 84%,
+    var(--violet) 91%,
     var(--pink) 100%
   );
-  background-size: 200% auto;
+  background-size: 320% auto;
   -webkit-background-clip: text;
   background-clip: text;
   font-size: clamp(5rem, 15.5vw, 12.25rem);
@@ -237,8 +237,10 @@ p {
   text-shadow:
     0 0 2rem color-mix(in srgb, var(--pink) 18%, transparent),
     0 0 0 color-mix(in srgb, var(--ink) 0%, transparent);
-  will-change: opacity, filter;
-  animation: logo-arrive 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: background-position, filter, text-shadow;
+  animation:
+    logo-arrive 620ms cubic-bezier(0.22, 1, 0.36, 1) both,
+    logo-spectrum 9.5s ease-in-out 1s infinite alternate-reverse;
 }
 
 @supports (-webkit-background-clip: text) {
@@ -281,6 +283,16 @@ p {
     filter: blur(0) saturate(1);
     background-position: 50% 50%;
     text-shadow: 0 0 1.8rem color-mix(in srgb, var(--pink) 16%, transparent);
+  }
+}
+
+@keyframes logo-spectrum {
+  0% {
+    background-position: 8% 50%;
+  }
+
+  100% {
+    background-position: 92% 50%;
   }
 }
 
