@@ -301,20 +301,20 @@ p {
     text-shadow: none;
   }
 
-  8%,
-  72% {
+  7%,
+  82% {
     opacity: 1;
     filter: none;
     text-shadow: none;
   }
 
-  76% {
-    opacity: 0.2;
-    filter: contrast(1.08);
-    text-shadow: 0 0 0.48rem color-mix(in srgb, var(--ink) 12%, transparent);
+  83% {
+    opacity: 0.18;
+    filter: contrast(1.8);
+    text-shadow: 0 0 0.7rem color-mix(in srgb, var(--ink) 18%, transparent);
   }
 
-  81%,
+  84%,
   100% {
     opacity: 0;
     filter: none;
@@ -324,22 +324,48 @@ p {
 
 @keyframes route-final {
   0%,
-  80% {
+  88% {
     opacity: 0;
     filter: none;
     text-shadow: none;
   }
 
-  84% {
-    opacity: 1;
-    filter: contrast(1.03);
-    text-shadow: 0 0 0.32rem color-mix(in srgb, var(--ink) 7%, transparent);
-  }
-
+  89%,
   100% {
     opacity: 1;
     filter: none;
     text-shadow: none;
+  }
+}
+
+@keyframes signal-drop {
+  0%,
+  81%,
+  100% {
+    opacity: 0;
+    filter: none;
+  }
+
+  82% {
+    opacity: 0;
+  }
+
+  83% {
+    opacity: 0.72;
+    filter: contrast(1.6);
+  }
+
+  84.5% {
+    opacity: 0;
+  }
+
+  86% {
+    opacity: 0.48;
+    filter: contrast(1.25);
+  }
+
+  87.5% {
+    opacity: 0;
   }
 }
 
@@ -400,6 +426,23 @@ h3 {
   letter-spacing: 0;
 }
 
+.hero-line::after {
+  position: absolute;
+  z-index: 2;
+  width: min(10.5em, 92%);
+  height: 0.055em;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 72%, var(--paper));
+  box-shadow:
+    0 -0.17em 0 -0.04em color-mix(in srgb, var(--ink) 22%, transparent),
+    0 0.2em 0 -0.05em color-mix(in srgb, var(--ink) 18%, transparent),
+    0 0 0.72rem color-mix(in srgb, var(--ink) 14%, transparent);
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  animation: signal-drop 2.05s linear both;
+}
+
 .hero-route {
   grid-area: 1 / 1;
   max-width: min(100%, 13.4em);
@@ -408,11 +451,11 @@ h3 {
 }
 
 .hero-route-long {
-  animation: route-long 2.06s cubic-bezier(0.3, 0, 0.24, 1) both;
+  animation: route-long 2.05s linear both;
 }
 
 .hero-route-final {
-  animation: route-final 2.06s cubic-bezier(0.3, 0, 0.24, 1) both;
+  animation: route-final 2.05s linear both;
 }
 
 .muted {
@@ -2244,9 +2287,14 @@ h3 {
   .hero-logo,
   .hero-copy,
   .hero-route,
+  .hero-line::after,
   .scroll-cue,
   .ticker-track {
     animation: none;
+  }
+
+  .hero-line::after {
+    opacity: 0;
   }
 
   .hero-route-long {
