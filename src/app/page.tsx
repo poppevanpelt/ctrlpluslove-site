@@ -244,15 +244,23 @@ export default function Home() {
             <div className="why-core">
               <p>AI made answers abundant.</p>
               <p>
-                <span>Meaning</span> became valuable.
+                <span>Judgment</span> became valuable.
               </p>
             </div>
             <p className="ai-bridge">
-              AI generates perspectives. The room creates meaning.
+              The room exists to help people think together.
             </p>
-            <p className="system-line">
-              Powered by billions of human signals.
-            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="content-section ruled">
+        <div className="content-block method-block">
+          <p className="section-kicker">How it works</p>
+          <div className="method-lines">
+            <p>Powered by billions of human signals.</p>
+            <p>AI makes perspectives available.</p>
+            <p>The room decides which ones matter.</p>
           </div>
         </div>
       </section>
