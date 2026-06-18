@@ -263,7 +263,6 @@ p {
 @keyframes logo-arrive {
   0% {
     opacity: 0;
-    transform: translateY(0.08em);
     filter: blur(0.28rem) saturate(0.82);
     background-position: 50% 50%;
     text-shadow: 0 0 0 color-mix(in srgb, var(--pink) 0%, transparent);
@@ -271,7 +270,6 @@ p {
 
   64% {
     opacity: 1;
-    transform: translateY(-0.015em);
     filter: blur(0) saturate(1.16);
     text-shadow:
       0 0 2.4rem color-mix(in srgb, var(--pink) 20%, transparent),
@@ -280,7 +278,6 @@ p {
 
   100% {
     opacity: 1;
-    transform: translateY(0);
     filter: blur(0) saturate(1);
     background-position: 50% 50%;
     text-shadow: 0 0 1.8rem color-mix(in srgb, var(--pink) 16%, transparent);
@@ -290,7 +287,6 @@ p {
 @keyframes logo-presence {
   0%,
   100% {
-    transform: translateY(0);
     filter: saturate(1);
     background-position: 50% 50%;
     text-shadow:
@@ -299,7 +295,6 @@ p {
   }
 
   42% {
-    transform: translateY(-0.018em);
     filter: saturate(1.18);
     background-position: 50% 50%;
     text-shadow:
@@ -308,7 +303,6 @@ p {
   }
 
   54% {
-    transform: translateY(0.004em);
     filter: saturate(1.06);
     background-position: 50% 50%;
     text-shadow:
@@ -320,12 +314,10 @@ p {
 @keyframes hero-copy-arrive {
   0% {
     opacity: 0;
-    transform: translateY(0.08rem);
   }
 
   100% {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
