@@ -297,28 +297,16 @@ p {
 @keyframes route-long {
   0% {
     opacity: 0;
-    filter: none;
-    text-shadow: none;
   }
 
   7%,
-  82% {
-    opacity: 1;
-    filter: none;
-    text-shadow: none;
-  }
-
   83% {
-    opacity: 0.18;
-    filter: contrast(1.8);
-    text-shadow: 0 0 0.7rem color-mix(in srgb, var(--ink) 18%, transparent);
+    opacity: 1;
   }
 
   84%,
   100% {
     opacity: 0;
-    filter: none;
-    text-shadow: none;
   }
 }
 
@@ -326,45 +314,27 @@ p {
   0%,
   88% {
     opacity: 0;
-    filter: none;
-    text-shadow: none;
   }
 
   89%,
   100% {
     opacity: 1;
-    filter: none;
-    text-shadow: none;
   }
 }
 
 @keyframes signal-drop {
   0%,
-  81%,
+  82%,
   100% {
     opacity: 0;
-    filter: none;
   }
 
-  82% {
-    opacity: 0;
+  83%,
+  88% {
+    opacity: 0.92;
   }
 
-  83% {
-    opacity: 0.72;
-    filter: contrast(1.6);
-  }
-
-  84.5% {
-    opacity: 0;
-  }
-
-  86% {
-    opacity: 0.48;
-    filter: contrast(1.25);
-  }
-
-  87.5% {
+  89% {
     opacity: 0;
   }
 }
@@ -415,10 +385,9 @@ h3 {
 
 .hero-line {
   position: relative;
-  display: grid;
+  display: block;
   justify-self: center;
-  min-height: 1.92em;
-  place-items: center;
+  width: min(100%, 13.4em);
   color: var(--ink);
   font-size: clamp(4.55rem, 8.8vw, 7.55rem);
   font-weight: 600;
@@ -429,6 +398,8 @@ h3 {
 .hero-line::after {
   position: absolute;
   z-index: 2;
+  top: 50%;
+  left: 50%;
   width: min(10.5em, 92%);
   height: 0.055em;
   border-radius: 999px;
@@ -440,21 +411,28 @@ h3 {
   content: "";
   opacity: 0;
   pointer-events: none;
+  transform: translate(-50%, -50%);
   animation: signal-drop 2.05s linear both;
 }
 
 .hero-route {
-  grid-area: 1 / 1;
-  max-width: min(100%, 13.4em);
+  display: block;
+  width: 100%;
   opacity: 0;
-  will-change: opacity, filter;
+  will-change: opacity;
 }
 
 .hero-route-long {
+  position: absolute;
+  inset: 50% 0 auto;
+  font-size: 0.76em;
+  line-height: 1.02;
+  transform: translateY(-50%);
   animation: route-long 2.05s linear both;
 }
 
 .hero-route-final {
+  position: relative;
   animation: route-final 2.05s linear both;
 }
 
@@ -2008,8 +1986,11 @@ h3 {
   .hero-line {
     max-width: 18rem;
     justify-self: center;
-    min-height: 1.92em;
     font-size: clamp(2.1rem, 8vw, 2.35rem);
+  }
+
+  .hero-route-long {
+    font-size: 0.78em;
   }
 
   .hero-translation {
