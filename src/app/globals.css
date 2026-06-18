@@ -317,6 +317,16 @@ h3 {
   color: var(--ink);
 }
 
+.hero-translation {
+  max-width: 46rem;
+  justify-self: center;
+  color: color-mix(in srgb, var(--ink) 82%, var(--muted));
+  font-size: clamp(1.38rem, 1.95vw, 2rem);
+  font-weight: 500;
+  line-height: 1.28;
+  letter-spacing: 0;
+}
+
 .hero-message {
   display: grid;
   gap: clamp(1.1rem, 2vh, 1.55rem);
@@ -1814,13 +1824,19 @@ h3 {
     font-size: clamp(2.1rem, 8vw, 2.35rem);
   }
 
+  .hero-translation {
+    max-width: 18rem;
+    font-size: 1.05rem;
+    line-height: 1.34;
+  }
+
   .hero-proof {
     max-width: 18rem;
-    font-size: 1rem;
+    font-size: 0.92rem;
   }
 
   .hero-message {
-    gap: 0.78rem;
+    gap: 0.62rem;
   }
 
   .hero-message-secondary {
@@ -2047,8 +2063,12 @@ h3 {
     font-size: clamp(3.7rem, 7.2vw, 6rem);
   }
 
+  .hero-translation {
+    font-size: clamp(1.1rem, 1.65vw, 1.45rem);
+  }
+
   .hero-message {
-    gap: 0.55rem;
+    gap: 0.5rem;
   }
 
   .hero-message-secondary {

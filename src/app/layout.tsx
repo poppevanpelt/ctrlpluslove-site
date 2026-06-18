@@ -6,10 +6,12 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.ctrlpluslove.com"),
   title: "ctrl+love",
-  description: "Shortcut to reality. Powered by billions of human signals.",
+  description:
+    "Shortcut to reality. Stress-test your decisions before the market does.",
   openGraph: {
     title: "ctrl+love",
-    description: "Shortcut to reality. Powered by billions of human signals.",
+    description:
+      "Shortcut to reality. Stress-test your decisions before the market does.",
     url: "https://www.ctrlpluslove.com",
     siteName: "ctrl+love",
     locale: "en_US",
@@ -18,7 +20,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary",
     title: "ctrl+love",
-    description: "Shortcut to reality. Powered by billions of human signals.",
+    description:
+      "Shortcut to reality. Stress-test your decisions before the market does.",
   },
 };
 
