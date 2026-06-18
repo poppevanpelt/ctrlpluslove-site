@@ -19,6 +19,9 @@ export default function Home() {
             <h1 className="hero-line">
               Shortcut to reality.
             </h1>
+            <p className="hero-translation">
+              Stress-test your decisions before the market does.
+            </p>
             <p className="hero-proof">
               Powered by billions of human signals.
             </p>
