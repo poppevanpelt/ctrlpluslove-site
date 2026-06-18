@@ -1169,6 +1169,14 @@ h3 {
   --persona-accent: var(--green);
 }
 
+.persona-card:nth-child(7) {
+  --persona-accent: var(--green);
+}
+
+.persona-card:nth-child(8) {
+  --persona-accent: var(--indigo);
+}
+
 .persona-card p {
   color: color-mix(in srgb, var(--persona-accent) 58%, var(--muted));
   font-size: var(--type-secondary);
