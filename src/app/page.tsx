@@ -66,7 +66,7 @@ export default function Home() {
             </div>
             <a className="explore-destination" href="/ai-y-fier">
               <strong>AI-y-fier →</strong>
-              <em>Jargon in. Gravity out.</em>
+              <em>Empty thoughts in. Thought leadership out.</em>
             </a>
             <a className="explore-destination" href="/meeting-filter">
               <strong>Meeting Filter →</strong>
