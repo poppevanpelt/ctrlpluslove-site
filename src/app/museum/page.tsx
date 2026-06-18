@@ -10,12 +10,14 @@ const artifacts = [
     name: "Cybertruck Steel Ball",
     line: "Reality always gets a turn.",
     object: "steel-ball",
+    image: "/museum/steel-ball-packshot.png",
   },
   {
     price: "€89",
     name: "Lee's Flip-Flops",
     line: "Creative authority. No socks.",
     object: "flip-flops",
+    image: "/museum/flip-flops-pair-packshot.png",
   },
   {
     price: "€149",
@@ -37,7 +39,23 @@ const artifacts = [
   },
 ];
 
-function ArtifactObject({ object, name }: { object: string; name: string }) {
+function ArtifactObject({
+  image,
+  object,
+  name,
+}: {
+  image?: string;
+  object: string;
+  name: string;
+}) {
+  if (image) {
+    return (
+      <div className={`museum-object museum-object-image museum-object-${object}`}>
+        <img alt={name} src={image} />
+      </div>
+    );
+  }
+
   return (
     <div className={`museum-object museum-object-${object}`} aria-label={name}>
       <span />
@@ -77,7 +95,11 @@ export default function MuseumPage() {
         {artifacts.map((artifact) => (
           <article className="museum-card" key={artifact.name}>
             <div className="museum-case">
-              <ArtifactObject object={artifact.object} name={artifact.name} />
+              <ArtifactObject
+                image={artifact.image}
+                object={artifact.object}
+                name={artifact.name}
+              />
             </div>
 
             <div className="museum-card-copy">

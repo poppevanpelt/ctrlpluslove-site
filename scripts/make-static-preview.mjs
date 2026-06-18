@@ -5,6 +5,8 @@ const sourceDir = new URL("../out/", import.meta.url);
 const previewDir = new URL("../static-preview/", import.meta.url);
 const aiYFierToolDir = new URL("../public/tools/ai-y-fier/", import.meta.url);
 const previewAiYFierToolDir = new URL("tools/ai-y-fier/", previewDir);
+const museumAssetDir = new URL("../public/museum/", import.meta.url);
+const previewMuseumAssetDir = new URL("museum/", previewDir);
 
 const pages = [
   "index.html",
@@ -213,7 +215,10 @@ function inlineCss(html, css) {
 
 function addThemeScripts(html) {
   return html
-    .replace("<head>", `<head>${themeHeadScript}`)
+    .replace(
+      "<head>",
+      `<head>${themeHeadScript}<meta http-equiv="Cache-Control" content="no-store, max-age=0" /><meta http-equiv="Pragma" content="no-cache" /><meta http-equiv="Expires" content="0" />`
+    )
     .replace(
       "</body>",
       `${themeBodyScript}${documentViewerScript}${meetingFilterScript}</body>`
@@ -267,6 +272,7 @@ for (const asset of assets) {
 }
 
 await cp(aiYFierToolDir, previewAiYFierToolDir, { recursive: true, force: true });
+await cp(museumAssetDir, previewMuseumAssetDir, { recursive: true, force: true });
 
 const aiYFierIndexPath = new URL("index.html", previewAiYFierToolDir);
 const aiYFierIndex = await readFile(aiYFierIndexPath, "utf8");
