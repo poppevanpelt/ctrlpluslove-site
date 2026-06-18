@@ -55,13 +55,13 @@ export default function Home() {
             Explore
           </p>
           <div className="explore-list" aria-label="Explore destinations">
-            <a className="explore-destination" href="/reality">
+            <a className="explore-destination" href="/reality/">
               <strong>Department of Reality Preservation →</strong>
               <em>Cornelis van Loon</em>
             </a>
             <a
               className="explore-destination"
-              href="/unfinished-thoughts"
+              href="/unfinished-thoughts/"
             >
               <strong>Department of Unfinished Thoughts →</strong>
               <em>Nora Veld</em>
@@ -69,20 +69,20 @@ export default function Home() {
             <div className="explore-destination">
               <a href="#intro">Meet the Room →</a>
             </div>
-            <a className="explore-destination" href="/ai-y-fier">
+            <a className="explore-destination" href="/ai-y-fier/">
               <strong>AI-y-fier →</strong>
               <em>Empty thoughts in. Thought leadership out.</em>
             </a>
-            <a className="explore-destination" href="/meeting-filter">
+            <a className="explore-destination" href="/meeting-filter/">
               <strong>Meeting Filter →</strong>
               <em>Should we be in this meeting?</em>
             </a>
-            <a className="explore-destination" href="/constitution">
+            <a className="explore-destination" href="/constitution/">
               <strong>ctrl+love constitution →</strong>
               <em>Governance archive.</em>
             </a>
             <div className="explore-destination">
-              <a href="/museum">Museum Shop →</a>
+              <a href="/museum/">Museum Shop →</a>
             </div>
           </div>
         </div>
@@ -130,6 +130,16 @@ export default function Home() {
               <span>Adrian Mbeki</span>
               <p>The Reality Check</p>
               <em>Tests what survives outside the room.</em>
+            </div>
+            <div className="persona-card">
+              <span>The Customer</span>
+              <p>The Missing Chair</p>
+              <em>Would anyone outside this room actually care?</em>
+            </div>
+            <div className="persona-card">
+              <span>The Future</span>
+              <p>The Missing Chair</p>
+              <em>How will this decision look in five years?</em>
             </div>
           </div>
         </div>
@@ -488,7 +498,7 @@ export default function Home() {
             </a>
           </p>
           <p>
-            <a href="/constitution">
+            <a href="/constitution/">
               ctrl+love constitution
             </a>
           </p>
