@@ -18,7 +18,7 @@ export default function Home() {
           <div className="hero-message">
             <h1 className="hero-line" aria-label="Shortcut to reality.">
               <span className="hero-route hero-route-long" aria-hidden="true">
-                Long journey to an agreeable compromise.
+                Agreeable compromise.
               </span>
               <span className="hero-route hero-route-final" aria-hidden="true">
                 Shortcut to reality.
