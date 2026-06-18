@@ -15,6 +15,7 @@ type DocumentViewerProps = {
 };
 
 const ZOOM_STEPS = [1, 0.82, 0.62, 0.42, 0] as const;
+const INITIAL_ZOOM_STEP = ZOOM_STEPS.length - 1;
 
 export function DocumentViewer({
   alt,
@@ -25,7 +26,7 @@ export function DocumentViewer({
   src,
   width,
 }: DocumentViewerProps) {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(INITIAL_ZOOM_STEP);
 
   const imageRatio = width / height;
   const progress = ZOOM_STEPS[step];
@@ -48,6 +49,10 @@ export function DocumentViewer({
           alt={alt}
           width={width}
           height={height}
+          data-initial-scale={initialScale}
+          data-initial-x={initialX}
+          data-initial-y={initialY}
+          data-initial-step={INITIAL_ZOOM_STEP}
           style={{
             "--document-ratio": imageRatio,
             transform,
