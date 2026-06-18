@@ -22,17 +22,11 @@ export default function Home() {
             <p className="hero-translation">
               Stress-test your decisions before the market does.
             </p>
-            <p className="hero-proof">
-              Powered by billions of human signals.
-            </p>
           </div>
           <div className="hero-message hero-message-secondary">
             <h2 className="hero-invitation">
               Bring the decision into the room.
             </h2>
-            <p className="hero-stakes">
-              For decisions you only want to make once.
-            </p>
           </div>
           <a
             href="mailto:hello@ctrlpluslove.com"
@@ -141,6 +135,9 @@ export default function Home() {
           <div className="ways-heading">
             <p className="section-kicker">Three ways in</p>
             <h2>Bring the decision into the room.</h2>
+            <p className="ways-support">
+              For decisions you only want to make once.
+            </p>
           </div>
 
           <div className="offer-grid">
@@ -252,6 +249,9 @@ export default function Home() {
             </div>
             <p className="ai-bridge">
               AI generates perspectives. The room creates meaning.
+            </p>
+            <p className="system-line">
+              Powered by billions of human signals.
             </p>
           </div>
         </div>

@@ -37,8 +37,6 @@ const tickerItems: Array<{ text: string; tone: TickerTone }> = [
   { text: "SOMEONE JUST SAID \"LET'S CIRCLE BACK\"", tone: "neutral" },
 ];
 
-const rightwardTickerItems = [...tickerItems].reverse();
-
 export function LivingTicker() {
   return (
     <div className="living-ticker" aria-label="Live reality signals">
@@ -53,7 +51,7 @@ export function LivingTicker() {
 function TickerRun({ ariaHidden = false }: { ariaHidden?: boolean }) {
   return (
     <div className="ticker-run" aria-hidden={ariaHidden}>
-      {rightwardTickerItems.map((item, index) => (
+      {tickerItems.map((item, index) => (
         <span
           className="ticker-item"
           data-tone={item.tone}
