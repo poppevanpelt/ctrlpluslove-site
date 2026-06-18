@@ -16,8 +16,16 @@ export default function Home() {
             ctrl+love
           </p>
           <div className="hero-message">
-            <h1 className="hero-line">
-              Shortcut to reality.
+            <h1 className="hero-line" aria-label="Shortcut to reality.">
+              <span className="hero-route hero-route-long" aria-hidden="true">
+                A very long route to reality.
+              </span>
+              <span className="hero-route hero-route-middle" aria-hidden="true">
+                Route to reality.
+              </span>
+              <span className="hero-route hero-route-final" aria-hidden="true">
+                Shortcut to reality.
+              </span>
             </h1>
             <p className="hero-translation">
               Stress-test your decisions before the market does.
