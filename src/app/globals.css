@@ -1707,9 +1707,10 @@ h3 {
   top: 50%;
   left: 50%;
   display: block;
-  width: min(100vw, calc(100svh * var(--document-ratio)));
+  width: max(100vw, calc(100svh * var(--document-ratio)));
   max-width: none;
-  height: auto;
+  height: max(100svh, calc(100vw / var(--document-ratio)));
+  object-fit: cover;
   transform-origin: center;
   transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
