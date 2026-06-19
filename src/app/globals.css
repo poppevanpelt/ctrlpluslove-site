@@ -905,7 +905,13 @@ h3 {
 }
 
 .hero-explore .explore-list {
-  gap: 1.05rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(6, auto);
+  grid-auto-flow: column;
+  column-gap: clamp(2.5rem, 7vw, 6rem);
+  row-gap: 1.05rem;
+  align-items: start;
+  justify-items: stretch;
 }
 
 .explore-block {
@@ -2194,6 +2200,13 @@ h3 {
 
   .hero-explore {
     max-width: 100vw;
+  }
+
+  .hero-explore .explore-list {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    grid-auto-flow: row;
+    gap: 1.05rem;
   }
 
   .theme-toggle {
