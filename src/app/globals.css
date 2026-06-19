@@ -3055,3 +3055,542 @@ h3 {
     min-height: 18rem;
   }
 }
+
+/* MUSEUM STOREFRONT */
+
+.museum-storefront {
+  --shop-red: #c81736;
+  --shop-cream: #f4f1ec;
+  min-height: 100vh;
+  background: var(--shop-cream);
+  color: #0a0a0a;
+  padding: 1.4rem 2.2rem 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.museum-store-header {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 2.2rem;
+  border-bottom: 1px solid #111;
+  padding: 0 0 1rem;
+}
+
+.museum-store-brand {
+  display: flex;
+  width: fit-content;
+  flex-direction: column;
+  color: inherit;
+  text-decoration: none;
+}
+
+.museum-store-brand strong {
+  font-size: clamp(2rem, 3.1vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.075em;
+  line-height: 0.88;
+}
+
+.museum-store-brand sup {
+  margin-left: 0.18rem;
+  font-size: 0.25em;
+  letter-spacing: 0;
+  vertical-align: top;
+}
+
+.museum-store-brand span {
+  margin-top: 0.35rem;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.museum-store-header > p {
+  margin-left: auto;
+  font-size: 0.92rem;
+}
+
+.museum-cart-button {
+  position: relative;
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  border: 0;
+  background: transparent;
+  color: #111;
+  cursor: pointer;
+  place-items: center;
+}
+
+.museum-cart-button span {
+  font-size: 3.2rem;
+  line-height: 1;
+  transform: rotate(180deg);
+}
+
+.museum-cart-button b {
+  position: absolute;
+  top: 1.05rem;
+  font-size: 0.75rem;
+}
+
+.museum-product-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1rem;
+  padding: 1.35rem 0;
+}
+
+.museum-product {
+  display: grid;
+  grid-column: span 2;
+  min-width: 0;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.museum-product-wide {
+  grid-column: span 3;
+}
+
+.museum-product:last-child {
+  grid-column: span 3;
+}
+
+.museum-product-image {
+  position: relative;
+  aspect-ratio: 1.55 / 1;
+  overflow: hidden;
+  background: #f7f3ee;
+}
+
+.museum-product-wide .museum-product-image,
+.museum-product:last-child .museum-product-image {
+  aspect-ratio: 2.15 / 1;
+}
+
+.museum-product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.museum-product:hover .museum-product-image img {
+  transform: scale(1.018);
+}
+
+.museum-product:nth-child(3) .museum-product-image img {
+  object-fit: contain;
+  padding: 0.5rem;
+}
+
+.museum-product:last-child .museum-product-image img {
+  object-fit: contain;
+  padding: 1rem;
+}
+
+.museum-product-content {
+  display: flex;
+  min-height: 17rem;
+  flex-direction: column;
+  padding: 0.9rem 0.85rem 0.75rem;
+}
+
+.museum-product-title {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.museum-product-title h1 {
+  max-width: 80%;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.35rem, 1.9vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+}
+
+.museum-product-title span {
+  flex: none;
+  font-size: clamp(1rem, 1.5vw, 1.35rem);
+}
+
+.museum-product-strapline {
+  margin-top: 0.65rem;
+  color: var(--shop-red);
+  font-size: 0.83rem;
+  font-weight: 700;
+}
+
+.museum-product-details {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(8rem, 0.75fr);
+  gap: 1rem;
+  margin: 0.55rem 0 1rem;
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.museum-product-details > p:only-child {
+  grid-column: 1 / -1;
+}
+
+.museum-product-details strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.7rem;
+}
+
+.museum-product-details ul {
+  padding-left: 1.05rem;
+}
+
+.museum-product-label {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 0.7rem;
+  margin-top: auto;
+  border: 1px solid #b5b1aa;
+  padding: 0.55rem 0.65rem;
+}
+
+.museum-product-label > p {
+  font-size: 0.7rem;
+  line-height: 1.35;
+}
+
+.museum-product-label > p strong {
+  display: block;
+  margin-bottom: 0.15rem;
+  color: var(--shop-red);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+}
+
+.museum-product-actions {
+  display: flex;
+  align-items: stretch;
+  gap: 0.4rem;
+}
+
+.museum-info-button,
+.museum-add-button,
+.museum-checkout-button {
+  border: 1px solid #080808;
+  padding: 0.72rem 0.9rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.museum-info-button {
+  background: transparent;
+  color: #0a0a0a;
+}
+
+.museum-add-button,
+.museum-checkout-button {
+  background: #080808;
+  color: #fff;
+}
+
+.museum-info-button:hover,
+.museum-info-button:focus-visible {
+  background: #e4ded6;
+}
+
+.museum-add-button:hover,
+.museum-checkout-button:hover,
+.museum-add-button:focus-visible,
+.museum-checkout-button:focus-visible {
+  background: var(--shop-red);
+  border-color: var(--shop-red);
+}
+
+.museum-store-footer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  border-top: 1px solid #111;
+  padding: 1.05rem 0 1.3rem;
+}
+
+.museum-store-footer a {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  color: inherit;
+  font-size: 0.68rem;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.museum-store-footer a > span {
+  flex: none;
+  font-size: 2rem;
+}
+
+.museum-store-footer strong {
+  display: block;
+}
+
+.museum-toast {
+  position: fixed;
+  right: 1.2rem;
+  bottom: 1.2rem;
+  z-index: 30;
+  background: #080808;
+  color: #fff;
+  padding: 0.9rem 1rem;
+  font-size: 0.8rem;
+  box-shadow: 0 0.8rem 2rem rgba(0, 0, 0, 0.25);
+}
+
+.museum-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  justify-content: flex-end;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(3px);
+}
+
+.museum-cart-drawer {
+  display: flex;
+  width: min(30rem, 100%);
+  height: 100%;
+  flex-direction: column;
+  overflow-y: auto;
+  background: var(--shop-cream);
+  padding: 1.5rem;
+  box-shadow: -1rem 0 3rem rgba(0, 0, 0, 0.18);
+}
+
+.museum-drawer-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid #111;
+  padding-bottom: 1rem;
+}
+
+.museum-drawer-heading h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2rem;
+  letter-spacing: -0.04em;
+}
+
+.museum-drawer-heading p {
+  margin-bottom: 0.25rem;
+  color: var(--shop-red);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.museum-drawer-heading > button {
+  border: 0;
+  background: transparent;
+  color: #111;
+  font-size: 2.1rem;
+  line-height: 0.8;
+  cursor: pointer;
+}
+
+.museum-empty-cart {
+  margin: auto;
+  max-width: 15rem;
+  text-align: center;
+}
+
+.museum-cart-items {
+  display: grid;
+  gap: 0;
+}
+
+.museum-cart-item {
+  display: grid;
+  grid-template-columns: 6.8rem 1fr;
+  gap: 0.9rem;
+  border-bottom: 1px solid #c3beb6;
+  padding: 1rem 0;
+}
+
+.museum-cart-item img {
+  width: 100%;
+  height: 5rem;
+  background: #fff;
+  object-fit: contain;
+}
+
+.museum-cart-item > div {
+  display: grid;
+  align-content: start;
+  gap: 0.35rem;
+}
+
+.museum-cart-item strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1rem;
+}
+
+.museum-cart-item span {
+  font-size: 0.78rem;
+}
+
+.museum-quantity {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  border: 1px solid #a9a49d;
+}
+
+.museum-quantity button,
+.museum-quantity b {
+  display: grid;
+  width: 1.9rem;
+  height: 1.75rem;
+  border: 0;
+  background: transparent;
+  color: #111;
+  place-items: center;
+}
+
+.museum-quantity button {
+  cursor: pointer;
+}
+
+.museum-cart-total {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #111;
+  margin-top: auto;
+  padding: 1rem 0;
+  font-size: 1.2rem;
+}
+
+.museum-checkout-button {
+  width: 100%;
+  padding: 1rem;
+}
+
+.museum-checkout-note {
+  margin-top: 0.65rem;
+  color: #5a554f;
+  font-size: 0.68rem;
+  text-align: center;
+}
+
+.museum-modal-overlay {
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.museum-request-modal {
+  width: min(34rem, 100%);
+  max-height: 94vh;
+  overflow-y: auto;
+  background: var(--shop-cream);
+  padding: 1.5rem;
+  box-shadow: 0 1.5rem 5rem rgba(0, 0, 0, 0.28);
+}
+
+.museum-request-modal form {
+  display: grid;
+  gap: 1rem;
+  padding-top: 1rem;
+}
+
+.museum-request-modal label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.museum-request-modal input,
+.museum-request-modal textarea {
+  width: 100%;
+  border: 1px solid #9d9891;
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.55);
+  color: #111;
+  padding: 0.8rem;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 400;
+  text-transform: none;
+}
+
+@media (max-width: 1100px) {
+  .museum-product {
+    grid-column: span 3;
+  }
+
+  .museum-product:last-child {
+    grid-column: span 6;
+  }
+}
+
+@media (max-width: 720px) {
+  .museum-storefront {
+    padding: 1rem 1rem 0;
+  }
+
+  .museum-store-header {
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+  }
+
+  .museum-store-header > p {
+    display: none;
+  }
+
+  .museum-product-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .museum-product,
+  .museum-product-wide,
+  .museum-product:last-child {
+    grid-column: 1;
+  }
+
+  .museum-product-image,
+  .museum-product-wide .museum-product-image,
+  .museum-product:last-child .museum-product-image {
+    aspect-ratio: 1.45 / 1;
+  }
+
+  .museum-product-content {
+    min-height: 0;
+  }
+
+  .museum-product-details {
+    grid-template-columns: 1fr;
+  }
+
+  .museum-product-label {
+    grid-template-columns: 1fr;
+  }
+
+  .museum-product-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .museum-store-footer {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
