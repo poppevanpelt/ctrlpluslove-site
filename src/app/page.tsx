@@ -66,6 +66,22 @@ export default function Home() {
               <strong>Department of Unfinished Thoughts →</strong>
               <em>Nora Veld</em>
             </a>
+            <a className="explore-destination" href="/necessary-elimination/">
+              <strong>Department of Necessary Elimination →</strong>
+              <em>Kill Almost Everything. Apple, 1997.</em>
+            </a>
+            <a className="explore-destination" href="/irreversible-decisions/">
+              <strong>Department of Irreversible Decisions →</strong>
+              <em>Burn the Boats. Netflix, 2007.</em>
+            </a>
+            <a className="explore-destination" href="/essential-things/">
+              <strong>Department of Essential Things →</strong>
+              <em>Remember the Brick. LEGO, 2004.</em>
+            </a>
+            <a className="explore-destination" href="/consequential-belief/">
+              <strong>Department of Consequential Belief →</strong>
+              <em>Mortgage the Heroes. Marvel, 2009.</em>
+            </a>
             <div className="explore-destination">
               <a href="#intro">Meet the Room →</a>
             </div>
