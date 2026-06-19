@@ -309,45 +309,155 @@ p {
 @keyframes route-long {
   0% {
     opacity: 0;
+    filter: none;
+    transform: translateY(-50%);
   }
 
   7%,
-  83% {
+  78% {
     opacity: 1;
+    filter: none;
+    transform: translateY(-50%);
+  }
+
+  80% {
+    opacity: 0.78;
+    filter: blur(0.012em) saturate(1.6);
+    transform: translate(-0.018em, -50%);
+  }
+
+  81% {
+    opacity: 1;
+    filter: brightness(1.35) saturate(1.8);
+    transform: translate(0.024em, -50%);
+  }
+
+  82% {
+    opacity: 0.46;
+    filter: blur(0.022em) saturate(2);
+    transform: translate(-0.034em, -50%);
   }
 
   84%,
   100% {
     opacity: 0;
+    filter: none;
+    transform: translateY(-50%);
   }
 }
 
 @keyframes route-final {
   0%,
-  88% {
+  82% {
     opacity: 0;
+    filter: blur(0.02em) saturate(1.7);
+    transform: translateX(0.032em);
   }
 
-  89%,
+  83% {
+    opacity: 0.44;
+    filter: blur(0.014em) brightness(1.25) saturate(2);
+    transform: translateX(-0.02em);
+  }
+
+  85% {
+    opacity: 0.18;
+    filter: blur(0.03em) saturate(2.2);
+    transform: translateX(0.044em);
+  }
+
+  88% {
+    opacity: 0.82;
+    filter: blur(0.006em) brightness(1.16) saturate(1.5);
+    transform: translateX(-0.012em);
+  }
+
+  91%,
   100% {
     opacity: 1;
+    filter: none;
+    transform: translateX(0);
   }
 }
 
 @keyframes signal-drop {
   0%,
-  82%,
+  76%,
   100% {
     opacity: 0;
   }
 
-  83%,
-  88% {
-    opacity: 0.92;
+  78% {
+    opacity: 0.28;
+    transform: translate(-52%, -50%) scaleX(0.28);
+  }
+
+  80% {
+    opacity: 0.95;
+    transform: translate(-48%, -50%) scaleX(0.96);
+  }
+
+  82% {
+    opacity: 0.5;
+    transform: translate(-51%, -50%) scaleX(0.58);
+  }
+
+  84% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scaleX(1.08);
+  }
+
+  86% {
+    opacity: 0.2;
+    transform: translate(-49%, -50%) scaleX(0.42);
   }
 
   89% {
     opacity: 0;
+    transform: translate(-50%, -50%) scaleX(1);
+  }
+}
+
+@keyframes electric-ghost {
+  0%,
+  76%,
+  100% {
+    opacity: 0;
+    filter: none;
+    clip-path: inset(0 0 0 0);
+    transform: translate(0, -50%);
+  }
+
+  78% {
+    opacity: 0.2;
+    clip-path: inset(12% 0 72% 0);
+    transform: translate(-0.032em, -50%);
+  }
+
+  80% {
+    opacity: 0.72;
+    clip-path: inset(44% 0 36% 0);
+    filter: brightness(1.55) saturate(2.2);
+    transform: translate(0.04em, -50%);
+  }
+
+  82% {
+    opacity: 0.38;
+    clip-path: inset(2% 0 84% 0);
+    transform: translate(-0.048em, -50%);
+  }
+
+  84% {
+    opacity: 0.76;
+    clip-path: inset(68% 0 14% 0);
+    filter: brightness(1.35) saturate(2);
+    transform: translate(0.03em, -50%);
+  }
+
+  87% {
+    opacity: 0.22;
+    clip-path: inset(28% 0 54% 0);
+    transform: translate(-0.018em, -50%);
   }
 }
 
@@ -407,6 +517,22 @@ h3 {
   letter-spacing: 0;
 }
 
+.hero-line::before {
+  position: absolute;
+  z-index: 1;
+  inset: 50% 0 auto;
+  color: color-mix(in srgb, var(--cyan) 72%, var(--ink));
+  content: "Shortcut to reality.";
+  opacity: 0;
+  pointer-events: none;
+  text-shadow:
+    -0.035em 0 0 color-mix(in srgb, var(--pink) 66%, transparent),
+    0.035em 0 0 color-mix(in srgb, var(--cyan) 74%, transparent),
+    0 0 0.42rem color-mix(in srgb, var(--cyan) 28%, transparent);
+  transform: translateY(-50%);
+  animation: electric-ghost 2.05s linear both;
+}
+
 .hero-line::after {
   position: absolute;
   z-index: 2;
@@ -417,9 +543,10 @@ h3 {
   border-radius: 999px;
   background: color-mix(in srgb, var(--ink) 72%, var(--paper));
   box-shadow:
-    0 -0.17em 0 -0.04em color-mix(in srgb, var(--ink) 22%, transparent),
-    0 0.2em 0 -0.05em color-mix(in srgb, var(--ink) 18%, transparent),
-    0 0 0.72rem color-mix(in srgb, var(--ink) 14%, transparent);
+    0 -0.19em 0 -0.045em color-mix(in srgb, var(--cyan) 44%, transparent),
+    0 0.21em 0 -0.052em color-mix(in srgb, var(--pink) 38%, transparent),
+    0 0 0.72rem color-mix(in srgb, var(--cyan) 24%, transparent),
+    0 0 1.15rem color-mix(in srgb, var(--pink) 16%, transparent);
   content: "";
   opacity: 0;
   pointer-events: none;
@@ -431,7 +558,7 @@ h3 {
   display: block;
   width: 100%;
   opacity: 0;
-  will-change: opacity;
+  will-change: opacity, filter, transform;
 }
 
 .hero-route-long {
@@ -2288,12 +2415,14 @@ h3 {
   .hero-logo,
   .hero-copy,
   .hero-route,
+  .hero-line::before,
   .hero-line::after,
   .scroll-cue,
   .ticker-track {
     animation: none;
   }
 
+  .hero-line::before,
   .hero-line::after {
     opacity: 0;
   }
