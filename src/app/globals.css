@@ -522,7 +522,7 @@ h3 {
   z-index: 1;
   inset: 50% 0 auto;
   color: color-mix(in srgb, var(--cyan) 72%, var(--ink));
-  content: "Shortcut to reality.";
+  content: none;
   opacity: 0;
   pointer-events: none;
   text-shadow:
@@ -551,7 +551,7 @@ h3 {
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, -50%);
-  animation: signal-drop 2.05s linear both;
+  animation: none;
 }
 
 .hero-route {
@@ -559,6 +559,55 @@ h3 {
   width: 100%;
   opacity: 0;
   will-change: opacity, filter, transform;
+}
+
+.hero-route-live {
+  position: relative;
+  min-height: 0.96em;
+  opacity: 1;
+}
+
+.hero-route-live::before {
+  position: absolute;
+  z-index: 1;
+  inset: 50% 0 auto;
+  color: color-mix(in srgb, var(--cyan) 72%, var(--ink));
+  content: attr(data-glitch-text);
+  opacity: 0;
+  pointer-events: none;
+  text-shadow:
+    -0.035em 0 0 color-mix(in srgb, var(--pink) 66%, transparent),
+    0.035em 0 0 color-mix(in srgb, var(--cyan) 74%, transparent),
+    0 0 0.42rem color-mix(in srgb, var(--cyan) 28%, transparent);
+  transform: translateY(-50%);
+}
+
+.hero-line-glitch .hero-route-live {
+  animation: route-scan-cut 180ms steps(2, end) both;
+}
+
+.hero-line-glitch .hero-route-live::before {
+  animation: electric-ghost 180ms linear both;
+}
+
+.hero-line-glitch::after {
+  animation: signal-drop 180ms linear both;
+}
+
+.hero-line-final .hero-route-live {
+  animation: reality-resolves 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes route-scan-cut {
+  0% { opacity: 0.42; filter: blur(0.018em); transform: translateX(-0.026em); }
+  34% { opacity: 1; filter: brightness(1.22); transform: translateX(0.02em); }
+  68% { opacity: 0.56; filter: blur(0.012em); transform: translateX(-0.012em); }
+  100% { opacity: 1; filter: none; transform: translateX(0); }
+}
+
+@keyframes reality-resolves {
+  0% { opacity: 0; filter: blur(0.018em); transform: translateY(0.035em); }
+  100% { opacity: 1; filter: none; transform: translateY(0); }
 }
 
 .hero-route-long {

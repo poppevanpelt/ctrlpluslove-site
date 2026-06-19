@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { HeroRealitySequence } from "./hero-reality-sequence";
 import { LivingTicker } from "./living-ticker";
 import { MeetingFilterController } from "./meeting-filter-controller";
 import { ThemeToggle } from "./theme-toggle";
@@ -16,14 +17,7 @@ export default function Home() {
             ctrl+love
           </p>
           <div className="hero-message">
-            <h1 className="hero-line" aria-label="Shortcut to reality.">
-              <span className="hero-route hero-route-long" aria-hidden="true">
-                Agreeable compromise.
-              </span>
-              <span className="hero-route hero-route-final" aria-hidden="true">
-                Shortcut to reality.
-              </span>
-            </h1>
+            <HeroRealitySequence />
             <p className="hero-translation">
               Stress-test your decisions before the market does.
             </p>
