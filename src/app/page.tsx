@@ -271,11 +271,26 @@ export default function Home() {
 
       <section className="content-section ruled method-section">
         <div className="content-block method-block">
-          <p className="section-kicker">How it works</p>
-          <div className="method-lines">
+          <p
+            className="section-kicker"
+            style={{ fontSize: "clamp(1.08rem, 1.35vw, 1.24rem)" }}
+          >
+            How it works
+          </p>
+          <div
+            className="method-lines"
+            style={{
+              gap: "0.48rem",
+              fontSize: "clamp(1.72rem, 2.55vw, 2.38rem)",
+            }}
+          >
             <p>Powered by billions of human signals.</p>
-            <p>AI makes perspectives available.</p>
-            <p>The room decides which ones matter.</p>
+            <p style={{ fontSize: "clamp(1.28rem, 1.68vw, 1.54rem)" }}>
+              AI makes perspectives available.
+            </p>
+            <p style={{ fontSize: "clamp(1.28rem, 1.68vw, 1.54rem)" }}>
+              The room decides which ones matter.
+            </p>
           </div>
         </div>
       </section>
