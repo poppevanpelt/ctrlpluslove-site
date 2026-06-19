@@ -60,6 +60,9 @@ export default function StressTestPage() {
               What happens inside?
             </a>
           </div>
+          <p className="stress-admission-sign">
+            Useful disagreement admitted by appointment.
+          </p>
         </div>
       </section>
 
@@ -83,6 +86,9 @@ export default function StressTestPage() {
                 the thing can finally be seen clearly.
               </p>
             </div>
+            <p className="stress-diagnosis">
+              For teams too close to the work to trust their own certainty.
+            </p>
           </div>
         </div>
       </section>
@@ -110,22 +116,31 @@ export default function StressTestPage() {
             <p className="section-kicker">What happens inside</p>
             <h2>The idea enters the room.</h2>
           </div>
-          <div className="stress-forces" aria-label="Forces inside the room">
-            <article className="stress-force stress-force-warm">
+          <div className="stress-chamber" aria-label="Decision chamber">
+            <article className="stress-chamber-side stress-chamber-warm">
               <p>ctrl+love</p>
               <h3>Protects the emotional truth.</h3>
             </article>
-            <article className="stress-force stress-force-cold">
+            <div className="stress-chamber-center">
+              <p>Admitted to the room</p>
+              <h3>One live decision</h3>
+              <span>The thing everyone has become too close to.</span>
+            </div>
+            <article className="stress-chamber-side stress-chamber-cold">
               <p>cmd+hmm</p>
               <h3>
                 Applies pressure from risk, budget, politics, legal,
                 production, stakeholder fear, and market reality.
               </h3>
             </article>
+            <div className="stress-chamber-verdict">
+              <p>Outcome / verdict</p>
+              <h3>Useful friction</h3>
+              <span>
+                Some voices protect the idea. Some attack it. Most need both.
+              </span>
+            </div>
           </div>
-          <p className="stress-principle">
-            Some voices protect the idea. Some attack it. Most need both.
-          </p>
         </div>
       </section>
 
@@ -134,6 +149,9 @@ export default function StressTestPage() {
           <div className="stress-section-heading">
             <p className="section-kicker">What comes back</p>
             <h2>You do not get a polite report.</h2>
+            <p className="stress-artifact-label">
+              The Decision Artifact contains:
+            </p>
           </div>
           <ul className="stress-list stress-output-list">
             {outputs.map((item, index) => (
@@ -164,9 +182,9 @@ export default function StressTestPage() {
         </div>
       </section>
 
-      <section className="stress-section stress-founder-section ruled">
+      <section className="stress-section stress-founder-section stress-authorship ruled">
         <div className="stress-block stress-split">
-          <p className="section-kicker">Founder role</p>
+          <p className="section-kicker">Authorship note</p>
           <div className="stress-section-copy">
             <h2>Founder-editor, not founder-operator.</h2>
             <p className="stress-quiet-copy">
