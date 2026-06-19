@@ -16,23 +16,22 @@ export default function Home() {
             ctrl+love
           </p>
           <div className="hero-message">
-            <h1 className="hero-line">
-              Shortcut to reality.
+            <h1 className="hero-line" aria-label="Shortcut to reality.">
+              <span className="hero-route hero-route-long" aria-hidden="true">
+                Agreeable compromise.
+              </span>
+              <span className="hero-route hero-route-final" aria-hidden="true">
+                Shortcut to reality.
+              </span>
             </h1>
             <p className="hero-translation">
               Stress-test your decisions before the market does.
-            </p>
-            <p className="hero-proof">
-              Powered by billions of human signals.
             </p>
           </div>
           <div className="hero-message hero-message-secondary">
             <h2 className="hero-invitation">
               Bring the decision into the room.
             </h2>
-            <p className="hero-stakes">
-              For decisions you only want to make once.
-            </p>
           </div>
           <a
             href="mailto:hello@ctrlpluslove.com"
@@ -56,13 +55,13 @@ export default function Home() {
             Explore
           </p>
           <div className="explore-list" aria-label="Explore destinations">
-            <a className="explore-destination" href="/reality">
+            <a className="explore-destination" href="/reality/">
               <strong>Department of Reality Preservation →</strong>
               <em>Cornelis van Loon</em>
             </a>
             <a
               className="explore-destination"
-              href="/unfinished-thoughts"
+              href="/unfinished-thoughts/"
             >
               <strong>Department of Unfinished Thoughts →</strong>
               <em>Nora Veld</em>
@@ -70,20 +69,20 @@ export default function Home() {
             <div className="explore-destination">
               <a href="#intro">Meet the Room →</a>
             </div>
-            <a className="explore-destination" href="/ai-y-fier">
+            <a className="explore-destination" href="/ai-y-fier/">
               <strong>AI-y-fier →</strong>
-              <em>Jargon in. Gravity out.</em>
+              <em>Empty thoughts in. Thought leadership out.</em>
             </a>
-            <a className="explore-destination" href="/meeting-filter">
+            <a className="explore-destination" href="/meeting-filter/">
               <strong>Meeting Filter →</strong>
               <em>Should we be in this meeting?</em>
             </a>
-            <a className="explore-destination" href="/constitution">
+            <a className="explore-destination" href="/constitution/">
               <strong>ctrl+love constitution →</strong>
               <em>Governance archive.</em>
             </a>
             <div className="explore-destination">
-              <a href="/museum">Museum Shop →</a>
+              <a href="/museum/">Museum Shop →</a>
             </div>
           </div>
         </div>
@@ -132,6 +131,16 @@ export default function Home() {
               <p>The Reality Check</p>
               <em>Tests what survives outside the room.</em>
             </div>
+            <div className="persona-card">
+              <span>The Customer</span>
+              <p>The Missing Chair</p>
+              <em>Would anyone outside this room actually care?</em>
+            </div>
+            <div className="persona-card">
+              <span>The Future</span>
+              <p>The Missing Chair</p>
+              <em>How will this decision look in five years?</em>
+            </div>
           </div>
         </div>
       </section>
@@ -141,6 +150,9 @@ export default function Home() {
           <div className="ways-heading">
             <p className="section-kicker">Three ways in</p>
             <h2>Bring the decision into the room.</h2>
+            <p className="ways-support">
+              For decisions you only want to make once.
+            </p>
           </div>
 
           <div className="offer-grid">
@@ -240,24 +252,35 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="content-section ruled">
+      <section className="content-section ruled why-section">
         <div className="content-block why-block">
           <p className="section-kicker">Why this exists</p>
           <div className="why-lines">
             <div className="why-core">
               <p>AI made answers abundant.</p>
               <p>
-                <span>Meaning</span> became valuable.
+                <span>Judgment</span> became valuable.
               </p>
             </div>
             <p className="ai-bridge">
-              AI generates perspectives. The room creates meaning.
+              The room exists to help people think together.
             </p>
           </div>
         </div>
       </section>
 
-      <section className="content-section ruled">
+      <section className="content-section ruled method-section">
+        <div className="content-block method-block">
+          <p className="section-kicker">How it works</p>
+          <div className="method-lines">
+            <p>Powered by billions of human signals.</p>
+            <p>AI makes perspectives available.</p>
+            <p>The room decides which ones matter.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="content-section ruled founder-section">
         <div className="content-block poster-block founder-note">
           <h2 className="label-title">Built by observation.</h2>
           <p>
@@ -475,7 +498,7 @@ export default function Home() {
             </a>
           </p>
           <p>
-            <a href="/constitution">
+            <a href="/constitution/">
               ctrl+love constitution
             </a>
           </p>

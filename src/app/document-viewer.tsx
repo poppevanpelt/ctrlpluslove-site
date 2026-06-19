@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import type { CSSProperties } from "react";
 
 type DocumentViewerProps = {
@@ -15,6 +15,7 @@ type DocumentViewerProps = {
 };
 
 const ZOOM_STEPS = [1, 0.82, 0.62, 0.42, 0] as const;
+const INITIAL_ZOOM_STEP = ZOOM_STEPS.length - 1;
 
 export function DocumentViewer({
   alt,
@@ -25,59 +26,38 @@ export function DocumentViewer({
   src,
   width,
 }: DocumentViewerProps) {
-  const frameRef = useRef<HTMLDivElement>(null);
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(INITIAL_ZOOM_STEP);
 
   const imageRatio = width / height;
   const progress = ZOOM_STEPS[step];
   const scale = 1 + (initialScale - 1) * progress;
-
-  useEffect(() => {
-    const frame = frameRef.current;
-
-    if (!frame) {
-      return;
-    }
-
-    requestAnimationFrame(() => {
-      const maxLeft = frame.scrollWidth - frame.clientWidth;
-      const maxTop = frame.scrollHeight - frame.clientHeight;
-      const xOffset = frame.clientWidth * (initialX / 100) * progress;
-      const yOffset = frame.clientHeight * (initialY / 100) * progress;
-
-      frame.scrollLeft = Math.max(0, Math.min(maxLeft, maxLeft / 2 - xOffset));
-      frame.scrollTop = Math.max(0, Math.min(maxTop, maxTop / 2 - yOffset));
-    });
-  }, [initialX, initialY, progress, scale]);
+  const x = initialX * progress;
+  const y = initialY * progress;
+  const transform = `translate(-50%, -50%) translate(${x}vw, ${y}vh) scale(${scale})`;
 
   return (
     <main className="document-page">
       <Link className="document-back" href="/">
         ctrl+love
       </Link>
-      <div className="document-frame" ref={frameRef}>
-        <div
-          className="document-scroll-surface"
+      <div className="document-frame">
+        {/* Plain img keeps the exported file:// preview self-contained. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          className="document-image"
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          data-initial-scale={initialScale}
+          data-initial-x={initialX}
+          data-initial-y={initialY}
+          data-initial-step={INITIAL_ZOOM_STEP}
           style={{
             "--document-ratio": imageRatio,
-            "--document-scale": scale,
-            "--document-fit-width": `min(100vw, calc(100svh * ${imageRatio}))`,
-          } as CSSProperties &
-            Record<
-              "--document-fit-width" | "--document-ratio" | "--document-scale",
-              number | string
-            >}
-        >
-          {/* Plain img keeps the exported file:// preview self-contained. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            className="document-image"
-            src={src}
-            alt={alt}
-            width={width}
-            height={height}
-          />
-        </div>
+            transform,
+          } as CSSProperties & Record<"--document-ratio", number>}
+        />
       </div>
       <div className="document-controls" aria-label="Document zoom controls">
         <button

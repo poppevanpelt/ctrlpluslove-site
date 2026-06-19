@@ -470,7 +470,10 @@ export default function AiYFierClient() {
       <section className={styles.hero} id="product">
         <div className={styles.heroCopy}>
           <p className={styles.eyebrow}>Narrative infrastructure for modern teams</p>
-          <h1>Turn perfectly normal sentences into board-approved AI gravity.</h1>
+          <h1 className={styles.heroTitle}>
+            <span>Empty thoughts in.</span>
+            <span>Thought leadership out.</span>
+          </h1>
           <p className={styles.lede}>
             Paste a perfectly normal sentence. Receive a longer, more confident version that
             sounds expensive, future-proof and strategically aligned while preserving
