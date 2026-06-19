@@ -3700,6 +3700,8 @@ h3 {
   text-decoration: none;
   text-transform: uppercase;
   transition: background-color 160ms ease, color 160ms ease;
+  cursor: pointer;
+  font-family: inherit;
 }
 
 .stress-primary-action:hover {
@@ -3971,6 +3973,119 @@ h3 {
   color: var(--ink);
 }
 
+.stress-entry-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--ink) 48%, transparent);
+  padding: 1.5rem;
+  backdrop-filter: blur(8px);
+}
+
+.stress-entry-panel {
+  display: grid;
+  width: min(100%, 37rem);
+  max-height: calc(100svh - 3rem);
+  overflow-y: auto;
+  gap: 1.4rem;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+  padding: clamp(1.5rem, 4vw, 2.75rem);
+  box-shadow: 0 2rem 6rem color-mix(in srgb, var(--ink) 30%, transparent);
+  text-align: left;
+}
+
+.stress-entry-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.stress-entry-heading > button {
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  padding: 0;
+  font: inherit;
+  font-size: 2rem;
+  line-height: 0.7;
+  cursor: pointer;
+}
+
+.stress-entry-panel h2 {
+  max-width: 30rem;
+  font-size: clamp(2.5rem, 6vw, 4.25rem);
+}
+
+.stress-entry-panel > p:not(.section-kicker) {
+  max-width: 31rem;
+  color: var(--muted);
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  line-height: var(--leading-body);
+}
+
+.stress-entry-address {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 1rem 0;
+}
+
+.stress-entry-address input {
+  width: min(100%, 18rem);
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ink);
+  padding: 0;
+  font-family: inherit;
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  font-weight: 700;
+}
+
+.stress-entry-address button {
+  flex: none;
+  border: 1px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  padding: 0.65rem 0.75rem;
+  font: inherit;
+  font-size: var(--type-secondary);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.stress-entry-address button:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.stress-entry-email {
+  width: fit-content;
+  color: var(--ink);
+  font-size: var(--type-secondary);
+  font-weight: 900;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.stress-entry-email:hover {
+  color: var(--team-warm);
+}
+
+.stress-entry-panel .stress-entry-note {
+  color: var(--muted);
+  font-size: var(--type-secondary) !important;
+  font-weight: 600;
+}
+
 @media (max-width: 680px) {
   .stress-home {
     top: 1rem;
@@ -4026,5 +4141,21 @@ h3 {
     align-items: flex-start;
     flex-direction: column;
     padding-inline: 1.25rem;
+  }
+
+  .stress-entry-overlay {
+    align-items: end;
+    padding: 0;
+  }
+
+  .stress-entry-panel {
+    width: 100%;
+    max-height: 92svh;
+    border-width: 1px 0 0;
+  }
+
+  .stress-entry-address {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }

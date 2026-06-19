@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { ThemeToggle } from "../theme-toggle";
+import { StressEntry } from "./stress-entry";
 
 export const metadata: Metadata = {
   title: "Decision Stress-Test™ — ctrl+love",
@@ -30,9 +31,6 @@ const outputs = [
   "What should be made braver",
 ];
 
-const roomEmail =
-  "mailto:hello@ctrlpluslove.com?subject=Decision%20Stress-Test&body=Hello%20ctrl%2Blove%2C%0A%0AI%20have%20one%20decision%20for%20the%20room.%0A%0AThe%20decision%3A%20";
-
 export default function StressTestPage() {
   return (
     <main className="site-shell stress-page">
@@ -57,9 +55,7 @@ export default function StressTestPage() {
             for them.
           </p>
           <div className="stress-actions">
-            <a className="stress-primary-action" href={roomEmail}>
-              Enter the room →
-            </a>
+            <StressEntry />
             <a className="stress-secondary-action" href="#inside">
               What happens inside?
             </a>
@@ -186,9 +182,7 @@ export default function StressTestPage() {
         <div className="stress-final-block">
           <p className="section-kicker">One decision. One room.</p>
           <h2>Stress-test one decision before it gets expensive.</h2>
-          <a className="stress-primary-action" href={roomEmail}>
-            Enter the room →
-          </a>
+          <StressEntry />
         </div>
       </section>
 
