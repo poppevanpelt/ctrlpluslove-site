@@ -85,6 +85,10 @@ export default function Home() {
             <div className="explore-destination">
               <a href="#intro">Meet the Room →</a>
             </div>
+            <a className="explore-destination" href="/stress-test/">
+              <strong>Decision Stress-Test™ →</strong>
+              <em>One decision. Less fog.</em>
+            </a>
             <a className="explore-destination" href="/ai-y-fier/">
               <strong>AI-y-fier →</strong>
               <em>Empty thoughts in. Thought leadership out.</em>
