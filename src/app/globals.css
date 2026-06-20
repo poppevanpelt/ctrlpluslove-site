@@ -1639,6 +1639,99 @@ h3 {
   gap: 0.78rem;
 }
 
+.offer-purchase,
+.offer-options {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 0.4rem;
+}
+
+.offer-price {
+  display: grid;
+  gap: 0.15rem;
+  border-top: 1px solid var(--rule);
+  padding-top: 0.85rem;
+}
+
+.offer-price strong {
+  color: var(--ink);
+  font-size: clamp(1.7rem, 2.7vw, 2.35rem);
+  font-weight: 650;
+  letter-spacing: -0.035em;
+  line-height: 1;
+}
+
+.offer-price span,
+.offer-billing {
+  color: var(--muted) !important;
+  font-size: 0.72rem !important;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.35 !important;
+  text-transform: uppercase;
+}
+
+.offer-action,
+.offer-option {
+  color: var(--ink);
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.offer-action {
+  width: fit-content;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 38%, transparent);
+  padding-bottom: 0.15rem;
+  font-size: var(--type-secondary);
+}
+
+.offer-action:hover,
+.offer-action:focus-visible {
+  border-color: var(--ink);
+}
+
+.offer-option {
+  display: grid;
+  gap: 0.18rem;
+  border: 1px solid var(--rule);
+  padding: 0.72rem 0.8rem;
+  transition: border-color 160ms ease, background-color 160ms ease;
+}
+
+.offer-option span {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.offer-option strong {
+  font-size: clamp(1.2rem, 1.8vw, 1.55rem);
+  font-weight: 650;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+.offer-option small {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0;
+}
+
+.offer-option:hover,
+.offer-option:focus-visible {
+  border-color: var(--ink);
+  background: color-mix(in srgb, var(--ink) 4%, transparent);
+}
+
+.offer-action:focus-visible,
+.offer-option:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--team-warm) 72%, transparent);
+  outline-offset: 0.2rem;
+}
+
 .offer-block h3 {
   font-size: var(--type-body);
   font-weight: 600;

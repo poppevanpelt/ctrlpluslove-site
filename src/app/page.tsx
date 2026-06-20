@@ -183,6 +183,18 @@ export default function Home() {
                 <br />
                 Before money and time commit.
               </p>
+              <div className="offer-purchase">
+                <p className="offer-price">
+                  <strong>&euro;5,000</strong>
+                  <span>fixed &middot; ex VAT</span>
+                </p>
+                <a
+                  className="offer-action"
+                  href="mailto:hello@ctrlpluslove.com?subject=Decision%20Stress-Test%20%E2%80%94%20booking%20request"
+                >
+                  Book this room &rarr;
+                </a>
+              </div>
             </article>
 
             <article className="offer-block">
@@ -192,6 +204,23 @@ export default function Home() {
                 <br />
                 While the work keeps moving.
               </p>
+              <div className="offer-options" aria-label="On-Call Room monthly options">
+                <a
+                  className="offer-option"
+                  href="mailto:hello@ctrlpluslove.com?subject=On-Call%20Room%20Essential%20%E2%80%94%20booking%20request"
+                >
+                  <span>Essential</span>
+                  <strong>&euro;5,000 <small>/ month</small></strong>
+                </a>
+                <a
+                  className="offer-option"
+                  href="mailto:hello@ctrlpluslove.com?subject=On-Call%20Room%20Founder%20%E2%80%94%20booking%20request"
+                >
+                  <span>Founder</span>
+                  <strong>&euro;10,000 <small>/ month</small></strong>
+                </a>
+              </div>
+              <p className="offer-billing">Monthly retainer &middot; billed monthly</p>
             </article>
 
             <article className="offer-block offer-featured">
@@ -201,6 +230,18 @@ export default function Home() {
                 <br />
                 No soft landing.
               </p>
+              <div className="offer-purchase">
+                <p className="offer-price">
+                  <strong>&euro;15,000</strong>
+                  <span>fixed &middot; starting at</span>
+                </p>
+                <a
+                  className="offer-action"
+                  href="mailto:hello@ctrlpluslove.com?subject=Kill%20or%20Scale%20%E2%80%94%20booking%20request"
+                >
+                  Request this room &rarr;
+                </a>
+              </div>
             </article>
           </div>
 
