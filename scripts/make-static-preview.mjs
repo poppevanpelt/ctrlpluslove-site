@@ -17,6 +17,8 @@ const pages = [
   "reality.html",
   "unfinished-thoughts.html",
   "ai-y-fier.html",
+  "meeting-filter.html",
+  "constitution.html",
 ];
 
 const assets = [
@@ -116,10 +118,10 @@ const documentViewerScript = `<script>
 
   if (!zoomOut || !zoomIn || !match) return;
 
-  var initialX = parseFloat(match[1]);
-  var initialY = parseFloat(match[2]);
-  var initialScale = parseFloat(match[3]);
-  var currentStep = 0;
+  var initialX = parseFloat(image.dataset.initialX || match[1]);
+  var initialY = parseFloat(image.dataset.initialY || match[2]);
+  var initialScale = parseFloat(image.dataset.initialScale || match[3]);
+  var currentStep = parseInt(image.dataset.initialStep || "0", 10);
 
   function render() {
     var progress = steps[currentStep];
@@ -242,7 +244,9 @@ function removeRuntime(html) {
     .replace(/href="marjan"/g, 'href="marjan.html"')
     .replace(/href="reality"/g, 'href="reality.html"')
     .replace(/href="unfinished-thoughts"/g, 'href="unfinished-thoughts.html"')
-    .replace(/href="ai-y-fier"/g, 'href="tools/ai-y-fier/index.html"');
+    .replace(/href="ai-y-fier"/g, 'href="tools/ai-y-fier/index.html"')
+    .replace(/href="meeting-filter"/g, 'href="meeting-filter.html"')
+    .replace(/href="constitution"/g, 'href="constitution.html"');
 }
 
 const cssDir = new URL("_next/static/css/", sourceDir);

@@ -127,6 +127,16 @@ button {
   font-weight: 900;
 }
 
+.version-stamp {
+  margin: 10px 0 0;
+  color: var(--mint);
+  text-align: center;
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .demo-button,
 .primary-action,
 .result-actions button {

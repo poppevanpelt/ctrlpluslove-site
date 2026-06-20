@@ -9,6 +9,7 @@ const intensity = document.querySelector("#intensity");
 const bullshitScore = document.querySelector("#bullshitScore");
 const buzzwordDensity = document.querySelector("#buzzwordDensity");
 const synergyIndex = document.querySelector("#synergyIndex");
+window.AIYFIER_VERSION = "inflation-v9";
 
 const conservativeEditorPrompt = `You are a conservative human editor. Your job is to lightly improve the user's text while preserving the original meaning, intent, topic, speaker, and tone.
 
@@ -143,25 +144,84 @@ function editTextConservatively(text, strict = false) {
     .join("\n\n");
 }
 
-function sanitizeGeneratedCopy(text, source) {
-  const needsRegeneration =
-    outputHasNewBannedTerms(text, source) ||
-    isTooLong(text, source) ||
-    repeatsLongSourceRun(text, source);
+const modeProfiles = {
+  vc: {
+    opener: "We are seeing a clear wedge emerge:",
+    frame: "This is less a task than a compounding product surface with unusually legible demand.",
+    proof: "The near-term motion creates momentum, reduces workflow drag, and gives the team a credible path to operator-level leverage.",
+    closer: "In memo terms: small surface area, high narrative gravity.",
+    nouns: ["market signal", "distribution wedge", "velocity layer"],
+  },
+  founder: {
+    opener: "Founder mode translation:",
+    frame: "This is the kind of focused execution loop that turns a simple customer pain into durable product intuition.",
+    proof: "The work sharpens the feedback cycle, protects momentum, and keeps the team close to the real user problem.",
+    closer: "Ship the thing, learn from the surface, then widen the aperture.",
+    nouns: ["user pain", "execution loop", "product instinct"],
+  },
+  consultant: {
+    opener: "From an advisory standpoint:",
+    frame: "This initiative represents a pragmatic alignment layer between user need, operational clarity, and measurable experience improvement.",
+    proof: "It reduces workflow ambiguity while creating a cleaner decision surface for cross-functional stakeholders.",
+    closer: "The recommendation is to proceed with a phased, outcome-aligned implementation path.",
+    nouns: ["alignment layer", "decision surface", "implementation path"],
+  },
+  enterprise: {
+    opener: "Enterprise AI readout:",
+    frame: "This is a candidate for scalable AI-native enablement across a high-friction operational workflow.",
+    proof: "By standardizing the interaction layer, the organization can unlock leverage, improve velocity, and support high-performing teams.",
+    closer: "The result is a more resilient operating model with clearer accountability.",
+    nouns: ["operating model", "enablement layer", "governance surface"],
+  },
+};
 
-  if (!needsRegeneration) {
-    return text;
-  }
-
-  const shouldChangeLess = conservativeEditorPrompt.includes("When in doubt, change less.");
-  const regenerated = editTextConservatively(source, shouldChangeLess).trim();
-
-  return regenerated || cleanInput(source);
+function seedNumber(seedText) {
+  return [...seedText].reduce((sum, char) => sum + char.charCodeAt(0), 0);
 }
 
-function aiYfy(text) {
+function pickOne(items, seed, offset = 0) {
+  return items[(seed + offset) % items.length];
+}
+
+function aiYfy(text, style = "vc", intensityValue = 4) {
   const edited = editTextConservatively(text);
-  return sanitizeGeneratedCopy(edited, text);
+  if (!edited) return "";
+
+  const profile = modeProfiles[style] || modeProfiles.vc;
+  const normalizedIntensity = Math.min(Math.max(Math.round(Number(intensityValue)), 1), 5);
+  const seed = seedNumber(`${text}:${style}:${normalizedIntensity}`);
+  const chosenNoun = pickOne(profile.nouns, seed);
+  const sourceLine = edited.replace(/\n{2,}/g, " ");
+  const expansion = [
+    "AI-Y-FIED (" + style + ", intensity " + normalizedIntensity + ")",
+    profile.opener,
+    `"${sourceLine}"`,
+    profile.frame,
+  ];
+
+  if (normalizedIntensity >= 2) {
+    expansion.push(`The underlying ${chosenNoun} is simple: make the important action easier to find, trust, and repeat.`);
+  }
+
+  if (normalizedIntensity >= 3) {
+    expansion.push(profile.proof);
+  }
+
+  if (normalizedIntensity >= 4) {
+    expansion.push(
+      "This turns a mundane product fix into a strategic narrative about confidence, speed, and customer-centered execution."
+    );
+  }
+
+  if (normalizedIntensity >= 5) {
+    expansion.push(
+      "At scale, that becomes the kind of deceptively small interface shift that changes how the organization talks about value creation."
+    );
+  }
+
+  expansion.push(profile.closer);
+
+  return expansion.join("\n\n");
 }
 
 function scoreOutput(text, source) {
