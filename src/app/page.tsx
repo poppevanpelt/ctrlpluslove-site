@@ -171,7 +171,7 @@ export default function Home() {
             <p className="section-kicker">Three ways in</p>
             <h2>Bring the decision into the room.</h2>
             <p className="ways-support">
-              For decisions you only want to make once.
+              Choose the room that fits the pressure.
             </p>
           </div>
 
@@ -186,7 +186,7 @@ export default function Home() {
               <div className="offer-purchase">
                 <p className="offer-price">
                   <strong>&euro;5,000</strong>
-                  <span>fixed &middot; ex VAT</span>
+                  <span>one-off &middot; ex VAT</span>
                 </p>
                 <a
                   className="offer-document"
@@ -194,13 +194,13 @@ export default function Home() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  View pricing document &nearr;
+                  View full pricing &nearr;
                 </a>
                 <a
                   className="offer-action"
                   href="mailto:hello@ctrlpluslove.com?subject=Decision%20Stress-Test%20%E2%80%94%20booking%20request"
                 >
-                  Book this room &rarr;
+                  Request this room &rarr;
                 </a>
               </div>
             </article>
@@ -219,6 +219,7 @@ export default function Home() {
                 >
                   <span>Essential</span>
                   <strong>&euro;5,000 <small>/ month</small></strong>
+                  <em>Choose Essential &rarr;</em>
                 </a>
                 <a
                   className="offer-option"
@@ -226,6 +227,7 @@ export default function Home() {
                 >
                   <span>Founder</span>
                   <strong>&euro;10,000 <small>/ month</small></strong>
+                  <em>Choose Founder &rarr;</em>
                 </a>
               </div>
               <p className="offer-billing">Monthly retainer &middot; billed monthly</p>
@@ -235,7 +237,7 @@ export default function Home() {
                 target="_blank"
                 rel="noreferrer"
               >
-                View pricing document &nearr;
+                View full pricing &nearr;
               </a>
             </article>
 
@@ -248,8 +250,8 @@ export default function Home() {
               </p>
               <div className="offer-purchase">
                 <p className="offer-price">
-                  <strong>&euro;15,000</strong>
-                  <span>fixed &middot; starting at</span>
+                  <strong>From &euro;15,000</strong>
+                  <span>one-off engagement</span>
                 </p>
                 <a
                   className="offer-document"
@@ -257,7 +259,7 @@ export default function Home() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  View pricing document &nearr;
+                  View full pricing &nearr;
                 </a>
                 <a
                   className="offer-action"

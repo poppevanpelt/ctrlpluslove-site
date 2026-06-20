@@ -1737,6 +1737,15 @@ h3 {
   letter-spacing: 0;
 }
 
+.offer-option em {
+  color: var(--ink);
+  font-size: 0.76rem;
+  font-style: normal;
+  font-weight: 750;
+  line-height: 1.35;
+  margin-top: 0.22rem;
+}
+
 .offer-option:hover,
 .offer-option:focus-visible {
   border-color: var(--ink);
