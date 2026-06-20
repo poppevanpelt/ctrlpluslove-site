@@ -55,50 +55,56 @@ export default function Home() {
             Explore
           </p>
           <div className="explore-list" aria-label="Explore destinations">
-            <a className="explore-destination" href="/reality/">
-              <strong>Department of Reality Preservation →</strong>
-              <em>Cornelis van Loon</em>
-            </a>
-            <a
-              className="explore-destination"
-              href="/unfinished-thoughts/"
-            >
-              <strong>Department of Unfinished Thoughts →</strong>
-              <em>Nora Veld</em>
-            </a>
-            <a className="explore-destination" href="/necessary-elimination/">
-              <strong>Department of Necessary Elimination →</strong>
-              <em>Kill Almost Everything. Apple, 1997.</em>
-            </a>
-            <a className="explore-destination" href="/irreversible-decisions/">
-              <strong>Department of Irreversible Decisions →</strong>
-              <em>Burn the Boats. Netflix, 2007.</em>
-            </a>
-            <a className="explore-destination" href="/essential-things/">
-              <strong>Department of Essential Things →</strong>
-              <em>Remember the Brick. LEGO, 2004.</em>
-            </a>
-            <a className="explore-destination" href="/consequential-belief/">
-              <strong>Department of Consequential Belief →</strong>
-              <em>Mortgage the Heroes. Marvel, 2009.</em>
-            </a>
-            <div className="explore-destination">
-              <a href="#intro">Meet the Room →</a>
+            <div className="explore-column">
+              <details className="explore-departments">
+                <summary>Departments</summary>
+                <div className="explore-submenu">
+                  <a className="explore-destination" href="/reality/">
+                    <strong>Reality Preservation →</strong>
+                    <em>Cornelis van Loon</em>
+                  </a>
+                  <a className="explore-destination" href="/unfinished-thoughts/">
+                    <strong>Unfinished Thoughts →</strong>
+                    <em>Nora Veld</em>
+                  </a>
+                  <a className="explore-destination" href="/necessary-elimination/">
+                    <strong>Necessary Elimination →</strong>
+                    <em>Kill Almost Everything. Apple, 1997.</em>
+                  </a>
+                  <a className="explore-destination" href="/irreversible-decisions/">
+                    <strong>Irreversible Decisions →</strong>
+                    <em>Burn the Boats. Netflix, 2007.</em>
+                  </a>
+                  <a className="explore-destination" href="/essential-things/">
+                    <strong>Essential Things →</strong>
+                    <em>Remember the Brick. LEGO, 2004.</em>
+                  </a>
+                  <a className="explore-destination" href="/consequential-belief/">
+                    <strong>Consequential Belief →</strong>
+                    <em>Mortgage the Heroes. Marvel, 2009.</em>
+                  </a>
+                </div>
+              </details>
             </div>
-            <a className="explore-destination" href="/ai-y-fier/">
-              <strong>AI-y-fier →</strong>
-              <em>Empty thoughts in. Thought leadership out.</em>
-            </a>
-            <a className="explore-destination" href="/meeting-filter/">
-              <strong>Meeting Filter →</strong>
-              <em>Should we be in this meeting?</em>
-            </a>
-            <a className="explore-destination" href="/constitution/">
-              <strong>ctrl+love constitution →</strong>
-              <em>Governance archive.</em>
-            </a>
-            <div className="explore-destination">
-              <a href="/museum/">Museum Shop →</a>
+            <div className="explore-column">
+              <div className="explore-destination">
+                <a href="#intro">Meet the Room →</a>
+              </div>
+              <a className="explore-destination" href="/ai-y-fier/">
+                <strong>AI-y-fier →</strong>
+                <em>Empty thoughts in. Thought leadership out.</em>
+              </a>
+              <a className="explore-destination" href="/meeting-filter/">
+                <strong>Meeting Filter →</strong>
+                <em>Should we be in this meeting?</em>
+              </a>
+              <a className="explore-destination" href="/constitution/">
+                <strong>ctrl+love constitution →</strong>
+                <em>Governance archive.</em>
+              </a>
+              <div className="explore-destination">
+                <a href="/museum/">Museum Shop →</a>
+              </div>
             </div>
           </div>
         </div>

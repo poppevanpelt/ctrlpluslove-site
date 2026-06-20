@@ -906,12 +906,8 @@ h3 {
 
 .hero-explore .explore-list {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-rows: repeat(6, auto);
-  grid-auto-flow: column;
   column-gap: clamp(2.5rem, 7vw, 6rem);
-  row-gap: 1.05rem;
   align-items: start;
-  justify-items: stretch;
 }
 
 .explore-block {
@@ -925,6 +921,48 @@ h3 {
   display: grid;
   gap: 1.28rem;
   justify-items: start;
+}
+
+.explore-column,
+.explore-submenu {
+  display: grid;
+  gap: 1.05rem;
+  width: 100%;
+}
+
+.explore-departments {
+  width: 100%;
+}
+
+.explore-departments summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: clamp(1.08rem, 1.36vw, 1.28rem);
+  font-weight: 600;
+  line-height: 1.32;
+  list-style: none;
+}
+
+.explore-departments summary::-webkit-details-marker {
+  display: none;
+}
+
+.explore-departments summary::after {
+  content: "↓";
+  color: var(--muted);
+}
+
+.explore-departments[open] summary::after {
+  content: "↑";
+}
+
+.explore-submenu {
+  border-left: 1px solid var(--rule);
+  margin-top: 1.05rem;
+  padding-left: 0.9rem;
 }
 
 .explore-destination {
@@ -2324,9 +2362,7 @@ h3 {
 
   .hero-explore .explore-list {
     grid-template-columns: 1fr;
-    grid-template-rows: none;
-    grid-auto-flow: row;
-    gap: 1.05rem;
+    gap: 1.55rem;
   }
 
   .theme-toggle {
