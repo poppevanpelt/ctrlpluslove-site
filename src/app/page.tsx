@@ -181,7 +181,7 @@ export default function Home() {
               <p className="muted">
                 One important decision.
                 <br />
-                Before money and time commit.
+                Before money and time are committed.
               </p>
               <div className="offer-purchase">
                 <p className="offer-price">
@@ -194,7 +194,7 @@ export default function Home() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  View full pricing &nearr;
+                  View full pricing ↗
                 </a>
                 <a
                   className="offer-action"
@@ -237,7 +237,7 @@ export default function Home() {
                 target="_blank"
                 rel="noreferrer"
               >
-                View full pricing &nearr;
+                View full pricing ↗
               </a>
             </article>
 
@@ -259,7 +259,7 @@ export default function Home() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  View full pricing &nearr;
+                  View full pricing ↗
                 </a>
                 <a
                   className="offer-action"
