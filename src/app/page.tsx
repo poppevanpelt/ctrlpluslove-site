@@ -189,6 +189,14 @@ export default function Home() {
                   <span>fixed &middot; ex VAT</span>
                 </p>
                 <a
+                  className="offer-document"
+                  href="/pricing/decision-stress-test.png"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  View pricing document &nearr;
+                </a>
+                <a
                   className="offer-action"
                   href="mailto:hello@ctrlpluslove.com?subject=Decision%20Stress-Test%20%E2%80%94%20booking%20request"
                 >
@@ -221,6 +229,14 @@ export default function Home() {
                 </a>
               </div>
               <p className="offer-billing">Monthly retainer &middot; billed monthly</p>
+              <a
+                className="offer-document"
+                href="/pricing/on-call-room.png"
+                target="_blank"
+                rel="noreferrer"
+              >
+                View pricing document &nearr;
+              </a>
             </article>
 
             <article className="offer-block offer-featured">
@@ -235,6 +251,14 @@ export default function Home() {
                   <strong>&euro;15,000</strong>
                   <span>fixed &middot; starting at</span>
                 </p>
+                <a
+                  className="offer-document"
+                  href="/pricing/kill-or-scale.png"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  View pricing document &nearr;
+                </a>
                 <a
                   className="offer-action"
                   href="mailto:hello@ctrlpluslove.com?subject=Kill%20or%20Scale%20%E2%80%94%20booking%20request"

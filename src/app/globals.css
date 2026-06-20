@@ -1672,10 +1672,27 @@ h3 {
 }
 
 .offer-action,
-.offer-option {
+.offer-option,
+.offer-document {
   color: var(--ink);
   font-weight: 750;
   text-decoration: none;
+}
+
+.offer-document {
+  width: fit-content;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.35;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--muted) 45%, transparent);
+  text-underline-offset: 0.2rem;
+}
+
+.offer-document:hover,
+.offer-document:focus-visible {
+  color: var(--ink);
+  text-decoration-color: var(--ink);
 }
 
 .offer-action {
@@ -1727,7 +1744,8 @@ h3 {
 }
 
 .offer-action:focus-visible,
-.offer-option:focus-visible {
+.offer-option:focus-visible,
+.offer-document:focus-visible {
   outline: 2px solid color-mix(in srgb, var(--team-warm) 72%, transparent);
   outline-offset: 0.2rem;
 }
