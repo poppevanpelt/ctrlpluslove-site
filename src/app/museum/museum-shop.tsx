@@ -7,6 +7,7 @@ import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 type Product = {
   id: string;
   name: string;
+  price: number;
   image: string;
   strapline: string;
   description: string;
@@ -19,6 +20,7 @@ const products: Product[] = [
   {
     id: "eraser",
     name: "For Really Big Mistakes™",
+    price: 9,
     image: "/museum/really-big-mistakes-eraser.png",
     strapline: "Erases most marketing.",
     description: "Industrial-grade eraser for moments of excessive confidence.",
@@ -28,6 +30,7 @@ const products: Product[] = [
   {
     id: "mug",
     name: "The Happiness Delay Mug™",
+    price: 149,
     image: "/museum/happiness-delay-mug.png",
     strapline: "Keeps coffee warm. Expectations realistic.",
     description: "A temperature-controlled mug for people whose best ideas arrive after everyone else has already left the meeting. Battery-powered patience.",
@@ -36,6 +39,7 @@ const products: Product[] = [
   {
     id: "flip-flops",
     name: "Lee’s Flip-Flops™",
+    price: 89,
     image: "/museum/flip-flops-pair-packshot.png",
     strapline: "Creative authority. No socks.",
     description: "Inspired by a generation of creative leaders who somehow convinced global brands to trust them while dressed for a beach holiday.",
@@ -45,6 +49,7 @@ const products: Product[] = [
   {
     id: "fax",
     name: "The Ignored Fax Machine™",
+    price: 149,
     image: "/museum/ignored-fax-machine.png",
     strapline: "Once urgent. Now curated.",
     description: "The original instant messaging device. Every document beside this machine was once considered important. Years later, a museum employee carefully sorted and stacked them by hand. Nobody has read them since.",
@@ -54,6 +59,7 @@ const products: Product[] = [
   {
     id: "steel-ball",
     name: "The Cybertruck Stainless Steel Ball™",
+    price: 39,
     image: "/museum/steel-ball-packshot.png",
     strapline: "Reality got a turn.",
     description: "40mm polished stainless steel sphere. Originally purchased to stop a Cybertruck from rolling away. Now mostly used to stop ideas from doing the same.",
@@ -61,6 +67,8 @@ const products: Product[] = [
     bullets: ["Testing assumptions", "Ending meetings", "Reflecting on poor decisions", "Preventing unexpected movement"],
   },
 ];
+
+const money = (value: number) => `€${value}`;
 
 export function MuseumShop() {
   const [cart, setCart] = useState<Record<string, number>>({});
@@ -103,6 +111,7 @@ export function MuseumShop() {
     [cart]
   );
   const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+  const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   function addToCart(product: Product) {
     setCart((current) => ({ ...current, [product.id]: (current[product.id] || 0) + 1 }));
@@ -121,8 +130,8 @@ export function MuseumShop() {
   }
 
   function requestOrder() {
-    const lines = cartItems.map((item) => `${item.quantity} × ${item.name}`);
-    window.open(`mailto:hello@ctrlpluslove.com?subject=${encodeURIComponent("Museum shop request")}&body=${encodeURIComponent(`Hello ctrl+love,\n\nI would like to ask about:\n\n${lines.join("\n")}\n\nPlease send availability and next steps.\n`)}`, "_self");
+    const lines = cartItems.map((item) => `${item.quantity} × ${item.name} — ${money(item.price * item.quantity)}`);
+    window.open(`mailto:hello@ctrlpluslove.com?subject=${encodeURIComponent("Museum shop order request")}&body=${encodeURIComponent(`Hello ctrl+love,\n\nI would like to request:\n\n${lines.join("\n")}\n\nTotal: ${money(total)}\n\nPlease send availability and next steps.\n`)}`, "_self");
   }
 
   function submitInformationRequest(event: FormEvent<HTMLFormElement>) {
@@ -160,7 +169,7 @@ export function MuseumShop() {
             <div className="museum-product-content">
               <div className="museum-product-title">
                 <h1>{product.name}</h1>
-                <span>Archive</span>
+                <span>{money(product.price)}</span>
               </div>
               <p className="museum-product-strapline">{product.strapline}</p>
               <div className="museum-product-details">
@@ -176,7 +185,7 @@ export function MuseumShop() {
                 <p><strong>Museum label</strong>{product.label}</p>
                 <div className="museum-product-actions">
                   <button type="button" className="museum-info-button" onClick={() => setRequestProduct(product)}>Request information</button>
-                  <button type="button" className="museum-add-button" onClick={() => addToCart(product)}>Add to archive request</button>
+                  <button type="button" className="museum-add-button" onClick={() => addToCart(product)}>Add to cart</button>
                 </div>
               </div>
             </div>
@@ -201,11 +210,12 @@ export function MuseumShop() {
                 <div className="museum-cart-items">{cartItems.map((item) => (
                   <div className="museum-cart-item" key={item.id}>
                     <Image src={item.image} alt="" width={180} height={120} />
-                    <div><strong>{item.name}</strong><span>Archive request</span><div className="museum-quantity"><button type="button" onClick={() => setQuantity(item.id, item.quantity - 1)} aria-label={`Remove one ${item.name}`}>−</button><b>{item.quantity}</b><button type="button" onClick={() => setQuantity(item.id, item.quantity + 1)} aria-label={`Add one ${item.name}`}>+</button></div></div>
+                    <div><strong>{item.name}</strong><span>{money(item.price)}</span><div className="museum-quantity"><button type="button" onClick={() => setQuantity(item.id, item.quantity - 1)} aria-label={`Remove one ${item.name}`}>−</button><b>{item.quantity}</b><button type="button" onClick={() => setQuantity(item.id, item.quantity + 1)} aria-label={`Add one ${item.name}`}>+</button></div></div>
                   </div>
                 ))}</div>
-                <button className="museum-checkout-button" type="button" onClick={requestOrder}>Request availability →</button>
-                <p className="museum-checkout-note">No payment is taken. We’ll reply by email.</p>
+                <div className="museum-cart-total"><span>Total</span><strong>{money(total)}</strong></div>
+                <button className="museum-checkout-button" type="button" onClick={requestOrder}>Request order →</button>
+                <p className="museum-checkout-note">No payment is taken. We’ll confirm availability by email.</p>
               </>
             )}
           </aside>

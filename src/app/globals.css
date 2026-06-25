@@ -575,18 +575,6 @@ h3 {
   animation: route-final 2.05s linear both;
 }
 
-.hero-line-static .hero-route {
-  opacity: 1;
-  animation: none;
-}
-
-.hero-line-static .hero-route-long {
-  position: relative;
-  inset: auto;
-  font-size: 0.58em;
-  transform: none;
-}
-
 .muted {
   color: var(--ink);
 }
@@ -893,21 +881,6 @@ h3 {
 
 .content-section.founder-section {
   padding-top: 5.2rem;
-}
-
-.content-section.problem-section {
-  padding-top: 6.2rem;
-  padding-bottom: 6.35rem;
-}
-
-.content-section.help-section {
-  padding-top: 5.5rem;
-  padding-bottom: 5.75rem;
-}
-
-.content-section.pricing-cta-section {
-  padding-top: 5.45rem;
-  padding-bottom: 5.8rem;
 }
 
 .ruled,
@@ -1634,48 +1607,6 @@ h3 {
   line-height: var(--leading-secondary);
 }
 
-.problem-block,
-.help-block,
-.pricing-cta-block {
-  width: min(100%, 60rem);
-  display: grid;
-  gap: 1.15rem;
-}
-
-.problem-block h2,
-.pricing-cta-block h2 {
-  max-width: 50rem;
-  color: var(--ink);
-  font-size: var(--type-section);
-  font-weight: 600;
-  line-height: var(--leading-section);
-}
-
-.problem-block p:not(.section-kicker),
-.pricing-cta-block p:not(.section-kicker) {
-  max-width: 38rem;
-  color: var(--muted);
-  font-size: var(--type-intro);
-  font-weight: 650;
-  line-height: var(--leading-body);
-}
-
-.help-grid {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 1.1rem;
-}
-
-.help-grid p {
-  min-height: 10rem;
-  border-top: 1px solid var(--rule);
-  color: var(--ink);
-  padding-top: 1rem;
-  font-size: clamp(1.12rem, 1.55vw, 1.36rem);
-  font-weight: 650;
-  line-height: 1.2;
-}
-
 .ways-support {
   max-width: 34rem;
   color: var(--muted);
@@ -1850,16 +1781,6 @@ h3 {
   font-size: var(--type-body);
   font-weight: 600;
   line-height: var(--leading-body);
-}
-
-.offer-note {
-  border-top: 1px solid var(--rule);
-  color: var(--muted) !important;
-  margin-top: 0.45rem;
-  padding-top: 0.85rem;
-  font-size: clamp(1rem, 1.18vw, 1.14rem) !important;
-  font-weight: 650;
-  line-height: var(--leading-secondary) !important;
 }
 
 .offer-lead {
@@ -2251,110 +2172,6 @@ h3 {
   color: var(--faint);
 }
 
-.pricing-page {
-  min-height: 100vh;
-  background: var(--paper);
-  color: var(--ink);
-  padding: clamp(5.5rem, 9vw, 8rem) 1.5rem clamp(4.5rem, 8vw, 7rem);
-}
-
-.pricing-hero,
-.pricing-room-grid,
-.pricing-close {
-  width: min(100%, 68rem);
-  margin: 0 auto;
-}
-
-.pricing-hero {
-  display: grid;
-  gap: 1rem;
-  padding-bottom: clamp(3.4rem, 6vw, 5rem);
-}
-
-.pricing-hero h1 {
-  max-width: 56rem;
-  color: var(--ink);
-  font-size: var(--type-display);
-  font-weight: 600;
-  letter-spacing: -0.055em;
-  line-height: var(--leading-display);
-}
-
-.pricing-hero p:not(.section-kicker) {
-  max-width: 34rem;
-  color: var(--muted);
-  font-size: var(--type-intro);
-  font-weight: 650;
-  line-height: var(--leading-body);
-}
-
-.pricing-room-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1.25rem;
-}
-
-.pricing-room-card {
-  display: grid;
-  align-content: space-between;
-  gap: 2.4rem;
-  min-height: 24rem;
-  border-top: 1px solid var(--rule);
-  padding-top: 1.15rem;
-}
-
-.pricing-room-card h2 {
-  color: var(--ink);
-  font-size: clamp(1.35rem, 2vw, 1.78rem);
-  font-weight: 650;
-  line-height: 1.08;
-}
-
-.pricing-room-card p {
-  margin-top: 0.75rem;
-  color: var(--muted);
-  font-size: clamp(1rem, 1.16vw, 1.12rem);
-  font-weight: 650;
-  line-height: var(--leading-secondary);
-}
-
-.pricing-room-price {
-  display: grid;
-  gap: 0.28rem;
-}
-
-.pricing-room-price strong {
-  color: var(--ink);
-  font-size: clamp(1.85rem, 3vw, 2.7rem);
-  font-weight: 650;
-  letter-spacing: -0.04em;
-  line-height: 0.98;
-}
-
-.pricing-room-price span {
-  color: var(--muted);
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  line-height: 1.35;
-  text-transform: uppercase;
-}
-
-.pricing-close {
-  display: grid;
-  gap: 0.9rem;
-  border-top: 1px solid var(--rule);
-  margin-top: clamp(3.2rem, 5.5vw, 4.6rem);
-  padding-top: 1.2rem;
-}
-
-.pricing-close p {
-  color: var(--muted);
-  font-size: var(--type-intro);
-  font-weight: 650;
-  line-height: var(--leading-body);
-}
-
 .document-page {
   position: relative;
   min-height: auto;
@@ -2567,9 +2384,6 @@ h3 {
 
   .content-section#intro,
   .content-section#ways-in,
-  .content-section.problem-section,
-  .content-section.help-section,
-  .content-section.pricing-cta-section,
   .content-section.meeting-filter-section,
   .content-section:nth-of-type(3),
   .content-section:nth-of-type(4),
@@ -2695,24 +2509,6 @@ h3 {
 
   .offer-grid {
     grid-template-columns: 1fr;
-    gap: 1.65rem;
-  }
-
-  .help-grid,
-  .pricing-room-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .help-grid p {
-    min-height: auto;
-  }
-
-  .pricing-page {
-    padding-top: 5rem;
-  }
-
-  .pricing-room-card {
-    min-height: auto;
     gap: 1.65rem;
   }
 

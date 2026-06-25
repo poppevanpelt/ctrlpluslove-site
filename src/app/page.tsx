@@ -16,33 +16,28 @@ export default function Home() {
             ctrl+love
           </p>
           <div className="hero-message">
-            <h1
-              className="hero-line hero-line-static"
-              aria-label="Sharper thinking. Before the real world answers back."
-            >
+            <h1 className="hero-line" aria-label="Shortcut to reality.">
               <span className="hero-route hero-route-long" aria-hidden="true">
-                Sharper thinking.
+                Agreeable compromise.
               </span>
               <span className="hero-route hero-route-final" aria-hidden="true">
-                Before the real world answers back.
+                Shortcut to reality.
               </span>
             </h1>
             <p className="hero-translation">
-              ctrl+love is a strategic thinking room where different voices test
-              your brand, campaign, pitch or idea before it meets clients,
-              culture or the market.
+              Stress-test your decisions before the market does.
             </p>
           </div>
           <div className="hero-message hero-message-secondary">
             <h2 className="hero-invitation">
-              Access to judgment. Not access to software.
+              Bring the decision into the room.
             </h2>
           </div>
           <a
-            href="#problem"
+            href="mailto:hello@ctrlpluslove.com"
             className="hero-email"
           >
-            Meet the room →
+            hello@ctrlpluslove.com →
           </a>
         </div>
 
@@ -50,24 +45,76 @@ export default function Home() {
 
       <LivingTicker />
 
-      <section className="content-section ruled problem-section" id="problem">
-        <div className="content-block problem-block">
-          <p className="section-kicker">The problem</p>
-          <h2>
-            Most work is judged by too few people, too late in the process.
-          </h2>
-          <p>
-            By the time the market answers, the deck is already sent. The media
-            is already booked. The room has already agreed with itself.
+      <nav
+        className="explore-section hero-explore"
+        id="explore"
+        aria-labelledby="explore-title"
+      >
+        <div className="explore-block">
+          <p className="section-kicker" id="explore-title">
+            Explore
           </p>
+          <div className="explore-list" aria-label="Explore destinations">
+            <div className="explore-column">
+              <div className="explore-departments">
+                <p className="explore-group-title">Departments</p>
+                <div className="explore-submenu">
+                  <a className="explore-destination" href="/reality/">
+                    <strong>Reality Preservation →</strong>
+                    <em>Cornelis van Loon</em>
+                  </a>
+                  <a className="explore-destination" href="/unfinished-thoughts/">
+                    <strong>Unfinished Thoughts →</strong>
+                    <em>Nora Veld</em>
+                  </a>
+                  <a className="explore-destination" href="/necessary-elimination/">
+                    <strong>Necessary Elimination →</strong>
+                    <em>Kill Almost Everything. Apple, 1997.</em>
+                  </a>
+                  <a className="explore-destination" href="/irreversible-decisions/">
+                    <strong>Irreversible Decisions →</strong>
+                    <em>Burn the Boats. Netflix, 2007.</em>
+                  </a>
+                  <a className="explore-destination" href="/essential-things/">
+                    <strong>Essential Things →</strong>
+                    <em>Remember the Brick. LEGO, 2004.</em>
+                  </a>
+                  <a className="explore-destination" href="/consequential-belief/">
+                    <strong>Consequential Belief →</strong>
+                    <em>Mortgage the Heroes. Marvel, 2009.</em>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="explore-column">
+              <div className="explore-destination">
+                <a href="#intro">Meet the Room →</a>
+              </div>
+              <a className="explore-destination" href="/ai-y-fier/">
+                <strong>AI-y-fier →</strong>
+                <em>Empty thoughts in. Thought leadership out.</em>
+              </a>
+              <a className="explore-destination" href="/meeting-filter/">
+                <strong>Meeting Filter →</strong>
+                <em>Should we be in this meeting?</em>
+              </a>
+              <a className="explore-destination" href="/constitution/">
+                <strong>ctrl+love constitution →</strong>
+                <em>Governance archive.</em>
+              </a>
+              <div className="explore-destination">
+                <a href="/museum/">Museum Shop →</a>
+              </div>
+            </div>
+          </div>
         </div>
-      </section>
+      </nav>
 
       <section className="content-section ruled" id="intro">
         <div className="content-block statement-block">
           <div className="opening-flow">
             <p className="opening-line">
-              The room
+              Meet the room.
             </p>
             <p className="bridge-line">
               Named minds.
@@ -120,73 +167,114 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="content-section ruled help-section">
-        <div className="content-block help-block">
-          <p className="section-kicker">What it can help with</p>
-          <div className="help-grid" aria-label="What ctrl+love can help with">
-            <p>Campaign second opinion</p>
-            <p>Pitch stress-test</p>
-            <p>Brand positioning</p>
-            <p>Strategic signal scan</p>
-            <p>Creative route evaluation</p>
-          </div>
-        </div>
-      </section>
-
       <section className="content-section" id="ways-in">
         <div className="content-block wide poster-block">
           <div className="ways-heading">
-            <p className="section-kicker">Working models</p>
-            <h2>What kind of room does your question need?</h2>
+            <p className="section-kicker">Three ways in</p>
+            <h2>Bring the decision into the room.</h2>
             <p className="ways-support">
-              First, we look at the question.
-              Some questions need a second opinion.
-              Some need pressure.
-              Some need a room full of conflicting voices.
-              The value starts with choosing the right room.
+              Choose the room that fits the pressure.
             </p>
           </div>
 
           <div className="offer-grid">
             <article className="offer-block">
-              <h3>A second opinion</h3>
+              <h3>Decision Stress-Test&trade;</h3>
               <p className="muted">
-                A question that needs another mind.
+                One important decision.
                 <br />
-                Before the room agrees with itself.
+                Before money and time are committed.
               </p>
-              <p className="offer-note">
-                For work that needs a second opinion before it becomes expensive.
-              </p>
+              <div className="offer-purchase">
+                <p className="offer-price">
+                  <strong>&euro;5,000</strong>
+                  <span>one-off &middot; ex VAT</span>
+                </p>
+                <a
+                  className="offer-document"
+                  href="/pricing/decision-stress-test.png"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  View full pricing ↗
+                </a>
+                <a
+                  className="offer-action"
+                  href="mailto:hello@ctrlpluslove.com?subject=Decision%20Stress-Test%20%E2%80%94%20booking%20request"
+                >
+                  Request this room &rarr;
+                </a>
+              </div>
             </article>
 
             <article className="offer-block">
-              <h3>A standing question</h3>
+              <h3>On-Call Room&trade;</h3>
               <p className="muted">
-                A question that keeps returning.
+                Recurring pressure.
                 <br />
                 While the work keeps moving.
               </p>
-              <p className="offer-note">
-                For teams who keep returning to the same hard edge.
-              </p>
+              <div className="offer-options" aria-label="On-Call Room monthly options">
+                <a
+                  className="offer-option"
+                  href="mailto:hello@ctrlpluslove.com?subject=On-Call%20Room%20Essential%20%E2%80%94%20booking%20request"
+                >
+                  <span>Essential</span>
+                  <strong>&euro;5,000 <small>/ month</small></strong>
+                  <em>Choose Essential &rarr;</em>
+                </a>
+                <a
+                  className="offer-option"
+                  href="mailto:hello@ctrlpluslove.com?subject=On-Call%20Room%20Founder%20%E2%80%94%20booking%20request"
+                >
+                  <span>Founder</span>
+                  <strong>&euro;10,000 <small>/ month</small></strong>
+                  <em>Choose Founder &rarr;</em>
+                </a>
+              </div>
+              <p className="offer-billing">Monthly retainer &middot; billed monthly</p>
+              <a
+                className="offer-document"
+                href="/pricing/on-call-room.png"
+                target="_blank"
+                rel="noreferrer"
+              >
+                View full pricing ↗
+              </a>
             </article>
 
             <article className="offer-block offer-featured">
-              <h3>A harder room</h3>
+              <h3>Kill or Scale&trade;</h3>
               <p className="muted">
-                A question that needs pressure.
+                Stop, reshape, or accelerate.
                 <br />
                 No soft landing.
               </p>
-              <p className="offer-note">
-                For ideas that may need to be ended, narrowed or given more force.
-              </p>
+              <div className="offer-purchase">
+                <p className="offer-price">
+                  <strong>From &euro;15,000</strong>
+                  <span>one-off engagement</span>
+                </p>
+                <a
+                  className="offer-document"
+                  href="/pricing/kill-or-scale.png"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  View full pricing ↗
+                </a>
+                <a
+                  className="offer-action"
+                  href="mailto:hello@ctrlpluslove.com?subject=Kill%20or%20Scale%20%E2%80%94%20booking%20request"
+                >
+                  Request this room &rarr;
+                </a>
+              </div>
             </article>
           </div>
 
           <div className="process-path" aria-label="Decision room path">
-            <span>Question</span>
+            <span>Decision</span>
             <span aria-hidden="true">↓</span>
             <span>Room</span>
             <span aria-hidden="true">↓</span>
@@ -196,16 +284,6 @@ export default function Home() {
             <span aria-hidden="true">↓</span>
             <span>Better decision</span>
           </div>
-        </div>
-      </section>
-
-      <section className="content-section ruled pricing-cta-section">
-        <div className="content-block pricing-cta-block">
-          <p className="section-kicker">When the room is clear</p>
-          <h2>When the room is clear, the next step is simple.</h2>
-          <a className="text-link" href="/pricing/">
-            Find the right room →
-          </a>
         </div>
       </section>
 
