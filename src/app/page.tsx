@@ -179,32 +179,68 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="offer-grid">
-            <article className="offer-block">
-              <h3>Decision Stress-Test&trade;</h3>
-              <p className="muted">
-                One important decision.
-                <br />
-                Before money and time are committed.
-              </p>
+          <div style={{ display: "grid", gap: "2.4rem" }}>
+            <article style={{ display: "grid" }}>
+              <a
+                className="text-link"
+                href="/pricing/decision-stress-test.png"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Open Decision Stress-Test pricing document"
+                style={{ display: "grid", gap: "0.55rem", textDecoration: "none" }}
+              >
+                <Image
+                  src="/pricing/decision-stress-test.png"
+                  alt="Decision Stress-Test pricing document"
+                  width={1536}
+                  height={1024}
+                  sizes="(max-width: 900px) 100vw, 88vw"
+                  style={{ width: "100%", height: "auto" }}
+                />
+                <span>Decision Stress-Test&trade; ↗</span>
+              </a>
             </article>
 
-            <article className="offer-block">
-              <h3>On-Call Room&trade;</h3>
-              <p className="muted">
-                Recurring pressure.
-                <br />
-                While the work keeps moving.
-              </p>
+            <article style={{ display: "grid" }}>
+              <a
+                className="text-link"
+                href="/pricing/on-call-room.png"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Open On-Call Room pricing document"
+                style={{ display: "grid", gap: "0.55rem", textDecoration: "none" }}
+              >
+                <Image
+                  src="/pricing/on-call-room.png"
+                  alt="On-Call Room pricing document"
+                  width={1536}
+                  height={1024}
+                  sizes="(max-width: 900px) 100vw, 88vw"
+                  style={{ width: "100%", height: "auto" }}
+                />
+                <span>On-Call Room&trade; ↗</span>
+              </a>
             </article>
 
-            <article className="offer-block offer-featured">
-              <h3>Kill or Scale&trade;</h3>
-              <p className="muted">
-                Stop, reshape, or accelerate.
-                <br />
-                No soft landing.
-              </p>
+            <article style={{ display: "grid" }}>
+              <a
+                className="text-link"
+                href="/pricing/kill-or-scale.png"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Open Kill or Scale pricing document"
+                style={{ display: "grid", gap: "0.55rem", textDecoration: "none" }}
+              >
+                <Image
+                  src="/pricing/kill-or-scale.png"
+                  alt="Kill or Scale pricing document"
+                  width={1536}
+                  height={1024}
+                  sizes="(max-width: 900px) 100vw, 88vw"
+                  style={{ width: "100%", height: "auto" }}
+                />
+                <span>Kill or Scale&trade; ↗</span>
+              </a>
             </article>
           </div>
 
@@ -219,7 +255,7 @@ export default function Home() {
             <span aria-hidden="true">↓</span>
             <span>Better decision</span>
           </div>
-          <a className="text-link" href="/pricing/">
+          <a className="text-link" href="/pricing-documents/">
             View rooms and pricing →
           </a>
         </div>
