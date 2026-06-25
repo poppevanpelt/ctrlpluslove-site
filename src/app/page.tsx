@@ -56,8 +56,8 @@ export default function Home() {
           </p>
           <div className="explore-list" aria-label="Explore destinations">
             <div className="explore-column">
-              <div className="explore-departments">
-                <p className="explore-group-title">Departments</p>
+              <details className="explore-departments">
+                <summary>Departments</summary>
                 <div className="explore-submenu">
                   <a className="explore-destination" href="/reality/">
                     <strong>Reality Preservation →</strong>
@@ -84,7 +84,7 @@ export default function Home() {
                     <em>Mortgage the Heroes. Marvel, 2009.</em>
                   </a>
                 </div>
-              </div>
+              </details>
             </div>
             <div className="explore-column">
               <div className="explore-destination">
