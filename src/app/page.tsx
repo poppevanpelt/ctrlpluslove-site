@@ -171,13 +171,11 @@ export default function Home() {
         <div className="content-block wide poster-block">
           <div className="ways-heading">
             <p className="section-kicker">Three ways in</p>
-            <h2>What kind of room does your question need?</h2>
+            <h2>Which room does it need?</h2>
             <p className="ways-support">
-              Before we talk about price, we look at the question.
-              Some questions need a second opinion.
-              Some need pressure.
-              Some need a room full of conflicting voices.
-              The value starts with choosing the right room.
+              First, the question.
+              Then the pressure: a second opinion, sharper friction, or a room
+              full of opposing voices.
             </p>
           </div>
 

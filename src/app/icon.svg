@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="signal" x1="10" x2="54" y1="14" y2="50" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#e8457c" />
+      <stop offset="0.34" stop-color="#f2722c" />
+      <stop offset="0.68" stop-color="#29abe2" />
+      <stop offset="1" stop-color="#6b6ac4" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="#fafaf8" />
+  <path
+    d="M18 34c0-7.7 5.7-13.2 13.4-13.2 4 0 7.4 1.4 9.9 4l-4.2 4.6c-1.5-1.5-3.3-2.3-5.4-2.3-3.9 0-6.6 2.8-6.6 6.9s2.7 6.9 6.6 6.9c2.1 0 3.9-.8 5.4-2.3l4.2 4.6c-2.5 2.6-5.9 4-9.9 4C23.7 47.2 18 41.7 18 34Z"
+    fill="#1a1815"
+  />
+  <path d="M45 22h5v7h7v5h-7v7h-5v-7h-7v-5h7v-7Z" fill="url(#signal)" />
+</svg>
