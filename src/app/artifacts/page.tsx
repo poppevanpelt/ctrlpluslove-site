@@ -10,7 +10,6 @@ code: "Artifact 001",
 name: "Franz's Steel Ball",
 line: "One throw. Permanent residency.",
 status: "Replica available.",
-price: "€29,00",
 availability: "In stock",
 },
 {
@@ -18,7 +17,6 @@ code: "Artifact 002",
 name: "Lee's Flip-Flops",
 line: "A secret weapon during reviews.",
 status: "Replica available.",
-price: "€19,00",
 availability: "In stock",
 },
 {
@@ -26,7 +24,6 @@ code: "Artifact 003",
 name: "Oscar's Fruit Sando",
 line: "Best consumed within 15 minutes.",
 status: "No replicas. Ever.",
-price: "€12,00",
 availability: "Low stock",
 },
 {
@@ -34,7 +31,6 @@ code: "Artifact 004",
 name: "Poppe's Windowsill",
 line: "Four objects. An entire biography.",
 status: "No replicas. Ever.",
-price: "€49,00",
 availability: "In stock",
 },
 {
@@ -42,7 +38,6 @@ code: "Artifact 005",
 name: "World's Smallest Artwork",
 line: "Some things become larger when you get closer.",
 status: "One-of-a-kind.",
-price: "Sold out",
 availability: "Out of stock",
 },
 {
@@ -50,7 +45,6 @@ code: "Artifact 006",
 name: "Department of Reality Preservation",
 line: "Filed before it was needed.",
 status: "No replicas. Ever.",
-price: "€25,00",
 availability: "In stock",
 },
 ];
@@ -81,10 +75,6 @@ export default function ArtifactsPage() {
               <div className="artifact-badge">
                 {artifact.availability}
               </div>
-
-              <button className="artifact-cart">
-                🛍️
-              </button>
             </div>
 
             <p className="museum-price">{artifact.code}</p>
@@ -98,27 +88,6 @@ export default function ArtifactsPage() {
             <p className="museum-note">
               {artifact.status}
             </p>
-
-            <div
-              style={{
-                marginTop: "1rem",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <strong>{artifact.price}</strong>
-
-              {artifact.availability === "Out of stock" ? (
-                <button>
-                  Notify me
-                </button>
-              ) : (
-                <button>
-                  Add to cart
-                </button>
-              )}
-            </div>
           </article>
         ))}
       </section>
