@@ -4,6 +4,33 @@ import { LivingTicker } from "./living-ticker";
 import { MeetingFilterController } from "./meeting-filter-controller";
 import { ThemeToggle } from "./theme-toggle";
 
+const pricingRooms = [
+  {
+    name: "Decision Stress-Test™",
+    href: "/pricing/decision-stress-test.png",
+    line: "A decision before you commit.",
+    description:
+      "One room. One moment. One decision, before you spend money, time, or reputation.",
+    note: "What comes back: not a polite report. A decision.",
+  },
+  {
+    name: "On-Call Room™",
+    href: "/pricing/on-call-room.png",
+    line: "Your decision team. On call.",
+    description:
+      "Recurring pressure and real-time clarity while the work keeps moving.",
+    note: "Direct access when pressure is on and the stakes are real.",
+  },
+  {
+    name: "Kill or Scale™",
+    href: "/pricing/kill-or-scale.png",
+    line: "You have started moving. Now decide the direction.",
+    description:
+      "Stop, reshape, or accelerate products, ideas, ventures, and initiatives.",
+    note: "What comes back: not encouragement. A verdict.",
+  },
+];
+
 export default function Home() {
   return (
     <main className="site-shell">
@@ -168,80 +195,115 @@ export default function Home() {
       </section>
 
       <section className="content-section" id="ways-in">
-        <div className="content-block wide poster-block">
-          <div className="ways-heading">
+        <div className="content-block wide poster-block" style={{ gap: "2.1rem" }}>
+          <div
+            style={{
+              display: "grid",
+              gap: "1rem",
+              borderBottom: "1px solid var(--rule)",
+              paddingBottom: "1.8rem",
+            }}
+          >
             <p className="section-kicker">Three ways in</p>
-            <h2>Which room does it need?</h2>
+            <h2
+              style={{
+                maxWidth: "42rem",
+                color: "var(--ink)",
+                fontSize: "clamp(2.35rem, 5.1vw, 5rem)",
+                fontWeight: 600,
+                letterSpacing: 0,
+                lineHeight: 0.95,
+              }}
+            >
+              Which room does it need?
+            </h2>
             <p className="ways-support">
-              First, the question.
-              Then the pressure: a second opinion, sharper friction, or a room
-              full of opposing voices.
+              First, the question. Then the pressure: a second opinion,
+              sharper friction, or a room full of opposing voices.
             </p>
           </div>
 
-          <div style={{ display: "grid", gap: "2.4rem" }}>
-            <article style={{ display: "grid" }}>
-              <a
-                className="text-link"
-                href="/pricing/decision-stress-test.png"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Open Decision Stress-Test pricing document"
-                style={{ display: "grid", gap: "0.55rem", textDecoration: "none" }}
+          <div
+            style={{
+              display: "grid",
+              gap: "1px",
+              border: "1px solid var(--rule)",
+              background: "var(--rule)",
+            }}
+          >
+            {pricingRooms.map((room) => (
+              <article
+                key={room.name}
+                style={{
+                  display: "grid",
+                  gap: "1.15rem",
+                  minHeight: "18rem",
+                  background: "var(--paper)",
+                  padding: "1.35rem",
+                }}
               >
-                <Image
-                  src="/pricing/decision-stress-test.png"
-                  alt="Decision Stress-Test pricing document"
-                  width={1536}
-                  height={1024}
-                  sizes="(max-width: 900px) 100vw, 88vw"
-                  style={{ width: "100%", height: "auto" }}
-                />
-                <span>Decision Stress-Test&trade; ↗</span>
-              </a>
-            </article>
-
-            <article style={{ display: "grid" }}>
-              <a
-                className="text-link"
-                href="/pricing/on-call-room.png"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Open On-Call Room pricing document"
-                style={{ display: "grid", gap: "0.55rem", textDecoration: "none" }}
-              >
-                <Image
-                  src="/pricing/on-call-room.png"
-                  alt="On-Call Room pricing document"
-                  width={1536}
-                  height={1024}
-                  sizes="(max-width: 900px) 100vw, 88vw"
-                  style={{ width: "100%", height: "auto" }}
-                />
-                <span>On-Call Room&trade; ↗</span>
-              </a>
-            </article>
-
-            <article style={{ display: "grid" }}>
-              <a
-                className="text-link"
-                href="/pricing/kill-or-scale.png"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Open Kill or Scale pricing document"
-                style={{ display: "grid", gap: "0.55rem", textDecoration: "none" }}
-              >
-                <Image
-                  src="/pricing/kill-or-scale.png"
-                  alt="Kill or Scale pricing document"
-                  width={1536}
-                  height={1024}
-                  sizes="(max-width: 900px) 100vw, 88vw"
-                  style={{ width: "100%", height: "auto" }}
-                />
-                <span>Kill or Scale&trade; ↗</span>
-              </a>
-            </article>
+                <div style={{ display: "grid", gap: "0.55rem" }}>
+                  <p
+                    style={{
+                      color: "color-mix(in srgb, var(--team-cold) 74%, var(--ink))",
+                      fontSize: "var(--type-caption)",
+                      fontWeight: 900,
+                      letterSpacing: "0.14em",
+                      lineHeight: 1.1,
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    {room.name}
+                  </p>
+                  <h3
+                    style={{
+                      color: "var(--ink)",
+                      fontSize: "clamp(1.75rem, 3vw, 2.7rem)",
+                      fontWeight: 600,
+                      letterSpacing: 0,
+                      lineHeight: 0.98,
+                    }}
+                  >
+                    {room.line}
+                  </h3>
+                </div>
+                <p
+                  style={{
+                    color: "var(--muted)",
+                    fontSize: "var(--type-secondary)",
+                    fontWeight: 650,
+                    lineHeight: "var(--leading-secondary)",
+                  }}
+                >
+                  {room.description}
+                </p>
+                <em
+                  style={{
+                    color: "var(--ink)",
+                    fontSize: "var(--type-secondary)",
+                    fontStyle: "normal",
+                    fontWeight: 750,
+                    lineHeight: "var(--leading-secondary)",
+                  }}
+                >
+                  {room.note}
+                </em>
+                <a
+                  className="text-link"
+                  href={room.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`Open ${room.name} pricing document`}
+                  style={{
+                    alignSelf: "end",
+                    width: "fit-content",
+                    fontSize: "var(--type-caption)",
+                  }}
+                >
+                  Open document ↗
+                </a>
+              </article>
+            ))}
           </div>
 
           <div className="process-path" aria-label="Decision room path">
@@ -256,7 +318,7 @@ export default function Home() {
             <span>Better decision</span>
           </div>
           <a className="text-link" href="/pricing-documents/">
-            View rooms and pricing →
+            View full pricing documents →
           </a>
         </div>
       </section>
