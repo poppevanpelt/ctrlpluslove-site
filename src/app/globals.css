@@ -368,18 +368,25 @@ p {
   11% {
     opacity: 0.3;
     filter: blur(0.012em) brightness(1.16) saturate(1.55);
+    text-shadow:
+      -0.026em 0 0 color-mix(in srgb, var(--pink) 48%, transparent),
+      0.026em 0 0 color-mix(in srgb, var(--cyan) 58%, transparent);
     transform: translateX(-0.02em);
   }
 
   13% {
     opacity: 0.76;
     filter: blur(0.006em) saturate(1.35);
+    text-shadow:
+      -0.018em 0 0 color-mix(in srgb, var(--pink) 36%, transparent),
+      0.018em 0 0 color-mix(in srgb, var(--cyan) 46%, transparent);
     transform: translateX(0.044em);
   }
 
   16% {
     opacity: 0.94;
     filter: blur(0.003em) brightness(1.08) saturate(1.18);
+    text-shadow: 0 0 0.28rem color-mix(in srgb, var(--cyan) 16%, transparent);
     transform: translateX(-0.012em);
   }
 
@@ -387,6 +394,7 @@ p {
   100% {
     opacity: 1;
     filter: none;
+    text-shadow: none;
     transform: translateX(0);
   }
 }
@@ -400,27 +408,27 @@ p {
   }
 
   8% {
-    opacity: 0.28;
+    opacity: 0.16;
     transform: translate(-52%, -50%) scaleX(0.28);
   }
 
   10% {
-    opacity: 0.82;
+    opacity: 0.42;
     transform: translate(-48%, -50%) scaleX(0.96);
   }
 
   12% {
-    opacity: 0.42;
+    opacity: 0.2;
     transform: translate(-51%, -50%) scaleX(0.58);
   }
 
   13.5% {
-    opacity: 0.88;
+    opacity: 0.46;
     transform: translate(-50%, -50%) scaleX(1.08);
   }
 
   15% {
-    opacity: 0.18;
+    opacity: 0.1;
     transform: translate(-49%, -50%) scaleX(0.42);
   }
 
@@ -552,14 +560,14 @@ h3 {
   top: 50%;
   left: 50%;
   width: min(10.5em, 92%);
-  height: 0.055em;
+  height: 0.035em;
   border-radius: 999px;
   background: color-mix(in srgb, var(--cyan) 70%, var(--indigo));
   box-shadow:
-    0 -0.16em 0 -0.05em color-mix(in srgb, var(--cyan) 34%, transparent),
-    0 0.18em 0 -0.055em color-mix(in srgb, var(--pink) 24%, transparent),
-    0 0 0.7rem color-mix(in srgb, var(--cyan) 28%, transparent),
-    0 0 1rem color-mix(in srgb, var(--indigo) 16%, transparent);
+    0 -0.12em 0 -0.055em color-mix(in srgb, var(--cyan) 22%, transparent),
+    0 0.13em 0 -0.058em color-mix(in srgb, var(--pink) 16%, transparent),
+    0 0 0.45rem color-mix(in srgb, var(--cyan) 18%, transparent),
+    0 0 0.7rem color-mix(in srgb, var(--indigo) 10%, transparent);
   content: "";
   opacity: 0;
   pointer-events: none;
