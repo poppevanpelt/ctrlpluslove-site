@@ -210,16 +210,13 @@ p {
   color: var(--ink);
   background: linear-gradient(
     102deg,
-    #1f55ff 0%,
-    #3250ff 9%,
-    #7b22f2 19%,
-    #df18c8 31%,
-    #ff236d 42%,
-    #ff6c20 52%,
-    #ffc21d 62%,
-    #43ef20 73%,
-    #00d9be 83%,
-    #1787ff 92%,
+    #ff00c8 0%,
+    #ff245f 14%,
+    #ff6c20 27%,
+    #ffc21d 41%,
+    #43ef20 57%,
+    #00d9be 72%,
+    #1787ff 88%,
     #3718ff 100%
   );
   background-size: 100% auto;
@@ -235,7 +232,7 @@ p {
     0 0 0.72rem color-mix(in srgb, var(--cyan) 6%, transparent);
   animation:
     logo-arrive 620ms cubic-bezier(0.22, 1, 0.36, 1) both,
-    logo-spectrum 8s ease-in-out 620ms infinite;
+    logo-spectrum 18s ease-in-out 620ms infinite;
 }
 
 @supports (-webkit-background-clip: text) {
@@ -536,7 +533,7 @@ h3 {
     0.035em 0 0 color-mix(in srgb, var(--cyan) 74%, transparent),
     0 0 0.42rem color-mix(in srgb, var(--cyan) 28%, transparent);
   transform: translateY(-50%);
-  animation: electric-ghost 8s linear infinite;
+  animation: electric-ghost 14s linear infinite;
 }
 
 .hero-line::after {
@@ -557,7 +554,7 @@ h3 {
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, -50%);
-  animation: signal-drop 8s linear infinite;
+  animation: signal-drop 14s linear infinite;
 }
 
 .hero-line-static::before,
@@ -579,12 +576,12 @@ h3 {
   font-size: 0.76em;
   line-height: 1.02;
   transform: translateY(-50%);
-  animation: route-long 8s linear infinite;
+  animation: route-long 14s linear infinite;
 }
 
 .hero-route-final {
   position: relative;
-  animation: route-final 8s linear infinite;
+  animation: route-final 14s linear infinite;
 }
 
 .muted {
