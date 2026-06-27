@@ -116,11 +116,11 @@ const initialPeople: Participant[] = [
   },
   {
     id: "empty",
-    name: "Empty chair",
-    lens: "missing view",
+    name: "Unsaid",
+    lens: "missing perspective",
     position: "silent",
     confidence: 0,
-    status: "unoccupied",
+    status: "not represented",
     note: "What has not been said yet",
     history: ["Unoccupied"],
     active: false,
@@ -462,7 +462,9 @@ export default function LivingDecisionReview() {
                         <span style={{ width: `${person.confidence}%` }} />
                       </div>
                     )}
-                    <div className={styles.position}>{positionLabels[person.position]}</div>
+                    <div className={styles.position}>
+                      {person.vacant ? "not in room" : positionLabels[person.position]}
+                    </div>
                   </article>
                 );
               })}

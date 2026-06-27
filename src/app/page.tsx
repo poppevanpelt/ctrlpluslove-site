@@ -8,26 +8,36 @@ const pricingRooms = [
   {
     name: "DECISION STRESS-TEST™",
     href: "/pricing/decision-stress-test.png",
+    tier: "01 / single decision",
     headline: "A decision before you commit.",
     description:
-      "One room. One moment. One decision, before you spend money, time, or reputation.",
+      "One room. One decision. Fast pressure before money, time, or reputation moves.",
     result: "What comes back: not a polite report. A decision.",
+    signals: ["Fastest way in."],
   },
   {
     name: "ON-CALL ROOM™",
     href: "/pricing/on-call-room.png",
+    tier: "02 / ongoing pressure",
     headline: "Your decision team. On call.",
     description:
-      "Recurring pressure and real-time clarity while the work keeps moving.",
-    result: "Direct access when pressure is on and the stakes are real.",
+      "Recurring pressure and real-time clarity while the work keeps moving and the stakes keep changing.",
+    result: "Direct access when pressure is on.",
+    signals: ["For decisions that do not sit still.", "The room stays close to the work."],
   },
   {
     name: "KILL OR SCALE™",
     href: "/pricing/kill-or-scale.png",
+    tier: "03 / highest leverage",
     headline: "You have started moving. Now decide the direction.",
     description:
-      "Stop, reshape, or accelerate products, ideas, ventures, and initiatives.",
-    result: "What comes back: not encouragement. A verdict.",
+      "A harder room for products, ideas, ventures, and initiatives already carrying cost, momentum, and internal belief.",
+    result: "Stop, reshape, or accelerate with a verdict strong enough to act on.",
+    signals: [
+      "Most value when delay is expensive.",
+      "Tests the work, the market, and the story.",
+      "Built for the decision you cannot keep half-making.",
+    ],
   },
 ];
 
@@ -256,6 +266,18 @@ export default function Home() {
                 </h3>
                 <p
                   style={{
+                    color: "var(--muted)",
+                    fontSize: "0.68rem",
+                    fontWeight: 850,
+                    letterSpacing: "0.04em",
+                    lineHeight: 1.2,
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {room.tier}
+                </p>
+                <p
+                  style={{
                     color: "var(--ink)",
                     fontSize: "clamp(1.05rem, 1.6vw, 1.36rem)",
                     fontWeight: 650,
@@ -284,6 +306,27 @@ export default function Home() {
                 >
                   {room.result}
                 </p>
+                <div
+                  style={{
+                    display: "grid",
+                    gap: "0.32rem",
+                    marginTop: "0.15rem",
+                  }}
+                >
+                  {room.signals.map((signal) => (
+                    <p
+                      key={signal}
+                      style={{
+                        color: "var(--soft)",
+                        fontSize: "clamp(0.76rem, 0.98vw, 0.9rem)",
+                        fontWeight: 650,
+                        lineHeight: 1.35,
+                      }}
+                    >
+                      {signal}
+                    </p>
+                  ))}
+                </div>
                 <a
                   className="text-link"
                   href={room.href}
