@@ -393,38 +393,38 @@ p {
 
 @keyframes signal-drop {
   0%,
-  24%,
-  39%,
+  6%,
+  18%,
   100% {
     opacity: 0;
   }
 
-  27% {
+  8% {
     opacity: 0.28;
     transform: translate(-52%, -50%) scaleX(0.28);
   }
 
-  29% {
-    opacity: 0.95;
+  10% {
+    opacity: 0.82;
     transform: translate(-48%, -50%) scaleX(0.96);
   }
 
-  31% {
-    opacity: 0.5;
+  12% {
+    opacity: 0.42;
     transform: translate(-51%, -50%) scaleX(0.58);
   }
 
-  33% {
-    opacity: 1;
+  13.5% {
+    opacity: 0.88;
     transform: translate(-50%, -50%) scaleX(1.08);
   }
 
-  35% {
-    opacity: 0.2;
+  15% {
+    opacity: 0.18;
     transform: translate(-49%, -50%) scaleX(0.42);
   }
 
-  38% {
+  17% {
     opacity: 0;
     transform: translate(-50%, -50%) scaleX(1);
   }
@@ -554,17 +554,17 @@ h3 {
   width: min(10.5em, 92%);
   height: 0.055em;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--ink) 72%, var(--paper));
+  background: color-mix(in srgb, var(--cyan) 70%, var(--indigo));
   box-shadow:
-    0 -0.19em 0 -0.045em color-mix(in srgb, var(--cyan) 44%, transparent),
-    0 0.21em 0 -0.052em color-mix(in srgb, var(--pink) 38%, transparent),
-    0 0 0.72rem color-mix(in srgb, var(--cyan) 24%, transparent),
-    0 0 1.15rem color-mix(in srgb, var(--pink) 16%, transparent);
+    0 -0.16em 0 -0.05em color-mix(in srgb, var(--cyan) 34%, transparent),
+    0 0.18em 0 -0.055em color-mix(in srgb, var(--pink) 24%, transparent),
+    0 0 0.7rem color-mix(in srgb, var(--cyan) 28%, transparent),
+    0 0 1rem color-mix(in srgb, var(--indigo) 16%, transparent);
   content: "";
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, -50%);
-  animation: none;
+  animation: signal-drop 4.8s linear infinite;
 }
 
 .hero-line-static::before,
