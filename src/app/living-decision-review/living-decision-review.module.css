@@ -137,6 +137,11 @@
   font-weight: 850;
   text-decoration: none;
   cursor: pointer;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
 }
 
 .decisionInput button:hover,
@@ -162,6 +167,56 @@
   font-size: clamp(2.65rem, 6vw, 6.5rem);
   line-height: 0.92;
   text-wrap: balance;
+}
+
+.demoState {
+  display: flex;
+  width: min(100%, 44rem);
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 1px solid #ded9d1;
+  border-radius: 999px;
+  background: #fffdfa;
+  padding: 0.5rem 0.55rem 0.5rem 1rem;
+  box-shadow: 0 1rem 2.8rem rgba(35, 31, 26, 0.055);
+}
+
+.demoState span {
+  flex: 0 0 auto;
+  border: 1px solid rgba(129, 122, 114, 0.28);
+  border-radius: 999px;
+  color: #4f4a45;
+  padding: 0.45rem 0.68rem;
+  font-size: 0.68rem;
+  font-weight: 880;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.demoState p {
+  margin: 0;
+  color: #5f5952;
+  font-size: 0.9rem;
+  font-weight: 620;
+  line-height: 1.25;
+  text-align: right;
+}
+
+.demoStarted .decisionInput button {
+  border-color: #4a7e77;
+  background: #4a7e77;
+}
+
+.demoStarted .demoState {
+  border-color: rgba(74, 126, 119, 0.32);
+  background: #f4f8f4;
+}
+
+.demoStarted .demoState span {
+  border-color: rgba(74, 126, 119, 0.32);
+  color: #315f59;
 }
 
 .room {
@@ -233,6 +288,16 @@
     translateY(calc(var(--orbit) * -1))
     rotate(calc(var(--angle) * -1));
   animation: arrive 520ms ease both;
+  animation-delay: var(--delay, 0ms);
+}
+
+.page:not(.demoStarted) .mind {
+  opacity: 0.42;
+  animation: none;
+}
+
+.demoStarted .roomQuestion {
+  animation: pulseQuestion 900ms ease both;
 }
 
 .mind strong {
@@ -500,6 +565,12 @@
   }
 }
 
+@keyframes pulseQuestion {
+  45% {
+    transform: scale(1.025);
+  }
+}
+
 @media (max-width: 1080px) {
   .reactionGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -552,6 +623,16 @@
 
   .decisionInput button {
     width: 100%;
+  }
+
+  .demoState {
+    display: grid;
+    border-radius: 1rem;
+    padding: 0.72rem;
+  }
+
+  .demoState p {
+    text-align: left;
   }
 
   .sectionLead h2 {
@@ -614,7 +695,8 @@
 @media (prefers-reduced-motion: reduce) {
   .mind,
   .reaction,
-  .confidence div::after {
+  .confidence div::after,
+  .demoStarted .roomQuestion {
     animation: none;
   }
 

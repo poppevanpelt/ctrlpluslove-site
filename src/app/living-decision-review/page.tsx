@@ -1,5 +1,7 @@
+"use client";
+
 import Link from "next/link";
-import type { CSSProperties } from "react";
+import { useState, type CSSProperties, type FormEvent } from "react";
 
 import styles from "./living-decision-review.module.css";
 
@@ -82,8 +84,22 @@ const differencePoints = [
 ];
 
 export default function LivingDecisionReview() {
+  const [demoStarted, setDemoStarted] = useState(false);
+
+  function startDemo(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setDemoStarted(true);
+
+    window.setTimeout(() => {
+      document.getElementById("room")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 80);
+  }
+
   return (
-    <main className={styles.page}>
+    <main className={`${styles.page} ${demoStarted ? styles.demoStarted : ""}`}>
       <header className={styles.topbar}>
         <Link className={styles.brand} href="/" aria-label="ctrl+love home">
           ctrl+love
@@ -99,11 +115,11 @@ export default function LivingDecisionReview() {
           minds and watch better judgment emerge.
         </p>
 
-        <form className={styles.decisionInput} action="#room" aria-label="Decision example">
+        <form className={styles.decisionInput} onSubmit={startDemo} aria-label="Decision example">
           <label htmlFor="decision">Decision</label>
           <div>
             <input id="decision" readOnly value={decision} />
-            <button type="submit">Bring it into the room</button>
+            <button type="submit">{demoStarted ? "Demo running" : "Start the demo"}</button>
           </div>
         </form>
       </section>
@@ -112,6 +128,15 @@ export default function LivingDecisionReview() {
         <div className={styles.sectionLead}>
           <p className={styles.kicker}>The room gathers</p>
           <h2 id="room-title">Every important decision deserves more than one perspective.</h2>
+        </div>
+
+        <div className={styles.demoState} aria-live="polite">
+          <span>{demoStarted ? "Demo started" : "Waiting to start"}</span>
+          <p>
+            {demoStarted
+              ? "Seven named minds join, take positions and begin pressure-testing the decision."
+              : "Use Start the demo above to bring the decision into the room."}
+          </p>
         </div>
 
         <div className={styles.room} aria-label="Seven minds around the room">
@@ -127,7 +152,12 @@ export default function LivingDecisionReview() {
               <article
                 className={styles.mind}
                 key={mind.name}
-                style={{ "--angle": `${angle}deg` } as CSSProperties}
+                style={
+                  {
+                    "--angle": `${angle}deg`,
+                    "--delay": `${index * 120}ms`,
+                  } as CSSProperties
+                }
               >
                 <strong>{mind.name}</strong>
                 <span>{mind.title}</span>
