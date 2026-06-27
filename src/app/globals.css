@@ -758,7 +758,7 @@ h3 {
 }
 
 .content-section#ways-in {
-  padding-top: 6rem;
+  padding-top: 3.75rem;
   padding-bottom: 6.1rem;
 }
 
@@ -850,7 +850,7 @@ h3 {
 }
 
 .content-section#ways-in {
-  padding-top: 5.75rem;
+  padding-top: 3.5rem;
   padding-bottom: 6.05rem;
 }
 
@@ -1639,6 +1639,95 @@ h3 {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 3.05rem;
+}
+
+.pricing-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.75rem, 1.8vw, 1.25rem);
+}
+
+.pricing-preview-card {
+  display: grid;
+  align-content: start;
+  gap: 0.5rem;
+  border-top: 1px solid var(--rule);
+  padding-top: 1rem;
+}
+
+.pricing-preview-card h3 {
+  color: var(--ink);
+  font-size: clamp(0.86rem, 1.22vw, 1.05rem);
+  font-weight: 850;
+  letter-spacing: 0.02em;
+  line-height: 1.08;
+}
+
+.pricing-preview-headline {
+  color: var(--ink);
+  font-size: clamp(1.05rem, 1.6vw, 1.36rem);
+  font-weight: 650;
+  line-height: 1.14;
+}
+
+.pricing-preview-copy {
+  color: var(--muted);
+  font-size: clamp(0.84rem, 1.08vw, 0.98rem);
+  font-weight: 650;
+  line-height: var(--leading-secondary);
+}
+
+.pricing-preview-result {
+  color: var(--ink);
+  font-size: clamp(0.82rem, 1.04vw, 0.96rem);
+  font-weight: 700;
+  line-height: var(--leading-secondary);
+}
+
+.pricing-preview-card .text-link {
+  width: fit-content;
+  margin-top: 0.2rem;
+  font-size: 0.68rem;
+}
+
+.pricing-document-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.7rem, 1.6vw, 1.2rem);
+}
+
+.pricing-home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: fit-content;
+}
+
+.pricing-home-link img {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 0.35rem;
+}
+
+.pricing-document-card {
+  min-width: 0;
+}
+
+.pricing-document-card a {
+  display: grid;
+  gap: 0.55rem;
+  text-decoration: none;
+}
+
+.pricing-document-card img {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
+}
+
+.pricing-document-card span {
+  font-size: clamp(0.64rem, 1vw, 0.78rem);
+  line-height: 1.2;
 }
 
 .process-path {
@@ -2528,8 +2617,54 @@ h3 {
   }
 
   .offer-grid {
-    grid-template-columns: 1fr;
-    gap: 1.65rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.68rem;
+  }
+
+  .pricing-preview-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.6rem;
+  }
+
+  .pricing-preview-card {
+    gap: 0.38rem;
+    padding-top: 0.82rem;
+  }
+
+  .pricing-preview-card h3 {
+    font-size: clamp(0.62rem, 2.35vw, 0.78rem);
+  }
+
+  .pricing-preview-headline {
+    font-size: clamp(0.76rem, 2.85vw, 0.94rem);
+  }
+
+  .pricing-preview-card .text-link {
+    font-size: 0.54rem;
+    letter-spacing: 0.04em;
+  }
+
+  .pricing-preview-copy {
+    font-size: clamp(0.64rem, 2.5vw, 0.78rem);
+    line-height: 1.32;
+  }
+
+  .pricing-preview-result {
+    font-size: clamp(0.62rem, 2.42vw, 0.76rem);
+    line-height: 1.32;
+  }
+
+  .pricing-document-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  .pricing-document-card a {
+    gap: 0.42rem;
+  }
+
+  .pricing-document-card span {
+    font-size: 0.54rem;
   }
 
   .case-grid {
@@ -4420,4 +4555,22 @@ h3 {
     align-items: flex-start;
     flex-direction: column;
   }
+}
+
+
+/* WAYS-IN THREE-COLUMN OVERRIDE */
+#ways-in .offer-grid,
+#ways-in .pricing-preview-grid,
+#ways-in .pricing-room-list {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  grid-auto-flow: column !important;
+  gap: clamp(0.5rem, 1.6vw, 1.2rem) !important;
+}
+
+#ways-in .offer-grid > *,
+#ways-in .pricing-preview-grid > *,
+#ways-in .pricing-room-list > * {
+  min-width: 0 !important;
+  width: auto !important;
 }

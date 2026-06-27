@@ -6,28 +6,28 @@ import { ThemeToggle } from "./theme-toggle";
 
 const pricingRooms = [
   {
-    name: "Decision Stress-Test™",
+    name: "DECISION STRESS-TEST™",
     href: "/pricing/decision-stress-test.png",
-    line: "A decision before you commit.",
+    headline: "A decision before you commit.",
     description:
       "One room. One moment. One decision, before you spend money, time, or reputation.",
-    note: "What comes back: not a polite report. A decision.",
+    result: "What comes back: not a polite report. A decision.",
   },
   {
-    name: "On-Call Room™",
+    name: "ON-CALL ROOM™",
     href: "/pricing/on-call-room.png",
-    line: "Your decision team. On call.",
+    headline: "Your decision team. On call.",
     description:
       "Recurring pressure and real-time clarity while the work keeps moving.",
-    note: "Direct access when pressure is on and the stakes are real.",
+    result: "Direct access when pressure is on and the stakes are real.",
   },
   {
-    name: "Kill or Scale™",
+    name: "KILL OR SCALE™",
     href: "/pricing/kill-or-scale.png",
-    line: "You have started moving. Now decide the direction.",
+    headline: "You have started moving. Now decide the direction.",
     description:
       "Stop, reshape, or accelerate products, ideas, ventures, and initiatives.",
-    note: "What comes back: not encouragement. A verdict.",
+    result: "What comes back: not encouragement. A verdict.",
   },
 ];
 
@@ -224,11 +224,11 @@ export default function Home() {
           </div>
 
           <div
+            aria-label="Room pricing preview"
             style={{
               display: "grid",
-              gap: "1px",
-              border: "1px solid var(--rule)",
-              background: "var(--rule)",
+              gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+              gap: "clamp(0.5rem, 1.6vw, 1.2rem)",
             }}
           >
             {pricingRooms.map((room) => (
@@ -236,58 +236,54 @@ export default function Home() {
                 key={room.name}
                 style={{
                   display: "grid",
-                  gap: "1.15rem",
-                  minHeight: "18rem",
-                  background: "var(--paper)",
-                  padding: "1.35rem",
+                  alignContent: "start",
+                  gap: "0.5rem",
+                  minWidth: 0,
+                  borderTop: "1px solid var(--rule)",
+                  paddingTop: "1rem",
                 }}
               >
-                <div style={{ display: "grid", gap: "0.55rem" }}>
-                  <p
-                    style={{
-                      color: "color-mix(in srgb, var(--team-cold) 74%, var(--ink))",
-                      fontSize: "var(--type-caption)",
-                      fontWeight: 900,
-                      letterSpacing: "0.14em",
-                      lineHeight: 1.1,
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    {room.name}
-                  </p>
-                  <h3
-                    style={{
-                      color: "var(--ink)",
-                      fontSize: "clamp(1.75rem, 3vw, 2.7rem)",
-                      fontWeight: 600,
-                      letterSpacing: 0,
-                      lineHeight: 0.98,
-                    }}
-                  >
-                    {room.line}
-                  </h3>
-                </div>
+                <h3
+                  style={{
+                    color: "var(--ink)",
+                    fontSize: "clamp(0.86rem, 1.22vw, 1.05rem)",
+                    fontWeight: 850,
+                    letterSpacing: "0.02em",
+                    lineHeight: 1.08,
+                  }}
+                >
+                  {room.name}
+                </h3>
+                <p
+                  style={{
+                    color: "var(--ink)",
+                    fontSize: "clamp(1.05rem, 1.6vw, 1.36rem)",
+                    fontWeight: 650,
+                    lineHeight: 1.14,
+                  }}
+                >
+                  {room.headline}
+                </p>
                 <p
                   style={{
                     color: "var(--muted)",
-                    fontSize: "var(--type-secondary)",
+                    fontSize: "clamp(0.84rem, 1.08vw, 0.98rem)",
                     fontWeight: 650,
                     lineHeight: "var(--leading-secondary)",
                   }}
                 >
                   {room.description}
                 </p>
-                <em
+                <p
                   style={{
                     color: "var(--ink)",
-                    fontSize: "var(--type-secondary)",
-                    fontStyle: "normal",
-                    fontWeight: 750,
+                    fontSize: "clamp(0.82rem, 1.04vw, 0.96rem)",
+                    fontWeight: 700,
                     lineHeight: "var(--leading-secondary)",
                   }}
                 >
-                  {room.note}
-                </em>
+                  {room.result}
+                </p>
                 <a
                   className="text-link"
                   href={room.href}
@@ -295,9 +291,9 @@ export default function Home() {
                   rel="noreferrer"
                   aria-label={`Open ${room.name} pricing document`}
                   style={{
-                    alignSelf: "end",
                     width: "fit-content",
-                    fontSize: "var(--type-caption)",
+                    marginTop: "0.2rem",
+                    fontSize: "0.68rem",
                   }}
                 >
                   Open document ↗
