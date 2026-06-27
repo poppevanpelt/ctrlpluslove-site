@@ -9,31 +9,22 @@ const pricingRooms = [
     name: "DECISION STRESS-TEST™",
     href: "/pricing/decision-stress-test.png",
     tier: "01 / single decision",
-    headline: "Pressure test.",
-    result: "Go, no-go, or rethink.",
-    details: [],
+    headline: "For one decision that needs pressure before it becomes public.",
+    result: "The room tests the logic, the emotional pull, and the obvious blind spots so you can leave with a sharper go, no-go, or rethink.",
   },
   {
     name: "ON-CALL ROOM™",
     href: "/pricing/on-call-room.png",
     tier: "02 / ongoing pressure",
-    headline: "Ongoing pressure.",
-    result: "Your room, on call.",
-    details: [
-      "For moving decisions.",
-    ],
+    headline: "For teams making decisions that keep moving.",
+    result: "Use the room as an on-call counterweight: a place to bring new evidence, test momentum, and keep the decision honest as conditions change.",
   },
   {
     name: "KILL OR SCALE™",
     href: "/pricing/kill-or-scale.png",
     tier: "03 / highest leverage",
-    headline: "Kill or scale.",
-    result: "For expensive momentum.",
-    details: [
-      "Strategy.",
-      "Market.",
-      "Story.",
-    ],
+    headline: "For costly ideas that either need commitment or a clean stop.",
+    result: "The room separates strategy, market signal, and story so you can see whether the thing deserves more force or less oxygen.",
   },
 ];
 
@@ -110,8 +101,13 @@ export default function Home() {
             ctrl+love
           </p>
           <div className="hero-message">
-            <h1 className="hero-line hero-line-static">
-              Shortcut to reality.
+            <h1 className="hero-line" aria-label="Shortcut to reality.">
+              <span className="hero-route hero-route-long" aria-hidden="true">
+                Assuring compromise.
+              </span>
+              <span className="hero-route hero-route-final">
+                Shortcut to reality.
+              </span>
             </h1>
             <p className="hero-translation">
               Stress-test your decisions before the market does.
@@ -139,37 +135,17 @@ export default function Home() {
           <p className="section-kicker" id="departments-title">
             Departments
           </p>
-          <div className="departments-groups">
-            <div className="departments-group">
-              <p>Named departments</p>
-              <div className="departments-list departments-list-named">
-                {departments.slice(0, 2).map((department) => (
-                  <a
-                    className="department-link"
-                    href={department.href}
-                    key={department.name}
-                  >
-                    <span>{department.name} →</span>
-                    <em>{department.person}</em>
-                  </a>
-                ))}
-              </div>
-            </div>
-            <div className="departments-group">
-              <p>Case departments</p>
-              <div className="departments-list">
-                {departments.slice(2).map((department) => (
-                  <a
-                    className="department-link"
-                    href={department.href}
-                    key={department.name}
-                  >
-                    <span>{department.name} →</span>
-                    <em>{department.person}</em>
-                  </a>
-                ))}
-              </div>
-            </div>
+          <div className="departments-list">
+            {departments.map((department) => (
+              <a
+                className="department-link"
+                href={department.href}
+                key={department.name}
+              >
+                <span>{department.name} →</span>
+                <em>{department.person}</em>
+              </a>
+            ))}
           </div>
         </div>
       </section>
@@ -337,15 +313,6 @@ export default function Home() {
                 <p className="pricing-room-result">
                   {room.result}
                 </p>
-                {room.details.length > 0 ? (
-                  <div className="pricing-room-details">
-                    {room.details.map((detail) => (
-                      <p key={detail}>
-                        {detail}
-                      </p>
-                    ))}
-                  </div>
-                ) : null}
                 <a
                   className="text-link"
                   href={room.href}

@@ -57,16 +57,16 @@ const timeline = [
 
 const productBlocks = [
   {
-    title: "Bring your decision",
-    body: "Start with the real question.",
+    title: "Input",
+    body: "A live decision, written in plain language. No deck, no prompt engineering, no theatre. The room first finds the hidden bet inside the question.",
   },
   {
-    title: "Watch judgment form",
-    body: "Positions move as evidence arrives.",
+    title: "Pressure",
+    body: "Different minds argue from different jobs: customer, culture, money, consequence, evidence, emotion. The point is not to agree faster. It is to make the weak parts visible.",
   },
   {
-    title: "Leave with sharper direction",
-    body: "Not certainty. Better judgment.",
+    title: "Output",
+    body: "A sharper recommendation with conditions attached: what to do, what to watch, what would change the answer, and which assumption should be tested before money or reputation moves.",
   },
 ];
 
@@ -211,8 +211,12 @@ export default function LivingDecisionReview() {
       </header>
 
       <section className={`${styles.section} ${styles.hero}`} aria-labelledby="hero-title">
-        <p className={styles.kicker}>Product demo</p>
-        <h1 id="hero-title">Watch a decision change its mind.</h1>
+        <p className={styles.kicker}>Live product</p>
+        <h1 id="hero-title">A decision room that thinks in public.</h1>
+        <p className={styles.heroSubcopy}>
+          Bring one unresolved decision. The room turns it into tension,
+          opposition, evidence, and a recommendation you can defend.
+        </p>
 
         <div className={styles.decisionInput} aria-label="Decision example">
           <span>Decision</span>
@@ -284,8 +288,13 @@ export default function LivingDecisionReview() {
 
       <section className={styles.section} aria-labelledby="how-title">
         <div className={styles.sectionLead}>
-          <p className={styles.kicker}>How it works</p>
-          <h2 id="how-title">Only now, the product.</h2>
+          <p className={styles.kicker}>What it does</p>
+          <h2 id="how-title">One decision in. A tested recommendation out.</h2>
+          <p className={styles.productIntro}>
+            The product is a structured argument engine. It does not summarize
+            a decision. It makes the decision withstand pressure before the
+            outside world gets a vote.
+          </p>
         </div>
 
         <div className={styles.productGrid}>
