@@ -248,7 +248,7 @@ export default function Home() {
       </section>
 
       <section className="content-section" id="ways-in">
-        <div className="content-block wide poster-block" style={{ gap: "2.1rem" }}>
+        <div className="content-block wide poster-block ways-block">
           <a
             href="/living-decision-review/"
             aria-label="Open the live discussion simulator"
@@ -305,25 +305,9 @@ export default function Home() {
               Open simulator →
             </span>
           </a>
-          <div
-            style={{
-              display: "grid",
-              gap: "1rem",
-              borderBottom: "1px solid var(--rule)",
-              paddingBottom: "1.8rem",
-            }}
-          >
+          <div className="ways-heading">
             <p className="section-kicker">Three ways in</p>
-            <h2
-              style={{
-                maxWidth: "42rem",
-                color: "var(--ink)",
-                fontSize: "clamp(2.35rem, 5.1vw, 5rem)",
-                fontWeight: 600,
-                letterSpacing: 0,
-                lineHeight: 0.95,
-              }}
-            >
+            <h2>
               Which room does it need?
             </h2>
             <p className="ways-support">
@@ -333,87 +317,30 @@ export default function Home() {
           </div>
 
           <div
+            className="pricing-room-list"
             aria-label="Room pricing preview"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-              gap: "clamp(0.5rem, 1.6vw, 1.2rem)",
-            }}
           >
             {pricingRooms.map((room) => (
               <article
+                className="pricing-room-card"
                 key={room.name}
-                style={{
-                  display: "grid",
-                  alignContent: "start",
-                  gap: "0.5rem",
-                  minWidth: 0,
-                  borderTop: "1px solid var(--rule)",
-                  paddingTop: "1rem",
-                }}
               >
-                <h3
-                  style={{
-                    color: "var(--ink)",
-                    fontSize: "clamp(0.86rem, 1.22vw, 1.05rem)",
-                    fontWeight: 850,
-                    letterSpacing: "0.02em",
-                    lineHeight: 1.08,
-                  }}
-                >
+                <h3>
                   {room.name}
                 </h3>
-                <p
-                  style={{
-                    color: "var(--muted)",
-                    fontSize: "0.68rem",
-                    fontWeight: 850,
-                    letterSpacing: "0.04em",
-                    lineHeight: 1.2,
-                    textTransform: "uppercase",
-                  }}
-                >
+                <p className="pricing-room-tier">
                   {room.tier}
                 </p>
-                <p
-                  style={{
-                    color: "var(--ink)",
-                    fontSize: "clamp(1.05rem, 1.6vw, 1.36rem)",
-                    fontWeight: 650,
-                    lineHeight: 1.14,
-                    textWrap: "balance",
-                  }}
-                >
+                <p className="pricing-room-headline">
                   {room.headline}
                 </p>
-                <p
-                  style={{
-                    color: "var(--ink)",
-                    fontSize: "clamp(0.82rem, 1.04vw, 0.96rem)",
-                    fontWeight: 700,
-                    lineHeight: "var(--leading-secondary)",
-                  }}
-                >
+                <p className="pricing-room-result">
                   {room.result}
                 </p>
                 {room.details.length > 0 ? (
-                  <div
-                    style={{
-                      display: "grid",
-                      gap: "0.32rem",
-                      marginTop: "0.1rem",
-                    }}
-                  >
+                  <div className="pricing-room-details">
                     {room.details.map((detail) => (
-                      <p
-                        key={detail}
-                        style={{
-                          color: "var(--soft)",
-                          fontSize: "clamp(0.76rem, 0.98vw, 0.9rem)",
-                          fontWeight: 650,
-                          lineHeight: 1.35,
-                        }}
-                      >
+                      <p key={detail}>
                         {detail}
                       </p>
                     ))}
@@ -425,11 +352,6 @@ export default function Home() {
                   target="_blank"
                   rel="noreferrer"
                   aria-label={`Open ${room.name} pricing document`}
-                  style={{
-                    width: "fit-content",
-                    marginTop: "0.2rem",
-                    fontSize: "0.68rem",
-                  }}
                 >
                   Open document ↗
                 </a>

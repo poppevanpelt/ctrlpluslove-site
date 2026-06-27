@@ -209,17 +209,20 @@ p {
   max-width: 100%;
   color: var(--ink);
   background: linear-gradient(
-    100deg,
-    var(--orange) 0%,
-    var(--orange) 14%,
-    var(--yellow) 23%,
-    var(--green) 33%,
-    var(--cyan) 49%,
-    var(--indigo) 62%,
-    var(--violet) 77%,
-    var(--pink) 100%
+    90deg,
+    var(--pink) 0%,
+    var(--orange) 10%,
+    var(--yellow) 20%,
+    var(--green) 30%,
+    var(--cyan) 42%,
+    var(--paper) 49%,
+    var(--cyan) 56%,
+    var(--indigo) 68%,
+    var(--violet) 80%,
+    var(--pink) 90%,
+    var(--orange) 100%
   );
-  background-size: 100% auto;
+  background-size: 320% auto;
   -webkit-background-clip: text;
   background-clip: text;
   font-size: clamp(6.25rem, 14.4vw, 12.4rem);
@@ -228,9 +231,11 @@ p {
   letter-spacing: 0;
   transform-origin: center;
   text-shadow:
-    0 0 2rem color-mix(in srgb, var(--pink) 18%, transparent),
-    0 0 0 color-mix(in srgb, var(--ink) 0%, transparent);
-  animation: logo-arrive 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    0 0 1.9rem color-mix(in srgb, var(--pink) 22%, transparent),
+    0 0 2.8rem color-mix(in srgb, var(--cyan) 10%, transparent);
+  animation:
+    logo-arrive 620ms cubic-bezier(0.22, 1, 0.36, 1) both,
+    logo-spectrum 3.2s linear 620ms infinite;
 }
 
 @supports (-webkit-background-clip: text) {
@@ -278,11 +283,33 @@ p {
 
 @keyframes logo-spectrum {
   0% {
-    background-position: 0% 50%;
+    background-position: 120% 50%;
+    filter: brightness(1) saturate(1.04);
+    text-shadow:
+      0 0 1.4rem color-mix(in srgb, var(--pink) 20%, transparent),
+      0 0 2rem color-mix(in srgb, var(--orange) 12%, transparent);
+  }
+
+  35% {
+    filter: brightness(1.08) saturate(1.28);
+    text-shadow:
+      0 0 2.7rem color-mix(in srgb, var(--cyan) 34%, transparent),
+      0 0 3.6rem color-mix(in srgb, var(--green) 18%, transparent);
+  }
+
+  70% {
+    filter: brightness(1.05) saturate(1.2);
+    text-shadow:
+      0 0 2.4rem color-mix(in srgb, var(--violet) 28%, transparent),
+      0 0 3.2rem color-mix(in srgb, var(--pink) 18%, transparent);
   }
 
   100% {
-    background-position: 100% 50%;
+    background-position: -120% 50%;
+    filter: brightness(1) saturate(1.04);
+    text-shadow:
+      0 0 1.4rem color-mix(in srgb, var(--pink) 20%, transparent),
+      0 0 2rem color-mix(in srgb, var(--orange) 12%, transparent);
   }
 }
 
@@ -1017,30 +1044,30 @@ h3 {
 
 .departments-block {
   display: grid;
-  grid-template-columns: minmax(9rem, 0.28fr) minmax(0, 1fr);
-  gap: clamp(1.2rem, 3.5vw, 3rem);
-  width: min(100%, 64rem);
+  grid-template-columns: minmax(8.5rem, 10rem) minmax(0, 1fr);
+  gap: clamp(1.6rem, 4vw, 4.2rem);
+  width: min(100%, 78rem);
   margin: 0 auto;
 }
 
 .features-block {
   display: grid;
-  grid-template-columns: minmax(9rem, 0.28fr) minmax(0, 1fr);
-  gap: clamp(1.2rem, 3.5vw, 3rem);
-  width: min(100%, 64rem);
+  grid-template-columns: minmax(8.5rem, 10rem) minmax(0, 1fr);
+  gap: clamp(1.6rem, 4vw, 4.2rem);
+  width: min(100%, 78rem);
   margin: 0 auto;
 }
 
 .departments-list {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem clamp(1.2rem, 3vw, 2.4rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13.5rem), 1fr));
+  gap: clamp(1rem, 2.2vw, 1.55rem) clamp(1.2rem, 2.8vw, 2.2rem);
 }
 
 .features-list {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem clamp(1.2rem, 3vw, 2.4rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  gap: clamp(1rem, 2.2vw, 1.55rem) clamp(1.2rem, 2.8vw, 2.2rem);
 }
 
 .departments-groups {
@@ -1063,23 +1090,28 @@ h3 {
 }
 
 .departments-list-named {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
 }
 
 .department-link,
 .feature-link {
   display: grid;
-  gap: 0.18rem;
+  align-content: start;
+  gap: 0.24rem;
+  min-height: 5.35rem;
+  border-top: 1px solid var(--rule);
   color: var(--ink);
+  padding-top: 0.78rem;
   text-decoration: none;
   transition: color 160ms ease, transform 160ms ease;
 }
 
 .department-link span,
 .feature-link span {
-  font-size: clamp(1rem, 1.25vw, 1.18rem);
+  font-size: clamp(1.02rem, 1.14vw, 1.16rem);
   font-weight: 650;
-  line-height: 1.18;
+  line-height: 1.12;
+  text-wrap: balance;
 }
 
 .department-link em,
@@ -1088,7 +1120,7 @@ h3 {
   font-size: var(--type-secondary);
   font-style: normal;
   font-weight: 800;
-  line-height: var(--leading-secondary);
+  line-height: 1.38;
 }
 
 .department-link:hover,
@@ -1731,6 +1763,95 @@ h3 {
   font-size: clamp(1.06rem, 1.22vw, 1.2rem);
   font-weight: 700;
   line-height: var(--leading-secondary);
+}
+
+.ways-block {
+  gap: clamp(1.55rem, 3vw, 2.25rem) !important;
+}
+
+.ways-heading {
+  display: grid;
+  gap: clamp(0.75rem, 1.5vw, 1rem);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: clamp(1.25rem, 2.2vw, 1.8rem);
+}
+
+.ways-heading h2 {
+  max-width: 12ch;
+  color: var(--ink);
+  font-size: clamp(2.35rem, 4.8vw, 4.6rem);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 0.95;
+  text-wrap: balance;
+}
+
+.pricing-room-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2.2vw, 1.8rem);
+}
+
+.pricing-room-card {
+  display: grid;
+  align-content: start;
+  gap: 0.55rem;
+  min-width: 0;
+  border-top: 1px solid var(--rule);
+  padding-top: 1rem;
+}
+
+.pricing-room-card h3 {
+  color: var(--ink);
+  font-size: clamp(0.88rem, 1.08vw, 1.02rem);
+  font-weight: 850;
+  letter-spacing: 0.02em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.pricing-room-tier {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.pricing-room-headline {
+  color: var(--ink);
+  font-size: clamp(1.08rem, 1.5vw, 1.34rem);
+  font-weight: 650;
+  line-height: 1.14;
+  text-wrap: balance;
+}
+
+.pricing-room-result {
+  color: var(--ink);
+  font-size: clamp(0.86rem, 1vw, 0.96rem);
+  font-weight: 700;
+  line-height: 1.38;
+}
+
+.pricing-room-details {
+  display: grid;
+  gap: 0.3rem;
+  margin-top: 0.1rem;
+}
+
+.pricing-room-details p {
+  color: var(--soft);
+  font-size: clamp(0.78rem, 0.92vw, 0.9rem);
+  font-weight: 650;
+  line-height: 1.32;
+}
+
+.pricing-room-card .text-link {
+  justify-self: start;
+  width: fit-content;
+  margin-top: 0.2rem;
+  font-size: 0.68rem;
 }
 
 .offer-grid {
@@ -2748,6 +2869,38 @@ h3 {
     gap: 0.68rem;
   }
 
+  .ways-block {
+    gap: 1.35rem !important;
+  }
+
+  .ways-heading h2 {
+    max-width: 100%;
+    font-size: clamp(2.25rem, 10vw, 3.35rem);
+  }
+
+  .pricing-room-list {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .pricing-room-card {
+    gap: 0.46rem;
+    min-height: auto;
+    padding-top: 0.9rem;
+  }
+
+  .pricing-room-card h3 {
+    font-size: 0.92rem;
+  }
+
+  .pricing-room-headline {
+    font-size: 1.12rem;
+  }
+
+  .pricing-room-card .text-link {
+    font-size: 0.64rem;
+  }
+
   .pricing-preview-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.6rem;
@@ -2875,7 +3028,6 @@ h3 {
     scroll-behavior: auto;
   }
 
-  .hero-logo,
   .hero-copy,
   .hero-route,
   .hero-line::before,
@@ -2901,8 +3053,9 @@ h3 {
   }
 
   .hero-logo {
-    background-position: 50% 50%;
-    filter: none;
+    animation:
+      logo-arrive 1ms linear both,
+      logo-spectrum 4.8s linear infinite;
     transform: none;
   }
 }
@@ -4682,22 +4835,4 @@ h3 {
     align-items: flex-start;
     flex-direction: column;
   }
-}
-
-
-/* WAYS-IN THREE-COLUMN OVERRIDE */
-#ways-in .offer-grid,
-#ways-in .pricing-preview-grid,
-#ways-in .pricing-room-list {
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  grid-auto-flow: column !important;
-  gap: clamp(0.5rem, 1.6vw, 1.2rem) !important;
-}
-
-#ways-in .offer-grid > *,
-#ways-in .pricing-preview-grid > *,
-#ways-in .pricing-room-list > * {
-  min-width: 0 !important;
-  width: auto !important;
 }

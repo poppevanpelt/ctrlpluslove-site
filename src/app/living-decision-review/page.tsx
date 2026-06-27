@@ -7,8 +7,6 @@ import { useEffect, useState, type CSSProperties, type MouseEvent } from "react"
 import styles from "./living-decision-review.module.css";
 
 const decision = "Should Suki launch a Matcha Subscription?";
-const initialReviewDelay = 520;
-const reviewStepDelay = 1180;
 
 const timeline = [
   {
@@ -74,16 +72,6 @@ const productBlocks = [
 
 const fallbackController = `
 (() => {
-  const initialDelay = ${initialReviewDelay};
-  const stepDelay = ${reviewStepDelay};
-  const timers = [];
-
-  function clearTimers() {
-    while (timers.length) {
-      window.clearTimeout(timers.pop());
-    }
-  }
-
   function init() {
     const root = document.querySelector("[data-demo-root]");
     const review = document.getElementById("review");
@@ -93,18 +81,36 @@ const fallbackController = `
 
     if (!root || !review || !start || steps.length === 0) return;
 
-    function revealStep(step) {
-      step.dataset.visible = "true";
+    function syncReview() {
+      if (root.dataset.demoRunning !== "true") return;
 
-      if (step.dataset.reviewStep === String(steps.length - 1) && consensus) {
+      const rect = review.getBoundingClientRect();
+      const pageTop = rect.top + window.scrollY;
+      const startY = pageTop - window.innerHeight * 0.14;
+      const endY = pageTop + window.innerHeight * 1.05;
+      const rawProgress = (window.scrollY - startY) / Math.max(endY - startY, 1);
+      const progress = Math.min(Math.max(rawProgress, 0), 1);
+      const visibleCount = Math.min(steps.length, Math.max(0, Math.ceil(progress * steps.length)));
+
+      steps.forEach((step, index) => {
+        if (index < visibleCount) {
+          step.dataset.visible = "true";
+        } else {
+          delete step.dataset.visible;
+        }
+      });
+
+      if (visibleCount >= steps.length && consensus) {
         consensus.dataset.complete = "true";
         consensus.setAttribute("aria-label", "Consensus 86%");
+      } else if (consensus) {
+        delete consensus.dataset.complete;
+        consensus.setAttribute("aria-label", "Consensus 78%");
       }
     }
 
     function runReview(event) {
       event.preventDefault();
-      clearTimers();
 
       root.dataset.demoRunning = "true";
       start.textContent = start.dataset.runningLabel || "Review running";
@@ -118,15 +124,14 @@ const fallbackController = `
         delete step.dataset.visible;
       });
 
-      steps.forEach((step, index) => {
-        timers.push(window.setTimeout(() => revealStep(step), initialDelay + index * stepDelay));
-      });
-
       history.replaceState(null, "", "#review");
       review.scrollIntoView({ behavior: "smooth", block: "start" });
+      window.requestAnimationFrame(syncReview);
     }
 
     start.addEventListener("click", runReview);
+    window.addEventListener("scroll", syncReview, { passive: true });
+    window.addEventListener("resize", syncReview);
   }
 
   if (document.readyState === "loading") {
@@ -144,18 +149,34 @@ export default function LivingDecisionReview() {
   useEffect(() => {
     if (!demoStarted) return;
 
-    const timers = timeline.map((_, index) =>
-      window.setTimeout(() => {
-        setRevealedSteps((currentSteps) =>
-          currentSteps.includes(index)
-            ? currentSteps
-            : [...currentSteps, index].sort((a, b) => a - b)
-        );
-      }, initialReviewDelay + index * reviewStepDelay)
-    );
+    function syncReviewToScroll() {
+      const review = document.getElementById("review");
+
+      if (!review) return;
+
+      const rect = review.getBoundingClientRect();
+      const pageTop = rect.top + window.scrollY;
+      const startY = pageTop - window.innerHeight * 0.14;
+      const endY = pageTop + window.innerHeight * 1.05;
+      const rawProgress = (window.scrollY - startY) / Math.max(endY - startY, 1);
+      const progress = Math.min(Math.max(rawProgress, 0), 1);
+      const visibleCount = Math.min(
+        timeline.length,
+        Math.max(0, Math.ceil(progress * timeline.length))
+      );
+
+      setRevealedSteps(
+        Array.from({ length: visibleCount }, (_, index) => index)
+      );
+    }
+
+    syncReviewToScroll();
+    window.addEventListener("scroll", syncReviewToScroll, { passive: true });
+    window.addEventListener("resize", syncReviewToScroll);
 
     return () => {
-      timers.forEach(window.clearTimeout);
+      window.removeEventListener("scroll", syncReviewToScroll);
+      window.removeEventListener("resize", syncReviewToScroll);
     };
   }, [demoStarted]);
 
