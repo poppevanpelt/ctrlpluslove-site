@@ -325,32 +325,31 @@ p {
     transform: translateY(-50%);
   }
 
-  6%,
-  26% {
+  5% {
     opacity: 1;
     filter: none;
     transform: translateY(-50%);
   }
 
-  28% {
-    opacity: 0.78;
-    filter: blur(0.01em) saturate(1.35);
+  8% {
+    opacity: 0.82;
+    filter: blur(0.012em) saturate(1.45);
     transform: translate(-0.018em, -50%);
   }
 
-  29% {
+  10% {
     opacity: 1;
-    filter: brightness(1.18) saturate(1.45);
+    filter: brightness(1.18) saturate(1.55);
     transform: translate(0.024em, -50%);
   }
 
-  31% {
-    opacity: 0.46;
-    filter: blur(0.018em) saturate(1.65);
+  12% {
+    opacity: 0.28;
+    filter: blur(0.02em) saturate(1.7);
     transform: translate(-0.034em, -50%);
   }
 
-  34%,
+  15%,
   100% {
     opacity: 0;
     filter: none;
@@ -360,31 +359,31 @@ p {
 
 @keyframes route-final {
   0%,
-  29% {
+  9% {
     opacity: 0;
     filter: blur(0.018em) saturate(1.45);
     transform: translateX(0.032em);
   }
 
-  31% {
-    opacity: 0.44;
+  11% {
+    opacity: 0.3;
     filter: blur(0.012em) brightness(1.16) saturate(1.55);
     transform: translateX(-0.02em);
   }
 
-  33% {
-    opacity: 0.18;
-    filter: blur(0.024em) saturate(1.7);
+  13% {
+    opacity: 0.76;
+    filter: blur(0.006em) saturate(1.35);
     transform: translateX(0.044em);
   }
 
-  36% {
-    opacity: 0.82;
-    filter: blur(0.005em) brightness(1.1) saturate(1.25);
+  16% {
+    opacity: 0.94;
+    filter: blur(0.003em) brightness(1.08) saturate(1.18);
     transform: translateX(-0.012em);
   }
 
-  39%,
+  19%,
   100% {
     opacity: 1;
     filter: none;
@@ -544,7 +543,7 @@ h3 {
     0.035em 0 0 color-mix(in srgb, var(--cyan) 74%, transparent),
     0 0 0.42rem color-mix(in srgb, var(--cyan) 28%, transparent);
   transform: translateY(-50%);
-  animation: electric-ghost 4.8s linear infinite;
+  animation: none;
 }
 
 .hero-line::after {
@@ -565,7 +564,7 @@ h3 {
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, -50%);
-  animation: signal-drop 4.8s linear infinite;
+  animation: none;
 }
 
 .hero-line-static::before,
