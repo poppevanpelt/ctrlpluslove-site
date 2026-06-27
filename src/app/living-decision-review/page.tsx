@@ -18,7 +18,6 @@ type Participant = {
   history: string[];
   active: boolean;
   evidence: number;
-  vacant?: boolean;
 };
 
 type EventStep = {
@@ -113,19 +112,6 @@ const initialPeople: Participant[] = [
     history: ["No position yet"],
     active: false,
     evidence: 0,
-  },
-  {
-    id: "empty",
-    name: "Unsaid",
-    lens: "missing perspective",
-    position: "silent",
-    confidence: 0,
-    status: "not represented",
-    note: "What has not been said yet",
-    history: ["Unoccupied"],
-    active: false,
-    evidence: 0,
-    vacant: true,
   },
 ];
 
@@ -448,23 +434,16 @@ export default function LivingDecisionReview() {
                     className={styles.participant}
                     data-active={person.active}
                     data-position={person.position}
-                    data-vacant={person.vacant ? "true" : undefined}
                     key={person.id}
                     style={{ "--angle": `${angle}deg` } as React.CSSProperties}
                   >
                     <div className={styles.personName}>{person.name}</div>
                     <div className={styles.personLens}>{person.lens}</div>
                     <div className={styles.status}>{person.status}</div>
-                    {person.vacant ? (
-                      <div className={styles.emptySeat} aria-hidden="true" />
-                    ) : (
-                      <div className={styles.meter} aria-label={`${person.confidence}% confidence`}>
-                        <span style={{ width: `${person.confidence}%` }} />
-                      </div>
-                    )}
-                    <div className={styles.position}>
-                      {person.vacant ? "not in room" : positionLabels[person.position]}
+                    <div className={styles.meter} aria-label={`${person.confidence}% confidence`}>
+                      <span style={{ width: `${person.confidence}%` }} />
                     </div>
+                    <div className={styles.position}>{positionLabels[person.position]}</div>
                   </article>
                 );
               })}
@@ -483,7 +462,7 @@ export default function LivingDecisionReview() {
             </div>
 
             <div className={styles.peopleStates}>
-              {people.filter((person) => !person.vacant).map((person) => (
+              {people.map((person) => (
                 <div className={styles.stateRow} key={person.id}>
                   <div>
                     <strong>{person.name}</strong>
