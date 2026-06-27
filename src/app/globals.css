@@ -211,15 +211,17 @@ p {
   background: linear-gradient(
     102deg,
     #ff00c8 0%,
-    #ff245f 14%,
-    #ff6c20 27%,
-    #ffc21d 41%,
-    #43ef20 57%,
-    #00d9be 72%,
-    #1787ff 88%,
-    #3718ff 100%
+    #ff245f 10%,
+    #ff6c20 20%,
+    #ffc21d 31%,
+    #43ef20 43%,
+    #00d9be 55%,
+    #1787ff 67%,
+    #3718ff 78%,
+    #cf18df 90%,
+    #ff00c8 100%
   );
-  background-size: 100% auto;
+  background-size: 230% auto;
   -webkit-background-clip: text;
   background-clip: text;
   font-size: clamp(6.25rem, 14.4vw, 12.4rem);
@@ -232,7 +234,7 @@ p {
     0 0 0.72rem color-mix(in srgb, var(--cyan) 6%, transparent);
   animation:
     logo-arrive 620ms cubic-bezier(0.22, 1, 0.36, 1) both,
-    logo-spectrum 18s ease-in-out 620ms infinite;
+    logo-spectrum 20s linear 620ms infinite;
 }
 
 @supports (-webkit-background-clip: text) {
@@ -281,8 +283,8 @@ p {
 }
 
 @keyframes logo-spectrum {
-  0%,
-  100% {
+  0% {
+    background-position: 0% 50%;
     filter: none;
     text-shadow:
       0 0 0.32rem color-mix(in srgb, var(--pink) 8%, transparent),
@@ -290,10 +292,19 @@ p {
   }
 
   50% {
+    background-position: 50% 50%;
     filter: saturate(1.06);
     text-shadow:
       0 0 0.48rem color-mix(in srgb, var(--cyan) 10%, transparent),
       0 0 0.86rem color-mix(in srgb, var(--green) 6%, transparent);
+  }
+
+  100% {
+    background-position: 100% 50%;
+    filter: none;
+    text-shadow:
+      0 0 0.32rem color-mix(in srgb, var(--pink) 8%, transparent),
+      0 0 0.58rem color-mix(in srgb, var(--cyan) 5%, transparent);
   }
 }
 
@@ -533,7 +544,7 @@ h3 {
     0.035em 0 0 color-mix(in srgb, var(--cyan) 74%, transparent),
     0 0 0.42rem color-mix(in srgb, var(--cyan) 28%, transparent);
   transform: translateY(-50%);
-  animation: electric-ghost 14s linear infinite;
+  animation: electric-ghost 8s linear infinite;
 }
 
 .hero-line::after {
@@ -554,7 +565,7 @@ h3 {
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, -50%);
-  animation: signal-drop 14s linear infinite;
+  animation: signal-drop 8s linear infinite;
 }
 
 .hero-line-static::before,
@@ -576,12 +587,12 @@ h3 {
   font-size: 0.76em;
   line-height: 1.02;
   transform: translateY(-50%);
-  animation: route-long 14s linear infinite;
+  animation: route-long 8s linear infinite;
 }
 
 .hero-route-final {
   position: relative;
-  animation: route-final 14s linear infinite;
+  animation: route-final 8s linear infinite;
 }
 
 .muted {
