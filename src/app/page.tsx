@@ -8,20 +8,20 @@ const pricingRooms = [
   {
     name: "DECISION STRESS-TEST™",
     href: "/pricing/decision-stress-test.png",
-    headline: "For one decision that needs pressure before it becomes public.",
-    result: "The room tests the logic, the emotional pull, and the obvious blind spots so you can leave with a sharper go, no-go, or rethink.",
+    headline: "For the decision you keep circling.",
+    result: "A one-off room that exposes the hidden bet, tests the obvious answer, and leaves you with a defensible next move.",
   },
   {
     name: "ON-CALL ROOM™",
     href: "/pricing/on-call-room.png",
-    headline: "For teams making decisions that keep moving.",
-    result: "Use the room as an on-call counterweight: a place to bring new evidence, test momentum, and keep the decision honest as conditions change.",
+    headline: "For decisions that keep changing shape.",
+    result: "A standing room for new evidence, changed context, and internal doubt, so momentum does not harden into habit.",
   },
   {
     name: "KILL OR SCALE™",
     href: "/pricing/kill-or-scale.png",
-    headline: "For costly ideas that either need commitment or a clean stop.",
-    result: "The room separates strategy, market signal, and story so you can see whether the thing deserves more force or less oxygen.",
+    headline: "For ideas already costing real money.",
+    result: "The room decides whether to add force, change shape, or stop cleanly before strategy turns into sunk cost.",
   },
 ];
 
