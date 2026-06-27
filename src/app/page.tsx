@@ -226,58 +226,23 @@ export default function Home() {
       <section className="content-section" id="ways-in">
         <div className="content-block wide poster-block ways-block">
           <a
+            className="live-simulator-feature"
             href="/living-decision-review/"
             aria-label="Open the live discussion simulator"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "minmax(0, 1fr) auto",
-              alignItems: "end",
-              gap: "1.25rem",
-              borderTop: "1px solid var(--rule)",
-              borderBottom: "1px solid var(--rule)",
-              color: "inherit",
-              padding: "1.15rem 0 1.25rem",
-              textDecoration: "none",
-            }}
           >
-            <span
-              style={{
-                display: "grid",
-                gap: "0.35rem",
-                minWidth: 0,
-              }}
-            >
-              <span
-                style={{
-                  color: "var(--muted)",
-                  fontSize: "0.68rem",
-                  fontWeight: 850,
-                  letterSpacing: "0.04em",
-                  lineHeight: 1.2,
-                  textTransform: "uppercase",
-                }}
-              >
+            <span className="live-simulator-copy">
+              <span className="live-simulator-kicker">
                 Live discussion simulator
               </span>
-              <span
-                style={{
-                  color: "var(--ink)",
-                  fontSize: "clamp(1.08rem, 1.75vw, 1.55rem)",
-                  fontWeight: 650,
-                  lineHeight: 1.12,
-                  textWrap: "balance",
-                }}
-              >
+              <span className="live-simulator-title">
                 Watch the room change its mind in real time.
               </span>
+              <span className="live-simulator-note">
+                A live decision becomes tension, opposition, evidence, and a
+                recommendation you can defend.
+              </span>
             </span>
-            <span
-              className="text-link"
-              style={{
-                whiteSpace: "nowrap",
-                fontSize: "0.76rem",
-              }}
-            >
+            <span className="text-link live-simulator-action">
               Open simulator →
             </span>
           </a>
