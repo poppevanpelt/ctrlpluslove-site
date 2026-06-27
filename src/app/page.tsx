@@ -9,34 +9,34 @@ const pricingRooms = [
     name: "DECISION STRESS-TEST™",
     href: "/pricing/decision-stress-test.png",
     tier: "01 / single decision",
-    headline: "A decision before you commit.",
+    headline: ["A decision", "before you commit."],
     description:
-      "One room. One decision. Fast pressure before money, time, or reputation moves.",
-    result: "What comes back: not a polite report. A decision.",
+      "One room. One decision. Fast pressure before money moves.",
+    result: "A clear go, no-go, or rethink.",
     signals: ["Fastest way in."],
   },
   {
     name: "ON-CALL ROOM™",
     href: "/pricing/on-call-room.png",
     tier: "02 / ongoing pressure",
-    headline: "Your decision team. On call.",
+    headline: ["Your decision team.", "On call."],
     description:
-      "Recurring pressure and real-time clarity while the work keeps moving and the stakes keep changing.",
+      "Recurring clarity while the work keeps moving.",
     result: "Direct access when pressure is on.",
-    signals: ["For decisions that do not sit still.", "The room stays close to the work."],
+    signals: ["For decisions that do not sit still.", "The room stays close."],
   },
   {
     name: "KILL OR SCALE™",
     href: "/pricing/kill-or-scale.png",
     tier: "03 / highest leverage",
-    headline: "You have started moving. Now decide the direction.",
+    headline: ["You have started moving.", "Now decide the direction."],
     description:
-      "A harder room for products, ideas, ventures, and initiatives already carrying cost, momentum, and internal belief.",
-    result: "Stop, reshape, or accelerate with a verdict strong enough to act on.",
+      "For ideas already carrying cost, momentum, and belief.",
+    result: "Stop, reshape, or accelerate with conviction.",
     signals: [
       "Most value when delay is expensive.",
-      "Tests the work, the market, and the story.",
-      "Built for the decision you cannot keep half-making.",
+      "Tests the work, market, and story.",
+      "For decisions you cannot keep half-making.",
     ],
   },
 ];
@@ -206,6 +206,62 @@ export default function Home() {
 
       <section className="content-section" id="ways-in">
         <div className="content-block wide poster-block" style={{ gap: "2.1rem" }}>
+          <a
+            href="/living-decision-review/"
+            aria-label="Open the live discussion simulator"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "minmax(0, 1fr) auto",
+              alignItems: "end",
+              gap: "1.25rem",
+              borderTop: "1px solid var(--rule)",
+              borderBottom: "1px solid var(--rule)",
+              color: "inherit",
+              padding: "1.15rem 0 1.25rem",
+              textDecoration: "none",
+            }}
+          >
+            <span
+              style={{
+                display: "grid",
+                gap: "0.35rem",
+                minWidth: 0,
+              }}
+            >
+              <span
+                style={{
+                  color: "var(--muted)",
+                  fontSize: "0.68rem",
+                  fontWeight: 850,
+                  letterSpacing: "0.04em",
+                  lineHeight: 1.2,
+                  textTransform: "uppercase",
+                }}
+              >
+                Live discussion simulator
+              </span>
+              <span
+                style={{
+                  color: "var(--ink)",
+                  fontSize: "clamp(1.08rem, 1.75vw, 1.55rem)",
+                  fontWeight: 650,
+                  lineHeight: 1.12,
+                  textWrap: "balance",
+                }}
+              >
+                Watch the room change its mind in real time.
+              </span>
+            </span>
+            <span
+              className="text-link"
+              style={{
+                whiteSpace: "nowrap",
+                fontSize: "0.76rem",
+              }}
+            >
+              Open simulator →
+            </span>
+          </a>
           <div
             style={{
               display: "grid",
@@ -284,7 +340,17 @@ export default function Home() {
                     lineHeight: 1.14,
                   }}
                 >
-                  {room.headline}
+                  {room.headline.map((line) => (
+                    <span
+                      key={line}
+                      style={{
+                        display: "block",
+                        textWrap: "balance",
+                      }}
+                    >
+                      {line}
+                    </span>
+                  ))}
                 </p>
                 <p
                   style={{
