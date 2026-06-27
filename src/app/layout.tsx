@@ -8,6 +8,15 @@ export const metadata: Metadata = {
   title: "ctrl+love",
   description:
     "Shortcut to reality. Stress-test your decisions before the market does.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/favicon.png", type: "image/png", sizes: "32x32" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-icon.png",
+  },
   openGraph: {
     title: "ctrl+love",
     description:

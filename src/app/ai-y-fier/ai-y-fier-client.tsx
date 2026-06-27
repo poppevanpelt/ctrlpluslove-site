@@ -396,6 +396,8 @@ const footerDisclaimers = [
   "Investor enthusiasm simulated.",
 ];
 
+const demoText = "We need to update the customer dashboard so people can find their invoices faster.";
+
 export default function AiYFierClient() {
   const [source, setSource] = useState("");
   const [output, setOutput] = useState("");
@@ -407,6 +409,12 @@ export default function AiYFierClient() {
 
   function transform() {
     setOutput(aiYfy(source));
+    setCopyStatus("");
+  }
+
+  function runDemo() {
+    setSource(demoText);
+    setOutput(aiYfy(demoText));
     setCopyStatus("");
   }
 
@@ -457,7 +465,7 @@ export default function AiYFierClient() {
           <a href="#metrics">Metrics</a>
           <a href="#waitlist">Enterprise</a>
         </nav>
-        <button className={styles.demoButton} type="button" onClick={() => setSource("We need to update the customer dashboard so people can find their invoices faster.")}>
+        <button className={styles.demoButton} type="button" onClick={runDemo} data-aiy-demo>
           Book a demo
         </button>
       </header>
@@ -525,9 +533,10 @@ export default function AiYFierClient() {
             spellCheck
             aria-label="Mundane text to transform"
             placeholder="Paste something mundane, then press AI-y-fy this."
+            data-aiy-source
           />
 
-          <button className={styles.primaryAction} type="button" onClick={transform}>
+          <button className={styles.primaryAction} type="button" onClick={transform} data-aiy-transform>
             AI-y-fy this
           </button>
         </div>
@@ -546,6 +555,7 @@ export default function AiYFierClient() {
               }}
               spellCheck
               aria-label="Generated strategic narrative"
+              data-aiy-output
             />
           </article>
           {output.trim() && executiveSummary ? (
@@ -555,22 +565,20 @@ export default function AiYFierClient() {
             </section>
           ) : null}
           <div className={styles.resultActions}>
-            <button type="button" onClick={copyOutput}>
+            <button type="button" onClick={copyOutput} data-aiy-copy>
               {copyStatus === "Copied." ? "Copied" : "Copy"}
             </button>
-            <button className={styles.stripAction} type="button" onClick={() => setOutput(source)}>
+            <button className={styles.stripAction} type="button" onClick={() => setOutput(source)} data-aiy-strip>
               Strip Confidence Layer
             </button>
-            <button type="button" onClick={clearAll}>
+            <button type="button" onClick={clearAll} data-aiy-clear>
               Clear all
             </button>
             <button
               type="button"
+              data-aiy-reset
               onClick={() => {
-                const demo = "We need to update the customer dashboard so people can find their invoices faster.";
-                setSource(demo);
-                setOutput(aiYfy(demo));
-                setCopyStatus("");
+                runDemo();
               }}
             >
               Reset

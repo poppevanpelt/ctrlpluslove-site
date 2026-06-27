@@ -9,35 +9,92 @@ const pricingRooms = [
     name: "DECISION STRESS-TEST™",
     href: "/pricing/decision-stress-test.png",
     tier: "01 / single decision",
-    headline: ["A decision", "before you commit."],
-    description:
-      "One room. One decision. Fast pressure before money moves.",
-    result: "A clear go, no-go, or rethink.",
-    signals: ["Fastest way in."],
+    headline: "Pressure test.",
+    result: "Go, no-go, or rethink.",
+    details: [],
   },
   {
     name: "ON-CALL ROOM™",
     href: "/pricing/on-call-room.png",
     tier: "02 / ongoing pressure",
-    headline: ["Your decision team.", "On call."],
-    description:
-      "Recurring clarity while the work keeps moving.",
-    result: "Direct access when pressure is on.",
-    signals: ["For decisions that do not sit still.", "The room stays close."],
+    headline: "Ongoing pressure.",
+    result: "Your room, on call.",
+    details: [
+      "For moving decisions.",
+    ],
   },
   {
     name: "KILL OR SCALE™",
     href: "/pricing/kill-or-scale.png",
     tier: "03 / highest leverage",
-    headline: ["You have started moving.", "Now decide the direction."],
-    description:
-      "For ideas already carrying cost, momentum, and belief.",
-    result: "Stop, reshape, or accelerate with conviction.",
-    signals: [
-      "Most value when delay is expensive.",
-      "Tests the work, market, and story.",
-      "For decisions you cannot keep half-making.",
+    headline: "Kill or scale.",
+    result: "For expensive momentum.",
+    details: [
+      "Strategy.",
+      "Market.",
+      "Story.",
     ],
+  },
+];
+
+const departments = [
+  {
+    name: "Reality Preservation",
+    href: "/reality/",
+    person: "Cornelis van Loon",
+  },
+  {
+    name: "Unfinished Thoughts",
+    href: "/unfinished-thoughts/",
+    person: "Nora Veld",
+  },
+  {
+    name: "Necessary Elimination",
+    href: "/necessary-elimination/",
+    person: "Kill Almost Everything. Apple, 1997.",
+  },
+  {
+    name: "Irreversible Decisions",
+    href: "/irreversible-decisions/",
+    person: "Burn the Boats. Netflix, 2007.",
+  },
+  {
+    name: "Essential Things",
+    href: "/essential-things/",
+    person: "Remember the Brick. LEGO, 2004.",
+  },
+  {
+    name: "Consequential Belief",
+    href: "/consequential-belief/",
+    person: "Mortgage the Heroes. Marvel, 2009.",
+  },
+];
+
+const featureLinks = [
+  {
+    name: "Live discussion simulator",
+    href: "/living-decision-review/",
+    note: "Watch the room change its mind.",
+  },
+  {
+    name: "AI-y-fier",
+    href: "/ai-y-fier/",
+    note: "Empty thoughts in. Thought leadership out.",
+  },
+  {
+    name: "Meeting Filter",
+    href: "/meeting-filter/",
+    note: "Should we be in this meeting?",
+  },
+  {
+    name: "Museum Shop",
+    href: "/museum/",
+    note: "Ideas, artifacts, consequences.",
+  },
+  {
+    name: "Constitution",
+    href: "/constitution/",
+    note: "Governance archive.",
   },
 ];
 
@@ -53,13 +110,8 @@ export default function Home() {
             ctrl+love
           </p>
           <div className="hero-message">
-            <h1 className="hero-line" aria-label="Shortcut to reality.">
-              <span className="hero-route hero-route-long" aria-hidden="true">
-                Agreeable compromise.
-              </span>
-              <span className="hero-route hero-route-final" aria-hidden="true">
-                Shortcut to reality.
-              </span>
+            <h1 className="hero-line hero-line-static">
+              Shortcut to reality.
             </h1>
             <p className="hero-translation">
               Stress-test your decisions before the market does.
@@ -82,70 +134,61 @@ export default function Home() {
 
       <LivingTicker />
 
-      <nav
-        className="explore-section hero-explore"
-        id="explore"
-        aria-labelledby="explore-title"
-      >
-        <div className="explore-block">
-          <p className="section-kicker" id="explore-title">
-            Explore
+      <section className="departments-section ruled" aria-labelledby="departments-title">
+        <div className="departments-block">
+          <p className="section-kicker" id="departments-title">
+            Departments
           </p>
-          <div className="explore-list" aria-label="Explore destinations">
-            <div className="explore-column">
-              <details className="explore-departments">
-                <summary>Departments</summary>
-                <div className="explore-submenu">
-                  <a className="explore-destination" href="/reality/">
-                    <strong>Reality Preservation →</strong>
-                    <em>Cornelis van Loon</em>
+          <div className="departments-groups">
+            <div className="departments-group">
+              <p>Named departments</p>
+              <div className="departments-list departments-list-named">
+                {departments.slice(0, 2).map((department) => (
+                  <a
+                    className="department-link"
+                    href={department.href}
+                    key={department.name}
+                  >
+                    <span>{department.name} →</span>
+                    <em>{department.person}</em>
                   </a>
-                  <a className="explore-destination" href="/unfinished-thoughts/">
-                    <strong>Unfinished Thoughts →</strong>
-                    <em>Nora Veld</em>
-                  </a>
-                  <a className="explore-destination" href="/necessary-elimination/">
-                    <strong>Necessary Elimination →</strong>
-                    <em>Kill Almost Everything. Apple, 1997.</em>
-                  </a>
-                  <a className="explore-destination" href="/irreversible-decisions/">
-                    <strong>Irreversible Decisions →</strong>
-                    <em>Burn the Boats. Netflix, 2007.</em>
-                  </a>
-                  <a className="explore-destination" href="/essential-things/">
-                    <strong>Essential Things →</strong>
-                    <em>Remember the Brick. LEGO, 2004.</em>
-                  </a>
-                  <a className="explore-destination" href="/consequential-belief/">
-                    <strong>Consequential Belief →</strong>
-                    <em>Mortgage the Heroes. Marvel, 2009.</em>
-                  </a>
-                </div>
-              </details>
-            </div>
-            <div className="explore-column">
-              <div className="explore-destination">
-                <a href="#intro">Meet the Room →</a>
+                ))}
               </div>
-              <a className="explore-destination" href="/ai-y-fier/">
-                <strong>AI-y-fier →</strong>
-                <em>Empty thoughts in. Thought leadership out.</em>
-              </a>
-              <a className="explore-destination" href="/meeting-filter/">
-                <strong>Meeting Filter →</strong>
-                <em>Should we be in this meeting?</em>
-              </a>
-              <a className="explore-destination" href="/constitution/">
-                <strong>ctrl+love constitution →</strong>
-                <em>Governance archive.</em>
-              </a>
-              <div className="explore-destination">
-                <a href="/museum/">Museum Shop →</a>
+            </div>
+            <div className="departments-group">
+              <p>Case departments</p>
+              <div className="departments-list">
+                {departments.slice(2).map((department) => (
+                  <a
+                    className="department-link"
+                    href={department.href}
+                    key={department.name}
+                  >
+                    <span>{department.name} →</span>
+                    <em>{department.person}</em>
+                  </a>
+                ))}
               </div>
             </div>
           </div>
         </div>
-      </nav>
+      </section>
+
+      <section className="features-section ruled" aria-labelledby="features-title">
+        <div className="features-block">
+          <p className="section-kicker" id="features-title">
+            Tools & artifacts
+          </p>
+          <div className="features-list">
+            {featureLinks.map((feature) => (
+              <a className="feature-link" href={feature.href} key={feature.name}>
+                <span>{feature.name} →</span>
+                <em>{feature.note}</em>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <section className="content-section ruled" id="intro">
         <div className="content-block statement-block">
@@ -338,29 +381,10 @@ export default function Home() {
                     fontSize: "clamp(1.05rem, 1.6vw, 1.36rem)",
                     fontWeight: 650,
                     lineHeight: 1.14,
+                    textWrap: "balance",
                   }}
                 >
-                  {room.headline.map((line) => (
-                    <span
-                      key={line}
-                      style={{
-                        display: "block",
-                        textWrap: "balance",
-                      }}
-                    >
-                      {line}
-                    </span>
-                  ))}
-                </p>
-                <p
-                  style={{
-                    color: "var(--muted)",
-                    fontSize: "clamp(0.84rem, 1.08vw, 0.98rem)",
-                    fontWeight: 650,
-                    lineHeight: "var(--leading-secondary)",
-                  }}
-                >
-                  {room.description}
+                  {room.headline}
                 </p>
                 <p
                   style={{
@@ -372,27 +396,29 @@ export default function Home() {
                 >
                   {room.result}
                 </p>
-                <div
-                  style={{
-                    display: "grid",
-                    gap: "0.32rem",
-                    marginTop: "0.15rem",
-                  }}
-                >
-                  {room.signals.map((signal) => (
-                    <p
-                      key={signal}
-                      style={{
-                        color: "var(--soft)",
-                        fontSize: "clamp(0.76rem, 0.98vw, 0.9rem)",
-                        fontWeight: 650,
-                        lineHeight: 1.35,
-                      }}
-                    >
-                      {signal}
-                    </p>
-                  ))}
-                </div>
+                {room.details.length > 0 ? (
+                  <div
+                    style={{
+                      display: "grid",
+                      gap: "0.32rem",
+                      marginTop: "0.1rem",
+                    }}
+                  >
+                    {room.details.map((detail) => (
+                      <p
+                        key={detail}
+                        style={{
+                          color: "var(--soft)",
+                          fontSize: "clamp(0.76rem, 0.98vw, 0.9rem)",
+                          fontWeight: 650,
+                          lineHeight: 1.35,
+                        }}
+                      >
+                        {detail}
+                      </p>
+                    ))}
+                  </div>
+                ) : null}
                 <a
                   className="text-link"
                   href={room.href}

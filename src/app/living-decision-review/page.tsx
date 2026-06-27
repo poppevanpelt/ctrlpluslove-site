@@ -1,105 +1,187 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type CSSProperties, type FormEvent } from "react";
+import Script from "next/script";
+import { useEffect, useState, type CSSProperties, type MouseEvent } from "react";
 
 import styles from "./living-decision-review.module.css";
 
 const decision = "Should Suki launch a Matcha Subscription?";
+const initialReviewDelay = 520;
+const reviewStepDelay = 1180;
 
-const minds = [
+const timeline = [
   {
-    name: "Maya",
-    title: "Emotional Pull",
-    thought: "Customers don't buy subscriptions. They buy reassurance.",
+    eyebrow: "Question entered",
+    title: "A launch decision enters.",
+    body: "The review starts before anyone has agreed what kind of risk it is.",
+  },
+  {
+    eyebrow: "Maya · Emotional Pull",
+    title: "Launch it.",
+    body: "The strongest pull is reassurance: never running out.",
+  },
+  {
+    eyebrow: "Simon · Skeptical Strategist",
+    title: "I don't buy it yet.",
+    body: "This could create subscription fatigue before loyalty.",
     status: "Contested",
   },
   {
-    name: "Simon",
-    title: "Skeptical Strategist",
-    thought: "Too early. Loyalty is not proven yet.",
-    status: "Open",
+    eyebrow: "Wade · Evidence",
+    title: "Ritual categories behave differently.",
+    body: "Subscription fatigue is real, but ritual categories behave differently from convenience refills.",
+    status: "Evidence added",
   },
   {
-    name: "Lexi",
-    title: "Brand Risk",
-    thought: "Efficiency could make Suki feel less cared for.",
-    status: "Open",
+    eyebrow: "Mira · Business Logic",
+    title: "Margins can work.",
+    body: "Churn decides everything.",
   },
   {
-    name: "Mira",
-    title: "Business Logic",
-    thought: "Margins work. Churn decides everything.",
-    status: "Open",
+    eyebrow: "Akiko · Japanese Nuance",
+    title: "Respect the ritual.",
+    body: "Matcha is not just a flavor.",
   },
   {
-    name: "Akiko",
-    title: "Japanese Nuance",
-    thought: "Respect the ritual. Matcha is not just a flavor.",
-    status: "Open",
-  },
-  {
-    name: "Wade",
-    title: "Evidence",
-    thought: "Daily rituals behave differently from convenience refills.",
+    eyebrow: "Recommendation updated",
+    title: "Launch ritual-based replenishment.",
+    body: "From: Launch subscriptions.",
     status: "Shifted",
   },
   {
-    name: "Vera",
-    title: "Cultural Timing",
-    thought: "Matcha is moving from trend to ritual.",
-    status: "Aligned",
+    eyebrow: "Consensus emerging",
+    title: "86%",
+    body: "The room is not louder. It is sharper.",
+    status: "Updated",
   },
-];
-
-const statusFlow = [
-  "Open",
-  "Contested",
-  "Evidence added",
-  "Perspective shifted",
-  "Consensus emerging",
 ];
 
 const productBlocks = [
   {
     title: "Bring your decision",
-    body: "Enter a real strategic question.",
+    body: "Start with the real question.",
   },
   {
-    title: "Watch the room",
-    body: "Different perspectives test assumptions, disagree, challenge each other and evolve.",
+    title: "Watch judgment form",
+    body: "Positions move as evidence arrives.",
   },
   {
-    title: "Leave with sharper judgment",
-    body: "Not just an answer. A visible reasoning process.",
+    title: "Leave with sharper direction",
+    body: "Not certainty. Better judgment.",
   },
 ];
 
-const differencePoints = [
-  "Designed disagreement",
-  "Opinions can change",
-  "Evidence changes conclusions",
-  "Human signals matter",
-  "The process is as valuable as the answer",
-];
+const fallbackController = `
+(() => {
+  const initialDelay = ${initialReviewDelay};
+  const stepDelay = ${reviewStepDelay};
+  const timers = [];
+
+  function clearTimers() {
+    while (timers.length) {
+      window.clearTimeout(timers.pop());
+    }
+  }
+
+  function init() {
+    const root = document.querySelector("[data-demo-root]");
+    const review = document.getElementById("review");
+    const start = document.querySelector("[data-review-start]");
+    const steps = Array.from(document.querySelectorAll("[data-review-step]"));
+    const consensus = document.querySelector("[data-consensus-panel]");
+
+    if (!root || !review || !start || steps.length === 0) return;
+
+    function revealStep(step) {
+      step.dataset.visible = "true";
+
+      if (step.dataset.reviewStep === String(steps.length - 1) && consensus) {
+        consensus.dataset.complete = "true";
+        consensus.setAttribute("aria-label", "Consensus 86%");
+      }
+    }
+
+    function runReview(event) {
+      event.preventDefault();
+      clearTimers();
+
+      root.dataset.demoRunning = "true";
+      start.textContent = start.dataset.runningLabel || "Review running";
+
+      if (consensus) {
+        delete consensus.dataset.complete;
+        consensus.setAttribute("aria-label", "Consensus 78%");
+      }
+
+      steps.forEach((step) => {
+        delete step.dataset.visible;
+      });
+
+      steps.forEach((step, index) => {
+        timers.push(window.setTimeout(() => revealStep(step), initialDelay + index * stepDelay));
+      });
+
+      history.replaceState(null, "", "#review");
+      review.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    start.addEventListener("click", runReview);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init, { once: true });
+  } else {
+    init();
+  }
+})();
+`;
 
 export default function LivingDecisionReview() {
   const [demoStarted, setDemoStarted] = useState(false);
+  const [revealedSteps, setRevealedSteps] = useState<number[]>([]);
 
-  function startDemo(event: FormEvent<HTMLFormElement>) {
+  useEffect(() => {
+    if (!demoStarted) return;
+
+    const timers = timeline.map((_, index) =>
+      window.setTimeout(() => {
+        setRevealedSteps((currentSteps) =>
+          currentSteps.includes(index)
+            ? currentSteps
+            : [...currentSteps, index].sort((a, b) => a - b)
+        );
+      }, initialReviewDelay + index * reviewStepDelay)
+    );
+
+    return () => {
+      timers.forEach(window.clearTimeout);
+    };
+  }, [demoStarted]);
+
+  function startDemo(event: MouseEvent<HTMLAnchorElement>) {
     event.preventDefault();
-    setDemoStarted(true);
+    setRevealedSteps([]);
+    setDemoStarted(false);
 
     window.setTimeout(() => {
-      document.getElementById("room")?.scrollIntoView({
+      setDemoStarted(true);
+      history.replaceState(null, "", "#review");
+      document.getElementById("review")?.scrollIntoView({
         behavior: "smooth",
         block: "start",
       });
-    }, 80);
+    }, 40);
   }
 
+  const consensusComplete = demoStarted && revealedSteps.includes(timeline.length - 1);
+
   return (
-    <main className={`${styles.page} ${demoStarted ? styles.demoStarted : ""}`}>
+    <main
+      className={`${styles.page} ${demoStarted ? styles.demoStarted : ""}`}
+      data-demo-root
+      data-demo-running={demoStarted ? "true" : undefined}
+    >
       <header className={styles.topbar}>
         <Link className={styles.brand} href="/" aria-label="ctrl+love home">
           ctrl+love
@@ -110,138 +192,73 @@ export default function LivingDecisionReview() {
       <section className={`${styles.section} ${styles.hero}`} aria-labelledby="hero-title">
         <p className={styles.kicker}>Product demo</p>
         <h1 id="hero-title">Watch a decision change its mind.</h1>
-        <p className={styles.heroLine}>
-          Bring any important business decision into a room of distinct strategic
-          minds and watch better judgment emerge.
-        </p>
 
-        <form className={styles.decisionInput} onSubmit={startDemo} aria-label="Decision example">
-          <label htmlFor="decision">Decision</label>
+        <div className={styles.decisionInput} aria-label="Decision example">
+          <span>Decision</span>
           <div>
-            <input id="decision" readOnly value={decision} />
-            <button type="submit">{demoStarted ? "Demo running" : "Start the demo"}</button>
+            <p>{decision}</p>
+            <a href="#review" onClick={startDemo} data-review-start data-running-label="Review running">
+              {demoStarted ? "Review running" : "Start the review"}
+            </a>
           </div>
-        </form>
+        </div>
       </section>
 
-      <section className={styles.section} id="room" aria-labelledby="room-title">
-        <div className={styles.sectionLead}>
-          <p className={styles.kicker}>The room gathers</p>
-          <h2 id="room-title">Every important decision deserves more than one perspective.</h2>
-        </div>
-
-        <div className={styles.demoState} aria-live="polite">
-          <span>{demoStarted ? "Demo started" : "Waiting to start"}</span>
-          <p>
-            {demoStarted
-              ? "Seven named minds join, take positions and begin pressure-testing the decision."
-              : "Use Start the demo above to bring the decision into the room."}
-          </p>
-        </div>
-
-        <div className={styles.room} aria-label="Seven minds around the room">
-          <div className={styles.roomQuestion}>
-            <span>The decision enters</span>
-            <p>{decision}</p>
+      <section className={styles.section} id="review" aria-labelledby="review-title">
+        <div className={styles.reviewHeader}>
+          <div className={styles.sectionLead}>
+            <p className={styles.kicker}>Review in progress.</p>
+            <h2 id="review-title">The decision evolves in public.</h2>
           </div>
 
-          {minds.map((mind, index) => {
-            const angle = (index / minds.length) * 360 - 90;
+          <div
+            className={`${styles.consensusPanel} ${consensusComplete ? styles.consensusComplete : ""}`}
+            data-consensus-panel
+            data-complete={consensusComplete ? "true" : undefined}
+            aria-label={`Consensus ${consensusComplete ? 86 : 78}%`}
+          >
+            <span>Consensus</span>
+            <strong>
+              <span className={styles.consensusValueInitial}>78%</span>
+              <span className={styles.consensusValueFinal}>86%</span>
+            </strong>
+            <div className={styles.consensusTrack}>
+              <i />
+            </div>
+          </div>
+        </div>
+
+        <ol className={styles.timeline} aria-live="polite">
+          {timeline.map((item, index) => {
+            const isVisible = demoStarted && revealedSteps.includes(index);
 
             return (
-              <article
-                className={styles.mind}
-                key={mind.name}
-                style={
-                  {
-                    "--angle": `${angle}deg`,
-                    "--delay": `${index * 120}ms`,
-                  } as CSSProperties
-                }
+              <li
+                className={`${styles.timelineItem} ${isVisible ? styles.visible : ""}`}
+                data-review-step={index}
+                data-visible={isVisible ? "true" : undefined}
+                key={`${item.eyebrow}-${item.title}`}
+                style={{ "--delay": `${Math.min(index * 25, 120)}ms` } as CSSProperties}
               >
-                <strong>{mind.name}</strong>
-                <span>{mind.title}</span>
-              </article>
+                <div className={styles.timelineMarker} aria-hidden="true" />
+                <article>
+                  <div className={styles.itemMeta}>
+                    <span>{item.eyebrow}</span>
+                    {item.status ? <em>{item.status}</em> : null}
+                  </div>
+                  <h3>{item.title}</h3>
+                  <p>{item.body}</p>
+                  {item.eyebrow === "Recommendation updated" ? (
+                    <div className={styles.recommendationShift} aria-label="Recommendation changed">
+                      <span>Launch subscriptions.</span>
+                      <strong>Launch ritual-based replenishment.</strong>
+                    </div>
+                  ) : null}
+                </article>
+              </li>
             );
           })}
-        </div>
-      </section>
-
-      <section className={styles.section} aria-labelledby="reactions-title">
-        <div className={styles.sectionLead}>
-          <p className={styles.kicker}>Initial reactions</p>
-          <h2 id="reactions-title">The room does not start in agreement.</h2>
-        </div>
-
-        <div className={styles.reactionGrid}>
-          {minds.map((mind) => (
-            <article className={styles.reaction} key={mind.name}>
-              <span>{mind.name}</span>
-              <em>{mind.title}</em>
-              <p>{mind.thought}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className={styles.section} aria-labelledby="conflict-title">
-        <div className={styles.conflict}>
-          <div className={styles.sectionLead}>
-            <p className={styles.kicker}>Conflict</p>
-            <h2 id="conflict-title">One position becomes contested.</h2>
-          </div>
-
-          <div className={styles.challenge}>
-            <article>
-              <span>Maya</span>
-              <p>Launch it. The emotional pull is strong.</p>
-            </article>
-            <article>
-              <span>Simon</span>
-              <p>I don&apos;t buy it yet. This could create subscription fatigue before loyalty.</p>
-            </article>
-          </div>
-
-          <div className={styles.statusFlow} aria-label="Status changes">
-            {statusFlow.map((status) => (
-              <span key={status}>{status}</span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className={styles.section} aria-labelledby="consensus-title">
-        <div className={styles.consensus}>
-          <div className={styles.sectionLead}>
-            <p className={styles.kicker}>Consensus</p>
-            <h2 id="consensus-title">The room changes its mind.</h2>
-          </div>
-
-          <div className={styles.recommendation}>
-            <article>
-              <span>Original recommendation</span>
-              <p>Launch subscriptions.</p>
-            </article>
-            <div className={styles.arrow} aria-hidden="true">
-              ↓
-            </div>
-            <article>
-              <span>Final recommendation</span>
-              <p>Launch ritual-based replenishment.</p>
-            </article>
-          </div>
-
-          <div className={styles.reason}>
-            <p>Don&apos;t sell convenience.</p>
-            <p>Protect the daily ritual.</p>
-          </div>
-
-          <div className={styles.confidence} aria-label="Confidence improves from 78% to 86%">
-            <span>78%</span>
-            <div />
-            <span>86%</span>
-          </div>
-        </div>
+        </ol>
       </section>
 
       <section className={styles.section} aria-labelledby="how-title">
@@ -260,27 +277,17 @@ export default function LivingDecisionReview() {
         </div>
       </section>
 
-      <section className={styles.section} aria-labelledby="different-title">
-        <div className={styles.sectionLead}>
-          <p className={styles.kicker}>Why it works</p>
-          <h2 id="different-title">The thinking is visible.</h2>
-        </div>
-
-        <div className={styles.differenceGrid}>
-          {differencePoints.map((point) => (
-            <p key={point}>{point}</p>
-          ))}
-        </div>
-      </section>
-
       <section className={`${styles.section} ${styles.close}`} aria-label="Closing">
         <div>
           <p>Built by observation.</p>
           <p>Designed for conflict.</p>
           <p>Made for better decisions.</p>
         </div>
-        <a href="#room">Bring your own decision into the room</a>
+        <a href="#review">Bring your own decision into the room</a>
       </section>
+      <Script id="living-decision-review-fallback" strategy="afterInteractive">
+        {fallbackController}
+      </Script>
     </main>
   );
 }

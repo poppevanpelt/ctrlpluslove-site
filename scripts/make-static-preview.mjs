@@ -7,22 +7,31 @@ const aiYFierToolDir = new URL("../public/tools/ai-y-fier/", import.meta.url);
 const previewAiYFierToolDir = new URL("tools/ai-y-fier/", previewDir);
 const museumAssetDir = new URL("../public/museum/", import.meta.url);
 const previewMuseumAssetDir = new URL("museum/", previewDir);
+const pricingAssetDir = new URL("../public/pricing/", import.meta.url);
+const previewPricingAssetDir = new URL("pricing/", previewDir);
 
 const pages = [
-  "index.html",
-  "museum.html",
-  "artifacts.html",
-  "rob.html",
-  "marjan.html",
-  "reality.html",
-  "unfinished-thoughts.html",
-  "ai-y-fier.html",
-  "meeting-filter.html",
-  "constitution.html",
+  ["index.html", "index.html"],
+  ["museum/index.html", "museum.html"],
+  ["artifacts/index.html", "artifacts.html"],
+  ["rob/index.html", "rob.html"],
+  ["marjan/index.html", "marjan.html"],
+  ["reality/index.html", "reality.html"],
+  ["unfinished-thoughts/index.html", "unfinished-thoughts.html"],
+  ["ai-y-fier/index.html", "ai-y-fier.html"],
+  ["meeting-filter/index.html", "meeting-filter.html"],
+  ["constitution/index.html", "constitution.html"],
+  ["living-decision-review/index.html", "living-decision-review.html"],
+  ["pricing/index.html", "pricing.html"],
+  ["pricing-documents/index.html", "pricing-documents.html"],
 ];
 
 const assets = [
+  "icon.svg",
   "favicon.ico",
+  "favicon.png",
+  "apple-icon.png",
+  "apple-touch-icon.png",
   "sw.js",
   "dear-rob.png",
   "dear-marjan.png",
@@ -199,6 +208,82 @@ const meetingFilterScript = `<script>
 })();
 </script>`;
 
+const aiYFierStaticScript = `<script>
+(function () {
+  var sourceText = document.querySelector("[data-aiy-source]");
+  var outputText = document.querySelector("[data-aiy-output]");
+  var demoButton = document.querySelector("[data-aiy-demo]");
+  var transformButton = document.querySelector("[data-aiy-transform]");
+  var copyButton = document.querySelector("[data-aiy-copy]");
+  var stripButton = document.querySelector("[data-aiy-strip]");
+  var clearButton = document.querySelector("[data-aiy-clear]");
+  var resetButton = document.querySelector("[data-aiy-reset]");
+  var demoText = "We need to update the customer dashboard so people can find their invoices faster.";
+
+  if (!sourceText || !outputText) return;
+
+  function cleanInput(text) {
+    return text.trim().replace(/\\s+/g, " ");
+  }
+
+  function aiYfy(text) {
+    var source = cleanInput(text);
+    if (!source) return "";
+
+    return [
+      "AI-Y-FIED (vc, intensity 4)",
+      "We are seeing a clear wedge emerge:",
+      '"' + source + '"',
+      "This is less a task than a compounding product surface with unusually legible demand.",
+      "The underlying market signal is simple: make the important action easier to find, trust, and repeat.",
+      "The near-term motion creates momentum, reduces workflow drag, and gives the team a credible path to operator-level leverage.",
+      "This turns a mundane product fix into a strategic narrative about confidence, speed, and customer-centered execution.",
+      "In memo terms: small surface area, high narrative gravity."
+    ].join("\\n\\n");
+  }
+
+  function transform() {
+    outputText.value = aiYfy(sourceText.value);
+  }
+
+  function runDemo() {
+    sourceText.value = demoText;
+    outputText.value = aiYfy(demoText);
+    outputText.dispatchEvent(new Event("input", { bubbles: true }));
+    outputText.focus();
+  }
+
+  if (demoButton) demoButton.addEventListener("click", runDemo);
+  if (resetButton) resetButton.addEventListener("click", runDemo);
+  if (transformButton) transformButton.addEventListener("click", transform);
+  if (stripButton) stripButton.addEventListener("click", function () {
+    outputText.value = sourceText.value;
+  });
+  if (clearButton) clearButton.addEventListener("click", function () {
+    sourceText.value = "";
+    outputText.value = "";
+  });
+  if (copyButton) copyButton.addEventListener("click", function () {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(outputText.value).catch(function () {});
+    }
+    copyButton.textContent = "Copied";
+    window.setTimeout(function () {
+      copyButton.textContent = "Copy";
+    }, 1200);
+  });
+  sourceText.addEventListener("input", function () {
+    if (!sourceText.value.trim()) outputText.value = "";
+  });
+})();
+</script>`;
+
+const previewIconLinks = `<link rel="icon" href="favicon.ico?v=20260626-favicon" sizes="32x32" />
+<link rel="shortcut icon" href="favicon.ico?v=20260626-favicon" />
+<link rel="icon" href="favicon.png?v=20260626-favicon" type="image/png" sizes="32x32" />
+<link rel="icon" href="icon.svg?v=20260626-favicon" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20260626-favicon" sizes="180x180" />`;
+
 function inlineCss(html, css) {
   let injected = false;
 
@@ -219,17 +304,18 @@ function addThemeScripts(html) {
   return html
     .replace(
       "<head>",
-      `<head>${themeHeadScript}<meta http-equiv="Cache-Control" content="no-store, max-age=0" /><meta http-equiv="Pragma" content="no-cache" /><meta http-equiv="Expires" content="0" />`
+      `<head>${themeHeadScript}<meta http-equiv="Cache-Control" content="no-store, max-age=0" /><meta http-equiv="Pragma" content="no-cache" /><meta http-equiv="Expires" content="0" />${previewIconLinks}`
     )
     .replace(
       "</body>",
-      `${themeBodyScript}${documentViewerScript}${meetingFilterScript}</body>`
+      `${themeBodyScript}${documentViewerScript}${meetingFilterScript}${aiYFierStaticScript}</body>`
     );
 }
 
 function removeRuntime(html) {
   return html
     .replace(/<link rel="preload" as="script"[^>]*>/g, "")
+    .replace(/<link rel="(?:shortcut icon|icon|apple-touch-icon)"[^>]*>/g, "")
     .replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, "")
     .replace(/<template\b[^>]*>[\s\S]*?<\/template>/g, "")
     .replace(/<!--[\s\S]*?-->/g, "")
@@ -239,6 +325,10 @@ function removeRuntime(html) {
     .replace(/src="\//g, 'src="')
     .replace(/href=""/g, 'href="index.html"')
     .replace(/href="museum"/g, 'href="museum.html"')
+    .replace(/href="pricing-documents\/"/g, 'href="pricing-documents.html"')
+    .replace(/href="pricing-documents"/g, 'href="pricing-documents.html"')
+    .replace(/href="pricing\/"/g, 'href="pricing.html"')
+    .replace(/href="pricing"/g, 'href="pricing.html"')
     .replace(/href="artifacts"/g, 'href="artifacts.html"')
     .replace(/href="rob"/g, 'href="rob.html"')
     .replace(/href="marjan"/g, 'href="marjan.html"')
@@ -246,6 +336,8 @@ function removeRuntime(html) {
     .replace(/href="unfinished-thoughts"/g, 'href="unfinished-thoughts.html"')
     .replace(/href="ai-y-fier"/g, 'href="tools/ai-y-fier/index.html"')
     .replace(/href="meeting-filter"/g, 'href="meeting-filter.html"')
+    .replace(/href="living-decision-review\/"/g, 'href="living-decision-review.html"')
+    .replace(/href="living-decision-review"/g, 'href="living-decision-review.html"')
     .replace(/href="constitution"/g, 'href="constitution.html"');
 }
 
@@ -263,9 +355,9 @@ const css = (
 await rm(previewDir, { recursive: true, force: true });
 await mkdir(previewDir, { recursive: true });
 
-for (const page of pages) {
-  const sourcePath = new URL(page, sourceDir);
-  const targetPath = new URL(page, previewDir);
+for (const [sourcePage, targetPage] of pages) {
+  const sourcePath = new URL(sourcePage, sourceDir);
+  const targetPath = new URL(targetPage, previewDir);
   const html = await readFile(sourcePath, "utf8");
   const standalone = addThemeScripts(removeRuntime(inlineCss(html, css)));
   await writeFile(targetPath, standalone, "utf8");
@@ -277,6 +369,7 @@ for (const asset of assets) {
 
 await cp(aiYFierToolDir, previewAiYFierToolDir, { recursive: true, force: true });
 await cp(museumAssetDir, previewMuseumAssetDir, { recursive: true, force: true });
+await cp(pricingAssetDir, previewPricingAssetDir, { recursive: true, force: true });
 
 const aiYFierIndexPath = new URL("index.html", previewAiYFierToolDir);
 const aiYFierIndex = await readFile(aiYFierIndexPath, "utf8");

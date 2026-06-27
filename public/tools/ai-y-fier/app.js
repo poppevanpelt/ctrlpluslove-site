@@ -10,6 +10,7 @@ const bullshitScore = document.querySelector("#bullshitScore");
 const buzzwordDensity = document.querySelector("#buzzwordDensity");
 const synergyIndex = document.querySelector("#synergyIndex");
 window.AIYFIER_VERSION = "inflation-v9";
+const demoText = "We need to update the customer dashboard so people can find their invoices faster.";
 
 const conservativeEditorPrompt = `You are a conservative human editor. Your job is to lightly improve the user's text while preserving the original meaning, intent, topic, speaker, and tone.
 
@@ -289,13 +290,16 @@ outputText.addEventListener("input", () => {
 clearButton.addEventListener("click", clearAll);
 
 resetButton.addEventListener("click", () => {
-  sourceText.value = "We need to update the customer dashboard so people can find their invoices faster.";
+  sourceText.value = demoText;
   document.querySelector("input[value='vc']").checked = true;
   intensity.value = 4;
   transform();
 });
 
 demoButton.addEventListener("click", () => {
+  sourceText.value = demoText;
+  document.querySelector("input[value='vc']").checked = true;
+  intensity.value = 4;
+  transform();
   sourceText.focus();
-  sourceText.select();
 });

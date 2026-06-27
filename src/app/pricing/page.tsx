@@ -4,15 +4,15 @@ import Link from "next/link";
 const pricingDocuments = [
   {
     name: "Decision Stress-Test™",
-    src: "/pricing/decision-stress-test.png",
+    src: "/pricing/decision-stress-test.png?v=20260626-prices",
   },
   {
     name: "On-Call Room™",
-    src: "/pricing/on-call-room.png",
+    src: "/pricing/on-call-room.png?v=20260626-prices",
   },
   {
     name: "Kill or Scale™",
-    src: "/pricing/kill-or-scale.png",
+    src: "/pricing/kill-or-scale.png?v=20260626-prices",
   },
 ];
 
@@ -26,8 +26,15 @@ export default function PricingPage() {
     <main className="site-shell">
       <section className="content-section">
         <div className="content-block wide poster-block">
-          <Link className="text-link" href="/">
-            ctrl+love →
+          <Link className="text-link pricing-home-link" href="/">
+            <Image
+              src="/favicon.png"
+              alt=""
+              width={32}
+              height={32}
+              aria-hidden="true"
+            />
+            <span>ctrl+love →</span>
           </Link>
 
           <div className="ways-heading">
@@ -35,16 +42,15 @@ export default function PricingPage() {
             <h1 className="section-title">Rooms and pricing</h1>
           </div>
 
-          <div style={{ display: "grid", gap: "2.4rem" }}>
+          <div className="pricing-document-grid" aria-label="Pricing documents">
             {pricingDocuments.map((document) => (
-              <article style={{ display: "grid" }} key={document.name}>
+              <article className="pricing-document-card" key={document.name}>
                 <a
                   className="text-link"
                   href={document.src}
                   target="_blank"
                   rel="noreferrer"
                   aria-label={`Open ${document.name} pricing document`}
-                  style={{ display: "grid", gap: "0.55rem", textDecoration: "none" }}
                 >
                   <Image
                     src={document.src}
@@ -52,8 +58,7 @@ export default function PricingPage() {
                     width={1536}
                     height={1024}
                     priority={document.name === "Decision Stress-Test™"}
-                    sizes="(max-width: 900px) 100vw, 88vw"
-                    style={{ width: "100%", height: "auto" }}
+                    sizes="(max-width: 900px) 33vw, 28vw"
                   />
                   <span>{document.name} ↗</span>
                 </a>

@@ -210,37 +210,27 @@ p {
   color: var(--ink);
   background: linear-gradient(
     100deg,
-    var(--pink) 0%,
-    var(--orange) 7.14%,
-    var(--yellow) 14.28%,
-    var(--green) 21.42%,
-    var(--cyan) 28.56%,
-    var(--indigo) 35.7%,
-    var(--violet) 42.84%,
-    var(--pink) 50%,
-    var(--orange) 57.14%,
-    var(--yellow) 64.28%,
-    var(--green) 71.42%,
-    var(--cyan) 78.56%,
-    var(--indigo) 85.7%,
-    var(--violet) 92.84%,
+    var(--orange) 0%,
+    var(--orange) 14%,
+    var(--yellow) 23%,
+    var(--green) 33%,
+    var(--cyan) 49%,
+    var(--indigo) 62%,
+    var(--violet) 77%,
     var(--pink) 100%
   );
-  background-size: 200% auto;
+  background-size: 100% auto;
   -webkit-background-clip: text;
   background-clip: text;
-  font-size: clamp(5rem, 15.5vw, 12.25rem);
-  font-weight: 600;
-  line-height: 0.86;
+  font-size: clamp(6.25rem, 14.4vw, 12.4rem);
+  font-weight: 660;
+  line-height: 0.82;
   letter-spacing: 0;
   transform-origin: center;
   text-shadow:
     0 0 2rem color-mix(in srgb, var(--pink) 18%, transparent),
     0 0 0 color-mix(in srgb, var(--ink) 0%, transparent);
-  will-change: background-position, filter, text-shadow;
-  animation:
-    logo-arrive 620ms cubic-bezier(0.22, 1, 0.36, 1) both,
-    logo-spectrum 9.5s linear 1s infinite;
+  animation: logo-arrive 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @supports (-webkit-background-clip: text) {
@@ -256,9 +246,9 @@ p {
 }
 
 .hero-logo-mark {
-  font-size: clamp(7.8rem, 18.4vw, 16.2rem);
+  font-size: clamp(6.25rem, 14.4vw, 12.4rem);
   line-height: 0.82;
-  margin-bottom: 0.25rem;
+  margin-bottom: -0.08rem;
 }
 
 @keyframes logo-arrive {
@@ -511,9 +501,9 @@ h3 {
   justify-self: center;
   width: min(100%, 13.4em);
   color: var(--ink);
-  font-size: clamp(4.55rem, 8.8vw, 7.55rem);
-  font-weight: 600;
-  line-height: 0.96;
+  font-size: clamp(3.55rem, 6.75vw, 5.85rem);
+  font-weight: 690;
+  line-height: 1;
   letter-spacing: 0;
 }
 
@@ -554,6 +544,12 @@ h3 {
   animation: signal-drop 2.05s linear both;
 }
 
+.hero-line-static::before,
+.hero-line-static::after {
+  content: none;
+  animation: none;
+}
+
 .hero-route {
   display: block;
   width: 100%;
@@ -583,15 +579,15 @@ h3 {
   max-width: 44rem;
   justify-self: center;
   color: color-mix(in srgb, var(--ink) 82%, var(--muted));
-  font-size: clamp(1.32rem, 1.72vw, 1.82rem);
-  font-weight: 500;
+  font-size: clamp(1.14rem, 1.46vw, 1.44rem);
+  font-weight: 600;
   line-height: 1.28;
   letter-spacing: 0;
 }
 
 .hero-message {
   display: grid;
-  gap: clamp(1.1rem, 2vh, 1.55rem);
+  gap: clamp(0.72rem, 1.45vh, 1.15rem);
   justify-self: center;
   width: 100%;
 }
@@ -608,8 +604,8 @@ h3 {
   border-bottom: 1px solid color-mix(in srgb, var(--ink) 28%, transparent);
   color: var(--ink);
   padding-bottom: 0.12rem;
-  font-size: clamp(0.92rem, 1.08vw, 1rem);
-  font-weight: 700;
+  font-size: clamp(0.96rem, 1.16vw, 1.16rem);
+  font-weight: 780;
   line-height: var(--leading-secondary);
   text-decoration: none;
   transition: border-color 160ms ease, color 160ms ease;
@@ -624,9 +620,9 @@ h3 {
   max-width: 46rem;
   justify-self: center;
   color: var(--ink);
-  font-size: clamp(2.05rem, 3.4vw, 3.1rem);
-  font-weight: 600;
-  line-height: 1.08;
+  font-size: clamp(2.42rem, 4.1vw, 3.72rem);
+  font-weight: 690;
+  line-height: 1.02;
   letter-spacing: 0;
 }
 
@@ -959,6 +955,18 @@ h3 {
   content: "↑";
 }
 
+.explore-label {
+  color: var(--ink);
+  font-size: clamp(1.08rem, 1.36vw, 1.28rem);
+  font-weight: 600;
+  line-height: 1.32;
+}
+
+.explore-departments-list {
+  border-left: 1px solid var(--rule);
+  padding-left: 0.9rem;
+}
+
 .explore-submenu {
   border-left: 1px solid var(--rule);
   margin-top: 1.05rem;
@@ -995,6 +1003,96 @@ h3 {
 }
 
 .explore-list a:hover {
+  color: var(--soft);
+  transform: translateX(0.18rem);
+}
+
+.departments-section {
+  padding: clamp(2.2rem, 4.2vw, 3.5rem) 1.5rem;
+}
+
+.features-section {
+  padding: clamp(2.1rem, 3.8vw, 3.25rem) 1.5rem;
+}
+
+.departments-block {
+  display: grid;
+  grid-template-columns: minmax(9rem, 0.28fr) minmax(0, 1fr);
+  gap: clamp(1.2rem, 3.5vw, 3rem);
+  width: min(100%, 64rem);
+  margin: 0 auto;
+}
+
+.features-block {
+  display: grid;
+  grid-template-columns: minmax(9rem, 0.28fr) minmax(0, 1fr);
+  gap: clamp(1.2rem, 3.5vw, 3rem);
+  width: min(100%, 64rem);
+  margin: 0 auto;
+}
+
+.departments-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem clamp(1.2rem, 3vw, 2.4rem);
+}
+
+.features-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem clamp(1.2rem, 3vw, 2.4rem);
+}
+
+.departments-groups {
+  display: grid;
+  gap: 1.65rem;
+}
+
+.departments-group {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.departments-group > p {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.departments-list-named {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.department-link,
+.feature-link {
+  display: grid;
+  gap: 0.18rem;
+  color: var(--ink);
+  text-decoration: none;
+  transition: color 160ms ease, transform 160ms ease;
+}
+
+.department-link span,
+.feature-link span {
+  font-size: clamp(1rem, 1.25vw, 1.18rem);
+  font-weight: 650;
+  line-height: 1.18;
+}
+
+.department-link em,
+.feature-link em {
+  color: var(--muted);
+  font-size: var(--type-secondary);
+  font-style: normal;
+  font-weight: 800;
+  line-height: var(--leading-secondary);
+}
+
+.department-link:hover,
+.feature-link:hover {
   color: var(--soft);
   transform: translateX(0.18rem);
 }
@@ -2397,14 +2495,15 @@ h3 {
   }
 
   .hero-logo-mark {
-    font-size: clamp(3.65rem, 12vw, 3.85rem);
-    margin-bottom: -0.1rem;
+    font-size: clamp(3.35rem, 15.5vw, 4.65rem);
+    line-height: 0.82;
+    margin-bottom: -0.08rem;
   }
 
   .hero-line {
     max-width: 18rem;
     justify-self: center;
-    font-size: clamp(2.1rem, 8vw, 2.35rem);
+    font-size: clamp(2.12rem, 9vw, 2.95rem);
   }
 
   .hero-route-long {
@@ -2413,7 +2512,7 @@ h3 {
 
   .hero-translation {
     max-width: 18rem;
-    font-size: 1.05rem;
+    font-size: clamp(1.02rem, 4.25vw, 1.14rem);
     line-height: 1.34;
   }
 
@@ -2423,7 +2522,7 @@ h3 {
   }
 
   .hero-message {
-    gap: 0.62rem;
+    gap: clamp(0.58rem, 1.25vh, 0.82rem);
   }
 
   .hero-message-secondary {
@@ -2433,7 +2532,7 @@ h3 {
 
   .hero-invitation {
     max-width: 16rem;
-    font-size: clamp(1.55rem, 5.8vw, 1.78rem);
+    font-size: clamp(1.65rem, 7.2vw, 2.22rem);
   }
 
   .hero-stakes {
@@ -2442,7 +2541,7 @@ h3 {
   }
 
   .hero-email {
-    font-size: 0.92rem;
+    font-size: 0.96rem;
   }
 
   .hero-explore {
@@ -2452,6 +2551,34 @@ h3 {
   .hero-explore .explore-list {
     grid-template-columns: 1fr;
     gap: 1.55rem;
+  }
+
+  .departments-section {
+    padding: 2.35rem 1.25rem;
+  }
+
+  .features-section {
+    padding: 2.35rem 1.25rem;
+  }
+
+  .departments-block {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+  }
+
+  .features-block {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+  }
+
+  .departments-list {
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+  }
+
+  .features-list {
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
   }
 
   .theme-toggle {
@@ -2712,28 +2839,28 @@ h3 {
   }
 
   .hero-logo-mark {
-    font-size: clamp(7rem, 15.5vw, 12rem);
+    font-size: clamp(6.25rem, 14.4vw, 12.4rem);
   }
 
   .hero-line {
-    font-size: clamp(3.7rem, 7.2vw, 6rem);
+    font-size: clamp(3.55rem, 6.75vw, 5.85rem);
   }
 
   .hero-translation {
-    font-size: clamp(1.1rem, 1.65vw, 1.45rem);
+    font-size: clamp(1.14rem, 1.46vw, 1.44rem);
   }
 
   .hero-message {
-    gap: 0.5rem;
+    gap: clamp(0.72rem, 1.45vh, 1.15rem);
   }
 
   .hero-message-secondary {
-    gap: 0.42rem;
-    margin-top: 0.48rem;
+    gap: clamp(0.8rem, 1.4vh, 1.1rem);
+    margin-top: clamp(0.95rem, 2.2vh, 1.8rem);
   }
 
   .hero-invitation {
-    font-size: clamp(2rem, 3.7vw, 3rem);
+    font-size: clamp(2.42rem, 4.1vw, 3.72rem);
   }
 }
 
