@@ -1876,15 +1876,6 @@ h3 {
   text-wrap: balance;
 }
 
-.pricing-room-tier {
-  color: var(--muted);
-  font-size: 0.68rem;
-  font-weight: 850;
-  letter-spacing: 0.04em;
-  line-height: 1.2;
-  text-transform: uppercase;
-}
-
 .pricing-room-headline {
   color: var(--ink);
   font-size: clamp(1.08rem, 1.5vw, 1.34rem);

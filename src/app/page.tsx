@@ -8,21 +8,18 @@ const pricingRooms = [
   {
     name: "DECISION STRESS-TEST™",
     href: "/pricing/decision-stress-test.png",
-    tier: "01 / single decision",
     headline: "For one decision that needs pressure before it becomes public.",
     result: "The room tests the logic, the emotional pull, and the obvious blind spots so you can leave with a sharper go, no-go, or rethink.",
   },
   {
     name: "ON-CALL ROOM™",
     href: "/pricing/on-call-room.png",
-    tier: "02 / ongoing pressure",
     headline: "For teams making decisions that keep moving.",
     result: "Use the room as an on-call counterweight: a place to bring new evidence, test momentum, and keep the decision honest as conditions change.",
   },
   {
     name: "KILL OR SCALE™",
     href: "/pricing/kill-or-scale.png",
-    tier: "03 / highest leverage",
     headline: "For costly ideas that either need commitment or a clean stop.",
     result: "The room separates strategy, market signal, and story so you can see whether the thing deserves more force or less oxygen.",
   },
@@ -269,9 +266,6 @@ export default function Home() {
                 <h3>
                   {room.name}
                 </h3>
-                <p className="pricing-room-tier">
-                  {room.tier}
-                </p>
                 <p className="pricing-room-headline">
                   {room.headline}
                 </p>
