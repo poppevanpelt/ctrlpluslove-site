@@ -1,200 +1,87 @@
-"use client";
-
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import type { CSSProperties } from "react";
 
 import styles from "./living-decision-review.module.css";
 
-type MindStatus = "Waiting" | "Open" | "Contested" | "Shifted" | "Aligned";
+const decision = "Should Suki launch a Matcha Subscription?";
 
-type Mind = {
-  id: string;
-  name: string;
-  lens: string;
-  initial: string;
-};
-
-type TranscriptLine = {
-  stage: number;
-  speaker: string;
-  text: string;
-};
-
-const minds: Mind[] = [
+const minds = [
   {
-    id: "maya",
     name: "Maya",
-    lens: "emotional pull",
-    initial: "Launch subscription",
+    title: "Emotional Pull",
+    thought: "Customers don't buy subscriptions. They buy reassurance.",
+    status: "Contested",
   },
   {
-    id: "mira",
-    name: "Mira",
-    lens: "business logic",
-    initial: "Open",
-  },
-  {
-    id: "wade",
-    name: "Wade",
-    lens: "evidence",
-    initial: "Waiting for signal",
-  },
-  {
-    id: "vera",
-    name: "Vera",
-    lens: "cultural timing",
-    initial: "Open",
-  },
-  {
-    id: "lexi",
-    name: "Lexi",
-    lens: "brand risk",
-    initial: "Concerned",
-  },
-  {
-    id: "simon",
     name: "Simon",
-    lens: "skeptical strategist",
-    initial: "Against",
+    title: "Skeptical Strategist",
+    thought: "Too early. Loyalty is not proven yet.",
+    status: "Open",
   },
   {
-    id: "akiko",
+    name: "Lexi",
+    title: "Brand Risk",
+    thought: "Efficiency could make Suki feel less cared for.",
+    status: "Open",
+  },
+  {
+    name: "Mira",
+    title: "Business Logic",
+    thought: "Margins work. Churn decides everything.",
+    status: "Open",
+  },
+  {
     name: "Akiko",
-    lens: "Japanese nuance",
-    initial: "Careful",
+    title: "Japanese Nuance",
+    thought: "Respect the ritual. Matcha is not just a flavor.",
+    status: "Open",
+  },
+  {
+    name: "Wade",
+    title: "Evidence",
+    thought: "Daily rituals behave differently from convenience refills.",
+    status: "Shifted",
+  },
+  {
+    name: "Vera",
+    title: "Cultural Timing",
+    thought: "Matcha is moving from trend to ritual.",
+    status: "Aligned",
   },
 ];
 
-const stages = [
-  "Question enters",
-  "Seven minds join",
-  "Initial positions",
-  "Disagreement",
+const statusFlow = [
+  "Open",
   "Contested",
-  "Evidence changes the room",
-  "Consensus shifts",
-  "Recommendation",
-];
-
-const transcript: TranscriptLine[] = [
-  {
-    stage: 2,
-    speaker: "Maya",
-    text: "Customers are not buying subscriptions. They are buying the comfort of not running out.",
-  },
-  {
-    stage: 2,
-    speaker: "Mira",
-    text: "The economics can work, but churn is the real risk.",
-  },
-  {
-    stage: 3,
-    speaker: "Simon",
-    text: "I don't buy it yet. This could create subscription fatigue before loyalty.",
-  },
-  {
-    stage: 5,
-    speaker: "Wade",
-    text: "Subscription fatigue is real, but daily rituals behave differently from convenience refills.",
-  },
-  {
-    stage: 5,
-    speaker: "Vera",
-    text: "The cultural timing is good. Matcha is moving from trend to ritual.",
-  },
-  {
-    stage: 5,
-    speaker: "Akiko",
-    text: "Be careful. In Japan, matcha is not just a flavor. It carries ceremony, restraint and respect.",
-  },
-  {
-    stage: 6,
-    speaker: "Lexi",
-    text: "The brand risk is making Suki feel too efficient. The subscription should feel like care, not commerce.",
-  },
+  "Evidence added",
+  "Perspective shifted",
+  "Consensus emerging",
 ];
 
 const productBlocks = [
   {
-    title: "Bring in the decision",
-    body: "You start with a real business question, not a prompt.",
+    title: "Bring your decision",
+    body: "Enter a real strategic question.",
   },
   {
-    title: "Watch the room work",
-    body: "Different minds pressure-test the decision from emotion, business, evidence, culture, brand and skepticism.",
+    title: "Watch the room",
+    body: "Different perspectives test assumptions, disagree, challenge each other and evolve.",
   },
   {
     title: "Leave with sharper judgment",
-    body: "The output is not just an answer. It is the visible path to a better decision.",
+    body: "Not just an answer. A visible reasoning process.",
   },
 ];
 
 const differencePoints = [
-  "Disagreement is designed in",
+  "Designed disagreement",
   "Opinions can change",
-  "Assumptions are made visible",
+  "Evidence changes conclusions",
   "Human signals matter",
   "The process is as valuable as the answer",
 ];
 
-function statusForMind(id: string, stage: number): MindStatus {
-  if (stage < 1) return "Waiting";
-  if (stage < 4) return "Open";
-  if (id === "maya" && stage === 4) return "Contested";
-  if (stage < 6) return id === "maya" ? "Contested" : "Open";
-  if (stage < 7) return id === "simon" || id === "maya" || id === "wade" ? "Shifted" : "Open";
-  return "Aligned";
-}
-
-function confidenceForStage(stage: number) {
-  if (stage < 5) return 78;
-  if (stage === 5) return 81;
-  if (stage === 6) return 84;
-  return 86;
-}
-
 export default function LivingDecisionReview() {
-  const [stage, setStage] = useState(0);
-  const [running, setRunning] = useState(true);
-
-  const visibleTranscript = useMemo(
-    () => transcript.filter((line) => line.stage <= stage),
-    [stage],
-  );
-  const confidence = confidenceForStage(stage);
-  const activeSpeaker = visibleTranscript[visibleTranscript.length - 1]?.speaker;
-  const consensus =
-    stage >= 7
-      ? "Do not sell it as a subscription. Sell it as: Never run out of your daily ritual."
-      : stage >= 6
-        ? "Launch ritual-based replenishment."
-        : stage >= 3
-          ? "Subscription may create fatigue before loyalty."
-          : "Launch subscription.";
-
-  useEffect(() => {
-    if (!running) return;
-
-    const timers = stages.map((_, index) =>
-      window.setTimeout(() => {
-        setStage(index);
-        if (index === stages.length - 1) {
-          window.setTimeout(() => setRunning(false), 900);
-        }
-      }, index * 1450),
-    );
-
-    return () => {
-      timers.forEach(window.clearTimeout);
-    };
-  }, [running]);
-
-  function startRoom() {
-    setStage(0);
-    setRunning(false);
-    window.setTimeout(() => setRunning(true), 60);
-  }
-
   return (
     <main className={styles.page}>
       <header className={styles.topbar}>
@@ -204,123 +91,135 @@ export default function LivingDecisionReview() {
         <span>Living Decision Review</span>
       </header>
 
-      <section className={styles.hero}>
-        <div className={styles.heroCopy}>
-          <p className={styles.kicker}>Product demo</p>
-          <h1>Watch a decision change its mind.</h1>
-          <p className={styles.subline}>
-            Living Decision Review brings your decision into a room of distinct
-            strategic minds, so you can see assumptions tested, disagreement
-            surface, and judgment improve before you act.
-          </p>
-          <div className={styles.actions}>
-            <button type="button" onClick={startRoom}>
-              Try the room
-            </button>
-            <a href="#how-it-works">See how it works</a>
+      <section className={`${styles.section} ${styles.hero}`} aria-labelledby="hero-title">
+        <p className={styles.kicker}>Product demo</p>
+        <h1 id="hero-title">Watch a decision change its mind.</h1>
+        <p className={styles.heroLine}>
+          Bring any important business decision into a room of distinct strategic
+          minds and watch better judgment emerge.
+        </p>
+
+        <form className={styles.decisionInput} action="#room" aria-label="Decision example">
+          <label htmlFor="decision">Decision</label>
+          <div>
+            <input id="decision" readOnly value={decision} />
+            <button type="submit">Bring it into the room</button>
           </div>
-        </div>
-
-        <section className={styles.demo} aria-label="Live decision review demo">
-          <div className={styles.demoHeader}>
-            <div>
-              <span>Decision</span>
-              <h2>Should Suki launch a Matcha Subscription?</h2>
-            </div>
-            <div className={styles.confidence} aria-label={`Confidence ${confidence}%`}>
-              <span>Confidence</span>
-              <strong>{confidence}%</strong>
-              <em>{stage >= 7 ? "78% to 86%" : "78% to 86%"}</em>
-            </div>
-          </div>
-
-          <div className={styles.roomGrid}>
-            <div className={styles.room} aria-label="Seven named minds">
-              <div className={styles.roomCenter}>
-                <span>{stages[stage]}</span>
-                <p>{consensus}</p>
-              </div>
-
-              {minds.map((mind, index) => {
-                const angle = (index / minds.length) * 360 - 90;
-                const status = statusForMind(mind.id, stage);
-                const active = activeSpeaker === mind.name || (stage === 1 && index <= stage + 2);
-
-                return (
-                  <article
-                    className={styles.mind}
-                    data-status={status}
-                    data-active={active ? "true" : undefined}
-                    key={mind.id}
-                    style={{ "--angle": `${angle}deg` } as React.CSSProperties}
-                  >
-                    <strong>{mind.name}</strong>
-                    <span>{mind.lens}</span>
-                    <em>{status}</em>
-                  </article>
-                );
-              })}
-            </div>
-
-            <aside className={styles.transcript} aria-label="Room transcript">
-              <div className={styles.stageList}>
-                {stages.map((label, index) => (
-                  <span data-current={stage === index ? "true" : undefined} key={label}>
-                    {index + 1}. {label}
-                  </span>
-                ))}
-              </div>
-
-              <div className={styles.lines}>
-                {visibleTranscript.length === 0 ? (
-                  <p className={styles.waiting}>The question enters the room.</p>
-                ) : (
-                  visibleTranscript.map((line) => (
-                    <article
-                      className={styles.line}
-                      data-active={line.speaker === activeSpeaker ? "true" : undefined}
-                      key={`${line.speaker}-${line.stage}`}
-                    >
-                      <span>{line.speaker}</span>
-                      <p>{line.text}</p>
-                    </article>
-                  ))
-                )}
-              </div>
-
-              <div className={styles.recommendation} data-visible={stage >= 6 ? "true" : undefined}>
-                {stage >= 7 ? (
-                  <>
-                    <span>Consensus shift</span>
-                    <p>From launch subscription to ritual-based replenishment.</p>
-                    <span>Final recommendation</span>
-                    <p>
-                      Do not sell it as a subscription. Sell it as
-                      <strong> Never run out of your daily ritual.</strong>
-                    </p>
-                  </>
-                ) : stage >= 6 ? (
-                  <>
-                    <span>Consensus shift</span>
-                    <p>From launch subscription to ritual-based replenishment.</p>
-                  </>
-                ) : (
-                  <>
-                    <span>Recommendation</span>
-                    <p>Waiting for the room to move.</p>
-                  </>
-                )}
-              </div>
-            </aside>
-          </div>
-        </section>
+        </form>
       </section>
 
-      <section className={styles.how} id="how-it-works" aria-labelledby="how-title">
-        <div className={styles.sectionHeading}>
-          <p className={styles.kicker}>How it works</p>
-          <h2 id="how-title">A room for decisions that deserve pressure.</h2>
+      <section className={styles.section} id="room" aria-labelledby="room-title">
+        <div className={styles.sectionLead}>
+          <p className={styles.kicker}>The room gathers</p>
+          <h2 id="room-title">Every important decision deserves more than one perspective.</h2>
         </div>
+
+        <div className={styles.room} aria-label="Seven minds around the room">
+          <div className={styles.roomQuestion}>
+            <span>The decision enters</span>
+            <p>{decision}</p>
+          </div>
+
+          {minds.map((mind, index) => {
+            const angle = (index / minds.length) * 360 - 90;
+
+            return (
+              <article
+                className={styles.mind}
+                key={mind.name}
+                style={{ "--angle": `${angle}deg` } as CSSProperties}
+              >
+                <strong>{mind.name}</strong>
+                <span>{mind.title}</span>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className={styles.section} aria-labelledby="reactions-title">
+        <div className={styles.sectionLead}>
+          <p className={styles.kicker}>Initial reactions</p>
+          <h2 id="reactions-title">The room does not start in agreement.</h2>
+        </div>
+
+        <div className={styles.reactionGrid}>
+          {minds.map((mind) => (
+            <article className={styles.reaction} key={mind.name}>
+              <span>{mind.name}</span>
+              <em>{mind.title}</em>
+              <p>{mind.thought}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className={styles.section} aria-labelledby="conflict-title">
+        <div className={styles.conflict}>
+          <div className={styles.sectionLead}>
+            <p className={styles.kicker}>Conflict</p>
+            <h2 id="conflict-title">One position becomes contested.</h2>
+          </div>
+
+          <div className={styles.challenge}>
+            <article>
+              <span>Maya</span>
+              <p>Launch it. The emotional pull is strong.</p>
+            </article>
+            <article>
+              <span>Simon</span>
+              <p>I don&apos;t buy it yet. This could create subscription fatigue before loyalty.</p>
+            </article>
+          </div>
+
+          <div className={styles.statusFlow} aria-label="Status changes">
+            {statusFlow.map((status) => (
+              <span key={status}>{status}</span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.section} aria-labelledby="consensus-title">
+        <div className={styles.consensus}>
+          <div className={styles.sectionLead}>
+            <p className={styles.kicker}>Consensus</p>
+            <h2 id="consensus-title">The room changes its mind.</h2>
+          </div>
+
+          <div className={styles.recommendation}>
+            <article>
+              <span>Original recommendation</span>
+              <p>Launch subscriptions.</p>
+            </article>
+            <div className={styles.arrow} aria-hidden="true">
+              ↓
+            </div>
+            <article>
+              <span>Final recommendation</span>
+              <p>Launch ritual-based replenishment.</p>
+            </article>
+          </div>
+
+          <div className={styles.reason}>
+            <p>Don&apos;t sell convenience.</p>
+            <p>Protect the daily ritual.</p>
+          </div>
+
+          <div className={styles.confidence} aria-label="Confidence improves from 78% to 86%">
+            <span>78%</span>
+            <div />
+            <span>86%</span>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.section} aria-labelledby="how-title">
+        <div className={styles.sectionLead}>
+          <p className={styles.kicker}>How it works</p>
+          <h2 id="how-title">Only now, the product.</h2>
+        </div>
+
         <div className={styles.productGrid}>
           {productBlocks.map((block) => (
             <article key={block.title}>
@@ -331,11 +230,12 @@ export default function LivingDecisionReview() {
         </div>
       </section>
 
-      <section className={styles.difference} aria-labelledby="different-title">
-        <div className={styles.sectionHeading}>
-          <p className={styles.kicker}>What makes it different</p>
-          <h2 id="different-title">Better judgment is visible while it forms.</h2>
+      <section className={styles.section} aria-labelledby="different-title">
+        <div className={styles.sectionLead}>
+          <p className={styles.kicker}>Why it works</p>
+          <h2 id="different-title">The thinking is visible.</h2>
         </div>
+
         <div className={styles.differenceGrid}>
           {differencePoints.map((point) => (
             <p key={point}>{point}</p>
@@ -343,10 +243,13 @@ export default function LivingDecisionReview() {
         </div>
       </section>
 
-      <section className={styles.close}>
-        <p>Built by observation.</p>
-        <p>Designed for conflict.</p>
-        <p>Made for better decisions.</p>
+      <section className={`${styles.section} ${styles.close}`} aria-label="Closing">
+        <div>
+          <p>Built by observation.</p>
+          <p>Designed for conflict.</p>
+          <p>Made for better decisions.</p>
+        </div>
+        <a href="#room">Bring your own decision into the room</a>
       </section>
     </main>
   );
