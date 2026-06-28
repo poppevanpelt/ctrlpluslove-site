@@ -8,20 +8,20 @@ const pricingRooms = [
   {
     name: "DECISION STRESS-TEST™",
     href: "/pricing/decision-stress-test.png",
-    headline: "For the decision you keep circling.",
-    result: "A one-off room that exposes the hidden bet, tests the obvious answer, and leaves you with a defensible next move.",
+    headline: "A decision before you commit.",
+    copy: "One room. One decision. A sharper next move.",
   },
   {
     name: "ON-CALL ROOM™",
     href: "/pricing/on-call-room.png",
-    headline: "For decisions that keep changing shape.",
-    result: "A standing room for new evidence, changed context, and internal doubt, so momentum does not harden into habit.",
+    headline: "Your decision team on call.",
+    copy: "A standing room for decisions that keep changing shape as new evidence, pressure, and doubt arrive.",
   },
   {
     name: "KILL OR SCALE™",
     href: "/pricing/kill-or-scale.png",
-    headline: "For ideas already costing real money.",
-    result: "The room decides whether to add force, change shape, or stop cleanly before strategy turns into sunk cost.",
+    headline: "Stop, reshape, or accelerate.",
+    copy: "For ideas already costing real money. The room decides whether to add force, change shape, or stop cleanly before strategy turns into sunk cost.",
   },
 ];
 
@@ -234,13 +234,9 @@ export default function Home() {
               <span className="live-simulator-title">
                 Watch the room change its mind in real time.
               </span>
-              <span className="live-simulator-note">
-                A live decision becomes tension, opposition, evidence, and a
-                recommendation you can defend.
-              </span>
             </span>
             <span className="text-link live-simulator-action">
-              Open simulator →
+              Try demo →
             </span>
           </a>
           <div className="ways-heading">
@@ -267,10 +263,18 @@ export default function Home() {
                   {room.name}
                 </h3>
                 <p className="pricing-room-headline">
-                  {room.headline}
+                  {room.name === "DECISION STRESS-TEST™" ? (
+                    <>
+                      A decision before
+                      <br />
+                      you commit.
+                    </>
+                  ) : (
+                    room.headline
+                  )}
                 </p>
                 <p className="pricing-room-result">
-                  {room.result}
+                  {room.copy}
                 </p>
                 <a
                   className="text-link"

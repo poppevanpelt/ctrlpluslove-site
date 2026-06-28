@@ -245,7 +245,9 @@
 .reviewMoment {
   position: relative;
   opacity: 0.42;
-  transition: opacity 220ms ease;
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease;
 }
 
 .reviewMoment::before {
@@ -283,9 +285,25 @@
   transform: scale(1.08);
 }
 
+.reviewMoment[data-relation="next"] {
+  opacity: 0.38;
+  pointer-events: none;
+}
+
+.reviewMoment[data-relation="next"]::before {
+  border-color: #fbfaf7;
+  background: #cfc8bd;
+}
+
 .reviewMoment[data-relation="future"]::before {
   border-color: #fbfaf7;
   background: #cfc8bd;
+}
+
+.reviewMoment[data-relation="future"] {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(0.5rem);
 }
 
 .reviewMoment article {

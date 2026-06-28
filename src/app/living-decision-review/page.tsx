@@ -73,7 +73,6 @@ const productRows = [
 export default function LivingDecisionReview() {
   const [activeMoment, setActiveMoment] = useState(-1);
   const [reviewProgress, setReviewProgress] = useState(0);
-  const highestMoment = useRef(-1);
   const reviewRef = useRef<HTMLElement | null>(null);
   const activeReview = reviewMoments[Math.max(activeMoment, 0)] ?? reviewMoments[0];
 
@@ -87,17 +86,16 @@ export default function LivingDecisionReview() {
         if (!review) return;
 
         const rect = review.getBoundingClientRect();
-        const anchor = window.innerHeight * 0.48;
         const travel = Math.max(rect.height - window.innerHeight * 0.18, 1);
-        const rawProgress = (anchor - rect.top) / travel;
+        const rawProgress = -rect.top / travel;
         const progress = Math.min(Math.max(rawProgress, 0), 1);
-        const nextMoment = progress <= 0
+        const activeProgress = Math.min(progress * 1.18, 1);
+        const nextMoment = rect.top > window.innerHeight * 0.48
           ? -1
-          : Math.min(reviewMoments.length - 1, Math.floor(progress * reviewMoments.length));
+          : Math.min(reviewMoments.length - 1, Math.floor(activeProgress * (reviewMoments.length - 1)));
 
-        highestMoment.current = Math.max(highestMoment.current, nextMoment);
-        setActiveMoment(highestMoment.current);
-        setReviewProgress((currentProgress) => Math.max(currentProgress, progress));
+        setActiveMoment(nextMoment);
+        setReviewProgress(nextMoment < 0 ? 0 : progress);
       });
     }
 
@@ -181,6 +179,8 @@ export default function LivingDecisionReview() {
                 ? "past"
                 : index === activeMoment
                   ? "current"
+                  : index === activeMoment + 1
+                    ? "next"
                   : "future";
 
             return (

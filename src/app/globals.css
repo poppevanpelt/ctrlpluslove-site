@@ -322,119 +322,76 @@ p {
   0% {
     opacity: 1;
     filter: none;
-    transform: translateY(-50%);
+    transform: none;
   }
 
-  5% {
+  68% {
     opacity: 1;
     filter: none;
-    transform: translateY(-50%);
+    transform: none;
   }
 
-  8% {
-    opacity: 0.82;
-    filter: blur(0.012em) saturate(1.45);
-    transform: translate(-0.018em, -50%);
+  70% {
+    opacity: 0;
+    filter: none;
+    transform: none;
   }
 
-  10% {
-    opacity: 1;
-    filter: brightness(1.18) saturate(1.55);
-    transform: translate(0.024em, -50%);
-  }
-
-  12% {
-    opacity: 0.28;
-    filter: blur(0.02em) saturate(1.7);
-    transform: translate(-0.034em, -50%);
-  }
-
-  15%,
   100% {
     opacity: 0;
     filter: none;
-    transform: translateY(-50%);
+    transform: none;
   }
 }
 
 @keyframes route-final {
   0%,
-  9% {
+  68% {
     opacity: 0;
-    filter: blur(0.018em) saturate(1.45);
-    transform: translateX(0.032em);
+    filter: none;
+    text-shadow: none;
+    transform: none;
   }
 
-  11% {
-    opacity: 0.3;
-    filter: blur(0.012em) brightness(1.16) saturate(1.55);
-    text-shadow:
-      -0.026em 0 0 color-mix(in srgb, var(--pink) 48%, transparent),
-      0.026em 0 0 color-mix(in srgb, var(--cyan) 58%, transparent);
-    transform: translateX(-0.02em);
+  70% {
+    opacity: 1;
+    filter: none;
+    text-shadow: none;
+    transform: none;
   }
 
-  13% {
-    opacity: 0.76;
-    filter: blur(0.006em) saturate(1.35);
-    text-shadow:
-      -0.018em 0 0 color-mix(in srgb, var(--pink) 36%, transparent),
-      0.018em 0 0 color-mix(in srgb, var(--cyan) 46%, transparent);
-    transform: translateX(0.044em);
-  }
-
-  16% {
-    opacity: 0.94;
-    filter: blur(0.003em) brightness(1.08) saturate(1.18);
-    text-shadow: 0 0 0.28rem color-mix(in srgb, var(--cyan) 16%, transparent);
-    transform: translateX(-0.012em);
-  }
-
-  19%,
   100% {
     opacity: 1;
     filter: none;
     text-shadow: none;
-    transform: translateX(0);
+    transform: none;
   }
 }
 
 @keyframes signal-drop {
   0%,
-  6%,
-  18%,
   100% {
     opacity: 0;
+    filter: brightness(1);
+    transform: translateY(-50%) scaleX(1);
   }
 
-  8% {
-    opacity: 0.16;
-    transform: translate(-52%, -50%) scaleX(0.28);
+  36% {
+    opacity: 0.82;
+    filter: brightness(1.32) saturate(1.35);
+    transform: translateY(-50%) scaleX(1);
   }
 
-  10% {
-    opacity: 0.42;
-    transform: translate(-48%, -50%) scaleX(0.96);
-  }
-
-  12% {
-    opacity: 0.2;
-    transform: translate(-51%, -50%) scaleX(0.58);
-  }
-
-  13.5% {
+  54% {
     opacity: 0.46;
-    transform: translate(-50%, -50%) scaleX(1.08);
+    filter: brightness(1.18) saturate(1.2);
+    transform: translateY(-50%) scaleX(1);
   }
 
-  15% {
-    opacity: 0.1;
-    transform: translate(-49%, -50%) scaleX(0.42);
-  }
-
-  17% {
+  66% {
     opacity: 0;
-    transform: translate(-50%, -50%) scaleX(1);
+    filter: brightness(1);
+    transform: translateY(-50%) scaleX(1);
   }
 }
 
@@ -557,22 +514,31 @@ h3 {
 .hero-line::after {
   position: absolute;
   z-index: 2;
-  top: 50%;
-  left: 50%;
-  width: min(10.5em, 92%);
-  height: 0.035em;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--cyan) 70%, var(--indigo));
+  top: 49%;
+  left: 0;
+  width: 100%;
+  height: 0.09em;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in srgb, var(--cyan) 58%, transparent) 8%,
+      color-mix(in srgb, var(--cyan) 86%, var(--indigo)) 50%,
+      color-mix(in srgb, var(--cyan) 44%, transparent) 92%,
+      transparent 100%
+    );
   box-shadow:
-    0 -0.12em 0 -0.055em color-mix(in srgb, var(--cyan) 22%, transparent),
-    0 0.13em 0 -0.058em color-mix(in srgb, var(--pink) 16%, transparent),
-    0 0 0.45rem color-mix(in srgb, var(--cyan) 18%, transparent),
-    0 0 0.7rem color-mix(in srgb, var(--indigo) 10%, transparent);
+    0 -0.16em 0 -0.07em color-mix(in srgb, var(--cyan) 26%, transparent),
+    0 0.14em 0 -0.065em color-mix(in srgb, var(--pink) 16%, transparent),
+    0 0 0.72rem color-mix(in srgb, var(--cyan) 34%, transparent),
+    0 0 1.05rem color-mix(in srgb, var(--indigo) 18%, transparent);
   content: "";
+  mix-blend-mode: screen;
   opacity: 0;
   pointer-events: none;
-  transform: translate(-50%, -50%);
-  animation: signal-drop 2.05s linear both;
+  transform: translateY(-50%) scaleX(1);
+  transform-origin: center;
+  animation: signal-drop 0.16s steps(1, end) 1.6s both;
 }
 
 .hero-line-static::before,
@@ -584,22 +550,24 @@ h3 {
 .hero-route {
   display: block;
   width: 100%;
-  opacity: 0;
+  opacity: 1;
   will-change: opacity, filter, transform;
 }
 
 .hero-route-long {
-  position: absolute;
-  inset: 50% 0 auto;
-  font-size: 0.76em;
-  line-height: 1.02;
-  transform: translateY(-50%);
-  animation: route-long 2.05s linear both;
+  position: relative;
+  opacity: 1;
+  animation: route-long 2.35s ease-out both;
 }
 
 .hero-route-final {
-  position: relative;
-  animation: route-final 2.05s linear both;
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  animation: route-final 2.35s ease-out both;
+  filter: none;
+  text-shadow: none;
+  transform: none;
 }
 
 .muted {
@@ -1823,9 +1791,29 @@ h3 {
 }
 
 .live-simulator-action {
-  align-self: end;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  justify-self: end;
+  width: min(100%, 18rem);
+  min-height: 5.4rem;
+  border: 2px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 1rem 1.18rem;
   white-space: nowrap;
-  font-size: clamp(0.88rem, 1.08vw, 1rem);
+  font-size: clamp(0.94rem, 1.18vw, 1.08rem);
+  font-weight: 900;
+  line-height: 1;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: transform 180ms ease;
+}
+
+.live-simulator-feature:hover .live-simulator-action,
+.live-simulator-feature:focus-visible .live-simulator-action {
+  transform: translateY(-1px);
 }
 
 .ways-heading {
@@ -1848,16 +1836,39 @@ h3 {
 .pricing-room-list {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
   gap: clamp(1rem, 2.2vw, 1.8rem);
 }
 
 .pricing-room-card {
   display: grid;
   align-content: start;
-  gap: 0.55rem;
+  gap: var(--room-gap, 0.55rem);
   min-width: 0;
+  min-height: var(--room-height, 8.75rem);
   border-top: 1px solid var(--rule);
-  padding-top: 1rem;
+  padding-top: var(--room-padding, 1rem);
+}
+
+.pricing-room-card:nth-child(1) {
+  --room-height: 8.75rem;
+  --room-gap: 0.58rem;
+  --room-headline-size: clamp(1.28rem, 1.8vw, 1.68rem);
+  --room-padding: 1rem;
+}
+
+.pricing-room-card:nth-child(2) {
+  --room-height: 10.75rem;
+  --room-gap: 0.58rem;
+  --room-headline-size: clamp(1.28rem, 1.8vw, 1.68rem);
+  --room-padding: 1.18rem;
+}
+
+.pricing-room-card:nth-child(3) {
+  --room-height: 12.75rem;
+  --room-gap: 0.58rem;
+  --room-headline-size: clamp(1.28rem, 1.8vw, 1.68rem);
+  --room-padding: 1.36rem;
 }
 
 .pricing-room-card h3 {
@@ -1871,7 +1882,7 @@ h3 {
 
 .pricing-room-headline {
   color: var(--ink);
-  font-size: clamp(1.08rem, 1.5vw, 1.34rem);
+  font-size: var(--room-headline-size, clamp(1.08rem, 1.5vw, 1.34rem));
   font-weight: 520;
   line-height: 1.18;
   text-wrap: balance;
@@ -1879,9 +1890,17 @@ h3 {
 
 .pricing-room-result {
   color: color-mix(in srgb, var(--ink) 84%, var(--muted));
-  font-size: clamp(0.86rem, 1vw, 0.96rem);
+  font-size: clamp(0.98rem, 1.18vw, 1.14rem);
   font-weight: 430;
-  line-height: 1.48;
+  line-height: 1.36;
+}
+
+.pricing-room-card:nth-child(2) .pricing-room-result {
+  font-size: clamp(0.98rem, 1.18vw, 1.14rem);
+}
+
+.pricing-room-card:nth-child(3) .pricing-room-result {
+  font-size: clamp(0.98rem, 1.18vw, 1.14rem);
 }
 
 .pricing-room-details {
@@ -2936,7 +2955,8 @@ h3 {
 
   .live-simulator-action {
     justify-self: start;
-    font-size: 0.78rem;
+    padding: 0.72rem 0.9rem;
+    font-size: 0.88rem;
   }
 
   .ways-heading h2 {
@@ -3104,6 +3124,14 @@ h3 {
   }
 
   .hero-line::before,
+  .hero-line::after {
+    transform: translate(0, -50%) scaleX(1);
+  }
+
+  .hero-line::before {
+    opacity: 0;
+  }
+
   .hero-line::after {
     opacity: 0;
   }
