@@ -5,47 +5,47 @@ import { useEffect, useRef, useState, type CSSProperties, type FormEvent } from 
 
 import styles from "./living-decision-review.module.css";
 
-const decision = "Should Suki launch a Matcha Subscription?";
+const decision = "Should we launch the Decision Room publicly?";
 
 const reviewMoments = [
   {
     label: "Question entered",
     title: "A launch decision enters.",
-    text: "The review starts before anyone has agreed what kind of risk it is.",
+    text: "The review starts before anyone has agreed what public actually means.",
   },
   {
-    label: "Maya - emotional pull",
-    title: "Launch it.",
-    text: "The strongest pull is reassurance: never running out.",
+    label: "Maya - momentum",
+    title: "Ship the room.",
+    text: "The strongest pull is proof: people understand it faster when they can see it move.",
   },
   {
     label: "Simon - skeptical strategist",
-    title: "I don't buy it yet.",
-    text: "This could create subscription fatigue before loyalty.",
+    title: "The promise is still too broad.",
+    text: "A public launch could make the room feel like software before the judgment is clear.",
     badge: "Contested",
   },
   {
     label: "Wade - evidence",
-    title: "Ritual categories behave differently.",
-    text: "Subscription fatigue is real, but ritual categories behave differently from convenience refills.",
+    title: "The demo changes the conversation.",
+    text: "People do not need every capability first. They need one decision that visibly improves under pressure.",
     badge: "Evidence added",
   },
   {
     label: "Mira - business logic",
-    title: "Margins can work.",
-    text: "Churn decides everything.",
+    title: "Scope decides the risk.",
+    text: "Launch the experience, not the entire operating model.",
   },
   {
-    label: "Akiko - Japanese nuance",
-    title: "Respect the ritual.",
-    text: "Matcha is not just a flavor.",
+    label: "Akiko - consequence",
+    title: "Protect the seriousness.",
+    text: "If the room looks playful, the underlying decision must still feel treated with care.",
   },
   {
     label: "Recommendation updated",
-    title: "Launch ritual-based replenishment.",
-    text: "From: Launch subscriptions.",
+    title: "Launch a focused public demo.",
+    text: "From: Launch the full Decision Room.",
     badge: "Shifted",
-    revision: "Launch ritual-based replenishment.",
+    revision: "Launch one focused public demo.",
   },
   {
     label: "Consensus emerging",
