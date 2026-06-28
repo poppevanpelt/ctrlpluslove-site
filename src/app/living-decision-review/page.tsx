@@ -71,9 +71,11 @@ const productRows = [
 ];
 
 export default function LivingDecisionReview() {
-  const [activeMoment, setActiveMoment] = useState(0);
-  const momentRefs = useRef<Array<HTMLLIElement | null>>([]);
-  const activeReview = reviewMoments[activeMoment] ?? reviewMoments[0];
+  const [activeMoment, setActiveMoment] = useState(-1);
+  const [reviewProgress, setReviewProgress] = useState(0);
+  const highestMoment = useRef(-1);
+  const reviewRef = useRef<HTMLElement | null>(null);
+  const activeReview = reviewMoments[Math.max(activeMoment, 0)] ?? reviewMoments[0];
 
   useEffect(() => {
     let frame = 0;
@@ -81,23 +83,21 @@ export default function LivingDecisionReview() {
     function updateActiveMoment() {
       window.cancelAnimationFrame(frame);
       frame = window.requestAnimationFrame(() => {
-        const anchor = window.innerHeight * 0.42;
-        let closestIndex = 0;
-        let closestDistance = Number.POSITIVE_INFINITY;
+        const review = reviewRef.current;
+        if (!review) return;
 
-        momentRefs.current.forEach((item, index) => {
-          if (!item) return;
+        const rect = review.getBoundingClientRect();
+        const anchor = window.innerHeight * 0.48;
+        const travel = Math.max(rect.height - window.innerHeight * 0.18, 1);
+        const rawProgress = (anchor - rect.top) / travel;
+        const progress = Math.min(Math.max(rawProgress, 0), 1);
+        const nextMoment = progress <= 0
+          ? -1
+          : Math.min(reviewMoments.length - 1, Math.floor(progress * reviewMoments.length));
 
-          const rect = item.getBoundingClientRect();
-          const distance = Math.abs(rect.top + rect.height * 0.38 - anchor);
-
-          if (rect.bottom > 0 && distance < closestDistance) {
-            closestDistance = distance;
-            closestIndex = index;
-          }
-        });
-
-        setActiveMoment(closestIndex);
+        highestMoment.current = Math.max(highestMoment.current, nextMoment);
+        setActiveMoment(highestMoment.current);
+        setReviewProgress((currentProgress) => Math.max(currentProgress, progress));
       });
     }
 
@@ -146,7 +146,12 @@ export default function LivingDecisionReview() {
         </form>
       </section>
 
-      <section className={`${styles.section} ${styles.review}`} id="review" aria-labelledby="review-title">
+      <section
+        className={`${styles.section} ${styles.review}`}
+        id="review"
+        aria-labelledby="review-title"
+        ref={reviewRef}
+      >
         <div className={styles.reviewHeader}>
           <div>
             <p className={styles.kicker}>Review in progress.</p>
@@ -165,21 +170,24 @@ export default function LivingDecisionReview() {
           className={styles.reviewTrail}
           style={
             {
-              "--review-progress": `${((activeMoment + 1) / reviewMoments.length) * 100}%`,
+              "--review-progress": `${reviewProgress * 100}%`,
             } as CSSProperties
           }
         >
           {reviewMoments.map((moment, index) => {
-            const relation = index < activeMoment ? "past" : index === activeMoment ? "current" : "future";
+            const relation = activeMoment < 0
+              ? "future"
+              : index < activeMoment
+                ? "past"
+                : index === activeMoment
+                  ? "current"
+                  : "future";
 
             return (
             <li
               className={styles.reviewMoment}
               data-relation={relation}
               key={moment.label}
-              ref={(node) => {
-                momentRefs.current[index] = node;
-              }}
             >
               <article>
                 <div className={styles.momentMeta}>

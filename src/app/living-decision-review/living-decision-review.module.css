@@ -194,13 +194,13 @@
 .consensusCard p {
   min-height: 1.15rem;
   margin: 0;
-  color: #315f59;
+  color: #5f5952;
   font-size: 0.74rem;
   font-weight: 850;
   letter-spacing: 0.04em;
   line-height: 1.15;
   text-transform: uppercase;
-  transition: color 260ms ease;
+  transition: opacity 180ms ease;
 }
 
 .consensusCard i {
@@ -208,7 +208,7 @@
   height: 0.32rem;
   overflow: hidden;
   border-radius: 999px;
-  background: linear-gradient(to right, #4f8c84 86%, #ded9d1 86%);
+  background: linear-gradient(to right, #817a72 86%, #ded9d1 86%);
 }
 
 .reviewTrail {
@@ -235,20 +235,17 @@
   top: 0.45rem;
   left: 1.05rem;
   width: 1px;
-  height: var(--review-progress, 12.5%);
+  height: var(--review-progress, 0%);
   max-height: calc(100% - 1.15rem);
-  background: #4f8c84;
+  background: #817a72;
   content: "";
-  transition: height 380ms ease;
+  transition: height 120ms linear;
 }
 
 .reviewMoment {
   position: relative;
-  opacity: 0.46;
-  transform: translateY(0.08rem);
-  transition:
-    opacity 320ms ease,
-    transform 320ms ease;
+  opacity: 0.42;
+  transition: opacity 220ms ease;
 }
 
 .reviewMoment::before {
@@ -258,37 +255,32 @@
   left: -3.2rem;
   width: 0.82rem;
   height: 0.82rem;
-  border: 0.24rem solid #d7e5df;
+  border: 0.24rem solid #fbfaf7;
   border-radius: 999px;
-  background: #4f8c84;
+  background: #cfc8bd;
   content: "";
   transition:
-    background 320ms ease,
-    border-color 320ms ease,
-    box-shadow 320ms ease,
-    transform 320ms ease;
+    background 220ms ease,
+    box-shadow 220ms ease,
+    transform 220ms ease;
 }
 
 .reviewMoment[data-relation="past"] {
-  opacity: 0.72;
-  transform: translateY(0);
+  opacity: 0.64;
 }
 
 .reviewMoment[data-relation="past"]::before {
-  border-color: #fbfaf7;
-  background: #4f8c84;
+  background: #817a72;
 }
 
 .reviewMoment[data-relation="current"] {
   opacity: 1;
-  transform: translateY(0);
 }
 
 .reviewMoment[data-relation="current"]::before {
-  border-color: #d7e5df;
-  background: #315f59;
-  box-shadow: 0 0 0 0.32rem rgba(79, 140, 132, 0.13);
-  transform: scale(1.12);
+  background: #171512;
+  box-shadow: 0 0 0 0.26rem rgba(23, 21, 18, 0.07);
+  transform: scale(1.08);
 }
 
 .reviewMoment[data-relation="future"]::before {
@@ -306,14 +298,12 @@
   padding: 1.15rem 1.25rem;
   transition:
     border-color 320ms ease,
-    box-shadow 320ms ease,
-    transform 320ms ease;
+    box-shadow 320ms ease;
 }
 
 .reviewMoment[data-relation="current"] article {
-  border-color: #cfe0dc;
-  box-shadow: 0 1rem 3rem rgba(23, 21, 18, 0.08);
-  transform: translateX(0.2rem);
+  border-color: #d8d2c8;
+  box-shadow: 0 1rem 2.4rem rgba(23, 21, 18, 0.055);
 }
 
 .momentMeta {
@@ -324,9 +314,9 @@
 }
 
 .momentMeta em {
-  border: 1px solid #cfe0dc;
+  border: 1px solid #ded9d1;
   border-radius: 999px;
-  color: #4f8c84;
+  color: #5f5952;
   padding: 0.32rem 0.6rem;
   font-size: 0.62rem;
   font-style: normal;
@@ -499,7 +489,6 @@
 @media (prefers-reduced-motion: reduce) {
   .decisionInput button,
   .close a,
-  .consensusCard p,
   .reviewTrail::after,
   .reviewMoment,
   .reviewMoment::before,
