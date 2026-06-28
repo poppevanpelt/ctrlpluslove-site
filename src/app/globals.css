@@ -572,7 +572,7 @@ h3 {
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, -50%);
-  animation: signal-drop 4.8s linear infinite;
+  animation: signal-drop 2.05s linear both;
 }
 
 .hero-line-static::before,
@@ -594,12 +594,12 @@ h3 {
   font-size: 0.76em;
   line-height: 1.02;
   transform: translateY(-50%);
-  animation: route-long 4.8s linear infinite;
+  animation: route-long 2.05s linear both;
 }
 
 .hero-route-final {
   position: relative;
-  animation: route-final 4.8s linear infinite;
+  animation: route-final 2.05s linear both;
 }
 
 .muted {
