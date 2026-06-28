@@ -98,7 +98,14 @@ export default function Home() {
             ctrl+love
           </p>
           <div className="hero-message">
-            <h1 className="hero-line">Shortcut to reality.</h1>
+            <h1 className="hero-line" aria-label="Shortcut to reality.">
+              <span className="hero-route hero-route-long" aria-hidden="true">
+                Assuring compromise.
+              </span>
+              <span className="hero-route hero-route-final">
+                Shortcut to reality.
+              </span>
+            </h1>
             <p className="hero-translation">
               Stress-test your decisions before the market does.
             </p>

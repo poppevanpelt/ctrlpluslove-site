@@ -493,7 +493,7 @@ h3 {
 
 .hero-line {
   position: relative;
-  display: block;
+  display: grid;
   justify-self: center;
   width: min(100%, 13.4em);
   min-height: 1em;
@@ -557,6 +557,7 @@ h3 {
 }
 
 .hero-route {
+  grid-area: 1 / 1;
   display: block;
   width: 100%;
   opacity: 1;
@@ -570,8 +571,8 @@ h3 {
 }
 
 .hero-route-final {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  inset: auto;
   opacity: 0;
   animation: route-final 2.35s ease-out both;
   filter: none;
@@ -2732,7 +2733,7 @@ h3 {
   }
 
   .hero-line {
-    display: block;
+    display: grid;
     max-width: 18rem;
     justify-self: center;
     font-size: clamp(1.9rem, 8.4vw, 2.65rem);
@@ -2747,16 +2748,15 @@ h3 {
   }
 
   .hero-route-long {
-    display: none;
-    animation: none;
+    font-size: 0.78em;
   }
 
   .hero-route-final {
     display: block;
-    position: static;
+    position: relative;
     inset: auto;
-    opacity: 1;
-    animation: none;
+    opacity: 0;
+    animation: route-final 2.35s ease-out both;
   }
 
   .hero-translation {
@@ -3156,7 +3156,7 @@ h3 {
   }
 
   .hero-line {
-    display: block;
+    display: grid;
     max-width: 18rem;
     justify-self: center;
     font-size: clamp(1.9rem, 8.4vw, 2.65rem);
@@ -3171,16 +3171,15 @@ h3 {
   }
 
   .hero-route-long {
-    display: none;
-    animation: none;
+    font-size: 0.78em;
   }
 
   .hero-route-final {
     display: block;
-    position: static;
+    position: relative;
     inset: auto;
-    opacity: 1;
-    animation: none;
+    opacity: 0;
+    animation: route-final 2.35s ease-out both;
   }
 
   .hero-translation {
@@ -5103,7 +5102,7 @@ h3 {
   }
 
   .hero-line {
-    display: block !important;
+    display: grid !important;
     width: min(100%, 18rem) !important;
     min-height: 0 !important;
     font-size: clamp(1.82rem, 8vw, 2.38rem) !important;
@@ -5118,16 +5117,17 @@ h3 {
   }
 
   .hero-route-long {
-    display: none !important;
-    animation: none !important;
+    display: block !important;
+    font-size: 0.78em !important;
+    animation: route-long 2.35s ease-out both !important;
   }
 
   .hero-route-final {
     display: block !important;
-    position: static !important;
+    position: relative !important;
     inset: auto !important;
-    opacity: 1 !important;
-    animation: none !important;
+    opacity: 0;
+    animation: route-final 2.35s ease-out both !important;
     transform: none !important;
   }
 
