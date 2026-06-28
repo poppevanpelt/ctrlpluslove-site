@@ -235,8 +235,26 @@ export default function Home() {
                 Watch the room change its mind in real time.
               </span>
             </span>
-            <span className="text-link live-simulator-action">
-              Try demo →
+            <span
+              className="live-simulator-action"
+              style={{
+                display: "inline-flex",
+                minWidth: "18rem",
+                minHeight: "6rem",
+                alignItems: "center",
+                justifyContent: "center",
+                border: "3px solid var(--ink)",
+                borderRadius: "999px",
+                background: "var(--ink)",
+                color: "var(--paper)",
+                padding: "0 2.4rem",
+                fontSize: "1.35rem",
+                fontWeight: 950,
+                lineHeight: 1,
+                textTransform: "uppercase",
+              }}
+            >
+              Open demo →
             </span>
           </a>
           <div className="ways-heading">

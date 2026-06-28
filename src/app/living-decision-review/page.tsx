@@ -75,6 +75,9 @@ export default function LivingDecisionReview() {
   const [reviewProgress, setReviewProgress] = useState(0);
   const reviewRef = useRef<HTMLElement | null>(null);
   const activeReview = reviewMoments[Math.max(activeMoment, 0)] ?? reviewMoments[0];
+  const consensusPercent = activeMoment < 0
+    ? 0
+    : Math.round((Math.max(activeMoment, 0) / (reviewMoments.length - 1)) * 86);
 
   useEffect(() => {
     let frame = 0;
@@ -139,7 +142,22 @@ export default function LivingDecisionReview() {
           <label htmlFor="decision">Decision</label>
           <div>
             <input id="decision" readOnly value={decision} />
-            <button type="submit">Review running</button>
+            <button
+              type="submit"
+              style={{
+                minWidth: "18rem",
+                minHeight: "6rem",
+                border: "3px solid #171512",
+                background: "#171512",
+                color: "#fffefa",
+                padding: "0 2.4rem",
+                fontSize: "1.35rem",
+                fontWeight: 950,
+                textTransform: "uppercase",
+              }}
+            >
+              Start review
+            </button>
           </div>
         </form>
       </section>
@@ -156,9 +174,17 @@ export default function LivingDecisionReview() {
             <h2 id="review-title">The decision evolves in public.</h2>
           </div>
 
-          <aside className={styles.consensusCard} aria-label="Consensus">
+          <aside
+            className={styles.consensusCard}
+            aria-label="Consensus"
+            style={
+              {
+                "--consensus-progress": `${consensusPercent}%`,
+              } as CSSProperties
+            }
+          >
             <span>Consensus</span>
-            <strong>86%</strong>
+            <strong>{consensusPercent}%</strong>
             <p>{activeReview.label}</p>
             <i aria-hidden="true" />
           </aside>
