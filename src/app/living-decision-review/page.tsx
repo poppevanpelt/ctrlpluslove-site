@@ -58,11 +58,25 @@ const reviewMoments = [
 const productRows = [
   {
     term: "Input",
-    text: "A live decision, written in plain language. No deck, no prompt engineering, no theatre. The room first finds the hidden bet inside the question.",
+    text: (
+      <>
+        A live decision, written in plain language.
+        <br />
+        No deck, no prompt engineering, no theatre. The room first finds the
+        hidden bet inside the question.
+      </>
+    ),
   },
   {
     term: "Pressure",
-    text: "Different minds argue from different jobs: customer, culture, money, consequence, evidence, emotion. The point is not to agree faster. It is to make the weak parts visible.",
+    text: (
+      <>
+        Different minds argue from different jobs: customer, culture, money,
+        consequence, evidence, emotion. The point is not to agree faster.
+        <br />
+        It is to make the weak parts visible.
+      </>
+    ),
   },
   {
     term: "Output",
@@ -239,8 +253,10 @@ export default function LivingDecisionReview() {
         <p className={styles.kicker}>What it does</p>
         <h2 id="product-title">One decision in. A tested recommendation out.</h2>
         <p>
-          The product is a structured argument engine. It does not summarize a decision.
-          It makes the decision withstand pressure before the outside world gets a vote.
+          The product is a structured argument engine.
+          <br />
+          It does not summarize a decision. It makes the decision withstand
+          pressure before the outside world gets a vote.
         </p>
 
         <dl className={styles.productRows}>

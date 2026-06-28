@@ -79,7 +79,7 @@ a {
 
 .site-shell {
   min-height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
   background: var(--paper);
 }
 
@@ -171,6 +171,10 @@ p {
   margin: 0;
 }
 
+:where(h1, h2, h3, p, li, a, button, strong, em, span) {
+  overflow-wrap: break-word;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -226,7 +230,7 @@ p {
   background-clip: text;
   font-size: clamp(6.25rem, 14.4vw, 12.4rem);
   font-weight: 660;
-  line-height: 0.82;
+  line-height: 0.9;
   letter-spacing: 0;
   transform-origin: center;
   text-shadow:
@@ -234,7 +238,7 @@ p {
     0 0 0.72rem color-mix(in srgb, var(--cyan) 6%, transparent);
   animation:
     logo-arrive 620ms cubic-bezier(0.22, 1, 0.36, 1) both,
-    logo-spectrum 20s linear 620ms infinite;
+    logo-spectrum 24s ease-in-out 620ms infinite;
 }
 
 @supports (-webkit-background-clip: text) {
@@ -251,7 +255,7 @@ p {
 
 .hero-logo-mark {
   font-size: clamp(6.25rem, 14.4vw, 12.4rem);
-  line-height: 0.82;
+  line-height: 0.9;
   margin-bottom: -0.08rem;
 }
 
@@ -292,7 +296,7 @@ p {
   }
 
   50% {
-    background-position: 50% 50%;
+    background-position: 100% 50%;
     filter: saturate(1.06);
     text-shadow:
       0 0 0.48rem color-mix(in srgb, var(--cyan) 10%, transparent),
@@ -300,7 +304,7 @@ p {
   }
 
   100% {
-    background-position: 100% 50%;
+    background-position: 0% 50%;
     filter: none;
     text-shadow:
       0 0 0.32rem color-mix(in srgb, var(--pink) 8%, transparent),
@@ -453,6 +457,8 @@ h2 {
   font-weight: 600;
   line-height: var(--leading-display);
   letter-spacing: 0;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
 }
 
 .section-title,
@@ -462,6 +468,8 @@ h2 {
   font-weight: 600;
   line-height: var(--leading-section);
   letter-spacing: 0;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
 }
 
 .label-title {
@@ -488,6 +496,7 @@ h3 {
   display: block;
   justify-self: center;
   width: min(100%, 13.4em);
+  min-height: 1em;
   color: var(--ink);
   font-size: clamp(3.55rem, 6.75vw, 5.85rem);
   font-weight: 690;
@@ -1910,6 +1919,7 @@ h3 {
   font-size: clamp(0.98rem, 1.18vw, 1.14rem);
   font-weight: 430;
   line-height: 1.36;
+  max-width: 26rem;
 }
 
 .pricing-room-card:nth-child(2) .pricing-room-result {
@@ -2325,6 +2335,8 @@ h3 {
 
 .cta-title {
   color: var(--ink);
+  line-height: 1;
+  text-wrap: balance;
 }
 
 .cta-title span {
@@ -2523,6 +2535,8 @@ h3 {
 }
 
 .constitution-intro {
+  max-width: 42rem;
+  margin-inline: auto;
   color: var(--soft);
   font-size: var(--type-intro);
   line-height: var(--leading-body);
@@ -2688,6 +2702,16 @@ h3 {
 }
 
 @media (max-width: 680px) {
+  :root {
+    --type-display: clamp(2.45rem, 12.5vw, 4.15rem);
+    --type-section: clamp(1.85rem, 9vw, 3rem);
+    --type-discovery: clamp(1.5rem, 7.5vw, 2.3rem);
+    --type-body: clamp(1.02rem, 4.1vw, 1.2rem);
+    --type-intro: clamp(1.12rem, 4.8vw, 1.35rem);
+    --leading-display: 1.04;
+    --leading-section: 1.08;
+  }
+
   .hero-section {
     min-height: auto;
     gap: 1.35rem;
@@ -2702,19 +2726,26 @@ h3 {
   }
 
   .hero-logo-mark {
-    font-size: clamp(3.35rem, 15.5vw, 4.65rem);
-    line-height: 0.82;
-    margin-bottom: -0.08rem;
+    font-size: clamp(2.95rem, 14vw, 4.15rem);
+    line-height: 0.95;
+    margin-bottom: 0;
   }
 
   .hero-line {
     max-width: 18rem;
     justify-self: center;
-    font-size: clamp(2.12rem, 9vw, 2.95rem);
+    font-size: clamp(1.9rem, 8.4vw, 2.65rem);
+    line-height: 1.06;
+    min-height: auto;
   }
 
   .hero-route-long {
     font-size: 0.78em;
+  }
+
+  .hero-route-final {
+    display: grid;
+    align-items: center;
   }
 
   .hero-translation {
@@ -2739,7 +2770,8 @@ h3 {
 
   .hero-invitation {
     max-width: 16rem;
-    font-size: clamp(1.65rem, 7.2vw, 2.22rem);
+    font-size: clamp(1.48rem, 6.7vw, 2rem);
+    line-height: 1.1;
   }
 
   .hero-stakes {
@@ -2887,7 +2919,8 @@ h3 {
   }
 
   .meeting-filter-heading h2 {
-    font-size: clamp(2.15rem, 9.5vw, 3.35rem);
+    font-size: clamp(1.95rem, 8.6vw, 3rem);
+    line-height: 1.08;
   }
 
   .meeting-filter-heading p:not(.section-kicker) {
@@ -2968,8 +3001,8 @@ h3 {
 
   .live-simulator-title {
     max-width: 100%;
-    font-size: clamp(1.55rem, 7vw, 2.35rem);
-    line-height: 1.03;
+    font-size: clamp(1.42rem, 6.5vw, 2.1rem);
+    line-height: 1.1;
   }
 
   .live-simulator-action {
@@ -2982,7 +3015,8 @@ h3 {
 
   .ways-heading h2 {
     max-width: 100%;
-    font-size: clamp(2.25rem, 10vw, 3.35rem);
+    font-size: clamp(1.85rem, 8.2vw, 2.85rem);
+    line-height: 1.08;
   }
 
   .pricing-room-list {
@@ -3001,16 +3035,23 @@ h3 {
   }
 
   .pricing-room-headline {
-    font-size: 1.12rem;
+    font-size: clamp(1rem, 4.8vw, 1.16rem);
+    line-height: 1.26;
+  }
+
+  .pricing-room-result,
+  .pricing-room-details p {
+    font-size: clamp(0.9rem, 4vw, 1rem);
   }
 
   .pricing-room-card .text-link {
     font-size: 0.64rem;
   }
 
-  .pricing-preview-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.6rem;
+  .pricing-preview-grid,
+  .pricing-document-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
   .pricing-preview-card {
@@ -3023,7 +3064,8 @@ h3 {
   }
 
   .pricing-preview-headline {
-    font-size: clamp(0.76rem, 2.85vw, 0.94rem);
+    font-size: clamp(1rem, 4.4vw, 1.16rem);
+    line-height: 1.24;
   }
 
   .pricing-preview-card .text-link {
@@ -3032,18 +3074,13 @@ h3 {
   }
 
   .pricing-preview-copy {
-    font-size: clamp(0.64rem, 2.5vw, 0.78rem);
-    line-height: 1.32;
+    font-size: clamp(0.9rem, 4vw, 1rem);
+    line-height: 1.42;
   }
 
   .pricing-preview-result {
-    font-size: clamp(0.62rem, 2.42vw, 0.76rem);
-    line-height: 1.32;
-  }
-
-  .pricing-document-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.5rem;
+    font-size: clamp(0.9rem, 3.9vw, 1rem);
+    line-height: 1.42;
   }
 
   .pricing-document-card a {
@@ -3162,6 +3199,8 @@ h3 {
   }
 
   .hero-route-final {
+    display: grid;
+    align-items: center;
     opacity: 1;
     filter: none;
     text-shadow: none;
@@ -3170,7 +3209,7 @@ h3 {
   .hero-logo {
     animation:
       logo-arrive 1ms linear both,
-      logo-spectrum 18s linear infinite;
+      logo-spectrum 24s ease-in-out infinite;
     transform: none;
   }
 }
@@ -3223,7 +3262,8 @@ h3 {
   color: var(--museum-ink);
   font-size: var(--type-display);
   font-weight: 600;
-  line-height: var(--leading-display);
+  line-height: 1;
+  text-wrap: balance;
 }
 
 .museum-hero .section-kicker {
@@ -4334,8 +4374,10 @@ h3 {
   color: var(--ink);
   font-size: clamp(4.5rem, 11vw, 9.7rem);
   font-weight: 600;
-  letter-spacing: -0.06em;
-  line-height: 0.82;
+  letter-spacing: 0;
+  line-height: 1;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
 }
 
 .stress-hero h1 sup {
@@ -4351,8 +4393,9 @@ h3 {
   color: var(--ink);
   font-size: clamp(2rem, 4vw, 3.6rem);
   font-weight: 600;
-  letter-spacing: -0.035em;
-  line-height: 1.02;
+  letter-spacing: 0;
+  line-height: 1.08;
+  text-wrap: balance;
 }
 
 .stress-hero-support {
@@ -4470,8 +4513,9 @@ h3 {
   color: var(--ink);
   font-size: clamp(2.6rem, 5vw, 4.8rem);
   font-weight: 600;
-  letter-spacing: -0.045em;
-  line-height: 0.98;
+  letter-spacing: 0;
+  line-height: 1.04;
+  text-wrap: balance;
 }
 
 .stress-prose {
@@ -4701,8 +4745,8 @@ h3 {
 .stress-authorship h2 {
   max-width: 36rem;
   font-size: clamp(1.8rem, 3vw, 2.75rem);
-  letter-spacing: -0.03em;
-  line-height: 1.06;
+  letter-spacing: 0;
+  line-height: 1.12;
 }
 
 .stress-authorship .stress-quiet-copy {
@@ -4876,8 +4920,8 @@ h3 {
   }
 
   .stress-hero h1 {
-    font-size: clamp(4rem, 20vw, 6rem);
-    line-height: 0.86;
+    font-size: clamp(3.25rem, 15vw, 5rem);
+    line-height: 1;
   }
 
   .stress-hero-line {

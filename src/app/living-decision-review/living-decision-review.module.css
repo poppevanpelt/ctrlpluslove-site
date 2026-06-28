@@ -67,18 +67,20 @@
   color: #171512;
   font-weight: 700;
   letter-spacing: 0;
+  overflow-wrap: anywhere;
   text-wrap: balance;
 }
 
 .hero h1 {
-  max-width: 11.7ch;
+  max-width: 12.8ch;
   margin-top: 1.9rem;
   font-size: clamp(4.1rem, 7.8vw, 6.8rem);
-  line-height: 0.94;
+  line-height: 1.06;
+  overflow-wrap: anywhere;
 }
 
 .heroCopy {
-  max-width: 51rem;
+  max-width: 42rem;
   margin: 1.4rem 0 0;
   color: #6f685f;
   font-size: clamp(1rem, 1.35vw, 1.18rem);
@@ -170,10 +172,10 @@
 
 .reviewHeader h2,
 .product h2 {
-  max-width: 12ch;
+  max-width: 13ch;
   margin-top: 1rem;
   font-size: clamp(2.85rem, 5vw, 4.75rem);
-  line-height: 0.92;
+  line-height: 1.06;
 }
 
 .consensusCard {
@@ -221,6 +223,7 @@
   position: relative;
   display: grid;
   gap: 0.9rem;
+  width: min(100%, 50rem);
   margin: 1rem 0 0;
   padding: 0 0 0 4rem;
   list-style: none;
@@ -361,7 +364,7 @@
 }
 
 .reviewMoment p {
-  max-width: 51rem;
+  max-width: 42rem;
   margin: 0;
   color: #5f5952;
   font-size: clamp(0.98rem, 1.24vw, 1.12rem);
@@ -396,11 +399,11 @@
 }
 
 .product h2 {
-  max-width: 14ch;
+  max-width: 15ch;
 }
 
 .product > p {
-  max-width: 62rem;
+  max-width: 46rem;
   margin: 0;
   color: #5f5952;
   font-size: clamp(1rem, 1.28vw, 1.16rem);
@@ -448,7 +451,7 @@
 .close h2 {
   max-width: 16ch;
   font-size: clamp(3rem, 6vw, 5rem);
-  line-height: 0.94;
+  line-height: 1.06;
 }
 
 .close a {
@@ -469,7 +472,8 @@
   }
 
   .hero h1 {
-    font-size: clamp(3.35rem, 16vw, 5rem);
+    font-size: clamp(2.35rem, 11vw, 3.45rem);
+    line-height: 1.08;
   }
 
   .decisionInput div {
@@ -501,7 +505,8 @@
   .reviewHeader h2,
   .product h2,
   .close h2 {
-    font-size: clamp(2.45rem, 12vw, 4rem);
+    font-size: clamp(1.9rem, 8.8vw, 2.85rem);
+    line-height: 1.1;
   }
 
   .productRows div {
