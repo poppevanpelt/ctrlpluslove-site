@@ -5,52 +5,63 @@ import { useEffect, useRef, useState, type CSSProperties, type FormEvent } from 
 
 import styles from "./living-decision-review.module.css";
 
-const decision = "Should we launch the Decision Room publicly?";
+const decision = "Should we relaunch our brand?";
 
 const reviewMoments = [
   {
     label: "Question entered",
-    title: "A launch decision enters.",
-    text: "The review starts before anyone has agreed what public actually means.",
+    title: "Should we relaunch our brand?",
+    text: "The review starts before anyone agrees what the real problem is.",
   },
   {
-    label: "Maya - momentum",
-    title: "Ship the room.",
-    text: "The strongest pull is proof: people understand it faster when they can see it move.",
+    label: "Maya - human insight",
+    title: "People rarely reconnect with a new logo.",
+    text: "They reconnect with a renewed promise.",
   },
   {
-    label: "Simon - skeptical strategist",
-    title: "The promise is still too broad.",
-    text: "A public launch could make the room feel like software before the judgment is clear.",
+    label: "Simon - constructive skeptic",
+    title: "Are we solving a business problem...",
+    text: "Or a boredom problem?",
     badge: "Contested",
   },
   {
     label: "Wade - evidence",
-    title: "The demo changes the conversation.",
-    text: "People do not need every capability first. They need one decision that visibly improves under pressure.",
+    title: "Awareness is stable. Consideration is falling.",
+    text: "Changing the identity will not automatically change behaviour.",
     badge: "Evidence added",
   },
   {
-    label: "Mira - business logic",
-    title: "Scope decides the risk.",
-    text: "Launch the experience, not the entire operating model.",
+    label: "Mira - commercial reality",
+    title: "A relaunch consumes attention.",
+    text: "Make sure you're buying growth, not headlines.",
   },
   {
-    label: "Akiko - consequence",
-    title: "Protect the seriousness.",
-    text: "If the room looks playful, the underlying decision must still feel treated with care.",
+    label: "Lexi - brand memory",
+    title: "Customers remember experiences first.",
+    text: "Protect the memory before replacing the symbol.",
+  },
+  {
+    label: "Vera - experience design",
+    title: "If nothing changes for the customer...",
+    text: "Nothing has actually relaunched.",
+  },
+  {
+    label: "Akiko - cultural signals",
+    title: "Culture rarely rewards change.",
+    text: "It rewards renewed relevance.",
   },
   {
     label: "Recommendation updated",
-    title: "Launch a focused public demo.",
-    text: "From: Launch the full Decision Room.",
+    title: "Renew the customer experience first.",
+    text: "Refresh the identity only where it supports that change.",
     badge: "Shifted",
-    revision: "Launch one focused public demo.",
+    previous: "Relaunch the brand.",
+    revision: "Renew the customer experience first.",
   },
   {
     label: "Consensus emerging",
     title: "86%",
-    text: "The room is not louder. It is sharper.",
+    text: "Confidence increased from 42%. The room is not louder. It is sharper.",
     badge: "Updated",
   },
 ];
@@ -238,7 +249,7 @@ export default function LivingDecisionReview() {
                 <p>{moment.text}</p>
                 {moment.revision ? (
                   <div className={styles.revision}>
-                    <s>Launch subscriptions.</s>
+                    <s>{moment.previous}</s>
                     <strong>{moment.revision}</strong>
                   </div>
                 ) : null}
