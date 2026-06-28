@@ -11,58 +11,69 @@ const reviewMoments = [
   {
     label: "Question entered",
     title: "Should we relaunch our brand?",
-    text: "The review starts before anyone agrees what the real problem is.",
+    text: "Nobody agrees what the problem is yet.",
+    consensus: 42,
   },
   {
     label: "Maya - human insight",
-    title: "People rarely reconnect with a new logo.",
-    text: "They reconnect with a renewed promise.",
+    title: "People don't miss the logo.",
+    text: "They miss the feeling.",
+    badge: "Perspective added",
+    consensus: 49,
   },
   {
     label: "Simon - constructive skeptic",
-    title: "Are we solving a business problem...",
-    text: "Or a boredom problem?",
+    title: "I don't buy it yet.",
+    text: "This sounds like boredom.",
     badge: "Contested",
+    consensus: 48,
   },
   {
     label: "Wade - evidence",
-    title: "Awareness is stable. Consideration is falling.",
-    text: "Changing the identity will not automatically change behaviour.",
+    title: "The numbers don't support a relaunch.",
+    text: "Awareness is fine. Consideration isn't.",
     badge: "Evidence added",
+    consensus: 61,
   },
   {
     label: "Mira - commercial reality",
-    title: "A relaunch consumes attention.",
-    text: "Make sure you're buying growth, not headlines.",
+    title: "A relaunch costs attention.",
+    text: "Spend it carefully.",
+    consensus: 66,
   },
   {
     label: "Lexi - brand memory",
-    title: "Customers remember experiences first.",
-    text: "Protect the memory before replacing the symbol.",
+    title: "Don't spend trust on cosmetics.",
+    text: "That's expensive trust.",
+    consensus: 70,
   },
   {
     label: "Vera - experience design",
-    title: "If nothing changes for the customer...",
+    title: "If customers don't notice the difference...",
     text: "Nothing has actually relaunched.",
+    consensus: 76,
   },
   {
     label: "Akiko - cultural signals",
-    title: "Culture rarely rewards change.",
-    text: "It rewards renewed relevance.",
+    title: "Relevance beats novelty.",
+    text: "Every time.",
+    consensus: 81,
   },
   {
     label: "Recommendation updated",
     title: "Renew the customer experience first.",
-    text: "Refresh the identity only where it supports that change.",
+    text: "Refresh the identity afterwards.",
     badge: "Shifted",
     previous: "Relaunch the brand.",
     revision: "Renew the customer experience first.",
+    consensus: 84,
   },
   {
     label: "Consensus emerging",
     title: "86%",
-    text: "Confidence increased from 42%. The room is not louder. It is sharper.",
-    badge: "Updated",
+    text: "The room changed its mind.",
+    badge: "Final",
+    consensus: 86,
   },
 ];
 
@@ -100,9 +111,7 @@ export default function LivingDecisionReview() {
   const [reviewProgress, setReviewProgress] = useState(0);
   const reviewRef = useRef<HTMLElement | null>(null);
   const activeReview = reviewMoments[Math.max(activeMoment, 0)] ?? reviewMoments[0];
-  const consensusPercent = activeMoment < 0
-    ? 0
-    : Math.round((Math.max(activeMoment, 0) / (reviewMoments.length - 1)) * 86);
+  const consensusPercent = activeMoment < 0 ? 0 : activeReview.consensus;
 
   useEffect(() => {
     let frame = 0;
@@ -249,7 +258,9 @@ export default function LivingDecisionReview() {
                 <p>{moment.text}</p>
                 {moment.revision ? (
                   <div className={styles.revision}>
+                    <span>Previous</span>
                     <s>{moment.previous}</s>
+                    <span>Updated</span>
                     <strong>{moment.revision}</strong>
                   </div>
                 ) : null}

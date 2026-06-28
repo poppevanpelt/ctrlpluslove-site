@@ -380,6 +380,19 @@
   padding-left: 0.9rem;
 }
 
+.revision span {
+  color: #817a72;
+  font-size: 0.62rem;
+  font-weight: 850;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.revision span:not(:first-child) {
+  margin-top: 0.38rem;
+}
+
 .revision s {
   color: #817a72;
   font-size: 1rem;
