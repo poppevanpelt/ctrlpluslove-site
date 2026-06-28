@@ -145,13 +145,13 @@ export default function LivingDecisionReview() {
             <button
               type="submit"
               style={{
-                minWidth: "18rem",
-                minHeight: "6rem",
+                minWidth: "15rem",
+                minHeight: "4.75rem",
                 border: "3px solid #171512",
                 background: "#171512",
                 color: "#fffefa",
-                padding: "0 2.4rem",
-                fontSize: "1.35rem",
+                padding: "0 1.8rem",
+                fontSize: "1.12rem",
                 fontWeight: 950,
                 textTransform: "uppercase",
               }}
