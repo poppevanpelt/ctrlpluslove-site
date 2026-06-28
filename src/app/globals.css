@@ -1796,19 +1796,26 @@ h3 {
   justify-content: center;
   align-self: center;
   justify-self: end;
-  width: min(100%, 18rem);
-  min-height: 5.4rem;
-  border: 2px solid var(--ink);
-  background: var(--ink);
-  color: var(--paper);
-  padding: 1rem 1.18rem;
+  width: fit-content;
+  min-height: 0;
+  border: 0;
+  border-bottom: 1px solid rgba(26, 24, 21, 0.35);
+  background: transparent;
+  color: var(--ink);
+  padding: 0 0 0.18rem;
   white-space: nowrap;
-  font-size: clamp(0.94rem, 1.18vw, 1.08rem);
-  font-weight: 900;
-  line-height: 1;
+  font-size: clamp(1rem, 1.32vw, 1.18rem);
+  font-weight: 750;
+  line-height: var(--leading-secondary);
   text-decoration: none;
-  text-transform: uppercase;
+  text-transform: none;
   transition: transform 180ms ease;
+}
+
+.live-simulator-feature .live-simulator-action,
+.live-simulator-feature:hover .live-simulator-action,
+.live-simulator-feature:focus-visible .live-simulator-action {
+  color: var(--ink);
 }
 
 .live-simulator-feature:hover .live-simulator-action,

@@ -124,10 +124,10 @@
   min-height: 3.35rem;
   align-items: center;
   justify-content: center;
-  border: 0;
+  border: 1px solid rgba(23, 21, 18, 0.28);
   border-radius: 999px;
-  background: #4f8c84;
-  color: #fffefa;
+  background: transparent;
+  color: #171512;
   padding: 0 1.35rem;
   font: inherit;
   font-size: 0.82rem;
@@ -142,7 +142,8 @@
 
 .decisionInput button:hover,
 .close a:hover {
-  background: #315f59;
+  border-color: rgba(23, 21, 18, 0.56);
+  background: rgba(23, 21, 18, 0.04);
   transform: translateY(-1px);
 }
 
