@@ -100,10 +100,14 @@ export default function Home() {
           <div className="hero-message">
             <h1 className="hero-line" aria-label="Shortcut to reality.">
               <span className="hero-route hero-route-long" aria-hidden="true">
-                Assuring compromise.
+                Assuring
+                <br className="hero-route-break" />
+                compromise.
               </span>
               <span className="hero-route hero-route-final">
-                Shortcut to reality.
+                Shortcut to
+                <br className="hero-route-break" />
+                reality.
               </span>
             </h1>
             <p className="hero-translation">
