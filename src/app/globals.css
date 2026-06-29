@@ -412,31 +412,31 @@ p {
   }
 
   8% {
-    opacity: 0.16;
-    transform: translate(-52%, -50%) scaleX(0.28);
+    opacity: 0.28;
+    transform: translate(-52%, -50%) scaleX(0.34);
   }
 
   10% {
-    opacity: 0.42;
-    transform: translate(-48%, -50%) scaleX(0.96);
+    opacity: 0.72;
+    transform: translate(-48%, -50%) scaleX(1.02);
   }
 
   12% {
-    opacity: 0.2;
-    transform: translate(-51%, -50%) scaleX(0.58);
+    opacity: 0.38;
+    transform: translate(-51%, -50%) scaleX(0.66);
   }
 
   13.5% {
-    opacity: 0.46;
-    transform: translate(-50%, -50%) scaleX(1.08);
+    opacity: 0.78;
+    transform: translate(-50%, -50%) scaleX(1.14);
   }
 
-  15% {
-    opacity: 0.1;
-    transform: translate(-49%, -50%) scaleX(0.42);
+  16% {
+    opacity: 0.34;
+    transform: translate(-49%, -50%) scaleX(0.5);
   }
 
-  17% {
+  20% {
     opacity: 0;
     transform: translate(-50%, -50%) scaleX(1);
   }
@@ -542,7 +542,7 @@ h3 {
   max-width: 100%;
   min-height: 1em;
   color: var(--ink);
-  font-size: clamp(3.85rem, 7.2vw, 6.25rem);
+  font-size: clamp(4.1rem, 7.65vw, 6.65rem);
   font-weight: 690;
   line-height: 1;
   letter-spacing: 0;
@@ -570,10 +570,12 @@ h3 {
   top: 50%;
   left: 50%;
   width: min(10.5em, 92%);
-  height: 0.035em;
+  height: 0.052em;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--cyan) 82%, #2563eb);
-  box-shadow: 0 0 0.48rem color-mix(in srgb, var(--cyan) 24%, transparent);
+  background: color-mix(in srgb, var(--cyan) 76%, #1d4ed8);
+  box-shadow:
+    0 0 0.52rem color-mix(in srgb, var(--cyan) 34%, transparent),
+    0 0.055em 0 color-mix(in srgb, #2563eb 34%, transparent);
   content: "";
   opacity: 0;
   pointer-events: none;
@@ -2776,7 +2778,7 @@ h3 {
     display: grid;
     max-width: calc(100vw - 2.5rem);
     justify-self: center;
-    font-size: clamp(1.72rem, 7.6vw, 2.38rem);
+    font-size: clamp(1.82rem, 8vw, 2.52rem);
     line-height: 1.04;
     min-height: 1.12em;
     place-items: center;
@@ -3199,7 +3201,7 @@ h3 {
     display: grid;
     max-width: calc(100vw - 2.5rem);
     justify-self: center;
-    font-size: clamp(1.72rem, 7.6vw, 2.38rem);
+    font-size: clamp(1.82rem, 8vw, 2.52rem);
     line-height: 1.04;
     min-height: 1.12em;
     place-items: center;
@@ -5146,7 +5148,7 @@ h3 {
     width: max-content !important;
     max-width: calc(100vw - 2.5rem) !important;
     min-height: 1.12em !important;
-    font-size: clamp(1.72rem, 7.6vw, 2.38rem) !important;
+    font-size: clamp(1.82rem, 8vw, 2.52rem) !important;
     line-height: 1.04 !important;
     position: relative !important;
     place-items: center !important;
