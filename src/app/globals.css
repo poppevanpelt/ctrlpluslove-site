@@ -573,9 +573,7 @@ h3 {
   height: 0.052em;
   border-radius: 999px;
   background: color-mix(in srgb, var(--cyan) 76%, #1d4ed8);
-  box-shadow:
-    0 0 0.52rem color-mix(in srgb, var(--cyan) 34%, transparent),
-    0 0.055em 0 color-mix(in srgb, #2563eb 34%, transparent);
+  box-shadow: 0 0 0.52rem color-mix(in srgb, var(--cyan) 34%, transparent);
   content: "";
   opacity: 0;
   pointer-events: none;
