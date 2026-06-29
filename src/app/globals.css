@@ -326,76 +326,119 @@ p {
   0% {
     opacity: 1;
     filter: none;
-    transform: none;
+    transform: translateY(-50%);
   }
 
-  68% {
+  5% {
     opacity: 1;
     filter: none;
-    transform: none;
+    transform: translateY(-50%);
   }
 
-  70% {
-    opacity: 0;
-    filter: none;
-    transform: none;
+  8% {
+    opacity: 0.82;
+    filter: blur(0.012em) saturate(1.45);
+    transform: translate(-0.018em, -50%);
   }
 
+  10% {
+    opacity: 1;
+    filter: brightness(1.18) saturate(1.55);
+    transform: translate(0.024em, -50%);
+  }
+
+  12% {
+    opacity: 0.28;
+    filter: blur(0.02em) saturate(1.7);
+    transform: translate(-0.034em, -50%);
+  }
+
+  15%,
   100% {
     opacity: 0;
     filter: none;
-    transform: none;
+    transform: translateY(-50%);
   }
 }
 
 @keyframes route-final {
   0%,
-  68% {
+  9% {
     opacity: 0;
-    filter: none;
-    text-shadow: none;
-    transform: none;
+    filter: blur(0.018em) saturate(1.45);
+    transform: translateX(0.032em);
   }
 
-  70% {
-    opacity: 1;
-    filter: none;
-    text-shadow: none;
-    transform: none;
+  11% {
+    opacity: 0.3;
+    filter: blur(0.012em) brightness(1.16) saturate(1.55);
+    text-shadow:
+      -0.026em 0 0 color-mix(in srgb, var(--pink) 48%, transparent),
+      0.026em 0 0 color-mix(in srgb, var(--cyan) 58%, transparent);
+    transform: translateX(-0.02em);
   }
 
+  13% {
+    opacity: 0.76;
+    filter: blur(0.006em) saturate(1.35);
+    text-shadow:
+      -0.018em 0 0 color-mix(in srgb, var(--pink) 36%, transparent),
+      0.018em 0 0 color-mix(in srgb, var(--cyan) 46%, transparent);
+    transform: translateX(0.044em);
+  }
+
+  16% {
+    opacity: 0.94;
+    filter: blur(0.003em) brightness(1.08) saturate(1.18);
+    text-shadow: 0 0 0.28rem color-mix(in srgb, var(--cyan) 16%, transparent);
+    transform: translateX(-0.012em);
+  }
+
+  19%,
   100% {
     opacity: 1;
     filter: none;
     text-shadow: none;
-    transform: none;
+    transform: translateX(0);
   }
 }
 
 @keyframes signal-drop {
   0%,
+  6%,
+  18%,
   100% {
     opacity: 0;
-    filter: brightness(1);
-    transform: translateY(-50%) scaleX(1);
   }
 
-  36% {
-    opacity: 0.82;
-    filter: brightness(1.32) saturate(1.35);
-    transform: translateY(-50%) scaleX(1);
+  8% {
+    opacity: 0.16;
+    transform: translate(-52%, -50%) scaleX(0.28);
   }
 
-  54% {
+  10% {
+    opacity: 0.42;
+    transform: translate(-48%, -50%) scaleX(0.96);
+  }
+
+  12% {
+    opacity: 0.2;
+    transform: translate(-51%, -50%) scaleX(0.58);
+  }
+
+  13.5% {
     opacity: 0.46;
-    filter: brightness(1.18) saturate(1.2);
-    transform: translateY(-50%) scaleX(1);
+    transform: translate(-50%, -50%) scaleX(1.08);
   }
 
-  66% {
+  15% {
+    opacity: 0.1;
+    transform: translate(-49%, -50%) scaleX(0.42);
+  }
+
+  17% {
     opacity: 0;
-    filter: brightness(1);
-    transform: translateY(-50%) scaleX(1);
+    transform: translate(-50%, -50%) scaleX(1);
   }
 }
 
@@ -517,37 +560,28 @@ h3 {
     0.035em 0 0 color-mix(in srgb, var(--cyan) 74%, transparent),
     0 0 0.42rem color-mix(in srgb, var(--cyan) 28%, transparent);
   transform: translateY(-50%);
-  animation: none;
+  animation: electric-ghost 2.35s steps(1, end) both;
 }
 
 .hero-line::after {
   position: absolute;
   z-index: 2;
-  top: 49%;
-  left: 0;
-  width: 100%;
-  height: 0.09em;
-  background:
-    linear-gradient(
-      90deg,
-      transparent 0%,
-      color-mix(in srgb, var(--cyan) 58%, transparent) 8%,
-      color-mix(in srgb, var(--cyan) 86%, var(--indigo)) 50%,
-      color-mix(in srgb, var(--cyan) 44%, transparent) 92%,
-      transparent 100%
-    );
+  top: 50%;
+  left: 50%;
+  width: min(10.5em, 92%);
+  height: 0.035em;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--cyan) 70%, var(--indigo));
   box-shadow:
-    0 -0.16em 0 -0.07em color-mix(in srgb, var(--cyan) 26%, transparent),
-    0 0.14em 0 -0.065em color-mix(in srgb, var(--pink) 16%, transparent),
-    0 0 0.72rem color-mix(in srgb, var(--cyan) 34%, transparent),
-    0 0 1.05rem color-mix(in srgb, var(--indigo) 18%, transparent);
+    0 -0.12em 0 -0.055em color-mix(in srgb, var(--cyan) 22%, transparent),
+    0 0.13em 0 -0.058em color-mix(in srgb, var(--pink) 16%, transparent),
+    0 0 0.45rem color-mix(in srgb, var(--cyan) 18%, transparent),
+    0 0 0.7rem color-mix(in srgb, var(--indigo) 10%, transparent);
   content: "";
-  mix-blend-mode: screen;
   opacity: 0;
   pointer-events: none;
-  transform: translateY(-50%) scaleX(1);
-  transform-origin: center;
-  animation: signal-drop 0.16s steps(1, end) 1.6s both;
+  transform: translate(-50%, -50%);
+  animation: signal-drop 2.35s steps(1, end) both;
 }
 
 .hero-line-static::before,
@@ -565,7 +599,8 @@ h3 {
 }
 
 .hero-route-long {
-  position: relative;
+  position: absolute;
+  inset: 50% 0 auto;
   opacity: 1;
   animation: route-long 2.35s ease-out both;
 }
@@ -2743,12 +2778,11 @@ h3 {
 
   .hero-line::before,
   .hero-line::after {
-    content: none;
-    animation: none;
+    animation-duration: 2.35s;
   }
 
   .hero-route-long {
-    font-size: 0.78em;
+    font-size: 1em;
   }
 
   .hero-route-final {
@@ -2780,9 +2814,9 @@ h3 {
   }
 
   .hero-invitation {
-    max-width: 16rem;
-    font-size: clamp(1.48rem, 6.7vw, 2rem);
-    line-height: 1.1;
+    max-width: 18rem;
+    font-size: clamp(1.08rem, 4.45vw, 1.24rem);
+    line-height: 1.28;
   }
 
   .hero-stakes {
@@ -3166,12 +3200,11 @@ h3 {
 
   .hero-line::before,
   .hero-line::after {
-    content: none;
-    animation: none;
+    animation-duration: 2.35s;
   }
 
   .hero-route-long {
-    font-size: 0.78em;
+    font-size: 1em;
   }
 
   .hero-route-final {
@@ -3198,9 +3231,9 @@ h3 {
   }
 
   .hero-invitation {
-    max-width: 16rem;
-    font-size: clamp(1.48rem, 6.7vw, 2rem);
-    line-height: 1.1;
+    max-width: 18rem;
+    font-size: clamp(1.08rem, 4.45vw, 1.24rem);
+    line-height: 1.28;
   }
 
   .hero-email {
@@ -5112,13 +5145,12 @@ h3 {
 
   .hero-line::before,
   .hero-line::after {
-    content: none !important;
-    animation: none !important;
+    animation-duration: 2.35s !important;
   }
 
   .hero-route-long {
     display: block !important;
-    font-size: 0.78em !important;
+    font-size: 1em !important;
     animation: route-long 2.35s ease-out both !important;
   }
 
@@ -5147,9 +5179,9 @@ h3 {
   }
 
   .hero-invitation {
-    max-width: 16rem !important;
-    font-size: clamp(1.45rem, 6.4vw, 1.95rem) !important;
-    line-height: 1.12 !important;
+    max-width: 18rem !important;
+    font-size: clamp(1.06rem, 4.35vw, 1.22rem) !important;
+    line-height: 1.3 !important;
   }
 
   .hero-email {
