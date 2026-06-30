@@ -1849,19 +1849,19 @@ h3 {
   justify-content: center;
   align-self: center;
   justify-self: end;
-  width: min(100%, 13.5rem);
-  min-height: 4.35rem;
-  border: 1px solid color-mix(in srgb, var(--ink) 42%, transparent);
+  width: min(100%, 15rem);
+  min-height: 4.75rem;
+  border: 3px solid var(--ink);
   border-radius: 999px;
   background: var(--ink);
   color: var(--ink);
   padding: 0 1.8rem;
   white-space: nowrap;
-  font-size: clamp(1.12rem, 1.45vw, 1.34rem);
-  font-weight: 860;
-  line-height: var(--leading-secondary);
+  font-size: 1.12rem;
+  font-weight: 950;
+  line-height: 1;
   text-decoration: none;
-  text-transform: none;
+  text-transform: uppercase;
   box-shadow: 0 1rem 2.4rem rgba(26, 24, 21, 0.14);
   transition:
     background 180ms ease,
@@ -3574,6 +3574,126 @@ h3 {
 
 .museum-card a:hover {
   color: var(--museum-gold);
+}
+
+.artifact-card {
+  grid-template-rows: auto 1fr;
+}
+
+.artifact-card .artifact-image-placeholder {
+  position: relative;
+  display: grid;
+  min-height: 16.4rem;
+  place-items: center;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(199, 161, 93, 0.16), transparent 34%),
+    linear-gradient(180deg, #fffdf8 0%, #f3efe6 100%);
+}
+
+.artifact-card .artifact-image-placeholder::before {
+  width: min(8.6rem, 48%);
+  aspect-ratio: 1;
+  border: 1px solid rgba(23, 20, 16, 0.16);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.92) 0 7%, transparent 18%),
+    linear-gradient(135deg, rgba(23, 20, 16, 0.16), rgba(199, 161, 93, 0.22));
+  box-shadow: 0 1.2rem 2.4rem rgba(24, 21, 17, 0.16);
+  content: "";
+}
+
+.artifact-card .artifact-image-placeholder::after {
+  position: absolute;
+  right: 24%;
+  bottom: 2rem;
+  left: 24%;
+  height: 0.75rem;
+  border-radius: 999px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.24), transparent 72%);
+  filter: blur(10px);
+  content: "";
+}
+
+.artifact-badge,
+.artifact-cart {
+  position: absolute;
+  z-index: 1;
+  top: 1rem;
+}
+
+.artifact-badge {
+  left: 1rem;
+  border: 1px solid rgba(23, 20, 16, 0.12);
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--museum-soft);
+  padding: 0.45rem 0.62rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.artifact-cart {
+  right: 1rem;
+}
+
+.artifact-cart,
+.artifact-purchase-row button {
+  min-height: 2.5rem;
+  border: 1px solid var(--museum-ink);
+  background: var(--museum-ink);
+  color: #fffefa;
+  padding: 0.65rem 0.78rem;
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 850;
+  line-height: 1;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.artifact-cart:hover,
+.artifact-purchase-row button:hover {
+  background: transparent;
+  color: var(--museum-ink);
+  transform: translateY(-0.08rem);
+}
+
+.artifact-cart:disabled,
+.artifact-purchase-row button:disabled {
+  border-color: rgba(23, 20, 16, 0.18);
+  background: rgba(23, 20, 16, 0.08);
+  color: var(--museum-soft);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.artifact-card-copy {
+  display: grid;
+  align-content: start;
+  gap: 0.8rem;
+  border-top: 1px solid rgba(23, 20, 16, 0.08);
+  padding: 1.25rem 1.35rem 1.45rem;
+}
+
+.artifact-purchase-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.25rem;
+}
+
+.artifact-purchase-row strong {
+  color: var(--museum-ink);
+  font-size: 0.92rem;
+  font-weight: 760;
 }
 
 .museum-object {

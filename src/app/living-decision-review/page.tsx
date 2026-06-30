@@ -178,17 +178,6 @@ export default function LivingDecisionReview() {
             <input id="decision" readOnly value={decision} />
             <button
               type="submit"
-              style={{
-                minWidth: "15rem",
-                minHeight: "4.75rem",
-                border: "3px solid #171512",
-                background: "#171512",
-                color: "#fffefa",
-                padding: "0 1.8rem",
-                fontSize: "1.12rem",
-                fontWeight: 950,
-                textTransform: "uppercase",
-              }}
             >
               Start review
             </button>

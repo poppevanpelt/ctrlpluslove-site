@@ -240,22 +240,6 @@ export default function Home() {
             </span>
             <span
               className="live-simulator-action"
-              style={{
-                display: "inline-flex",
-                minWidth: "15rem",
-                minHeight: "4.75rem",
-                alignItems: "center",
-                justifyContent: "center",
-                border: "3px solid var(--ink)",
-                borderRadius: "999px",
-                background: "var(--ink)",
-                color: "var(--paper)",
-                padding: "0 1.8rem",
-                fontSize: "1.12rem",
-                fontWeight: 950,
-                lineHeight: 1,
-                textTransform: "uppercase",
-              }}
             >
               Open demo →
             </span>
@@ -400,24 +384,15 @@ export default function Home() {
 
       <section className="content-section ruled method-section">
         <div className="content-block method-block">
-          <p
-            className="section-kicker"
-            style={{ fontSize: "clamp(1.08rem, 1.35vw, 1.24rem)" }}
-          >
+          <p className="section-kicker">
             How it works
           </p>
-          <div
-            className="method-lines"
-            style={{
-              gap: "0.48rem",
-              fontSize: "clamp(1.72rem, 2.55vw, 2.38rem)",
-            }}
-          >
+          <div className="method-lines">
             <p>Powered by billions of human signals.</p>
-            <p style={{ fontSize: "clamp(1.28rem, 1.68vw, 1.54rem)" }}>
+            <p>
               AI makes perspectives available.
             </p>
-            <p style={{ fontSize: "clamp(1.28rem, 1.68vw, 1.54rem)" }}>
+            <p>
               The room decides which ones matter.
             </p>
           </div>

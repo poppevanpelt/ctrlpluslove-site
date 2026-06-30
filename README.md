@@ -1,10 +1,10 @@
 # ctrl+love
 
-ctrl+love is now configured as a public landing-page-only Next.js site for `ctrlpluslove.com`.
+ctrl+love is configured as a public static Next.js site for `ctrlpluslove.com`.
 
-The landing page lives at `src/app/page.tsx`, with global styling in `src/app/globals.css`.
+The landing page lives at `src/app/page.tsx`, global styling lives in `src/app/globals.css`, and the product/artifact routes live under `src/app/*`.
 
-The private chat/admin prototype from the hand-off has been moved out of the deployed app tree and ignored from git.
+No environment variables are required for the public site.
 
 ## Getting Started
 
@@ -28,15 +28,13 @@ Open `http://localhost:3000`.
 npm run dev       # local development
 npm run build     # production build check
 npm run lint      # lint check
-npm run db:push   # sync Prisma schema to local DB
-npm run db:seed   # seed admin user, personas, rules, protocols, indexes
-npm run db:studio # inspect local DB
+npm run preview:static # build and create a self-contained static preview
 ```
 
 ## Important Notes
 
 - This repo uses Next.js `16.2.1`.
-- `.env`, `.env.local`, `.vercel`, database files, `node_modules`, `.next`, and `private-prototype` should not be committed.
+- `.env`, `.env.local`, `.vercel`, `node_modules`, `.next`, and static preview output should not be committed.
 - No environment variables are required for the landing page.
 
 ## Deploy on Vercel
@@ -50,4 +48,4 @@ vercel env pull
 vercel --prod
 ```
 
-See `CODEX_HANDOFF.md` for the transfer checklist, GitHub/Vercel connection notes, and production caveats.
+The app uses `output: "export"` and `trailingSlash: true`, so Vercel can serve it as a static export.
