@@ -42,7 +42,9 @@ export default function StressTestPage() {
 
       <section className="stress-hero">
         <div className="stress-hero-block">
-          <p className="section-kicker">One live decision</p>
+          <p className="hero-logo hero-logo-mark" aria-label="ctrl+love">
+            ctrl+love
+          </p>
           <h1>
             Decision
             <br />

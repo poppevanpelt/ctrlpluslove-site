@@ -17,7 +17,9 @@ export default function ConstitutionPage() {
 
       <section className="constitution-section">
         <div className="constitution-block">
-          <p className="section-kicker">governance archive</p>
+          <p className="hero-logo hero-logo-mark" aria-label="ctrl+love">
+            ctrl+love
+          </p>
 
           <h1>ctrl+love constitution</h1>
 
