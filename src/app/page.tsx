@@ -62,7 +62,7 @@ const departments = [
 const featureLinks = [
   {
     name: "Live Decision Simulator",
-    href: "/living-decision-simulator-episode-002.html",
+    href: "/living-decision-simulator-episode-002/",
     note: "A decision room that thinks in public.",
   },
   {
@@ -194,7 +194,7 @@ export default function Home() {
         <div className="content-block wide poster-block ways-block">
           <a
             className="live-simulator-feature"
-            href="/living-decision-simulator-episode-002.html"
+            href="/living-decision-simulator-episode-002/"
             aria-label="Open the live decision simulator"
           >
             <span className="live-simulator-copy">
