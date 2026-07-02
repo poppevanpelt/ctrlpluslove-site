@@ -96,18 +96,6 @@ export function DocumentViewer({
     zoomFromPoint(nextScale, event.clientX, event.clientY);
   }, [scale, zoomFromPoint]);
 
-  const zoomFromCenter = useCallback((nextScale: number) => {
-    const frame = frameRef.current;
-
-    if (!frame) {
-      setScale(nextScale);
-      return;
-    }
-
-    const bounds = frame.getBoundingClientRect();
-    zoomFromPoint(nextScale, bounds.left + bounds.width / 2, bounds.top + bounds.height / 2);
-  }, [zoomFromPoint]);
-
   useEffect(() => {
     const frame = frameRef.current;
     const image = frame?.querySelector<HTMLImageElement>(".document-image");
@@ -169,24 +157,6 @@ export function DocumentViewer({
               >}
           />
         </div>
-      </div>
-      <div className="document-controls" aria-label="Document zoom controls">
-        <button
-          type="button"
-          data-document-zoom="out"
-          onClick={() => zoomFromCenter(scale * 0.9)}
-          aria-label="Zoom out"
-        >
-          −
-        </button>
-        <button
-          type="button"
-          data-document-zoom="in"
-          onClick={() => zoomFromCenter(scale * 1.1)}
-          aria-label="Zoom in"
-        >
-          +
-        </button>
       </div>
     </main>
   );

@@ -156,8 +156,6 @@ const documentViewerScript = `<script>
 (function () {
   var frame = document.querySelector(".document-frame");
   var image = document.querySelector(".document-image");
-  var zoomOut = document.querySelector('[data-document-zoom="out"]');
-  var zoomIn = document.querySelector('[data-document-zoom="in"]');
 
   if (!frame || !image) return;
 
@@ -212,23 +210,6 @@ const documentViewerScript = `<script>
   frame.addEventListener("dblclick", function (event) {
     zoomFromPoint(scale > 1.05 ? 1 : 1.85, event.clientX, event.clientY);
   });
-
-  function zoomFromCenter(nextScale) {
-    var bounds = frame.getBoundingClientRect();
-    zoomFromPoint(nextScale, bounds.left + bounds.width / 2, bounds.top + bounds.height / 2);
-  }
-
-  if (zoomOut) {
-    zoomOut.addEventListener("click", function () {
-      zoomFromCenter(scale * 0.9);
-    });
-  }
-
-  if (zoomIn) {
-    zoomIn.addEventListener("click", function () {
-      zoomFromCenter(scale * 1.1);
-    });
-  }
 
   if (image.complete) {
     window.requestAnimationFrame(setInitialScroll);
