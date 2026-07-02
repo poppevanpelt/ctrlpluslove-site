@@ -214,19 +214,22 @@ p {
   max-width: 100%;
   color: var(--ink);
   background: linear-gradient(
-    102deg,
+    96deg,
     #ff00c8 0%,
-    #ff245f 10%,
-    #ff6c20 20%,
-    #ffc21d 31%,
-    #43ef20 43%,
-    #00d9be 55%,
-    #1787ff 67%,
-    #3718ff 78%,
-    #cf18df 90%,
+    #ff245f 7%,
+    #ff6c20 14%,
+    #ffc21d 22%,
+    #43ef20 30%,
+    #00d9be 38%,
+    #1787ff 47%,
+    #3718ff 56%,
+    #cf18df 65%,
+    #ff00c8 74%,
+    #ff6c20 82%,
+    #43ef20 90%,
     #ff00c8 100%
   );
-  background-size: 230% auto;
+  background-size: 120% auto;
   -webkit-background-clip: text;
   background-clip: text;
   font-size: clamp(7.3rem, 16vw, 15rem);
@@ -1951,10 +1954,10 @@ h3 {
 .ways-heading h2 {
   max-width: 12ch;
   color: var(--ink);
-  font-size: clamp(2.35rem, 4.8vw, 4.6rem);
+  font-size: clamp(2.25rem, 4.4vw, 3.65rem);
   font-weight: 600;
   letter-spacing: 0;
-  line-height: 0.95;
+  line-height: 1;
   text-wrap: balance;
 }
 
@@ -2163,9 +2166,11 @@ h3 {
 
 .ways-heading h2 {
   color: var(--ink);
-  font-size: var(--type-body);
+  max-width: 12ch;
+  font-size: clamp(2.25rem, 4.4vw, 3.65rem);
   font-weight: 600;
-  line-height: var(--leading-body);
+  line-height: 1;
+  text-wrap: balance;
 }
 
 .ways-support {
@@ -2660,21 +2665,6 @@ h3 {
   line-height: 1.02;
   letter-spacing: 0;
   text-wrap: balance;
-}
-
-.constitution-block h1::after {
-  position: absolute;
-  top: 52%;
-  left: 50%;
-  width: min(8.4em, 98%);
-  height: 0.045em;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--cyan) 78%, #2563eb);
-  box-shadow: 0 0 0.45rem color-mix(in srgb, var(--cyan) 26%, transparent);
-  content: "";
-  opacity: 0.78;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
 }
 
 .constitution-intro {
@@ -3189,8 +3179,8 @@ h3 {
 
   .ways-heading h2 {
     max-width: 100%;
-    font-size: clamp(1.85rem, 8.2vw, 2.85rem);
-    line-height: 1.08;
+    font-size: clamp(2rem, 7.4vw, 2.8rem);
+    line-height: 1.04;
   }
 
   .pricing-room-list {
@@ -6061,7 +6051,7 @@ h3 {
 }
 
 /* Keep this at the end: it restores the homepage title swap after layout clamps. */
-.hero-line {
+.home-hero-section .hero-line {
   position: relative !important;
   display: grid !important;
   min-height: 1.08em !important;
@@ -6069,7 +6059,7 @@ h3 {
   overflow: hidden !important;
 }
 
-.hero-line::before {
+.home-hero-section .hero-line::before {
   position: absolute !important;
   z-index: 3 !important;
   top: 50% !important;
@@ -6086,10 +6076,10 @@ h3 {
     0.035em 0 0 color-mix(in srgb, var(--cyan) 76%, transparent) !important;
   transform: translate(-50%, -50%) !important;
   white-space: nowrap !important;
-  animation: route-ghost 3.8s steps(1, end) both !important;
+  animation: route-ghost 6.2s steps(1, end) 900ms infinite !important;
 }
 
-.hero-line::after {
+.home-hero-section .hero-line::after {
   position: absolute !important;
   z-index: 2 !important;
   top: 50% !important;
@@ -6106,12 +6096,12 @@ h3 {
   opacity: 0 !important;
   pointer-events: none !important;
   transform: translate(-50%, -50%) !important;
-  animation: signal-drop 3.8s steps(1, end) both !important;
+  animation: signal-drop 6.2s steps(1, end) 900ms infinite !important;
 }
 
-.hero-route,
-.hero-route-long,
-.hero-route-final {
+.home-hero-section .hero-route,
+.home-hero-section .hero-route-long,
+.home-hero-section .hero-route-final {
   grid-area: 1 / 1 !important;
   width: max-content !important;
   max-width: calc(100vw - 1.5rem) !important;
@@ -6122,17 +6112,17 @@ h3 {
   will-change: opacity, filter, transform !important;
 }
 
-.hero-route-long {
+.home-hero-section .hero-route-long {
   position: absolute !important;
   top: 50% !important;
   left: 50% !important;
   display: block !important;
   opacity: 1 !important;
   transform: translate(-50%, -50%) !important;
-  animation: route-long 3.8s steps(1, end) both !important;
+  animation: route-long 6.2s steps(1, end) 900ms infinite !important;
 }
 
-.hero-route-final {
+.home-hero-section .hero-route-final {
   position: absolute !important;
   top: 50% !important;
   left: 50% !important;
@@ -6141,7 +6131,7 @@ h3 {
   filter: none !important;
   text-shadow: none !important;
   transform: translate(-50%, -50%) !important;
-  animation: route-final 3.8s steps(1, end) both !important;
+  animation: route-final 6.2s steps(1, end) 900ms infinite !important;
 }
 
 @keyframes route-long {

@@ -1,6 +1,6 @@
 export function HomeHero() {
   return (
-    <section className="hero-section">
+    <section className="hero-section home-hero-section">
       <div className="hero-copy">
         <p className="hero-logo hero-logo-mark" aria-label="ctrl+love">
           ctrl+love
