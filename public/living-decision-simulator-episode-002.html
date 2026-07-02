@@ -58,6 +58,36 @@
         text-transform: uppercase;
       }
 
+      .return-link {
+        position: fixed;
+        z-index: 23;
+        top: 3rem;
+        left: 50%;
+        width: fit-content;
+        transform: translateX(-50%);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 999px;
+        background: rgba(11, 14, 19, 0.72);
+        color: var(--ink);
+        padding: 0.58rem 0.82rem;
+        font-size: 0.68rem;
+        font-weight: 820;
+        letter-spacing: 0.07em;
+        line-height: 1;
+        text-decoration: none;
+        text-transform: uppercase;
+        backdrop-filter: blur(14px);
+        transition:
+          border-color 180ms ease,
+          background-color 180ms ease,
+          color 180ms ease;
+      }
+
+      .return-link:hover {
+        border-color: var(--blue);
+        background: var(--blue-soft);
+      }
+
       .scene-nav {
         position: fixed;
         z-index: 22;
@@ -653,6 +683,11 @@
           transform: translateX(50%);
         }
 
+        .return-link {
+          top: auto;
+          bottom: 4.35rem;
+        }
+
         .decision-grid,
         .challenge,
         .final-card {
@@ -704,6 +739,7 @@
   <body>
     <div class="progress" aria-hidden="true"></div>
     <div class="episode-label">ctrl+love decision simulator / episode 002</div>
+    <a class="return-link" href="/">Return to ctrl+love</a>
     <nav class="scene-nav" aria-label="Episode navigation">
       <a href="#question" aria-label="Question enters"></a>
       <a href="#initial" aria-label="Initial recommendation"></a>

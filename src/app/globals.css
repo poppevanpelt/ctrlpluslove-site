@@ -2796,10 +2796,6 @@ h3 {
   height: auto;
 }
 
-.document-canvas[data-document-orientation="landscape"] {
-  overflow: hidden;
-}
-
 .document-back {
   position: fixed;
   z-index: 2;
@@ -2865,31 +2861,6 @@ h3 {
     --document-inline-padding: 0.65rem;
     align-content: start;
     place-items: start center;
-  }
-}
-
-@media (max-width: 768px) and (orientation: portrait) {
-  .document-canvas[data-document-orientation="landscape"] {
-    --document-block-end: 0px;
-    --document-block-start: 0px;
-    --document-inline-padding: 0px;
-    position: relative;
-    min-height: 100dvh;
-    padding: 0;
-    place-items: center;
-  }
-
-  .document-canvas[data-document-orientation="landscape"] .document-image {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: min(
-      calc(var(--document-natural-width) * 1px),
-      calc(100dvh * 0.985),
-      calc(100vw * var(--document-ratio) * 0.985)
-    );
-    transform: translate(-50%, -50%) rotate(90deg);
-    transform-origin: center;
   }
 }
 
@@ -3444,6 +3415,119 @@ h3 {
   .hero-email {
     font-size: 0.96rem;
     margin-top: 0.78rem;
+  }
+}
+
+/* Final homepage motion pass: keep the fitted layout, but restore the title transition. */
+.hero-line {
+  position: relative !important;
+  display: grid !important;
+  min-height: 1.08em !important;
+  place-items: center !important;
+  overflow: hidden !important;
+}
+
+.hero-line::before {
+  content: none !important;
+}
+
+.hero-line::after {
+  position: absolute !important;
+  z-index: 2 !important;
+  top: 50% !important;
+  left: 50% !important;
+  display: block !important;
+  width: min(11.6em, 106%) !important;
+  height: 0.15em !important;
+  border-radius: 999px !important;
+  background: color-mix(in srgb, var(--cyan) 84%, #2563eb) !important;
+  box-shadow:
+    0 0 0.42rem color-mix(in srgb, var(--cyan) 46%, transparent),
+    0 0 1.1rem color-mix(in srgb, #2563eb 28%, transparent) !important;
+  content: "" !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translate(-50%, -50%) !important;
+  animation: signal-drop 2.35s steps(1, end) both !important;
+}
+
+.hero-route,
+.hero-route-long,
+.hero-route-final {
+  grid-area: 1 / 1 !important;
+  width: max-content !important;
+  max-width: 100% !important;
+  justify-self: center !important;
+  white-space: nowrap !important;
+  text-wrap: nowrap !important;
+  overflow-wrap: normal !important;
+  will-change: opacity, filter, transform !important;
+}
+
+.hero-route-long {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  display: block !important;
+  opacity: 1 !important;
+  transform: translate(-50%, -50%) !important;
+  animation: route-long 2.35s ease-out both !important;
+}
+
+.hero-route-final {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  display: block !important;
+  opacity: 0 !important;
+  filter: none !important;
+  text-shadow: none !important;
+  transform: translate(-50%, -50%) !important;
+  animation: route-final 2.35s ease-out both !important;
+}
+
+@media (max-width: 680px) {
+  .ticker-track {
+    display: flex !important;
+    width: max-content !important;
+    animation: ticker-scroll 260s linear infinite !important;
+  }
+
+  .ticker-run,
+  .ticker-run[aria-hidden="true"] {
+    display: flex !important;
+    flex: 0 0 auto !important;
+    align-items: center !important;
+    gap: 1.8rem !important;
+    padding: 0.86rem 0 !important;
+  }
+
+  .ticker-item {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 1.8rem !important;
+    min-width: auto !important;
+    overflow: visible !important;
+    font-size: 0.66rem !important;
+    letter-spacing: 0.05em !important;
+    line-height: 1 !important;
+    text-align: left !important;
+    text-overflow: clip !important;
+    white-space: nowrap !important;
+  }
+
+  .ticker-item::after {
+    content: "" !important;
+  }
+
+  .ticker-item:nth-child(n + 4) {
+    display: inline-flex !important;
+  }
+
+  .hero-route,
+  .hero-route-long,
+  .hero-route-final {
+    max-width: calc(100vw - 1.5rem) !important;
   }
 }
 
@@ -6010,4 +6094,68 @@ h3 {
     font-size: 0.78rem !important;
     line-height: 1.28 !important;
   }
+}
+
+/* Keep this at the end: it restores the homepage title swap after layout clamps. */
+.hero-line {
+  position: relative !important;
+  display: grid !important;
+  min-height: 1.08em !important;
+  place-items: center !important;
+  overflow: hidden !important;
+}
+
+.hero-line::after {
+  position: absolute !important;
+  z-index: 2 !important;
+  top: 50% !important;
+  left: 50% !important;
+  display: block !important;
+  width: min(11.6em, 106%) !important;
+  height: 0.15em !important;
+  border-radius: 999px !important;
+  background: color-mix(in srgb, var(--cyan) 84%, #2563eb) !important;
+  box-shadow:
+    0 0 0.42rem color-mix(in srgb, var(--cyan) 46%, transparent),
+    0 0 1.1rem color-mix(in srgb, #2563eb 28%, transparent) !important;
+  content: "" !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translate(-50%, -50%) !important;
+  animation: signal-drop 2.35s steps(1, end) both !important;
+}
+
+.hero-route,
+.hero-route-long,
+.hero-route-final {
+  grid-area: 1 / 1 !important;
+  width: max-content !important;
+  max-width: calc(100vw - 1.5rem) !important;
+  justify-self: center !important;
+  white-space: nowrap !important;
+  text-wrap: nowrap !important;
+  overflow-wrap: normal !important;
+  will-change: opacity, filter, transform !important;
+}
+
+.hero-route-long {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  display: block !important;
+  opacity: 1 !important;
+  transform: translate(-50%, -50%) !important;
+  animation: route-long 2.35s ease-out both !important;
+}
+
+.hero-route-final {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  display: block !important;
+  opacity: 0 !important;
+  filter: none !important;
+  text-shadow: none !important;
+  transform: translate(-50%, -50%) !important;
+  animation: route-final 2.35s ease-out both !important;
 }
