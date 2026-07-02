@@ -6,7 +6,8 @@
     "dev": "next dev --webpack",
     "build": "next build --webpack",
     "export": "next build --webpack",
-    "preview:static": "next build --webpack && node scripts/make-static-preview.mjs",
+    "preview:static": "node scripts/clean-static-output.mjs && next build --webpack && node scripts/make-static-preview.mjs",
+    "preview:serve": "node scripts/serve-static-preview.mjs",
     "start": "next start",
     "lint": "eslint"
   },

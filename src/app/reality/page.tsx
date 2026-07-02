@@ -12,9 +12,9 @@ export default function RealityPage() {
       alt="Department of Reality Preservation"
       width={1672}
       height={941}
-      initialScale={2.15}
-      initialX={58}
-      initialY={30}
+      initialScale={1}
+      initialX={0}
+      initialY={0}
     />
   );
 }

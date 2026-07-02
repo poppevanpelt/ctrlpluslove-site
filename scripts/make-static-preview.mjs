@@ -9,6 +9,8 @@ const museumAssetDir = new URL("../public/museum/", import.meta.url);
 const previewMuseumAssetDir = new URL("museum/", previewDir);
 const pricingAssetDir = new URL("../public/pricing/", import.meta.url);
 const previewPricingAssetDir = new URL("pricing/", previewDir);
+const downloadsDir = new URL("../public/downloads/", import.meta.url);
+const previewDownloadsDir = new URL("downloads/", previewDir);
 
 const pages = [
   ["index.html", "index.html"],
@@ -18,11 +20,20 @@ const pages = [
   ["marjan/index.html", "marjan.html"],
   ["reality/index.html", "reality.html"],
   ["unfinished-thoughts/index.html", "unfinished-thoughts.html"],
+  ["necessary-elimination/index.html", "necessary-elimination.html"],
+  ["irreversible-decisions/index.html", "irreversible-decisions.html"],
+  ["essential-things/index.html", "essential-things.html"],
+  ["consequential-belief/index.html", "consequential-belief.html"],
   ["ai-y-fier/index.html", "ai-y-fier.html"],
   ["meeting-filter/index.html", "meeting-filter.html"],
   ["constitution/index.html", "constitution.html"],
   ["living-decision-review/index.html", "living-decision-review.html"],
+  ["living-decision-simulator-episode-002/index.html", "living-decision-simulator-episode-002.html"],
+  ["stress-test/index.html", "stress-test.html"],
   ["pricing/index.html", "pricing.html"],
+  ["pricing/decision-stress-test/index.html", "pricing-decision-stress-test.html"],
+  ["pricing/kill-or-scale/index.html", "pricing-kill-or-scale.html"],
+  ["pricing/on-call-room/index.html", "pricing-on-call-room.html"],
   ["pricing-documents/index.html", "pricing-documents.html"],
 ];
 
@@ -32,12 +43,41 @@ const assets = [
   "favicon.png",
   "apple-icon.png",
   "apple-touch-icon.png",
+  "living-decision-simulator-episode-002.html",
   "sw.js",
   "dear-rob.png",
   "dear-marjan.png",
   "reality-poster.png",
   "unfinished-thoughts.png",
+  "department-necessary-elimination.png",
+  "department-irreversible-decisions.png",
+  "department-essential-things.png",
+  "department-consequential-belief.png",
   "ai-y-fier-hero-inflation-engine.png",
+];
+
+const routeMap = [
+  ["pricing/decision-stress-test", "pricing-decision-stress-test.html"],
+  ["pricing/kill-or-scale", "pricing-kill-or-scale.html"],
+  ["pricing/on-call-room", "pricing-on-call-room.html"],
+  ["pricing-documents", "pricing-documents.html"],
+  ["living-decision-simulator-episode-002", "living-decision-simulator-episode-002.html"],
+  ["living-decision-review", "living-decision-review.html"],
+  ["necessary-elimination", "necessary-elimination.html"],
+  ["irreversible-decisions", "irreversible-decisions.html"],
+  ["consequential-belief", "consequential-belief.html"],
+  ["unfinished-thoughts", "unfinished-thoughts.html"],
+  ["essential-things", "essential-things.html"],
+  ["meeting-filter", "meeting-filter.html"],
+  ["stress-test", "stress-test.html"],
+  ["ai-y-fier", "ai-y-fier.html"],
+  ["artifacts", "artifacts.html"],
+  ["constitution", "constitution.html"],
+  ["pricing", "pricing.html"],
+  ["museum", "museum.html"],
+  ["marjan", "marjan.html"],
+  ["reality", "reality.html"],
+  ["rob", "rob.html"],
 ];
 
 const themeHeadScript = `<script>
@@ -114,46 +154,95 @@ const themeBodyScript = `<script>
 
 const documentViewerScript = `<script>
 (function () {
-  var steps = [1, 0.82, 0.62, 0.42, 0];
-  var image = document.querySelector(".document-image[style*='scale']");
-  var controls = document.querySelector(".document-controls");
+  var frame = document.querySelector(".document-frame");
+  var image = document.querySelector(".document-image");
+  var zoomOut = document.querySelector('[data-document-zoom="out"]');
+  var zoomIn = document.querySelector('[data-document-zoom="in"]');
 
-  if (!image || !controls) return;
+  if (!frame || !image) return;
 
-  var zoomOut = controls.querySelector("[aria-label='Zoom out']");
-  var zoomIn = controls.querySelector("[aria-label='Zoom in']");
-  var transform = image.style.transform || "";
-  var match = transform.match(/translate\\((-?\\d+(?:\\.\\d+)?)vw,\\s*(-?\\d+(?:\\.\\d+)?)vh\\)\\s*scale\\((-?\\d+(?:\\.\\d+)?)\\)/);
+  var initialX = parseFloat(image.dataset.initialX || "0");
+  var initialY = parseFloat(image.dataset.initialY || "0");
+  var scale = parseFloat(image.dataset.initialScale || "1");
 
-  if (!zoomOut || !zoomIn || !match) return;
-
-  var initialX = parseFloat(image.dataset.initialX || match[1]);
-  var initialY = parseFloat(image.dataset.initialY || match[2]);
-  var initialScale = parseFloat(image.dataset.initialScale || match[3]);
-  var currentStep = parseInt(image.dataset.initialStep || "0", 10);
-
-  function render() {
-    var progress = steps[currentStep];
-    var scale = 1 + (initialScale - 1) * progress;
-    var x = initialX * progress;
-    var y = initialY * progress;
-
-    image.style.transform = "translate(-50%, -50%) translate(" + x + "vw, " + y + "vh) scale(" + scale + ")";
-    zoomOut.disabled = currentStep === steps.length - 1;
-    zoomIn.disabled = currentStep === 0;
+  function setScale(nextScale) {
+    scale = Math.min(2.8, Math.max(1, nextScale));
+    image.style.setProperty("--document-scale", String(scale));
   }
 
-  zoomOut.addEventListener("click", function () {
-    currentStep = Math.min(currentStep + 1, steps.length - 1);
-    render();
+  function setInitialScroll() {
+    var maxLeft = Math.max(0, frame.scrollWidth - frame.clientWidth);
+    var maxTop = Math.max(0, frame.scrollHeight - frame.clientHeight);
+    var centerLeft = image.offsetLeft + image.clientWidth / 2 - frame.clientWidth / 2;
+    var centerTop = image.offsetTop + image.clientHeight / 2 - frame.clientHeight / 2;
+    var initialLeft = centerLeft + (initialX / 100) * maxLeft;
+    var initialTop = centerTop + (initialY / 100) * maxTop;
+
+    frame.scrollTo({
+      left: Math.min(maxLeft, Math.max(0, initialLeft)),
+      top: Math.min(maxTop, Math.max(0, initialTop)),
+      behavior: "auto"
+    });
+  }
+
+  function zoomFromPoint(nextScale, clientX, clientY) {
+    var bounds = frame.getBoundingClientRect();
+    var beforeLeft = frame.scrollLeft + clientX - bounds.left;
+    var beforeTop = frame.scrollTop + clientY - bounds.top;
+    var ratio = nextScale / scale;
+
+    setScale(nextScale);
+
+    window.requestAnimationFrame(function () {
+      frame.scrollTo({
+        left: beforeLeft * ratio - (clientX - bounds.left),
+        top: beforeTop * ratio - (clientY - bounds.top),
+        behavior: "auto"
+      });
+    });
+  }
+
+  frame.addEventListener("wheel", function (event) {
+    if (!event.ctrlKey && !event.metaKey) return;
+
+    event.preventDefault();
+    zoomFromPoint(scale * (event.deltaY > 0 ? 0.9 : 1.1), event.clientX, event.clientY);
+  }, { passive: false });
+
+  frame.addEventListener("dblclick", function (event) {
+    zoomFromPoint(scale > 1.05 ? 1 : 1.85, event.clientX, event.clientY);
   });
 
-  zoomIn.addEventListener("click", function () {
-    currentStep = Math.max(currentStep - 1, 0);
-    render();
+  function zoomFromCenter(nextScale) {
+    var bounds = frame.getBoundingClientRect();
+    zoomFromPoint(nextScale, bounds.left + bounds.width / 2, bounds.top + bounds.height / 2);
+  }
+
+  if (zoomOut) {
+    zoomOut.addEventListener("click", function () {
+      zoomFromCenter(scale * 0.9);
+    });
+  }
+
+  if (zoomIn) {
+    zoomIn.addEventListener("click", function () {
+      zoomFromCenter(scale * 1.1);
+    });
+  }
+
+  if (image.complete) {
+    window.requestAnimationFrame(setInitialScroll);
+  } else {
+    image.addEventListener("load", function () {
+      window.requestAnimationFrame(setInitialScroll);
+    }, { once: true });
+  }
+
+  window.addEventListener("resize", function () {
+    window.requestAnimationFrame(setInitialScroll);
   });
 
-  render();
+  setScale(scale);
 })();
 </script>`;
 
@@ -278,6 +367,127 @@ const aiYFierStaticScript = `<script>
 })();
 </script>`;
 
+const livingDecisionReviewScript = `<script>
+(function () {
+  var page = document.querySelector('main[class*="living-decision-review_page"]');
+  if (!page) return;
+
+  var scenes = Array.from(page.querySelectorAll("section[id][data-title]"));
+  var navItems = Array.from(page.querySelectorAll('nav[aria-label="Episode navigation"] a'));
+  var count = page.querySelector('[aria-live="polite"]');
+  var previous = page.querySelector('button[aria-label="Previous scene"]');
+  var next = page.querySelector('button[aria-label="Next scene"]');
+  var play = page.querySelector('button[aria-label="Play episode"], button[aria-label="Pause episode"]');
+
+  if (!scenes.length) return;
+
+  var sceneActiveClass = Array.from(scenes[0].classList).find(function (name) {
+    return name.indexOf("isCurrent") !== -1;
+  });
+  var navActiveClass = navItems[0] ? Array.from(navItems[0].classList).find(function (name) {
+    return name.indexOf("isActive") !== -1;
+  }) : "";
+  var activeIndex = 0;
+  var playTimer = null;
+
+  function clampIndex(index) {
+    return Math.max(0, Math.min(index, scenes.length - 1));
+  }
+
+  function setActive(index) {
+    activeIndex = clampIndex(index);
+    scenes.forEach(function (scene, sceneIndex) {
+      if (sceneActiveClass) scene.classList.toggle(sceneActiveClass, sceneIndex === activeIndex);
+    });
+    navItems.forEach(function (item, itemIndex) {
+      if (navActiveClass) item.classList.toggle(navActiveClass, itemIndex === activeIndex);
+    });
+    if (count) {
+      count.textContent =
+        String(activeIndex + 1).padStart(2, "0") +
+        " / " +
+        String(scenes.length).padStart(2, "0");
+    }
+    if (previous) previous.disabled = activeIndex === 0;
+    if (next) next.disabled = activeIndex === scenes.length - 1;
+    if (activeIndex === scenes.length - 1 && playTimer) stopPlay();
+  }
+
+  function scrollToScene(index) {
+    scenes[clampIndex(index)].scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function stopPlay() {
+    window.clearInterval(playTimer);
+    playTimer = null;
+    if (play) {
+      play.textContent = "Play";
+      play.setAttribute("aria-label", "Play episode");
+    }
+  }
+
+  function startPlay() {
+    if (activeIndex === scenes.length - 1) scrollToScene(0);
+    playTimer = window.setInterval(function () {
+      if (activeIndex >= scenes.length - 1) {
+        stopPlay();
+        return;
+      }
+      scrollToScene(activeIndex + 1);
+    }, 5200);
+    if (play) {
+      play.textContent = "Pause";
+      play.setAttribute("aria-label", "Pause episode");
+    }
+  }
+
+  if ("IntersectionObserver" in window) {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var index = scenes.indexOf(entry.target);
+        if (index >= 0) setActive(index);
+      });
+    }, { rootMargin: "-36% 0px -42% 0px", threshold: 0.08 });
+
+    scenes.forEach(function (scene) {
+      observer.observe(scene);
+    });
+  }
+
+  navItems.forEach(function (item, index) {
+    item.addEventListener("click", function (event) {
+      event.preventDefault();
+      scrollToScene(index);
+    });
+  });
+
+  if (previous) {
+    previous.addEventListener("click", function () {
+      scrollToScene(activeIndex - 1);
+    });
+  }
+
+  if (next) {
+    next.addEventListener("click", function () {
+      scrollToScene(activeIndex + 1);
+    });
+  }
+
+  if (play) {
+    play.addEventListener("click", function () {
+      if (playTimer) {
+        stopPlay();
+      } else {
+        startPlay();
+      }
+    });
+  }
+
+  setActive(0);
+})();
+</script>`;
+
 const previewIconLinks = `<link rel="icon" href="favicon.ico?v=20260626-favicon" sizes="32x32" />
 <link rel="shortcut icon" href="favicon.ico?v=20260626-favicon" />
 <link rel="icon" href="favicon.png?v=20260626-favicon" type="image/png" sizes="32x32" />
@@ -308,12 +518,12 @@ function addThemeScripts(html) {
     )
     .replace(
       "</body>",
-      `${themeBodyScript}${documentViewerScript}${meetingFilterScript}${aiYFierStaticScript}</body>`
+      `${themeBodyScript}${documentViewerScript}${meetingFilterScript}${aiYFierStaticScript}${livingDecisionReviewScript}</body>`
     );
 }
 
 function removeRuntime(html) {
-  return html
+  const standalone = html
     .replace(/<link rel="preload" as="script"[^>]*>/g, "")
     .replace(/<link rel="(?:shortcut icon|icon|apple-touch-icon)"[^>]*>/g, "")
     .replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, "")
@@ -323,22 +533,15 @@ function removeRuntime(html) {
     .replace(/<link rel="icon" href="\/favicon\.ico\?[^"]*"([^>]*)>/g, '<link rel="icon" href="favicon.ico"$1>')
     .replace(/href="\//g, 'href="')
     .replace(/src="\//g, 'src="')
-    .replace(/href=""/g, 'href="index.html"')
-    .replace(/href="museum"/g, 'href="museum.html"')
-    .replace(/href="pricing-documents\/"/g, 'href="pricing-documents.html"')
-    .replace(/href="pricing-documents"/g, 'href="pricing-documents.html"')
-    .replace(/href="pricing\/"/g, 'href="pricing.html"')
-    .replace(/href="pricing"/g, 'href="pricing.html"')
-    .replace(/href="artifacts"/g, 'href="artifacts.html"')
-    .replace(/href="rob"/g, 'href="rob.html"')
-    .replace(/href="marjan"/g, 'href="marjan.html"')
-    .replace(/href="reality"/g, 'href="reality.html"')
-    .replace(/href="unfinished-thoughts"/g, 'href="unfinished-thoughts.html"')
-    .replace(/href="ai-y-fier"/g, 'href="tools/ai-y-fier/index.html"')
-    .replace(/href="meeting-filter"/g, 'href="meeting-filter.html"')
-    .replace(/href="living-decision-review\/"/g, 'href="living-decision-review.html"')
-    .replace(/href="living-decision-review"/g, 'href="living-decision-review.html"')
-    .replace(/href="constitution"/g, 'href="constitution.html"');
+    .replace(/href=""/g, 'href="index.html"');
+
+  return routeMap.reduce((currentHtml, [route, target]) => {
+    const escapedRoute = route.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+    return currentHtml
+      .replace(new RegExp(`href="${escapedRoute}/"`, "g"), `href="${target}"`)
+      .replace(new RegExp(`href="${escapedRoute}"`, "g"), `href="${target}"`);
+  }, standalone);
 }
 
 const cssDir = new URL("_next/static/css/", sourceDir);
@@ -370,6 +573,7 @@ for (const asset of assets) {
 await cp(aiYFierToolDir, previewAiYFierToolDir, { recursive: true, force: true });
 await cp(museumAssetDir, previewMuseumAssetDir, { recursive: true, force: true });
 await cp(pricingAssetDir, previewPricingAssetDir, { recursive: true, force: true });
+await cp(downloadsDir, previewDownloadsDir, { recursive: true, force: true });
 
 const aiYFierIndexPath = new URL("index.html", previewAiYFierToolDir);
 const aiYFierIndex = await readFile(aiYFierIndexPath, "utf8");

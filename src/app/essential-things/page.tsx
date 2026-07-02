@@ -12,7 +12,7 @@ export default function EssentialThingsPage() {
       alt="Department of Essential Things — Remember the Brick, LEGO, 2004"
       width={1140}
       height={1380}
-      initialScale={2.1}
+      initialScale={1}
       initialX={0}
       initialY={0}
     />

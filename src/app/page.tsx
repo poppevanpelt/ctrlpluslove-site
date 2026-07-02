@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { HomeHero } from "./home-hero";
 import { LivingTicker } from "./living-ticker";
 import { MeetingFilterController } from "./meeting-filter-controller";
 import { ThemeToggle } from "./theme-toggle";
@@ -7,19 +8,19 @@ import { ThemeToggle } from "./theme-toggle";
 const pricingRooms = [
   {
     name: "DECISION STRESS-TEST™",
-    href: "/pricing/decision-stress-test.png",
+    href: "/pricing/decision-stress-test/",
     headline: "A decision before you commit.",
     copy: "One room. One decision. A sharper next move.",
   },
   {
     name: "ON-CALL ROOM™",
-    href: "/pricing/on-call-room.png",
+    href: "/pricing/on-call-room/",
     headline: "Your decision team on call.",
     copy: "A standing room for decisions that keep changing shape as new evidence, pressure, and doubt arrive.",
   },
   {
     name: "KILL OR SCALE™",
-    href: "/pricing/kill-or-scale.png",
+    href: "/pricing/kill-or-scale/",
     headline: "Stop, reshape, or accelerate.",
     copy: "For ideas already costing real money. The room decides whether to add force, change shape, or stop cleanly before strategy turns into sunk cost.",
   },
@@ -60,9 +61,9 @@ const departments = [
 
 const featureLinks = [
   {
-    name: "Live discussion simulator",
-    href: "/living-decision-review/",
-    note: "Watch the room change its mind.",
+    name: "Live Decision Simulator",
+    href: "/living-decision-simulator-episode-002.html",
+    note: "A decision room that thinks in public.",
   },
   {
     name: "AI-y-fier",
@@ -92,41 +93,7 @@ export default function Home() {
       <ThemeToggle />
       <MeetingFilterController />
 
-      <section className="hero-section">
-        <div className="hero-copy">
-          <p className="hero-logo hero-logo-mark" aria-label="ctrl+love">
-            ctrl+love
-          </p>
-          <div className="hero-message">
-            <h1
-              className="hero-line"
-              aria-label="Assuring compromise. Shortcut to reality."
-            >
-              <span className="hero-route hero-route-long" aria-hidden="true">
-                Assuring compromise.
-              </span>
-              <span className="hero-route hero-route-final">
-                Shortcut to reality.
-              </span>
-            </h1>
-            <p className="hero-translation">
-              Stress-test your decisions before the market does.
-            </p>
-          </div>
-          <div className="hero-message hero-message-secondary">
-            <h2 className="hero-invitation">
-              Bring the decision into the room.
-            </h2>
-          </div>
-          <a
-            href="mailto:hello@ctrlpluslove.com"
-            className="hero-email"
-          >
-            hello@ctrlpluslove.com →
-          </a>
-        </div>
-
-      </section>
+      <HomeHero />
 
       <LivingTicker />
 
@@ -227,21 +194,24 @@ export default function Home() {
         <div className="content-block wide poster-block ways-block">
           <a
             className="live-simulator-feature"
-            href="/living-decision-review/"
-            aria-label="Open the live discussion simulator"
+            href="/living-decision-simulator-episode-002.html"
+            aria-label="Open the live decision simulator"
           >
             <span className="live-simulator-copy">
               <span className="live-simulator-kicker">
-                Live discussion simulator
+                Live Decision Simulator
               </span>
               <span className="live-simulator-title">
-                Watch the room change its mind in real time.
+                Episode 002
+              </span>
+              <span className="live-simulator-note">
+                A decision room that thinks in public.
               </span>
             </span>
             <span
               className="live-simulator-action"
             >
-              Open demo →
+              Open simulator →
             </span>
           </a>
           <div className="ways-heading">
@@ -284,8 +254,6 @@ export default function Home() {
                 <a
                   className="text-link"
                   href={room.href}
-                  target="_blank"
-                  rel="noreferrer"
                   aria-label={`Open ${room.name} pricing document`}
                 >
                   Open document ↗

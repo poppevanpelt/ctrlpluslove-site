@@ -4,14 +4,17 @@ import Link from "next/link";
 const pricingDocuments = [
   {
     name: "Decision Stress-Test™",
+    href: "/pricing/decision-stress-test/",
     src: "/pricing/decision-stress-test.png?v=20260626-prices",
   },
   {
     name: "On-Call Room™",
+    href: "/pricing/on-call-room/",
     src: "/pricing/on-call-room.png?v=20260626-prices",
   },
   {
     name: "Kill or Scale™",
+    href: "/pricing/kill-or-scale/",
     src: "/pricing/kill-or-scale.png?v=20260626-prices",
   },
 ];
@@ -47,9 +50,7 @@ export default function PricingPage() {
               <article className="pricing-document-card" key={document.name}>
                 <a
                   className="text-link"
-                  href={document.src}
-                  target="_blank"
-                  rel="noreferrer"
+                  href={document.href}
                   aria-label={`Open ${document.name} pricing document`}
                 >
                   <Image

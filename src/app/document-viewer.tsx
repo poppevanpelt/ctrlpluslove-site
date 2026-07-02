@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import type { CSSProperties } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { CSSProperties, MouseEvent, WheelEvent } from "react";
 
 type DocumentViewerProps = {
   alt: string;
@@ -14,9 +14,6 @@ type DocumentViewerProps = {
   width: number;
 };
 
-const ZOOM_STEPS = [1, 0.82, 0.62, 0.42, 0] as const;
-const INITIAL_ZOOM_STEP = ZOOM_STEPS.length - 1;
-
 export function DocumentViewer({
   alt,
   height,
@@ -26,55 +23,167 @@ export function DocumentViewer({
   src,
   width,
 }: DocumentViewerProps) {
-  const [step, setStep] = useState(INITIAL_ZOOM_STEP);
+  const frameRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(initialScale);
 
   const imageRatio = width / height;
-  const progress = ZOOM_STEPS[step];
-  const scale = 1 + (initialScale - 1) * progress;
-  const x = initialX * progress;
-  const y = initialY * progress;
-  const transform = `translate(-50%, -50%) translate(${x}vw, ${y}vh) scale(${scale})`;
+  const documentOrientation = width >= height ? "landscape" : "portrait";
+
+  const setInitialScroll = useCallback(() => {
+    const frame = frameRef.current;
+    const image = frame?.querySelector<HTMLImageElement>(".document-image");
+
+    if (!frame || !image) {
+      return;
+    }
+
+    const maxLeft = Math.max(0, frame.scrollWidth - frame.clientWidth);
+    const maxTop = Math.max(0, frame.scrollHeight - frame.clientHeight);
+    const centerLeft = image.offsetLeft + image.clientWidth / 2 - frame.clientWidth / 2;
+    const centerTop = image.offsetTop + image.clientHeight / 2 - frame.clientHeight / 2;
+    const initialLeft = centerLeft + (initialX / 100) * maxLeft;
+    const initialTop = centerTop + (initialY / 100) * maxTop;
+
+    frame.scrollTo({
+      left: Math.min(maxLeft, Math.max(0, initialLeft)),
+      top: Math.min(maxTop, Math.max(0, initialTop)),
+      behavior: "auto",
+    });
+  }, [initialX, initialY]);
+
+  const zoomFromPoint = useCallback((nextScale: number, x: number, y: number) => {
+    const frame = frameRef.current;
+
+    if (!frame) {
+      setScale(nextScale);
+      return;
+    }
+
+    const bounds = frame.getBoundingClientRect();
+    const beforeLeft = frame.scrollLeft + x - bounds.left;
+    const beforeTop = frame.scrollTop + y - bounds.top;
+    const previousScale = scale;
+    const ratio = nextScale / previousScale;
+
+    setScale(nextScale);
+
+    requestAnimationFrame(() => {
+      frame.scrollTo({
+        left: beforeLeft * ratio - (x - bounds.left),
+        top: beforeTop * ratio - (y - bounds.top),
+        behavior: "auto",
+      });
+    });
+  }, [scale]);
+
+  const handleWheel = useCallback((event: WheelEvent<HTMLDivElement>) => {
+    if (!event.ctrlKey && !event.metaKey) {
+      return;
+    }
+
+    event.preventDefault();
+
+    const nextScale = Math.min(
+      2.8,
+      Math.max(1, scale * (event.deltaY > 0 ? 0.9 : 1.1)),
+    );
+
+    zoomFromPoint(nextScale, event.clientX, event.clientY);
+  }, [scale, zoomFromPoint]);
+
+  const handleDoubleClick = useCallback((event: MouseEvent<HTMLDivElement>) => {
+    const nextScale = scale > 1.05 ? 1 : 1.85;
+    zoomFromPoint(nextScale, event.clientX, event.clientY);
+  }, [scale, zoomFromPoint]);
+
+  const zoomFromCenter = useCallback((nextScale: number) => {
+    const frame = frameRef.current;
+
+    if (!frame) {
+      setScale(nextScale);
+      return;
+    }
+
+    const bounds = frame.getBoundingClientRect();
+    zoomFromPoint(nextScale, bounds.left + bounds.width / 2, bounds.top + bounds.height / 2);
+  }, [zoomFromPoint]);
+
+  useEffect(() => {
+    const frame = frameRef.current;
+    const image = frame?.querySelector<HTMLImageElement>(".document-image");
+
+    if (!frame || !image) {
+      return;
+    }
+
+    const place = () => requestAnimationFrame(setInitialScroll);
+
+    if (image.complete) {
+      place();
+    } else {
+      image.addEventListener("load", place, { once: true });
+    }
+
+    window.addEventListener("resize", place);
+
+    return () => {
+      image.removeEventListener("load", place);
+      window.removeEventListener("resize", place);
+    };
+  }, [setInitialScroll]);
 
   return (
     <main className="document-page">
       <Link className="document-back" href="/">
         ctrl+love
       </Link>
-      <div className="document-frame">
-        {/* Plain img keeps the exported file:// preview self-contained. */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          className="document-image"
-          src={src}
-          alt={alt}
-          width={width}
-          height={height}
-          data-initial-scale={initialScale}
-          data-initial-x={initialX}
-          data-initial-y={initialY}
-          data-initial-step={INITIAL_ZOOM_STEP}
-          style={{
-            "--document-ratio": imageRatio,
-            transform,
-          } as CSSProperties & Record<"--document-ratio", number>}
-        />
+      <div
+        className="document-frame"
+        ref={frameRef}
+        onDoubleClick={handleDoubleClick}
+        onWheel={handleWheel}
+      >
+        <div className="document-canvas" data-document-orientation={documentOrientation}>
+          {/* Plain img keeps the exported file:// preview self-contained. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="document-image"
+            src={src}
+            alt={alt}
+            width={width}
+            height={height}
+            data-initial-scale={initialScale}
+            data-initial-x={initialX}
+            data-initial-y={initialY}
+            data-document-orientation={documentOrientation}
+            style={{
+              "--document-ratio": imageRatio,
+              "--document-scale": scale,
+              "--document-natural-width": width,
+            } as CSSProperties &
+              Record<
+                | "--document-ratio"
+                | "--document-scale"
+                | "--document-natural-width",
+                number
+              >}
+          />
+        </div>
       </div>
       <div className="document-controls" aria-label="Document zoom controls">
         <button
           type="button"
+          data-document-zoom="out"
+          onClick={() => zoomFromCenter(scale * 0.9)}
           aria-label="Zoom out"
-          onClick={() =>
-            setStep((current) => Math.min(current + 1, ZOOM_STEPS.length - 1))
-          }
-          disabled={step === ZOOM_STEPS.length - 1}
         >
-          -
+          −
         </button>
         <button
           type="button"
+          data-document-zoom="in"
+          onClick={() => zoomFromCenter(scale * 1.1)}
           aria-label="Zoom in"
-          onClick={() => setStep((current) => Math.max(current - 1, 0))}
-          disabled={step === 0}
         >
           +
         </button>

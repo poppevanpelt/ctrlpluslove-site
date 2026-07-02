@@ -12,9 +12,9 @@ export default function UnfinishedThoughtsPage() {
       alt="Department of Unanswered Questions"
       width={1536}
       height={1024}
-      initialScale={2.05}
-      initialX={33}
-      initialY={32}
+      initialScale={1}
+      initialX={0}
+      initialY={0}
     />
   );
 }

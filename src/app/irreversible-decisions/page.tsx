@@ -12,7 +12,7 @@ export default function IrreversibleDecisionsPage() {
       alt="Department of Irreversible Decisions — Burn the Boats, Netflix, 2007"
       width={1158}
       height={1359}
-      initialScale={2.1}
+      initialScale={1}
       initialX={0}
       initialY={0}
     />

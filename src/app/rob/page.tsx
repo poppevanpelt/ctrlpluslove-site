@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { DocumentViewer } from "../document-viewer";
 
 export const metadata: Metadata = {
   title: "Dear Rob — ctrl+love",
@@ -6,16 +7,14 @@ export const metadata: Metadata = {
 
 export default function RobPage() {
   return (
-    <main className="document-page">
-      {/* Plain img keeps the exported file:// preview self-contained. */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        className="document-image"
-        src="dear-rob.png"
-        alt="Dear Rob"
-        width={1024}
-        height={1536}
-      />
-    </main>
+    <DocumentViewer
+      src="/dear-rob.png"
+      alt="Dear Rob"
+      width={1024}
+      height={1536}
+      initialScale={1}
+      initialX={0}
+      initialY={0}
+    />
   );
 }

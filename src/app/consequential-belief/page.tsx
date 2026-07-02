@@ -12,7 +12,7 @@ export default function ConsequentialBeliefPage() {
       alt="Department of Consequential Belief — Mortgage the Heroes, Marvel, 2009"
       width={1149}
       height={1369}
-      initialScale={2.1}
+      initialScale={1}
       initialX={0}
       initialY={0}
     />
