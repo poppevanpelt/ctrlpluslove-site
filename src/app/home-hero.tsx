@@ -1,6 +1,38 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+type HeroPhase = "is-route-long" | "is-route-glitch" | "is-route-final";
+
 export function HomeHero() {
+  const [phase, setPhase] = useState<HeroPhase>("is-route-long");
+
+  useEffect(() => {
+    const sequence: Array<[HeroPhase, number]> = [
+      ["is-route-long", 1800],
+      ["is-route-glitch", 2400],
+      ["is-route-final", 3000],
+      ["is-route-glitch", 1600],
+    ];
+    let index = 0;
+    let timeout: number;
+
+    const tick = () => {
+      const [nextPhase, duration] = sequence[index];
+      setPhase(nextPhase);
+      index = (index + 1) % sequence.length;
+      timeout = window.setTimeout(tick, duration);
+    };
+
+    timeout = window.setTimeout(tick, sequence[0][1]);
+
+    return () => {
+      window.clearTimeout(timeout);
+    };
+  }, []);
+
   return (
-    <section className="hero-section home-hero-section">
+    <section className={`hero-section home-hero-section ${phase}`}>
       <div className="hero-copy">
         <p className="hero-logo hero-logo-mark" aria-label="ctrl+love">
           ctrl+love

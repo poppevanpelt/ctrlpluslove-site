@@ -6134,6 +6134,212 @@ h3 {
   animation: route-final 6.2s steps(1, end) 900ms infinite !important;
 }
 
+.home-hero-section.is-route-long .hero-line::before,
+.home-hero-section.is-route-long .hero-line::after,
+.home-hero-section.is-route-final .hero-line::before,
+.home-hero-section.is-route-final .hero-line::after {
+  animation: none !important;
+  opacity: 0 !important;
+}
+
+.home-hero-section.is-route-long .hero-route-long {
+  animation: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+  text-shadow: none !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+.home-hero-section.is-route-long .hero-route-final {
+  animation: none !important;
+  opacity: 0 !important;
+}
+
+.home-hero-section.is-route-final .hero-route-long {
+  animation: none !important;
+  opacity: 0 !important;
+}
+
+.home-hero-section.is-route-final .hero-route-final {
+  animation: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+  text-shadow: none !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+.home-hero-section.is-route-glitch .hero-route-long {
+  animation: none !important;
+  opacity: 0.62 !important;
+  filter: blur(0.018em) brightness(1.18) saturate(1.7) !important;
+  text-shadow:
+    -0.04em 0 0 color-mix(in srgb, var(--pink) 62%, transparent),
+    0.04em 0 0 color-mix(in srgb, var(--cyan) 72%, transparent) !important;
+  transform: translate(calc(-50% - 0.055em), -50%) skewX(-3deg) !important;
+}
+
+.home-hero-section.is-route-glitch .hero-route-final {
+  animation: none !important;
+  opacity: 0.72 !important;
+  filter: blur(0.012em) brightness(1.18) saturate(1.65) !important;
+  text-shadow:
+    0.065em 0 0 color-mix(in srgb, var(--cyan) 58%, transparent),
+    -0.052em 0 0 color-mix(in srgb, var(--pink) 48%, transparent) !important;
+  transform: translate(calc(-50% + 0.05em), -50%) !important;
+}
+
+.home-hero-section.is-route-glitch .hero-line::before {
+  animation: none !important;
+  opacity: 0.52 !important;
+  clip-path: inset(34% 0 42% 0) !important;
+  filter: brightness(1.35) saturate(1.7) !important;
+  transform: translate(calc(-50% + 0.06em), -50%) !important;
+}
+
+.home-hero-section.is-route-glitch .hero-line::after {
+  animation: none !important;
+  opacity: 0.72 !important;
+  transform: translate(-49%, -50%) scaleX(0.86) !important;
+}
+
+@keyframes route-long-glitch {
+  0% {
+    opacity: 0.68;
+    filter: blur(0.012em) brightness(1.16) saturate(1.55);
+    text-shadow:
+      -0.035em 0 0 color-mix(in srgb, var(--pink) 60%, transparent),
+      0.035em 0 0 color-mix(in srgb, var(--cyan) 70%, transparent);
+    transform: translate(calc(-50% - 0.04em), -50%);
+  }
+
+  24% {
+    opacity: 0.72;
+    filter: blur(0.018em) brightness(1.18) saturate(1.7);
+    text-shadow:
+      -0.04em 0 0 color-mix(in srgb, var(--pink) 62%, transparent),
+      0.04em 0 0 color-mix(in srgb, var(--cyan) 72%, transparent);
+    transform: translate(calc(-50% - 0.055em), -50%);
+  }
+
+  48% {
+    opacity: 0.95;
+    filter: contrast(1.22) saturate(1.55);
+    text-shadow:
+      0.055em 0 0 color-mix(in srgb, var(--green) 44%, transparent),
+      -0.045em 0 0 color-mix(in srgb, var(--pink) 48%, transparent);
+    transform: translate(calc(-50% + 0.07em), -50%);
+  }
+
+  72% {
+    opacity: 0.22;
+    filter: blur(0.035em) saturate(2);
+    text-shadow:
+      -0.08em 0 0 color-mix(in srgb, var(--pink) 72%, transparent),
+      0.08em 0 0 color-mix(in srgb, var(--cyan) 78%, transparent);
+    transform: translate(calc(-50% - 0.09em), -50%) skewX(-5deg);
+  }
+
+  100% {
+    opacity: 0;
+    filter: none;
+    text-shadow: none;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes route-final-glitch {
+  0% {
+    opacity: 0.36;
+    filter: blur(0.02em) saturate(1.7);
+    text-shadow:
+      -0.035em 0 0 color-mix(in srgb, var(--pink) 54%, transparent),
+      0.035em 0 0 color-mix(in srgb, var(--cyan) 64%, transparent);
+    transform: translate(calc(-50% + 0.04em), -50%);
+  }
+
+  34% {
+    opacity: 0.34;
+    filter: blur(0.018em) brightness(1.22) saturate(1.85);
+    transform: translate(calc(-50% - 0.09em), -50%);
+  }
+
+  62% {
+    opacity: 0.86;
+    filter: blur(0.008em) saturate(1.45);
+    text-shadow:
+      0.065em 0 0 color-mix(in srgb, var(--cyan) 58%, transparent),
+      -0.052em 0 0 color-mix(in srgb, var(--pink) 48%, transparent);
+    transform: translate(calc(-50% + 0.05em), -50%);
+  }
+
+  100% {
+    opacity: 1;
+    filter: none;
+    text-shadow: none;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes signal-drop-glitch {
+  100% {
+    opacity: 0;
+  }
+
+  0% {
+    opacity: 0.62;
+    transform: translate(-49%, -50%) scaleX(0.78);
+  }
+
+  24% {
+    opacity: 0.2;
+    transform: translate(-53%, -50%) scaleX(0.22);
+  }
+
+  48% {
+    opacity: 0.82;
+    transform: translate(-47%, -50%) scaleX(1.08);
+  }
+
+  72% {
+    opacity: 0.34;
+    transform: translate(-52%, -50%) scaleX(0.52);
+  }
+}
+
+@keyframes route-ghost-glitch {
+  100% {
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+    filter: none;
+  }
+
+  0% {
+    opacity: 0.46;
+    clip-path: inset(34% 0 42% 0);
+    filter: brightness(1.35) saturate(1.7);
+    transform: translate(calc(-50% + 0.06em), -50%);
+  }
+
+  28% {
+    opacity: 0.18;
+    clip-path: inset(4% 0 78% 0);
+    transform: translate(calc(-50% + 0.1em), -50%);
+  }
+
+  54% {
+    opacity: 0.62;
+    clip-path: inset(42% 0 34% 0);
+    filter: brightness(1.4) saturate(1.9);
+    transform: translate(calc(-50% - 0.08em), -50%);
+  }
+
+  78% {
+    opacity: 0.3;
+    clip-path: inset(70% 0 12% 0);
+    transform: translate(calc(-50% + 0.05em), -50%);
+  }
+}
+
 @keyframes route-long {
   0%,
   34% {

@@ -469,6 +469,41 @@ const livingDecisionReviewScript = `<script>
 })();
 </script>`;
 
+const heroPhaseScript = `<script>
+(function () {
+  var hero = document.querySelector(".home-hero-section");
+
+  if (!hero) return;
+
+  var phases = [
+    ["is-route-long", 1800],
+    ["is-route-glitch", 2400],
+    ["is-route-final", 3000],
+    ["is-route-glitch", 1600]
+  ];
+  var phaseClasses = phases.map(function (phase) {
+    return phase[0];
+  });
+  var index = 0;
+
+  function setPhase(phase) {
+    phaseClasses.forEach(function (className) {
+      hero.classList.remove(className);
+    });
+    hero.classList.add(phase);
+  }
+
+  function tick() {
+    var phase = phases[index];
+    setPhase(phase[0]);
+    index = (index + 1) % phases.length;
+    window.setTimeout(tick, phase[1]);
+  }
+
+  tick();
+})();
+</script>`;
+
 const previewIconLinks = `<link rel="icon" href="favicon.ico?v=20260626-favicon" sizes="32x32" />
 <link rel="shortcut icon" href="favicon.ico?v=20260626-favicon" />
 <link rel="icon" href="favicon.png?v=20260626-favicon" type="image/png" sizes="32x32" />
@@ -499,7 +534,7 @@ function addThemeScripts(html) {
     )
     .replace(
       "</body>",
-      `${themeBodyScript}${documentViewerScript}${meetingFilterScript}${aiYFierStaticScript}${livingDecisionReviewScript}</body>`
+      `${themeBodyScript}${documentViewerScript}${meetingFilterScript}${aiYFierStaticScript}${livingDecisionReviewScript}${heroPhaseScript}</body>`
     );
 }
 
