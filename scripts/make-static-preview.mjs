@@ -162,6 +162,7 @@ const documentViewerScript = `<script>
   var initialX = parseFloat(image.dataset.initialX || "0");
   var initialY = parseFloat(image.dataset.initialY || "0");
   var scale = parseFloat(image.dataset.initialScale || "1");
+  var drag = null;
 
   function setScale(nextScale) {
     scale = Math.min(2.8, Math.max(1, nextScale));
@@ -210,6 +211,43 @@ const documentViewerScript = `<script>
   frame.addEventListener("dblclick", function (event) {
     zoomFromPoint(scale > 1.05 ? 1 : 1.85, event.clientX, event.clientY);
   });
+
+  frame.addEventListener("pointerdown", function (event) {
+    if (!event.isPrimary || event.button !== 0 || event.ctrlKey || event.metaKey) return;
+    if (frame.scrollWidth <= frame.clientWidth && frame.scrollHeight <= frame.clientHeight) return;
+
+    drag = {
+      pointerId: event.pointerId,
+      startLeft: frame.scrollLeft,
+      startTop: frame.scrollTop,
+      startX: event.clientX,
+      startY: event.clientY
+    };
+
+    frame.setPointerCapture(event.pointerId);
+    frame.classList.add("is-dragging");
+  });
+
+  frame.addEventListener("pointermove", function (event) {
+    if (!drag || drag.pointerId !== event.pointerId) return;
+
+    event.preventDefault();
+    frame.scrollLeft = drag.startLeft - (event.clientX - drag.startX);
+    frame.scrollTop = drag.startTop - (event.clientY - drag.startY);
+  });
+
+  function stopDragging(event) {
+    if (drag && event && frame.hasPointerCapture(event.pointerId)) {
+      frame.releasePointerCapture(event.pointerId);
+    }
+
+    drag = null;
+    frame.classList.remove("is-dragging");
+  }
+
+  frame.addEventListener("pointerup", stopDragging);
+  frame.addEventListener("pointercancel", stopDragging);
+  frame.addEventListener("lostpointercapture", stopDragging);
 
   if (image.complete) {
     window.requestAnimationFrame(setInitialScroll);
@@ -476,15 +514,14 @@ const heroPhaseScript = `<script>
   if (!hero) return;
 
   var phases = [
-    ["is-route-long", 1800],
-    ["is-route-glitch", 2400],
-    ["is-route-final", 3000],
-    ["is-route-glitch", 1600]
+    ["is-route-long", 7800],
+    ["is-route-glitch-to-final", 700],
+    ["is-route-final", 0]
   ];
   var phaseClasses = phases.map(function (phase) {
     return phase[0];
   });
-  var index = 0;
+  var index = 1;
 
   function setPhase(phase) {
     phaseClasses.forEach(function (className) {
@@ -496,8 +533,11 @@ const heroPhaseScript = `<script>
   function tick() {
     var phase = phases[index];
     setPhase(phase[0]);
-    index = (index + 1) % phases.length;
-    window.setTimeout(tick, phase[1]);
+
+    if (index < phases.length - 1) {
+      index += 1;
+      window.setTimeout(tick, phase[1]);
+    }
   }
 
   tick();

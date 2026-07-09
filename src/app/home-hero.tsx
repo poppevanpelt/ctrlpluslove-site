@@ -2,26 +2,31 @@
 
 import { useEffect, useState } from "react";
 
-type HeroPhase = "is-route-long" | "is-route-glitch" | "is-route-final";
+type HeroPhase =
+  | "is-route-long"
+  | "is-route-glitch-to-final"
+  | "is-route-final";
 
 export function HomeHero() {
   const [phase, setPhase] = useState<HeroPhase>("is-route-long");
 
   useEffect(() => {
     const sequence: Array<[HeroPhase, number]> = [
-      ["is-route-long", 1800],
-      ["is-route-glitch", 2400],
-      ["is-route-final", 3000],
-      ["is-route-glitch", 1600],
+      ["is-route-long", 7800],
+      ["is-route-glitch-to-final", 700],
+      ["is-route-final", 0],
     ];
-    let index = 0;
+    let index = 1;
     let timeout: number;
 
     const tick = () => {
       const [nextPhase, duration] = sequence[index];
       setPhase(nextPhase);
-      index = (index + 1) % sequence.length;
-      timeout = window.setTimeout(tick, duration);
+
+      if (index < sequence.length - 1) {
+        index += 1;
+        timeout = window.setTimeout(tick, duration);
+      }
     };
 
     timeout = window.setTimeout(tick, sequence[0][1]);
@@ -33,32 +38,32 @@ export function HomeHero() {
 
   return (
     <section className={`hero-section home-hero-section ${phase}`}>
-      <div className="hero-copy">
-        <p className="hero-logo hero-logo-mark" aria-label="ctrl+love">
+      <div className="home-hero-copy">
+        <p className="home-hero-logo" aria-label="ctrl+love">
           ctrl+love
         </p>
-        <div className="hero-message">
+        <div className="home-hero-message">
           <h1
-            className="hero-line"
+            className="home-hero-line"
             aria-label="Assuring compromise. Shortcut to reality."
           >
-            <span className="hero-route hero-route-long" aria-hidden="true">
+            <span className="home-hero-route home-hero-route-long" aria-hidden="true">
               Assuring compromise.
             </span>
-            <span className="hero-route hero-route-final">
+            <span className="home-hero-route home-hero-route-final">
               Shortcut to reality.
             </span>
           </h1>
-          <p className="hero-translation">
+          <p className="home-hero-translation">
             Stress-test your decisions before the market does.
           </p>
         </div>
-        <div className="hero-message hero-message-secondary">
-          <h2 className="hero-invitation">
+        <div className="home-hero-message home-hero-message-secondary">
+          <h2 className="home-hero-invitation">
             Bring the decision into the room.
           </h2>
         </div>
-        <a href="mailto:hello@ctrlpluslove.com" className="hero-email">
+        <a href="mailto:hello@ctrlpluslove.com" className="home-hero-email">
           hello@ctrlpluslove.com →
         </a>
       </div>

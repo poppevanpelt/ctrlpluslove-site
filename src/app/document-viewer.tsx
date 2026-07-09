@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { CSSProperties, MouseEvent, WheelEvent } from "react";
+import type { CSSProperties, MouseEvent, PointerEvent, WheelEvent } from "react";
 
 type DocumentViewerProps = {
   alt: string;
@@ -24,7 +24,15 @@ export function DocumentViewer({
   width,
 }: DocumentViewerProps) {
   const frameRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef({
+    pointerId: -1,
+    startLeft: 0,
+    startTop: 0,
+    startX: 0,
+    startY: 0,
+  });
   const [scale, setScale] = useState(initialScale);
+  const [isDragging, setIsDragging] = useState(false);
 
   const imageRatio = width / height;
   const documentOrientation = width >= height ? "landscape" : "portrait";
@@ -96,6 +104,58 @@ export function DocumentViewer({
     zoomFromPoint(nextScale, event.clientX, event.clientY);
   }, [scale, zoomFromPoint]);
 
+  const stopDragging = useCallback((event?: PointerEvent<HTMLDivElement>) => {
+    const frame = frameRef.current;
+
+    if (event && event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+
+    if (frame) {
+      frame.classList.remove("is-dragging");
+    }
+
+    dragRef.current.pointerId = -1;
+    setIsDragging(false);
+  }, []);
+
+  const handlePointerDown = useCallback((event: PointerEvent<HTMLDivElement>) => {
+    if (!event.isPrimary || event.button !== 0 || event.ctrlKey || event.metaKey) {
+      return;
+    }
+
+    const frame = frameRef.current;
+
+    if (!frame || (frame.scrollWidth <= frame.clientWidth && frame.scrollHeight <= frame.clientHeight)) {
+      return;
+    }
+
+    dragRef.current = {
+      pointerId: event.pointerId,
+      startLeft: frame.scrollLeft,
+      startTop: frame.scrollTop,
+      startX: event.clientX,
+      startY: event.clientY,
+    };
+
+    event.currentTarget.setPointerCapture(event.pointerId);
+    frame.classList.add("is-dragging");
+    setIsDragging(true);
+  }, []);
+
+  const handlePointerMove = useCallback((event: PointerEvent<HTMLDivElement>) => {
+    const frame = frameRef.current;
+    const drag = dragRef.current;
+
+    if (!frame || drag.pointerId !== event.pointerId) {
+      return;
+    }
+
+    event.preventDefault();
+    frame.scrollLeft = drag.startLeft - (event.clientX - drag.startX);
+    frame.scrollTop = drag.startTop - (event.clientY - drag.startY);
+  }, []);
+
   useEffect(() => {
     const frame = frameRef.current;
     const image = frame?.querySelector<HTMLImageElement>(".document-image");
@@ -126,9 +186,14 @@ export function DocumentViewer({
         ctrl+love
       </Link>
       <div
-        className="document-frame"
+        className={`document-frame${isDragging ? " is-dragging" : ""}`}
         ref={frameRef}
         onDoubleClick={handleDoubleClick}
+        onLostPointerCapture={stopDragging}
+        onPointerCancel={stopDragging}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={stopDragging}
         onWheel={handleWheel}
       >
         <div className="document-canvas" data-document-orientation={documentOrientation}>
@@ -140,6 +205,7 @@ export function DocumentViewer({
             alt={alt}
             width={width}
             height={height}
+            draggable={false}
             data-initial-scale={initialScale}
             data-initial-x={initialX}
             data-initial-y={initialY}

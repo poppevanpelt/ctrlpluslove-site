@@ -319,6 +319,16 @@ p {
   }
 }
 
+@keyframes home-logo-spectrum {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: -100% 50%;
+  }
+}
+
 @keyframes hero-copy-arrive {
   0% {
     opacity: 0;
@@ -1122,6 +1132,11 @@ h3 {
   padding: clamp(2.2rem, 4.2vw, 3.5rem) 1.5rem;
 }
 
+.departments-section,
+.departments-section * {
+  cursor: default !important;
+}
+
 .features-section {
   padding: clamp(2.1rem, 3.8vw, 3.25rem) 1.5rem;
 }
@@ -1190,6 +1205,10 @@ h3 {
   transition: color 160ms ease, transform 160ms ease;
 }
 
+.department-link {
+  cursor: default;
+}
+
 .feature-link {
   min-height: 0;
 }
@@ -1211,7 +1230,6 @@ h3 {
   line-height: 1.22;
 }
 
-.department-link:hover,
 .feature-link:hover {
   color: var(--soft);
   transform: translateX(0.18rem);
@@ -2746,10 +2764,15 @@ h3 {
   inset: 0;
   overflow: auto;
   background: var(--paper);
-  cursor: zoom-in;
+  cursor: grab;
   overscroll-behavior: contain;
   scrollbar-gutter: auto;
   touch-action: pan-x pan-y pinch-zoom;
+  user-select: none;
+}
+
+.document-frame.is-dragging {
+  cursor: grabbing;
 }
 
 .document-canvas {
@@ -2784,6 +2807,8 @@ h3 {
   );
   max-width: none;
   height: auto;
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 .document-back {
@@ -6050,193 +6075,46 @@ h3 {
   }
 }
 
-/* Keep this at the end: it restores the homepage title swap after layout clamps. */
-.home-hero-section .hero-line {
-  position: relative !important;
-  display: grid !important;
-  min-height: 1.08em !important;
-  place-items: center !important;
-  overflow: hidden !important;
-}
-
-.home-hero-section .hero-line::before {
-  position: absolute !important;
-  z-index: 3 !important;
-  top: 50% !important;
-  left: 50% !important;
-  display: block !important;
-  width: max-content !important;
-  max-width: calc(100vw - 1.5rem) !important;
-  color: color-mix(in srgb, var(--pink) 64%, var(--cyan)) !important;
-  content: "Shortcut to reality." !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-  text-shadow:
-    -0.035em 0 0 color-mix(in srgb, var(--pink) 68%, transparent),
-    0.035em 0 0 color-mix(in srgb, var(--cyan) 76%, transparent) !important;
-  transform: translate(-50%, -50%) !important;
-  white-space: nowrap !important;
-  animation: route-ghost 6.2s steps(1, end) 900ms infinite !important;
-}
-
-.home-hero-section .hero-line::after {
-  position: absolute !important;
-  z-index: 2 !important;
-  top: 50% !important;
-  left: 50% !important;
-  display: block !important;
-  width: min(11.6em, 106%) !important;
-  height: 0.15em !important;
-  border-radius: 999px !important;
-  background: color-mix(in srgb, var(--cyan) 84%, #2563eb) !important;
-  box-shadow:
-    0 0 0.42rem color-mix(in srgb, var(--cyan) 46%, transparent),
-    0 0 1.1rem color-mix(in srgb, #2563eb 28%, transparent) !important;
-  content: "" !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-  transform: translate(-50%, -50%) !important;
-  animation: signal-drop 6.2s steps(1, end) 900ms infinite !important;
-}
-
-.home-hero-section .hero-route,
-.home-hero-section .hero-route-long,
-.home-hero-section .hero-route-final {
-  grid-area: 1 / 1 !important;
-  width: max-content !important;
-  max-width: calc(100vw - 1.5rem) !important;
-  justify-self: center !important;
-  white-space: nowrap !important;
-  text-wrap: nowrap !important;
-  overflow-wrap: normal !important;
-  will-change: opacity, filter, transform !important;
-}
-
-.home-hero-section .hero-route-long {
-  position: absolute !important;
-  top: 50% !important;
-  left: 50% !important;
-  display: block !important;
-  opacity: 1 !important;
-  transform: translate(-50%, -50%) !important;
-  animation: route-long 6.2s steps(1, end) 900ms infinite !important;
-}
-
-.home-hero-section .hero-route-final {
-  position: absolute !important;
-  top: 50% !important;
-  left: 50% !important;
-  display: block !important;
-  opacity: 0 !important;
-  filter: none !important;
-  text-shadow: none !important;
-  transform: translate(-50%, -50%) !important;
-  animation: route-final 6.2s steps(1, end) 900ms infinite !important;
-}
-
-.home-hero-section.is-route-long .hero-line::before,
-.home-hero-section.is-route-long .hero-line::after,
-.home-hero-section.is-route-final .hero-line::before,
-.home-hero-section.is-route-final .hero-line::after {
-  animation: none !important;
-  opacity: 0 !important;
-}
-
-.home-hero-section.is-route-long .hero-route-long {
-  animation: none !important;
-  opacity: 1 !important;
-  filter: none !important;
-  text-shadow: none !important;
-  transform: translate(-50%, -50%) !important;
-}
-
-.home-hero-section.is-route-long .hero-route-final {
-  animation: none !important;
-  opacity: 0 !important;
-}
-
-.home-hero-section.is-route-final .hero-route-long {
-  animation: none !important;
-  opacity: 0 !important;
-}
-
-.home-hero-section.is-route-final .hero-route-final {
-  animation: none !important;
-  opacity: 1 !important;
-  filter: none !important;
-  text-shadow: none !important;
-  transform: translate(-50%, -50%) !important;
-}
-
-.home-hero-section.is-route-glitch .hero-route-long {
-  animation: none !important;
-  opacity: 0.62 !important;
-  filter: blur(0.018em) brightness(1.18) saturate(1.7) !important;
-  text-shadow:
-    -0.04em 0 0 color-mix(in srgb, var(--pink) 62%, transparent),
-    0.04em 0 0 color-mix(in srgb, var(--cyan) 72%, transparent) !important;
-  transform: translate(calc(-50% - 0.055em), -50%) skewX(-3deg) !important;
-}
-
-.home-hero-section.is-route-glitch .hero-route-final {
-  animation: none !important;
-  opacity: 0.72 !important;
-  filter: blur(0.012em) brightness(1.18) saturate(1.65) !important;
-  text-shadow:
-    0.065em 0 0 color-mix(in srgb, var(--cyan) 58%, transparent),
-    -0.052em 0 0 color-mix(in srgb, var(--pink) 48%, transparent) !important;
-  transform: translate(calc(-50% + 0.05em), -50%) !important;
-}
-
-.home-hero-section.is-route-glitch .hero-line::before {
-  animation: none !important;
-  opacity: 0.52 !important;
-  clip-path: inset(34% 0 42% 0) !important;
-  filter: brightness(1.35) saturate(1.7) !important;
-  transform: translate(calc(-50% + 0.06em), -50%) !important;
-}
-
-.home-hero-section.is-route-glitch .hero-line::after {
-  animation: none !important;
-  opacity: 0.72 !important;
-  transform: translate(-49%, -50%) scaleX(0.86) !important;
-}
-
 @keyframes route-long-glitch {
   0% {
-    opacity: 0.68;
-    filter: blur(0.012em) brightness(1.16) saturate(1.55);
-    text-shadow:
-      -0.035em 0 0 color-mix(in srgb, var(--pink) 60%, transparent),
-      0.035em 0 0 color-mix(in srgb, var(--cyan) 70%, transparent);
-    transform: translate(calc(-50% - 0.04em), -50%);
+    opacity: 1;
+    filter: none;
+    text-shadow: none;
+    transform: translate(-50%, -50%);
   }
 
-  24% {
-    opacity: 0.72;
-    filter: blur(0.018em) brightness(1.18) saturate(1.7);
-    text-shadow:
-      -0.04em 0 0 color-mix(in srgb, var(--pink) 62%, transparent),
-      0.04em 0 0 color-mix(in srgb, var(--cyan) 72%, transparent);
-    transform: translate(calc(-50% - 0.055em), -50%);
+  58% {
+    opacity: 1;
+    filter: none;
+    text-shadow: none;
+    transform: translate(-50%, -50%);
   }
 
-  48% {
-    opacity: 0.95;
-    filter: contrast(1.22) saturate(1.55);
+  70% {
+    opacity: 0.86;
+    filter: blur(0.01em) brightness(1.1) saturate(1.35);
     text-shadow:
-      0.055em 0 0 color-mix(in srgb, var(--green) 44%, transparent),
-      -0.045em 0 0 color-mix(in srgb, var(--pink) 48%, transparent);
-    transform: translate(calc(-50% + 0.07em), -50%);
+      -0.024em 0 0 color-mix(in srgb, var(--pink) 44%, transparent),
+      0.024em 0 0 color-mix(in srgb, var(--cyan) 54%, transparent);
+    transform: translate(calc(-50% - 0.028em), -50%);
   }
 
-  72% {
-    opacity: 0.22;
-    filter: blur(0.035em) saturate(2);
+  82% {
+    opacity: 0.8;
+    filter: blur(0.014em) brightness(1.14) saturate(1.45);
     text-shadow:
-      -0.08em 0 0 color-mix(in srgb, var(--pink) 72%, transparent),
-      0.08em 0 0 color-mix(in srgb, var(--cyan) 78%, transparent);
-    transform: translate(calc(-50% - 0.09em), -50%) skewX(-5deg);
+      -0.035em 0 0 color-mix(in srgb, var(--pink) 55%, transparent),
+      0.035em 0 0 color-mix(in srgb, var(--cyan) 62%, transparent);
+    transform: translate(calc(-50% + 0.04em), -50%);
+  }
+
+  92% {
+    opacity: 0.46;
+    filter: blur(0.024em) saturate(1.7);
+    text-shadow:
+      -0.052em 0 0 color-mix(in srgb, var(--pink) 62%, transparent),
+      0.052em 0 0 color-mix(in srgb, var(--cyan) 68%, transparent);
+    transform: translate(calc(-50% - 0.052em), -50%) skewX(-3deg);
   }
 
   100% {
@@ -6249,27 +6127,27 @@ h3 {
 
 @keyframes route-final-glitch {
   0% {
-    opacity: 0.36;
-    filter: blur(0.02em) saturate(1.7);
+    opacity: 0;
+    filter: blur(0.018em) saturate(1.45);
     text-shadow:
       -0.035em 0 0 color-mix(in srgb, var(--pink) 54%, transparent),
       0.035em 0 0 color-mix(in srgb, var(--cyan) 64%, transparent);
     transform: translate(calc(-50% + 0.04em), -50%);
   }
 
-  34% {
-    opacity: 0.34;
-    filter: blur(0.018em) brightness(1.22) saturate(1.85);
-    transform: translate(calc(-50% - 0.09em), -50%);
+  48% {
+    opacity: 0;
+    filter: blur(0.018em) saturate(1.45);
+    transform: translate(calc(-50% + 0.04em), -50%);
   }
 
-  62% {
-    opacity: 0.86;
-    filter: blur(0.008em) saturate(1.45);
+  72% {
+    opacity: 0.58;
+    filter: blur(0.012em) brightness(1.14) saturate(1.5);
     text-shadow:
-      0.065em 0 0 color-mix(in srgb, var(--cyan) 58%, transparent),
-      -0.052em 0 0 color-mix(in srgb, var(--pink) 48%, transparent);
-    transform: translate(calc(-50% + 0.05em), -50%);
+      0.04em 0 0 color-mix(in srgb, var(--cyan) 46%, transparent),
+      -0.035em 0 0 color-mix(in srgb, var(--pink) 38%, transparent);
+    transform: translate(calc(-50% - 0.035em), -50%);
   }
 
   100% {
@@ -6280,29 +6158,76 @@ h3 {
   }
 }
 
-@keyframes signal-drop-glitch {
+@keyframes route-long-return-glitch {
+  0% {
+    opacity: 0.2;
+    filter: blur(0.03em) saturate(1.8);
+    text-shadow:
+      -0.06em 0 0 color-mix(in srgb, var(--pink) 62%, transparent),
+      0.06em 0 0 color-mix(in srgb, var(--cyan) 72%, transparent);
+    transform: translate(calc(-50% + 0.07em), -50%) skewX(4deg);
+  }
+
+  42% {
+    opacity: 0.88;
+    filter: contrast(1.25) saturate(1.6);
+    text-shadow:
+      0.05em 0 0 color-mix(in srgb, var(--cyan) 58%, transparent),
+      -0.04em 0 0 color-mix(in srgb, var(--pink) 48%, transparent);
+    transform: translate(calc(-50% - 0.05em), -50%);
+  }
+
+  100% {
+    opacity: 1;
+    filter: none;
+    text-shadow: none;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes route-final-return-glitch {
+  0% {
+    opacity: 0.86;
+    filter: blur(0.01em) saturate(1.45);
+    text-shadow:
+      0.065em 0 0 color-mix(in srgb, var(--cyan) 58%, transparent),
+      -0.052em 0 0 color-mix(in srgb, var(--pink) 48%, transparent);
+    transform: translate(calc(-50% - 0.03em), -50%);
+  }
+
+  46% {
+    opacity: 0.36;
+    filter: blur(0.02em) brightness(1.18) saturate(1.7);
+    transform: translate(calc(-50% + 0.09em), -50%) skewX(-5deg);
+  }
+
   100% {
     opacity: 0;
+    filter: none;
+    text-shadow: none;
+    transform: translate(-50%, -50%);
   }
+}
 
+@keyframes hero-scanline-sweep {
   0% {
-    opacity: 0.62;
-    transform: translate(-49%, -50%) scaleX(0.78);
+    opacity: 0.72;
+    transform: translate(-50%, -50%) scaleX(1.02);
   }
 
-  24% {
-    opacity: 0.2;
-    transform: translate(-53%, -50%) scaleX(0.22);
-  }
-
-  48% {
-    opacity: 0.82;
-    transform: translate(-47%, -50%) scaleX(1.08);
-  }
-
-  72% {
+  28% {
     opacity: 0.34;
-    transform: translate(-52%, -50%) scaleX(0.52);
+    transform: translate(-50%, -50%) scaleX(0.96);
+  }
+
+  58% {
+    opacity: 0.78;
+    transform: translate(-50%, -50%) scaleX(1.04);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scaleX(1);
   }
 }
 
@@ -6497,4 +6422,265 @@ h3 {
     clip-path: inset(18% 0 58% 0);
     transform: translate(calc(-50% - 0.035em), -50%);
   }
+}
+
+/* Isolated homepage hero: avoids the older generic .hero-line/.hero-route rules. */
+.home-hero-section {
+  display: flex !important;
+  min-height: auto !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: visible !important;
+  padding: clamp(4.5rem, 7svh, 6rem) 1rem clamp(2.6rem, 4.6svh, 3.6rem) !important;
+  text-align: center !important;
+}
+
+.home-hero-copy {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: min(100%, calc(100vw - 2rem), 78rem);
+  gap: clamp(0.82rem, 1.55svh, 1.25rem);
+  justify-items: center;
+}
+
+.home-hero-logo {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  background: linear-gradient(
+    96deg,
+    #ff19c8 0%,
+    #ff245f 4%,
+    #ff7a1a 8%,
+    #ffd21d 13%,
+    #39df33 18%,
+    #00d9be 23%,
+    #1787ff 29%,
+    #4c22ff 35%,
+    #a225e8 42%,
+    #ff19c8 50%,
+    #ff245f 54%,
+    #ff7a1a 58%,
+    #ffd21d 63%,
+    #39df33 68%,
+    #00d9be 73%,
+    #1787ff 79%,
+    #4c22ff 85%,
+    #a225e8 92%,
+    #ff19c8 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: min(10.5rem, 12vw, 16svh, calc((100vw - 2rem) / 5.2));
+  font-weight: 660;
+  line-height: 0.9;
+  animation: home-logo-spectrum 7.5s linear infinite;
+}
+
+@supports (-webkit-background-clip: text) {
+  .home-hero-logo {
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.home-hero-message {
+  display: grid;
+  width: 100%;
+  gap: clamp(0.82rem, 1.55svh, 1.15rem);
+  justify-items: center;
+}
+
+.home-hero-message-secondary {
+  margin-top: clamp(0.72rem, 1.8svh, 1.35rem);
+}
+
+.home-hero-line {
+  position: relative;
+  display: grid;
+  width: 100%;
+  max-width: calc(100vw - 2rem);
+  min-height: 1.08em;
+  place-items: center;
+  margin: 0;
+  color: var(--ink);
+  font-size: min(6.25rem, 6.6vw, 10svh, calc((100vw - 2rem) / 9.9));
+  font-weight: 700;
+  line-height: 1;
+  overflow: visible;
+}
+
+.home-hero-route {
+  grid-area: 1 / 1;
+  width: max-content;
+  max-width: calc(100vw - 1.5rem);
+  justify-self: center;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  will-change: opacity, filter, transform;
+}
+
+.home-hero-route-long,
+.home-hero-route-final {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+}
+
+.home-hero-section.is-route-long .home-hero-route-long,
+.home-hero-section.is-route-glitch-to-long .home-hero-route-long {
+  opacity: 1;
+}
+
+.home-hero-section.is-route-long .home-hero-route-final,
+.home-hero-section.is-route-final .home-hero-route-long {
+  opacity: 0;
+}
+
+.home-hero-section.is-route-long .home-hero-route-long,
+.home-hero-section.is-route-final .home-hero-route-final {
+  animation: none;
+  filter: none;
+  text-shadow: none;
+  transform: translate(-50%, -50%);
+}
+
+.home-hero-section.is-route-final .home-hero-route-final {
+  opacity: 1;
+}
+
+.home-hero-section.is-route-glitch-to-final .home-hero-route-long {
+  animation: route-long-glitch 700ms steps(1, end) both;
+  clip-path: inset(0 0 0 0);
+}
+
+.home-hero-section.is-route-glitch-to-final .home-hero-route-final {
+  animation: route-final-glitch 700ms steps(1, end) both;
+  clip-path: inset(0 0 0 0);
+}
+
+.home-hero-section.is-route-glitch-to-long .home-hero-route-long {
+  animation: route-long-return-glitch 360ms steps(1, end) both;
+  clip-path: inset(18% 0 22% 0);
+}
+
+.home-hero-section.is-route-glitch-to-long .home-hero-route-final {
+  animation: route-final-return-glitch 360ms steps(1, end) both;
+  clip-path: inset(36% 0 18% 0);
+}
+
+.home-hero-line::after {
+  position: absolute;
+  z-index: 41;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: 124vw;
+  min-width: 124vw;
+  height: clamp(0.16rem, 0.32vw, 0.28rem);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--cyan) 82%, #2563eb);
+  box-shadow: 0 0 0.42rem color-mix(in srgb, var(--cyan) 42%, transparent);
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scaleX(0.98);
+  transform-origin: center;
+}
+
+.home-hero-section.is-route-glitch-to-final .home-hero-line::after,
+.home-hero-section.is-route-glitch-to-long .home-hero-line::after {
+  animation: hero-scanline-sweep 700ms steps(1, end) both;
+}
+
+.home-hero-translation {
+  max-width: min(100%, 42rem);
+  color: color-mix(in srgb, var(--ink) 82%, var(--muted));
+  font-size: clamp(1.2rem, 1.8vw, 1.55rem);
+  font-weight: 680;
+  line-height: 1.22;
+}
+
+.home-hero-invitation {
+  max-width: min(100%, 50rem);
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.75rem, 4.2vw, 4.2rem);
+  font-weight: 700;
+  line-height: 1.04;
+}
+
+.home-hero-email {
+  width: fit-content;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 28%, transparent);
+  color: var(--ink);
+  padding-bottom: 0.12rem;
+  font-size: clamp(1.05rem, 1.7vw, 1.35rem);
+  font-weight: 780;
+  line-height: var(--leading-secondary);
+  text-decoration: none;
+}
+
+@media (max-width: 900px) {
+  .home-hero-logo {
+    font-size: min(5.4rem, 15vw, 15svh, calc((100vw - 1.5rem) / 5.25));
+  }
+
+  .home-hero-line {
+    font-size: min(3.1rem, 8.8vw, 8svh, calc((100vw - 1.5rem) / 9.8));
+  }
+
+  .home-hero-translation {
+    max-width: min(100%, 24rem);
+    font-size: clamp(1rem, 3.8vw, 1.25rem);
+  }
+
+  .home-hero-invitation {
+    max-width: min(100%, 26rem);
+    font-size: clamp(1.45rem, 6vw, 2.35rem);
+  }
+
+  .home-hero-email {
+    font-size: clamp(0.98rem, 3.6vw, 1.16rem);
+  }
+}
+
+/* Fallback for cached/older homepage markup that still uses generic hero classes. */
+.home-hero-section .hero-line {
+  position: relative !important;
+  overflow: visible !important;
+}
+
+.home-hero-scanline,
+.home-hero-section .hero-scanline {
+  display: none !important;
+}
+
+.home-hero-section .hero-line::after {
+  position: absolute !important;
+  z-index: 41 !important;
+  top: 50% !important;
+  left: 50% !important;
+  display: block !important;
+  width: 124vw !important;
+  min-width: 124vw !important;
+  height: clamp(0.16rem, 0.32vw, 0.28rem) !important;
+  border-radius: 999px !important;
+  background: color-mix(in srgb, var(--cyan) 82%, #2563eb) !important;
+  box-shadow: 0 0 0.42rem color-mix(in srgb, var(--cyan) 42%, transparent) !important;
+  content: "" !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translate(-50%, -50%) scaleX(0.98) !important;
+  transform-origin: center !important;
+}
+
+.home-hero-section.is-route-glitch .hero-line::after,
+.home-hero-section.is-route-glitch-to-final .hero-line::after,
+.home-hero-section.is-route-glitch-to-long .hero-line::after {
+  animation: hero-scanline-sweep 360ms steps(1, end) both !important;
 }
