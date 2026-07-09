@@ -6554,12 +6554,12 @@ h3 {
 }
 
 .home-hero-section.is-route-glitch-to-final .home-hero-route-long {
-  animation: route-long-glitch 700ms steps(1, end) both;
+  animation: route-long-glitch 620ms steps(1, end) both;
   clip-path: inset(0 0 0 0);
 }
 
 .home-hero-section.is-route-glitch-to-final .home-hero-route-final {
-  animation: route-final-glitch 700ms steps(1, end) both;
+  animation: route-final-glitch 620ms steps(1, end) both;
   clip-path: inset(0 0 0 0);
 }
 
@@ -6594,7 +6594,7 @@ h3 {
 
 .home-hero-section.is-route-glitch-to-final .home-hero-line::after,
 .home-hero-section.is-route-glitch-to-long .home-hero-line::after {
-  animation: hero-scanline-sweep 700ms steps(1, end) both;
+  animation: hero-scanline-sweep 620ms steps(1, end) both;
 }
 
 .home-hero-translation {

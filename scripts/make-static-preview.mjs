@@ -514,8 +514,8 @@ const heroPhaseScript = `<script>
   if (!hero) return;
 
   var phases = [
-    ["is-route-long", 7800],
-    ["is-route-glitch-to-final", 700],
+    ["is-route-long", 6300],
+    ["is-route-glitch-to-final", 620],
     ["is-route-final", 0]
   ];
   var phaseClasses = phases.map(function (phase) {
