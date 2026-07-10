@@ -1,5 +1,7 @@
 import Image from "next/image";
 
+import { AmbassadorGrid } from "./ambassador-grid";
+import { featuredAmbassadors } from "./ambassadors-data";
 import { HomeHero } from "./home-hero";
 import { LivingTicker } from "./living-ticker";
 import { MeetingFilterController } from "./meeting-filter-controller";
@@ -556,6 +558,31 @@ export default function Home() {
             <br />
             We&apos;ve just been following them for a very long time.
           </p>
+        </div>
+      </section>
+
+      <section
+        className="content-section ruled ambassador-section"
+        aria-labelledby="ambassadors-title"
+      >
+        <div className="content-block ambassador-block">
+          <div className="section-heading quiet-heading">
+            <div>
+              <p className="section-kicker">Ambassadors</p>
+              <h2 id="ambassadors-title">Local readers of reality.</h2>
+            </div>
+            <p>
+              A light embassy layer.
+              <br />
+              People who carry the room into their city.
+            </p>
+          </div>
+
+          <AmbassadorGrid ambassadors={featuredAmbassadors} compact />
+
+          <a className="text-link" href="/ambassadors/">
+            View all ambassadors →
+          </a>
         </div>
       </section>
 

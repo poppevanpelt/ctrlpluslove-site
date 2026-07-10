@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 400" role="img" aria-labelledby="title">
+  <title id="title">Portrait of Christophe</title>
+  <rect width="320" height="400" fill="#e6e3dc"/>
+  <path d="M72 400c13-76 44-114 88-114s75 38 88 114z" fill="#26282d"/>
+  <path d="M108 309c7-31 24-48 52-48s45 17 52 48c-30 20-68 20-104 0z" fill="#d09a73"/>
+  <path d="M89 160c0-62 28-103 71-103s71 41 71 103c0 64-28 109-71 109s-71-45-71-109z" fill="#d4a079"/>
+  <path d="M91 141c11-57 37-89 75-89s62 31 65 88c-46-17-92-17-140 1z" fill="#5c554e"/>
+  <path d="M103 184h43" stroke="#272521" stroke-width="5" stroke-linecap="round"/>
+  <path d="M175 184h43" stroke="#272521" stroke-width="5" stroke-linecap="round"/>
+  <path d="M150 211c6 5 14 5 20 0" stroke="#9c664d" stroke-width="4" stroke-linecap="round"/>
+  <path d="M131 236c19 12 39 12 58 0" stroke="#5f3a31" stroke-width="5" stroke-linecap="round"/>
+  <path d="M114 400l46-82 46 82z" fill="#f7f5ef" opacity=".9"/>
+</svg>

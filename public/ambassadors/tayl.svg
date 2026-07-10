@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 400" role="img" aria-labelledby="title">
+  <title id="title">Portrait of Tayl</title>
+  <rect width="320" height="400" fill="#e7e8ec"/>
+  <path d="M73 400c13-76 44-114 87-114s74 38 87 114z" fill="#303033"/>
+  <path d="M108 309c7-31 24-48 52-48s45 17 52 48c-30 20-68 20-104 0z" fill="#d3a17b"/>
+  <path d="M88 159c0-65 29-106 72-106s72 41 72 106c0 65-29 110-72 110s-72-45-72-110z" fill="#d7a67f"/>
+  <path d="M85 153c2-70 30-110 75-110s73 40 75 110c-45-30-96-30-150 0z" fill="#1e1d1c"/>
+  <path d="M106 184c15 7 30 7 45 0" stroke="#1e1d1c" stroke-width="5" stroke-linecap="round"/>
+  <path d="M176 184c15 7 30 7 45 0" stroke="#1e1d1c" stroke-width="5" stroke-linecap="round"/>
+  <path d="M151 211c6 5 13 5 19 0" stroke="#9b684f" stroke-width="4" stroke-linecap="round"/>
+  <path d="M132 237c18 12 39 12 57 0" stroke="#724437" stroke-width="5" stroke-linecap="round"/>
+  <path d="M114 400l46-82 46 82z" fill="#f7f5ef" opacity=".9"/>
+</svg>

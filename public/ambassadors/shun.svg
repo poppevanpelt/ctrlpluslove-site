@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 400" role="img" aria-labelledby="title">
+  <title id="title">Portrait of Shun</title>
+  <rect width="320" height="400" fill="#e7e8e4"/>
+  <path d="M72 400c13-76 44-114 88-114s75 38 88 114z" fill="#2c3034"/>
+  <path d="M108 309c7-31 24-48 52-48s45 17 52 48c-30 20-68 20-104 0z" fill="#d1a07b"/>
+  <path d="M88 160c0-64 29-105 72-105s72 41 72 105c0 65-29 109-72 109s-72-44-72-109z" fill="#d8a77f"/>
+  <path d="M87 142c10-60 37-93 76-93 41 0 66 35 68 96-48-19-95-20-144-3z" fill="#1d1d1c"/>
+  <path d="M103 184c15 7 30 7 45 0" stroke="#1d1d1c" stroke-width="5" stroke-linecap="round"/>
+  <path d="M174 184c15 7 30 7 45 0" stroke="#1d1d1c" stroke-width="5" stroke-linecap="round"/>
+  <path d="M151 211c6 5 13 5 19 0" stroke="#9a654d" stroke-width="4" stroke-linecap="round"/>
+  <path d="M132 237c18 12 39 12 57 0" stroke="#704235" stroke-width="5" stroke-linecap="round"/>
+  <path d="M114 400l46-82 46 82z" fill="#f7f5ef" opacity=".9"/>
+</svg>

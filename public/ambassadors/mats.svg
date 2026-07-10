@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 400" role="img" aria-labelledby="title">
+  <title id="title">Portrait of Mats</title>
+  <rect width="320" height="400" fill="#e8e5de"/>
+  <path d="M72 400c14-76 45-114 88-114s74 38 88 114z" fill="#2d3035"/>
+  <path d="M108 309c7-31 24-48 52-48s45 17 52 48c-30 20-68 20-104 0z" fill="#c98d68"/>
+  <path d="M88 160c0-64 29-105 72-105s72 41 72 105c0 65-29 109-72 109s-72-44-72-109z" fill="#ce946f"/>
+  <path d="M86 158c6-73 37-113 80-113 42 0 68 39 67 108-51-24-99-22-147 5z" fill="#6b5145"/>
+  <path d="M103 184c15 7 30 7 45 0" stroke="#2b2926" stroke-width="5" stroke-linecap="round"/>
+  <path d="M174 184c15 7 30 7 45 0" stroke="#2b2926" stroke-width="5" stroke-linecap="round"/>
+  <path d="M151 211c6 5 13 5 19 0" stroke="#99624c" stroke-width="4" stroke-linecap="round"/>
+  <path d="M132 238c19 11 39 11 58 0" stroke="#734338" stroke-width="5" stroke-linecap="round"/>
+  <path d="M113 400l47-84 47 84z" fill="#f7f5ef" opacity=".88"/>
+</svg>

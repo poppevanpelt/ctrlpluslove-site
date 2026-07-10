@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 400" role="img" aria-labelledby="title">
+  <title id="title">Portrait of Jorge</title>
+  <rect width="320" height="400" fill="#e9e6df"/>
+  <path d="M70 400c14-76 46-114 90-114s76 38 90 114z" fill="#2b2d31"/>
+  <path d="M108 309c7-31 24-48 52-48s45 17 52 48c-30 21-69 21-104 0z" fill="#b87358"/>
+  <path d="M88 160c0-65 29-106 72-106s72 41 72 106c0 66-29 110-72 110s-72-44-72-110z" fill="#bd7a5f"/>
+  <path d="M82 165c5-76 37-119 82-119 43 0 70 39 72 112-56-26-104-24-154 7z" fill="#2b231f"/>
+  <path d="M103 184c15 8 30 8 45 0" stroke="#201c19" stroke-width="5" stroke-linecap="round"/>
+  <path d="M175 184c15 8 30 8 45 0" stroke="#201c19" stroke-width="5" stroke-linecap="round"/>
+  <path d="M151 211c6 5 13 5 19 0" stroke="#7f4739" stroke-width="4" stroke-linecap="round"/>
+  <path d="M132 238c19 12 39 12 58 0" stroke="#5f302b" stroke-width="5" stroke-linecap="round"/>
+  <path d="M113 400l47-84 47 84z" fill="#f7f5ef" opacity=".88"/>
+</svg>

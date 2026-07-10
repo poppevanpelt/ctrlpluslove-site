@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 400" role="img" aria-labelledby="title">
+  <title id="title">Portrait of Nadia</title>
+  <rect width="320" height="400" fill="#e8e9e6"/>
+  <path d="M72 400c13-76 44-114 88-114s75 38 88 114z" fill="#38424a"/>
+  <path d="M108 309c7-31 24-48 52-48s45 17 52 48c-29 20-68 20-104 0z" fill="#c98f6d"/>
+  <path d="M88 160c0-62 29-103 72-103s72 41 72 103c0 65-29 109-72 109s-72-44-72-109z" fill="#cf9674"/>
+  <path d="M91 137c12-57 38-87 76-87 39 0 63 30 65 88-45-17-92-17-141-1z" fill="#4b4038"/>
+  <path d="M103 184h44" stroke="#25221f" stroke-width="5" stroke-linecap="round"/>
+  <path d="M174 184h44" stroke="#25221f" stroke-width="5" stroke-linecap="round"/>
+  <path d="M147 181h26" stroke="#25221f" stroke-width="3" stroke-linecap="round"/>
+  <path d="M151 210c6 5 13 5 19 0" stroke="#98604c" stroke-width="4" stroke-linecap="round"/>
+  <path d="M133 235c18 11 38 11 56 0" stroke="#714338" stroke-width="5" stroke-linecap="round"/>
+  <path d="M115 400l45-82 45 82z" fill="#f5f2eb" opacity=".86"/>
+</svg>
