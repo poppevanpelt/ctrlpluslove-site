@@ -1132,11 +1132,6 @@ h3 {
   padding: clamp(2.2rem, 4.2vw, 3.5rem) 1.5rem;
 }
 
-.departments-section,
-.departments-section * {
-  cursor: default !important;
-}
-
 .features-section {
   padding: clamp(2.1rem, 3.8vw, 3.25rem) 1.5rem;
 }
@@ -1206,7 +1201,7 @@ h3 {
 }
 
 .department-link {
-  cursor: default;
+  cursor: pointer;
 }
 
 .feature-link {
@@ -1230,6 +1225,7 @@ h3 {
   line-height: 1.22;
 }
 
+.department-link:hover,
 .feature-link:hover {
   color: var(--soft);
   transform: translateX(0.18rem);

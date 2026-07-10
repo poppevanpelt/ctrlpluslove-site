@@ -12,7 +12,7 @@ export function HomeHero() {
 
   useEffect(() => {
     const sequence: Array<[HeroPhase, number]> = [
-      ["is-route-long", 6300],
+      ["is-route-long", 2200],
       ["is-route-glitch-to-final", 620],
       ["is-route-final", 0],
     ];

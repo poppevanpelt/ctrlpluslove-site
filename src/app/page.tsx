@@ -29,26 +29,32 @@ const pricingRooms = [
 const departments = [
   {
     name: "Reality Preservation",
+    href: "/reality/",
     person: "Cornelis van Loon",
   },
   {
     name: "Unfinished Thoughts",
+    href: "/unfinished-thoughts/",
     person: "Nora Veld",
   },
   {
     name: "Necessary Elimination",
+    href: "/necessary-elimination/",
     person: "Kill Almost Everything. Apple, 1997.",
   },
   {
     name: "Irreversible Decisions",
+    href: "/irreversible-decisions/",
     person: "Burn the Boats. Netflix, 2007.",
   },
   {
     name: "Essential Things",
+    href: "/essential-things/",
     person: "Remember the Brick. LEGO, 2004.",
   },
   {
     name: "Consequential Belief",
+    href: "/consequential-belief/",
     person: "Mortgage the Heroes. Marvel, 2009.",
   },
 ];
@@ -98,10 +104,10 @@ export default function Home() {
           </p>
           <div className="departments-list">
             {departments.map((department) => (
-              <article className="department-link" key={department.name}>
+              <a className="department-link" href={department.href} key={department.name}>
                 <span>{department.name}</span>
                 <em>{department.person}</em>
-              </article>
+              </a>
             ))}
           </div>
         </div>
