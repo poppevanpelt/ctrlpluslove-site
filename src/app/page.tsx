@@ -1,91 +1,131 @@
-import Image from "next/image";
-
 import { AmbassadorGrid } from "./ambassador-grid";
 import { featuredAmbassadors } from "./ambassadors-data";
 import { HomeHero } from "./home-hero";
 import { LivingTicker } from "./living-ticker";
-import { MeetingFilterController } from "./meeting-filter-controller";
 import { ThemeToggle } from "./theme-toggle";
 
-const pricingRooms = [
+const howItWorks = [
   {
-    name: "DECISION STRESS-TEST™",
-    href: "/pricing/decision-stress-test/",
-    headline: "A decision before you commit.",
-    copy: "One room. One decision. A sharper next move.",
+    step: "Step 1",
+    title: "Bring the decision",
+    copy: "A strategic, creative or commercial decision that matters enough to challenge before you commit.",
   },
   {
-    name: "ON-CALL ROOM™",
-    href: "/pricing/on-call-room/",
-    headline: "Your decision team on call.",
-    copy: "A standing room for decisions that keep changing shape as new evidence, pressure, and doubt arrive.",
+    step: "Step 2",
+    title: "Build the right room",
+    copy: "Relevant AI systems, trusted experts, market signals and opposing perspectives are brought together around the question.",
   },
   {
-    name: "KILL OR SCALE™",
-    href: "/pricing/kill-or-scale/",
-    headline: "Stop, reshape, or accelerate.",
-    copy: "For ideas already costing real money. The room decides whether to add force, change shape, or stop cleanly before strategy turns into sunk cost.",
+    step: "Step 3",
+    title: "Leave with a sharper move",
+    copy: "The room identifies what holds, what breaks and what should happen next: move, adapt or stop.",
   },
 ];
 
-const departments = [
+const offers = [
   {
-    name: "Reality Preservation",
-    href: "/reality/",
-    person: "Cornelis van Loon",
+    title: "Decision Stress-Test™",
+    description:
+      "One important decision, subjected to concentrated strategic and creative pressure.",
+    details: ["90 minutes", "One decision", "Clear recommendation", "Move, adapt or stop", "€4,500"],
+    cta: "Bring a decision",
+    href: "mailto:hello@ctrlpluslove.com",
   },
   {
-    name: "Unfinished Thoughts",
-    href: "/unfinished-thoughts/",
-    person: "Nora Veld",
+    title: "On-Call Room™",
+    description:
+      "Ongoing access for decisions that keep moving, changing or returning.",
+    details: ["Embedded decision support", "Direct access", "Fast turnaround", "From €5,000 per month"],
+    cta: "Discuss access",
+    href: "mailto:hello@ctrlpluslove.com",
   },
   {
-    name: "Necessary Elimination",
-    href: "/necessary-elimination/",
-    person: "Kill Almost Everything. Apple, 1997.",
-  },
-  {
-    name: "Irreversible Decisions",
-    href: "/irreversible-decisions/",
-    person: "Burn the Boats. Netflix, 2007.",
-  },
-  {
-    name: "Essential Things",
-    href: "/essential-things/",
-    person: "Remember the Brick. LEGO, 2004.",
-  },
-  {
-    name: "Consequential Belief",
-    href: "/consequential-belief/",
-    person: "Mortgage the Heroes. Marvel, 2009.",
+    title: "Kill or Scale",
+    description:
+      "A focused review for an idea, proposition, product or campaign that needs a hard answer.",
+    details: ["Commercial and creative pressure test", "Weaknesses exposed early", "Directional verdict", "Price on request"],
+    cta: "Test an idea",
+    href: "mailto:hello@ctrlpluslove.com",
   },
 ];
 
-const featureLinks = [
+const roomVoices = [
   {
-    name: "Live Decision Simulator",
-    href: "/living-decision-simulator-episode-002/",
-    note: "A decision room that thinks in public.",
+    name: "Simon Cross",
+    role: "The Critic",
+    line: "Challenges the answer everyone already agreed on.",
   },
   {
-    name: "AI-y-fier",
-    href: "/ai-y-fier/",
-    note: "Empty thoughts in. Thought leadership out.",
+    name: "Nick Deckman",
+    role: "The Commercial Realist",
+    line: "Sees the cost of being wrong.",
   },
   {
-    name: "Meeting Filter",
-    href: "/meeting-filter/",
-    note: "Should we be in this meeting?",
+    name: "Lexi Arden",
+    role: "The Cultural Lens",
+    line: "Spots what others miss.",
   },
   {
-    name: "Museum Shop",
-    href: "/museum/",
-    note: "Ideas, artifacts, consequences.",
+    name: "Akiko Hayashi",
+    role: "The Consequence Keeper",
+    line: "Looks beyond the next decision.",
   },
   {
-    name: "Constitution",
-    href: "/constitution/",
-    note: "Governance archive.",
+    name: "Adrian Mbeki",
+    role: "The Reality Check",
+    line: "Tests what survives outside the room.",
+  },
+  {
+    name: "The Customer",
+    role: "The Missing Chair",
+    line: "Would anyone outside this room actually care?",
+  },
+];
+
+const proofExamples = [
+  {
+    label: "Case / Signal 01",
+    assumption: "The approval experience was the problem.",
+    surfaced: "The rejection experience mattered more.",
+    shift:
+      "Attention moved from improving approval to understanding the moment people were turned away.",
+  },
+  {
+    label: "Case / Signal 02",
+    assumption: "People wanted a better chair.",
+    surfaced: "They wanted their life back.",
+    shift:
+      "The question moved from product features to the emotional job the product had to do.",
+  },
+  {
+    label: "Case / Signal 03",
+    assumption: "People were buying apparel.",
+    surfaced: "They were buying freedom.",
+    shift:
+      "The team stopped treating the campaign as category messaging and started looking at what the choice unlocked.",
+  },
+];
+
+const practicalQuestions = [
+  {
+    question: "Is the work confidential?",
+    answer:
+      "Yes. Sensitive strategy, market information and new product development can be handled under NDA.",
+  },
+  {
+    question: "Is this a workshop?",
+    answer:
+      "No. It is a structured decision process designed to produce a recommendation, not another room full of notes.",
+  },
+  {
+    question: "Who joins the room?",
+    answer:
+      "The room is assembled around the decision. Relevant AI systems, expert perspectives and human specialists are activated only when useful.",
+  },
+  {
+    question: "What do we receive?",
+    answer:
+      "A clear view of what holds, what breaks, the important contradictions and the recommended next move.",
   },
 ];
 
@@ -93,513 +133,229 @@ export default function Home() {
   return (
     <main className="site-shell">
       <ThemeToggle />
-      <MeetingFilterController />
 
       <HomeHero />
 
       <LivingTicker />
 
-      <section className="departments-section ruled" aria-labelledby="departments-title">
-        <div className="departments-block">
-          <p className="section-kicker" id="departments-title">
-            Departments
-          </p>
-          <div className="departments-list">
-            {departments.map((department) => (
-              <a className="department-link" href={department.href} key={department.name}>
-                <span>{department.name}</span>
-                <em>{department.person}</em>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="features-section ruled" aria-labelledby="features-title">
-        <div className="features-block">
-          <p className="section-kicker" id="features-title">
-            Tools & artifacts
-          </p>
-          <div className="features-list">
-            {featureLinks.map((feature) => (
-              <a className="feature-link" href={feature.href} key={feature.name}>
-                <span>{feature.name} →</span>
-                <em>{feature.note}</em>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="content-section ruled" id="intro">
-        <div className="content-block statement-block">
-          <div className="opening-flow">
-            <p className="opening-line">
-              Meet the room.
-            </p>
-            <p className="bridge-line">
-              Named minds.
-              <br />
-              Built to disagree before the world does.
-            </p>
-          </div>
-          <div className="room-preview" aria-label="Room preview">
-            <div className="persona-card">
-              <span>Simon Cross</span>
-              <p>The Critic</p>
-              <em>Challenges the answer everyone already agreed on.</em>
+      <section
+        className="content-section ruled homepage-section"
+        id="how-it-works"
+        aria-labelledby="how-it-works-title"
+      >
+        <div className="content-block wide homepage-block">
+          <div className="section-heading quiet-heading">
+            <div>
+              <p className="section-kicker">How it works</p>
+              <h2 id="how-it-works-title">
+                One decision. More than one way of seeing it.
+              </h2>
             </div>
-            <div className="persona-card">
-              <span>Nick Deckman</span>
-              <p>The Commercial Realist</p>
-              <em>Sees the cost of being wrong.</em>
-            </div>
-            <div className="persona-card">
-              <span>Lexi Arden</span>
-              <p>The Cultural Lens</p>
-              <em>Spots what others miss.</em>
-            </div>
-            <div className="persona-card">
-              <span>Akiko Hayashi</span>
-              <p>The Consequence Keeper</p>
-              <em>Looks beyond the next decision.</em>
-            </div>
-            <div className="persona-card">
-              <span>Maya Elise Harper</span>
-              <p>The Truth Teller</p>
-              <em>Protects emotional truth.</em>
-            </div>
-            <div className="persona-card">
-              <span>Adrian Mbeki</span>
-              <p>The Reality Check</p>
-              <em>Tests what survives outside the room.</em>
-            </div>
-            <div className="persona-card">
-              <span>The Customer</span>
-              <p>The Missing Chair</p>
-              <em>Would anyone outside this room actually care?</em>
-            </div>
-            <div className="persona-card">
-              <span>The Future</span>
-              <p>The Missing Chair</p>
-              <em>How will this decision look in five years?</em>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="content-section" id="ways-in">
-        <div className="content-block wide poster-block ways-block">
-          <a
-            className="live-simulator-feature"
-            href="/living-decision-simulator-episode-002/"
-            aria-label="Open the live decision simulator"
-          >
-            <span className="live-simulator-copy">
-              <span className="live-simulator-kicker">
-                Live Decision Simulator
-              </span>
-              <span className="live-simulator-title">
-                Episode 002
-              </span>
-              <span className="live-simulator-note">
-                A decision room that thinks in public.
-              </span>
-            </span>
-            <span
-              className="live-simulator-action"
-            >
-              Open simulator →
-            </span>
-          </a>
-          <div className="ways-heading">
-            <p className="section-kicker">Three ways in</p>
-            <h2>
-              Which room does it need?
-            </h2>
-            <p className="ways-support">
-              First, the question. Then the pressure: a second opinion,
-              sharper friction, or a room full of opposing voices.
-            </p>
           </div>
 
-          <div
-            className="pricing-room-list"
-            aria-label="Room pricing preview"
-          >
-            {pricingRooms.map((room) => (
-              <article
-                className="pricing-room-card"
-                key={room.name}
-              >
-                <h3>
-                  {room.name}
-                </h3>
-                <p className="pricing-room-headline">
-                  {room.name === "DECISION STRESS-TEST™" ? (
-                    <>
-                      A decision before
-                      <br />
-                      you commit.
-                    </>
-                  ) : (
-                    room.headline
-                  )}
-                </p>
-                <p className="pricing-room-result">
-                  {room.copy}
-                </p>
-                <a
-                  className="text-link"
-                  href={room.href}
-                  aria-label={`Open ${room.name} pricing document`}
-                >
-                  Open document ↗
-                </a>
+          <div className="homepage-step-grid">
+            {howItWorks.map((step) => (
+              <article className="homepage-step" key={step.title}>
+                <p>{step.step}</p>
+                <h3>{step.title}</h3>
+                <p>{step.copy}</p>
               </article>
             ))}
           </div>
-
-          <div className="process-path" aria-label="Decision room path">
-            <span>Decision</span>
-            <span aria-hidden="true">↓</span>
-            <span>Room</span>
-            <span aria-hidden="true">↓</span>
-            <span>Friction</span>
-            <span aria-hidden="true">↓</span>
-            <span>Insight</span>
-            <span aria-hidden="true">↓</span>
-            <span>Better decision</span>
-          </div>
-          <a className="text-link" href="/pricing-documents/">
-            View full pricing documents →
-          </a>
-        </div>
-      </section>
-
-      <section className="content-section ruled proof-section">
-        <div className="content-block surfaced-section">
-          <div className="section-heading quiet-heading">
-            <div>
-              <p className="section-kicker">From early rooms</p>
-              <h2>What the room surfaced.</h2>
-            </div>
-            <p>
-              A few early stress-tests.
-              <br />
-              Shared anonymously.
-            </p>
-          </div>
-
-          <div className="case-grid" aria-label="Anonymous room findings">
-            <article className="case-card">
-              <p>FINTECH LENDER</p>
-              <h3>
-                The rejection experience may matter more than the approval
-                experience.
-              </h3>
-            </article>
-            <article className="case-card">
-              <p>HOMECARE BRAND</p>
-              <h3>
-                Nobody wanted a chair.
-                <br />
-                They wanted their life back.
-              </h3>
-            </article>
-            <article className="case-card">
-              <p>FASHION BRAND</p>
-              <h3>
-                People weren&apos;t buying apparel.
-                <br />
-                They were buying freedom.
-              </h3>
-            </article>
-            <article className="case-card">
-              <p>BREWING GROUP</p>
-              <h3>
-                Cost-cutting revealed a deeper organizational question.
-              </h3>
-            </article>
-          </div>
-
-          <p className="case-close">
-            From the first rooms.
-            <br />
-            Nothing left exactly as it entered.
-          </p>
-        </div>
-      </section>
-
-      <section className="content-section ruled why-section">
-        <div className="content-block why-block">
-          <p className="section-kicker">Why this exists</p>
-          <div className="why-lines">
-            <div className="why-core">
-              <p>AI made answers abundant.</p>
-              <p>
-                <span>Judgment</span> became valuable.
-              </p>
-            </div>
-            <p className="ai-bridge">
-              The room exists to help people think together.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="content-section ruled method-section">
-        <div className="content-block method-block">
-          <p className="section-kicker">
-            How it works
-          </p>
-          <div className="method-lines">
-            <p>Powered by billions of human signals.</p>
-            <p>
-              AI makes perspectives available.
-            </p>
-            <p>
-              The room decides which ones matter.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="content-section ruled founder-section">
-        <div className="content-block poster-block founder-note">
-          <h2 className="label-title">Built by observation.</h2>
-          <p>
-            Poppe van Pelt.
-            <br />
-            ADCN Hall of Fame.
-            <br />
-            Apple. Saint. TBWA. Selmore.
-          </p>
-          <p>
-            Three decades of seeing what <span className="changing-word">changes</span> minds.
-            <br />
-            Now rebuilt for a world with AI.
-          </p>
-        </div>
-      </section>
-
-      <section className="content-section ruled final-cta-section">
-        <div className="content-block statement-block centered final-cta">
-          <h2 className="statement-title cta-title">
-            DESIGNED FOR <span className="conflict-word">CONFLICT.</span>
-            <br />
-            <span>NOT COMFORT.</span>
-          </h2>
-          <a
-            href="mailto:hello@ctrlpluslove.com"
-            className="text-link"
-          >
-            Bring a decision →
-          </a>
         </div>
       </section>
 
       <section
-        id="archive"
-        className="content-section ruled archive-section"
-        aria-labelledby="archive-title"
+        className="content-section ruled homepage-section offer-section"
+        id="offer"
+        aria-labelledby="offer-title"
       >
-        <div className="content-block archive-block">
-          <div className="archive-heading">
-            <p className="section-kicker" id="archive-title">
-              Archive
+        <div className="content-block wide homepage-block">
+          <div className="ways-heading">
+            <p className="section-kicker">The offer</p>
+            <h2 id="offer-title">Choose the room the decision needs.</h2>
+          </div>
+
+          <div className="homepage-offer-grid">
+            {offers.map((offer) => (
+              <article className="homepage-offer" key={offer.title}>
+                <h3>{offer.title}</h3>
+                <p>{offer.description}</p>
+                <ul>
+                  {offer.details.map((detail) => (
+                    <li key={detail}>{detail}</li>
+                  ))}
+                </ul>
+                <a className="text-link" href={offer.href}>
+                  {offer.cta} →
+                </a>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section
+        className="content-section ruled homepage-section"
+        id="room"
+        aria-labelledby="room-title"
+      >
+        <div className="content-block statement-block">
+          <div className="opening-flow">
+            <p className="opening-line" id="room-title">
+              Meet the room.
             </p>
-            <p>A few artifacts from before the move.</p>
+            <p className="bridge-line">
+              Built to disagree before the world does.
+            </p>
+            <p className="homepage-support">
+              Each decision activates only the perspectives it needs.
+            </p>
           </div>
-
-          <div className="archive-list" aria-label="Archive artifacts">
-            <a
-              href="https://www.youtube.com/watch?v=6cSVEYtbAZU"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <span className="archive-thumbnail" aria-hidden="true">
-                <Image
-                  src="https://i.ytimg.com/vi/6cSVEYtbAZU/hqdefault.jpg"
-                  alt=""
-                  width={118}
-                  height={66}
-                  loading="lazy"
-                />
-              </span>
-              <span className="archive-title">100 People</span>
-              <em>United Nations</em>
-              <p className="archive-caption">
-                Eight billion people.
-                <br />
-                One village.
-                <br />
-                <br />
-                An experiment in reducing humanity to a sample size of 100.
-                <br />
-                <br />
-                Long before &quot;billions of human signals&quot;
-                <br />
-                became part of our vocabulary.
-              </p>
-            </a>
-            <a
-              href="https://www.youtube.com/watch?v=iiaj2xrgvNw"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <span className="archive-thumbnail" aria-hidden="true">
-                <Image
-                  src="https://i.ytimg.com/vi/iiaj2xrgvNw/hqdefault.jpg"
-                  alt=""
-                  width={118}
-                  height={66}
-                  loading="lazy"
-                />
-              </span>
-              <span className="archive-title">Creature of Habit</span>
-              <em>ASN Bank</em>
-              <p className="archive-caption">
-                Complexity enters disguised as a story.
-                <br />
-                <br />
-                Sometimes the fastest route to understanding
-                <br />
-                isn&apos;t data.
-                <br />
-                <br />
-                It&apos;s a character.
-              </p>
-            </a>
-            <a
-              href="https://www.youtube.com/watch?v=zeCSDR0Emfk"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <span className="archive-thumbnail" aria-hidden="true">
-                <Image
-                  src="https://i.ytimg.com/vi/zeCSDR0Emfk/hqdefault.jpg"
-                  alt=""
-                  width={118}
-                  height={66}
-                  loading="lazy"
-                />
-              </span>
-              <span className="archive-title">Fireworks</span>
-              <em>L.A.A.F.</em>
-              <p className="archive-caption">
-                Reality leaves clues.
-                <br />
-                <br />
-                While most people watched the fireworks,
-                <br />
-                someone else was watching the supply chain.
-              </p>
-            </a>
-            <a
-              href="https://www.youtube.com/watch?v=hbsINkeRA_U"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <span className="archive-thumbnail" aria-hidden="true">
-                <Image
-                  src="https://i.ytimg.com/vi/hbsINkeRA_U/hqdefault.jpg"
-                  alt=""
-                  width={118}
-                  height={66}
-                  loading="lazy"
-                />
-              </span>
-              <span className="archive-title">Disobedient North-Korean Protester</span>
-              <em>Delta Lloyd</em>
-              <p className="archive-caption">
-                Every system contains its opposite.
-                <br />
-                <br />
-                Even on the most choreographed day imaginable,
-                <br />
-                someone eventually asks a different question.
-              </p>
-            </a>
-            <a
-              href="https://www.youtube.com/watch?v=Xw9Y-lh_OFE"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <span className="archive-thumbnail" aria-hidden="true">
-                <Image
-                  src="https://i.ytimg.com/vi/Xw9Y-lh_OFE/hqdefault.jpg"
-                  alt=""
-                  width={118}
-                  height={66}
-                  loading="lazy"
-                />
-              </span>
-              <span className="archive-title">You Need Protection</span>
-              <em>New York Pizza</em>
-              <p className="archive-caption">
-                Culture is what happens when nobody is watching.
-                <br />
-                <br />
-                A pizza company.
-                <br />
-                A helmet.
-                <br />
-                A manager who cares more than necessary.
-                <br />
-                <br />
-                Those details tend to matter.
-              </p>
-            </a>
+          <div className="room-preview" aria-label="Room preview">
+            {roomVoices.map((voice) => (
+              <div className="persona-card" key={voice.name}>
+                <span>{voice.name}</span>
+                <p>{voice.role}</p>
+                <em>{voice.line}</em>
+              </div>
+            ))}
           </div>
-
-          <p className="archive-footnote">
-            We didn&apos;t invent these questions.
-            <br />
-            We&apos;ve just been following them for a very long time.
-          </p>
+          <a className="text-link" href="/living-decision-simulator-episode-002/">
+            Meet the full room →
+          </a>
         </div>
       </section>
 
       <section
         className="content-section ruled ambassador-section"
-        aria-labelledby="ambassadors-title"
+        aria-labelledby="people-title"
       >
         <div className="content-block ambassador-block">
           <div className="section-heading quiet-heading">
             <div>
-              <p className="section-kicker">Ambassadors</p>
-              <h2 id="ambassadors-title">Local readers of reality.</h2>
+              <p className="section-kicker">The human network</p>
+              <h2 id="people-title">The People Behind ctrl+love.</h2>
             </div>
             <p>
-              A light embassy layer.
-              <br />
-              People who carry the room into their city.
+              ctrl+love connects trusted creative and strategic experts across
+              markets, cultures and industries. The right local voice can enter
+              the room when the decision needs it.
             </p>
           </div>
 
           <AmbassadorGrid ambassadors={featuredAmbassadors} compact />
 
           <a className="text-link" href="/ambassadors/">
-            View all ambassadors →
+            Meet the network →
           </a>
+        </div>
+      </section>
+
+      <section className="content-section ruled final-cta-section conflict-section">
+        <div className="content-block statement-block centered final-cta">
+          <h2 className="statement-title cta-title">
+            DESIGNED FOR <span className="conflict-word">CONFLICT.</span>
+            <br />
+            <span>NOT COMFORT.</span>
+          </h2>
+          <p className="conflict-copy">
+            Most systems try to produce one smooth answer. ctrl+love is
+            structured to expose disagreement, contradictions and blind spots
+            before a decision reaches the market.
+          </p>
+        </div>
+      </section>
+
+      <section
+        className="content-section ruled homepage-section proof-section"
+        id="cases"
+        aria-labelledby="proof-title"
+      >
+        <div className="content-block wide surfaced-section">
+          <div className="section-heading quiet-heading">
+            <div>
+              <p className="section-kicker">From the room</p>
+              <h2 id="proof-title">
+                What changed after the question entered the room.
+              </h2>
+            </div>
+          </div>
+
+          <div className="homepage-proof-grid">
+            {proofExamples.map((example) => (
+              <article className="homepage-proof" key={example.label}>
+                <p>{example.label}</p>
+                <dl>
+                  <div>
+                    <dt>Assumption</dt>
+                    <dd>{example.assumption}</dd>
+                  </div>
+                  <div>
+                    <dt>What surfaced</dt>
+                    <dd>{example.surfaced}</dd>
+                  </div>
+                  <div>
+                    <dt>Decision shift</dt>
+                    <dd>{example.shift}</dd>
+                  </div>
+                </dl>
+              </article>
+            ))}
+          </div>
+
+          <a className="text-link" href="/living-decision-simulator-episode-002/">
+            See more cases and episodes →
+          </a>
+        </div>
+      </section>
+
+      <section
+        className="content-section ruled homepage-section practical-section"
+        aria-labelledby="practical-title"
+      >
+        <div className="content-block wide homepage-block">
+          <div className="section-heading quiet-heading">
+            <div>
+              <p className="section-kicker">Practical</p>
+              <h2 id="practical-title">
+                Built for decisions that may not be public yet.
+              </h2>
+            </div>
+          </div>
+
+          <div className="practical-grid">
+            {practicalQuestions.map((item) => (
+              <article className="practical-item" key={item.question}>
+                <h3>{item.question}</h3>
+                <p>{item.answer}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="content-section ruled final-contact-section">
+        <div className="content-block statement-block centered final-contact">
+          <p className="section-kicker">Contact</p>
+          <h2>Bring the decision into the room.</h2>
+          <p>
+            Tell us what you are deciding, what is at stake and when the
+            decision needs to be made.
+          </p>
+          <a href="mailto:hello@ctrlpluslove.com" className="text-link">
+            hello@ctrlpluslove.com
+          </a>
+          <p className="final-contact-note">Confidential conversations welcome.</p>
         </div>
       </section>
 
       <footer className="site-footer">
         <div className="footer-copy">
-          <p>Conversations on request</p>
+          <p>ctrl+love</p>
           <p>
-            <a
-              href="mailto:hello@ctrlpluslove.com"
-            >
+            <a href="mailto:hello@ctrlpluslove.com">
               hello@ctrlpluslove.com
-            </a>{" "}
-            <br />
-            <a
-              href="tel:+31625279867"
-            >
-              +31 6 2527 9867
             </a>
           </p>
           <p>
@@ -608,9 +364,7 @@ export default function Home() {
             </a>
           </p>
           <p>
-            <a href="/constitution/">
-              ctrl+love constitution
-            </a>
+            <a href="/inside-ctrl-love/">Inside ctrl+love</a>
           </p>
           <p className="copyright">ctrl+love/2026</p>
         </div>

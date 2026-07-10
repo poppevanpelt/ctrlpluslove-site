@@ -15,10 +15,16 @@ type AmbassadorPortraitProps = {
   onSelect: (ambassador: Ambassador, trigger: HTMLButtonElement) => void;
 };
 
+function formatAmbassadorLocation(ambassador: Ambassador) {
+  return [ambassador.city, ambassador.country].filter(Boolean).join(", ");
+}
+
 export function AmbassadorPortrait({
   ambassador,
   onSelect,
 }: AmbassadorPortraitProps) {
+  const location = formatAmbassadorLocation(ambassador);
+
   return (
     <button
       className="ambassador-portrait-card"
@@ -29,7 +35,7 @@ export function AmbassadorPortrait({
       <span className="ambassador-portrait-frame">
         <Image
           src={ambassador.image}
-          alt={`Portrait of ${ambassador.name}, ctrl+love ambassador in ${ambassador.city}`}
+          alt={`Portrait of ${ambassador.name}, ctrl+love ambassador from ${ambassador.country}`}
           width={240}
           height={300}
           className="ambassador-portrait-image"
@@ -38,9 +44,7 @@ export function AmbassadorPortrait({
       </span>
       <span className="ambassador-portrait-copy">
         <strong>{ambassador.name}</strong>
-        <span>
-          {ambassador.city}, {ambassador.country}
-        </span>
+        <span>{location}</span>
         <em>{ambassador.perspective}</em>
       </span>
     </button>
@@ -125,7 +129,7 @@ export function AmbassadorGrid({
             <div className="ambassador-modal-portrait">
               <Image
                 src={selected.image}
-                alt={`Portrait of ${selected.name}, ctrl+love ambassador in ${selected.city}`}
+                alt={`Portrait of ${selected.name}, ctrl+love ambassador from ${selected.country}`}
                 width={480}
                 height={600}
               />
@@ -135,7 +139,7 @@ export function AmbassadorGrid({
               <h2 id="ambassador-modal-title">{selected.name}</h2>
               <p className="ambassador-modal-role">{selected.role}</p>
               <p className="ambassador-modal-place">
-                {selected.city}, {selected.country}
+                {formatAmbassadorLocation(selected)}
               </p>
               <p
                 className="ambassador-modal-perspective"
@@ -144,14 +148,20 @@ export function AmbassadorGrid({
                 {selected.perspective}
               </p>
               <p className="ambassador-modal-bio">{selected.bio}</p>
-              <a
-                className="text-link"
-                href={selected.linkedin}
-                target="_blank"
-                rel="noreferrer"
-              >
-                LinkedIn →
-              </a>
+              {selected.linkedin ? (
+                <a
+                  className="text-link"
+                  href={selected.linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  LinkedIn →
+                </a>
+              ) : (
+                <p className="ambassador-modal-link-note">
+                  LinkedIn pending confirmation.
+                </p>
+              )}
             </div>
           </section>
         </div>

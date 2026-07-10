@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.ctrlpluslove.com"),
   title: "ctrl+love",
   description:
-    "Shortcut to reality. Stress-test your decisions before the market does.",
+    "ctrl+love is a distributed creative intelligence network combining AI, trusted human experts and structured workflows to improve strategic and creative decisions.",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "32x32" },
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "ctrl+love",
     description:
-      "Shortcut to reality. Stress-test your decisions before the market does.",
+      "ctrl+love is a distributed creative intelligence network combining AI, trusted human experts and structured workflows to improve strategic and creative decisions.",
     url: "https://www.ctrlpluslove.com",
     siteName: "ctrl+love",
     locale: "en_US",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     card: "summary",
     title: "ctrl+love",
     description:
-      "Shortcut to reality. Stress-test your decisions before the market does.",
+      "ctrl+love is a distributed creative intelligence network combining AI, trusted human experts and structured workflows to improve strategic and creative decisions.",
   },
 };
 

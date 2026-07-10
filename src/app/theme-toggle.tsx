@@ -21,7 +21,10 @@ declare global {
 
 function readSavedTheme(): Theme {
   try {
-    return window.ctrlLoveTheme?.get() ?? (localStorage.getItem(STORAGE_KEY) === "night" ? "night" : "day");
+    return (
+      window.ctrlLoveTheme?.get() ??
+      (localStorage.getItem(STORAGE_KEY) === "night" ? "night" : "day")
+    );
   } catch {
     return "day";
   }
@@ -81,16 +84,16 @@ export function ThemeToggle() {
     }
 
     function toggleTheme(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
+      event.preventDefault();
+      event.stopPropagation();
       if ("stopImmediatePropagation" in event) {
         event.stopImmediatePropagation();
       }
 
-    const nextTheme = currentTheme() === "night" ? "day" : "night";
-    commitTheme(nextTheme);
-    setCurrentTheme(nextTheme);
-  }
+      const nextTheme = currentTheme() === "night" ? "day" : "night";
+      commitTheme(nextTheme);
+      setCurrentTheme(nextTheme);
+    }
 
     button.addEventListener("click", toggleTheme);
 
