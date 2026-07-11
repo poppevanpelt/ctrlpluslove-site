@@ -151,6 +151,10 @@ export default function Home() {
                 One decision. More than one way of seeing it.
               </h2>
             </div>
+            <p>
+              ctrl+love is a distributed creative intelligence network built
+              around AI systems, trusted experts and structured workflows.
+            </p>
           </div>
 
           <div className="homepage-step-grid">
