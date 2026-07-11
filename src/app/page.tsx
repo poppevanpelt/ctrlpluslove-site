@@ -1,5 +1,5 @@
 import { AmbassadorGrid } from "./ambassador-grid";
-import { featuredAmbassadors } from "./ambassadors-data";
+import { confirmedAmbassadors } from "./ambassadors-data";
 import { HomeHero } from "./home-hero";
 import { LivingTicker } from "./living-ticker";
 import { homepageRoomPersonas } from "./room-personas-data";
@@ -216,7 +216,7 @@ export default function Home() {
             </p>
           </div>
 
-          <AmbassadorGrid ambassadors={featuredAmbassadors} compact />
+          <AmbassadorGrid ambassadors={confirmedAmbassadors} compact />
 
           <a className="text-link" href="/ambassadors/">
             Meet the network →
