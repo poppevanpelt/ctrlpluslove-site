@@ -1,126 +1,188 @@
+export type AmbassadorStatus = "founder" | "ambassador";
+
 export type Ambassador = {
   id: string;
+  number: string;
   name: string;
+  preferredName?: string;
   role: string;
   city: string;
   country: string;
-  perspective: string;
-  bio: string;
-  image: string;
-  linkedin: string;
-  embassyNumber: string;
-  status: "confirmed" | "pending";
+  countryCode: string;
+  flag: string;
+  status: AmbassadorStatus;
+  participationLabel: string;
+  image?: string;
+  linkedin?: string;
+  website?: string;
+  roomHref: string;
+  featured?: boolean;
+  public: boolean;
 };
 
 export const ambassadors: Ambassador[] = [
   {
     id: "poppe-van-pelt",
+    number: "001",
     name: "Poppe van Pelt",
-    role: "Role pending confirmation",
-    city: "",
+    role: "Netherlands / Haarlem",
+    city: "Haarlem",
     country: "Netherlands",
-    perspective: "Perspective pending confirmation.",
-    bio: "Biography pending confirmation.",
+    countryCode: "NL",
+    flag: "🇳🇱",
+    status: "founder",
+    participationLabel: "Founder",
     image: "/ambassadors/poppe-van-pelt.svg",
-    linkedin: "",
-    embassyNumber: "EMB-001",
-    status: "confirmed",
+    linkedin: "https://nl.linkedin.com/in/poppevanpelt",
+    roomHref: "/#room",
+    featured: true,
+    public: true,
   },
   {
-    id: "nadia",
-    name: "Nadia",
-    role: "Role pending confirmation",
-    city: "",
+    id: "nadia-al-mardini",
+    number: "002",
+    name: "Nadia Al-Mardini",
+    role: "Germany / Berlin",
+    city: "Berlin",
     country: "Germany",
-    perspective: "Perspective pending confirmation.",
-    bio: "Biography pending confirmation.",
+    countryCode: "DE",
+    flag: "🇩🇪",
+    status: "ambassador",
+    participationLabel: "Ambassador",
     image: "/ambassadors/nadia.svg",
-    linkedin: "",
-    embassyNumber: "EMB-002",
-    status: "confirmed",
+    roomHref: "/#room",
+    featured: true,
+    public: true,
   },
   {
-    id: "shun",
-    name: "Shun",
-    role: "Role pending confirmation",
-    city: "",
+    id: "shun-iwai",
+    number: "003",
+    name: "Shun Iwai",
+    role: "Japan / Tokyo",
+    city: "Tokyo",
     country: "Japan",
-    perspective: "Perspective pending confirmation.",
-    bio: "Biography pending confirmation.",
+    countryCode: "JP",
+    flag: "🇯🇵",
+    status: "ambassador",
+    participationLabel: "Ambassador",
     image: "/ambassadors/shun.svg",
-    linkedin: "",
-    embassyNumber: "EMB-003",
-    status: "confirmed",
+    roomHref: "/#room",
+    featured: true,
+    public: true,
   },
   {
-    id: "jorge",
-    name: "Jorge",
-    role: "Role pending confirmation",
-    city: "",
-    country: "Brazil",
-    perspective: "Perspective pending confirmation.",
-    bio: "Biography pending confirmation.",
-    image: "/ambassadors/jorge.svg",
-    linkedin: "",
-    embassyNumber: "EMB-004",
-    status: "confirmed",
-  },
-  {
-    id: "tayl",
-    name: "Tayl",
-    role: "Role pending confirmation",
-    city: "",
-    country: "China",
-    perspective: "Perspective pending confirmation.",
-    bio: "Biography pending confirmation.",
+    id: "sung-wook-tayl-chung",
+    number: "004",
+    name: "Sung Wook \"Tayl\" Chung",
+    preferredName: "Tayl",
+    role: "South Korea / Seoul",
+    city: "Seoul",
+    country: "South Korea",
+    countryCode: "KR",
+    flag: "🇰🇷",
+    status: "ambassador",
+    participationLabel: "Ambassador",
     image: "/ambassadors/tayl.svg",
-    linkedin: "",
-    embassyNumber: "EMB-005",
-    status: "confirmed",
+    roomHref: "/#room",
+    featured: true,
+    public: true,
   },
   {
-    id: "mats",
-    name: "Mats",
-    role: "Role pending confirmation",
-    city: "",
-    country: "Belgium",
-    perspective: "Perspective pending confirmation.",
-    bio: "Biography pending confirmation.",
+    id: "mats-utberg",
+    number: "005",
+    name: "Mats Utberg",
+    role: "Sweden / Stockholm",
+    city: "Stockholm",
+    country: "Sweden",
+    countryCode: "SE",
+    flag: "🇸🇪",
+    status: "ambassador",
+    participationLabel: "Ambassador",
     image: "/ambassadors/mats.svg",
-    linkedin: "",
-    embassyNumber: "EMB-006",
-    status: "confirmed",
+    roomHref: "/#room",
+    public: true,
   },
   {
-    id: "christophe",
-    name: "Christophe",
-    role: "Role pending confirmation",
-    city: "",
-    country: "France",
-    perspective: "Perspective pending confirmation.",
-    bio: "Biography pending confirmation.",
-    image: "/ambassadors/christophe.svg",
-    linkedin: "",
-    embassyNumber: "EMB-007",
-    status: "confirmed",
+    id: "jorge-virgos",
+    number: "006",
+    name: "Jorge Virgós",
+    role: "Spain / Valencia",
+    city: "Valencia",
+    country: "Spain",
+    countryCode: "ES",
+    flag: "🇪🇸",
+    status: "ambassador",
+    participationLabel: "Ambassador",
+    image: "/ambassadors/jorge.svg",
+    roomHref: "/#room",
+    public: true,
   },
   {
     id: "jose-ricardo-monteiro",
-    name: "José Ricardo Monteiro",
-    role: "Role pending confirmation",
-    city: "",
+    number: "007",
+    name: "José Ricardo Monteiro (JR)",
+    role: "Portugal / Lisbon",
+    city: "Lisbon",
     country: "Portugal",
-    perspective: "Perspective pending confirmation.",
-    bio: "Biography pending confirmation.",
+    countryCode: "PT",
+    flag: "🇵🇹",
+    status: "ambassador",
+    participationLabel: "Ambassador",
     image: "/ambassadors/jose-ricardo-monteiro.svg",
-    linkedin: "",
-    embassyNumber: "EMB-008",
-    status: "confirmed",
+    roomHref: "/#room",
+    public: true,
+  },
+  {
+    id: "christophe-pernaudet",
+    number: "008",
+    name: "Christophe Pernaudet",
+    role: "France / Paris",
+    city: "Paris",
+    country: "France",
+    countryCode: "FR",
+    flag: "🇫🇷",
+    status: "ambassador",
+    participationLabel: "Ambassador",
+    image: "/ambassadors/christophe.svg",
+    roomHref: "/#room",
+    public: true,
+  },
+  {
+    id: "umberto-bartolini",
+    number: "009",
+    name: "Umberto Bartolini",
+    role: "Italy / Milan and Rome",
+    city: "Milan / Rome",
+    country: "Italy",
+    countryCode: "IT",
+    flag: "🇮🇹",
+    status: "ambassador",
+    participationLabel: "Ambassador",
+    roomHref: "/#room",
+    public: true,
   },
 ];
 
 export const confirmedAmbassadors = ambassadors.filter(
-  (ambassador) => ambassador.status === "confirmed",
+  (ambassador) => ambassador.public,
 );
 
-export const featuredAmbassadors = confirmedAmbassadors.slice(0, 4);
+export const featuredAmbassadors = confirmedAmbassadors.filter(
+  (ambassador) => ambassador.featured,
+);
+
+export const ambassadorMetrics = [
+  ["People", String(confirmedAmbassadors.length)],
+  [
+    "Countries",
+    String(new Set(confirmedAmbassadors.map((ambassador) => ambassador.country)).size),
+  ],
+  ["Cities", "10"],
+  [
+    "Founders",
+    String(
+      confirmedAmbassadors.filter((ambassador) => ambassador.status === "founder")
+        .length,
+    ),
+  ],
+] as const;

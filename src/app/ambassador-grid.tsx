@@ -1,6 +1,3 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 import type { Ambassador } from "./ambassadors-data";
@@ -10,44 +7,114 @@ type AmbassadorGridProps = {
   compact?: boolean;
 };
 
-type AmbassadorPortraitProps = {
+type AmbassadorCardProps = {
   ambassador: Ambassador;
-  onSelect: (ambassador: Ambassador, trigger: HTMLButtonElement) => void;
 };
 
 function formatAmbassadorLocation(ambassador: Ambassador) {
   return [ambassador.city, ambassador.country].filter(Boolean).join(", ");
 }
 
-export function AmbassadorPortrait({
-  ambassador,
-  onSelect,
-}: AmbassadorPortraitProps) {
-  const location = formatAmbassadorLocation(ambassador);
-
+export function AmbassadorCard({ ambassador }: AmbassadorCardProps) {
   return (
-    <button
-      className="ambassador-portrait-card"
-      type="button"
-      aria-haspopup="dialog"
-      onClick={(event) => onSelect(ambassador, event.currentTarget)}
+    <article
+      className="ambassador-profile-card"
+      id={`ambassador-${ambassador.id}`}
     >
-      <span className="ambassador-portrait-frame">
-        <Image
-          src={ambassador.image}
-          alt={`Portrait of ${ambassador.name}, ctrl+love ambassador from ${ambassador.country}`}
-          width={240}
-          height={300}
-          className="ambassador-portrait-image"
-          loading="lazy"
-        />
-      </span>
-      <span className="ambassador-portrait-copy">
-        <strong>{ambassador.name}</strong>
-        <span>{location}</span>
-        <em>{ambassador.perspective}</em>
-      </span>
-    </button>
+      <div className="ambassador-profile-portrait">
+        <span
+          className="ambassador-flag-badge"
+          aria-label={`${ambassador.country} flag`}
+        >
+          {ambassador.flag}
+        </span>
+        {ambassador.image ? (
+          <Image
+            src={ambassador.image}
+            alt={`Portrait of ${ambassador.name}, ctrl+love table member from ${ambassador.country}`}
+            width={720}
+            height={900}
+            className="ambassador-profile-image"
+            loading="lazy"
+            sizes="(max-width: 980px) 100vw, 42vw"
+          />
+        ) : (
+          <div className="ambassador-initials" aria-label={ambassador.name}>
+            {ambassador.name
+              .split(" ")
+              .map((part) => part[0])
+              .join("")
+              .slice(0, 2)}
+          </div>
+        )}
+      </div>
+
+      <div className="ambassador-profile-copy">
+        <div className="ambassador-profile-head">
+          <p className="ambassador-profile-meta">
+            <span>{ambassador.number}</span>
+            <span>{formatAmbassadorLocation(ambassador)}</span>
+          </p>
+          <h3>
+            <span
+              className="ambassador-name-flag"
+              aria-label={`${ambassador.country} flag`}
+            >
+              {ambassador.flag}
+            </span>
+            {ambassador.name}
+          </h3>
+          <p className="ambassador-profile-role">
+            {ambassador.role}
+          </p>
+        </div>
+
+        <dl className="ambassador-profile-facts">
+          <div>
+            <dt>Number</dt>
+            <dd>{ambassador.number}</dd>
+          </div>
+          <div>
+            <dt>Participation</dt>
+            <dd>{ambassador.participationLabel}</dd>
+          </div>
+          {ambassador.preferredName ? (
+            <div>
+              <dt>Short name</dt>
+              <dd>{ambassador.preferredName}</dd>
+            </div>
+          ) : null}
+        </dl>
+
+        <div className="ambassador-profile-actions">
+          {ambassador.linkedin ? (
+            <a
+              className="ambassador-action"
+              href={ambassador.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Open ${ambassador.name} on LinkedIn in a new tab`}
+            >
+              LinkedIn ↗
+            </a>
+          ) : null}
+          {ambassador.website ? (
+            <a
+              className="ambassador-action"
+              href={ambassador.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Open ${ambassador.name}'s website in a new tab`}
+            >
+              Website ↗
+            </a>
+          ) : null}
+          <a className="ambassador-room-link" href={ambassador.roomHref}>
+            Meet the Room →
+          </a>
+        </div>
+      </div>
+    </article>
   );
 }
 
@@ -55,117 +122,68 @@ export function AmbassadorGrid({
   ambassadors,
   compact = false,
 }: AmbassadorGridProps) {
-  const [selected, setSelected] = useState<Ambassador | null>(null);
-  const activeButtonRef = useRef<HTMLButtonElement | null>(null);
-  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
-
-  useEffect(() => {
-    if (!selected) {
-      return;
-    }
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    closeButtonRef.current?.focus();
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setSelected(null);
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      document.removeEventListener("keydown", handleKeyDown);
-      activeButtonRef.current?.focus();
-    };
-  }, [selected]);
-
-  return (
-    <>
-      <div
-        className={compact ? "ambassador-grid is-compact" : "ambassador-grid"}
-      >
+  if (compact) {
+    return (
+      <div className="ambassador-grid is-compact">
         {ambassadors.map((ambassador) => (
-          <AmbassadorPortrait
-            ambassador={ambassador}
+          <a
+            className="ambassador-portrait-card"
+            href="/ambassadors/"
             key={ambassador.id}
-            onSelect={(selectedAmbassador, trigger) => {
-              activeButtonRef.current = trigger;
-              setSelected(selectedAmbassador);
-            }}
-          />
+          >
+            <span className="ambassador-portrait-frame">
+              <span
+                className="ambassador-flag-badge"
+                aria-label={`${ambassador.country} flag`}
+              >
+                {ambassador.flag}
+              </span>
+              {ambassador.image ? (
+                <Image
+                  src={ambassador.image}
+                  alt={`Portrait of ${ambassador.name}`}
+                  width={240}
+                  height={300}
+                  className="ambassador-portrait-image"
+                  loading="lazy"
+                  sizes="7.5rem"
+                />
+              ) : (
+                <span className="ambassador-initials">
+                  {ambassador.name
+                    .split(" ")
+                    .map((part) => part[0])
+                    .join("")
+                    .slice(0, 2)}
+                </span>
+              )}
+            </span>
+            <span className="ambassador-portrait-copy">
+              <strong>
+                <span
+                  className="ambassador-name-flag"
+                  aria-label={`${ambassador.country} flag`}
+                >
+                  {ambassador.flag}
+                </span>
+                {ambassador.name}
+              </strong>
+              <span>
+                {ambassador.number} · {ambassador.city}, {ambassador.country}
+              </span>
+              <em>{ambassador.participationLabel}</em>
+            </span>
+          </a>
         ))}
       </div>
+    );
+  }
 
-      {selected ? (
-        <div
-          className="ambassador-modal-backdrop"
-          role="presentation"
-          onMouseDown={(event) => {
-            if (event.target === event.currentTarget) {
-              setSelected(null);
-            }
-          }}
-        >
-          <section
-            className="ambassador-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="ambassador-modal-title"
-            aria-describedby="ambassador-modal-description"
-          >
-            <button
-              className="ambassador-modal-close"
-              type="button"
-              ref={closeButtonRef}
-              aria-label="Close ambassador details"
-              onClick={() => setSelected(null)}
-            >
-              Close
-            </button>
-            <div className="ambassador-modal-portrait">
-              <Image
-                src={selected.image}
-                alt={`Portrait of ${selected.name}, ctrl+love ambassador from ${selected.country}`}
-                width={480}
-                height={600}
-              />
-            </div>
-            <div className="ambassador-modal-copy">
-              <p className="section-kicker">{selected.embassyNumber}</p>
-              <h2 id="ambassador-modal-title">{selected.name}</h2>
-              <p className="ambassador-modal-role">{selected.role}</p>
-              <p className="ambassador-modal-place">
-                {formatAmbassadorLocation(selected)}
-              </p>
-              <p
-                className="ambassador-modal-perspective"
-                id="ambassador-modal-description"
-              >
-                {selected.perspective}
-              </p>
-              <p className="ambassador-modal-bio">{selected.bio}</p>
-              {selected.linkedin ? (
-                <a
-                  className="text-link"
-                  href={selected.linkedin}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  LinkedIn →
-                </a>
-              ) : (
-                <p className="ambassador-modal-link-note">
-                  LinkedIn pending confirmation.
-                </p>
-              )}
-            </div>
-          </section>
-        </div>
-      ) : null}
-    </>
+  return (
+    <div className="ambassador-profile-list">
+      {ambassadors.map((ambassador) => (
+        <AmbassadorCard ambassador={ambassador} key={ambassador.id} />
+      ))}
+    </div>
   );
 }

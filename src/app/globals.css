@@ -1631,6 +1631,28 @@ h3 {
   color: var(--ink);
 }
 
+.back-home-link {
+  justify-self: start;
+  color: var(--muted);
+  font-size: var(--type-secondary);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: var(--leading-secondary);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 160ms ease;
+}
+
+.back-home-link:hover,
+.back-home-link:focus-visible {
+  color: var(--ink);
+}
+
+.back-home-link:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--team-warm) 72%, transparent);
+  outline-offset: 0.22rem;
+}
+
 .centered {
   text-align: center;
 }
@@ -2814,21 +2836,421 @@ h3 {
 .ambassador-block,
 .ambassador-directory-block {
   display: grid;
-  width: min(100%, 72rem);
-  gap: 2.45rem;
+  width: min(100%, 78rem);
+  gap: clamp(2.4rem, 5vw, 4.8rem);
 }
 
 .ambassador-directory-section {
   min-height: 100svh;
   padding-top: clamp(5.2rem, 9vw, 7.4rem);
+  background: #fff;
 }
 
 .ambassador-directory-section .section-heading h1,
 .ambassador-section .section-heading h2 {
   color: var(--ink);
-  font-size: var(--type-intro);
+  font-size: clamp(2.4rem, 6vw, 5.5rem);
+  font-weight: 640;
+  letter-spacing: 0;
+  line-height: 0.98;
+}
+
+.ambassador-directory-section .section-heading p {
+  max-width: 34rem;
+}
+
+.ambassador-metrics {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+.ambassador-metric {
+  display: grid;
+  gap: 0.36rem;
+  min-height: 7.8rem;
+  align-content: center;
+  padding: 1rem 1.1rem;
+  border-right: 1px solid var(--rule);
+}
+
+.ambassador-metric:last-child {
+  border-right: 0;
+}
+
+.ambassador-metric strong {
+  color: var(--ink);
+  font-size: clamp(1.55rem, 2.7vw, 2.55rem);
+  font-weight: 620;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.ambassador-metric span {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 760;
+  letter-spacing: 0.07em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.ambassador-map-panel {
+  display: grid;
+  grid-template-columns: minmax(14rem, 0.34fr) minmax(0, 0.66fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: center;
+}
+
+.ambassador-map-copy {
+  display: grid;
+  gap: 1rem;
+  align-content: center;
+}
+
+.ambassador-map-copy h2 {
+  color: var(--ink);
+  font-size: clamp(1.85rem, 3.7vw, 3.75rem);
+  font-weight: 620;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.ambassador-map-copy p:last-child {
+  color: color-mix(in srgb, var(--ink) 68%, var(--muted));
+  font-size: clamp(0.98rem, 1.2vw, 1.12rem);
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+.ambassador-world-map {
+  position: relative;
+  min-height: clamp(20rem, 42vw, 34rem);
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  background:
+    radial-gradient(circle at 49% 32%, rgba(232, 93, 69, 0.16), transparent 8%),
+    linear-gradient(180deg, #fff 0%, #f8f8f5 100%);
+}
+
+.ambassador-world-map::before {
+  position: absolute;
+  inset: 8% 3%;
+  background:
+    radial-gradient(ellipse at 20% 44%, transparent 0 9%, rgba(26, 24, 21, 0.08) 9.4% 17%, transparent 17.4%),
+    radial-gradient(ellipse at 49% 37%, transparent 0 10%, rgba(26, 24, 21, 0.08) 10.4% 24%, transparent 24.4%),
+    radial-gradient(ellipse at 73% 43%, transparent 0 8%, rgba(26, 24, 21, 0.08) 8.4% 21%, transparent 21.4%),
+    radial-gradient(ellipse at 34% 72%, transparent 0 7%, rgba(26, 24, 21, 0.08) 7.4% 15%, transparent 15.4%);
+  content: "";
+  filter: blur(0.2px);
+}
+
+.ambassador-world-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.ambassador-world-lines path {
+  fill: none;
+  stroke: rgba(232, 93, 69, 0.3);
+  stroke-dasharray: 2 8;
+  stroke-linecap: round;
+  stroke-width: 0.28;
+  animation: ambassador-signal 8s linear infinite;
+}
+
+.ambassador-map-point {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  width: 1.65rem;
+  height: 1.65rem;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  padding: 0;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+.ambassador-map-point span {
+  display: block;
+  width: 0.48rem;
+  height: 0.48rem;
+  border-radius: 999px;
+  background: var(--team-warm);
+  box-shadow:
+    0 0 0 0.28rem rgba(232, 93, 69, 0.15),
+    0 0 1.4rem rgba(232, 93, 69, 0.46);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.ambassador-map-point:hover span,
+.ambassador-map-point:focus-visible span,
+.ambassador-map-point[data-active="true"] span {
+  transform: scale(1.45);
+  box-shadow:
+    0 0 0 0.42rem rgba(232, 93, 69, 0.18),
+    0 0 2rem rgba(232, 93, 69, 0.62);
+}
+
+.ambassador-map-point:focus-visible,
+.ambassador-profile-card:focus-within,
+.ambassador-action:focus-visible,
+.ambassador-room-link:focus-visible,
+.ambassador-portrait-card:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--team-warm) 72%, transparent);
+  outline-offset: 0.22rem;
+}
+
+.ambassador-map-tooltip {
+  position: absolute;
+  z-index: 3;
+  display: grid;
+  min-width: 11rem;
+  gap: 0.16rem;
+  border: 1px solid var(--rule);
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--ink);
+  padding: 0.72rem 0.82rem;
+  box-shadow: 0 1rem 2rem rgba(26, 24, 21, 0.08);
+  backdrop-filter: blur(14px);
+  pointer-events: none;
+}
+
+.ambassador-map-tooltip strong {
+  font-size: 0.9rem;
+  font-weight: 720;
+  line-height: 1.2;
+}
+
+.ambassador-map-tooltip span,
+.ambassador-map-tooltip em {
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-style: normal;
   font-weight: 650;
-  line-height: var(--leading-body);
+  line-height: 1.35;
+}
+
+.ambassador-profile-list {
+  display: grid;
+  gap: clamp(2rem, 5vw, 5.4rem);
+}
+
+.ambassador-profile-card {
+  display: grid;
+  grid-template-columns: minmax(16rem, 0.42fr) minmax(0, 0.58fr);
+  gap: clamp(1.4rem, 4vw, 4.4rem);
+  align-items: start;
+  scroll-margin-top: 5rem;
+}
+
+.ambassador-profile-portrait {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #f2f1ed;
+}
+
+.ambassador-flag-badge {
+  position: absolute;
+  z-index: 2;
+  top: 0.72rem;
+  left: 0.72rem;
+  display: inline-grid;
+  width: 2.15rem;
+  height: 2.15rem;
+  place-items: center;
+  border: 1px solid rgba(26, 24, 21, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 0.5rem 1.2rem rgba(26, 24, 21, 0.08);
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.ambassador-profile-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: grayscale(0.08) saturate(0.9) contrast(1.02);
+  object-fit: cover;
+}
+
+.ambassador-initials {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  place-items: center;
+  background: #f2f1ed;
+  color: var(--ink);
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  font-weight: 640;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.ambassador-profile-copy {
+  display: grid;
+  gap: clamp(1rem, 2vw, 1.55rem);
+  padding-top: clamp(0rem, 2vw, 1.4rem);
+}
+
+.ambassador-profile-head {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.ambassador-profile-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.44rem 0.62rem;
+  align-items: center;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 760;
+  letter-spacing: 0.07em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.ambassador-profile-card h3 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.42rem 0.72rem;
+  align-items: baseline;
+  color: var(--ink);
+  font-size: clamp(2.15rem, 4.8vw, 5rem);
+  font-weight: 620;
+  letter-spacing: 0;
+  line-height: 0.96;
+}
+
+.ambassador-name-flag {
+  display: inline-grid;
+  width: 1.15em;
+  height: 1.15em;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgba(26, 24, 21, 0.08);
+  font-size: 0.58em;
+  line-height: 1;
+}
+
+.ambassador-profile-role {
+  color: color-mix(in srgb, var(--ink) 72%, var(--muted));
+  font-size: clamp(1rem, 1.45vw, 1.22rem);
+  font-weight: 560;
+  line-height: 1.42;
+}
+
+.ambassador-profile-perspective {
+  max-width: 41rem;
+  color: var(--ink);
+  font-size: clamp(1.12rem, 1.8vw, 1.52rem);
+  font-weight: 620;
+  line-height: 1.28;
+}
+
+.ambassador-profile-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  margin: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.ambassador-profile-facts div {
+  display: grid;
+  gap: 0.28rem;
+  min-height: 5.4rem;
+  align-content: start;
+  padding: 0.86rem 1rem 0.86rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.ambassador-profile-facts dt {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 780;
+  letter-spacing: 0.08em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.ambassador-profile-facts dd {
+  margin: 0;
+  color: color-mix(in srgb, var(--ink) 76%, var(--muted));
+  font-size: 0.92rem;
+  font-weight: 560;
+  line-height: 1.42;
+}
+
+.ambassador-profile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.72rem;
+  align-items: center;
+}
+
+.ambassador-action,
+.ambassador-room-link {
+  display: inline-flex;
+  min-height: 2.7rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: var(--ink);
+  color: #fff;
+  padding: 0.68rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 760;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.ambassador-action {
+  border-color: var(--rule);
+  background: #fff;
+  color: var(--ink);
+}
+
+.ambassador-action.is-disabled {
+  color: var(--muted);
+  cursor: default;
+}
+
+.ambassador-room-link:hover,
+.ambassador-action:hover {
+  transform: translateY(-1px);
+}
+
+.ambassador-closing,
+.room-closing {
+  display: grid;
+  gap: 1rem;
+  border-top: 1px solid var(--rule);
+  padding-top: clamp(2.2rem, 5vw, 4rem);
+}
+
+.ambassador-closing h2,
+.room-closing h2 {
+  max-width: 46rem;
+  color: var(--ink);
+  font-size: clamp(2rem, 4.2vw, 4.2rem);
+  font-weight: 620;
+  letter-spacing: 0;
+  line-height: 1;
 }
 
 .ambassador-grid {
@@ -2837,21 +3259,13 @@ h3 {
   gap: 2rem;
 }
 
-.ambassador-grid.is-compact {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
 .ambassador-portrait-card {
   display: grid;
   gap: 0.72rem;
   align-content: start;
-  border: 0;
-  background: transparent;
   color: var(--ink);
-  padding: 0;
-  font: inherit;
   text-align: left;
-  cursor: pointer;
+  text-decoration: none;
   transition: transform 250ms ease-out;
 }
 
@@ -2859,19 +3273,13 @@ h3 {
   transform: translateY(-0.12rem);
 }
 
-.ambassador-portrait-card:focus-visible,
-.ambassador-modal-close:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--team-warm) 72%, transparent);
-  outline-offset: 0.2rem;
-}
-
 .ambassador-portrait-frame {
+  position: relative;
   display: block;
   width: 7.5rem;
   aspect-ratio: 4 / 5;
-  border-radius: 14px;
-  background: var(--paper-soft);
   overflow: hidden;
+  background: var(--paper-soft);
   transition: box-shadow 250ms ease-out, transform 250ms ease-out;
 }
 
@@ -2896,19 +3304,17 @@ h3 {
 .ambassador-portrait-copy {
   display: grid;
   gap: 0.22rem;
-  max-width: 12.5rem;
+  max-width: 18rem;
 }
 
 .ambassador-portrait-copy strong {
+  display: flex;
+  gap: 0.38rem;
+  align-items: baseline;
   color: var(--ink);
   font-size: clamp(0.96rem, 1.1vw, 1.06rem);
   font-weight: 560;
   line-height: 1.15;
-  transition: color 250ms ease-out;
-}
-
-.ambassador-portrait-card:hover .ambassador-portrait-copy strong {
-  color: var(--team-warm);
 }
 
 .ambassador-portrait-copy span {
@@ -2926,103 +3332,101 @@ h3 {
   line-height: 1.36;
 }
 
-.ambassador-modal-backdrop {
-  position: fixed;
-  z-index: 80;
-  inset: 0;
+.room-directory-section {
+  min-height: 100svh;
+  padding-top: clamp(5.2rem, 9vw, 7.4rem);
+}
+
+.room-directory-block {
   display: grid;
-  place-items: center;
-  background: color-mix(in srgb, var(--paper) 78%, var(--ink) 22%);
-  padding: 1rem;
+  width: min(100%, 76rem);
+  gap: clamp(2.4rem, 5vw, 4.8rem);
 }
 
-.ambassador-modal {
-  position: relative;
+.room-directory-section .section-heading h1 {
+  color: var(--ink);
+  font-size: clamp(2.4rem, 6vw, 5.5rem);
+  font-weight: 640;
+  letter-spacing: 0;
+  line-height: 0.98;
+}
+
+.room-persona-list {
   display: grid;
-  grid-template-columns: minmax(13rem, 18rem) minmax(0, 1fr);
-  gap: clamp(1.2rem, 3vw, 2.4rem);
-  width: min(100%, 48rem);
-  max-height: min(42rem, calc(100svh - 2rem));
-  border: 1px solid var(--rule);
-  background: var(--paper);
-  color: var(--ink);
-  padding: clamp(1rem, 2.6vw, 1.7rem);
-  overflow: auto;
-  box-shadow: 0 1.3rem 4rem color-mix(in srgb, var(--ink) 20%, transparent);
+  gap: 0;
+  border-top: 1px solid var(--rule);
 }
 
-.ambassador-modal-close {
-  position: absolute;
-  top: 0.8rem;
-  right: 0.8rem;
-  border: 1px solid var(--rule);
-  background: var(--paper);
-  color: var(--ink);
-  padding: 0.42rem 0.58rem;
-  font: inherit;
-  font-size: var(--type-secondary);
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.ambassador-modal-portrait {
-  align-self: start;
-  aspect-ratio: 4 / 5;
-  border-radius: 16px;
-  background: var(--paper-soft);
-  overflow: hidden;
-}
-
-.ambassador-modal-portrait img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.ambassador-modal-copy {
+.room-persona-profile {
   display: grid;
-  align-content: start;
-  gap: 0.76rem;
-  padding-right: 2.7rem;
+  grid-template-columns: 5rem minmax(13rem, 0.34fr) minmax(12rem, 0.25fr) minmax(0, 0.41fr);
+  gap: clamp(1rem, 2.6vw, 2.8rem);
+  align-items: baseline;
+  border-bottom: 1px solid var(--rule);
+  padding: clamp(1.2rem, 2.4vw, 2rem) 0;
 }
 
-.ambassador-modal-copy h2 {
+.room-persona-number {
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 820;
+  letter-spacing: 0.08em;
+  line-height: 1.35;
+}
+
+.room-persona-profile h2 {
   color: var(--ink);
-  font-size: clamp(2rem, 4.2vw, 3.1rem);
-  font-weight: 660;
+  font-size: clamp(1.5rem, 3vw, 3rem);
+  font-weight: 640;
+  letter-spacing: 0;
   line-height: 1;
 }
 
-.ambassador-modal-role,
-.ambassador-modal-place {
+.room-persona-role {
+  margin-top: 0.36rem;
   color: var(--muted);
-  font-size: var(--type-secondary);
-  font-weight: 800;
-  line-height: var(--leading-secondary);
+  font-size: 0.78rem;
+  font-weight: 780;
+  letter-spacing: 0.07em;
+  line-height: 1.35;
   text-transform: uppercase;
 }
 
-.ambassador-modal-perspective {
+.room-persona-line {
   color: var(--ink);
-  font-size: clamp(1.1rem, 1.9vw, 1.45rem);
+  font-size: clamp(1rem, 1.45vw, 1.18rem);
   font-weight: 650;
-  line-height: 1.28;
+  line-height: 1.35;
 }
 
-.ambassador-modal-bio {
-  color: color-mix(in srgb, var(--ink) 76%, var(--muted));
-  font-size: clamp(0.98rem, 1.25vw, 1.08rem);
-  line-height: 1.48;
+.room-persona-contribution {
+  color: color-mix(in srgb, var(--ink) 70%, var(--muted));
+  font-size: clamp(0.94rem, 1.15vw, 1.05rem);
+  font-weight: 500;
+  line-height: 1.5;
 }
 
-.ambassador-modal-link-note {
-  color: var(--muted);
-  font-size: var(--type-secondary);
-  line-height: var(--leading-secondary);
+@keyframes ambassador-signal {
+  to {
+    stroke-dashoffset: -48;
+  }
 }
 
 @media (max-width: 980px) {
+  .ambassador-metrics {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .ambassador-map-panel,
+  .ambassador-profile-card,
+  .room-persona-profile {
+    grid-template-columns: 1fr;
+  }
+
+  .ambassador-profile-portrait {
+    width: min(100%, 28rem);
+  }
+
   .ambassador-grid,
   .ambassador-grid.is-compact {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -3030,6 +3434,10 @@ h3 {
 
   .ambassador-portrait-frame {
     width: 6.25rem;
+  }
+
+  .room-persona-profile {
+    gap: 0.6rem;
   }
 }
 
@@ -3779,21 +4187,19 @@ h3 {
   }
 
   .ambassador-portrait-copy {
-    max-width: 9rem;
+    max-width: 14rem;
   }
 
-  .ambassador-modal {
+  .ambassador-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ambassador-profile-facts {
     grid-template-columns: 1fr;
-    gap: 1rem;
-    align-content: start;
   }
 
-  .ambassador-modal-portrait {
-    width: min(12rem, 52vw);
-  }
-
-  .ambassador-modal-copy {
-    padding-right: 0;
+  .room-persona-profile {
+    padding: 1.35rem 0;
   }
 
   .content-section.archive-section {

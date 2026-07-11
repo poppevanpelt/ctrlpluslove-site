@@ -2,6 +2,7 @@ import { AmbassadorGrid } from "./ambassador-grid";
 import { featuredAmbassadors } from "./ambassadors-data";
 import { HomeHero } from "./home-hero";
 import { LivingTicker } from "./living-ticker";
+import { homepageRoomPersonas } from "./room-personas-data";
 import { ThemeToggle } from "./theme-toggle";
 
 const howItWorks = [
@@ -46,39 +47,6 @@ const offers = [
     details: ["Commercial and creative pressure test", "Weaknesses exposed early", "Directional verdict", "Price on request"],
     cta: "Test an idea",
     href: "mailto:hello@ctrlpluslove.com",
-  },
-];
-
-const roomVoices = [
-  {
-    name: "Simon Cross",
-    role: "The Critic",
-    line: "Challenges the answer everyone already agreed on.",
-  },
-  {
-    name: "Nick Deckman",
-    role: "The Commercial Realist",
-    line: "Sees the cost of being wrong.",
-  },
-  {
-    name: "Lexi Arden",
-    role: "The Cultural Lens",
-    line: "Spots what others miss.",
-  },
-  {
-    name: "Akiko Hayashi",
-    role: "The Consequence Keeper",
-    line: "Looks beyond the next decision.",
-  },
-  {
-    name: "Adrian Mbeki",
-    role: "The Reality Check",
-    line: "Tests what survives outside the room.",
-  },
-  {
-    name: "The Customer",
-    role: "The Missing Chair",
-    line: "Would anyone outside this room actually care?",
   },
 ];
 
@@ -217,7 +185,7 @@ export default function Home() {
             </p>
           </div>
           <div className="room-preview" aria-label="Room preview">
-            {roomVoices.map((voice) => (
+            {homepageRoomPersonas.map((voice) => (
               <div className="persona-card" key={voice.name}>
                 <span>{voice.name}</span>
                 <p>{voice.role}</p>
@@ -225,7 +193,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <a className="text-link" href="/living-decision-simulator-episode-002/">
+          <a className="text-link" href="/room/">
             Meet the full room →
           </a>
         </div>
@@ -239,7 +207,7 @@ export default function Home() {
           <div className="section-heading quiet-heading">
             <div>
               <p className="section-kicker">The human network</p>
-              <h2 id="people-title">The People Behind ctrl+love.</h2>
+              <h2 id="people-title">Local intelligence, without building a global office.</h2>
             </div>
             <p>
               ctrl+love connects trusted creative and strategic experts across

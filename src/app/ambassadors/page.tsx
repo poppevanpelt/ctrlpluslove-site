@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { AmbassadorGrid } from "../ambassador-grid";
-import { confirmedAmbassadors } from "../ambassadors-data";
+import { ambassadorMetrics, confirmedAmbassadors } from "../ambassadors-data";
 import { ThemeToggle } from "../theme-toggle";
 
 export const metadata: Metadata = {
-  title: "The People Behind ctrl+love — ctrl+love",
-  description: "The distributed human network behind ctrl+love.",
+  title: "Around the Table — ctrl+love",
+  description: "The distributed human network behind the ctrl+love Engine.",
 };
 
 export default function AmbassadorsPage() {
@@ -16,21 +17,41 @@ export default function AmbassadorsPage() {
 
       <section className="content-section ambassador-directory-section">
         <div className="content-block ambassador-directory-block">
+          <Link className="back-home-link" href="/">
+            ← Home
+          </Link>
+
           <div className="section-heading quiet-heading">
             <div>
-              <p className="section-kicker">Ambassadors</p>
-              <h1>The People Behind ctrl+love.</h1>
+              <p className="section-kicker">Around the Table</p>
+              <h1>A distributed human network for better rooms.</h1>
             </div>
             <p>
-              The network is not a permanent committee. Relevant voices enter
-              when the decision, market or cultural context requires them.
-              <br />
-              Confirmed countries are shown; city labels will be added only
-              when confirmed.
+              The current public network of people ctrl+love can bring into
+              the Room.
             </p>
           </div>
 
+          <div className="ambassador-metrics" aria-label="Around the Table metrics">
+            {ambassadorMetrics.map(([label, value]) => (
+              <div className="ambassador-metric" key={label}>
+                <strong>{value}</strong>
+                <span>{label}</span>
+              </div>
+            ))}
+          </div>
+
           <AmbassadorGrid ambassadors={confirmedAmbassadors} />
+
+          <section className="ambassador-closing" aria-labelledby="ambassador-closing-title">
+            <p className="section-kicker">The Room changes with the question</p>
+            <h2 id="ambassador-closing-title">
+              Bring in the people the decision actually needs.
+            </h2>
+            <Link className="text-link" href="/#room">
+              Bring a decision into the Room →
+            </Link>
+          </section>
         </div>
       </section>
     </main>
