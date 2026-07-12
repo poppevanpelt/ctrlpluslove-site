@@ -77,21 +77,18 @@ const featuredProjects = [
     question: "How can the brand grow across the Netherlands, Germany and Belgium?",
     outcome:
       "The Room identified where the proposition travels, where it breaks and what must be adapted locally.",
-    href: "#project-confidential-01",
   },
   {
     name: "Undisclosed Brand 02",
     question: "What is the strongest path to growth without flattening the brand?",
     outcome:
       "The Room separated product momentum from sustainable brand advantage.",
-    href: "#project-confidential-02",
   },
   {
     name: "Undisclosed Brand 03",
     question: "Has the company reached a growth ceiling?",
     outcome:
       "The Room surfaced structural, cultural and leadership constraints behind the visible symptoms.",
-    href: "#project-confidential-03",
   },
 ];
 
@@ -203,12 +200,11 @@ export default function Home() {
             </div>
           </div>
 
-          {/* TODO: Replace temporary anchors with public project routes when the Decision Library ships. */}
           <div className="homepage-proof-grid">
-            {featuredProjects.map((project) => (
+            {featuredProjects.map((project, index) => (
               <article
                 className="homepage-proof project-proof"
-                id={project.href.slice(1)}
+                id={`project-undisclosed-${String(index + 1).padStart(2, "0")}`}
                 key={project.name}
               >
                 <p>Project</p>
@@ -223,9 +219,6 @@ export default function Home() {
                     <dd>{project.outcome}</dd>
                   </div>
                 </dl>
-                <a className="text-link" href={project.href}>
-                  Open project →
-                </a>
               </article>
             ))}
           </div>

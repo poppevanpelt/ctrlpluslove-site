@@ -2330,13 +2330,8 @@ h3 {
 }
 
 .project-proof {
-  grid-template-rows: auto auto 1fr auto;
-  min-height: 18rem;
-}
-
-.project-proof .text-link {
-  justify-self: start;
-  align-self: end;
+  grid-template-rows: auto auto 1fr;
+  min-height: 16rem;
 }
 
 .practical-grid {
