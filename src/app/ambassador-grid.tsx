@@ -100,9 +100,13 @@ export function AmbassadorCard({ ambassador }: AmbassadorCardProps) {
               rel="noopener noreferrer"
               aria-label={`Open ${ambassador.name} on LinkedIn in a new tab`}
             >
-              LinkedIn ↗
+              View LinkedIn profile ↗
             </a>
-          ) : null}
+          ) : (
+            <span className="ambassador-action is-disabled">
+              LinkedIn to confirm
+            </span>
+          )}
           {ambassador.website ? (
             <a
               className="ambassador-action"
@@ -191,9 +195,13 @@ export function AmbassadorGrid({
                 rel="noopener noreferrer"
                 aria-label={`Open ${ambassador.name} on LinkedIn in a new tab`}
               >
-                LinkedIn
+                View LinkedIn profile ↗
               </a>
-            ) : null}
+            ) : (
+              <span className="ambassador-portrait-link is-disabled">
+                LinkedIn to confirm
+              </span>
+            )}
           </article>
         ))}
       </div>

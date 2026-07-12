@@ -3456,9 +3456,15 @@ h3 {
 }
 
 .ambassador-portrait-link {
+  display: inline-flex;
+  min-height: 2.05rem;
+  align-items: center;
+  justify-content: center;
   width: fit-content;
-  border-bottom: 1px solid currentColor;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
   color: var(--ink);
+  padding: 0.42rem 0.72rem;
   font-size: 0.78rem;
   font-weight: 760;
   line-height: 1.25;
@@ -3466,7 +3472,18 @@ h3 {
 }
 
 .ambassador-portrait-link:hover {
+  border-color: color-mix(in srgb, var(--accent) 56%, var(--rule));
   color: var(--accent);
+}
+
+.ambassador-portrait-link.is-disabled {
+  color: var(--muted);
+  cursor: default;
+}
+
+.ambassador-portrait-link.is-disabled:hover {
+  border-color: var(--rule);
+  color: var(--muted);
 }
 
 .room-directory-section {
