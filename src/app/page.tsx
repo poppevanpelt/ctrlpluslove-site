@@ -73,21 +73,21 @@ const practiceLinks = [
 
 const featuredProjects = [
   {
-    name: "Confidential Brand 01",
+    name: "Undisclosed Brand 01",
     question: "How can the brand grow across the Netherlands, Germany and Belgium?",
     outcome:
       "The Room identified where the proposition travels, where it breaks and what must be adapted locally.",
     href: "#project-confidential-01",
   },
   {
-    name: "Confidential Brand 02",
+    name: "Undisclosed Brand 02",
     question: "What is the strongest path to growth without flattening the brand?",
     outcome:
       "The Room separated product momentum from sustainable brand advantage.",
     href: "#project-confidential-02",
   },
   {
-    name: "Confidential Brand 03",
+    name: "Undisclosed Brand 03",
     question: "Has the company reached a growth ceiling?",
     outcome:
       "The Room surfaced structural, cultural and leadership constraints behind the visible symptoms.",
@@ -414,7 +414,7 @@ export default function Home() {
             </a>
           </p>
           <p>
-            <a href="https://nl.linkedin.com/in/poppevanpelt">
+            <a href="https://www.linkedin.com/in/poppevanpelt/" target="_blank" rel="noopener noreferrer">
               Poppe van Pelt · LinkedIn
             </a>
           </p>

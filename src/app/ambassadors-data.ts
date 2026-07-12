@@ -33,7 +33,7 @@ export const ambassadors: Ambassador[] = [
     status: "founder",
     participationLabel: "Founder",
     image: "/ambassadors/portraits/001-poppe-van-pelt-portrait-live-20260712.jpeg",
-    linkedin: "https://www.linkedin.com/in/poppevanpelt",
+    linkedin: "https://www.linkedin.com/in/poppevanpelt/",
     roomHref: "/#room",
     featured: true,
     public: true,

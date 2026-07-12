@@ -3119,7 +3119,8 @@ h3 {
 .ambassador-profile-card:focus-within,
 .ambassador-action:focus-visible,
 .ambassador-room-link:focus-visible,
-.ambassador-portrait-card:focus-visible {
+.ambassador-portrait-main:focus-visible,
+.ambassador-portrait-link:focus-visible {
   outline: 2px solid color-mix(in srgb, var(--team-warm) 72%, transparent);
   outline-offset: 0.22rem;
 }
@@ -3381,12 +3382,18 @@ h3 {
   align-content: start;
   color: var(--ink);
   text-align: left;
-  text-decoration: none;
   transition: transform 250ms ease-out;
 }
 
 .ambassador-portrait-card:hover {
   transform: translateY(-0.12rem);
+}
+
+.ambassador-portrait-main {
+  display: grid;
+  gap: 0.72rem;
+  color: inherit;
+  text-decoration: none;
 }
 
 .ambassador-portrait-frame {
@@ -3446,6 +3453,20 @@ h3 {
   font-style: normal;
   font-weight: 520;
   line-height: 1.36;
+}
+
+.ambassador-portrait-link {
+  width: fit-content;
+  border-bottom: 1px solid currentColor;
+  color: var(--ink);
+  font-size: 0.78rem;
+  font-weight: 760;
+  line-height: 1.25;
+  text-decoration: none;
+}
+
+.ambassador-portrait-link:hover {
+  color: var(--accent);
 }
 
 .room-directory-section {

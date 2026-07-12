@@ -131,55 +131,70 @@ export function AmbassadorGrid({
     return (
       <div className="ambassador-grid is-compact">
         {ambassadors.map((ambassador) => (
-          <a
+          <article
             className="ambassador-portrait-card"
-            href="/ambassadors/"
             key={ambassador.id}
           >
-            <span className="ambassador-portrait-frame">
-              <span
-                className="ambassador-flag-badge"
-                aria-label={`${ambassador.country} flag`}
-              >
-                {ambassador.flag}
-              </span>
-              {ambassador.image ? (
-                <Image
-                  src={portraitSrc(ambassador.image)}
-                  alt={`Portrait of ${ambassador.name}`}
-                  width={240}
-                  height={300}
-                  className="ambassador-portrait-image"
-                  loading="lazy"
-                  sizes="7.5rem"
-                  unoptimized
-                />
-              ) : (
-                <span className="ambassador-initials">
-                  {ambassador.name
-                    .split(" ")
-                    .map((part) => part[0])
-                    .join("")
-                    .slice(0, 2)}
-                </span>
-              )}
-            </span>
-            <span className="ambassador-portrait-copy">
-              <strong>
+            <a
+              className="ambassador-portrait-main"
+              href={`/ambassadors/#ambassador-${ambassador.id}`}
+            >
+              <span className="ambassador-portrait-frame">
                 <span
-                  className="ambassador-name-flag"
+                  className="ambassador-flag-badge"
                   aria-label={`${ambassador.country} flag`}
                 >
                   {ambassador.flag}
                 </span>
-                {ambassador.name}
-              </strong>
-              <span>
-                {ambassador.number} · {ambassador.city}, {ambassador.country}
+                {ambassador.image ? (
+                  <Image
+                    src={portraitSrc(ambassador.image)}
+                    alt={`Portrait of ${ambassador.name}`}
+                    width={240}
+                    height={300}
+                    className="ambassador-portrait-image"
+                    loading="lazy"
+                    sizes="7.5rem"
+                    unoptimized
+                  />
+                ) : (
+                  <span className="ambassador-initials">
+                    {ambassador.name
+                      .split(" ")
+                      .map((part) => part[0])
+                      .join("")
+                      .slice(0, 2)}
+                  </span>
+                )}
               </span>
-              <em>{ambassador.participationLabel}</em>
-            </span>
-          </a>
+              <span className="ambassador-portrait-copy">
+                <strong>
+                  <span
+                    className="ambassador-name-flag"
+                    aria-label={`${ambassador.country} flag`}
+                  >
+                    {ambassador.flag}
+                  </span>
+                  {ambassador.name}
+                </strong>
+                <span>
+                  {ambassador.number} · {ambassador.city}, {ambassador.country}
+                </span>
+                <em>{ambassador.participationLabel}</em>
+              </span>
+            </a>
+            {ambassador.linkedin ? (
+              <a
+                className="ambassador-portrait-link"
+                href={ambassador.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Open ${ambassador.name} on LinkedIn in a new tab`}
+              >
+                LinkedIn
+              </a>
+            ) : null}
+          </article>
         ))}
       </div>
     );
