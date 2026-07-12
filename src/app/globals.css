@@ -3,10 +3,10 @@
   --paper: #fafaf8;
   --paper-soft: #f2f1ed;
   --ink: #1a1815;
-  --soft: #46423d;
-  --muted: #625d55;
-  --faint: #817a72;
-  --rule: #d8d2c8;
+  --soft: #34302b;
+  --muted: #4f4942;
+  --faint: #625b52;
+  --rule: #c9c1b6;
   --red: #e85d45;
   --pink: #e8457c;
   --orange: #f2722c;
@@ -1818,8 +1818,9 @@ h3 {
 }
 
 .section-heading p {
-  color: var(--muted);
+  color: color-mix(in srgb, var(--ink) 82%, var(--muted));
   font-size: var(--type-intro);
+  font-weight: 500;
   line-height: var(--leading-body);
 }
 
@@ -1884,7 +1885,7 @@ h3 {
 }
 
 .section-kicker {
-  color: var(--muted);
+  color: color-mix(in srgb, var(--ink) 72%, var(--muted));
   font-size: clamp(0.95rem, 1.2vw, 1.08rem);
   font-weight: 700;
   line-height: var(--leading-secondary);
@@ -2233,8 +2234,9 @@ h3 {
 .homepage-offer > p,
 .practice-link p,
 .practical-item p {
-  color: color-mix(in srgb, var(--ink) 76%, var(--muted));
+  color: color-mix(in srgb, var(--ink) 88%, var(--muted));
   font-size: clamp(0.98rem, 1.2vw, 1.1rem);
+  font-weight: 480;
   line-height: 1.44;
 }
 
@@ -2281,7 +2283,7 @@ h3 {
 }
 
 .homepage-support {
-  color: var(--muted);
+  color: color-mix(in srgb, var(--ink) 84%, var(--muted));
   font-size: clamp(1rem, 1.25vw, 1.16rem);
   font-weight: 560;
   line-height: 1.42;
@@ -2294,7 +2296,7 @@ h3 {
 
 .conflict-copy {
   max-width: 42rem;
-  color: color-mix(in srgb, var(--ink) 78%, var(--muted));
+  color: color-mix(in srgb, var(--ink) 88%, var(--muted));
   font-size: clamp(1.08rem, 1.55vw, 1.35rem);
   font-weight: 540;
   line-height: 1.38;
@@ -2378,14 +2380,14 @@ h3 {
 
 .final-contact > p:not(.section-kicker):not(.final-contact-note) {
   max-width: 38rem;
-  color: color-mix(in srgb, var(--ink) 76%, var(--muted));
+  color: color-mix(in srgb, var(--ink) 88%, var(--muted));
   font-size: clamp(1.08rem, 1.55vw, 1.32rem);
   line-height: 1.4;
   text-align: center;
 }
 
 .final-contact-note {
-  color: var(--muted);
+  color: color-mix(in srgb, var(--ink) 72%, var(--muted));
   font-size: var(--type-secondary);
   font-weight: 700;
   line-height: var(--leading-secondary);
@@ -2745,7 +2747,7 @@ h3 {
 
 .surfaced-section .quiet-heading > p {
   max-width: 18rem;
-  color: color-mix(in srgb, var(--ink) 58%, var(--muted));
+  color: color-mix(in srgb, var(--ink) 82%, var(--muted));
   font-size: clamp(1rem, 1.32vw, 1.18rem);
   font-weight: 520;
   line-height: 1.42;
@@ -3230,7 +3232,7 @@ h3 {
   flex-wrap: wrap;
   gap: 0.44rem 0.62rem;
   align-items: center;
-  color: var(--muted);
+  color: color-mix(in srgb, var(--ink) 72%, var(--muted));
   font-size: 0.78rem;
   font-weight: 760;
   letter-spacing: 0.07em;
@@ -3264,7 +3266,7 @@ h3 {
 }
 
 .ambassador-profile-role {
-  color: color-mix(in srgb, var(--ink) 72%, var(--muted));
+  color: color-mix(in srgb, var(--ink) 86%, var(--muted));
   font-size: clamp(1rem, 1.45vw, 1.22rem);
   font-weight: 560;
   line-height: 1.42;
@@ -3296,7 +3298,7 @@ h3 {
 }
 
 .ambassador-profile-facts dt {
-  color: var(--muted);
+  color: color-mix(in srgb, var(--ink) 72%, var(--muted));
   font-size: 0.68rem;
   font-weight: 780;
   letter-spacing: 0.08em;
@@ -3306,7 +3308,7 @@ h3 {
 
 .ambassador-profile-facts dd {
   margin: 0;
-  color: color-mix(in srgb, var(--ink) 76%, var(--muted));
+  color: color-mix(in srgb, var(--ink) 88%, var(--muted));
   font-size: 0.92rem;
   font-weight: 560;
   line-height: 1.42;
@@ -3448,14 +3450,14 @@ h3 {
 }
 
 .ambassador-portrait-copy span {
-  color: var(--muted);
+  color: color-mix(in srgb, var(--ink) 72%, var(--muted));
   font-size: clamp(0.78rem, 0.92vw, 0.86rem);
   font-weight: 520;
   line-height: 1.35;
 }
 
 .ambassador-portrait-copy em {
-  color: color-mix(in srgb, var(--ink) 72%, var(--muted));
+  color: color-mix(in srgb, var(--ink) 84%, var(--muted));
   font-size: clamp(0.86rem, 1vw, 0.96rem);
   font-style: normal;
   font-weight: 520;
@@ -7628,7 +7630,7 @@ h3 {
 }
 
 .home-hero-nav a {
-  color: color-mix(in srgb, var(--ink) 74%, var(--muted));
+  color: color-mix(in srgb, var(--ink) 86%, var(--muted));
   font-size: 0.78rem;
   font-weight: 760;
   line-height: var(--leading-secondary);
@@ -7677,7 +7679,7 @@ h3 {
 
 .home-hero-proposition {
   max-width: min(100%, 31rem);
-  color: color-mix(in srgb, var(--ink) 82%, var(--muted));
+  color: color-mix(in srgb, var(--ink) 92%, var(--muted));
   font-size: clamp(1.08rem, 1.5vw, 1.34rem);
   font-weight: 520;
   line-height: 1.42;
@@ -7823,7 +7825,7 @@ h3 {
 
 .home-hero-translation {
   max-width: min(100%, 42rem);
-  color: color-mix(in srgb, var(--ink) 82%, var(--muted));
+  color: color-mix(in srgb, var(--ink) 94%, var(--muted));
   font-size: clamp(1.2rem, 1.8vw, 1.55rem);
   font-weight: 680;
   line-height: 1.22;
@@ -7831,16 +7833,16 @@ h3 {
 
 .home-hero-mechanism {
   max-width: min(100%, 36rem);
-  color: color-mix(in srgb, var(--ink) 58%, var(--muted));
+  color: color-mix(in srgb, var(--ink) 82%, var(--muted));
   font-size: clamp(0.95rem, 1.18vw, 1.08rem);
-  font-weight: 420;
+  font-weight: 500;
   line-height: 1.42;
 }
 
 .home-hero-proof {
   max-width: min(100%, 34rem);
   margin-top: 0.34rem;
-  color: color-mix(in srgb, var(--ink) 70%, var(--muted));
+  color: color-mix(in srgb, var(--ink) 86%, var(--muted));
   font-size: clamp(0.92rem, 1.1vw, 1.02rem);
   font-weight: 650;
   line-height: 1.4;
