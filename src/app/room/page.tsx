@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { roomPersonas } from "../room-personas-data";
+import {
+  roomPersonas,
+  supportingRoomPersonas,
+} from "../room-personas-data";
 import { ThemeToggle } from "../theme-toggle";
 
 export const metadata: Metadata = {
@@ -43,12 +46,40 @@ export default function RoomPage() {
                   <p className="room-persona-role">{persona.role}</p>
                 </div>
                 <p className="room-persona-line">{persona.line}</p>
-                <p className="room-persona-contribution">
-                  {persona.contribution}
-                </p>
+                {persona.contribution ? (
+                  <p className="room-persona-contribution">
+                    {persona.contribution}
+                  </p>
+                ) : null}
               </article>
             ))}
           </div>
+
+          <section
+            className="supporting-room-section"
+            aria-labelledby="supporting-room-title"
+          >
+            <div className="section-heading quiet-heading">
+              <div>
+                <p className="section-kicker">Supporting perspectives</p>
+                <h2 id="supporting-room-title">
+                  These participants enter only when their perspective is
+                  relevant.
+                </h2>
+              </div>
+            </div>
+
+            <div className="supporting-persona-list">
+              {supportingRoomPersonas.map((persona) => (
+                <article className="supporting-persona" key={persona.id}>
+                  <h3>{persona.name}</h3>
+                  <p>{persona.role}</p>
+                  <strong>{persona.line}</strong>
+                  {persona.contribution ? <span>{persona.contribution}</span> : null}
+                </article>
+              ))}
+            </div>
+          </section>
 
           <section className="room-closing" aria-labelledby="room-closing-title">
             <p className="section-kicker">Then the decision enters</p>

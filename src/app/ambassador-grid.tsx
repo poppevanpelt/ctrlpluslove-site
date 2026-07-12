@@ -15,6 +15,10 @@ function formatAmbassadorLocation(ambassador: Ambassador) {
   return [ambassador.city, ambassador.country].filter(Boolean).join(", ");
 }
 
+function portraitSrc(src: string) {
+  return `${src}?v=portrait-clean-20260712-2`;
+}
+
 export function AmbassadorCard({ ambassador }: AmbassadorCardProps) {
   return (
     <article
@@ -30,13 +34,14 @@ export function AmbassadorCard({ ambassador }: AmbassadorCardProps) {
         </span>
         {ambassador.image ? (
           <Image
-            src={ambassador.image}
+            src={portraitSrc(ambassador.image)}
             alt={`Portrait of ${ambassador.name}, ctrl+love table member from ${ambassador.country}`}
             width={720}
             height={900}
             className="ambassador-profile-image"
             loading="lazy"
             sizes="(max-width: 980px) 100vw, 42vw"
+            unoptimized
           />
         ) : (
           <div className="ambassador-initials" aria-label={ambassador.name}>
@@ -140,13 +145,14 @@ export function AmbassadorGrid({
               </span>
               {ambassador.image ? (
                 <Image
-                  src={ambassador.image}
+                  src={portraitSrc(ambassador.image)}
                   alt={`Portrait of ${ambassador.name}`}
                   width={240}
                   height={300}
                   className="ambassador-portrait-image"
                   loading="lazy"
                   sizes="7.5rem"
+                  unoptimized
                 />
               ) : (
                 <span className="ambassador-initials">

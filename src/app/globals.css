@@ -1553,9 +1553,9 @@ h3 {
   position: relative;
   --persona-accent: var(--team-warm);
   display: grid;
-  grid-template-rows: auto auto minmax(3.4em, auto);
+  grid-template-rows: auto auto minmax(2.6em, auto) 1fr;
   gap: 0.46rem;
-  min-height: 9.8rem;
+  min-height: 15.2rem;
   align-content: start;
   border-top: 1px solid var(--rule);
   padding: 1.35rem 0 0;
@@ -1622,9 +1622,79 @@ h3 {
 .persona-card em {
   max-width: 20rem;
   color: var(--ink);
-  font-size: var(--type-body);
+  font-size: clamp(1.08rem, 1.45vw, 1.35rem);
   font-style: normal;
-  line-height: var(--leading-body);
+  font-weight: 650;
+  line-height: 1.32;
+}
+
+.persona-card small {
+  max-width: 22rem;
+  color: color-mix(in srgb, var(--ink) 70%, var(--muted));
+  font-size: clamp(0.92rem, 1.04vw, 1rem);
+  font-weight: 520;
+  line-height: 1.45;
+}
+
+.supporting-room-preview {
+  display: grid;
+  gap: 1rem;
+  width: min(100%, 60rem);
+  border-top: 1px solid var(--rule);
+  padding-top: 1.2rem;
+}
+
+.supporting-room-preview > p {
+  color: var(--muted);
+  font-size: var(--type-secondary);
+  font-weight: 850;
+  line-height: var(--leading-secondary);
+  text-transform: uppercase;
+}
+
+.supporting-room-preview ul {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem 1.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.supporting-room-preview li {
+  display: grid;
+  gap: 0.2rem;
+  align-content: start;
+}
+
+.supporting-room-preview span {
+  color: var(--ink);
+  font-size: clamp(0.94rem, 1.08vw, 1.02rem);
+  font-weight: 680;
+  line-height: 1.25;
+}
+
+.supporting-room-preview em {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 820;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.supporting-room-preview strong {
+  color: var(--ink);
+  font-size: clamp(0.9rem, 1vw, 0.98rem);
+  font-weight: 650;
+  line-height: 1.34;
+}
+
+.supporting-room-preview small {
+  color: color-mix(in srgb, var(--ink) 68%, var(--muted));
+  font-size: clamp(0.84rem, 0.92vw, 0.92rem);
+  font-weight: 500;
+  line-height: 1.42;
 }
 
 .bright {
@@ -2119,6 +2189,7 @@ h3 {
 .homepage-step-grid,
 .homepage-offer-grid,
 .homepage-proof-grid,
+.practice-link-grid,
 .practical-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2128,6 +2199,7 @@ h3 {
 .homepage-step,
 .homepage-offer,
 .homepage-proof,
+.practice-link,
 .practical-item {
   display: grid;
   align-content: start;
@@ -2147,6 +2219,8 @@ h3 {
 
 .homepage-step h3,
 .homepage-offer h3,
+.homepage-proof h3,
+.practice-link h3,
 .practical-item h3 {
   color: var(--ink);
   font-size: clamp(1.18rem, 1.55vw, 1.42rem);
@@ -2157,10 +2231,24 @@ h3 {
 
 .homepage-step > p:last-child,
 .homepage-offer > p,
+.practice-link p,
 .practical-item p {
   color: color-mix(in srgb, var(--ink) 76%, var(--muted));
   font-size: clamp(0.98rem, 1.2vw, 1.1rem);
   line-height: 1.44;
+}
+
+.practice-link {
+  min-height: 10.5rem;
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.practice-link:hover,
+.practice-link:focus-visible {
+  border-color: color-mix(in srgb, var(--ink) 52%, var(--rule));
+  transform: translateY(-1px);
 }
 
 .homepage-offer {
@@ -2239,8 +2327,36 @@ h3 {
   line-height: 1.38;
 }
 
+.project-proof {
+  grid-template-rows: auto auto 1fr auto;
+  min-height: 18rem;
+}
+
+.project-proof .text-link {
+  justify-self: start;
+  align-self: end;
+}
+
 .practical-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.final-growth-section {
+  padding-top: clamp(4.6rem, 7vw, 6.9rem) !important;
+  padding-bottom: clamp(4.6rem, 7vw, 6.9rem) !important;
+}
+
+.final-growth-cta {
+  gap: 1.35rem !important;
+}
+
+.final-growth-cta h2 {
+  max-width: 52rem;
+  color: var(--ink);
+  font-size: clamp(2.35rem, 5.8vw, 5.2rem);
+  font-weight: 660;
+  line-height: 1;
+  text-wrap: balance;
 }
 
 .final-contact-section {
@@ -3406,6 +3522,62 @@ h3 {
   line-height: 1.5;
 }
 
+.supporting-room-section {
+  display: grid;
+  gap: clamp(1.4rem, 3vw, 2.4rem);
+}
+
+.supporting-room-section .section-heading h2 {
+  max-width: 18ch;
+  color: var(--ink);
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 620;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.supporting-persona-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2.4vw, 2rem);
+}
+
+.supporting-persona {
+  display: grid;
+  align-content: start;
+  gap: 0.5rem;
+  border-top: 1px solid var(--rule);
+  padding-top: 1rem;
+}
+
+.supporting-persona h3 {
+  color: var(--ink);
+  font-size: clamp(1.12rem, 1.4vw, 1.32rem);
+  font-weight: 680;
+  line-height: 1.16;
+}
+
+.supporting-persona p {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 850;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.supporting-persona strong {
+  color: var(--ink);
+  font-size: clamp(0.98rem, 1.14vw, 1.06rem);
+  font-weight: 650;
+  line-height: 1.34;
+}
+
+.supporting-persona span {
+  color: color-mix(in srgb, var(--ink) 70%, var(--muted));
+  font-size: clamp(0.92rem, 1vw, 1rem);
+  line-height: 1.45;
+}
+
 @keyframes ambassador-signal {
   to {
     stroke-dashoffset: -48;
@@ -3959,6 +4131,11 @@ h3 {
     gap: 1.7rem 2rem;
   }
 
+  .supporting-room-preview ul,
+  .supporting-persona-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .persona-card {
     min-height: 8.5rem;
     padding: 1.25rem 0 0;
@@ -4129,12 +4306,15 @@ h3 {
   .homepage-step-grid,
   .homepage-offer-grid,
   .homepage-proof-grid,
+  .practice-link-grid,
   .practical-grid {
     grid-template-columns: 1fr;
     gap: 1.45rem;
   }
 
-  .homepage-offer {
+  .homepage-offer,
+  .project-proof,
+  .practice-link {
     min-height: auto;
   }
 
@@ -4153,6 +4333,10 @@ h3 {
   }
 
   .final-contact h2 {
+    font-size: clamp(2.05rem, 10vw, 3.4rem);
+  }
+
+  .final-growth-cta h2 {
     font-size: clamp(2.05rem, 10vw, 3.4rem);
   }
 
@@ -4455,7 +4639,9 @@ h3 {
 }
 
 @media (max-width: 430px) {
-  .room-preview {
+  .room-preview,
+  .supporting-room-preview ul,
+  .supporting-persona-list {
     grid-template-columns: 1fr;
   }
 }
@@ -7383,6 +7569,29 @@ h3 {
   animation: home-logo-spectrum 7.5s linear infinite;
 }
 
+.home-hero-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.55rem 1rem;
+  margin-top: -0.25rem;
+}
+
+.home-hero-nav a {
+  color: color-mix(in srgb, var(--ink) 74%, var(--muted));
+  font-size: 0.78rem;
+  font-weight: 760;
+  line-height: var(--leading-secondary);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 160ms ease;
+}
+
+.home-hero-nav a:hover,
+.home-hero-nav a:focus-visible {
+  color: var(--ink);
+}
+
 @supports (-webkit-background-clip: text) {
   .home-hero-logo {
     -webkit-text-fill-color: transparent;
@@ -7570,6 +7779,24 @@ h3 {
   line-height: 1.22;
 }
 
+.home-hero-mechanism {
+  max-width: min(100%, 36rem);
+  color: color-mix(in srgb, var(--ink) 58%, var(--muted));
+  font-size: clamp(0.95rem, 1.18vw, 1.08rem);
+  font-weight: 420;
+  line-height: 1.42;
+}
+
+.home-hero-proof {
+  max-width: min(100%, 34rem);
+  margin-top: 0.34rem;
+  color: color-mix(in srgb, var(--ink) 70%, var(--muted));
+  font-size: clamp(0.92rem, 1.1vw, 1.02rem);
+  font-weight: 650;
+  line-height: 1.4;
+  text-wrap: balance;
+}
+
 .home-hero-invitation {
   max-width: min(100%, 50rem);
   margin: 0;
@@ -7606,6 +7833,11 @@ h3 {
     font-size: clamp(1rem, 3.8vw, 1.25rem);
   }
 
+  .home-hero-mechanism,
+  .home-hero-proof {
+    max-width: min(100%, 25rem);
+  }
+
   .home-hero-proposition {
     max-width: min(100%, 30rem);
     font-size: clamp(1rem, 3.55vw, 1.16rem);
@@ -7637,6 +7869,15 @@ h3 {
     line-height: 0.96;
   }
 
+  .home-hero-nav {
+    gap: 0.28rem 0.72rem;
+    max-width: 18rem;
+  }
+
+  .home-hero-nav a {
+    font-size: 0.68rem;
+  }
+
   .home-hero-line {
     max-width: 100%;
     font-size: clamp(1.9rem, 9.4vw, 2.24rem);
@@ -7652,6 +7893,12 @@ h3 {
 
   .home-hero-translation {
     font-size: clamp(0.98rem, 3.8vw, 1.08rem);
+    text-wrap: wrap;
+  }
+
+  .home-hero-mechanism,
+  .home-hero-proof {
+    font-size: clamp(0.86rem, 3.5vw, 0.96rem);
     text-wrap: wrap;
   }
 
@@ -7727,6 +7974,7 @@ h3 {
 
   .homepage-step > p:last-child,
   .homepage-offer > p,
+  .practice-link p,
   .practical-item p,
   .homepage-proof dd {
     font-size: 0.98rem !important;
