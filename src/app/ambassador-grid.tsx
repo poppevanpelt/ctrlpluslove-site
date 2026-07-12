@@ -96,9 +96,8 @@ export function AmbassadorCard({ ambassador }: AmbassadorCardProps) {
             <a
               className="ambassador-action"
               href={ambassador.linkedin}
-              target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Open ${ambassador.name} on LinkedIn in a new tab`}
+              aria-label={`Open ${ambassador.name} on LinkedIn`}
             >
               View LinkedIn profile ↗
             </a>
@@ -191,9 +190,8 @@ export function AmbassadorGrid({
               <a
                 className="ambassador-portrait-link"
                 href={ambassador.linkedin}
-                target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`Open ${ambassador.name} on LinkedIn in a new tab`}
+                aria-label={`Open ${ambassador.name} on LinkedIn`}
               >
                 View LinkedIn profile ↗
               </a>

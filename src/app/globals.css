@@ -3321,6 +3321,8 @@ h3 {
 
 .ambassador-action,
 .ambassador-room-link {
+  position: relative;
+  z-index: 3;
   display: inline-flex;
   min-height: 2.7rem;
   align-items: center;
@@ -3340,11 +3342,13 @@ h3 {
   border-color: var(--rule);
   background: #fff;
   color: var(--ink);
+  cursor: pointer;
 }
 
 .ambassador-action.is-disabled {
   color: var(--muted);
   cursor: default;
+  pointer-events: none;
 }
 
 .ambassador-room-link:hover,
@@ -3377,6 +3381,7 @@ h3 {
 }
 
 .ambassador-portrait-card {
+  position: relative;
   display: grid;
   gap: 0.72rem;
   align-content: start;
@@ -3390,6 +3395,8 @@ h3 {
 }
 
 .ambassador-portrait-main {
+  position: relative;
+  z-index: 1;
   display: grid;
   gap: 0.72rem;
   color: inherit;
@@ -3456,6 +3463,8 @@ h3 {
 }
 
 .ambassador-portrait-link {
+  position: relative;
+  z-index: 3;
   display: inline-flex;
   min-height: 2.05rem;
   align-items: center;
@@ -3468,6 +3477,8 @@ h3 {
   font-size: 0.78rem;
   font-weight: 760;
   line-height: 1.25;
+  cursor: pointer;
+  pointer-events: auto;
   text-decoration: none;
 }
 
@@ -3479,6 +3490,7 @@ h3 {
 .ambassador-portrait-link.is-disabled {
   color: var(--muted);
   cursor: default;
+  pointer-events: none;
 }
 
 .ambassador-portrait-link.is-disabled:hover {
