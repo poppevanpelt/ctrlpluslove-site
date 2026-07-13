@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { AmbassadorGrid } from "./ambassador-grid";
 import { confirmedAmbassadors } from "./ambassadors-data";
 import { HomeHero } from "./home-hero";
@@ -33,7 +35,7 @@ const offers = [
       "One important decision, subjected to concentrated strategic and creative pressure.",
     details: ["90 minutes", "One decision", "Clear recommendation", "Move, adapt or stop", "€4,500"],
     cta: "Bring a decision",
-    href: "mailto:hello@ctrlpluslove.com",
+    href: "/stress-test/",
   },
   {
     title: "On-Call Room™",
@@ -41,15 +43,15 @@ const offers = [
       "Ongoing access for decisions that keep moving, changing or returning.",
     details: ["Embedded decision support", "Direct access", "Fast turnaround", "From €5,000 per month"],
     cta: "Discuss access",
-    href: "mailto:hello@ctrlpluslove.com",
+    href: "/pricing/on-call-room/",
   },
   {
-    title: "Kill or Scale",
+    title: "Kill or Scale™",
     description:
       "A focused review for an idea, proposition, product or campaign that needs a hard answer.",
     details: ["Commercial and creative pressure test", "Weaknesses exposed early", "Directional verdict", "Price on request"],
     cta: "Test an idea",
-    href: "mailto:hello@ctrlpluslove.com",
+    href: "/pricing/kill-or-scale/",
   },
 ];
 
@@ -60,7 +62,7 @@ const practiceLinks = [
     href: "#projects",
   },
   {
-    title: "Read a real project",
+    title: "Read an anonymised project",
     copy: "Explore how the Room challenged strategy, creative work and growth decisions.",
     href: "#projects",
   },
@@ -115,6 +117,21 @@ const practicalQuestions = [
   },
 ];
 
+const founderHighlights = [
+  "ADCN Hall of Fame",
+  "TBWA",
+  "Co-founder of Selmore",
+  "Lead Creative Director for Apple NL/BE",
+  "Founder of CTRL+LOVE",
+];
+
+const founderBio = [
+  "Poppe van Pelt is an ADCN Hall of Fame creative director and the founder of CTRL+LOVE.",
+  "He began his career at TBWA before co-founding Selmore, which he helped build into one of the Netherlands’ leading independent creative agencies. Over the course of his career, Poppe has worked with ambitious international brands and served as Lead Creative Director for Apple in the Netherlands and Belgium.",
+  "At CTRL+LOVE, he brings together an international network of experienced creative and strategic leaders. Combining local intelligence, human judgment and AI, they help organisations challenge assumptions, expose blind spots and make sharper decisions before reality makes them expensive.",
+  "After more than 30 years in advertising, Poppe remains driven by the same belief: technology changes, markets change and organisations change—but a powerful idea still begins with understanding people.",
+];
+
 export default function Home() {
   return (
     <main className="site-shell">
@@ -137,20 +154,39 @@ export default function Home() {
               </h2>
             </div>
             <p>
-              Every ctrl+love project exposes the question, the disagreement,
-              the blind spots, the shift in thinking and the final
-              recommendation.
+              Every ctrl+love example below is anonymised or illustrative where
+              it needs to be. The useful bit is the pressure: the question, the
+              disagreement, the blind spots and the sharper next move.
             </p>
           </div>
 
           <div className="practice-link-grid">
             {practiceLinks.map((item) => (
-              <a className="practice-link" href={item.href} key={item.title}>
+              <Link className="practice-link" href={item.href} key={item.title}>
                 <h3>{item.title}</h3>
                 <p>{item.copy}</p>
-              </a>
+              </Link>
             ))}
           </div>
+
+          <Link className="steel-ball-home-card" href="/steel-ball/">
+            <span className="steel-ball-home-copy">
+              <span className="section-kicker">Artifact 001</span>
+              <strong>The Steel Ball</strong>
+              <span>
+                The original replica. A physical reminder to test confidence
+                before reality does.
+              </span>
+              <em>€29.95 · View product →</em>
+            </span>
+            <span
+              className="steel-ball-home-image"
+              role="img"
+              aria-label="A polished steel ball"
+            >
+              <span className="steel-ball-object" aria-hidden="true" />
+            </span>
+          </Link>
         </div>
       </section>
 
@@ -207,7 +243,7 @@ export default function Home() {
                 id={`project-undisclosed-${String(index + 1).padStart(2, "0")}`}
                 key={project.name}
               >
-                <p>Project</p>
+                <p>Anonymised project</p>
                 <h3>{project.name}</h3>
                 <dl>
                   <div>
@@ -246,9 +282,9 @@ export default function Home() {
                     <li key={detail}>{detail}</li>
                   ))}
                 </ul>
-                <a className="text-link" href={offer.href}>
+                <Link className="text-link" href={offer.href}>
                   {offer.cta} →
-                </a>
+                </Link>
               </article>
             ))}
           </div>
@@ -299,9 +335,13 @@ export default function Home() {
               ))}
             </ul>
           </div>
-          <a className="text-link" href="/room/">
+          <Link className="text-link" href="/room/">
             Meet the full room →
-          </a>
+          </Link>
+          <p className="room-disclaimer">
+            These are decision lenses, not human ambassadors. The people are in
+            the network below.
+          </p>
         </div>
       </section>
 
@@ -322,11 +362,36 @@ export default function Home() {
             </p>
           </div>
 
+          <article className="founder-bio-card" aria-labelledby="founder-bio-title">
+            <div className="founder-bio-intro">
+              <p className="section-kicker">Founder</p>
+              <h3 id="founder-bio-title">Poppe van Pelt</h3>
+              <p>
+                Founder-editor of ctrl+love: part creative director, part
+                reality-preservation mechanism, still allergic to easy
+                certainty.
+              </p>
+            </div>
+            <ul className="founder-bio-highlights" aria-label="Founder credentials">
+              {founderHighlights.map((highlight) => (
+                <li key={highlight}>{highlight}</li>
+              ))}
+            </ul>
+            <details className="founder-bio-details">
+              <summary>Read the founder bio</summary>
+              <div>
+                {founderBio.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </div>
+            </details>
+          </article>
+
           <AmbassadorGrid ambassadors={confirmedAmbassadors} compact />
 
-          <a className="text-link" href="/ambassadors/">
+          <Link className="text-link" href="/ambassadors/">
             Meet the network →
-          </a>
+          </Link>
         </div>
       </section>
 
@@ -373,12 +438,12 @@ export default function Home() {
         <div className="content-block statement-block centered final-growth-cta">
           <h2>Bring the decision before reality does.</h2>
           <div className="home-hero-actions" aria-label="Final actions">
-            <a href="mailto:hello@ctrlpluslove.com" className="home-hero-cta">
+            <Link href="/stress-test/" className="home-hero-cta">
               Stress-test a decision
-            </a>
-            <a href="#projects" className="home-hero-secondary">
+            </Link>
+            <Link href="#projects" className="home-hero-secondary">
               Explore real projects
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -407,8 +472,13 @@ export default function Home() {
             </a>
           </p>
           <p>
-            <a href="https://www.linkedin.com/in/poppevanpelt/" target="_blank" rel="noopener noreferrer">
-              Poppe van Pelt · LinkedIn
+            <a
+              href="https://www.linkedin.com/in/poppevanpelt/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open Poppe van Pelt's LinkedIn profile in a new tab"
+            >
+              View LinkedIn profile ↗
             </a>
           </p>
           <p>

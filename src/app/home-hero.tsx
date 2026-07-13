@@ -9,6 +9,8 @@ export function HomeHero() {
           <a href="#how-it-works">How it works</a>
           <a href="#projects">Projects</a>
           <a href="#room">The Room</a>
+          <a href="#people-title">Human network</a>
+          <a href="/steel-ball/">Steel Ball</a>
           <a href="/inside-ctrl-love/">About</a>
         </nav>
         <div className="home-hero-message">
@@ -32,16 +34,23 @@ export function HomeHero() {
             Stress-test your decisions before the market does.
           </p>
           <p className="home-hero-mechanism">
-            Powered by AI, trusted experts and structured workflows.
+            A distributed creative intelligence network powered by AI, trusted
+            experts and structured workflows.
           </p>
           <div className="home-hero-actions" aria-label="Primary actions">
-            <a href="mailto:hello@ctrlpluslove.com" className="home-hero-cta">
+            <a href="/stress-test/" className="home-hero-cta">
               Stress-test a decision
             </a>
-            <a href="#how-it-works" className="home-hero-secondary">
+            <a href="/living-decision-review/" className="home-hero-secondary">
               Watch the Room think
             </a>
           </div>
+          <a className="home-steel-ball-link" href="/steel-ball/">
+            <span>
+              <strong>Artifact 001</strong>
+              The Steel Ball · €29.95 →
+            </span>
+          </a>
           <p className="home-hero-proof">
             Real decisions. Real disagreement. Clearer next moves.
           </p>

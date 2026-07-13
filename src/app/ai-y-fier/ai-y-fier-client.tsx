@@ -473,7 +473,6 @@ export default function AiYFierClient() {
       <Link className={styles.homeRibbon} href="/">
         Part of ctrl+love. Return to the main site →
       </Link>
-      <p className={styles.versionStamp}>final copy - 16 june 2026</p>
 
       <section className={styles.hero} id="product">
         <div className={styles.heroCopy}>

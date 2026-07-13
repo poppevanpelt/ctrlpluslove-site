@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "The Artifact Registry - ctrl+love",
+  title: "The Artifact Registry — ctrl+love",
 };
 
 const artifacts = [

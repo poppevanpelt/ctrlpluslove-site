@@ -5,9 +5,12 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.ctrlpluslove.com"),
-  title: "ctrl+love",
+  title: "CTRL+LOVE — Shortcut to reality.",
   description:
-    "ctrl+love is a distributed creative intelligence network combining AI, trusted human experts and structured workflows to improve strategic and creative decisions.",
+    "CTRL+LOVE — Shortcut to reality. Stress-test strategic, creative and commercial decisions before the market does.",
+  alternates: {
+    canonical: "/",
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "32x32" },
@@ -18,19 +21,28 @@ export const metadata: Metadata = {
     apple: "/apple-icon.png",
   },
   openGraph: {
-    title: "ctrl+love",
+    title: "CTRL+LOVE — Shortcut to reality.",
     description:
-      "ctrl+love is a distributed creative intelligence network combining AI, trusted human experts and structured workflows to improve strategic and creative decisions.",
+      "Stress-test strategic, creative and commercial decisions before the market does.",
     url: "https://www.ctrlpluslove.com",
-    siteName: "ctrl+love",
+    siteName: "CTRL+LOVE",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/ctrl-love-logo-gradient-master.png",
+        width: 1200,
+        height: 630,
+        alt: "CTRL+LOVE",
+      },
+    ],
   },
   twitter: {
-    card: "summary",
-    title: "ctrl+love",
+    card: "summary_large_image",
+    title: "CTRL+LOVE — Shortcut to reality.",
     description:
-      "ctrl+love is a distributed creative intelligence network combining AI, trusted human experts and structured workflows to improve strategic and creative decisions.",
+      "Stress-test strategic, creative and commercial decisions before the market does.",
+    images: ["/ctrl-love-logo-gradient-master.png"],
   },
 };
 

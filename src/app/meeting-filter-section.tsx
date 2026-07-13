@@ -143,7 +143,7 @@ export function MeetingFilterSection({ isStandalone = false }: MeetingFilterSect
 
         <div className="meeting-filter-result" aria-live="polite">
           <p className="meeting-filter-support">
-            A small diagnostic for detecting whether an organization is ready for
+            A small diagnostic for detecting whether an organisation is ready for
             judgment, or only looking for confirmation.
           </p>
           <div className="meeting-filter-status">
