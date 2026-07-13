@@ -465,7 +465,7 @@ export default function Home() {
                 </h3>
                 <span>{person.city} / {person.country}</span>
                 <p>{networkPerspectives[person.id] ?? "A trusted perspective that enters when the decision needs it."}</p>
-                <Link href={`/ambassadors/${person.id}/`}>
+                <Link href={`/ambassadors/#ambassador-${person.id}`}>
                   View perspective →
                 </Link>
               </article>
