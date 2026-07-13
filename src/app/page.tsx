@@ -89,28 +89,43 @@ const insideRoom = [
 
 const featuredProof = [
   {
-    name: "Undisclosed Brand 01",
-    question:
-      "How can the brand grow across the Netherlands, Germany and Belgium without flattening what makes it distinct?",
-    whoEntered:
-      "Strategic, creative and local-market perspectives entered the room before the recommendation hardened.",
+    name: "Undisclosed Fintech Lender",
+    question: "What is the strongest path to growth without flattening the brand?",
     outcome:
-      "The Room identified where the proposition travels, where it breaks and what must be adapted locally.",
+      "The Room separated product momentum from sustainable brand advantage, giving leadership a clear strategy for long-term growth.",
   },
 ];
 
 const featuredProjects = [
   {
-    name: "Undisclosed Brand 02",
-    question: "What is the strongest path to growth without flattening the brand?",
+    name: "Undisclosed Healthcare Provider",
+    question: "People wanted their life back.",
     outcome:
-      "The Room separated product momentum from sustainable brand advantage.",
+      "The Room reframed the challenge from delivering healthcare to enabling independence, reshaping the organisation's proposition and priorities.",
   },
   {
-    name: "Undisclosed Brand 03",
+    name: "Undisclosed B2B SaaS Platform",
+    question: "Which customers should we stop building for?",
+    outcome:
+      "The Room identified the customer segments with the greatest long-term value, bringing focus to product, sales and marketing.",
+  },
+  {
+    name: "Undisclosed Consumer Brand",
+    question: "Why were customers choosing us less often?",
+    outcome:
+      "The Room uncovered where the brand had lost relevance, leading to a sharper positioning and renewed customer value proposition.",
+  },
+  {
+    name: "Undisclosed Industrial Manufacturer",
+    question: "Are we selling products or solving problems?",
+    outcome:
+      "The Room shifted the commercial strategy from product-led to solution-led, creating a more differentiated market position.",
+  },
+  {
+    name: "Undisclosed Scale-up",
     question: "Has the company reached a growth ceiling?",
     outcome:
-      "The Room surfaced structural, cultural and leadership constraints behind the visible symptoms.",
+      "The Room surfaced the structural, cultural and leadership constraints behind the visible symptoms, providing clarity on the next stage of growth.",
   },
 ];
 
@@ -286,11 +301,7 @@ export default function Home() {
                   <dd>{project.question}</dd>
                 </div>
                 <div>
-                  <dt>Who entered the room</dt>
-                  <dd>{project.whoEntered}</dd>
-                </div>
-                <div>
-                  <dt>What changed</dt>
+                  <dt>Room outcome</dt>
                   <dd>{project.outcome}</dd>
                 </div>
               </dl>
