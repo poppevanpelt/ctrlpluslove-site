@@ -291,28 +291,11 @@ export default function Home() {
             </div>
           </div>
 
-          {featuredProof.map((project) => (
-            <article className="homepage-proof proof-panel" key={project.name}>
-              <p>Anonymised project</p>
-              <h3>{project.name}</h3>
-              <dl>
-                <div>
-                  <dt>Decision question</dt>
-                  <dd>{project.question}</dd>
-                </div>
-                <div>
-                  <dt>Room outcome</dt>
-                  <dd>{project.outcome}</dd>
-                </div>
-              </dl>
-            </article>
-          ))}
-
           <div className="homepage-proof-grid project-proof-grid">
-            {featuredProjects.map((project, index) => (
+            {[...featuredProof, ...featuredProjects].map((project, index) => (
               <article
                 className="homepage-proof project-proof"
-                id={`project-undisclosed-${String(index + 2).padStart(2, "0")}`}
+                id={`project-undisclosed-${String(index + 1).padStart(2, "0")}`}
                 key={project.name}
               >
                 <p>Anonymised project</p>

@@ -2531,8 +2531,8 @@ h3 {
 }
 
 .project-proof {
-  grid-template-rows: auto auto 1fr;
-  min-height: 16rem;
+  grid-template-rows: auto minmax(3.4rem, auto) 1fr;
+  min-height: clamp(18rem, 20vw, 20rem);
 }
 
 .network-perspective-grid {
@@ -2604,7 +2604,8 @@ h3 {
 
 @media (max-width: 1100px) {
   .decision-process-grid,
-  .network-perspective-grid {
+  .network-perspective-grid,
+  .project-proof-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
