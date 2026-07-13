@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { AmbassadorGrid } from "./ambassador-grid";
 import { confirmedAmbassadors } from "./ambassadors-data";
 import { HomeHero } from "./home-hero";
 import { LivingTicker } from "./living-ticker";
@@ -8,78 +7,99 @@ import {
   homepageRoomPersonas,
   supportingRoomPersonas,
 } from "./room-personas-data";
+import { SteelBallPresence } from "./steel-ball-presence";
 import { ThemeToggle } from "./theme-toggle";
 
 const howItWorks = [
   {
     step: "Step 1",
-    title: "Bring the decision",
-    copy: "A strategic, creative or commercial decision that matters enough to test before it becomes expensive.",
+    title: "Bring one real decision",
+    copy: "A strategy, proposition, campaign, product move or growth question that is important enough to be wrong about.",
   },
   {
     step: "Step 2",
-    title: "Build the right room",
-    copy: "AI systems, expert judgment, market signals and opposing perspectives are assembled around the question.",
+    title: "Define the stakes",
+    copy: "We clarify who is affected, what success would mean and what would become expensive if the decision fails.",
   },
   {
     step: "Step 3",
-    title: "Leave with a sharper move",
-    copy: "The room shows what holds, what breaks and what should happen next: move, adapt or stop.",
+    title: "Build the room",
+    copy: "AI systems, expert judgment, market context and opposing perspectives are assembled around the question.",
+  },
+  {
+    step: "Step 4",
+    title: "Expose the pressure",
+    copy: "The room tests the decision against customers, culture, execution, commercial reality and likely consequences.",
+  },
+  {
+    step: "Step 5",
+    title: "Leave with a move",
+    copy: "You get what holds, what breaks, what needs to change and whether to move, adapt or stop.",
   },
 ];
 
 const offers = [
   {
     title: "Decision Stress-Test™",
-    description:
-      "One important decision, subjected to concentrated strategic and creative pressure.",
-    details: ["90 minutes", "One decision", "Clear recommendation", "Move, adapt or stop", "€4,500"],
-    cta: "Bring a decision",
+    purpose: "A concentrated pressure test for one decision that needs a sharper answer.",
+    bestFor: "A launch, repositioning, growth bet, campaign or board-level choice.",
+    participants: "CTRL+LOVE lead, relevant room lenses, AI synthesis and selected expert pressure.",
+    outcome: "A clear recommendation: move, adapt or stop. €4,500.",
+    cta: "Bring this decision",
     href: "/stress-test/",
   },
   {
     title: "On-Call Room™",
-    description:
-      "Ongoing access for decisions that keep moving, changing or returning.",
-    details: ["Embedded decision support", "Direct access", "Fast turnaround", "From €5,000 per month"],
-    cta: "Discuss access",
+    purpose: "Ongoing decision support when the question keeps moving or returning.",
+    bestFor: "Founders, leadership teams and brands making repeated high-stakes calls.",
+    participants: "A standing room with fast access to the right human and machine perspectives.",
+    outcome: "Sharper decisions over time, without turning every question into a workshop.",
+    cta: "See when to use it",
     href: "/pricing/on-call-room/",
   },
   {
     title: "Kill or Scale™",
-    description:
-      "A focused review for an idea, proposition, product or campaign that needs a hard answer.",
-    details: ["Commercial and creative pressure test", "Weaknesses exposed early", "Directional verdict", "Price on request"],
-    cta: "Test an idea",
+    purpose: "A hard answer for an idea, proposition, product or campaign at a fork in the road.",
+    bestFor: "Concepts that may deserve more investment, or a dignified ending.",
+    participants: "Creative, commercial, cultural and execution pressure around the same evidence.",
+    outcome: "A directional verdict and the strongest path if the idea survives.",
+    cta: "Enter this room",
     href: "/pricing/kill-or-scale/",
   },
 ];
 
-const practiceLinks = [
+const insideRoom = [
   {
-    title: "See a decision change",
-    copy: "Follow the discussion from first assumption to sharper next move.",
-    href: "#projects",
+    title: "The decision brief",
+    copy: "What is being decided, who is affected, what is assumed and what would make the decision wrong.",
   },
   {
-    title: "Read an anonymised project",
-    copy: "Explore how the Room challenged strategy, creative work and growth decisions.",
-    href: "#projects",
+    title: "Perspective passes",
+    copy: "Distinct lenses test the same decision: customer truth, culture, commerce, execution, reputation and consequence.",
   },
   {
-    title: "Meet the wider Room",
-    copy: "See the experts, markets and cultural perspectives behind the Engine.",
-    href: "#room",
+    title: "The contradiction map",
+    copy: "Where the room disagrees, where confidence is false and which assumptions deserve evidence before action.",
+  },
+  {
+    title: "The next move",
+    copy: "A concise recommendation with what to keep, what to change and what not to do yet.",
+  },
+];
+
+const featuredProof = [
+  {
+    name: "Undisclosed Brand 01",
+    question:
+      "How can the brand grow across the Netherlands, Germany and Belgium without flattening what makes it distinct?",
+    whoEntered:
+      "Strategic, creative and local-market perspectives entered the room before the recommendation hardened.",
+    outcome:
+      "The Room identified where the proposition travels, where it breaks and what must be adapted locally.",
   },
 ];
 
 const featuredProjects = [
-  {
-    name: "Undisclosed Brand 01",
-    question: "How can the brand grow across the Netherlands, Germany and Belgium?",
-    outcome:
-      "The Room identified where the proposition travels, where it breaks and what must be adapted locally.",
-  },
   {
     name: "Undisclosed Brand 02",
     question: "What is the strongest path to growth without flattening the brand?",
@@ -93,6 +113,23 @@ const featuredProjects = [
       "The Room surfaced structural, cultural and leadership constraints behind the visible symptoms.",
   },
 ];
+
+const networkPerspectives: Record<string, string> = {
+  "poppe-van-pelt":
+    "Creative leadership, brand consequence and the discipline to keep the room honest.",
+  "nadia-al-mardini":
+    "European market instinct, strategic framing and the questions a local team would actually ask.",
+  "shun-iwai":
+    "Japanese cultural intelligence and the quiet signals that rarely survive a global deck.",
+  "sung-wook-tayl-chung":
+    "Korean market perspective, creative judgment and pressure on whether the idea travels.",
+  "mats-utberg":
+    "Nordic brand sense, commercial clarity and a useful allergy to overclaiming.",
+  "jorge-virgos":
+    "Southern European creative strategy and the ability to spot when momentum is not yet meaning.",
+};
+
+const featuredNetwork = confirmedAmbassadors.slice(0, 6);
 
 const practicalQuestions = [
   {
@@ -134,61 +171,15 @@ const founderBio = [
 
 export default function Home() {
   return (
-    <main className="site-shell">
+    <main className="site-shell" id="main-content">
+      <a className="skip-link" href="#main-content">
+        Skip to main content
+      </a>
       <ThemeToggle />
 
       <HomeHero />
 
       <LivingTicker />
-
-      <section
-        className="content-section ruled homepage-section practice-section"
-        aria-labelledby="practice-title"
-      >
-        <div className="content-block wide homepage-block">
-          <div className="section-heading quiet-heading">
-            <div>
-              <p className="section-kicker">The Room in practice</p>
-              <h2 id="practice-title">
-                You should not have to imagine what happens.
-              </h2>
-            </div>
-            <p>
-              Every ctrl+love example below is anonymised or illustrative where
-              it needs to be. The useful bit is the pressure: the question, the
-              disagreement, the blind spots and the sharper next move.
-            </p>
-          </div>
-
-          <div className="practice-link-grid">
-            {practiceLinks.map((item) => (
-              <Link className="practice-link" href={item.href} key={item.title}>
-                <h3>{item.title}</h3>
-                <p>{item.copy}</p>
-              </Link>
-            ))}
-          </div>
-
-          <Link className="steel-ball-home-card" href="/steel-ball/">
-            <span className="steel-ball-home-copy">
-              <span className="section-kicker">Artifact 001</span>
-              <strong>The Steel Ball</strong>
-              <span>
-                The original replica. A physical reminder to test confidence
-                before reality does.
-              </span>
-              <em>€29.95 · View product →</em>
-            </span>
-            <span
-              className="steel-ball-home-image"
-              role="img"
-              aria-label="A polished steel ball"
-            >
-              <span className="steel-ball-object" aria-hidden="true" />
-            </span>
-          </Link>
-        </div>
-      </section>
 
       <section
         className="content-section ruled homepage-section"
@@ -198,25 +189,74 @@ export default function Home() {
         <div className="content-block wide homepage-block">
           <div className="section-heading quiet-heading">
             <div>
-              <p className="section-kicker">How it works</p>
+              <p className="section-kicker">How a Decision Room works</p>
               <h2 id="how-it-works-title">
-                One decision. More than one way of seeing it.
+                One decision, tested from more than one reality.
               </h2>
             </div>
             <p>
-              A living room for decisions: fast machine intelligence, human
-              judgment and a clear process for useful disagreement.
+              A Decision Room is a structured pressure test. It invites the
+              people, systems and perspectives the decision will meet later,
+              while there is still time to change course.
             </p>
           </div>
 
-          <div className="homepage-step-grid">
+          <div
+            className="decision-process-grid"
+            id="decision-room-works"
+            aria-label="Five steps in a Decision Room"
+          >
             {howItWorks.map((step) => (
-              <article className="homepage-step" key={step.title}>
+              <article className="decision-process-step" key={step.title}>
                 <p>{step.step}</p>
                 <h3>{step.title}</h3>
                 <p>{step.copy}</p>
               </article>
             ))}
+          </div>
+
+          <Link className="text-link" href="#offer">
+            Explore the rooms →
+          </Link>
+        </div>
+      </section>
+
+      <section
+        className="content-section ruled homepage-section inside-room-section"
+        aria-labelledby="inside-room-title"
+      >
+        <div className="content-block wide homepage-block">
+          <div className="section-heading quiet-heading">
+            <div>
+              <p className="section-kicker">Inside a Decision Room</p>
+              <h2 id="inside-room-title">
+                Less theatre. More useful friction.
+              </h2>
+            </div>
+            <p>
+              The room is not a brainstorm and not a dashboard. It is a working
+              system for turning disagreement into a better decision.
+            </p>
+          </div>
+
+          <div className="inside-room-layout">
+            <div className="inside-room-visual" aria-hidden="true">
+              {/* TODO: Replace this neutral schematic with a production capture of a real Decision Room output once client-safe material is available. */}
+              <span className="inside-room-node is-decision">Decision</span>
+              <span className="inside-room-node">Customer</span>
+              <span className="inside-room-node">Culture</span>
+              <span className="inside-room-node">Commerce</span>
+              <span className="inside-room-node">Execution</span>
+              <span className="inside-room-node is-outcome">Next move</span>
+            </div>
+            <div className="inside-room-list">
+              {insideRoom.map((item) => (
+                <article className="inside-room-item" key={item.title}>
+                  <h3>{item.title}</h3>
+                  <p>{item.copy}</p>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -226,21 +266,42 @@ export default function Home() {
         id="projects"
         aria-labelledby="projects-title"
       >
-        <div className="content-block wide surfaced-section">
+        <div className="content-block wide homepage-block proof-block">
           <div className="section-heading quiet-heading">
             <div>
-              <p className="section-kicker">Projects</p>
+              <p className="section-kicker">What changes when the room changes</p>
               <h2 id="projects-title">
-                Decisions already brought into the Room.
+                Better decisions usually start as better disagreement.
               </h2>
             </div>
           </div>
 
-          <div className="homepage-proof-grid">
+          {featuredProof.map((project) => (
+            <article className="homepage-proof proof-panel" key={project.name}>
+              <p>Anonymised project</p>
+              <h3>{project.name}</h3>
+              <dl>
+                <div>
+                  <dt>Decision question</dt>
+                  <dd>{project.question}</dd>
+                </div>
+                <div>
+                  <dt>Who entered the room</dt>
+                  <dd>{project.whoEntered}</dd>
+                </div>
+                <div>
+                  <dt>What changed</dt>
+                  <dd>{project.outcome}</dd>
+                </div>
+              </dl>
+            </article>
+          ))}
+
+          <div className="homepage-proof-grid project-proof-grid">
             {featuredProjects.map((project, index) => (
               <article
                 className="homepage-proof project-proof"
-                id={`project-undisclosed-${String(index + 1).padStart(2, "0")}`}
+                id={`project-undisclosed-${String(index + 2).padStart(2, "0")}`}
                 key={project.name}
               >
                 <p>Anonymised project</p>
@@ -262,6 +323,26 @@ export default function Home() {
       </section>
 
       <section
+        className="content-section ruled homepage-section steel-ball-signature-section"
+        aria-labelledby="steel-ball-title"
+      >
+        <div className="content-block wide homepage-block">
+          <div className="section-heading quiet-heading">
+            <div>
+              <p className="section-kicker">Signature artifact</p>
+              <h2 id="steel-ball-title">Confidence should feel heavy.</h2>
+            </div>
+            <p>
+              The Steel Ball is the small physical version of the same idea:
+              pressure first, certainty later.
+            </p>
+          </div>
+
+          <SteelBallPresence />
+        </div>
+      </section>
+
+      <section
         className="content-section ruled homepage-section"
         id="offer"
         aria-labelledby="offer-title"
@@ -276,12 +357,24 @@ export default function Home() {
             {offers.map((offer) => (
               <article className="homepage-offer" key={offer.title}>
                 <h3>{offer.title}</h3>
-                <p>{offer.description}</p>
-                <ul>
-                  {offer.details.map((detail) => (
-                    <li key={detail}>{detail}</li>
-                  ))}
-                </ul>
+                <dl className="offer-definition-list">
+                  <div>
+                    <dt>Purpose</dt>
+                    <dd>{offer.purpose}</dd>
+                  </div>
+                  <div>
+                    <dt>Best for</dt>
+                    <dd>{offer.bestFor}</dd>
+                  </div>
+                  <div>
+                    <dt>Participants</dt>
+                    <dd>{offer.participants}</dd>
+                  </div>
+                  <div>
+                    <dt>Outcome</dt>
+                    <dd>{offer.outcome}</dd>
+                  </div>
+                </dl>
                 <Link className="text-link" href={offer.href}>
                   {offer.cta} →
                 </Link>
@@ -362,6 +455,23 @@ export default function Home() {
             </p>
           </div>
 
+          <div className="network-perspective-grid" aria-label="Featured human perspectives">
+            {featuredNetwork.map((person) => (
+              <article className="network-perspective-card" key={person.id}>
+                <p>{person.number}</p>
+                <h3>
+                  {person.preferredName ?? person.name}
+                  <span>{person.flag}</span>
+                </h3>
+                <span>{person.city} / {person.country}</span>
+                <p>{networkPerspectives[person.id] ?? "A trusted perspective that enters when the decision needs it."}</p>
+                <Link href={`/ambassadors/${person.id}/`}>
+                  View perspective →
+                </Link>
+              </article>
+            ))}
+          </div>
+
           <article className="founder-bio-card" aria-labelledby="founder-bio-title">
             <div className="founder-bio-intro">
               <p className="section-kicker">Founder</p>
@@ -387,10 +497,8 @@ export default function Home() {
             </details>
           </article>
 
-          <AmbassadorGrid ambassadors={confirmedAmbassadors} compact />
-
           <Link className="text-link" href="/ambassadors/">
-            Meet the network →
+            Meet the wider network →
           </Link>
         </div>
       </section>
@@ -436,13 +544,18 @@ export default function Home() {
 
       <section className="content-section ruled final-cta-section final-growth-section">
         <div className="content-block statement-block centered final-growth-cta">
-          <h2>Bring the decision before reality does.</h2>
+          <p className="section-kicker">Before reality does</p>
+          <h2>Bring the decision into the room.</h2>
+          <p>
+            Most organisations test products before releasing them. Important
+            decisions deserve the same pressure.
+          </p>
           <div className="home-hero-actions" aria-label="Final actions">
             <Link href="/stress-test/" className="home-hero-cta">
-              Stress-test a decision
+              Bring a decision into the room
             </Link>
-            <Link href="#projects" className="home-hero-secondary">
-              Explore real projects
+            <Link href="mailto:hello@ctrlpluslove.com?subject=Talk%20to%20CTRL%2BLOVE" className="home-hero-secondary">
+              Talk to CTRL+LOVE
             </Link>
           </div>
         </div>

@@ -27,22 +27,22 @@ export function HomeHero() {
               lineHeight: 1.42,
             }}
           >
-            We expose disagreement, blind spots and likely consequences before
-            a decision reaches the market.
+            Test important decisions with the people they affect before reality
+            makes the decision for you.
           </p>
           <p className="home-hero-translation">
             Stress-test your decisions before the market does.
           </p>
           <p className="home-hero-mechanism">
-            A distributed creative intelligence network powered by AI, trusted
-            experts and structured workflows.
+            CTRL+LOVE builds Decision Rooms: structured pressure tests powered
+            by AI, trusted experts and perspectives from the markets that matter.
           </p>
           <div className="home-hero-actions" aria-label="Primary actions">
             <a href="/stress-test/" className="home-hero-cta">
-              Stress-test a decision
+              Bring a decision into the room
             </a>
-            <a href="/living-decision-review/" className="home-hero-secondary">
-              Watch the Room think
+            <a href="#decision-room-works" className="home-hero-secondary">
+              See how a Decision Room works
             </a>
           </div>
           <a className="home-steel-ball-link" href="/steel-ball/">
@@ -52,7 +52,8 @@ export function HomeHero() {
             </span>
           </a>
           <p className="home-hero-proof">
-            Real decisions. Real disagreement. Clearer next moves.
+            For leaders, founders and teams who need to know what breaks before
+            money, reputation or momentum is committed.
           </p>
         </div>
       </div>
