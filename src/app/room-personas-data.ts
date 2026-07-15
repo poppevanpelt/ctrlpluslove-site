@@ -11,7 +11,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     id: "maya-elise-harper",
     name: "Maya Elise Harper",
     role: "Emotional Truth",
-    line: "Finds what people are really buying.",
+    line: "Finds what people are buying beneath the brief.",
     contribution:
       "Reframes the decision around the human need underneath the stated brief.",
   },
@@ -19,7 +19,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     id: "simon-cross",
     name: "Simon Cross",
     role: "Contrarian Pressure",
-    line: "Challenges the answer everyone already agreed on.",
+    line: "Challenges the answer the room agreed on too early.",
     contribution:
       "Applies constructive skepticism before the market does it less politely.",
   },
@@ -59,7 +59,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     id: "the-customer",
     name: "The Customer",
     role: "The Missing Chair",
-    line: "Would anyone outside this room actually care?",
+    line: "Would anyone outside this room care enough to act?",
     contribution:
       "Pulls the room back to the person who has to choose, pay for, use or ignore the thing.",
   },
@@ -70,7 +70,7 @@ export const supportingRoomPersonas: RoomPersona[] = [
     id: "charles-whitmore",
     name: "Charles Whitmore",
     role: "Executive Judgment",
-    line: "Clarifies the real decision, the stakes and what success actually looks like.",
+    line: "Clarifies the real decision, the stakes and what success must look like.",
   },
   {
     id: "clare-mercer",
@@ -102,7 +102,7 @@ export const supportingRoomPersonas: RoomPersona[] = [
     id: "sandra-soskic",
     name: "Sandra Soskic",
     role: "Execution Reality",
-    line: "Asks whether the recommendation can actually be produced, delivered and maintained.",
+    line: "Asks whether the recommendation can be produced, delivered and maintained.",
   },
   {
     id: "vera-elise-hartmann",
@@ -124,9 +124,31 @@ export const supportingRoomPersonas: RoomPersona[] = [
     id: "johan-cruyff",
     name: "Johan Cruyff",
     role: "Simple Truth",
-    line: "Leaves the Room with the one observation that suddenly makes everything obvious.",
+    line: "Leaves the Room with the observation that makes the pattern obvious.",
   },
 ];
 
 export const roomPersonas = coreRoomPersonas;
 export const homepageRoomPersonas = coreRoomPersonas;
+
+export const allRoomPersonas = [...coreRoomPersonas, ...supportingRoomPersonas];
+
+export function getRoomPersona(id: string) {
+  return allRoomPersonas.find((persona) => persona.id === id);
+}
+
+export function getRoomPersonaNeighbors(id: string) {
+  const index = allRoomPersonas.findIndex((persona) => persona.id === id);
+
+  if (index < 0) {
+    return {
+      previous: undefined,
+      next: undefined,
+    };
+  }
+
+  return {
+    previous: allRoomPersonas[index - 1] ?? allRoomPersonas[allRoomPersonas.length - 1],
+    next: allRoomPersonas[index + 1] ?? allRoomPersonas[0],
+  };
+}

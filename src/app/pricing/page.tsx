@@ -1,28 +1,27 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { routeMetadata } from "../seo";
+
 const pricingDocuments = [
   {
     name: "Decision Stress-Test™",
     href: "/pricing/decision-stress-test/",
-    src: "/pricing/decision-stress-test.png?v=20260626-prices",
+    src: "/pricing/decision-stress-test.webp",
   },
   {
     name: "On-Call Room™",
     href: "/pricing/on-call-room/",
-    src: "/pricing/on-call-room.png?v=20260626-prices",
+    src: "/pricing/on-call-room.webp",
   },
   {
     name: "Kill or Scale™",
     href: "/pricing/kill-or-scale/",
-    src: "/pricing/kill-or-scale.png?v=20260626-prices",
+    src: "/pricing/kill-or-scale.webp",
   },
 ];
 
-export const metadata = {
-  title: "Rooms and pricing — ctrl+love",
-  description: "Pricing is simple. But the room should fit the question.",
-};
+export const metadata = routeMetadata("/pricing/");
 
 export default function PricingPage() {
   return (

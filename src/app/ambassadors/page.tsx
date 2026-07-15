@@ -3,12 +3,10 @@ import Link from "next/link";
 
 import { AmbassadorGrid } from "../ambassador-grid";
 import { ambassadorMetrics, confirmedAmbassadors } from "../ambassadors-data";
+import { routeMetadata } from "../seo";
 import { ThemeToggle } from "../theme-toggle";
 
-export const metadata: Metadata = {
-  title: "Around the Table — ctrl+love",
-  description: "The distributed human network behind the ctrl+love Engine.",
-};
+export const metadata: Metadata = routeMetadata("/ambassadors/");
 
 export default function AmbassadorsPage() {
   return (

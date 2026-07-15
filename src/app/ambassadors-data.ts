@@ -166,6 +166,7 @@ export const ambassadors: Ambassador[] = [
     status: "ambassador",
     participationLabel: "Ambassador",
     image: "/ambassadors/portraits/009-umberto-bartolini-portrait-live-20260712.jpeg",
+    linkedin: "https://www.linkedin.com/in/umberto/",
     roomHref: "/#room",
     public: true,
   },

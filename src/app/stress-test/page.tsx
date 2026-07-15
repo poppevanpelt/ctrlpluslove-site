@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { routeMetadata } from "../seo";
 import { ThemeToggle } from "../theme-toggle";
 import { StressEntry } from "./stress-entry";
 
-export const metadata: Metadata = {
-  title: "Decision Stress-Test™ — ctrl+love",
-  description:
-    "Bring one live creative decision into the ctrl+love room. Leave with less fog.",
-};
+export const metadata: Metadata = routeMetadata("/stress-test/");
 
 const clientInputs = [
   "Campaign route",
@@ -52,7 +49,7 @@ export default function StressTestPage() {
           </h1>
           <p className="stress-hero-line">Bring one decision. Leave with less fog.</p>
           <p className="stress-hero-support">
-            ctrl+love helps companies see what their ideas are really doing
+            ctrl+love helps companies see what their ideas are doing
             before the market, the boardroom, or the comment section does it
             for them.
           </p>
@@ -165,7 +162,7 @@ export default function StressTestPage() {
           </ul>
           <p className="stress-closing-line">
             The output is a clear decision artifact. Something people can
-            actually use.
+            use.
           </p>
         </div>
       </section>

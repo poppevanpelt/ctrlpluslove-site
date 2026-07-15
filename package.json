@@ -9,22 +9,27 @@
     "preview:static": "node scripts/clean-static-output.mjs && next build --webpack && node scripts/make-static-preview.mjs",
     "preview:serve": "node scripts/serve-static-preview.mjs",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "next typegen && tsc --noEmit --incremental false",
+    "test": "node --test --experimental-strip-types --experimental-specifier-resolution=node \"tests/**/*.test.ts\""
   },
   "dependencies": {
     "@vercel/analytics": "latest",
     "@vercel/speed-insights": "^2.0.0",
-    "next": "16.2.1",
+    "next": "16.2.10",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
   "devDependencies": {
-    "@next/swc-wasm-nodejs": "16.2.1",
+    "@next/swc-wasm-nodejs": "16.2.10",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.2.1",
+    "eslint-config-next": "16.2.10",
     "typescript": "^5"
+  },
+  "overrides": {
+    "postcss": "8.5.10"
   }
 }

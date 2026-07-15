@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 
+import { routeMetadata } from "../seo";
 import { ThemeToggle } from "../theme-toggle";
 
-export const metadata: Metadata = {
-  title: "Inside ctrl+love — ctrl+love",
-  description: "Internal tools, departments and artifacts from the ctrl+love engine.",
-};
+export const metadata: Metadata = routeMetadata("/inside-ctrl-love/");
 
 const departments = [
   {

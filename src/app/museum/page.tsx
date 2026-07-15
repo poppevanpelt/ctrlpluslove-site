@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { MuseumShop } from "./museum-shop";
+import { routeMetadata } from "../seo";
 
-export const metadata: Metadata = {
-  title: "Museum Shop — ctrl+love",
-  description: "Ideas. Artifacts. Consequences. Objects from the ctrl+love archive.",
-};
+export const metadata: Metadata = routeMetadata("/museum/");
 
 export default function MuseumPage() {
   return <MuseumShop />;

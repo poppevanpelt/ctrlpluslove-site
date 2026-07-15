@@ -16,7 +16,7 @@ function formatAmbassadorLocation(ambassador: Ambassador) {
 }
 
 function portraitSrc(src: string) {
-  return `${src}?v=portrait-clean-20260712-2`;
+  return src;
 }
 
 export function AmbassadorCard({ ambassador }: AmbassadorCardProps) {
@@ -41,7 +41,6 @@ export function AmbassadorCard({ ambassador }: AmbassadorCardProps) {
             className="ambassador-profile-image"
             loading="lazy"
             sizes="(max-width: 980px) 100vw, 42vw"
-            unoptimized
           />
         ) : (
           <div className="ambassador-initials" aria-label={ambassador.name}>
@@ -155,7 +154,6 @@ export function AmbassadorGrid({
                     className="ambassador-portrait-image"
                     loading="lazy"
                     sizes="7.5rem"
-                    unoptimized
                   />
                 ) : (
                   <span className="ambassador-initials">

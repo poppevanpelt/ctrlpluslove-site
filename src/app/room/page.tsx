@@ -5,12 +5,10 @@ import {
   roomPersonas,
   supportingRoomPersonas,
 } from "../room-personas-data";
+import { routeMetadata } from "../seo";
 import { ThemeToggle } from "../theme-toggle";
 
-export const metadata: Metadata = {
-  title: "The Room — ctrl+love",
-  description: "The decision-making lenses inside the ctrl+love Room.",
-};
+export const metadata: Metadata = routeMetadata("/room/");
 
 export default function RoomPage() {
   return (
@@ -42,7 +40,9 @@ export default function RoomPage() {
                   {String(index + 1).padStart(2, "0")}
                 </p>
                 <div>
-                  <h2>{persona.name}</h2>
+                  <h2>
+                    <Link href={`/room/${persona.id}/`}>{persona.name}</Link>
+                  </h2>
                   <p className="room-persona-role">{persona.role}</p>
                 </div>
                 <p className="room-persona-line">{persona.line}</p>
@@ -72,7 +72,9 @@ export default function RoomPage() {
             <div className="supporting-persona-list">
               {supportingRoomPersonas.map((persona) => (
                 <article className="supporting-persona" key={persona.id}>
-                  <h3>{persona.name}</h3>
+                  <h3>
+                    <Link href={`/room/${persona.id}/`}>{persona.name}</Link>
+                  </h3>
                   <p>{persona.role}</p>
                   <strong>{persona.line}</strong>
                   {persona.contribution ? <span>{persona.contribution}</span> : null}

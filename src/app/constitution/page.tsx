@@ -1,10 +1,8 @@
 import Link from "next/link";
+import { routeMetadata } from "../seo";
 import { ThemeToggle } from "../theme-toggle";
 
-export const metadata = {
-  title: "ctrl+love constitution",
-  description: "Download the ctrl+love constitution archive.",
-};
+export const metadata = routeMetadata("/constitution/");
 
 export default function ConstitutionPage() {
   return (

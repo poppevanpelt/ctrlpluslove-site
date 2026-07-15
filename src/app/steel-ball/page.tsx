@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
+import { createPageMetadata } from "../seo";
 import { ThemeToggle } from "../theme-toggle";
 
 const steelBallStory = [
@@ -32,34 +33,14 @@ const steelBallStory = [
   "Warning: May expose weak ideas before the market does.",
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
+  path: "/steel-ball/",
   title: "The Steel Ball — ctrl+love",
   description:
     "The original replica. A physical reminder to test confidence before reality does.",
-  openGraph: {
-    title: "The Steel Ball — ctrl+love",
-    description:
-      "The original replica. A physical reminder to test confidence before reality does.",
-    url: "/steel-ball",
-    siteName: "ctrl+love",
-    type: "website",
-    images: [
-      {
-        url: "/museum/steel-ball-packshot.png",
-        width: 1200,
-        height: 630,
-        alt: "The Steel Ball by ctrl+love",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "The Steel Ball — ctrl+love",
-    description:
-      "The original replica. A physical reminder to test confidence before reality does.",
-    images: ["/museum/steel-ball-packshot.png"],
-  },
-};
+  image: "/museum/steel-ball-packshot.png",
+  imageAlt: "The Steel Ball by ctrl+love",
+});
 
 export default function SteelBallPage() {
   return (

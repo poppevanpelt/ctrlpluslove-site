@@ -497,7 +497,7 @@ export default function AiYFierClient() {
         <section className={styles.terminalPanel} aria-label="Live funding signal">
           <Image
             className={styles.heroVisual}
-            src="/ai-y-fier-hero-inflation-engine.png?v=confidence-layer"
+            src="/ai-y-fier-hero-inflation-engine.webp"
             alt="A sentence entering a dark machine and exiting as a much larger hollow language bubble"
             width={1280}
             height={720}

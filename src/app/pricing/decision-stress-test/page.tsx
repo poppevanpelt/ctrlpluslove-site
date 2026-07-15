@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { DocumentViewer } from "../../document-viewer";
+import { routeMetadata } from "../../seo";
 
-export const metadata: Metadata = {
-  title: "Decision Stress-Test pricing — ctrl+love",
-};
+export const metadata: Metadata = routeMetadata("/pricing/decision-stress-test/");
 
 export default function DecisionStressTestPricingPage() {
   return (
     <DocumentViewer
-      src="/pricing/decision-stress-test.png"
+      src="/pricing/decision-stress-test.webp"
       alt="Decision Stress-Test pricing document"
       width={1536}
       height={1024}

@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { DocumentViewer } from "../document-viewer";
+import { routeMetadata } from "../seo";
 
-export const metadata: Metadata = {
-  title: "Department of Reality Preservation — ctrl+love",
-};
+export const metadata: Metadata = routeMetadata("/reality/");
 
 export default function RealityPage() {
   return (
     <DocumentViewer
-      src="/reality-poster.png"
+      src="/reality-poster.webp"
       alt="Department of Reality Preservation"
       width={1672}
       height={941}

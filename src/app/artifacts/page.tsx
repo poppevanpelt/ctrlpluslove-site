@@ -1,8 +1,8 @@
 import Link from "next/link";
 
-export const metadata = {
-  title: "The Artifact Registry — ctrl+love",
-};
+import { routeMetadata } from "../seo";
+
+export const metadata = routeMetadata("/artifacts/");
 
 const artifacts = [
   {

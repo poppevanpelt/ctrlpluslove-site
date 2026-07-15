@@ -1,8 +1,7 @@
 import { MeetingFilterSection } from "../meeting-filter-section";
+import { routeMetadata } from "../seo";
 
-export const metadata = {
-  title: "The Meeting Filter — ctrl+love",
-};
+export const metadata = routeMetadata("/meeting-filter/");
 
 export default function MeetingFilterPage() {
   return (

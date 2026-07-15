@@ -7,6 +7,7 @@ import {
   ambassadorProfiles,
   getAmbassadorProfile,
 } from "../../ambassador-profiles-data";
+import { absoluteUrl } from "../../seo";
 import { ThemeToggle } from "../../theme-toggle";
 
 type AmbassadorProfilePageProps = {
@@ -16,7 +17,7 @@ type AmbassadorProfilePageProps = {
 };
 
 function portraitSrc(src: string) {
-  return `${src}?v=profile-20260713`;
+  return src;
 }
 
 export function generateStaticParams() {
@@ -42,9 +43,13 @@ export async function generateMetadata({
   return {
     title: `${profile.name} — ctrl+love Ambassador`,
     description,
+    alternates: {
+      canonical: absoluteUrl(`/ambassadors/${profile.slug}/`),
+    },
     openGraph: {
       title: `${profile.name} — ctrl+love Ambassador`,
       description,
+      url: absoluteUrl(`/ambassadors/${profile.slug}/`),
       type: "profile",
       images: profile.image
         ? [
@@ -56,6 +61,12 @@ export async function generateMetadata({
             },
           ]
         : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${profile.name} — ctrl+love Ambassador`,
+      description,
+      images: profile.image ? [profile.image] : undefined,
     },
   };
 }
@@ -118,7 +129,6 @@ export default async function AmbassadorProfilePage({
                   className="ambassador-detail-image"
                   priority
                   sizes="(max-width: 860px) 100vw, 42vw"
-                  unoptimized
                 />
               ) : (
                 <div className="ambassador-detail-initials" aria-label={profile.name}>

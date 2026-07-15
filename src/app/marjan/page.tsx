@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { DocumentViewer } from "../document-viewer";
+import { routeMetadata } from "../seo";
 
-export const metadata: Metadata = {
-  title: "Dear Marjan — ctrl+love",
-};
+export const metadata: Metadata = routeMetadata("/marjan/");
 
 export default function MarjanPage() {
   return (
     <DocumentViewer
-      src="/dear-marjan.png"
+      src="/dear-marjan.webp"
       alt="Dear Marjan"
       width={1024}
       height={1536}
