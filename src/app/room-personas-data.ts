@@ -141,6 +141,7 @@ export const supportingRoomPersonas: RoomPersona[] = [
     name: "Johan Cruyff",
     role: "Simple Truth",
     line: "Leaves the Room with the observation that makes the pattern obvious.",
+    portrait: "/room/personas/johan-cruyff-silhouette.jpg",
   },
 ];
 
