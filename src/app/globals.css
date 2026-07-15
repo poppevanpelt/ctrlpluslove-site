@@ -10534,12 +10534,37 @@ h3 {
 
 .persona-portrait span {
   position: absolute;
-  top: 13%;
-  width: 52%;
-  aspect-ratio: 1.45;
-  border-radius: 52% 48% 38% 42%;
-  background: color-mix(in srgb, var(--persona-accent, var(--team-warm)) 70%, var(--ink));
-  transform: translateY(-0.05rem);
+  inset: 0;
+  display: block;
+  background:
+    radial-gradient(ellipse at 50% 31%, color-mix(in srgb, var(--ink) 84%, transparent) 0 16%, transparent 16.5%),
+    radial-gradient(ellipse at 50% 88%, color-mix(in srgb, var(--ink) 84%, transparent) 0 35%, transparent 35.5%),
+    linear-gradient(180deg, transparent 0 100%);
+  content: "";
+}
+
+.persona-portrait span::before {
+  position: absolute;
+  top: 19%;
+  left: 50%;
+  width: 42%;
+  aspect-ratio: 0.76;
+  border-radius: 48% 48% 45% 45%;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--ink) 90%, transparent), color-mix(in srgb, var(--ink) 76%, transparent));
+  box-shadow: 0 1rem 2rem color-mix(in srgb, var(--ink) 14%, transparent);
+  transform: translateX(-50%);
+  content: "";
+}
+
+.persona-portrait span::after {
+  position: absolute;
+  right: 0.85rem;
+  bottom: 0.85rem;
+  left: 0.85rem;
+  height: 38%;
+  border-radius: 48% 48% 0 0;
+  background: color-mix(in srgb, var(--ink) 82%, transparent);
   content: "";
 }
 
