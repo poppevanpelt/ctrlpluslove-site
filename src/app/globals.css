@@ -2280,6 +2280,10 @@ h3 {
   pointer-events: auto;
 }
 
+#the-room:focus-visible {
+  outline: none;
+}
+
 .decision-process-grid {
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
@@ -10481,11 +10485,65 @@ h3 {
   transform: translateY(-0.35rem);
 }
 
-.persona-card span {
+.persona-card > span {
   color: color-mix(in srgb, currentColor 54%, var(--muted));
   font-size: 0.7rem;
   font-weight: 850;
   letter-spacing: 0.1em;
+}
+
+.persona-portrait {
+  position: relative;
+  display: grid;
+  width: min(100%, 9.5rem);
+  aspect-ratio: 1;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 36% 28%, color-mix(in srgb, var(--persona-accent, var(--team-warm)) 42%, transparent), transparent 32%),
+    radial-gradient(circle at 62% 68%, color-mix(in srgb, currentColor 18%, transparent), transparent 38%),
+    color-mix(in srgb, var(--paper-soft) 78%, transparent);
+  box-shadow:
+    inset -0.8rem -0.9rem 1.8rem color-mix(in srgb, currentColor 9%, transparent),
+    0 1.2rem 2.6rem color-mix(in srgb, var(--ink) 8%, transparent);
+  transition: border-color 220ms ease, transform 260ms ease;
+}
+
+.persona-portrait::before,
+.persona-portrait::after {
+  position: absolute;
+  border: 1px solid color-mix(in srgb, currentColor 15%, transparent);
+  border-radius: 50%;
+  content: "";
+}
+
+.persona-portrait::before {
+  width: 72%;
+  aspect-ratio: 1;
+}
+
+.persona-portrait::after {
+  width: 42%;
+  aspect-ratio: 1;
+  transform: translate(18%, -12%);
+}
+
+.persona-portrait span {
+  position: relative;
+  z-index: 1;
+  color: currentColor;
+  font-size: clamp(1.45rem, 2.8vw, 2.2rem);
+  font-weight: 680;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.persona-card:hover .persona-portrait,
+.persona-card:focus-visible .persona-portrait {
+  border-color: color-mix(in srgb, currentColor 34%, transparent);
+  transform: translateY(-0.12rem);
 }
 
 .persona-card h3 {

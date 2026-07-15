@@ -240,6 +240,14 @@ const decisionJourney = [
   },
 ];
 
+function initialsFor(name: string) {
+  return name
+    .split(" ")
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2);
+}
+
 export default function Home() {
   const humanAmbassadors = confirmedAmbassadors.filter(
     (ambassador) => ambassador.status === "ambassador",
@@ -262,7 +270,7 @@ export default function Home() {
 
   return (
     <main className="site-shell chapter-one" id="main-content">
-      <a className="skip-link" href="#main-content">
+      <a className="skip-link" href="#the-room">
         Skip to main content
       </a>
       <ThemeToggle />
@@ -272,6 +280,7 @@ export default function Home() {
       <section
         className="content-section ruled chapter-room-section"
         id="the-room"
+        tabIndex={-1}
         aria-labelledby="first-room-title"
       >
         <div className="content-block chapter-room-block">
@@ -412,6 +421,9 @@ export default function Home() {
                 key={persona.name}
               >
                 <span>{String(index + 1).padStart(2, "0")}</span>
+                <div className="persona-portrait" aria-hidden="true">
+                  <span>{initialsFor(persona.name)}</span>
+                </div>
                 <h3>{persona.name}</h3>
                 <p>{persona.role}</p>
                 <blockquote>{persona.line}</blockquote>
