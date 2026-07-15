@@ -786,7 +786,7 @@ export default async function Home() {
                     <span>{ambassador.name.slice(0, 1)}</span>
                   )}
                   <div>
-                    <strong>{ambassador.preferredName ?? ambassador.name}</strong>
+                    <strong>{ambassador.name}</strong>
                     <small>
                       Creative Ambassador / {ambassador.city}, {ambassador.country}
                     </small>
