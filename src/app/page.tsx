@@ -240,14 +240,6 @@ const decisionJourney = [
   },
 ];
 
-function initialsFor(name: string) {
-  return name
-    .split(" ")
-    .map((part) => part[0])
-    .join("")
-    .slice(0, 2);
-}
-
 export default function Home() {
   const humanAmbassadors = confirmedAmbassadors.filter(
     (ambassador) => ambassador.status === "ambassador",
@@ -422,7 +414,7 @@ export default function Home() {
               >
                 <span>{String(index + 1).padStart(2, "0")}</span>
                 <div className="persona-portrait" aria-hidden="true">
-                  <span>{initialsFor(persona.name)}</span>
+                  <span />
                 </div>
                 <h3>{persona.name}</h3>
                 <p>{persona.role}</p>
