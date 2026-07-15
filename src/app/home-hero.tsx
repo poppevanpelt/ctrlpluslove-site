@@ -25,7 +25,7 @@ export function HomeHero() {
             Shortcut to reality.
           </h1>
           <p className="home-hero-proposition sequence-reveal sequence-hero-orientation">
-            ctrl+love is a discussion intelligence system that helps people make better decisions by bringing diverse perspectives into one structured conversation.
+            ctrl+love helps teams make better decisions: AI finds patterns fast, humans bring judgment, context and disagreement.
           </p>
           <div
             className="arrival-status sequence-reveal sequence-hero-status"

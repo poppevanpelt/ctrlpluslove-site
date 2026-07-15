@@ -10265,6 +10265,15 @@ h3 {
   color: var(--team-warm);
 }
 
+.homepage-radar-deck {
+  max-width: 28rem;
+  margin-top: 1rem;
+  color: color-mix(in srgb, var(--paper) 72%, var(--rule));
+  font-size: clamp(1.05rem, 1.45vw, 1.28rem);
+  font-weight: 560;
+  line-height: 1.36;
+}
+
 .homepage-radar-copy {
   display: grid;
   gap: 1rem;

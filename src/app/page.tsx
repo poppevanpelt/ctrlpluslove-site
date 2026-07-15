@@ -340,6 +340,10 @@ export default async function Home() {
             <div>
               <p className="section-kicker">CTRL+LOVE RADAR</p>
               <h2 id="homepage-radar-title">Before the Room, there is Radar.</h2>
+              <p className="homepage-radar-deck">
+                Radar collects small human observations before they become
+                obvious trends or important decisions.
+              </p>
             </div>
             <div className="homepage-radar-copy">
               <p>
@@ -352,6 +356,10 @@ export default async function Home() {
               </p>
               <p>
                 Radar makes those signals visible before they become obvious.
+              </p>
+              <p>
+                AI helps surface patterns quickly. People decide which ones
+                carry judgment, context or useful disagreement.
               </p>
               <div className="homepage-radar-actions">
                 <Link className="home-hero-cta" href="/radar/">
