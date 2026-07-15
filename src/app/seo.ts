@@ -107,6 +107,14 @@ export const publicRoutes: PublicRoute[] = [
     priority: 0.25,
   },
   {
+    path: "/radar/",
+    title: "Radar — ctrl+love",
+    description:
+      "The human-facing sensing layer of ctrl+love: observations, contradictions and weak signals before they become questions.",
+    changeFrequency: "weekly",
+    priority: 0.8,
+  },
+  {
     path: "/pricing/",
     title: "Rooms and pricing — ctrl+love",
     description: "Pricing is simple. But the room should fit the question.",

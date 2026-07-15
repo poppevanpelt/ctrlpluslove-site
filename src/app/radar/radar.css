@@ -1,0 +1,384 @@
+.radar-page {
+  --radar-line: color-mix(in srgb, var(--ink) 16%, transparent);
+  --radar-panel: color-mix(in srgb, var(--paper-soft) 78%, var(--paper) 22%);
+  --radar-accent: var(--cyan);
+  background:
+    linear-gradient(90deg, var(--radar-line) 1px, transparent 1px) 50% 0 / 6.5rem 6.5rem,
+    linear-gradient(0deg, var(--radar-line) 1px, transparent 1px) 50% 0 / 6.5rem 6.5rem,
+    var(--paper);
+}
+
+.radar-hero {
+  min-height: 92svh;
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(18rem, 0.72fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: center;
+  width: min(100% - 2rem, 82rem);
+  margin: 0 auto;
+  padding: clamp(5.5rem, 10vh, 8rem) 0 clamp(2.5rem, 8vh, 5rem);
+}
+
+.radar-hero-copy {
+  display: grid;
+  gap: 1.35rem;
+}
+
+.radar-kicker {
+  color: var(--team-warm);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.radar-hero h1,
+.radar-section h2 {
+  color: var(--ink);
+  font-size: clamp(3.4rem, 9vw, 8.7rem);
+  font-weight: 680;
+  letter-spacing: 0;
+  line-height: 0.9;
+}
+
+.radar-section h2 {
+  max-width: 12ch;
+  font-size: clamp(2.7rem, 6.5vw, 6.2rem);
+}
+
+.radar-intro,
+.radar-submit-copy p {
+  max-width: 42rem;
+  color: var(--soft);
+  font-size: clamp(1.2rem, 2vw, 1.7rem);
+  line-height: 1.35;
+}
+
+.radar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 0.8rem;
+}
+
+.radar-actions a,
+.radar-submit {
+  min-height: 3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.75rem 1.1rem;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.radar-actions a:nth-child(2) {
+  background: transparent;
+  color: var(--ink);
+}
+
+.radar-console {
+  position: relative;
+  min-height: min(70vw, 32rem);
+  border: 1px solid color-mix(in srgb, var(--ink) 24%, transparent);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--cyan) 30%, transparent) 0 1px, transparent 2px 100%) 0 0 / 2.1rem 2.1rem,
+    color-mix(in srgb, var(--paper) 82%, var(--ink) 18%);
+  box-shadow: 0 1.5rem 4rem color-mix(in srgb, var(--ink) 12%, transparent);
+}
+
+.radar-console::before,
+.radar-console::after {
+  position: absolute;
+  inset: 16%;
+  border: 1px solid color-mix(in srgb, var(--cyan) 42%, transparent);
+  border-radius: 50%;
+  content: "";
+}
+
+.radar-console::after {
+  inset: 31%;
+}
+
+.radar-console-topline,
+.radar-console-grid {
+  position: absolute;
+  z-index: 1;
+  left: 1rem;
+  right: 1rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--ink);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.radar-console-topline {
+  top: 1rem;
+}
+
+.radar-console-grid {
+  bottom: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.radar-sweep {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 44%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--cyan), transparent);
+  transform-origin: left center;
+  animation: radar-sweep 5s linear infinite;
+}
+
+.radar-flow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  width: min(100% - 2rem, 82rem);
+  margin: 0 auto clamp(4rem, 8vw, 7rem);
+  border: 1px solid var(--radar-line);
+  background: var(--radar-line);
+}
+
+.radar-flow-step {
+  min-height: 7.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--paper);
+  padding: 1rem;
+}
+
+.radar-flow-step span,
+.radar-signal-meta,
+.radar-signal-context,
+.radar-field span,
+.radar-submit-message {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.radar-flow-step strong {
+  color: var(--ink);
+  font-size: clamp(1.05rem, 2vw, 1.45rem);
+  line-height: 1;
+}
+
+.radar-section {
+  width: min(100% - 2rem, 82rem);
+  margin: 0 auto;
+  padding: clamp(3.5rem, 8vw, 7rem) 0;
+}
+
+.radar-section-heading {
+  display: grid;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+}
+
+.radar-signal-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid var(--radar-line);
+  background: var(--radar-line);
+}
+
+.radar-signal-card {
+  min-height: 23rem;
+  display: grid;
+  align-content: space-between;
+  gap: 1.2rem;
+  background: var(--radar-panel);
+  padding: clamp(1.1rem, 2.5vw, 1.6rem);
+}
+
+.radar-signal-card h3 {
+  max-width: 18ch;
+  color: var(--ink);
+  font-size: clamp(1.8rem, 3.8vw, 3.1rem);
+  font-weight: 650;
+  line-height: 0.98;
+}
+
+.radar-signal-card p {
+  color: var(--soft);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.radar-signal-meta,
+.radar-signal-context {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.65rem;
+}
+
+.radar-submit-section {
+  display: grid;
+  grid-template-columns: minmax(0, 0.7fr) minmax(20rem, 1fr);
+  gap: clamp(1.5rem, 5vw, 4rem);
+  align-items: start;
+  border-top: 1px solid var(--radar-line);
+}
+
+.radar-submit-copy {
+  display: grid;
+  gap: 1rem;
+  position: sticky;
+  top: 5rem;
+}
+
+.radar-submit-copy ul {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.radar-submit-copy li {
+  border-top: 1px solid var(--radar-line);
+  color: var(--soft);
+  padding-top: 0.75rem;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.radar-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  border: 1px solid var(--radar-line);
+  background: color-mix(in srgb, var(--paper) 84%, var(--ink) 16%);
+  padding: clamp(1rem, 2vw, 1.4rem);
+}
+
+.radar-field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.radar-field-full {
+  grid-column: 1 / -1;
+}
+
+.radar-field input,
+.radar-field select,
+.radar-field textarea {
+  width: 100%;
+  border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+  border-radius: 0.35rem;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 0.8rem;
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.radar-field textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.radar-field input:focus,
+.radar-field select:focus,
+.radar-field textarea:focus {
+  border-color: color-mix(in srgb, var(--team-warm) 72%, var(--ink) 28%);
+  outline: 2px solid color-mix(in srgb, var(--team-warm) 24%, transparent);
+}
+
+.radar-submit-row {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.radar-submit:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.radar-submit-message {
+  min-height: 1.1rem;
+  letter-spacing: 0.04em;
+}
+
+.radar-submit-message.success {
+  color: var(--green);
+}
+
+.radar-submit-message.error {
+  color: var(--red);
+}
+
+.radar-hidden-field {
+  position: absolute;
+  left: -10000px;
+  opacity: 0;
+}
+
+@keyframes radar-sweep {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 900px) {
+  .radar-hero,
+  .radar-submit-section {
+    grid-template-columns: 1fr;
+  }
+
+  .radar-console {
+    min-height: 22rem;
+  }
+
+  .radar-flow,
+  .radar-signal-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .radar-submit-copy {
+    position: static;
+  }
+}
+
+@media (max-width: 620px) {
+  .radar-hero {
+    min-height: auto;
+  }
+
+  .radar-flow,
+  .radar-signal-list,
+  .radar-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .radar-sweep {
+    animation: none;
+  }
+}
