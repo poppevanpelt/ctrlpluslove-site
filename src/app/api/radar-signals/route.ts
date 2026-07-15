@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { createRadarSignal } from "@/lib/radar/notion";
+import { createRadarSignal, findMatchingRadarSignal } from "@/lib/radar/notion";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -41,7 +41,8 @@ export async function POST(request: NextRequest) {
     const body = (await request.json().catch(() => null)) as Record<string, unknown> | null;
 
     if (!body) {
-      return NextResponse.json({ ok: false, error: "Invalid request." }, { status: 400 });
+      console.error("Radar signal rejected: invalid JSON body.");
+      return NextResponse.json({ ok: false }, { status: 400 });
     }
 
     const signal = normalizeText(body.signal, 220);
@@ -52,10 +53,16 @@ export async function POST(request: NextRequest) {
     }
 
     if (signal.length < 12) {
-      return NextResponse.json(
-        { ok: false, error: "Please describe the signal in a little more detail." },
-        { status: 400 },
-      );
+      console.error("Radar signal rejected: signal below minimum length.");
+      return NextResponse.json({ ok: false }, { status: 400 });
+    }
+
+    let insight = null;
+
+    try {
+      insight = await findMatchingRadarSignal(signal);
+    } catch (error) {
+      console.error("Radar matching check failed", error);
     }
 
     await createRadarSignal({
@@ -71,13 +78,10 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       ok: true,
-      message: "Signal received. It will be reviewed before it enters the system.",
+      insight,
     });
   } catch (error) {
     console.error("Radar signal submission failed", error);
-    return NextResponse.json(
-      { ok: false, error: "The signal could not be received right now." },
-      { status: 500 },
-    );
+    return NextResponse.json({ ok: false }, { status: 500 });
   }
 }

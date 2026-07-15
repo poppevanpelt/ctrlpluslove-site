@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 
 const signalTypes = [
   "Observation",
@@ -15,25 +15,38 @@ const sources = ["Ambassador", "Client", "Social", "News", "Other"];
 const confidenceLevels = ["Low", "Medium", "High"];
 
 type SubmitState =
-  | { status: "idle"; message: string }
-  | { status: "sending"; message: string }
-  | { status: "success"; message: string }
-  | { status: "error"; message: string };
+  | { status: "idle" }
+  | { status: "sending" }
+  | { status: "success"; insight?: SubmissionInsight }
+  | { status: "error" };
+
+type SubmissionInsight = "similar-observed" | "first-observed";
+
+const successInsightText: Record<SubmissionInsight, string> = {
+  "first-observed": "No matching signals yet. You may be the first.",
+  "similar-observed": "A similar signal has already been observed elsewhere.",
+};
 
 export function RadarForm() {
+  const firstFieldRef = useRef<HTMLTextAreaElement>(null);
+  const isSubmittingRef = useRef(false);
   const [submitState, setSubmitState] = useState<SubmitState>({
     status: "idle",
-    message: "",
   });
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (submitState.status === "sending" || isSubmittingRef.current) {
+      return;
+    }
+
+    isSubmittingRef.current = true;
     const form = event.currentTarget;
     const formData = new FormData(form);
 
     setSubmitState({
       status: "sending",
-      message: "Receiving the signal.",
     });
 
     const payload = Object.fromEntries(formData.entries());
@@ -49,29 +62,29 @@ export function RadarForm() {
 
       const result = (await response.json().catch(() => ({}))) as {
         ok?: boolean;
-        message?: string;
-        error?: string;
+        insight?: SubmissionInsight | null;
       };
 
       if (!response.ok || !result.ok) {
-        throw new Error(result.error ?? "The signal could not be sent.");
+        throw new Error("Radar transmission failed.");
       }
 
       form.reset();
       setSubmitState({
         status: "success",
-        message: result.message ?? "Signal received.",
+        insight: result.insight ?? undefined,
       });
-    } catch (error) {
+      firstFieldRef.current?.focus();
+    } catch {
       setSubmitState({
         status: "error",
-        message:
-          error instanceof Error
-            ? error.message
-            : "The signal could not be sent.",
       });
+    } finally {
+      isSubmittingRef.current = false;
     }
   }
+
+  const isSending = submitState.status === "sending";
 
   return (
     <form className="radar-form" onSubmit={handleSubmit}>
@@ -87,6 +100,7 @@ export function RadarForm() {
       <label className="radar-field radar-field-full">
         <span>What did you notice?</span>
         <textarea
+          ref={firstFieldRef}
           name="signal"
           minLength={12}
           maxLength={220}
@@ -161,12 +175,34 @@ export function RadarForm() {
       </label>
 
       <div className="radar-submit-row">
-        <button className="radar-submit" disabled={submitState.status === "sending"} type="submit">
-          {submitState.status === "sending" ? "Sending" : "Submit signal"}
+        <button className="radar-submit" disabled={isSending} type="submit">
+          {isSending ? "Sending" : "Send to Radar"}
         </button>
-        <p aria-live="polite" className={`radar-submit-message ${submitState.status}`}>
-          {submitState.message}
-        </p>
+        <div aria-live="polite" className={`radar-submit-message ${submitState.status}`}>
+          {submitState.status === "sending" ? (
+            <>
+              <strong>Transmitting signal…</strong>
+            </>
+          ) : null}
+          {submitState.status === "success" ? (
+            <>
+              <strong>SIGNAL RECEIVED.</strong>
+              <span>
+                Your observation has entered the ctrl+love Radar.
+                It may strengthen an existing pattern, challenge an assumption or trigger a new question.
+              </span>
+              {submitState.insight ? <em>{successInsightText[submitState.insight]}</em> : null}
+            </>
+          ) : null}
+          {submitState.status === "error" ? (
+            <>
+              <strong>RADAR IS TEMPORARILY OUT OF RANGE.</strong>
+              <span>
+                Your signal could not be transmitted right now. Please try again in a moment.
+              </span>
+            </>
+          ) : null}
+        </div>
       </div>
     </form>
   );

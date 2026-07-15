@@ -21,6 +21,11 @@ export type PublicRadarSignal = {
   notes: string;
 };
 
+export type RadarSubmissionInsight =
+  | "similar-observed"
+  | "first-observed"
+  | null;
+
 type NotionRichText = {
   plain_text?: string;
 };
@@ -177,6 +182,32 @@ export async function createRadarSignal(input: RadarSignalInput) {
       ],
     }),
   });
+}
+
+export async function findMatchingRadarSignal(signal: string): Promise<RadarSubmissionInsight> {
+  const normalizedSignal = safeText(signal).slice(0, 220);
+
+  if (!normalizedSignal) {
+    return null;
+  }
+
+  const response = await notionRequest<NotionQueryResponse>(
+    `/data_sources/${radarSignalsDataSourceId()}/query`,
+    {
+      method: "POST",
+      body: JSON.stringify({
+        page_size: 1,
+        filter: {
+          property: "Signal",
+          title: {
+            equals: normalizedSignal,
+          },
+        },
+      }),
+    },
+  );
+
+  return (response.results ?? []).length > 0 ? "similar-observed" : "first-observed";
 }
 
 export async function getPublicRadarSignals(): Promise<PublicRadarSignal[]> {
