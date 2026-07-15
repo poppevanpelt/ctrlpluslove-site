@@ -28,7 +28,7 @@ export function HomeHero() {
             Bring the decision into the room.
           </p>
           <p className="home-hero-proposition sequence-reveal sequence-hero-orientation">
-            ctrl+love helps organisations make better decisions by pairing AI speed with human judgement.
+            AI can find the pattern. Human judgement decides what matters.
           </p>
           <div
             className="arrival-status sequence-reveal sequence-hero-status"
