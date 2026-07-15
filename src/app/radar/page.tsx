@@ -84,6 +84,7 @@ export default async function RadarPage() {
           </p>
           <div className="radar-actions">
             <a href="#submit-signal">Submit a signal</a>
+            <Link href="/">Home</Link>
             <Link href="/room/">See the Room</Link>
           </div>
         </div>
