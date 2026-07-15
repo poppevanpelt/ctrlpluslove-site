@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 import {
@@ -39,6 +40,20 @@ export default function RoomPage() {
                 <p className="room-persona-number">
                   {String(index + 1).padStart(2, "0")}
                 </p>
+                {persona.portrait ? (
+                  <Link
+                    className="room-persona-portrait-link"
+                    href={`/room/${persona.id}/`}
+                    aria-label={`${persona.name} profile`}
+                  >
+                    <Image
+                      src={persona.portrait}
+                      alt=""
+                      fill
+                      sizes="(max-width: 680px) 24vw, 7rem"
+                    />
+                  </Link>
+                ) : null}
                 <div>
                   <h2>
                     <Link href={`/room/${persona.id}/`}>{persona.name}</Link>
@@ -72,6 +87,20 @@ export default function RoomPage() {
             <div className="supporting-persona-list">
               {supportingRoomPersonas.map((persona) => (
                 <article className="supporting-persona" key={persona.id}>
+                  {persona.portrait ? (
+                    <Link
+                      className="supporting-persona-portrait-link"
+                      href={`/room/${persona.id}/`}
+                      aria-label={`${persona.name} profile`}
+                    >
+                      <Image
+                        src={persona.portrait}
+                        alt=""
+                        fill
+                        sizes="(max-width: 680px) 20vw, 5rem"
+                      />
+                    </Link>
+                  ) : null}
                   <h3>
                     <Link href={`/room/${persona.id}/`}>{persona.name}</Link>
                   </h3>

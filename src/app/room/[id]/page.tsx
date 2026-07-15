@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -107,7 +108,17 @@ export default async function SyntheticPersonaPage({
                 className="synthetic-detail-portrait"
                 aria-label={`Synthetic portrait for ${persona.name}`}
               >
-                <span>{persona.name.slice(0, 2)}</span>
+                {persona.portrait ? (
+                  <Image
+                    src={persona.portrait}
+                    alt=""
+                    fill
+                    sizes="(max-width: 900px) 86vw, 34vw"
+                    priority
+                  />
+                ) : (
+                  <span>{persona.name.slice(0, 2)}</span>
+                )}
               </div>
             </div>
           </section>
