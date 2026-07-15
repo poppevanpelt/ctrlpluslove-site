@@ -10286,7 +10286,7 @@ h3 {
   font-size: clamp(3.4rem, 8vw, 8rem);
   font-weight: 680;
   letter-spacing: 0;
-  line-height: 0.9;
+  line-height: 1.02;
 }
 
 .homepage-radar-section .section-kicker {
