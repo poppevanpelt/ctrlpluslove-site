@@ -2283,6 +2283,15 @@ h3 {
   outline: none;
 }
 
+#first-room-title {
+  scroll-margin-top: clamp(1.5rem, 5vw, 4rem);
+}
+
+#first-room-title:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--team-warm) 72%, transparent);
+  outline-offset: 0.3rem;
+}
+
 .decision-process-grid {
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
@@ -10493,10 +10502,9 @@ h3 {
 
 .persona-portrait {
   position: relative;
-  display: grid;
+  display: block;
   width: min(100%, 10rem);
   aspect-ratio: 4 / 5;
-  place-items: end center;
   overflow: hidden;
   border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
   border-radius: 0.9rem;
@@ -10513,37 +10521,15 @@ h3 {
   transition: border-color 220ms ease, transform 260ms ease;
 }
 
-.persona-portrait::before,
-.persona-portrait::after {
+.persona-portrait img {
   position: absolute;
-  content: "";
-}
-
-.persona-portrait::before {
-  top: 16%;
-  width: 44%;
-  aspect-ratio: 0.78;
-  border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
-  border-radius: 48% 48% 44% 44%;
-  background:
-    radial-gradient(circle at 38% 38%, color-mix(in srgb, currentColor 72%, transparent) 0 4%, transparent 5%),
-    radial-gradient(circle at 62% 38%, color-mix(in srgb, currentColor 72%, transparent) 0 4%, transparent 5%),
-    radial-gradient(ellipse at 50% 70%, color-mix(in srgb, currentColor 46%, transparent) 0 9%, transparent 10%),
-    linear-gradient(180deg, color-mix(in srgb, var(--paper) 92%, white), color-mix(in srgb, var(--paper-soft) 72%, var(--persona-accent, var(--team-warm))));
-  box-shadow:
-    0 -0.5rem 0 -0.2rem color-mix(in srgb, var(--persona-accent, var(--team-warm)) 72%, var(--ink)),
-    inset -0.45rem -0.6rem 1rem color-mix(in srgb, currentColor 9%, transparent);
-}
-
-.persona-portrait::after {
-  bottom: -10%;
-  width: 78%;
-  aspect-ratio: 1.55;
-  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
-  border-radius: 48% 48% 0 0;
-  background:
-    radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--paper) 72%, transparent), transparent 38%),
-    color-mix(in srgb, var(--persona-accent, var(--team-warm)) 56%, var(--ink));
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.92) contrast(1.04);
+  transform: scale(1.01);
+  transition: filter 260ms ease, transform 260ms ease;
 }
 
 .persona-portrait span {
@@ -10561,6 +10547,12 @@ h3 {
 .persona-card:focus-visible .persona-portrait {
   border-color: color-mix(in srgb, currentColor 34%, transparent);
   transform: translateY(-0.12rem);
+}
+
+.persona-card:hover .persona-portrait img,
+.persona-card:focus-visible .persona-portrait img {
+  filter: saturate(1.02) contrast(1.08);
+  transform: scale(1.05);
 }
 
 .persona-card h3 {

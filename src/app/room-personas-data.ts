@@ -4,6 +4,7 @@ export type RoomPersona = {
   role: string;
   line: string;
   contribution?: string;
+  portrait?: string;
 };
 
 export const coreRoomPersonas: RoomPersona[] = [
@@ -14,6 +15,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     line: "Finds what people are buying beneath the brief.",
     contribution:
       "Reframes the decision around the human need underneath the stated brief.",
+    portrait: "/room/personas/maya-elise-harper.webp",
   },
   {
     id: "simon-cross",
@@ -22,6 +24,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     line: "Challenges the answer the room agreed on too early.",
     contribution:
       "Applies constructive skepticism before the market does it less politely.",
+    portrait: "/room/personas/simon-cross.webp",
   },
   {
     id: "nick-deckman",
@@ -30,6 +33,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     line: "Sees the cost of being wrong.",
     contribution:
       "Tests whether the recommendation can survive budget, timing and commercial reality.",
+    portrait: "/room/personas/nick-deckman.webp",
   },
   {
     id: "lexi-arden",
@@ -38,6 +42,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     line: "Spots what others miss.",
     contribution:
       "Reads the cultural risk, memory and meaning surrounding the decision.",
+    portrait: "/room/personas/lexi-arden.webp",
   },
   {
     id: "akiko-hayashi",
@@ -46,6 +51,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     line: "Looks beyond the next decision.",
     contribution:
       "Keeps the room honest about second-order effects, unintended consequences and future regret.",
+    portrait: "/room/personas/akiko-hayashi.webp",
   },
   {
     id: "adrian-mbeki",
@@ -54,6 +60,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     line: "Tests what survives outside the room.",
     contribution:
       "Pushes the idea against operational pressure, customer behavior and messy reality.",
+    portrait: "/room/personas/adrian-mbeki.webp",
   },
   {
     id: "the-customer",
@@ -62,6 +69,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     line: "Would anyone outside this room care enough to act?",
     contribution:
       "Pulls the room back to the person who has to choose, pay for, use or ignore the thing.",
+    portrait: "/room/personas/the-customer.webp",
   },
 ];
 
@@ -71,6 +79,7 @@ export const supportingRoomPersonas: RoomPersona[] = [
     name: "Charles Whitmore",
     role: "Executive Judgment",
     line: "Clarifies the real decision, the stakes and what success must look like.",
+    portrait: "/room/personas/charles-whitmore.webp",
   },
   {
     id: "clare-mercer",
@@ -79,30 +88,35 @@ export const supportingRoomPersonas: RoomPersona[] = [
     line: "Separates evidence from assumptions.",
     contribution:
       "Ensures the Room reaches a coherent recommendation rather than a collection of opinions.",
+    portrait: "/room/personas/clare-mercer.webp",
   },
   {
     id: "judy-law",
     name: "Judy Law",
     role: "Legal Exposure",
     line: "Identifies legal, ethical and regulatory risks before they become expensive.",
+    portrait: "/room/personas/judy-law.webp",
   },
   {
     id: "grace-holloway",
     name: "Grace Holloway",
     role: "Reputation",
     line: "Protects long-term trust, legitimacy and public confidence.",
+    portrait: "/room/personas/grace-holloway.webp",
   },
   {
     id: "brigitte-brussels",
     name: "Brigitte Brussels",
     role: "Institutional Systems",
     line: "Brings the perspective of governments, regulators and large institutions.",
+    portrait: "/room/personas/brigitte-brussels.webp",
   },
   {
     id: "sandra-soskic",
     name: "Sandra Soskic",
     role: "Execution Reality",
     line: "Asks whether the recommendation can be produced, delivered and maintained.",
+    portrait: "/room/personas/sandra-soskic.webp",
   },
   {
     id: "vera-elise-hartmann",
@@ -111,6 +125,7 @@ export const supportingRoomPersonas: RoomPersona[] = [
     line: "Recognizes patterns that have appeared before.",
     contribution:
       "Reminds the Room what history is trying to teach.",
+    portrait: "/room/personas/vera-elise-hartmann.webp",
   },
   {
     id: "wade-ellison",
@@ -119,12 +134,14 @@ export const supportingRoomPersonas: RoomPersona[] = [
     line: "Detects the questions nobody has fully asked yet.",
     contribution:
       "Surfaces emotional signals and unfinished thinking before they disappear.",
+    portrait: "/room/personas/wade-ellison.webp",
   },
   {
     id: "johan-cruyff",
     name: "Johan Cruyff",
     role: "Simple Truth",
     line: "Leaves the Room with the observation that makes the pattern obvious.",
+    portrait: "/room/personas/johan-cruyff.webp",
   },
 ];
 
