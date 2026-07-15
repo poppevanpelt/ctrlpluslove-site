@@ -115,6 +115,14 @@ function errorDetails(error: unknown) {
   };
 }
 
+function envPresence() {
+  return {
+    hasNotionToken: Boolean(process.env.NOTION_TOKEN?.trim()),
+    hasOpenaiApiKey: Boolean(process.env.OPENAI_API_KEY?.trim()),
+    hasRadarSignalsDataSourceId: Boolean(process.env.RADAR_SIGNALS_DATA_SOURCE_ID?.trim()),
+  };
+}
+
 function clientKey(request: NextRequest) {
   return (
     request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
@@ -259,7 +267,11 @@ function responseForResult(result: RadarApiResponse) {
 export async function POST(request: NextRequest) {
   const reference = radarReference();
 
-  radarLog("info", { reference, stage: "request-received" });
+  radarLog("info", {
+    reference,
+    stage: "request-received",
+    validation: envPresence(),
+  });
 
   if (requestIsTooLarge(request)) {
     radarLog("error", {
