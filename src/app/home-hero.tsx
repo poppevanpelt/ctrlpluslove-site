@@ -16,7 +16,11 @@ export function HomeHero() {
           <a href="mailto:hello@ctrlpluslove.com">ADMISSION</a>
         </nav>
         <div className="chapter-arrival-message">
-          <h1 className="home-hero-line sequence-reveal sequence-shortcut">
+          <h1
+            className="home-hero-line sequence-reveal sequence-shortcut"
+            id="homepage-start"
+            tabIndex={-1}
+          >
             Shortcut to reality.
           </h1>
           <div

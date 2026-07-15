@@ -2288,6 +2288,15 @@ h3 {
   scroll-margin-top: 0;
 }
 
+#homepage-start {
+  scroll-margin-top: 0;
+}
+
+#homepage-start:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--team-warm) 72%, transparent);
+  outline-offset: -0.4rem;
+}
+
 .decision-process-grid {
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
@@ -10535,37 +10544,42 @@ h3 {
 
 .persona-silhouette {
   position: absolute;
-  right: 10%;
+  right: 11%;
   bottom: 0;
-  left: 10%;
-  height: 82%;
+  left: 11%;
+  height: 78%;
   display: block;
-  background: none;
+  border-radius: 47% 47% 0.35rem 0.35rem;
+  background:
+    radial-gradient(ellipse at 50% 8%, transparent 0 29%, color-mix(in srgb, var(--ink) 94%, transparent) 30% 46%, transparent 47%),
+    linear-gradient(90deg, transparent 0 9%, color-mix(in srgb, var(--ink) 88%, transparent) 9% 91%, transparent 91% 100%);
+  clip-path: polygon(10% 100%, 90% 100%, 83% 45%, 70% 30%, 58% 24%, 42% 24%, 30% 30%, 17% 45%);
   content: "";
 }
 
 .persona-silhouette::before {
   position: absolute;
-  top: 0;
+  top: 0.2rem;
   left: 50%;
-  width: 38%;
-  aspect-ratio: 0.78;
+  z-index: 1;
+  width: 36%;
+  aspect-ratio: 0.74;
   border-radius: 48% 48% 45% 45%;
-  background: color-mix(in srgb, var(--ink) 92%, transparent);
-  box-shadow: 0 1rem 1.8rem color-mix(in srgb, var(--ink) 12%, transparent);
+  background: color-mix(in srgb, var(--ink) 96%, transparent);
+  box-shadow: 0 0.8rem 1.6rem color-mix(in srgb, var(--ink) 12%, transparent);
   transform: translateX(-50%);
   content: "";
 }
 
 .persona-silhouette::after {
   position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height: 58%;
-  border-radius: 46% 46% 0.35rem 0.35rem;
-  background: color-mix(in srgb, var(--ink) 88%, transparent);
-  clip-path: polygon(18% 100%, 82% 100%, 76% 42%, 64% 20%, 50% 14%, 36% 20%, 24% 42%);
+  top: 31%;
+  left: 50%;
+  width: 17%;
+  height: 20%;
+  border-radius: 0 0 45% 45%;
+  background: color-mix(in srgb, var(--ink) 94%, transparent);
+  transform: translateX(-50%);
   content: "";
 }
 

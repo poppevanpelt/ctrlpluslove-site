@@ -262,7 +262,7 @@ export default function Home() {
 
   return (
     <main className="site-shell chapter-one" id="main-content">
-      <a className="skip-link" href="#the-room">
+      <a className="skip-link" href="#homepage-start">
         Skip to main content
       </a>
       <ThemeToggle />
