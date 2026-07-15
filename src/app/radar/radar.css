@@ -16,6 +16,36 @@
   padding: clamp(5.5rem, 10vh, 8rem) 0 clamp(2.5rem, 8vh, 5rem);
 }
 
+.radar-home-link {
+  position: fixed;
+  z-index: 30;
+  top: 1rem;
+  left: 1rem;
+  display: inline-flex;
+  min-height: 2.35rem;
+  align-items: center;
+  border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--paper) 86%, var(--ink) 14%);
+  color: var(--ink);
+  padding: 0.32rem 0.76rem;
+  box-shadow: 0 0.8rem 2rem color-mix(in srgb, var(--ink) 9%, transparent);
+  font-size: var(--type-secondary);
+  font-weight: 800;
+  line-height: var(--leading-secondary);
+  text-decoration: none;
+}
+
+.radar-home-link:hover {
+  border-color: color-mix(in srgb, var(--ink) 42%, transparent);
+  background: color-mix(in srgb, var(--paper) 74%, var(--ink) 26%);
+}
+
+.radar-home-link:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--team-warm) 72%, transparent);
+  outline-offset: 0.2rem;
+}
+
 .radar-hero-copy {
   display: grid;
   gap: 1.35rem;

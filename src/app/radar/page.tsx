@@ -72,6 +72,9 @@ export default async function RadarPage() {
   return (
     <main className="site-shell radar-page">
       <ThemeToggle />
+      <Link className="radar-home-link" href="/" aria-label="Back to ctrl+love homepage">
+        ctrl+love
+      </Link>
 
       <section className="radar-hero">
         <div className="radar-hero-copy">
