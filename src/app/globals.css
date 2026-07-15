@@ -4848,6 +4848,518 @@ h3 {
   color: var(--soft);
 }
 
+.room-runner-page {
+  --runner-line: color-mix(in srgb, var(--ink) 18%, transparent);
+  --runner-wash: color-mix(in srgb, var(--paper-soft) 72%, var(--paper) 28%);
+}
+
+.room-runner-hero {
+  min-height: 82svh;
+  display: grid;
+  align-content: space-between;
+  gap: 4rem;
+  padding: 1.5rem clamp(1.25rem, 4vw, 4rem) 5rem;
+  border-bottom: 1px solid var(--runner-line);
+  background:
+    linear-gradient(115deg, transparent 0 55%, color-mix(in srgb, var(--team-warm) 12%, transparent) 55% 56%, transparent 56%),
+    var(--paper);
+}
+
+.room-runner-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.room-runner-topline span,
+.room-runner-hero-copy > p:last-child,
+.runner-note,
+.runner-warning,
+.confidence-line,
+.room-record-card em,
+.room-record-card small {
+  color: var(--muted);
+}
+
+.room-runner-hero-copy {
+  width: min(100%, 74rem);
+  display: grid;
+  gap: 1.35rem;
+}
+
+.room-runner-hero-copy h1 {
+  max-width: 12ch;
+  font-size: clamp(4rem, 10vw, 9rem);
+  font-weight: 720;
+  line-height: 0.9;
+  letter-spacing: 0;
+}
+
+.room-runner-hero-copy > p:last-child {
+  width: min(100%, 48rem);
+  font-size: clamp(1.25rem, 2vw, 1.8rem);
+  line-height: 1.35;
+}
+
+.room-runner-dashboard,
+.room-runner-workspace {
+  padding: clamp(3rem, 7vw, 6.5rem) clamp(1.25rem, 4vw, 4rem);
+}
+
+.room-runner-section-head,
+.runner-step-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.room-runner-section-head h2,
+.runner-step-head h2 {
+  font-size: clamp(2.2rem, 5vw, 4.5rem);
+  line-height: 0.98;
+  letter-spacing: 0;
+}
+
+.runner-step-head {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.runner-step-head > span {
+  flex: 0 0 auto;
+  width: 3.1rem;
+  height: 3.1rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--runner-line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: var(--type-secondary);
+  font-weight: 900;
+}
+
+.room-status-strip,
+.lineage-chain,
+.challenge-actions,
+.lineage-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-bottom: 1.5rem;
+}
+
+.room-status-strip span,
+.lineage-chain span,
+.runner-pill {
+  border: 1px solid var(--runner-line);
+  border-radius: 999px;
+  padding: 0.55rem 0.8rem;
+  background: var(--paper);
+  color: var(--soft);
+  font-size: var(--type-secondary);
+  font-weight: 800;
+}
+
+.room-card-grid,
+.participant-pool,
+.position-grid,
+.friction-layout {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.room-record-card,
+.participant-card,
+.position-panel,
+.friction-column,
+.disagreement-row,
+.quality-panel,
+.synthesis-score,
+.lineage-record {
+  border: 1px solid var(--runner-line);
+  border-radius: 8px;
+  background: var(--paper);
+}
+
+.room-record-card {
+  min-height: 15rem;
+  display: grid;
+  gap: 0.75rem;
+  text-align: left;
+  padding: 1rem;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.room-record-card.is-active,
+.participant-card.is-selected {
+  border-color: color-mix(in srgb, var(--team-warm) 72%, var(--ink) 28%);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--team-warm) 45%, transparent);
+}
+
+.room-record-card span,
+.participant-card span,
+.position-panel > span,
+.disagreement-row > span {
+  width: fit-content;
+  border-bottom: 1px solid var(--runner-line);
+  color: var(--muted);
+  font-size: var(--type-secondary);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.room-record-card strong {
+  font-size: clamp(1.2rem, 2vw, 1.65rem);
+  line-height: 1.08;
+}
+
+.room-runner-workspace {
+  display: grid;
+  gap: clamp(3rem, 6vw, 6rem);
+  background: var(--runner-wash);
+}
+
+.runner-step {
+  width: min(100%, 82rem);
+  margin: 0 auto;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.runner-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.runner-question-field {
+  grid-column: 1 / -1;
+}
+
+.runner-question-field textarea {
+  min-height: 9.5rem;
+  font-size: clamp(1.6rem, 3vw, 2.7rem);
+  font-weight: 720;
+  line-height: 1.04;
+}
+
+.runner-form-grid label,
+.participant-controls label,
+.editable-block,
+.challenge-item {
+  display: grid;
+  gap: 0.45rem;
+  color: var(--muted);
+  font-size: var(--type-secondary);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.runner-form-grid input,
+.runner-form-grid select,
+.runner-form-grid textarea,
+.participant-controls select,
+.custom-participant input,
+.position-panel textarea,
+.challenge-item textarea {
+  width: 100%;
+  border: 1px solid var(--runner-line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--paper) 92%, var(--ink) 8%);
+  color: var(--ink);
+  padding: 0.85rem;
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.runner-form-grid textarea,
+.position-panel textarea,
+.challenge-item textarea {
+  min-height: 7.5rem;
+  resize: vertical;
+}
+
+.quality-panel,
+.synthesis-score,
+.lineage-record,
+.friction-column,
+.disagreement-row,
+.participant-card,
+.position-panel {
+  padding: 1rem;
+}
+
+.quality-panel {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.75rem;
+  align-items: start;
+}
+
+.quality-panel span,
+.synthesis-score strong {
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 0.95;
+  font-weight: 760;
+}
+
+.quality-panel ul,
+.synthesis-score ul,
+.friction-column ul,
+.lineage-record ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--soft);
+  line-height: 1.45;
+}
+
+.runner-warning {
+  border-left: 3px solid var(--team-warm);
+  padding-left: 1rem;
+  font-weight: 800;
+}
+
+.participant-card {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.participant-card h3,
+.position-panel h3,
+.friction-column h3,
+.disagreement-row h3,
+.lineage-record h3,
+.runner-question {
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  line-height: 1.08;
+}
+
+.participant-card dl {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.participant-card dt {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.participant-card dd {
+  margin: 0;
+  color: var(--soft);
+  line-height: 1.35;
+}
+
+.participant-controls {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.runner-button {
+  width: fit-content;
+  min-height: 2.55rem;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  padding: 0.65rem 1rem;
+  font: inherit;
+  font-size: var(--type-secondary);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.runner-button.is-dark,
+.runner-pill.is-on {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.custom-participant {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.custom-participant input {
+  max-width: 28rem;
+}
+
+.position-panel {
+  display: grid;
+  gap: 1rem;
+}
+
+.challenge-layer {
+  display: grid;
+  gap: 0.6rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--runner-line);
+}
+
+.friction-layout {
+  grid-template-columns: 0.85fr 1.35fr 0.85fr;
+  align-items: start;
+}
+
+.disagreement-column {
+  display: grid;
+  gap: 1rem;
+}
+
+.disagreement-row {
+  display: grid;
+  gap: 1rem;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--team-warm) 16%, transparent), transparent 42%),
+    var(--paper);
+}
+
+.disagreement-row div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.disagreement-row p {
+  border-left: 2px solid var(--runner-line);
+  padding-left: 0.75rem;
+  color: var(--soft);
+  line-height: 1.38;
+}
+
+.disagreement-row select {
+  width: fit-content;
+  max-width: 100%;
+  border: 1px solid var(--runner-line);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 0.55rem 0.75rem;
+  font: inherit;
+  font-size: var(--type-secondary);
+  font-weight: 900;
+}
+
+.challenge-item {
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  text-transform: none;
+}
+
+.challenge-item input {
+  margin-top: 1rem;
+}
+
+.lineage-chain span::after {
+  content: "→";
+  margin-left: 0.65rem;
+  color: var(--team-warm);
+}
+
+.lineage-chain span:last-child::after {
+  content: "";
+}
+
+.lineage-record {
+  display: grid;
+  gap: 1rem;
+  max-width: 58rem;
+}
+
+.runner-empty,
+.runner-toast {
+  width: min(100%, 82rem);
+  margin: 0 auto;
+  border: 1px solid var(--runner-line);
+  border-radius: 8px;
+  background: var(--paper);
+  padding: 1rem;
+  color: var(--soft);
+  font-weight: 800;
+}
+
+.runner-toast {
+  position: sticky;
+  bottom: 1rem;
+  z-index: 12;
+  box-shadow: 0 1rem 2rem color-mix(in srgb, var(--ink) 14%, transparent);
+}
+
+@media (max-width: 980px) {
+  .room-card-grid,
+  .participant-pool,
+  .position-grid,
+  .friction-layout,
+  .runner-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .room-runner-section-head,
+  .runner-step-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .disagreement-row div {
+    grid-template-columns: 1fr;
+  }
+
+  .runner-question-field {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .room-runner-hero {
+    min-height: 72svh;
+    padding: 1rem 1rem 3.5rem;
+  }
+
+  .room-runner-hero-copy h1 {
+    max-width: 9ch;
+  }
+
+  .room-runner-dashboard,
+  .room-runner-workspace {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .quality-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .custom-participant {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .custom-participant input,
+  .runner-button {
+    width: 100%;
+  }
+
+  .lineage-chain {
+    display: grid;
+  }
+
+  .lineage-chain span::after {
+    content: "";
+  }
+}
+
 .constitution-page {
   min-height: 100svh;
 }
