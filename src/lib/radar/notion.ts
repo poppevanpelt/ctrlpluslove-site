@@ -56,11 +56,25 @@ type NotionQueryResponse = {
   results?: NotionPage[];
 };
 
+export class RadarNotionError extends Error {
+  status?: number;
+  code?: string;
+  stage: string;
+
+  constructor(message: string, options: { stage: string; status?: number; code?: string }) {
+    super(message);
+    this.name = "RadarNotionError";
+    this.stage = options.stage;
+    this.status = options.status;
+    this.code = options.code;
+  }
+}
+
 function notionToken() {
   return process.env.NOTION_TOKEN?.trim();
 }
 
-function radarSignalsDataSourceId() {
+export function radarSignalsDataSourceId() {
   return (
     process.env.RADAR_SIGNALS_DATA_SOURCE_ID?.trim() ||
     FALLBACK_RADAR_SIGNALS_DATA_SOURCE_ID
@@ -71,7 +85,10 @@ async function notionRequest<T>(path: string, init: RequestInit = {}): Promise<T
   const token = notionToken();
 
   if (!token) {
-    throw new Error("Missing NOTION_TOKEN.");
+    throw new RadarNotionError("Missing NOTION_TOKEN.", {
+      stage: "notion-auth",
+      code: "missing_env",
+    });
   }
 
   const response = await fetch(`https://api.notion.com/v1${path}`, {
@@ -86,8 +103,18 @@ async function notionRequest<T>(path: string, init: RequestInit = {}): Promise<T
   });
 
   if (!response.ok) {
-    const body = (await response.json().catch(() => ({}))) as { message?: string };
-    throw new Error(body.message ?? `Notion request failed with ${response.status}.`);
+    const body = (await response.json().catch(() => ({}))) as {
+      code?: string;
+      message?: string;
+    };
+    throw new RadarNotionError(
+      body.message ?? `Notion request failed with ${response.status}.`,
+      {
+        stage: "notion-request",
+        status: response.status,
+        code: body.code,
+      },
+    );
   }
 
   return (await response.json()) as T;
@@ -131,6 +158,10 @@ function checkboxProperty(checked: boolean) {
   };
 }
 
+function optionalTextProperty(text: string) {
+  return text ? textProperty(text) : undefined;
+}
+
 function safeText(value: string | undefined, fallback = "") {
   return value?.trim() || fallback;
 }
@@ -149,10 +180,32 @@ function getSelect(page: NotionPage, property: string) {
 
 export async function createRadarSignal(input: RadarSignalInput) {
   const signal = safeText(input.signal).slice(0, 220);
+  const market = safeText(input.market);
+  const location = safeText(input.location);
+  const notes = safeText(input.notes);
+  const sourceMaterial = safeText(input.sourceMaterial);
 
   if (!signal) {
     throw new Error("A signal is required.");
   }
+
+  const properties: Record<string, unknown> = {
+    Signal: titleProperty(signal),
+    Type: selectProperty(input.type),
+    Source: selectProperty(input.source),
+    Confidence: selectProperty(input.confidence),
+    Status: selectProperty("Raw"),
+    "Reflection Status": selectProperty("Pending"),
+    Captured: {
+      date: {
+        start: new Date().toISOString(),
+      },
+    },
+    Market: optionalTextProperty(market),
+    Location: optionalTextProperty(location),
+    Notes: optionalTextProperty(notes),
+    "Source Material": optionalTextProperty(sourceMaterial),
+  };
 
   return notionRequest<{ id: string }>("/pages", {
     method: "POST",
@@ -160,23 +213,7 @@ export async function createRadarSignal(input: RadarSignalInput) {
       parent: {
         data_source_id: radarSignalsDataSourceId(),
       },
-      properties: {
-        Signal: titleProperty(signal),
-        Type: selectProperty(input.type),
-        Source: selectProperty(input.source),
-        Confidence: selectProperty(input.confidence),
-        Status: selectProperty("Raw"),
-        "Reflection Status": selectProperty("Pending"),
-        Captured: {
-          date: {
-            start: new Date().toISOString(),
-          },
-        },
-        Market: textProperty(safeText(input.market)),
-        Location: textProperty(safeText(input.location)),
-        Notes: textProperty(safeText(input.notes)),
-        "Source Material": textProperty(safeText(input.sourceMaterial)),
-      },
+      properties: Object.fromEntries(Object.entries(properties).filter(([, value]) => Boolean(value))),
       children: [
         {
           object: "block",

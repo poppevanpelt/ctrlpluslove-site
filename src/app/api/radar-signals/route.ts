@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   createRadarSignal,
   getRadarSignal,
+  RadarNotionError,
+  radarSignalsDataSourceId,
   updateRadarSignalReflection,
   type RadarSignalInput,
 } from "@/lib/radar/notion";
@@ -57,10 +59,61 @@ function normalizeText(value: unknown, maxLength: number) {
 }
 
 type RadarApiResponse =
-  | RadarReflectionResponse
-  | { status: "saved_reflection_unavailable"; signalId: string }
-  | { status: "save_failed" }
-  | { status: "ignored" };
+  | (RadarReflectionResponse & { reference: string })
+  | { status: "saved_reflection_unavailable"; signalId: string; reference: string }
+  | { status: "save_failed"; reference: string }
+  | { status: "ignored"; reference: string };
+
+function radarReference() {
+  return `RADAR-${crypto.randomUUID().slice(0, 4).toUpperCase()}`;
+}
+
+function radarLog(
+  level: "info" | "error",
+  event: {
+    reference: string;
+    stage: string;
+    signalId?: string;
+    status?: number;
+    notionCode?: string;
+    message?: string;
+    validation?: Record<string, unknown>;
+  },
+) {
+  const payload = {
+    component: "radar-submission",
+    dataSourceId: radarSignalsDataSourceId(),
+    ...event,
+  };
+
+  if (level === "error") {
+    console.error("Radar submission", payload);
+    return;
+  }
+
+  console.info("Radar submission", payload);
+}
+
+function errorDetails(error: unknown) {
+  if (error instanceof RadarNotionError) {
+    return {
+      status: error.status,
+      notionCode: error.code,
+      message: error.message,
+      stage: error.stage,
+    };
+  }
+
+  if (error instanceof Error) {
+    return {
+      message: error.message,
+    };
+  }
+
+  return {
+    message: String(error),
+  };
+}
 
 function clientKey(request: NextRequest) {
   return (
@@ -104,11 +157,28 @@ function inputFromBody(body: Record<string, unknown>): RadarSignalInput {
   };
 }
 
-async function reflectSavedSignal(signalId: string, input: RadarSignalInput): Promise<RadarReflectionResponse> {
+async function reflectSavedSignal(
+  reference: string,
+  signalId: string,
+  input: RadarSignalInput,
+): Promise<RadarReflectionResponse> {
   const relatedSignals: RadarRelatedSignal[] = [];
+  radarLog("info", { reference, stage: "model-generation-start", signalId });
   const reflection = await generateRadarReflection(input, relatedSignals);
 
+  radarLog("info", {
+    reference,
+    stage: "model-generation-complete",
+    signalId,
+    validation: {
+      reflectionType: reflection.reflectionType,
+      relatedSignalCount: reflection.relatedSignals.length,
+      roomWorthy: reflection.roomWorthy,
+    },
+  });
+  radarLog("info", { reference, stage: "notion-reflection-update-start", signalId });
   await updateRadarSignalReflection(signalId, reflection);
+  radarLog("info", { reference, stage: "notion-reflection-update-complete", signalId });
 
   return {
     status: "reflected",
@@ -117,24 +187,60 @@ async function reflectSavedSignal(signalId: string, input: RadarSignalInput): Pr
   };
 }
 
-async function saveAndReflect(input: RadarSignalInput): Promise<RadarApiResponse> {
+async function saveAndReflect(reference: string, input: RadarSignalInput): Promise<RadarApiResponse> {
   let savedSignal: { id: string };
 
   try {
+    radarLog("info", {
+      reference,
+      stage: "notion-page-create-start",
+      validation: {
+        hasSignal: Boolean(input.signal),
+        type: input.type,
+        source: input.source,
+        confidence: input.confidence,
+        optionalFields: {
+          market: Boolean(input.market),
+          location: Boolean(input.location),
+          notes: Boolean(input.notes),
+          sourceMaterial: Boolean(input.sourceMaterial),
+        },
+      },
+    });
     savedSignal = await createRadarSignal(input);
+    radarLog("info", {
+      reference,
+      stage: "notion-page-create-complete",
+      signalId: savedSignal.id,
+    });
   } catch (error) {
-    console.error("Radar signal save failed", error);
-    return { status: "save_failed" };
+    const details = errorDetails(error);
+    radarLog("error", {
+      reference,
+      stage: details.stage ?? "notion-page-create-failed",
+      status: details.status,
+      notionCode: details.notionCode,
+      message: details.message,
+    });
+    return { status: "save_failed", reference };
   }
 
   try {
-    return await reflectSavedSignal(savedSignal.id, input);
+    return {
+      ...(await reflectSavedSignal(reference, savedSignal.id, input)),
+      reference,
+    };
   } catch (error) {
-    console.error("Radar reflection failed after save", {
+    const details = errorDetails(error);
+    radarLog("error", {
+      reference,
+      stage: details.stage ?? "reflection-after-save-failed",
       signalId: savedSignal.id,
-      error,
+      status: details.status,
+      notionCode: details.notionCode,
+      message: details.message,
     });
-    return { status: "saved_reflection_unavailable", signalId: savedSignal.id };
+    return { status: "saved_reflection_unavailable", signalId: savedSignal.id, reference };
   }
 }
 
@@ -151,35 +257,58 @@ function responseForResult(result: RadarApiResponse) {
 }
 
 export async function POST(request: NextRequest) {
+  const reference = radarReference();
+
+  radarLog("info", { reference, stage: "request-received" });
+
   if (requestIsTooLarge(request)) {
-    console.error("Radar signal rejected: payload too large.");
-    return NextResponse.json({ status: "save_failed" }, { status: 413 });
+    radarLog("error", {
+      reference,
+      stage: "payload-too-large",
+      status: 413,
+      validation: {
+        contentLength: request.headers.get("content-length"),
+      },
+    });
+    return NextResponse.json({ status: "save_failed", reference }, { status: 413 });
   }
 
   try {
     const body = (await request.json().catch(() => null)) as Record<string, unknown> | null;
 
     if (!body) {
-      console.error("Radar signal rejected: invalid JSON body.");
-      return NextResponse.json({ status: "save_failed" }, { status: 400 });
+      radarLog("error", { reference, stage: "invalid-json", status: 400 });
+      return NextResponse.json({ status: "save_failed", reference }, { status: 400 });
     }
 
     const hiddenField = normalizeText(body.website, 120);
 
     if (hiddenField) {
-      return NextResponse.json({ status: "ignored" });
+      radarLog("info", { reference, stage: "honeypot-ignored" });
+      return NextResponse.json({ status: "ignored", reference });
     }
 
     if (isRateLimited(clientKey(request))) {
-      console.error("Radar signal rejected: rate limit exceeded.");
-      return NextResponse.json({ status: "save_failed" }, { status: 429 });
+      radarLog("error", { reference, stage: "rate-limited", status: 429 });
+      return NextResponse.json({ status: "save_failed", reference }, { status: 429 });
     }
 
     const input = inputFromBody(body);
 
+    radarLog("info", {
+      reference,
+      stage: "payload-validated",
+      validation: {
+        hasSignal: Boolean(input.signal),
+        type: input.type,
+        source: input.source,
+        confidence: input.confidence,
+      },
+    });
+
     if (!input.signal) {
-      console.error("Radar signal rejected: empty signal.");
-      return NextResponse.json({ status: "save_failed" }, { status: 400 });
+      radarLog("error", { reference, stage: "empty-signal", status: 400 });
+      return NextResponse.json({ status: "save_failed", reference }, { status: 400 });
     }
 
     const idempotencyKey = normalizeText(body.idempotencyKey, 120);
@@ -189,43 +318,80 @@ export async function POST(request: NextRequest) {
       const existing = idempotentSubmissions.get(submissionKey);
 
       if (existing) {
+        radarLog("info", { reference, stage: "idempotent-replay" });
         return responseForResult(await existing);
       }
 
-      const submission = saveAndReflect(input);
+      const submission = saveAndReflect(reference, input);
       idempotentSubmissions.set(submissionKey, submission);
       const result = await submission;
       setTimeout(() => idempotentSubmissions.delete(submissionKey), RATE_LIMIT_WINDOW_MS);
+      radarLog("info", { reference, stage: "response-returned", status: result.status === "reflected" ? 200 : 500 });
       return responseForResult(result);
     }
 
-    return responseForResult(await saveAndReflect(input));
+    const result = await saveAndReflect(reference, input);
+    radarLog("info", { reference, stage: "response-returned", status: result.status === "reflected" ? 200 : 500 });
+    return responseForResult(result);
   } catch (error) {
-    console.error("Radar signal submission failed", error);
-    return NextResponse.json({ status: "save_failed" }, { status: 500 });
+    const details = errorDetails(error);
+    radarLog("error", {
+      reference,
+      stage: "submission-unhandled-error",
+      status: 500,
+      message: details.message,
+    });
+    return NextResponse.json({ status: "save_failed", reference }, { status: 500 });
   }
 }
 
 export async function PATCH(request: NextRequest) {
+  const reference = radarReference();
+
   try {
     const body = (await request.json().catch(() => null)) as Record<string, unknown> | null;
     const signalId = normalizeText(body?.signalId, 120);
 
     if (!signalId) {
-      console.error("Radar reflection retry rejected: missing signal id.");
-      return NextResponse.json({ status: "saved_reflection_unavailable" }, { status: 400 });
+      radarLog("error", { reference, stage: "retry-missing-signal-id", status: 400 });
+      return NextResponse.json(
+        { status: "saved_reflection_unavailable", reference },
+        { status: 400 },
+      );
     }
 
+    radarLog("info", { reference, stage: "retry-signal-fetch-start", signalId });
     const input = await getRadarSignal(signalId);
 
     try {
-      return responseForResult(await reflectSavedSignal(signalId, input));
+      return responseForResult({
+        ...(await reflectSavedSignal(reference, signalId, input)),
+        reference,
+      });
     } catch (error) {
-      console.error("Radar reflection retry failed", { signalId, error });
-      return responseForResult({ status: "saved_reflection_unavailable", signalId });
+      const details = errorDetails(error);
+      radarLog("error", {
+        reference,
+        stage: details.stage ?? "retry-reflection-failed",
+        signalId,
+        status: details.status,
+        notionCode: details.notionCode,
+        message: details.message,
+      });
+      return responseForResult({ status: "saved_reflection_unavailable", signalId, reference });
     }
   } catch (error) {
-    console.error("Radar reflection retry failed before reflection", error);
-    return NextResponse.json({ status: "saved_reflection_unavailable" }, { status: 500 });
+    const details = errorDetails(error);
+    radarLog("error", {
+      reference,
+      stage: "retry-before-reflection-failed",
+      status: details.status ?? 500,
+      notionCode: details.notionCode,
+      message: details.message,
+    });
+    return NextResponse.json(
+      { status: "saved_reflection_unavailable", reference },
+      { status: 500 },
+    );
   }
 }

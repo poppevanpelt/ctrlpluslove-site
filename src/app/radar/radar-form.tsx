@@ -18,8 +18,8 @@ type SubmitState =
   | { status: "idle" }
   | { status: "sending" }
   | { status: "reflected"; reflection: RadarReflectionResult }
-  | { status: "reflection-error"; signalId: string; retrying?: boolean }
-  | { status: "save-error" };
+  | { status: "reflection-error"; signalId: string; retrying?: boolean; reference?: string }
+  | { status: "save-error"; reference?: string };
 
 type RadarReflectionResult = {
   status: "reflected";
@@ -33,6 +33,7 @@ type RadarReflectionResult = {
   };
   roomWorthy: boolean;
   relatedSignals: Array<{ id: string; signal: string }>;
+  reference?: string;
 };
 
 export function RadarForm() {
@@ -73,8 +74,8 @@ export function RadarForm() {
 
       const result = (await response.json().catch(() => ({}))) as
         | RadarReflectionResult
-        | { status?: "saved_reflection_unavailable"; signalId?: string }
-        | { status?: "save_failed" };
+        | { status?: "saved_reflection_unavailable"; signalId?: string; reference?: string }
+        | { status?: "save_failed"; reference?: string };
 
       if (result.status === "reflected") {
         form.reset();
@@ -90,12 +91,14 @@ export function RadarForm() {
         setSubmitState({
           status: "reflection-error",
           signalId: result.signalId,
+          reference: result.reference,
         });
         return;
       }
 
       setSubmitState({
         status: "save-error",
+        reference: result.reference,
       });
     } catch {
       setSubmitState({
@@ -125,7 +128,7 @@ export function RadarForm() {
 
       const result = (await response.json().catch(() => ({}))) as
         | RadarReflectionResult
-        | { status?: "saved_reflection_unavailable"; signalId?: string };
+        | { status?: "saved_reflection_unavailable"; signalId?: string; reference?: string };
 
       if (response.ok && result.status === "reflected") {
         setSubmitState({
@@ -138,7 +141,7 @@ export function RadarForm() {
         return;
       }
 
-      setSubmitState({ status: "reflection-error", signalId });
+      setSubmitState({ status: "reflection-error", signalId, reference: result.reference });
     } catch {
       setSubmitState({ status: "reflection-error", signalId });
     } finally {
@@ -198,6 +201,7 @@ export function RadarForm() {
                 Your observation is safely in Radar, but the interpretation service did not
                 respond.
               </span>
+              {submitState.reference ? <em>Reference: {submitState.reference}</em> : null}
               <button
                 className="radar-retry"
                 disabled={isSending}
@@ -217,6 +221,7 @@ export function RadarForm() {
         <>
           <strong>RADAR COULD NOT SAVE THIS SIGNAL.</strong>
           <span>Nothing has been stored. Please try again.</span>
+          {submitState.reference ? <em>Reference: {submitState.reference}</em> : null}
         </>
       );
     }
