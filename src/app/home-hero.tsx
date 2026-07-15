@@ -6,8 +6,8 @@ export function HomeHero() {
           ctrl+love
         </p>
         <nav className="home-hero-nav" aria-label="Institution">
-          <a href="#the-room">THE ROOM</a>
           <a href="/radar/">RADAR</a>
+          <a href="#the-room">THE ROOM</a>
           <a href="#personas">PERSONAS</a>
           <a href="#products">PRODUCTS</a>
           <a href="#cases">CASES</a>

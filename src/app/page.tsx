@@ -4,6 +4,7 @@ import Link from "next/link";
 import { confirmedAmbassadors } from "./ambassadors-data";
 import { getAmbassadorProfile } from "./ambassador-profiles-data";
 import { HomeHero } from "./home-hero";
+import { getPublicRadarSignals } from "@/lib/radar/notion";
 import { allRoomPersonas } from "./room-personas-data";
 import { SteelBallPresence } from "./steel-ball-presence";
 import { ThemeToggle } from "./theme-toggle";
@@ -240,7 +241,67 @@ const decisionJourney = [
   },
 ];
 
-export default function Home() {
+type HomepageRadarSignal = {
+  location: string;
+  type: string;
+  signal: string;
+  confidence?: string;
+  source?: string;
+};
+
+const editorialRadarSignals: HomepageRadarSignal[] = [
+  {
+    location: "Amsterdam",
+    type: "Observation",
+    signal:
+      "Parents are increasingly using cargo bikes as temporary waiting rooms between school, work and errands.",
+    confidence: "Medium",
+    source: "Editorial example",
+  },
+  {
+    location: "São Paulo",
+    type: "Cultural Note",
+    signal:
+      "Clients are asking how quickly AI helped, rather than whether AI was used.",
+    confidence: "Medium",
+    source: "Editorial example",
+  },
+  {
+    location: "Cape Town",
+    type: "Contradiction",
+    signal:
+      "Local workarounds often protect context, safety or trust that central processes cannot see.",
+    confidence: "High",
+    source: "Editorial example",
+  },
+];
+
+async function getHomepageRadarSignals(): Promise<{
+  signals: HomepageRadarSignal[];
+  source: "live" | "editorial";
+}> {
+  try {
+    const publicSignals = await getPublicRadarSignals();
+    const signals = publicSignals.slice(0, 3).map((signal) => ({
+      location: signal.location || signal.market || "Radar",
+      type: signal.type || "Signal",
+      signal: signal.signal,
+      confidence: signal.confidence || undefined,
+      source: signal.market || undefined,
+    }));
+
+    if (signals.length === 3) {
+      return { signals, source: "live" };
+    }
+  } catch {
+    // The homepage must stay available even when Radar's private source is unavailable.
+  }
+
+  return { signals: editorialRadarSignals, source: "editorial" };
+}
+
+export default async function Home() {
+  const radarPreview = await getHomepageRadarSignals();
   const humanAmbassadors = confirmedAmbassadors.filter(
     (ambassador) => ambassador.status === "ambassador",
   );
@@ -268,6 +329,89 @@ export default function Home() {
       <ThemeToggle />
 
       <HomeHero />
+
+      <section
+        className="content-section ruled homepage-radar-section"
+        id="radar"
+        aria-labelledby="homepage-radar-title"
+      >
+        <div className="content-block wide homepage-radar-block">
+          <div className="homepage-radar-intro">
+            <div>
+              <p className="section-kicker">CTRL+LOVE RADAR</p>
+              <h2 id="homepage-radar-title">Before the Room, there is Radar.</h2>
+            </div>
+            <div className="homepage-radar-copy">
+              <p>
+                Not every important question begins as a brief.
+              </p>
+              <p>
+                Sometimes it begins as a small observation from Amsterdam, São
+                Paulo, Cape Town or Tokyo. A contradiction. A local habit.
+                Something that changed before the dashboard noticed.
+              </p>
+              <p>
+                Radar makes those signals visible before they become obvious.
+              </p>
+              <div className="homepage-radar-actions">
+                <Link className="home-hero-cta" href="/radar/">
+                  Explore Radar {"->"}
+                </Link>
+                <Link className="home-hero-secondary" href="/radar/#submit-signal">
+                  Send a signal
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          <div className="homepage-radar-preview" aria-labelledby="homepage-live-radar-title">
+            <div className="homepage-radar-preview-heading">
+              <p className="section-kicker">
+                {radarPreview.source === "live" ? "LIVE RADAR" : "RADAR PREVIEW"}
+              </p>
+              <h3 id="homepage-live-radar-title">
+                What the network is learning to notice.
+              </h3>
+            </div>
+
+            <div
+              className="homepage-radar-grid"
+              data-source={radarPreview.source}
+              aria-label={
+                radarPreview.source === "live"
+                  ? "Public Radar signals"
+                  : "Editorial Radar examples"
+              }
+            >
+              {radarPreview.signals.map((signal) => (
+                <article className="homepage-radar-card" key={`${signal.location}-${signal.signal}`}>
+                  <div className="homepage-radar-card-meta">
+                    <span>{signal.location}</span>
+                    <span>{signal.type}</span>
+                  </div>
+                  <p>{signal.signal}</p>
+                  <div className="homepage-radar-card-footer">
+                    {signal.confidence ? <span>{signal.confidence} confidence</span> : null}
+                    {signal.source ? <span>{signal.source}</span> : null}
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <Link className="text-link homepage-radar-link" href="/radar/">
+              View all signals {"->"}
+            </Link>
+          </div>
+
+          <div className="homepage-radar-bridge" aria-label="From signal to decision">
+            <p className="section-kicker">FROM SIGNAL TO DECISION</p>
+            <p>
+              When a signal is strong enough, it becomes a question worth
+              putting in a Room.
+            </p>
+          </div>
+        </div>
+      </section>
 
       <section
         className="content-section ruled chapter-room-section"
@@ -782,6 +926,9 @@ export default function Home() {
           <p>ctrl+love</p>
           <p>
             <Link href="/room/">The Room</Link>
+          </p>
+          <p>
+            <Link href="/radar/">Radar</Link>
           </p>
           <p>
             <Link href="/museum/">The Museum</Link>

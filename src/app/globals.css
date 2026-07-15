@@ -10203,6 +10203,7 @@ h3 {
 }
 
 .chapter-room-section,
+.homepage-radar-section,
 .final-verdict-section,
 .decision-artifact-section,
 .constitution-article-section,
@@ -10211,6 +10212,7 @@ h3 {
 }
 
 .chapter-room-block,
+.homepage-radar-block,
 .verdict-block,
 .artifact-block,
 .article-block,
@@ -10218,6 +10220,124 @@ h3 {
   display: grid;
   width: min(100%, 72rem);
   gap: clamp(1.35rem, 3vw, 2.5rem);
+}
+
+.homepage-radar-block {
+  width: min(100%, 82rem);
+  gap: clamp(2.35rem, 5vw, 4rem);
+}
+
+.homepage-radar-intro {
+  display: grid;
+  grid-template-columns: minmax(15rem, 0.64fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 5vw, 4.5rem);
+  align-items: start;
+}
+
+.homepage-radar-intro h2,
+.homepage-radar-preview-heading h3 {
+  max-width: 12ch;
+  color: var(--ink);
+  font-size: clamp(2.7rem, 6.5vw, 6.2rem);
+  font-weight: 650;
+  letter-spacing: 0;
+  line-height: 0.96;
+}
+
+.homepage-radar-copy {
+  display: grid;
+  gap: 1rem;
+  color: var(--soft);
+  font-size: clamp(1.18rem, 1.8vw, 1.55rem);
+  line-height: 1.38;
+}
+
+.homepage-radar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.78rem;
+  margin-top: 0.45rem;
+}
+
+.homepage-radar-preview {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.homepage-radar-preview-heading {
+  display: grid;
+  gap: 0.72rem;
+}
+
+.homepage-radar-preview-heading h3 {
+  max-width: 15ch;
+  font-size: clamp(2.25rem, 5vw, 4.8rem);
+}
+
+.homepage-radar-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
+  background: color-mix(in srgb, var(--ink) 16%, transparent);
+}
+
+.homepage-radar-card {
+  min-height: 21rem;
+  display: grid;
+  align-content: space-between;
+  gap: 1.4rem;
+  background: color-mix(in srgb, var(--paper-soft) 78%, var(--paper) 22%);
+  padding: clamp(1rem, 2.2vw, 1.45rem);
+}
+
+.homepage-radar-card-meta,
+.homepage-radar-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.65rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: var(--leading-secondary);
+  text-transform: uppercase;
+}
+
+.homepage-radar-card-meta span:last-child {
+  color: var(--team-warm);
+}
+
+.homepage-radar-card p {
+  color: var(--ink);
+  font-size: clamp(1.45rem, 2.7vw, 2.3rem);
+  font-weight: 650;
+  line-height: 1.03;
+}
+
+.homepage-radar-card-footer {
+  color: var(--faint);
+}
+
+.homepage-radar-link {
+  justify-self: start;
+  margin-top: 0.35rem;
+}
+
+.homepage-radar-bridge {
+  display: grid;
+  gap: 0.55rem;
+  max-width: 40rem;
+  border-top: 1px solid color-mix(in srgb, var(--ink) 28%, var(--rule));
+  padding-top: 1rem;
+}
+
+.homepage-radar-bridge > p:last-child {
+  color: var(--ink);
+  font-size: clamp(1.15rem, 1.65vw, 1.45rem);
+  font-weight: 620;
+  line-height: 1.32;
 }
 
 .chapter-decision-card {
@@ -10617,6 +10737,7 @@ h3 {
   }
 
   .chapter-room-section,
+  .homepage-radar-section,
   .final-verdict-section,
   .decision-artifact-section,
   .constitution-article-section,
@@ -10627,6 +10748,30 @@ h3 {
 
   .decision-artifact {
     padding: 1rem;
+  }
+
+  .homepage-radar-intro,
+  .homepage-radar-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .homepage-radar-intro h2,
+  .homepage-radar-preview-heading h3 {
+    max-width: 100%;
+  }
+
+  .homepage-radar-card {
+    min-height: 17rem;
+  }
+
+  .homepage-radar-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .homepage-radar-actions .home-hero-cta,
+  .homepage-radar-actions .home-hero-secondary {
+    width: 100%;
   }
 }
 
@@ -10656,6 +10801,7 @@ h3 {
 }
 
 .chapter-one .chapter-room-section,
+.chapter-one .homepage-radar-section,
 .chapter-one .room-afterword-section,
 .chapter-one .personas-section,
 .chapter-one .engagement-section,
