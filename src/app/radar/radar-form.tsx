@@ -17,14 +17,22 @@ const confidenceLevels = ["Low", "Medium", "High"];
 type SubmitState =
   | { status: "idle" }
   | { status: "sending" }
-  | { status: "success"; insight?: SubmissionInsight }
-  | { status: "error" };
+  | { status: "reflected"; reflection: RadarReflectionResult }
+  | { status: "reflection-error"; signalId: string; retrying?: boolean }
+  | { status: "save-error" };
 
-type SubmissionInsight = "similar-observed" | "first-observed";
-
-const successInsightText: Record<SubmissionInsight, string> = {
-  "first-observed": "No matching signals yet. You may be the first.",
-  "similar-observed": "A similar signal has already been observed elsewhere.",
+type RadarReflectionResult = {
+  status: "reflected";
+  signalId: string;
+  reflectionType: string;
+  reflection: string;
+  quality: {
+    specific: boolean;
+    observable: boolean;
+    comparativeValue: "low" | "medium" | "high";
+  };
+  roomWorthy: boolean;
+  relatedSignals: Array<{ id: string; signal: string }>;
 };
 
 export function RadarForm() {
@@ -49,7 +57,10 @@ export function RadarForm() {
       status: "sending",
     });
 
-    const payload = Object.fromEntries(formData.entries());
+    const payload = {
+      ...Object.fromEntries(formData.entries()),
+      idempotencyKey: crypto.randomUUID(),
+    };
 
     try {
       const response = await fetch("/api/radar-signals", {
@@ -60,31 +71,158 @@ export function RadarForm() {
         body: JSON.stringify(payload),
       });
 
-      const result = (await response.json().catch(() => ({}))) as {
-        ok?: boolean;
-        insight?: SubmissionInsight | null;
-      };
+      const result = (await response.json().catch(() => ({}))) as
+        | RadarReflectionResult
+        | { status?: "saved_reflection_unavailable"; signalId?: string }
+        | { status?: "save_failed" };
 
-      if (!response.ok || !result.ok) {
-        throw new Error("Radar transmission failed.");
+      if (result.status === "reflected") {
+        form.reset();
+        setSubmitState({
+          status: "reflected",
+          reflection: result,
+        });
+        firstFieldRef.current?.focus();
+        return;
       }
 
-      form.reset();
+      if (result.status === "saved_reflection_unavailable" && result.signalId) {
+        setSubmitState({
+          status: "reflection-error",
+          signalId: result.signalId,
+        });
+        return;
+      }
+
       setSubmitState({
-        status: "success",
-        insight: result.insight ?? undefined,
+        status: "save-error",
       });
-      firstFieldRef.current?.focus();
     } catch {
       setSubmitState({
-        status: "error",
+        status: "save-error",
       });
     } finally {
       isSubmittingRef.current = false;
     }
   }
 
-  const isSending = submitState.status === "sending";
+  async function retryReflection(signalId: string) {
+    if (isSubmittingRef.current) {
+      return;
+    }
+
+    isSubmittingRef.current = true;
+    setSubmitState({ status: "reflection-error", signalId, retrying: true });
+
+    try {
+      const response = await fetch("/api/radar-signals", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ signalId }),
+      });
+
+      const result = (await response.json().catch(() => ({}))) as
+        | RadarReflectionResult
+        | { status?: "saved_reflection_unavailable"; signalId?: string };
+
+      if (response.ok && result.status === "reflected") {
+        setSubmitState({
+          status: "reflected",
+          reflection: result,
+        });
+        const form = firstFieldRef.current?.form;
+        form?.reset();
+        firstFieldRef.current?.focus();
+        return;
+      }
+
+      setSubmitState({ status: "reflection-error", signalId });
+    } catch {
+      setSubmitState({ status: "reflection-error", signalId });
+    } finally {
+      isSubmittingRef.current = false;
+    }
+  }
+
+  const isSending =
+    submitState.status === "sending" ||
+    (submitState.status === "reflection-error" && submitState.retrying);
+
+  function renderSubmitMessage() {
+    if (submitState.status === "sending") {
+      return <strong>Reading the signal…</strong>;
+    }
+
+    if (submitState.status === "reflected") {
+      const { reflection } = submitState;
+
+      return (
+        <>
+          <strong>SIGNAL RECEIVED.</strong>
+          <span>
+            Your observation has entered the ctrl+love Radar. The reflection below is saved with
+            the signal.
+          </span>
+          <div className="radar-reflection-card">
+            <b>{reflection.reflectionType.toUpperCase()}</b>
+            <p>{reflection.reflection}</p>
+            <small>
+              {reflection.quality.specific ? "Specific" : "Needs specificity"} ·{" "}
+              {reflection.quality.observable ? "Observable" : "Needs observation"} · Comparative
+              value: {reflection.quality.comparativeValue}
+            </small>
+            {reflection.roomWorthy ? <em>Room worthy</em> : null}
+            {reflection.relatedSignals.length > 0 ? (
+              <ul>
+                {reflection.relatedSignals.map((signal) => (
+                  <li key={signal.id}>{signal.signal}</li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+        </>
+      );
+    }
+
+    if (submitState.status === "reflection-error") {
+      return (
+        <>
+          <strong>
+            {submitState.retrying ? "Reading the signal…" : "SIGNAL SAVED. REFLECTION UNAVAILABLE."}
+          </strong>
+          {!submitState.retrying ? (
+            <>
+              <span>
+                Your observation is safely in Radar, but the interpretation service did not
+                respond.
+              </span>
+              <button
+                className="radar-retry"
+                disabled={isSending}
+                onClick={() => retryReflection(submitState.signalId)}
+                type="button"
+              >
+                Retry reflection
+              </button>
+            </>
+          ) : null}
+        </>
+      );
+    }
+
+    if (submitState.status === "save-error") {
+      return (
+        <>
+          <strong>RADAR COULD NOT SAVE THIS SIGNAL.</strong>
+          <span>Nothing has been stored. Please try again.</span>
+        </>
+      );
+    }
+
+    return null;
+  }
 
   return (
     <form className="radar-form" onSubmit={handleSubmit}>
@@ -102,7 +240,6 @@ export function RadarForm() {
         <textarea
           ref={firstFieldRef}
           name="signal"
-          minLength={12}
           maxLength={220}
           placeholder="A short, sharp observation. Something that changed, contradicted the brief, or felt too alive to ignore."
           required
@@ -176,32 +313,10 @@ export function RadarForm() {
 
       <div className="radar-submit-row">
         <button className="radar-submit" disabled={isSending} type="submit">
-          {isSending ? "Sending" : "Send to Radar"}
+          {isSending ? "Reading" : "Send to Radar"}
         </button>
         <div aria-live="polite" className={`radar-submit-message ${submitState.status}`}>
-          {submitState.status === "sending" ? (
-            <>
-              <strong>Transmitting signal…</strong>
-            </>
-          ) : null}
-          {submitState.status === "success" ? (
-            <>
-              <strong>SIGNAL RECEIVED.</strong>
-              <span>
-                Your observation has entered the ctrl+love Radar.
-                It may strengthen an existing pattern, challenge an assumption or trigger a new question.
-              </span>
-              {submitState.insight ? <em>{successInsightText[submitState.insight]}</em> : null}
-            </>
-          ) : null}
-          {submitState.status === "error" ? (
-            <>
-              <strong>RADAR IS TEMPORARILY OUT OF RANGE.</strong>
-              <span>
-                Your signal could not be transmitted right now. Please try again in a moment.
-              </span>
-            </>
-          ) : null}
+          {renderSubmitMessage()}
         </div>
       </div>
     </form>

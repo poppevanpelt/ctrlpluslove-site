@@ -1,3 +1,8 @@
+import {
+  confidenceFromComparativeValue,
+  type RadarReflection,
+} from "./reflection.ts";
+
 const NOTION_VERSION = "2022-06-28";
 const FALLBACK_RADAR_SIGNALS_DATA_SOURCE_ID = "0e63c0ad-9817-40de-b1bb-267cd0c748a7";
 
@@ -35,12 +40,14 @@ type NotionSelect = {
 };
 
 type NotionPage = {
+  id?: string;
   properties?: Record<
     string,
     {
       title?: NotionRichText[];
       rich_text?: NotionRichText[];
       select?: NotionSelect | null;
+      checkbox?: boolean;
     }
   >;
 };
@@ -118,6 +125,12 @@ function selectProperty(name: string) {
   };
 }
 
+function checkboxProperty(checked: boolean) {
+  return {
+    checkbox: checked,
+  };
+}
+
 function safeText(value: string | undefined, fallback = "") {
   return value?.trim() || fallback;
 }
@@ -153,6 +166,7 @@ export async function createRadarSignal(input: RadarSignalInput) {
         Source: selectProperty(input.source),
         Confidence: selectProperty(input.confidence),
         Status: selectProperty("Raw"),
+        "Reflection Status": selectProperty("Pending"),
         Captured: {
           date: {
             start: new Date().toISOString(),
@@ -180,6 +194,43 @@ export async function createRadarSignal(input: RadarSignalInput) {
           },
         },
       ],
+    }),
+  });
+}
+
+export async function getRadarSignal(pageId: string): Promise<RadarSignalInput & { id: string }> {
+  const page = await notionRequest<NotionPage>(`/pages/${encodeURIComponent(pageId)}`);
+
+  return {
+    id: page.id ?? pageId,
+    signal: getTitle(page, "Signal"),
+    type: getSelect(page, "Type") || "Observation",
+    source: getSelect(page, "Source") || "Other",
+    confidence: getSelect(page, "Confidence") || "Medium",
+    market: getText(page, "Market"),
+    location: getText(page, "Location"),
+    notes: getText(page, "Notes"),
+    sourceMaterial: getText(page, "Source Material"),
+  };
+}
+
+export async function updateRadarSignalReflection(pageId: string, reflection: RadarReflection) {
+  const relatedSignals = reflection.relatedSignals
+    .map((signal) => signal.signal)
+    .filter(Boolean)
+    .join("\n");
+
+  return notionRequest<NotionPage>(`/pages/${encodeURIComponent(pageId)}`, {
+    method: "PATCH",
+    body: JSON.stringify({
+      properties: {
+        Reflection: textProperty(reflection.reflection),
+        "Reflection Type": selectProperty(reflection.reflectionType),
+        Confidence: selectProperty(confidenceFromComparativeValue(reflection.quality.comparativeValue)),
+        "Related Signals": textProperty(relatedSignals),
+        "Room Worthy": checkboxProperty(reflection.roomWorthy),
+        "Reflection Status": selectProperty("Generated"),
+      },
     }),
   });
 }
