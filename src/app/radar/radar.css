@@ -2,10 +2,7 @@
   --radar-line: color-mix(in srgb, var(--ink) 16%, transparent);
   --radar-panel: color-mix(in srgb, var(--paper-soft) 78%, var(--paper) 22%);
   --radar-accent: var(--cyan);
-  background:
-    linear-gradient(90deg, var(--radar-line) 1px, transparent 1px) 50% 0 / 6.5rem 6.5rem,
-    linear-gradient(0deg, var(--radar-line) 1px, transparent 1px) 50% 0 / 6.5rem 6.5rem,
-    var(--paper);
+  background: var(--paper);
 }
 
 .radar-hero {
