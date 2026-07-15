@@ -32,7 +32,7 @@ export const ambassadors: Ambassador[] = [
     flag: "🇳🇱",
     status: "founder",
     participationLabel: "Founder",
-    image: "/ambassadors/portraits/001-poppe-van-pelt-portrait-live-20260712.jpeg",
+    image: "/ambassadors/portraits/001-poppe-van-pelt-portrait-live-20260715.png",
     linkedin: "https://www.linkedin.com/in/poppevanpelt/",
     roomHref: "/#room",
     featured: true,
@@ -75,7 +75,7 @@ export const ambassadors: Ambassador[] = [
   {
     id: "sung-wook-tayl-chung",
     number: "004",
-    name: "Sung Wook \"Tayl\" Chung",
+    name: "Sung Wook “Tayl” Chung",
     preferredName: "Tayl",
     role: "South Korea / Seoul",
     city: "Seoul",

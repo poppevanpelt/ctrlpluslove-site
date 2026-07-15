@@ -184,7 +184,7 @@ const artifactFields = [
 const founder = {
   name: "Poppe van Pelt",
   role: "Founder",
-  image: "/ambassadors/portraits/001-poppe-van-pelt-portrait-live-20260712.jpeg",
+  image: "/ambassadors/portraits/001-poppe-van-pelt-portrait-live-20260715.png",
   note:
     "Thirty years helping organisations make decisions taught me that most expensive mistakes were not caused by a lack of intelligence. They happened because nobody challenged certainty early enough. ctrl+love exists to change that.",
 };
