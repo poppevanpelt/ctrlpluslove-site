@@ -24,8 +24,11 @@ export function HomeHero() {
           >
             Shortcut to reality.
           </h1>
+          <p className="home-hero-subline sequence-reveal sequence-hero-orientation">
+            Bring the decision into the room.
+          </p>
           <p className="home-hero-proposition sequence-reveal sequence-hero-orientation">
-            ctrl+love helps teams make better decisions: AI finds patterns fast, humans bring judgment, context and disagreement.
+            ctrl+love helps organisations make better decisions by pairing AI speed with human judgement.
           </p>
           <div
             className="arrival-status sequence-reveal sequence-hero-status"

@@ -342,7 +342,7 @@ export default async function Home() {
               <h2 id="homepage-radar-title">Before the Room, there is Radar.</h2>
               <p className="homepage-radar-deck">
                 Radar collects small human observations before they become
-                obvious trends or important decisions.
+                bigger decisions.
               </p>
             </div>
             <div className="homepage-radar-copy">
@@ -414,8 +414,8 @@ export default async function Home() {
           <div className="homepage-radar-bridge" aria-label="From signal to decision">
             <p className="section-kicker">FROM SIGNAL TO DECISION</p>
             <p>
-              When a signal is strong enough, it becomes a question worth
-              putting in a Room.
+              When a signal matters enough, it becomes a question worth
+              discussing.
             </p>
           </div>
         </div>
