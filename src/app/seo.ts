@@ -86,7 +86,7 @@ export const publicRoutes: PublicRoute[] = [
     path: "/stress-test/",
     title: "Decision Stress-Test™ — ctrl+love",
     description:
-      "Bring one live creative decision into the ctrl+love room. Leave with less fog.",
+      "Bring one live creative decision into the ctrl+love Room. Leave with less fog.",
     changeFrequency: "monthly",
     priority: 0.9,
   },
@@ -117,7 +117,7 @@ export const publicRoutes: PublicRoute[] = [
   {
     path: "/pricing/",
     title: "Rooms and pricing — ctrl+love",
-    description: "Pricing is simple. But the room should fit the question.",
+    description: "Pricing is simple. But the Room should fit the question.",
     changeFrequency: "monthly",
     priority: 0.85,
   },

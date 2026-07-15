@@ -31,7 +31,7 @@ export function HomeHero() {
             AI finds patterns. Human judgment decides what matters.
           </p>
           <p className="home-hero-category sequence-reveal sequence-hero-orientation">
-            A global decision intelligence network.
+            A global network for better decisions.
           </p>
           <div
             className="arrival-status sequence-reveal sequence-hero-status"

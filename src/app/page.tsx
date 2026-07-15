@@ -80,7 +80,7 @@ const products = [
   {
     name: "On-Call Room™",
     what: "An available decision room for executives who need pressure before committing.",
-    when: "When senior teams face recurring decisions and need a trusted outside room on call.",
+    when: "When senior teams face recurring decisions and need a trusted outside Room on call.",
     receive: "A continuing decision rhythm, rapid pressure sessions and documented recommendations.",
     outcome: "Fewer protected assumptions. Faster contact with the real question.",
     startingPoint: "Ongoing partnership",
@@ -609,9 +609,8 @@ export default async function Home() {
             <p className="section-kicker">Products</p>
             <h2 id="products-title">Three ways to engage the Room.</h2>
             <p>
-              The product architecture is deliberately narrow: one urgent
-              decision, an ongoing executive room, or a verdict on whether to
-              kill or scale.
+              Three entry points, each built around a decision that needs
+              pressure before commitment.
             </p>
           </div>
           <div className="product-grid">
@@ -656,8 +655,8 @@ export default async function Home() {
             <p className="section-kicker">Engagements</p>
             <h2 id="engagement-title">Commercial clarity, institutional form.</h2>
             <p>
-              Clients pay for pressure before commitment: a serious room,
-              selected perspectives, a written record and a sharper decision.
+              Every engagement creates pressure before commitment: selected
+              perspectives, a written record and a sharper decision.
             </p>
           </div>
 
