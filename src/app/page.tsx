@@ -262,7 +262,7 @@ export default function Home() {
 
   return (
     <main className="site-shell chapter-one" id="main-content">
-      <a className="skip-link" href="#first-room-title">
+      <a className="skip-link" href="#the-room">
         Skip to main content
       </a>
       <ThemeToggle />
@@ -289,7 +289,7 @@ export default function Home() {
               <p>Decision 014</p>
               <span>Initial confidence 82%</span>
             </div>
-            <h2 id="first-room-title" tabIndex={-1}>
+            <h2 id="first-room-title">
               Should we expand into Brazil next quarter?
             </h2>
             <dl className="decision-card-facts">
@@ -413,7 +413,12 @@ export default function Home() {
                 key={persona.name}
               >
                 <span>{String(index + 1).padStart(2, "0")}</span>
-                <div className="persona-portrait" aria-hidden="true">
+                <div
+                  className={`persona-portrait${
+                    persona.portrait ? "" : " persona-portrait-silhouette"
+                  }`}
+                  aria-hidden="true"
+                >
                   {persona.portrait ? (
                     <Image
                       src={persona.portrait}
@@ -422,7 +427,7 @@ export default function Home() {
                       sizes="(max-width: 680px) 58vw, (max-width: 1100px) 24vw, 13vw"
                     />
                   ) : (
-                    <span />
+                    <span className="persona-silhouette" />
                   )}
                 </div>
                 <h3>{persona.name}</h3>

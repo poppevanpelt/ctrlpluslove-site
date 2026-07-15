@@ -2280,16 +2280,12 @@ h3 {
 }
 
 #the-room:focus-visible {
-  outline: none;
-}
-
-#first-room-title {
-  scroll-margin-top: clamp(1.5rem, 5vw, 4rem);
-}
-
-#first-room-title:focus-visible {
   outline: 2px solid color-mix(in srgb, var(--team-warm) 72%, transparent);
-  outline-offset: 0.3rem;
+  outline-offset: -0.4rem;
+}
+
+#the-room {
+  scroll-margin-top: 0;
 }
 
 .decision-process-grid {
@@ -10532,39 +10528,44 @@ h3 {
   transition: filter 260ms ease, transform 260ms ease;
 }
 
-.persona-portrait span {
+.persona-portrait-silhouette {
+  display: grid;
+  place-items: end center;
+}
+
+.persona-silhouette {
   position: absolute;
-  inset: 0;
+  right: 10%;
+  bottom: 0;
+  left: 10%;
+  height: 82%;
   display: block;
-  background:
-    radial-gradient(ellipse at 50% 31%, color-mix(in srgb, var(--ink) 84%, transparent) 0 16%, transparent 16.5%),
-    radial-gradient(ellipse at 50% 88%, color-mix(in srgb, var(--ink) 84%, transparent) 0 35%, transparent 35.5%),
-    linear-gradient(180deg, transparent 0 100%);
+  background: none;
   content: "";
 }
 
-.persona-portrait span::before {
+.persona-silhouette::before {
   position: absolute;
-  top: 19%;
+  top: 0;
   left: 50%;
-  width: 42%;
-  aspect-ratio: 0.76;
+  width: 38%;
+  aspect-ratio: 0.78;
   border-radius: 48% 48% 45% 45%;
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--ink) 90%, transparent), color-mix(in srgb, var(--ink) 76%, transparent));
-  box-shadow: 0 1rem 2rem color-mix(in srgb, var(--ink) 14%, transparent);
+  background: color-mix(in srgb, var(--ink) 92%, transparent);
+  box-shadow: 0 1rem 1.8rem color-mix(in srgb, var(--ink) 12%, transparent);
   transform: translateX(-50%);
   content: "";
 }
 
-.persona-portrait span::after {
+.persona-silhouette::after {
   position: absolute;
-  right: 0.85rem;
-  bottom: 0.85rem;
-  left: 0.85rem;
-  height: 38%;
-  border-radius: 48% 48% 0 0;
-  background: color-mix(in srgb, var(--ink) 82%, transparent);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 58%;
+  border-radius: 46% 46% 0.35rem 0.35rem;
+  background: color-mix(in srgb, var(--ink) 88%, transparent);
+  clip-path: polygon(18% 100%, 82% 100%, 76% 42%, 64% 20%, 50% 14%, 36% 20%, 24% 42%);
   content: "";
 }
 
@@ -10633,21 +10634,45 @@ h3 {
 
 .case-row {
   display: grid;
-  grid-template-columns: 3.5rem minmax(10rem, 0.58fr) minmax(12rem, 0.8fr) minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    "number project question"
+    "number tension outcome";
+  grid-template-columns: 3.5rem minmax(11rem, 0.32fr) minmax(0, 0.68fr);
   gap: clamp(0.9rem, 2.4vw, 2rem);
   border-bottom: 1px solid color-mix(in srgb, var(--ink) 24%, var(--rule));
   padding: clamp(1.2rem, 2.8vw, 2.2rem) 0;
 }
 
 .case-row > span {
+  grid-area: number;
   color: color-mix(in srgb, var(--ink) 42%, var(--muted));
   font-size: 0.78rem;
   font-weight: 850;
   letter-spacing: 0.1em;
 }
 
+.case-row > div {
+  min-width: 0;
+}
+
+.case-row > div:nth-of-type(1) {
+  grid-area: project;
+}
+
+.case-row > div:nth-of-type(2) {
+  grid-area: question;
+}
+
+.case-row > div:nth-of-type(3) {
+  grid-area: tension;
+}
+
+.case-row > div:nth-of-type(4) {
+  grid-area: outcome;
+}
+
 .case-row h3 {
-  max-width: 20rem;
+  max-width: 36rem;
   color: var(--ink);
   font-size: clamp(1.25rem, 2.1vw, 1.9rem);
   font-weight: 660;
@@ -10964,11 +10989,16 @@ h3 {
   }
 
   .case-row {
+    grid-template-areas:
+      "number project"
+      "number question"
+      "number tension"
+      "number outcome";
     grid-template-columns: 2.7rem minmax(0, 1fr);
   }
 
   .case-row > div {
-    grid-column: 2 / -1;
+    grid-column: auto;
   }
 
   .founders-block,
@@ -11033,7 +11063,17 @@ h3 {
   .case-row,
   .engagement-item,
   .founder-card {
+    grid-template-areas:
+      "number"
+      "project"
+      "question"
+      "tension"
+      "outcome";
     grid-template-columns: 1fr;
+  }
+
+  .case-row > span {
+    grid-area: number;
   }
 
   .case-row div:last-child {
