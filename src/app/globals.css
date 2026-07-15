@@ -9492,6 +9492,16 @@ h3 {
   text-wrap: balance;
 }
 
+.home-hero-category {
+  margin: 0;
+  color: color-mix(in srgb, var(--ink) 62%, var(--muted));
+  font-size: clamp(0.78rem, 0.92vw, 0.92rem);
+  font-weight: 760;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
 .home-hero-actions {
   display: flex;
   flex-wrap: wrap;
@@ -10087,6 +10097,10 @@ h3 {
 .chapter-arrival .home-hero-subline {
   max-width: min(100%, 44rem);
   color: color-mix(in srgb, var(--ink) 86%, var(--muted));
+}
+
+.chapter-arrival .home-hero-category {
+  margin-top: clamp(0.25rem, 0.9svh, 0.72rem);
 }
 
 .sequence-reveal {
