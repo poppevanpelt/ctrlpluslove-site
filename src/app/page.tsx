@@ -69,24 +69,30 @@ const products = [
   {
     name: "Decision Stress-Test™",
     what: "A focused Room for one important decision before it becomes expensive.",
-    forWhom: "Leaders facing a near-term choice with visible pressure and incomplete evidence.",
-    outcome: "A sharper recommendation, exposed blind spots, and a Decision Artifact.",
+    when: "Before a board recommendation, market launch, investment choice or strategic commitment.",
+    receive: "A Decision Record with the pressure applied, tensions surfaced and the reframed question.",
+    outcome: "The team leaves with sharper direction, visible risk and a next action.",
+    startingPoint: "From €4,500",
     object: "pressure dossier",
     href: "/pricing/decision-stress-test/",
   },
   {
     name: "On-Call Room™",
     what: "An available decision room for executives who need pressure before committing.",
-    forWhom: "Senior teams with recurring high-stakes decisions and little appetite for theatre.",
-    outcome: "Ongoing access to contradiction, synthesis, and reality contact.",
+    when: "When senior teams face recurring decisions and need a trusted outside room on call.",
+    receive: "A continuing decision rhythm, rapid pressure sessions and documented recommendations.",
+    outcome: "Fewer protected assumptions. Faster contact with the real question.",
+    startingPoint: "Ongoing partnership",
     object: "open channel",
     href: "/pricing/on-call-room/",
   },
   {
     name: "Kill or Scale™",
     what: "A decisive Room for initiatives that should either receive force or be stopped.",
-    forWhom: "Founding teams, boards, and operators carrying projects that are too alive to ignore and too costly to drift.",
-    outcome: "A clear scale, stop, or redesign recommendation before more energy is spent.",
+    when: "When a venture, campaign or internal bet has enough momentum to become costly.",
+    receive: "A structured verdict on what to protect, what to redesign and what to stop.",
+    outcome: "Energy moves toward the work that deserves it.",
+    startingPoint: "Scoped to the decision",
     object: "verdict switch",
     href: "/pricing/kill-or-scale/",
   },
@@ -121,7 +127,7 @@ const caseStudies = [
     sentence: "The growth problem was a fatigue signal wearing a dashboard costume.",
   },
   {
-    sector: "Legacy consumer brand",
+    sector: "Global consumer brand",
     question: "Should we reposition for a younger audience?",
     blindSpot: "The company was not becoming old. It had become predictable.",
     outcome:
@@ -138,7 +144,7 @@ const caseStudies = [
     sentence: "What looked messy was carrying memory.",
   },
   {
-    sector: "Climate infrastructure",
+    sector: "Climate infrastructure venture",
     question: "Should we accept a fast strategic partnership?",
     blindSpot:
       "The partner brought distribution, but also a dependency that would narrow future choices before anyone noticed.",
@@ -151,19 +157,27 @@ const caseStudies = [
 const artifactFields = [
   ["Original decision", "Expand into Brazil next quarter."],
   [
-    "Pressure applied",
-    "Emotional Truth, Contrarian Pressure, Commercial Realism, Reality Stress.",
+    "Participants",
+    "Emotional Truth, Contrarian Pressure, Commercial Realism and Reality Stress.",
   ],
   [
-    "Blind spot",
+    "Tensions surfaced",
     "The team was treating Brazil as one market and expansion as proof of model strength.",
   ],
   [
-    "Decision",
+    "Reframed question",
+    "What must become true before expansion is responsible?",
+  ],
+  [
+    "Recommendation",
     "Delay launch. Run six weeks of retention and regional-entry validation. Re-enter the Room.",
   ],
   ["Confidence", "91% after reframing, not before."],
-  ["Reality contact", "Recovered."],
+  [
+    "Unresolved questions",
+    "Which regions behave differently, and what retention signal is strong enough to proceed?",
+  ],
+  ["Next action", "Run the validation sprint and return with evidence."],
 ];
 
 const founder = {
@@ -368,8 +382,8 @@ export default function Home() {
           <p className="section-kicker">What happened</p>
           <h2 id="after-room-title">Reality entered. Confidence moved.</h2>
           <p>
-            The decision did not get smaller. It became more truthful. The Room
-            turned a yes/no launch question into a testable responsibility.
+            The Room turned a yes/no launch question into a testable
+            responsibility.
           </p>
         </div>
       </section>
@@ -439,12 +453,20 @@ export default function Home() {
                     <dd>{product.what}</dd>
                   </div>
                   <div>
-                    <dt>Who it is for</dt>
-                    <dd>{product.forWhom}</dd>
+                    <dt>When you need it</dt>
+                    <dd>{product.when}</dd>
                   </div>
                   <div>
-                    <dt>Outcome</dt>
+                    <dt>What you receive</dt>
+                    <dd>{product.receive}</dd>
+                  </div>
+                  <div>
+                    <dt>What changes</dt>
                     <dd>{product.outcome}</dd>
+                  </div>
+                  <div>
+                    <dt>Starting point</dt>
+                    <dd>{product.startingPoint}</dd>
                   </div>
                 </dl>
               </Link>
@@ -461,6 +483,10 @@ export default function Home() {
           <div className="engagement-heading">
             <p className="section-kicker">Engagements</p>
             <h2 id="engagement-title">Commercial clarity, institutional form.</h2>
+            <p>
+              Clients pay for pressure before commitment: a serious room,
+              selected perspectives, a written record and a sharper decision.
+            </p>
           </div>
 
           <div className="engagement-list">
@@ -474,7 +500,8 @@ export default function Home() {
           </div>
 
           <p className="engagement-note">
-            Every engagement ends with a documented Decision Artifact.
+            No dashboards. No generic workshop theatre. Every engagement ends
+            with a documented Decision Record.
           </p>
         </div>
       </section>
@@ -490,17 +517,25 @@ export default function Home() {
             <h2 id="cases-title">
               Real decisions improved. Names withheld. Lessons intact.
             </h2>
+            <aside className="human-proof-note">
+              The visible issue was performance. The deeper issue was that
+              people wanted their lives back.
+            </aside>
           </div>
           <div className="case-ledger">
             {caseStudies.map((study, index) => (
               <article className="case-row" key={study.question}>
                 <span>{String(index + 1).padStart(2, "0")}</span>
                 <div>
-                  <p>{study.sector}</p>
+                  <p>Anonymised project</p>
+                  <small>{study.sector}</small>
+                </div>
+                <div>
+                  <strong>Decision question</strong>
                   <h3>{study.question}</h3>
                 </div>
                 <div>
-                  <strong>Blind spot</strong>
+                  <strong>Hidden tension</strong>
                   <p>{study.blindSpot}</p>
                 </div>
                 <div>
@@ -539,9 +574,9 @@ export default function Home() {
               A growing intelligence network for decisions that cross reality.
             </h2>
             <p>
-              Ambassadors are real people across cultures, disciplines, and
-              markets. They extend ctrl+love into places synthetic minds cannot
-              inhabit.
+              Ambassadors are a trusted international council: cultural,
+              creative and strategic specialists who bring lived market context
+              into decisions that cannot be solved from one room alone.
             </p>
           </div>
 
@@ -581,7 +616,7 @@ export default function Home() {
                   <div>
                     <strong>{ambassador.preferredName ?? ambassador.name}</strong>
                     <small>
-                      {ambassador.city}, {ambassador.country}
+                      Creative Ambassador / {ambassador.city}, {ambassador.country}
                     </small>
                   </div>
                 </Link>
@@ -609,9 +644,9 @@ export default function Home() {
               Built for the moment before certainty becomes expensive.
             </h2>
             <p>
-              ctrl+love has an author before it has articles, rituals, and
-              rooms. The institution begins as a refusal to let intelligence
-              become self-protection.
+              ctrl+love is most useful before consensus hardens, before the
+              wrong question becomes expensive and before leadership mistakes
+              more information for clarity.
             </p>
           </div>
           <div className="founder-grid">
@@ -649,11 +684,11 @@ export default function Home() {
       >
         <div className="content-block artifact-block">
           <div className="artifact-heading">
-            <p className="section-kicker">Decision Artifact</p>
+            <p className="section-kicker">Decision Record</p>
             <h2 id="artifact-title">Decision 014 / Reality Contact Record</h2>
           </div>
 
-          <article className="decision-artifact" aria-label="Decision Artifact 014">
+          <article className="decision-artifact" aria-label="Decision Record 014">
             <div className="artifact-topline">
               <span>ctrl+love</span>
               <span>ROOM OUTPUT / 001</span>
@@ -683,7 +718,7 @@ export default function Home() {
             only a decision waiting to meet the world.
           </p>
           <Link className="text-link" href="/constitution/">
-            Read the visible articles {"->"}
+            Read Article I {"->"}
           </Link>
         </div>
       </section>
@@ -699,7 +734,7 @@ export default function Home() {
             className="home-hero-cta"
             href="mailto:hello@ctrlpluslove.com?subject=Bring%20this%20decision%20into%20the%20Room"
           >
-            Bring it into the Room
+            Bring us a decision
           </Link>
           <div className="living-institution" aria-label="Currently inside the Room">
             <p>CURRENTLY INSIDE THE ROOM</p>

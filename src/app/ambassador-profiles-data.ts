@@ -37,7 +37,7 @@ export const ambassadorProfiles: AmbassadorProfile[] = [
     biography: [
       "Poppe van Pelt is an ADCN Hall of Fame creative director and the founder of ctrl+love.",
       "He began his career at TBWA before co-founding Selmore, which he helped build into one of the Netherlands’ leading independent creative agencies. Over the course of his career, Poppe has worked with ambitious international brands and served as Lead Creative Director for Apple in the Netherlands and Belgium.",
-      "At ctrl+love, he brings together an international network of experienced creative and strategic leaders. Combining local intelligence, human judgment and AI, they help organisations challenge assumptions, expose blind spots and make sharper decisions before reality makes them expensive.",
+      "At ctrl+love, he brings together an international network of experienced creative and strategic leaders. They help organisations challenge assumptions, expose blind spots and make sharper decisions before reality makes them expensive.",
       "After more than 30 years in advertising, Poppe remains driven by the same belief: technology changes, markets change and organisations change—but a powerful idea still begins with understanding people.",
     ],
     quote:

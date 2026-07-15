@@ -76,9 +76,9 @@ export function createPageMetadata({
 export const publicRoutes: PublicRoute[] = [
   {
     path: "/",
-    title: "ctrl+love — Shortcut to reality.",
+    title: "ctrl+love — Shortcut to reality",
     description:
-      "Stress-test strategic, creative and commercial decisions before the market does.",
+      "A decision company for moments when the real question matters more than another answer.",
     changeFrequency: "weekly",
     priority: 1,
   },
@@ -131,7 +131,7 @@ export const publicRoutes: PublicRoute[] = [
   {
     path: "/ambassadors/",
     title: "Around the Table — ctrl+love",
-    description: "The distributed human network behind the ctrl+love Engine.",
+    description: "The distributed human network behind ctrl+love decisions.",
     changeFrequency: "monthly",
     priority: 0.8,
   },

@@ -52,8 +52,7 @@ export function SteelBallPresence() {
         <span className="section-kicker">Artifact 001</span>
         <strong>The Steel Ball</strong>
         <span>
-          A physical reminder to test confidence before reality does. Useful on
-          desks. Slightly rude in meetings. Exactly the point.
+          A physical reminder to test confidence before reality does.
         </span>
         <em>View the object</em>
       </span>
