@@ -10224,7 +10224,12 @@ h3 {
 
 .homepage-radar-block {
   width: min(100%, 82rem);
-  gap: clamp(2.35rem, 5vw, 4rem);
+  gap: clamp(2.75rem, 5.5vw, 5.25rem);
+}
+
+.homepage-radar-section {
+  background: var(--ink);
+  color: var(--paper);
 }
 
 .homepage-radar-intro {
@@ -10237,18 +10242,22 @@ h3 {
 .homepage-radar-intro h2,
 .homepage-radar-preview-heading h3 {
   max-width: 12ch;
-  color: var(--ink);
-  font-size: clamp(2.7rem, 6.5vw, 6.2rem);
-  font-weight: 650;
+  color: var(--paper);
+  font-size: clamp(3.4rem, 8vw, 8rem);
+  font-weight: 680;
   letter-spacing: 0;
-  line-height: 0.96;
+  line-height: 0.9;
+}
+
+.homepage-radar-section .section-kicker {
+  color: var(--team-warm);
 }
 
 .homepage-radar-copy {
   display: grid;
   gap: 1rem;
-  color: var(--soft);
-  font-size: clamp(1.18rem, 1.8vw, 1.55rem);
+  color: color-mix(in srgb, var(--paper) 78%, var(--rule));
+  font-size: clamp(1.28rem, 2vw, 1.78rem);
   line-height: 1.38;
 }
 
@@ -10259,9 +10268,33 @@ h3 {
   margin-top: 0.45rem;
 }
 
+.homepage-radar-actions .home-hero-cta {
+  border-color: var(--paper);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.homepage-radar-actions .home-hero-secondary {
+  border-color: color-mix(in srgb, var(--paper) 52%, transparent);
+  color: var(--paper);
+}
+
+.homepage-radar-actions .home-hero-cta:hover,
+.homepage-radar-actions .home-hero-cta:focus-visible {
+  background: transparent;
+  color: var(--paper);
+}
+
+.homepage-radar-actions .home-hero-secondary:hover,
+.homepage-radar-actions .home-hero-secondary:focus-visible {
+  background: color-mix(in srgb, var(--paper) 12%, transparent);
+}
+
 .homepage-radar-preview {
   display: grid;
-  gap: 1.25rem;
+  gap: 1.45rem;
+  border-top: 1px solid color-mix(in srgb, var(--paper) 24%, transparent);
+  padding-top: clamp(1.4rem, 3vw, 2rem);
 }
 
 .homepage-radar-preview-heading {
@@ -10270,25 +10303,27 @@ h3 {
 }
 
 .homepage-radar-preview-heading h3 {
-  max-width: 15ch;
-  font-size: clamp(2.25rem, 5vw, 4.8rem);
+  max-width: 16ch;
+  font-size: clamp(2.8rem, 6vw, 5.8rem);
 }
 
 .homepage-radar-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1px;
-  border: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
-  background: color-mix(in srgb, var(--ink) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--paper) 24%, transparent);
+  background: color-mix(in srgb, var(--paper) 24%, transparent);
 }
 
 .homepage-radar-card {
-  min-height: 21rem;
+  min-height: 25rem;
   display: grid;
   align-content: space-between;
   gap: 1.4rem;
-  background: color-mix(in srgb, var(--paper-soft) 78%, var(--paper) 22%);
-  padding: clamp(1rem, 2.2vw, 1.45rem);
+  background:
+    radial-gradient(circle at 10% 12%, color-mix(in srgb, var(--cyan) 22%, transparent) 0 1px, transparent 2px 100%) 0 0 / 2rem 2rem,
+    color-mix(in srgb, var(--paper) 9%, var(--ink) 91%);
+  padding: clamp(1.15rem, 2.4vw, 1.65rem);
 }
 
 .homepage-radar-card-meta,
@@ -10297,7 +10332,7 @@ h3 {
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 0.65rem;
-  color: var(--muted);
+  color: color-mix(in srgb, var(--paper) 62%, var(--rule));
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -10310,32 +10345,40 @@ h3 {
 }
 
 .homepage-radar-card p {
-  color: var(--ink);
-  font-size: clamp(1.45rem, 2.7vw, 2.3rem);
+  color: var(--paper);
+  font-size: clamp(1.7rem, 3.15vw, 2.85rem);
   font-weight: 650;
   line-height: 1.03;
 }
 
 .homepage-radar-card-footer {
-  color: var(--faint);
+  color: color-mix(in srgb, var(--paper) 48%, var(--rule));
 }
 
 .homepage-radar-link {
   justify-self: start;
   margin-top: 0.35rem;
+  border-color: color-mix(in srgb, var(--paper) 36%, transparent);
+  color: var(--paper);
+}
+
+.homepage-radar-link:hover,
+.homepage-radar-link:focus-visible {
+  border-color: var(--paper);
+  color: color-mix(in srgb, var(--paper) 82%, var(--team-warm));
 }
 
 .homepage-radar-bridge {
   display: grid;
-  gap: 0.55rem;
-  max-width: 40rem;
-  border-top: 1px solid color-mix(in srgb, var(--ink) 28%, var(--rule));
-  padding-top: 1rem;
+  gap: 0.7rem;
+  max-width: 48rem;
+  border-top: 1px solid color-mix(in srgb, var(--paper) 26%, transparent);
+  padding-top: clamp(1.15rem, 2vw, 1.6rem);
 }
 
 .homepage-radar-bridge > p:last-child {
-  color: var(--ink);
-  font-size: clamp(1.15rem, 1.65vw, 1.45rem);
+  color: var(--paper);
+  font-size: clamp(1.32rem, 2.2vw, 2rem);
   font-weight: 620;
   line-height: 1.32;
 }
