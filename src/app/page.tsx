@@ -262,7 +262,7 @@ export default function Home() {
 
   return (
     <main className="site-shell chapter-one" id="main-content">
-      <a className="skip-link" href="#homepage-start">
+      <a className="skip-link" href="#room-changed-question">
         Skip to main content
       </a>
       <ThemeToggle />
@@ -355,7 +355,9 @@ export default function Home() {
 
           <div
             className="room-changed-mind sequence-reveal sequence-changed-mind"
+            id="room-changed-question"
             role="status"
+            tabIndex={-1}
           >
             <p>The Room has changed the question.</p>
           </div>
