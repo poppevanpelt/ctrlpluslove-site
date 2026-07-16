@@ -11381,27 +11381,27 @@ h3 {
 .persona-eye-blink::after {
   content: "";
   position: absolute;
-  top: 33.3%;
-  width: 13.5%;
-  height: 4.7%;
-  border-radius: 999px;
+  top: 31.9%;
+  width: 12.2%;
+  height: 3.7%;
+  border-radius: 50% 50% 46% 46%;
   background:
-    radial-gradient(ellipse at 50% 72%, color-mix(in srgb, var(--ink) 44%, transparent) 0 24%, transparent 68%),
-    linear-gradient(180deg, color-mix(in srgb, var(--paper) 15%, transparent), color-mix(in srgb, var(--ink) 22%, transparent));
-  filter: blur(0.045rem);
-  mix-blend-mode: multiply;
+    radial-gradient(ellipse at 50% 18%, rgb(222 170 137 / 76%) 0 32%, transparent 70%),
+    linear-gradient(180deg, rgb(232 184 151 / 70%), rgb(171 109 86 / 28%));
+  box-shadow: inset 0 -0.035rem 0.06rem rgb(88 46 34 / 16%);
+  filter: blur(0.018rem);
   opacity: 0;
-  transform: scaleY(0.12);
+  transform: translateY(-0.12rem) scaleY(0.08);
   transform-origin: center;
-  animation: persona-eye-blink var(--persona-blink-cycle) ease-in-out 1.05s infinite;
+  animation: persona-eye-blink var(--persona-blink-cycle) cubic-bezier(0.42, 0, 0.2, 1) 1.05s infinite;
 }
 
 .persona-eye-blink::before {
-  left: 31.2%;
+  left: 31.8%;
 }
 
 .persona-eye-blink::after {
-  left: 55.7%;
+  left: 56.1%;
 }
 
 .persona-card--signal-life:hover .persona-portrait,
@@ -11469,23 +11469,22 @@ h3 {
   55%,
   100% {
     opacity: 0;
-    transform: scaleY(0.12);
+    transform: translateY(-0.12rem) scaleY(0.08);
   }
 
-  51.3% {
-    opacity: 0.3;
-    transform: scaleY(0.55);
+  51.5% {
+    opacity: 0.36;
+    transform: translateY(0) scaleY(0.52);
   }
 
-  52.4%,
-  53.1% {
-    opacity: 0.56;
-    transform: scaleY(0.92);
+  52.35% {
+    opacity: 0.68;
+    transform: translateY(0.035rem) scaleY(0.9);
   }
 
-  54% {
+  53.25% {
     opacity: 0.22;
-    transform: scaleY(0.42);
+    transform: translateY(0) scaleY(0.4);
   }
 }
 
