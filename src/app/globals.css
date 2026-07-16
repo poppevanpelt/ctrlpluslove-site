@@ -11382,51 +11382,51 @@ h3 {
 }
 
 .persona-card[data-motion-effect="grain"] .persona-presence-field {
-  opacity: 0.42;
+  opacity: 0.7;
   background:
-    radial-gradient(circle at 18% 22%, color-mix(in srgb, currentColor 44%, transparent) 0 1px, transparent 2px),
-    radial-gradient(circle at 74% 42%, color-mix(in srgb, var(--paper) 68%, transparent) 0 1px, transparent 2px),
-    linear-gradient(92deg, transparent, color-mix(in srgb, var(--persona-accent, currentColor) 20%, transparent) 45%, transparent 70%);
-  background-size: 2.05rem 2.05rem, 2.8rem 2.8rem, auto;
-  animation: persona-cultural-friction 8.8s ease-in-out infinite alternate;
+    radial-gradient(circle at 18% 22%, color-mix(in srgb, currentColor 62%, transparent) 0 1px, transparent 2px),
+    radial-gradient(circle at 74% 42%, color-mix(in srgb, var(--paper) 78%, transparent) 0 1px, transparent 2px),
+    linear-gradient(92deg, transparent, color-mix(in srgb, var(--persona-accent, currentColor) 34%, transparent) 45%, transparent 70%);
+  background-size: 1.55rem 1.55rem, 2.15rem 2.15rem, auto;
+  animation: persona-cultural-friction 5.6s ease-in-out infinite alternate;
 }
 
 .persona-card[data-motion-effect="grid"] .persona-presence-field {
-  opacity: 0.42;
+  opacity: 0.68;
   background:
-    linear-gradient(90deg, color-mix(in srgb, currentColor 34%, transparent) 1px, transparent 1px),
-    linear-gradient(180deg, color-mix(in srgb, currentColor 24%, transparent) 1px, transparent 1px),
-    linear-gradient(180deg, transparent 0 38%, color-mix(in srgb, var(--paper) 48%, transparent) 50%, transparent 62%);
-  background-size: 1.55rem 1.55rem, 1.55rem 1.55rem, 100% 150%;
-  animation: persona-ledger-scan 9.4s ease-in-out infinite;
+    linear-gradient(90deg, color-mix(in srgb, currentColor 50%, transparent) 1px, transparent 1px),
+    linear-gradient(180deg, color-mix(in srgb, currentColor 38%, transparent) 1px, transparent 1px),
+    linear-gradient(180deg, transparent 0 34%, color-mix(in srgb, var(--paper) 72%, transparent) 50%, transparent 66%);
+  background-size: 1.1rem 1.1rem, 1.1rem 1.1rem, 100% 130%;
+  animation: persona-ledger-scan 5.8s ease-in-out infinite;
 }
 
 .persona-card[data-motion-effect="data"] .persona-presence-field {
-  opacity: 0.4;
+  opacity: 0.66;
   background:
-    radial-gradient(ellipse at 50% 50%, transparent 0 37%, color-mix(in srgb, currentColor 30%, transparent) 39% 41%, transparent 44%),
-    radial-gradient(ellipse at 50% 50%, transparent 0 55%, color-mix(in srgb, currentColor 18%, transparent) 57% 58%, transparent 61%),
-    linear-gradient(118deg, transparent 0%, color-mix(in srgb, var(--persona-accent, currentColor) 18%, transparent) 46%, transparent 100%);
+    radial-gradient(ellipse at 50% 50%, transparent 0 34%, color-mix(in srgb, currentColor 52%, transparent) 37% 41%, transparent 45%),
+    radial-gradient(ellipse at 50% 50%, transparent 0 51%, color-mix(in srgb, currentColor 34%, transparent) 54% 57%, transparent 62%),
+    linear-gradient(118deg, transparent 0%, color-mix(in srgb, var(--persona-accent, currentColor) 34%, transparent) 46%, transparent 100%);
   background-size: 100% 100%, auto;
-  animation: persona-consequence-echo 11.6s ease-in-out infinite;
+  animation: persona-consequence-echo 7.2s ease-in-out infinite;
 }
 
 .persona-card[data-motion-effect="glitch"] .persona-presence-field {
-  opacity: 0.4;
+  opacity: 0.68;
   background:
-    linear-gradient(90deg, transparent 0 28%, color-mix(in srgb, currentColor 32%, transparent) 30% 34%, transparent 36% 100%),
-    linear-gradient(180deg, transparent 0 42%, color-mix(in srgb, var(--persona-accent, currentColor) 24%, transparent) 44% 48%, transparent 50% 100%);
+    linear-gradient(90deg, transparent 0 24%, color-mix(in srgb, currentColor 56%, transparent) 28% 36%, transparent 40% 100%),
+    linear-gradient(180deg, transparent 0 38%, color-mix(in srgb, var(--persona-accent, currentColor) 44%, transparent) 42% 50%, transparent 54% 100%);
   background-size: 100% 100%, 100% 100%;
-  animation: persona-pressure-test 7.4s steps(1, end) infinite;
+  animation: persona-pressure-test 4.4s steps(1, end) infinite;
 }
 
 .persona-card[data-motion-effect="none"] .persona-presence-field {
   inset: -14%;
-  opacity: 0.34;
+  opacity: 0.6;
   background:
-    radial-gradient(ellipse at 50% 56%, transparent 0 32%, color-mix(in srgb, currentColor 24%, transparent) 35% 37%, transparent 41%),
-    radial-gradient(ellipse at 50% 82%, color-mix(in srgb, var(--paper) 44%, transparent) 0 16%, transparent 46%);
-  animation: persona-missing-chair 12.8s ease-in-out infinite;
+    radial-gradient(ellipse at 50% 56%, transparent 0 27%, color-mix(in srgb, currentColor 42%, transparent) 31% 35%, transparent 42%),
+    radial-gradient(ellipse at 50% 82%, color-mix(in srgb, var(--paper) 62%, transparent) 0 18%, transparent 48%);
+  animation: persona-missing-chair 7.8s ease-in-out infinite;
 }
 
 .persona-card[data-motion-intensity="subtle"] .persona-portrait-frame {
@@ -11606,13 +11606,13 @@ h3 {
 @keyframes persona-cultural-friction {
   0%,
   100% {
-    transform: translate3d(-0.26rem, 0.08rem, 0) skewX(-0.55deg);
+    transform: translate3d(-0.52rem, 0.18rem, 0) skewX(-1.1deg);
     background-position: 0 0, 0 0, 48% 50%;
   }
 
   48% {
-    transform: translate3d(0.22rem, -0.12rem, 0) skewX(0.62deg);
-    background-position: 0.7rem -0.38rem, -0.48rem 0.42rem, 58% 50%;
+    transform: translate3d(0.46rem, -0.26rem, 0) skewX(1.2deg);
+    background-position: 1.2rem -0.76rem, -0.9rem 0.78rem, 66% 50%;
   }
 }
 
@@ -11624,8 +11624,8 @@ h3 {
   }
 
   54% {
-    transform: translate3d(0, -0.1rem, 0);
-    background-position: 0.04rem 0, 0 0.04rem, 50% 120%;
+    transform: translate3d(0, -0.24rem, 0);
+    background-position: 0.18rem 0, 0 0.18rem, 50% 130%;
   }
 }
 
@@ -11637,13 +11637,13 @@ h3 {
   }
 
   42% {
-    transform: scale(1.045);
-    opacity: 0.48;
+    transform: scale(1.085);
+    opacity: 0.72;
   }
 
   68% {
-    transform: scale(1.018) translate3d(0.12rem, -0.08rem, 0);
-    opacity: 0.32;
+    transform: scale(1.04) translate3d(0.24rem, -0.18rem, 0);
+    opacity: 0.5;
   }
 }
 
@@ -11657,13 +11657,13 @@ h3 {
   }
 
   47% {
-    transform: translate3d(-0.18rem, 0.05rem, 0);
-    opacity: 0.5;
+    transform: translate3d(-0.38rem, 0.12rem, 0);
+    opacity: 0.78;
   }
 
   49% {
-    transform: translate3d(0.2rem, -0.08rem, 0);
-    opacity: 0.38;
+    transform: translate3d(0.42rem, -0.18rem, 0);
+    opacity: 0.58;
   }
 }
 
@@ -11675,8 +11675,8 @@ h3 {
   }
 
   55% {
-    transform: scale(1.045);
-    opacity: 0.42;
+    transform: scale(1.085);
+    opacity: 0.68;
   }
 }
 
