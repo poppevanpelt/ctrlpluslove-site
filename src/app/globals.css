@@ -11372,6 +11372,66 @@ h3 {
   animation: persona-dust var(--persona-ambient-cycle) ease-in-out infinite alternate;
 }
 
+.persona-presence-field::before,
+.persona-presence-field::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.persona-card[data-motion-effect="grain"] .persona-presence-field {
+  opacity: 0.24;
+  background:
+    radial-gradient(circle at 18% 22%, color-mix(in srgb, currentColor 28%, transparent) 0 1px, transparent 2px),
+    radial-gradient(circle at 74% 42%, color-mix(in srgb, var(--paper) 48%, transparent) 0 1px, transparent 2px),
+    linear-gradient(92deg, transparent, color-mix(in srgb, var(--persona-accent, currentColor) 12%, transparent) 45%, transparent 70%);
+  background-size: 2.6rem 2.6rem, 3.4rem 3.4rem, auto;
+  animation: persona-cultural-friction 11.5s ease-in-out infinite alternate;
+}
+
+.persona-card[data-motion-effect="grid"] .persona-presence-field {
+  opacity: 0.2;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, currentColor 18%, transparent) 1px, transparent 1px),
+    linear-gradient(180deg, color-mix(in srgb, currentColor 12%, transparent) 1px, transparent 1px),
+    linear-gradient(180deg, transparent 0 42%, color-mix(in srgb, var(--paper) 24%, transparent) 50%, transparent 58%);
+  background-size: 2.2rem 2.2rem, 2.2rem 2.2rem, 100% 180%;
+  animation: persona-ledger-scan 13.5s ease-in-out infinite;
+}
+
+.persona-card[data-motion-effect="data"] .persona-presence-field {
+  opacity: 0.22;
+  background:
+    radial-gradient(ellipse at 50% 50%, transparent 0 42%, color-mix(in srgb, currentColor 14%, transparent) 44% 45%, transparent 47%),
+    linear-gradient(118deg, transparent 0%, color-mix(in srgb, var(--persona-accent, currentColor) 12%, transparent) 46%, transparent 100%);
+  background-size: 100% 100%, auto;
+  animation: persona-consequence-echo 17s ease-in-out infinite;
+}
+
+.persona-card[data-motion-effect="glitch"] .persona-presence-field {
+  opacity: 0.21;
+  background:
+    linear-gradient(90deg, transparent 0 33%, color-mix(in srgb, currentColor 16%, transparent) 34% 36%, transparent 37% 100%),
+    linear-gradient(180deg, transparent 0 46%, color-mix(in srgb, var(--persona-accent, currentColor) 13%, transparent) 47% 49%, transparent 50% 100%);
+  background-size: 100% 100%, 100% 100%;
+  animation: persona-pressure-test 10.8s steps(1, end) infinite;
+}
+
+.persona-card[data-motion-effect="none"] .persona-presence-field {
+  inset: -14%;
+  opacity: 0.18;
+  background:
+    radial-gradient(ellipse at 50% 56%, transparent 0 36%, color-mix(in srgb, currentColor 13%, transparent) 38% 39%, transparent 42%),
+    radial-gradient(ellipse at 50% 82%, color-mix(in srgb, var(--paper) 28%, transparent) 0 14%, transparent 42%);
+  animation: persona-missing-chair 18s ease-in-out infinite;
+}
+
+.persona-card[data-motion-intensity="subtle"] .persona-portrait-frame {
+  animation-duration: calc(var(--persona-breath-cycle) * 0.92);
+}
+
 .persona-eye-blink {
   inset: 0;
   z-index: 3;
@@ -11542,10 +11602,89 @@ h3 {
   }
 }
 
+@keyframes persona-cultural-friction {
+  0%,
+  100% {
+    transform: translate3d(-0.12rem, 0.04rem, 0) skewX(-0.25deg);
+    background-position: 0 0, 0 0, 48% 50%;
+  }
+
+  48% {
+    transform: translate3d(0.08rem, -0.05rem, 0) skewX(0.32deg);
+    background-position: 0.34rem -0.18rem, -0.22rem 0.2rem, 53% 50%;
+  }
+}
+
+@keyframes persona-ledger-scan {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    background-position: 0 0, 0 0, 50% -40%;
+  }
+
+  54% {
+    transform: translate3d(0, -0.04rem, 0);
+    background-position: 0.04rem 0, 0 0.04rem, 50% 120%;
+  }
+}
+
+@keyframes persona-consequence-echo {
+  0%,
+  100% {
+    transform: scale(0.985);
+    opacity: 0.18;
+  }
+
+  42% {
+    transform: scale(1.018);
+    opacity: 0.3;
+  }
+
+  68% {
+    transform: scale(1.006) translate3d(0.05rem, -0.04rem, 0);
+    opacity: 0.2;
+  }
+}
+
+@keyframes persona-pressure-test {
+  0%,
+  46%,
+  52%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.18;
+  }
+
+  47% {
+    transform: translate3d(-0.06rem, 0.02rem, 0);
+    opacity: 0.28;
+  }
+
+  49% {
+    transform: translate3d(0.08rem, -0.03rem, 0);
+    opacity: 0.22;
+  }
+}
+
+@keyframes persona-missing-chair {
+  0%,
+  100% {
+    transform: scale(0.98);
+    opacity: 0.14;
+  }
+
+  55% {
+    transform: scale(1.018);
+    opacity: 0.24;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .persona-portrait--signal-life,
   .persona-portrait--signal-life img,
   .persona-presence-field,
+  .persona-presence-field::before,
+  .persona-presence-field::after,
   .persona-eye-blink,
   .persona-eye-blink::before,
   .persona-eye-blink::after {

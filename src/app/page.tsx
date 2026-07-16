@@ -574,6 +574,8 @@ export default async function Home() {
                   className={`persona-card${
                     persona.motion ? " persona-card--signal-life" : ""
                   }`}
+                  data-motion-effect={persona.motion?.ambientEffect}
+                  data-motion-intensity={persona.motion?.intensity}
                   href={`/room/${persona.id}/`}
                   key={persona.name}
                   style={motionStyle}
