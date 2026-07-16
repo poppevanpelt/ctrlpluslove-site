@@ -564,8 +564,6 @@ export default async function Home() {
             {personas.map((persona, index) => {
               const motionStyle = persona.motion
                 ? ({
-                    "--persona-blink-cycle": `${7.2 + (index % 4) * 0.5}s`,
-                    "--persona-blink-delay": `${1.1 + (index % 5) * 0.25}s`,
                     "--persona-breath-cycle": `${6.8 + (index % 3) * 0.35}s`,
                     "--persona-ambient-cycle": `${14 + (index % 4) * 1.4}s`,
                   } as CSSProperties)
@@ -600,10 +598,7 @@ export default async function Home() {
                       <span className="persona-silhouette" />
                     )}
                     {persona.motion ? (
-                      <>
-                        <span className="persona-presence-field" />
-                        <span className="persona-blink-mask" />
-                      </>
+                      <span className="persona-presence-field" />
                     ) : null}
                   </div>
                   <h3>{persona.name}</h3>

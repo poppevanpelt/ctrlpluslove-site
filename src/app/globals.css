@@ -11322,8 +11322,6 @@ h3 {
 }
 
 .persona-card--signal-life {
-  --persona-blink-cycle: 7.2s;
-  --persona-blink-delay: 1.1s;
   --persona-breath-cycle: 6.8s;
   --persona-ambient-cycle: 14s;
 }
@@ -11352,41 +11350,23 @@ h3 {
   will-change: transform, filter;
 }
 
-.persona-presence-field,
-.persona-blink-mask {
+.persona-presence-field {
   position: absolute;
   pointer-events: none;
 }
 
 .persona-presence-field {
-  inset: -8%;
+  inset: -10%;
   z-index: 1;
-  opacity: 0.22;
+  opacity: 0.26;
   background:
     radial-gradient(circle at 24% 26%, color-mix(in srgb, var(--paper) 54%, transparent) 0 1px, transparent 2px),
     radial-gradient(circle at 78% 58%, color-mix(in srgb, currentColor 32%, transparent) 0 1px, transparent 2px),
-    linear-gradient(118deg, transparent 0%, color-mix(in srgb, var(--persona-accent, var(--team-cold)) 10%, transparent) 48%, transparent 100%);
+    radial-gradient(ellipse at 50% 82%, color-mix(in srgb, var(--persona-accent, var(--team-cold)) 13%, transparent) 0 18%, transparent 48%),
+    linear-gradient(118deg, transparent 0%, color-mix(in srgb, var(--persona-accent, var(--team-cold)) 9%, transparent) 48%, transparent 100%);
   background-size: 3.7rem 3.7rem, 4.9rem 4.9rem, auto;
   mix-blend-mode: screen;
   animation: persona-dust var(--persona-ambient-cycle) ease-in-out infinite alternate;
-}
-
-.persona-blink-mask {
-  top: 32%;
-  right: 25%;
-  left: 25%;
-  z-index: 3;
-  height: 10%;
-  border-radius: 999px;
-  background:
-    radial-gradient(ellipse 18% 42% at 32% 50%, color-mix(in srgb, var(--ink) 36%, transparent) 0 34%, transparent 72%),
-    radial-gradient(ellipse 18% 42% at 68% 50%, color-mix(in srgb, var(--ink) 36%, transparent) 0 34%, transparent 72%);
-  filter: blur(0.11rem);
-  mix-blend-mode: multiply;
-  opacity: 0;
-  transform: translate3d(0, -0.05rem, 0) scaleY(0.04);
-  transform-origin: center;
-  animation: persona-blink var(--persona-blink-cycle) linear var(--persona-blink-delay) infinite;
 }
 
 .persona-card--signal-life:hover .persona-portrait,
@@ -11433,30 +11413,6 @@ h3 {
   }
 }
 
-@keyframes persona-blink {
-  0%,
-  58%,
-  100% {
-    opacity: 0;
-    transform: translate3d(0, -0.05rem, 0) scaleY(0.04);
-  }
-
-  59% {
-    opacity: 0.24;
-    transform: translate3d(0, 0.02rem, 0) scaleY(0.36);
-  }
-
-  60.2% {
-    opacity: 0.38;
-    transform: translate3d(0, 0.05rem, 0) scaleY(0.72);
-  }
-
-  61.8% {
-    opacity: 0;
-    transform: translate3d(0, 0.08rem, 0) scaleY(0.04);
-  }
-}
-
 @keyframes persona-presence-glow {
   0%,
   100% {
@@ -11495,14 +11451,12 @@ h3 {
 @media (prefers-reduced-motion: reduce) {
   .persona-portrait--signal-life,
   .persona-portrait--signal-life img,
-  .persona-presence-field,
-  .persona-blink-mask {
+  .persona-presence-field {
     animation: none;
     transform: none;
   }
 
-  .persona-presence-field,
-  .persona-blink-mask {
+  .persona-presence-field {
     opacity: 0;
   }
 }
