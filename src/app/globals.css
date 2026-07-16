@@ -11322,8 +11322,8 @@ h3 {
 }
 
 .persona-card--signal-life {
-  --persona-blink-cycle: 8.6s;
-  --persona-blink-delay: 1.8s;
+  --persona-blink-cycle: 5.8s;
+  --persona-blink-delay: 0.8s;
   --persona-breath-cycle: 6.8s;
   --persona-ambient-cycle: 14s;
 }
@@ -11372,19 +11372,19 @@ h3 {
 }
 
 .persona-blink-mask {
-  top: 34%;
-  right: 18%;
-  left: 18%;
+  top: 33%;
+  right: 16%;
+  left: 16%;
   z-index: 3;
-  height: 10%;
+  height: 11%;
   border-radius: 48% 48% 54% 54%;
   background:
     linear-gradient(
       180deg,
-      color-mix(in srgb, var(--ink) 34%, transparent),
-      color-mix(in srgb, var(--paper) 18%, transparent)
+      color-mix(in srgb, var(--ink) 48%, transparent),
+      color-mix(in srgb, var(--paper) 10%, transparent)
     );
-  filter: blur(0.12rem);
+  filter: blur(0.07rem);
   opacity: 0;
   transform: scaleY(0.04);
   transform-origin: center;
@@ -11437,23 +11437,23 @@ h3 {
 
 @keyframes persona-blink {
   0%,
-  88%,
+  42%,
   100% {
     opacity: 0;
     transform: scaleY(0.04);
   }
 
-  89.2% {
-    opacity: 0.24;
-    transform: scaleY(0.42);
+  43.1% {
+    opacity: 0.36;
+    transform: scaleY(0.5);
   }
 
-  90.2% {
-    opacity: 0.28;
-    transform: scaleY(0.62);
+  44.4% {
+    opacity: 0.52;
+    transform: scaleY(0.78);
   }
 
-  91.4% {
+  46% {
     opacity: 0;
     transform: scaleY(0.04);
   }
