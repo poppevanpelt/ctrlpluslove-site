@@ -600,7 +600,7 @@ export default async function Home() {
                     {persona.motion ? (
                       <>
                         <span className="persona-presence-field" />
-                        <span className="persona-signal-pulse" />
+                        <span className="persona-soft-blink" />
                       </>
                     ) : null}
                   </div>
