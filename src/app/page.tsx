@@ -564,10 +564,10 @@ export default async function Home() {
             {personas.map((persona, index) => {
               const motionStyle = persona.motion
                 ? ({
-                    "--persona-blink-cycle": `${4.8 + (index % 4) * 0.4}s`,
-                    "--persona-blink-delay": `${0.8 + (index % 5) * 0.25}s`,
-                    "--persona-breath-cycle": `${3.8 + (index % 3) * 0.2}s`,
-                    "--persona-ambient-cycle": `${8 + (index % 4) * 0.8}s`,
+                    "--persona-blink-cycle": `${8.6 + (index % 4) * 0.8}s`,
+                    "--persona-blink-delay": `${1.8 + (index % 5) * 0.45}s`,
+                    "--persona-breath-cycle": `${6.8 + (index % 3) * 0.35}s`,
+                    "--persona-ambient-cycle": `${14 + (index % 4) * 1.4}s`,
                   } as CSSProperties)
                 : undefined;
 
