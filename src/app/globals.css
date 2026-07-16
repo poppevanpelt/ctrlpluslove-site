@@ -11324,6 +11324,7 @@ h3 {
 .persona-card--signal-life {
   --persona-breath-cycle: 6.8s;
   --persona-ambient-cycle: 14s;
+  --persona-pulse-cycle: 7.4s;
 }
 
 .persona-portrait--signal-life {
@@ -11350,7 +11351,8 @@ h3 {
   will-change: transform, filter;
 }
 
-.persona-presence-field {
+.persona-presence-field,
+.persona-signal-pulse {
   position: absolute;
   pointer-events: none;
 }
@@ -11367,6 +11369,19 @@ h3 {
   background-size: 3.7rem 3.7rem, 4.9rem 4.9rem, auto;
   mix-blend-mode: screen;
   animation: persona-dust var(--persona-ambient-cycle) ease-in-out infinite alternate;
+}
+
+.persona-signal-pulse {
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  background:
+    radial-gradient(ellipse at 50% 46%, color-mix(in srgb, var(--paper) 30%, transparent) 0 26%, transparent 62%),
+    linear-gradient(115deg, transparent 0 38%, color-mix(in srgb, var(--persona-accent, currentColor) 18%, transparent) 48%, transparent 58% 100%);
+  mix-blend-mode: soft-light;
+  opacity: 0;
+  transform: scale(1.01);
+  animation: persona-signal-pulse var(--persona-pulse-cycle) ease-in-out 1.2s infinite;
 }
 
 .persona-card--signal-life:hover .persona-portrait,
@@ -11387,6 +11402,11 @@ h3 {
 .persona-card--signal-life:focus-visible .persona-presence-field {
   opacity: 0.32;
   animation-duration: calc(var(--persona-ambient-cycle) * 1.2);
+}
+
+.persona-card--signal-life:hover .persona-signal-pulse,
+.persona-card--signal-life:focus-visible .persona-signal-pulse {
+  animation-duration: calc(var(--persona-pulse-cycle) * 0.82);
 }
 
 @keyframes persona-breathe {
@@ -11428,6 +11448,30 @@ h3 {
   }
 }
 
+@keyframes persona-signal-pulse {
+  0%,
+  54%,
+  100% {
+    opacity: 0;
+    transform: scale(1.01);
+  }
+
+  56% {
+    opacity: 0.2;
+    transform: scale(1.018);
+  }
+
+  58% {
+    opacity: 0.36;
+    transform: scale(1.024);
+  }
+
+  62% {
+    opacity: 0;
+    transform: scale(1.012);
+  }
+}
+
 @keyframes persona-field-drift {
   from {
     background-position: 0 0, 0 0, 50% 50%, 50% 50%, 50% 50%;
@@ -11451,12 +11495,14 @@ h3 {
 @media (prefers-reduced-motion: reduce) {
   .persona-portrait--signal-life,
   .persona-portrait--signal-life img,
-  .persona-presence-field {
+  .persona-presence-field,
+  .persona-signal-pulse {
     animation: none;
     transform: none;
   }
 
-  .persona-presence-field {
+  .persona-presence-field,
+  .persona-signal-pulse {
     opacity: 0;
   }
 }
