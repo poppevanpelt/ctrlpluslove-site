@@ -10,7 +10,6 @@ export type RoomPersona = {
 
 export type PersonaMotionConfig = {
   blink?: boolean;
-  blinkPortrait?: string;
   breathing?: boolean;
   eyeRefocus?: boolean;
   parallax?: boolean;
@@ -30,8 +29,7 @@ export const coreRoomPersonas: RoomPersona[] = [
       "Reframes the decision around the human need underneath the stated brief.",
     portrait: "/room/personas/maya-elise-harper.webp",
     motion: {
-      blink: true,
-      blinkPortrait: "/room/personas/maya-elise-harper-blink.png",
+      blink: false,
       breathing: true,
       parallax: true,
       ambientEffect: "dust",

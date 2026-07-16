@@ -598,15 +598,6 @@ export default async function Home() {
                     ) : (
                       <span className="persona-silhouette" />
                     )}
-                    {persona.motion?.blinkPortrait ? (
-                      <Image
-                        className="persona-blink-frame"
-                        src={persona.motion.blinkPortrait}
-                        alt=""
-                        fill
-                        sizes="(max-width: 680px) 58vw, (max-width: 1100px) 24vw, 13vw"
-                      />
-                    ) : null}
                     {persona.motion ? (
                       <span className="persona-presence-field" />
                     ) : null}
