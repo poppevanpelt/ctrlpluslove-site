@@ -11324,7 +11324,7 @@ h3 {
 .persona-card--signal-life {
   --persona-breath-cycle: 6.8s;
   --persona-ambient-cycle: 14s;
-  --persona-blink-cycle: 9.4s;
+  --persona-blink-cycle: 16.8s;
 }
 
 .persona-portrait--signal-life {
@@ -11465,43 +11465,60 @@ h3 {
 
 @keyframes persona-eye-blink {
   0%,
-  18.2%,
-  21.5%,
-  50.8%,
-  52.2%,
+  9.2%,
+  11.2%,
+  43.8%,
+  45%,
+  76.6%,
+  78.1%,
   100% {
     opacity: 0;
     transform: translateY(-0.1rem) scaleY(0.06);
   }
 
-  18.8% {
+  9.55% {
     opacity: 0.28;
     transform: translateY(-0.02rem) scaleY(0.4);
   }
 
-  19.45% {
+  9.95% {
     opacity: 0.58;
     transform: translateY(0.02rem) scaleY(0.78);
   }
 
-  19.95% {
+  10.25% {
     opacity: 0.24;
     transform: translateY(-0.005rem) scaleY(0.34);
   }
 
-  51.2% {
+  44.15% {
     opacity: 0.18;
     transform: translateY(-0.035rem) scaleY(0.28);
   }
 
-  51.55% {
+  44.45% {
     opacity: 0.34;
     transform: translateY(0) scaleY(0.54);
   }
 
-  51.85% {
+  44.72% {
     opacity: 0.12;
     transform: translateY(-0.035rem) scaleY(0.22);
+  }
+
+  77% {
+    opacity: 0.23;
+    transform: translateY(-0.02rem) scaleY(0.36);
+  }
+
+  77.35% {
+    opacity: 0.5;
+    transform: translateY(0.016rem) scaleY(0.68);
+  }
+
+  77.7% {
+    opacity: 0.18;
+    transform: translateY(-0.018rem) scaleY(0.27);
   }
 }
 
