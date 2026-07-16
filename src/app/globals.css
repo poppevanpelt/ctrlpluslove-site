@@ -11393,7 +11393,7 @@ h3 {
   opacity: 0;
   transform: translateY(-0.1rem) scaleY(0.06);
   transform-origin: center;
-  animation: persona-eye-blink var(--persona-blink-cycle) cubic-bezier(0.42, 0, 0.2, 1) 1.25s infinite;
+  animation: persona-eye-blink var(--persona-blink-cycle) cubic-bezier(0.42, 0, 0.2, 1) 0.2s infinite;
 }
 
 .persona-eye-blink::before {
@@ -11465,26 +11465,43 @@ h3 {
 
 @keyframes persona-eye-blink {
   0%,
-  61.6%,
-  64.1%,
+  18.2%,
+  21.5%,
+  50.8%,
+  52.2%,
   100% {
     opacity: 0;
     transform: translateY(-0.1rem) scaleY(0.06);
   }
 
-  62.3% {
+  18.8% {
     opacity: 0.28;
     transform: translateY(-0.02rem) scaleY(0.4);
   }
 
-  62.95% {
+  19.45% {
     opacity: 0.58;
     transform: translateY(0.02rem) scaleY(0.78);
   }
 
-  63.45% {
+  19.95% {
     opacity: 0.24;
     transform: translateY(-0.005rem) scaleY(0.34);
+  }
+
+  51.2% {
+    opacity: 0.18;
+    transform: translateY(-0.035rem) scaleY(0.28);
+  }
+
+  51.55% {
+    opacity: 0.34;
+    transform: translateY(0) scaleY(0.54);
+  }
+
+  51.85% {
+    opacity: 0.12;
+    transform: translateY(-0.035rem) scaleY(0.22);
   }
 }
 
