@@ -11361,7 +11361,7 @@ h3 {
 .persona-portrait--signal-life .persona-blink-frame {
   animation:
     persona-breathe var(--persona-breath-cycle) ease-in-out infinite,
-    persona-real-blink var(--persona-blink-cycle) steps(1, end) 1s infinite;
+    persona-real-blink var(--persona-blink-cycle) ease-in-out 1s infinite;
 }
 
 .persona-presence-field {
@@ -11407,12 +11407,12 @@ h3 {
   0%,
   100% {
     filter: saturate(0.94) contrast(1.04) brightness(1);
-    transform: scale(1.01) translate3d(0, 0, 0);
+    transform: scale(1.012) translate3d(0, 0, 0);
   }
 
   50% {
-    filter: saturate(0.97) contrast(1.05) brightness(1.028);
-    transform: scale(1.033) translate3d(0, -0.1rem, 0);
+    filter: saturate(0.96) contrast(1.045) brightness(1.018);
+    transform: scale(1.022) translate3d(0, -0.045rem, 0);
   }
 }
 
@@ -11444,14 +11444,18 @@ h3 {
 
 @keyframes persona-real-blink {
   0%,
-  50%,
-  55%,
+  49.8%,
+  54.2%,
   100% {
     opacity: 0;
   }
 
-  52%,
-  53.2% {
+  51.2%,
+  52.8% {
+    opacity: 0.92;
+  }
+
+  52% {
     opacity: 1;
   }
 }
