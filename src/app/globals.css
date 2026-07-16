@@ -11324,7 +11324,7 @@ h3 {
 .persona-card--signal-life {
   --persona-breath-cycle: 6.8s;
   --persona-ambient-cycle: 14s;
-  --persona-blink-cycle: 6.2s;
+  --persona-blink-cycle: 9.4s;
 }
 
 .persona-portrait--signal-life {
@@ -11381,19 +11381,19 @@ h3 {
 .persona-eye-blink::after {
   content: "";
   position: absolute;
-  top: 31.9%;
-  width: 12.2%;
-  height: 3.7%;
+  top: 31.7%;
+  width: 11.7%;
+  height: 3.2%;
   border-radius: 50% 50% 46% 46%;
   background:
-    radial-gradient(ellipse at 50% 18%, rgb(222 170 137 / 76%) 0 32%, transparent 70%),
-    linear-gradient(180deg, rgb(232 184 151 / 70%), rgb(171 109 86 / 28%));
-  box-shadow: inset 0 -0.035rem 0.06rem rgb(88 46 34 / 16%);
-  filter: blur(0.018rem);
+    radial-gradient(ellipse at 50% 18%, rgb(222 170 137 / 52%) 0 30%, transparent 68%),
+    linear-gradient(180deg, rgb(232 184 151 / 48%), rgb(171 109 86 / 18%));
+  box-shadow: inset 0 -0.025rem 0.045rem rgb(88 46 34 / 10%);
+  filter: blur(0.014rem);
   opacity: 0;
-  transform: translateY(-0.12rem) scaleY(0.08);
+  transform: translateY(-0.1rem) scaleY(0.06);
   transform-origin: center;
-  animation: persona-eye-blink var(--persona-blink-cycle) cubic-bezier(0.42, 0, 0.2, 1) 1.05s infinite;
+  animation: persona-eye-blink var(--persona-blink-cycle) cubic-bezier(0.42, 0, 0.2, 1) 1.25s infinite;
 }
 
 .persona-eye-blink::before {
@@ -11402,6 +11402,7 @@ h3 {
 
 .persona-eye-blink::after {
   left: 56.1%;
+  animation-delay: 1.3s;
 }
 
 .persona-card--signal-life:hover .persona-portrait,
@@ -11465,26 +11466,26 @@ h3 {
 
 @keyframes persona-eye-blink {
   0%,
-  49%,
-  55%,
+  61.6%,
+  64.1%,
   100% {
     opacity: 0;
-    transform: translateY(-0.12rem) scaleY(0.08);
+    transform: translateY(-0.1rem) scaleY(0.06);
   }
 
-  51.5% {
-    opacity: 0.36;
-    transform: translateY(0) scaleY(0.52);
+  62.3% {
+    opacity: 0.2;
+    transform: translateY(-0.02rem) scaleY(0.34);
   }
 
-  52.35% {
-    opacity: 0.68;
-    transform: translateY(0.035rem) scaleY(0.9);
+  62.95% {
+    opacity: 0.42;
+    transform: translateY(0.015rem) scaleY(0.68);
   }
 
-  53.25% {
-    opacity: 0.22;
-    transform: translateY(0) scaleY(0.4);
+  63.45% {
+    opacity: 0.16;
+    transform: translateY(-0.01rem) scaleY(0.28);
   }
 }
 
