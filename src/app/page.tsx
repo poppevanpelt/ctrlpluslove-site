@@ -576,6 +576,7 @@ export default async function Home() {
                   }`}
                   data-motion-effect={persona.motion?.ambientEffect}
                   data-motion-intensity={persona.motion?.intensity}
+                  data-persona-id={persona.id}
                   href={`/room/${persona.id}/`}
                   key={persona.name}
                   style={motionStyle}

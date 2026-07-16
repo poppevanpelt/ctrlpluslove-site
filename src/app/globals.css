@@ -11325,6 +11325,11 @@ h3 {
   --persona-breath-cycle: 6.8s;
   --persona-ambient-cycle: 14s;
   --persona-blink-cycle: 16.8s;
+  --persona-eye-top: 31.7%;
+  --persona-eye-left: 31.8%;
+  --persona-eye-right: 56.1%;
+  --persona-eye-width: 12.6%;
+  --persona-eye-height: 3.7%;
 }
 
 .persona-portrait--signal-life {
@@ -11382,7 +11387,7 @@ h3 {
 }
 
 .persona-card[data-motion-effect="grain"] .persona-presence-field {
-  opacity: 0.7;
+  opacity: 0.34;
   background:
     radial-gradient(circle at 18% 22%, color-mix(in srgb, currentColor 62%, transparent) 0 1px, transparent 2px),
     radial-gradient(circle at 74% 42%, color-mix(in srgb, var(--paper) 78%, transparent) 0 1px, transparent 2px),
@@ -11392,7 +11397,7 @@ h3 {
 }
 
 .persona-card[data-motion-effect="grid"] .persona-presence-field {
-  opacity: 0.68;
+  opacity: 0.36;
   background:
     linear-gradient(90deg, color-mix(in srgb, currentColor 50%, transparent) 1px, transparent 1px),
     linear-gradient(180deg, color-mix(in srgb, currentColor 38%, transparent) 1px, transparent 1px),
@@ -11402,7 +11407,7 @@ h3 {
 }
 
 .persona-card[data-motion-effect="data"] .persona-presence-field {
-  opacity: 0.66;
+  opacity: 0.34;
   background:
     radial-gradient(ellipse at 50% 50%, transparent 0 34%, color-mix(in srgb, currentColor 52%, transparent) 37% 41%, transparent 45%),
     radial-gradient(ellipse at 50% 50%, transparent 0 51%, color-mix(in srgb, currentColor 34%, transparent) 54% 57%, transparent 62%),
@@ -11412,7 +11417,7 @@ h3 {
 }
 
 .persona-card[data-motion-effect="glitch"] .persona-presence-field {
-  opacity: 0.68;
+  opacity: 0.34;
   background:
     linear-gradient(90deg, transparent 0 24%, color-mix(in srgb, currentColor 56%, transparent) 28% 36%, transparent 40% 100%),
     linear-gradient(180deg, transparent 0 38%, color-mix(in srgb, var(--persona-accent, currentColor) 44%, transparent) 42% 50%, transparent 54% 100%);
@@ -11422,7 +11427,7 @@ h3 {
 
 .persona-card[data-motion-effect="none"] .persona-presence-field {
   inset: -14%;
-  opacity: 0.6;
+  opacity: 0.28;
   background:
     radial-gradient(ellipse at 50% 56%, transparent 0 27%, color-mix(in srgb, currentColor 42%, transparent) 31% 35%, transparent 42%),
     radial-gradient(ellipse at 50% 82%, color-mix(in srgb, var(--paper) 62%, transparent) 0 18%, transparent 48%);
@@ -11431,6 +11436,68 @@ h3 {
 
 .persona-card[data-motion-intensity="subtle"] .persona-portrait-frame {
   animation-duration: calc(var(--persona-breath-cycle) * 0.92);
+}
+
+.persona-card[data-motion-effect="grain"] .persona-portrait--signal-life {
+  animation:
+    persona-cultural-face 6.8s ease-in-out infinite alternate,
+    persona-presence-glow var(--persona-breath-cycle) ease-in-out infinite;
+}
+
+.persona-card[data-motion-effect="grid"] .persona-portrait--signal-life {
+  animation:
+    persona-commercial-face 7.2s ease-in-out infinite,
+    persona-presence-glow var(--persona-breath-cycle) ease-in-out infinite;
+}
+
+.persona-card[data-motion-effect="data"] .persona-portrait--signal-life {
+  animation:
+    persona-consequence-face 8.4s ease-in-out infinite,
+    persona-presence-glow var(--persona-breath-cycle) ease-in-out infinite;
+}
+
+.persona-card[data-motion-effect="glitch"] .persona-portrait--signal-life {
+  animation:
+    persona-pressure-face 5.6s steps(1, end) infinite,
+    persona-presence-glow var(--persona-breath-cycle) ease-in-out infinite;
+}
+
+.persona-card[data-motion-effect="none"] .persona-portrait--signal-life {
+  animation:
+    persona-customer-face 9.2s ease-in-out infinite,
+    persona-presence-glow var(--persona-breath-cycle) ease-in-out infinite;
+}
+
+.persona-card[data-persona-id="simon-cross"] {
+  --persona-eye-top: 31.4%;
+  --persona-eye-left: 31.5%;
+  --persona-eye-right: 55.8%;
+}
+
+.persona-card[data-persona-id="nick-deckman"] {
+  --persona-eye-top: 31.9%;
+  --persona-eye-left: 31.6%;
+  --persona-eye-right: 55.9%;
+}
+
+.persona-card[data-persona-id="lexi-arden"] {
+  --persona-eye-top: 32.3%;
+  --persona-eye-left: 31.7%;
+  --persona-eye-right: 55.9%;
+}
+
+.persona-card[data-persona-id="akiko-hayashi"] {
+  --persona-eye-top: 31.6%;
+  --persona-eye-left: 32.2%;
+  --persona-eye-right: 55.9%;
+  --persona-eye-width: 11.8%;
+}
+
+.persona-card[data-persona-id="adrian-mbeki"] {
+  --persona-eye-top: 31.6%;
+  --persona-eye-left: 32.5%;
+  --persona-eye-right: 55.8%;
+  --persona-eye-width: 11.6%;
 }
 
 .persona-eye-blink {
@@ -11442,9 +11509,9 @@ h3 {
 .persona-eye-blink::after {
   content: "";
   position: absolute;
-  top: 31.7%;
-  width: 12.6%;
-  height: 3.7%;
+  top: var(--persona-eye-top);
+  width: var(--persona-eye-width);
+  height: var(--persona-eye-height);
   border-radius: 50% 50% 46% 46%;
   background:
     radial-gradient(ellipse at 50% 18%, rgb(222 170 137 / 64%) 0 30%, transparent 68%),
@@ -11458,11 +11525,11 @@ h3 {
 }
 
 .persona-eye-blink::before {
-  left: 31.8%;
+  left: var(--persona-eye-left);
 }
 
 .persona-eye-blink::after {
-  left: 56.1%;
+  left: var(--persona-eye-right);
 }
 
 .persona-card--signal-life:hover .persona-portrait,
@@ -11677,6 +11744,77 @@ h3 {
   55% {
     transform: scale(1.085);
     opacity: 0.68;
+  }
+}
+
+@keyframes persona-cultural-face {
+  0%,
+  100% {
+    transform: translate3d(-0.12rem, 0.04rem, 0) rotate(-0.35deg);
+  }
+
+  54% {
+    transform: translate3d(0.14rem, -0.08rem, 0) rotate(0.42deg);
+  }
+}
+
+@keyframes persona-commercial-face {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  46% {
+    transform: translate3d(0, -0.08rem, 0) scale(1.018);
+  }
+
+  62% {
+    transform: translate3d(0.05rem, -0.02rem, 0) scale(1.006);
+  }
+}
+
+@keyframes persona-consequence-face {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(0.995);
+  }
+
+  48% {
+    transform: translate3d(-0.05rem, -0.06rem, 0) scale(1.025);
+  }
+
+  72% {
+    transform: translate3d(0.08rem, 0.02rem, 0) scale(1.008);
+  }
+}
+
+@keyframes persona-pressure-face {
+  0%,
+  43%,
+  52%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  45% {
+    transform: translate3d(-0.12rem, 0.04rem, 0) rotate(-0.35deg);
+  }
+
+  48% {
+    transform: translate3d(0.13rem, -0.06rem, 0) rotate(0.42deg);
+  }
+}
+
+@keyframes persona-customer-face {
+  0%,
+  100% {
+    transform: scale(0.985);
+    opacity: 0.96;
+  }
+
+  56% {
+    transform: scale(1.035);
+    opacity: 1;
   }
 }
 

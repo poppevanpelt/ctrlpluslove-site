@@ -47,6 +47,7 @@ export const coreRoomPersonas: RoomPersona[] = [
       "Applies constructive skepticism before the market does it less politely.",
     portrait: "/room/personas/simon-cross.webp",
     motion: {
+      blink: true,
       breathing: true,
       parallax: true,
       ambientEffect: "glitch",
@@ -64,6 +65,7 @@ export const coreRoomPersonas: RoomPersona[] = [
       "Tests whether the recommendation can survive budget, timing and commercial reality.",
     portrait: "/room/personas/nick-deckman.jpg",
     motion: {
+      blink: true,
       breathing: true,
       parallax: true,
       ambientEffect: "grid",
@@ -81,6 +83,7 @@ export const coreRoomPersonas: RoomPersona[] = [
       "Reads the cultural risk, memory and meaning surrounding the decision.",
     portrait: "/room/personas/lexi-arden.jpg",
     motion: {
+      blink: true,
       breathing: true,
       parallax: true,
       ambientEffect: "grain",
@@ -98,6 +101,7 @@ export const coreRoomPersonas: RoomPersona[] = [
       "Keeps the room honest about second-order effects, unintended consequences and future regret.",
     portrait: "/room/personas/akiko-hayashi.jpg",
     motion: {
+      blink: true,
       breathing: true,
       parallax: true,
       ambientEffect: "data",
@@ -115,6 +119,7 @@ export const coreRoomPersonas: RoomPersona[] = [
       "Pushes the idea against operational pressure, customer behavior and messy reality.",
     portrait: "/room/personas/adrian-mbeki.jpg",
     motion: {
+      blink: true,
       breathing: true,
       parallax: true,
       ambientEffect: "glitch",
