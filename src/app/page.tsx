@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 
 import { confirmedAmbassadors } from "./ambassadors-data";
 import { getAmbassadorProfile } from "./ambassador-profiles-data";
@@ -560,41 +561,63 @@ export default async function Home() {
             </p>
           </div>
           <div className="persona-grid">
-            {personas.map((persona, index) => (
-              <Link
-                className="persona-card"
-                href={`/room/${persona.id}/`}
-                key={persona.name}
-              >
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <div
-                  className={`persona-portrait${
-                    persona.portrait ? "" : " persona-portrait-silhouette"
+            {personas.map((persona, index) => {
+              const motionStyle = persona.motion
+                ? ({
+                    "--persona-blink-cycle": `${13.6 + (index % 4) * 1.7}s`,
+                    "--persona-blink-delay": `${3.2 + (index % 5) * 0.9}s`,
+                    "--persona-breath-cycle": `${8.4 + (index % 3) * 0.6}s`,
+                    "--persona-ambient-cycle": `${22 + (index % 4) * 2.5}s`,
+                  } as CSSProperties)
+                : undefined;
+
+              return (
+                <Link
+                  className={`persona-card${
+                    persona.motion ? " persona-card--signal-life" : ""
                   }`}
-                  aria-hidden="true"
+                  href={`/room/${persona.id}/`}
+                  key={persona.name}
+                  style={motionStyle}
                 >
-                  {persona.portrait ? (
-                    <Image
-                      src={persona.portrait}
-                      alt=""
-                      fill
-                      sizes="(max-width: 680px) 58vw, (max-width: 1100px) 24vw, 13vw"
-                    />
-                  ) : (
-                    <span className="persona-silhouette" />
-                  )}
-                </div>
-                <h3>{persona.name}</h3>
-                <p>{persona.role}</p>
-                <blockquote>{persona.line}</blockquote>
-                <dl>
-                  <div>
-                    <dt>Function</dt>
-                    <dd>{persona.contribution ?? persona.line}</dd>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <div
+                    className={`persona-portrait${
+                      persona.portrait ? "" : " persona-portrait-silhouette"
+                    }${
+                      persona.motion ? " persona-portrait--signal-life" : ""
+                    }`}
+                    aria-hidden="true"
+                  >
+                    {persona.portrait ? (
+                      <Image
+                        src={persona.portrait}
+                        alt=""
+                        fill
+                        sizes="(max-width: 680px) 58vw, (max-width: 1100px) 24vw, 13vw"
+                      />
+                    ) : (
+                      <span className="persona-silhouette" />
+                    )}
+                    {persona.motion ? (
+                      <>
+                        <span className="persona-presence-field" />
+                        <span className="persona-blink-mask" />
+                      </>
+                    ) : null}
                   </div>
-                </dl>
-              </Link>
-            ))}
+                  <h3>{persona.name}</h3>
+                  <p>{persona.role}</p>
+                  <blockquote>{persona.line}</blockquote>
+                  <dl>
+                    <div>
+                      <dt>Function</dt>
+                      <dd>{persona.contribution ?? persona.line}</dd>
+                    </div>
+                  </dl>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>

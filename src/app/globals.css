@@ -11321,6 +11321,18 @@ h3 {
   transition: border-color 220ms ease, transform 260ms ease;
 }
 
+.persona-card--signal-life {
+  --persona-blink-cycle: 14s;
+  --persona-blink-delay: 3s;
+  --persona-breath-cycle: 8.5s;
+  --persona-ambient-cycle: 24s;
+}
+
+.persona-portrait--signal-life {
+  animation: persona-field-drift var(--persona-ambient-cycle) ease-in-out infinite alternate;
+  will-change: background-position;
+}
+
 .persona-portrait img {
   position: absolute;
   inset: 0;
@@ -11330,6 +11342,147 @@ h3 {
   filter: saturate(0.92) contrast(1.04);
   transform: scale(1.01);
   transition: filter 260ms ease, transform 260ms ease;
+}
+
+.persona-portrait--signal-life img {
+  animation: persona-breathe var(--persona-breath-cycle) ease-in-out infinite;
+  transform-origin: 50% 58%;
+  will-change: transform, filter;
+}
+
+.persona-presence-field,
+.persona-blink-mask {
+  position: absolute;
+  pointer-events: none;
+}
+
+.persona-presence-field {
+  inset: -8%;
+  z-index: 1;
+  opacity: 0.18;
+  background:
+    radial-gradient(circle at 24% 26%, color-mix(in srgb, var(--paper) 42%, transparent) 0 1px, transparent 2px),
+    radial-gradient(circle at 78% 58%, color-mix(in srgb, currentColor 30%, transparent) 0 1px, transparent 2px),
+    linear-gradient(118deg, transparent 0%, color-mix(in srgb, var(--persona-accent, var(--team-cold)) 8%, transparent) 48%, transparent 100%);
+  background-size: 3.7rem 3.7rem, 4.9rem 4.9rem, auto;
+  mix-blend-mode: screen;
+  animation: persona-dust var(--persona-ambient-cycle) ease-in-out infinite alternate;
+}
+
+.persona-blink-mask {
+  top: 36%;
+  right: 19%;
+  left: 19%;
+  z-index: 2;
+  height: 9%;
+  border-radius: 999px;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--ink) 48%, transparent),
+      color-mix(in srgb, var(--paper) 18%, transparent)
+    );
+  filter: blur(0.03rem);
+  opacity: 0;
+  transform: scaleY(0.08);
+  transform-origin: center;
+  animation: persona-blink var(--persona-blink-cycle) steps(1, end) var(--persona-blink-delay) infinite;
+}
+
+.persona-card--signal-life:hover .persona-portrait,
+.persona-card--signal-life:focus-visible .persona-portrait {
+  border-color: color-mix(in srgb, var(--persona-accent, currentColor) 30%, currentColor);
+  box-shadow:
+    inset -0.8rem -0.9rem 1.8rem color-mix(in srgb, currentColor 8%, transparent),
+    0 1.25rem 2.8rem color-mix(in srgb, var(--persona-accent, var(--ink)) 13%, transparent);
+}
+
+.persona-card--signal-life:hover .persona-portrait img,
+.persona-card--signal-life:focus-visible .persona-portrait img {
+  filter: saturate(0.98) contrast(1.06) brightness(1.035);
+  animation-name: persona-breathe-aware;
+}
+
+.persona-card--signal-life:hover .persona-presence-field,
+.persona-card--signal-life:focus-visible .persona-presence-field {
+  opacity: 0.24;
+  animation-duration: calc(var(--persona-ambient-cycle) * 1.2);
+}
+
+@keyframes persona-breathe {
+  0%,
+  100% {
+    transform: scale(1.012) translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: scale(1.018) translate3d(0, -0.08rem, 0);
+  }
+}
+
+@keyframes persona-breathe-aware {
+  0%,
+  100% {
+    transform: scale(1.016) translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: scale(1.022) translate3d(0.03rem, -0.1rem, 0);
+  }
+}
+
+@keyframes persona-blink {
+  0%,
+  96.8%,
+  100% {
+    opacity: 0;
+    transform: scaleY(0.08);
+  }
+
+  97.15% {
+    opacity: 0.2;
+    transform: scaleY(0.72);
+  }
+
+  97.55% {
+    opacity: 0;
+    transform: scaleY(0.08);
+  }
+}
+
+@keyframes persona-field-drift {
+  from {
+    background-position: 0 0, 0 0, 50% 50%, 50% 50%, 50% 50%;
+  }
+
+  to {
+    background-position: 0.16rem -0.1rem, -0.12rem 0.14rem, 49.4% 50.6%, 50.5% 49.5%, 50% 50%;
+  }
+}
+
+@keyframes persona-dust {
+  from {
+    transform: translate3d(-0.08rem, 0.04rem, 0);
+  }
+
+  to {
+    transform: translate3d(0.09rem, -0.08rem, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .persona-portrait--signal-life,
+  .persona-portrait--signal-life img,
+  .persona-presence-field,
+  .persona-blink-mask {
+    animation: none;
+    transform: none;
+  }
+
+  .persona-presence-field,
+  .persona-blink-mask {
+    opacity: 0;
+  }
 }
 
 .persona-portrait-silhouette {

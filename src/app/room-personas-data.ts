@@ -5,6 +5,18 @@ export type RoomPersona = {
   line: string;
   contribution?: string;
   portrait?: string;
+  motion?: PersonaMotionConfig;
+};
+
+export type PersonaMotionConfig = {
+  blink?: boolean;
+  breathing?: boolean;
+  eyeRefocus?: boolean;
+  parallax?: boolean;
+  ambientEffect?: "dust" | "grain" | "grid" | "glitch" | "data" | "type" | "none";
+  intensity?: "minimal" | "subtle";
+  hoverResponse?: boolean;
+  reducedMotionFallback?: boolean;
 };
 
 export const coreRoomPersonas: RoomPersona[] = [
@@ -16,6 +28,15 @@ export const coreRoomPersonas: RoomPersona[] = [
     contribution:
       "Reframes the decision around the human need underneath the stated brief.",
     portrait: "/room/personas/maya-elise-harper.webp",
+    motion: {
+      blink: true,
+      breathing: true,
+      parallax: true,
+      ambientEffect: "dust",
+      intensity: "minimal",
+      hoverResponse: true,
+      reducedMotionFallback: true,
+    },
   },
   {
     id: "simon-cross",
