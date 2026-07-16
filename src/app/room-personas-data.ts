@@ -29,7 +29,7 @@ export const coreRoomPersonas: RoomPersona[] = [
       "Reframes the decision around the human need underneath the stated brief.",
     portrait: "/room/personas/maya-elise-harper.webp",
     motion: {
-      blink: false,
+      blink: true,
       breathing: true,
       parallax: true,
       ambientEffect: "dust",

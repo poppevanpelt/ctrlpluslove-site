@@ -11324,6 +11324,7 @@ h3 {
 .persona-card--signal-life {
   --persona-breath-cycle: 6.8s;
   --persona-ambient-cycle: 14s;
+  --persona-blink-cycle: 6.2s;
 }
 
 .persona-portrait--signal-life {
@@ -11351,7 +11352,8 @@ h3 {
   will-change: transform, filter;
 }
 
-.persona-presence-field {
+.persona-presence-field,
+.persona-eye-blink {
   position: absolute;
   pointer-events: none;
 }
@@ -11368,6 +11370,38 @@ h3 {
   background-size: 3.7rem 3.7rem, 4.9rem 4.9rem, auto;
   mix-blend-mode: screen;
   animation: persona-dust var(--persona-ambient-cycle) ease-in-out infinite alternate;
+}
+
+.persona-eye-blink {
+  inset: 0;
+  z-index: 3;
+}
+
+.persona-eye-blink::before,
+.persona-eye-blink::after {
+  content: "";
+  position: absolute;
+  top: 33.3%;
+  width: 13.5%;
+  height: 4.7%;
+  border-radius: 999px;
+  background:
+    radial-gradient(ellipse at 50% 72%, color-mix(in srgb, var(--ink) 44%, transparent) 0 24%, transparent 68%),
+    linear-gradient(180deg, color-mix(in srgb, var(--paper) 15%, transparent), color-mix(in srgb, var(--ink) 22%, transparent));
+  filter: blur(0.045rem);
+  mix-blend-mode: multiply;
+  opacity: 0;
+  transform: scaleY(0.12);
+  transform-origin: center;
+  animation: persona-eye-blink var(--persona-blink-cycle) ease-in-out 1.05s infinite;
+}
+
+.persona-eye-blink::before {
+  left: 31.2%;
+}
+
+.persona-eye-blink::after {
+  left: 55.7%;
 }
 
 .persona-card--signal-life:hover .persona-portrait,
@@ -11429,6 +11463,32 @@ h3 {
   }
 }
 
+@keyframes persona-eye-blink {
+  0%,
+  49%,
+  55%,
+  100% {
+    opacity: 0;
+    transform: scaleY(0.12);
+  }
+
+  51.3% {
+    opacity: 0.3;
+    transform: scaleY(0.55);
+  }
+
+  52.4%,
+  53.1% {
+    opacity: 0.56;
+    transform: scaleY(0.92);
+  }
+
+  54% {
+    opacity: 0.22;
+    transform: scaleY(0.42);
+  }
+}
+
 @keyframes persona-field-drift {
   from {
     background-position: 0 0, 0 0, 50% 50%, 50% 50%, 50% 50%;
@@ -11452,12 +11512,16 @@ h3 {
 @media (prefers-reduced-motion: reduce) {
   .persona-portrait--signal-life,
   .persona-portrait--signal-life img,
-  .persona-presence-field {
+  .persona-presence-field,
+  .persona-eye-blink,
+  .persona-eye-blink::before,
+  .persona-eye-blink::after {
     animation: none;
     transform: none;
   }
 
-  .persona-presence-field {
+  .persona-presence-field,
+  .persona-eye-blink {
     opacity: 0;
   }
 }
