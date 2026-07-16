@@ -11330,6 +11330,9 @@ h3 {
   --persona-eye-right: 56.1%;
   --persona-eye-width: 12.6%;
   --persona-eye-height: 3.7%;
+  --persona-eye-peak-opacity: 0.58;
+  --persona-eye-mid-opacity: 0.28;
+  --persona-eye-soft-opacity: 0.24;
 }
 
 .persona-portrait--signal-life {
@@ -11469,24 +11472,35 @@ h3 {
 }
 
 .persona-card[data-persona-id="simon-cross"] {
+  --persona-blink-cycle: 13.2s;
   --persona-eye-top: 31.4%;
   --persona-eye-left: 31.5%;
   --persona-eye-right: 55.8%;
 }
 
 .persona-card[data-persona-id="nick-deckman"] {
+  --persona-blink-cycle: 14.6s;
   --persona-eye-top: 31.9%;
   --persona-eye-left: 31.6%;
   --persona-eye-right: 55.9%;
 }
 
 .persona-card[data-persona-id="lexi-arden"] {
+  --persona-blink-cycle: 15.4s;
   --persona-eye-top: 32.3%;
   --persona-eye-left: 31.7%;
   --persona-eye-right: 55.9%;
 }
 
+.persona-card[data-persona-id="maya-elise-harper"] {
+  --persona-blink-cycle: 24s;
+  --persona-eye-peak-opacity: 0.38;
+  --persona-eye-mid-opacity: 0.18;
+  --persona-eye-soft-opacity: 0.14;
+}
+
 .persona-card[data-persona-id="akiko-hayashi"] {
+  --persona-blink-cycle: 18.6s;
   --persona-eye-top: 31.6%;
   --persona-eye-left: 32.2%;
   --persona-eye-right: 55.9%;
@@ -11494,6 +11508,7 @@ h3 {
 }
 
 .persona-card[data-persona-id="adrian-mbeki"] {
+  --persona-blink-cycle: 12.8s;
   --persona-eye-top: 31.6%;
   --persona-eye-left: 32.5%;
   --persona-eye-right: 55.8%;
@@ -11605,17 +11620,17 @@ h3 {
   }
 
   9.55% {
-    opacity: 0.28;
+    opacity: var(--persona-eye-mid-opacity);
     transform: translateY(-0.02rem) scaleY(0.4);
   }
 
   9.95% {
-    opacity: 0.58;
+    opacity: var(--persona-eye-peak-opacity);
     transform: translateY(0.02rem) scaleY(0.78);
   }
 
   10.25% {
-    opacity: 0.24;
+    opacity: var(--persona-eye-soft-opacity);
     transform: translateY(-0.005rem) scaleY(0.34);
   }
 
