@@ -11324,7 +11324,7 @@ h3 {
 .persona-card--signal-life {
   --persona-breath-cycle: 6.8s;
   --persona-ambient-cycle: 14s;
-  --persona-blink-cycle: 6.2s;
+  --persona-blink-cycle: 5.8s;
 }
 
 .persona-portrait--signal-life {
@@ -11345,13 +11345,23 @@ h3 {
   transition: filter 260ms ease, transform 260ms ease;
 }
 
-.persona-portrait--signal-life img {
+.persona-portrait--signal-life .persona-portrait-frame,
+.persona-portrait--signal-life .persona-blink-frame {
+  animation:
+    persona-breathe var(--persona-breath-cycle) ease-in-out infinite;
+  transform-origin: 50% 58%;
+  will-change: transform, filter, opacity;
+}
+
+.persona-blink-frame {
+  z-index: 2;
+  opacity: 0;
+}
+
+.persona-portrait--signal-life .persona-blink-frame {
   animation:
     persona-breathe var(--persona-breath-cycle) ease-in-out infinite,
-    persona-image-blink var(--persona-blink-cycle) ease-in-out 1s infinite;
-  clip-path: inset(0 0 0 0 round 1.5rem);
-  transform-origin: 50% 58%;
-  will-change: transform, filter, clip-path;
+    persona-real-blink var(--persona-blink-cycle) steps(1, end) 1s infinite;
 }
 
 .persona-presence-field {
@@ -11432,23 +11442,17 @@ h3 {
   }
 }
 
-@keyframes persona-image-blink {
+@keyframes persona-real-blink {
   0%,
-  52%,
+  50%,
+  55%,
   100% {
-    clip-path: inset(0 0 0 0 round 1.5rem);
+    opacity: 0;
   }
 
-  54.2% {
-    clip-path: inset(21% 0 21% 0 round 1.2rem);
-  }
-
-  55.4% {
-    clip-path: inset(45% 0 45% 0 round 0.55rem);
-  }
-
-  56.4% {
-    clip-path: inset(21% 0 21% 0 round 1.2rem);
+  52%,
+  53.2% {
+    opacity: 1;
   }
 }
 
