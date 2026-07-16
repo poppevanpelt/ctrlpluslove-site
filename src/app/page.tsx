@@ -48,7 +48,7 @@ export default function Home() {
               <span>Akiko Hayashi</span>
               <em>Looks beyond the next decision.</em>
             </div>
-            <div className="persona-card">
+            <div className="persona-card persona-card--signal-life">
               <p>The Truth Teller</p>
               <span>Maya Elise Harper</span>
               <em>Protects emotional truth.</em>

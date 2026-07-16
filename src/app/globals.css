@@ -376,6 +376,103 @@ h3 {
   line-height: var(--leading-body);
 }
 
+.persona-card--signal-life {
+  overflow: hidden;
+  isolation: isolate;
+  transform-origin: 50% 60%;
+  animation: persona-card-breathe 8.8s ease-in-out infinite;
+}
+
+.persona-card--signal-life::before {
+  width: 3.6rem;
+  background: color-mix(in srgb, var(--team-warm) 78%, var(--team-cold));
+  box-shadow: 0 0 1.2rem color-mix(in srgb, var(--team-warm) 16%, transparent);
+  animation: persona-line-attention 16.4s steps(1, end) 4.2s infinite;
+}
+
+.persona-card--signal-life::after {
+  position: absolute;
+  inset: 0 -8% -10%;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 14% 28%, color-mix(in srgb, var(--team-warm) 13%, transparent) 0 1px, transparent 2px),
+    radial-gradient(circle at 82% 70%, color-mix(in srgb, var(--team-cold) 12%, transparent) 0 1px, transparent 2px),
+    linear-gradient(116deg, transparent 0%, color-mix(in srgb, var(--team-warm) 5%, transparent) 48%, transparent 100%);
+  background-size: 3.8rem 3.8rem, 5.2rem 5.2rem, auto;
+  content: "";
+  opacity: 0.2;
+  pointer-events: none;
+  transform: translate3d(-0.08rem, 0.04rem, 0);
+  animation: persona-presence-drift 24s ease-in-out infinite alternate;
+}
+
+.persona-card--signal-life p,
+.persona-card--signal-life span,
+.persona-card--signal-life em {
+  transition: color 520ms ease, opacity 520ms ease, transform 520ms ease;
+}
+
+.persona-card--signal-life:hover p,
+.persona-card--signal-life:hover span,
+.persona-card--signal-life:hover em {
+  color: color-mix(in srgb, var(--ink) 88%, var(--team-warm));
+}
+
+.persona-card--signal-life:hover span {
+  transform: translate3d(0.04rem, 0, 0);
+}
+
+@keyframes persona-card-breathe {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(0, -0.06rem, 0);
+  }
+}
+
+@keyframes persona-line-attention {
+  0%,
+  96.8%,
+  100% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  97.15% {
+    opacity: 0.52;
+    transform: scaleX(0.28);
+  }
+
+  97.55% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes persona-presence-drift {
+  from {
+    background-position: 0 0, 0 0, 50% 50%;
+    transform: translate3d(-0.08rem, 0.04rem, 0);
+  }
+
+  to {
+    background-position: 0.14rem -0.1rem, -0.12rem 0.16rem, 50% 50%;
+    transform: translate3d(0.09rem, -0.08rem, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .persona-card--signal-life,
+  .persona-card--signal-life::before,
+  .persona-card--signal-life::after {
+    animation: none;
+    transform: none;
+  }
+}
+
 .bright {
   color: var(--ink);
 }
