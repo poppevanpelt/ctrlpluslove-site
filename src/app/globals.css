@@ -10417,7 +10417,7 @@ h3 {
 }
 
 .chapter-arrival .home-hero-logo {
-  max-width: 62rem;
+  max-width: 70rem;
   background: linear-gradient(
     96deg,
     #ff19c8 0%,
@@ -10444,7 +10444,7 @@ h3 {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  font-size: clamp(2.35rem, 7.4vw, 6.9rem);
+  font-size: clamp(3.15rem, 8.8vw, 8.45rem);
   font-weight: 650;
   line-height: 0.92;
   animation: home-logo-spectrum 14s linear infinite;
@@ -11164,7 +11164,7 @@ h3 {
 
 @media (max-width: 900px) {
   .chapter-arrival .home-hero-logo {
-    font-size: clamp(2.15rem, 11vw, 5.4rem);
+    font-size: clamp(2.55rem, 13vw, 6rem);
   }
 
   .chapter-arrival .home-hero-line {
@@ -12621,7 +12621,7 @@ h3 {
 .soundtrack-toggle {
   position: fixed !important;
   right: var(--fixed-control-right, max(1rem, env(safe-area-inset-right))) !important;
-  top: calc(var(--fixed-control-top, 1rem) + var(--fixed-control-gap, 0.72rem) + var(--fixed-control-height, 2.65rem)) !important;
+  top: var(--fixed-control-top, 1rem) !important;
   bottom: auto !important;
   left: auto !important;
   z-index: 320 !important;
@@ -12687,10 +12687,10 @@ h3 {
 .theme-toggle,
 [data-theme-toggle].theme-toggle {
   position: fixed !important;
-  right: var(--fixed-control-right, max(1rem, env(safe-area-inset-right))) !important;
+  right: auto !important;
   top: var(--fixed-control-top, 1rem) !important;
   bottom: auto !important;
-  left: auto !important;
+  left: var(--fixed-control-left, max(1rem, env(safe-area-inset-left))) !important;
   display: inline-flex !important;
   width: var(--fixed-control-width, 10rem) !important;
   min-width: var(--fixed-control-width, 10rem) !important;
@@ -12709,6 +12709,7 @@ h3 {
 
 @media (max-width: 680px) {
   :root {
+    --fixed-control-left: max(0.75rem, env(safe-area-inset-left));
     --fixed-control-right: max(0.75rem, env(safe-area-inset-right));
     --fixed-control-top: 0.75rem;
     --fixed-control-width: 2.45rem;
@@ -12799,5 +12800,32 @@ h3 {
 
   .soundtrack-toggle {
     transition: none;
+  }
+}
+
+/* Final fixed-control placement lock. Keep these controls inline across deploys. */
+.theme-toggle,
+[data-theme-toggle].theme-toggle {
+  right: auto !important;
+  left: var(--fixed-control-left, max(1rem, env(safe-area-inset-left))) !important;
+  top: var(--fixed-control-top, 1rem) !important;
+}
+
+.soundtrack-toggle {
+  right: var(--fixed-control-right, max(1rem, env(safe-area-inset-right))) !important;
+  left: auto !important;
+  top: var(--fixed-control-top, 1rem) !important;
+}
+
+@media (max-width: 680px) {
+  .theme-toggle,
+  [data-theme-toggle].theme-toggle {
+    left: var(--fixed-control-left, max(0.75rem, env(safe-area-inset-left))) !important;
+    right: auto !important;
+  }
+
+  .soundtrack-toggle {
+    left: auto !important;
+    right: var(--fixed-control-right, max(0.75rem, env(safe-area-inset-right))) !important;
   }
 }
