@@ -57,10 +57,11 @@ export function SteelBallCursor() {
     let renderY = pointerY;
     let targetScale = 1;
     let scale = 1;
-    let pressScaleX = 1;
-    let pressScaleY = 1;
+    let pressScale = 1;
     let isPressed = false;
     let activeTarget: Element | null = null;
+    let previousInteractiveTarget: Element | null = null;
+    let glintTimeout = 0;
 
     const setNativeCursor = (isNative: boolean) => {
       document.documentElement.toggleAttribute("data-steel-cursor-native", isNative);
@@ -78,6 +79,21 @@ export function SteelBallCursor() {
 
       setNativeCursor(false);
       activeTarget = element?.closest(INTERACTIVE_SELECTOR) ?? null;
+    };
+
+    const triggerGlint = () => {
+      if (!cursor || reducedMotionMedia.matches) {
+        return;
+      }
+
+      cursor.removeAttribute("data-glint");
+      window.clearTimeout(glintTimeout);
+      window.requestAnimationFrame(() => {
+        cursor?.setAttribute("data-glint", "true");
+        glintTimeout = window.setTimeout(() => {
+          cursor?.removeAttribute("data-glint");
+        }, 460);
+      });
     };
 
     const getCardEdgeOffset = (target: Element | null) => {
@@ -132,6 +148,12 @@ export function SteelBallCursor() {
       let nextY = pointerY;
       const isInteractive = Boolean(activeTarget) && !document.documentElement.hasAttribute("data-steel-cursor-native");
 
+      if (isInteractive && activeTarget !== previousInteractiveTarget) {
+        triggerGlint();
+      }
+
+      previousInteractiveTarget = isInteractive ? activeTarget : null;
+
       if (isInteractive && activeTarget && !reducedMotion) {
         const rect = activeTarget.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
@@ -142,24 +164,21 @@ export function SteelBallCursor() {
       }
 
       targetScale = isInteractive ? 1.08 : 1;
-      const targetPressScaleX = isPressed ? 1.06 : 1;
-      const targetPressScaleY = isPressed ? 0.94 : 1;
+      const targetPressScale = isPressed ? 0.94 : 1;
 
       if (reducedMotion) {
         renderX = nextX;
         renderY = nextY;
         scale = targetScale;
-        pressScaleX = targetPressScaleX;
-        pressScaleY = targetPressScaleY;
+        pressScale = targetPressScale;
       } else {
         renderX += (nextX - renderX) * 0.46;
         renderY += (nextY - renderY) * 0.46;
         scale += (targetScale - scale) * 0.22;
-        pressScaleX += (targetPressScaleX - pressScaleX) * 0.42;
-        pressScaleY += (targetPressScaleY - pressScaleY) * 0.42;
+        pressScale += (targetPressScale - pressScale) * 0.5;
       }
 
-      cursor.style.transform = `translate3d(${renderX}px, ${renderY}px, 0) translate(-50%, -50%) scale(${scale}) scale(${pressScaleX}, ${pressScaleY})`;
+      cursor.style.transform = `translate3d(${renderX}px, ${renderY}px, 0) translate(-50%, -50%) scale(${scale}) scale(${pressScale})`;
       cursor.toggleAttribute("data-interactive", isInteractive);
       cursor.toggleAttribute("data-clicking", isPressed);
       frame = window.requestAnimationFrame(render);
@@ -184,6 +203,8 @@ export function SteelBallCursor() {
       visible = false;
       isPressed = false;
       activeTarget = null;
+      previousInteractiveTarget = null;
+      window.clearTimeout(glintTimeout);
       setNativeCursor(false);
       document.documentElement.classList.remove("steel-ball-cursor-active");
       window.cancelAnimationFrame(frame);
@@ -240,7 +261,9 @@ export function SteelBallCursor() {
       visible = false;
       isPressed = false;
       activeTarget = null;
+      previousInteractiveTarget = null;
       cursor?.removeAttribute("data-visible");
+      cursor?.removeAttribute("data-glint");
     };
 
     syncEnabled();
