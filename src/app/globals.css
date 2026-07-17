@@ -12620,12 +12620,13 @@ h3 {
 
 .soundtrack-toggle {
   position: fixed;
-  right: max(1rem, env(safe-area-inset-right));
-  top: calc(4rem + env(safe-area-inset-top));
+  right: var(--fixed-control-right, max(1rem, env(safe-area-inset-right)));
+  top: calc(var(--fixed-control-top, 1rem) + var(--fixed-control-gap, 0.72rem) + var(--fixed-control-height, 2.65rem));
   z-index: 31;
   display: inline-flex;
-  min-width: 8rem;
-  height: 2.65rem;
+  width: var(--fixed-control-width, 10rem);
+  min-width: var(--fixed-control-width, 10rem);
+  height: var(--fixed-control-height, 2.65rem);
   align-items: center;
   justify-content: center;
   gap: 0.55rem;
@@ -12677,6 +12678,52 @@ h3 {
 
 .soundtrack-toggle__label {
   white-space: nowrap;
+}
+
+.theme-toggle,
+[data-theme-toggle].theme-toggle {
+  right: var(--fixed-control-right, max(1rem, env(safe-area-inset-right))) !important;
+  top: var(--fixed-control-top, 1rem) !important;
+  width: var(--fixed-control-width, 10rem) !important;
+  min-width: var(--fixed-control-width, 10rem) !important;
+  max-width: var(--fixed-control-width, 10rem) !important;
+  min-height: var(--fixed-control-height, 2.65rem) !important;
+  justify-content: flex-start !important;
+  z-index: 32 !important;
+}
+
+@media (max-width: 680px) {
+  :root {
+    --fixed-control-right: max(0.75rem, env(safe-area-inset-right));
+    --fixed-control-top: 0.75rem;
+    --fixed-control-width: 2.45rem;
+    --fixed-control-height: 2.45rem;
+    --fixed-control-gap: 0.48rem;
+  }
+
+  .soundtrack-toggle {
+    min-width: var(--fixed-control-width) !important;
+    max-width: var(--fixed-control-width) !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    overflow: hidden !important;
+    font-size: 0 !important;
+  }
+
+  .soundtrack-toggle__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .soundtrack-toggle__mark {
+    width: 1.24rem !important;
+    height: 1.24rem !important;
+    font-size: 0.72rem !important;
+  }
 }
 
 @media (max-width: 1100px) {
