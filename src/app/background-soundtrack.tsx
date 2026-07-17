@@ -9,9 +9,17 @@ import {
   WORLD_EMOTION_EVENT,
 } from "./world-emotion-engine";
 
-const SOUNDTRACK_URL = "/audio/open-arms-drift-v2.wav";
 const STORAGE_KEY = "ctrl-love-soundtrack-muted";
 const BASE_VOLUME = 0.12;
+const HIDDEN_VOLUME = 0.025;
+const GRAPH_UPDATE_INTERVAL_MS = 150;
+
+const SOUNDTRACK_SOURCES = [
+  { src: "/audio/open-arms-drift-v2.webm", type: 'audio/webm; codecs="opus"' },
+  { src: "/audio/open-arms-drift-v2.m4a", type: "audio/mp4" },
+  { src: "/audio/open-arms-drift-v2.mp3", type: "audio/mpeg" },
+  { src: "/audio/open-arms-drift-v2.wav", type: "audio/wav" },
+] as const;
 
 type AudioState = "idle" | "loading" | "playing" | "muted" | "unavailable";
 
@@ -27,6 +35,25 @@ function lerp(from: number, to: number, amount: number) {
   return from + (to - from) * amount;
 }
 
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function getTargetVolume(state: WorldEmotionState, isHidden: boolean) {
+  if (isHidden) {
+    return HIDDEN_VOLUME;
+  }
+
+  const intensity =
+    state.energy * 0.34 +
+    state.warmth * 0.18 +
+    state.curiosity * 0.18 +
+    state.playfulness * 0.12 +
+    state.calm * 0.18;
+
+  return BASE_VOLUME + Math.min(0.035, intensity * 0.035);
+}
+
 function getAudioContext() {
   const AudioContextClass =
     window.AudioContext ||
@@ -34,6 +61,35 @@ function getAudioContext() {
       .webkitAudioContext;
 
   return AudioContextClass ? new AudioContextClass() : null;
+}
+
+function holdParamAtNow(param: AudioParam, now: number) {
+  const paramWithHold = param as AudioParam & {
+    cancelAndHoldAtTime?: (time: number) => AudioParam;
+  };
+
+  if (typeof paramWithHold.cancelAndHoldAtTime === "function") {
+    paramWithHold.cancelAndHoldAtTime(now);
+    return;
+  }
+
+  const currentValue = param.value;
+  param.cancelScheduledValues(now);
+  param.setValueAtTime(currentValue, now);
+}
+
+function setSmoothedParam(
+  param: AudioParam | undefined,
+  target: number,
+  now: number,
+  timeConstant: number,
+) {
+  if (!param) {
+    return;
+  }
+
+  holdParamAtNow(param, now);
+  param.setTargetAtTime(target, now, timeConstant);
 }
 
 export function BackgroundSoundtrack() {
@@ -58,6 +114,7 @@ export function BackgroundSoundtrack() {
 
   function setupAudioGraph(audio: HTMLAudioElement) {
     if (sourceRef.current) {
+      audio.volume = 1;
       return contextRef.current;
     }
 
@@ -65,6 +122,8 @@ export function BackgroundSoundtrack() {
     if (!context) {
       return null;
     }
+
+    audio.volume = 1;
 
     const source = context.createMediaElementSource(audio);
     const lowShelf = context.createBiquadFilter();
@@ -101,36 +160,41 @@ export function BackgroundSoundtrack() {
     return context;
   }
 
-  function applyEmotionToGraph(state: WorldEmotionState) {
+  function applyEmotionToGraph(
+    state: WorldEmotionState,
+    options: { updateGain?: boolean } = {},
+  ) {
+    const shouldUpdateGain = options.updateGain ?? true;
     const context = contextRef.current;
     if (!context) {
       const audio = audioRef.current;
       if (audio) {
-        audio.volume = hiddenRef.current ? 0.03 : BASE_VOLUME;
+        audio.volume = getTargetVolume(state, hiddenRef.current);
       }
       return;
     }
 
-    const intensity =
-      state.energy * 0.34 +
-      state.warmth * 0.18 +
-      state.curiosity * 0.18 +
-      state.playfulness * 0.12 +
-      state.calm * 0.18;
-    const volume = hiddenRef.current
-      ? 0.025
-      : BASE_VOLUME + Math.min(0.035, intensity * 0.035);
-    const lowGain = -0.8 + state.energy * 1.6 + state.focus * 0.45;
-    const cutoff = 9200 + state.curiosity * 2400 + state.calm * 1200;
-    const pan = (state.playfulness - state.focus) * 0.035;
+    const volume = getTargetVolume(state, hiddenRef.current);
+    const lowGain = clamp(
+      -1.2 + state.energy * 2.4 + state.focus * 0.6,
+      -1.2,
+      1.8,
+    );
+    const cutoff = clamp(
+      7600 + state.curiosity * 3600 + state.calm * 1500,
+      7200,
+      12700,
+    );
+    const pan = clamp((state.playfulness - state.focus) * 0.07, -0.07, 0.07);
     const now = context.currentTime;
 
-    lowShelfRef.current?.gain.setTargetAtTime(lowGain, now, 2.8);
-    lowPassRef.current?.frequency.setTargetAtTime(cutoff, now, 4.2);
-    panRef.current?.pan.setTargetAtTime(pan, now, 3.4);
+    audioRef.current && (audioRef.current.volume = 1);
+    setSmoothedParam(lowShelfRef.current?.gain, lowGain, now, 2.8);
+    setSmoothedParam(lowPassRef.current?.frequency, cutoff, now, 4.2);
+    setSmoothedParam(panRef.current?.pan, pan, now, 3.4);
 
-    if (playingRef.current) {
-      gainRef.current?.gain.setTargetAtTime(volume, now, 3.2);
+    if (playingRef.current && shouldUpdateGain) {
+      setSmoothedParam(gainRef.current?.gain, volume, now, 3.2);
     }
   }
 
@@ -150,8 +214,13 @@ export function BackgroundSoundtrack() {
 
       audio.loop = true;
       audio.muted = false;
-      audio.volume = BASE_VOLUME;
       const context = setupAudioGraph(audio);
+      const targetVolume = getTargetVolume(
+        currentEmotionRef.current,
+        hiddenRef.current,
+      );
+
+      audio.volume = context ? 1 : targetVolume;
       if (context?.state === "suspended") {
         await context.resume();
       }
@@ -159,12 +228,15 @@ export function BackgroundSoundtrack() {
       await audio.play();
 
       playingRef.current = true;
-      applyEmotionToGraph(currentEmotionRef.current);
       const gain = gainRef.current;
       if (gain && context) {
-        gain.gain.cancelScheduledValues(context.currentTime);
+        applyEmotionToGraph(currentEmotionRef.current, { updateGain: false });
+        holdParamAtNow(gain.gain, context.currentTime);
         gain.gain.setValueAtTime(0, context.currentTime);
-        gain.gain.linearRampToValueAtTime(BASE_VOLUME, context.currentTime + 3);
+        gain.gain.linearRampToValueAtTime(
+          targetVolume,
+          context.currentTime + 3,
+        );
       }
 
       try {
@@ -189,8 +261,7 @@ export function BackgroundSoundtrack() {
     dispatchSoundtrackStatus(false);
 
     if (gain && context) {
-      gain.gain.cancelScheduledValues(context.currentTime);
-      gain.gain.setValueAtTime(gain.gain.value, context.currentTime);
+      holdParamAtNow(gain.gain, context.currentTime);
       gain.gain.linearRampToValueAtTime(0, context.currentTime + 2.4);
       window.setTimeout(() => {
         if (!playingRef.current) {
@@ -223,7 +294,7 @@ export function BackgroundSoundtrack() {
       return;
     }
 
-    audio.volume = BASE_VOLUME;
+    audio.volume = getTargetVolume(neutralWorldEmotionState, hiddenRef.current);
 
     const handleError = () => setAudioState("unavailable");
     const handleEnded = () => setAudioState("muted");
@@ -243,6 +314,7 @@ export function BackgroundSoundtrack() {
 
     let frame = 0;
     let previousTime = performance.now();
+    let previousGraphUpdate = 0;
 
     function animateEmotion(time: number) {
       const deltaSeconds = Math.max(0.001, (time - previousTime) / 1000);
@@ -259,7 +331,11 @@ export function BackgroundSoundtrack() {
         calm: lerp(current.calm, target.calm, amount),
       };
 
-      applyEmotionToGraph(currentEmotionRef.current);
+      if (time - previousGraphUpdate >= GRAPH_UPDATE_INTERVAL_MS) {
+        applyEmotionToGraph(currentEmotionRef.current);
+        previousGraphUpdate = time;
+      }
+
       frame = window.requestAnimationFrame(animateEmotion);
     }
 
@@ -290,7 +366,12 @@ export function BackgroundSoundtrack() {
 
   return (
     <>
-      <audio ref={audioRef} src={SOUNDTRACK_URL} preload="none" />
+      <audio ref={audioRef} preload="none">
+        {/* Generate compressed versions from the WAV master for smaller web delivery. */}
+        {SOUNDTRACK_SOURCES.map((source) => (
+          <source key={source.src} src={source.src} type={source.type} />
+        ))}
+      </audio>
       <button
         className="soundtrack-toggle"
         type="button"
