@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { CSSProperties } from "react";
 
 import { confirmedAmbassadors } from "./ambassadors-data";
 import { getAmbassadorProfile } from "./ambassador-profiles-data";
@@ -545,6 +544,76 @@ export default async function Home() {
       </section>
 
       <section
+        className="content-section ruled ambassador-network-section"
+        id="network"
+        aria-labelledby="network-title"
+      >
+        <div className="content-block wide network-block">
+          <div className="network-heading">
+            <p className="section-kicker">Human Network</p>
+            <h2 id="network-title">
+              A growing intelligence network for decisions that cross reality.
+            </h2>
+            <p>
+              Ambassadors are a trusted international council: cultural,
+              creative and strategic specialists who bring lived market context
+              into decisions that cannot be solved from one room alone.
+            </p>
+          </div>
+
+          <div className="network-map">
+            <div className="network-metrics" aria-label="Network metrics">
+              <div>
+                <strong>{humanAmbassadors.length}</strong>
+                <span>people</span>
+              </div>
+              <div>
+                <strong>{countries.length}</strong>
+                <span>countries</span>
+              </div>
+              <div>
+                <strong>{cities.length}</strong>
+                <span>cities</span>
+              </div>
+            </div>
+
+            <div className="ambassador-face-grid" aria-label="Ambassador network preview">
+              {networkPreview.map((ambassador) => (
+                <Link
+                  className="ambassador-face"
+                  href="/ambassadors/"
+                  key={ambassador.id}
+                >
+                  {ambassador.image ? (
+                    <Image
+                      src={ambassador.image}
+                      alt=""
+                      fill
+                      sizes="(max-width: 900px) 100vw, 28vw"
+                    />
+                  ) : (
+                    <span>{ambassador.name.slice(0, 1)}</span>
+                  )}
+                  <div>
+                    <strong>{ambassador.name}</strong>
+                    <small>
+                      Creative Ambassador / {ambassador.city}, {ambassador.country}
+                    </small>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div className="specialisation-ribbon" aria-label="Network specialisations">
+            {networkSpecialisations.map((specialisation) => (
+              <span key={specialisation}>{specialisation}</span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section
         className="content-section ruled personas-section"
         id="personas"
         aria-labelledby="personas-title"
@@ -561,67 +630,43 @@ export default async function Home() {
             </p>
           </div>
           <div className="persona-grid">
-            {personas.map((persona, index) => {
-              const motionStyle = persona.motion
-                ? ({
-                    "--persona-breath-cycle": `${6.8 + (index % 3) * 0.35}s`,
-                    "--persona-ambient-cycle": `${14 + (index % 4) * 1.4}s`,
-                  } as CSSProperties)
-                : undefined;
-
-              return (
-                <Link
-                  className={`persona-card${
-                    persona.motion ? " persona-card--signal-life" : ""
+            {personas.map((persona, index) => (
+              <Link
+                className="persona-card"
+                data-persona-id={persona.id}
+                href={`/room/${persona.id}/`}
+                key={persona.name}
+              >
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <div
+                  className={`persona-portrait${
+                    persona.portrait ? "" : " persona-portrait-silhouette"
                   }`}
-                  data-motion-effect={persona.motion?.ambientEffect}
-                  data-motion-intensity={persona.motion?.intensity}
-                  data-persona-id={persona.id}
-                  href={`/room/${persona.id}/`}
-                  key={persona.name}
-                  style={motionStyle}
+                  aria-hidden="true"
                 >
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <div
-                    className={`persona-portrait${
-                      persona.portrait ? "" : " persona-portrait-silhouette"
-                    }${
-                      persona.motion ? " persona-portrait--signal-life" : ""
-                    }`}
-                    aria-hidden="true"
-                  >
-                    {persona.portrait ? (
-                      <Image
-                        className="persona-portrait-frame"
-                        src={persona.portrait}
-                        alt=""
-                        fill
-                        sizes="(max-width: 680px) 58vw, (max-width: 1100px) 24vw, 13vw"
-                      />
-                    ) : (
-                      <span className="persona-silhouette" />
-                    )}
-                    {persona.motion ? (
-                      <>
-                        <span className="persona-presence-field" />
-                        {persona.motion.blink ? (
-                          <span className="persona-eye-blink" />
-                        ) : null}
-                      </>
-                    ) : null}
+                  {persona.portrait ? (
+                    <Image
+                      className="persona-portrait-frame"
+                      src={persona.portrait}
+                      alt=""
+                      fill
+                      sizes="(max-width: 680px) 58vw, (max-width: 1100px) 24vw, 13vw"
+                    />
+                  ) : (
+                    <span className="persona-silhouette" />
+                  )}
+                </div>
+                <h3>{persona.name}</h3>
+                <p>{persona.role}</p>
+                <blockquote>{persona.line}</blockquote>
+                <dl>
+                  <div>
+                    <dt>Function</dt>
+                    <dd>{persona.contribution ?? persona.line}</dd>
                   </div>
-                  <h3>{persona.name}</h3>
-                  <p>{persona.role}</p>
-                  <blockquote>{persona.line}</blockquote>
-                  <dl>
-                    <div>
-                      <dt>Function</dt>
-                      <dd>{persona.contribution ?? persona.line}</dd>
-                    </div>
-                  </dl>
-                </Link>
-              );
-            })}
+                </dl>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
@@ -757,76 +802,6 @@ export default async function Home() {
             <h2 id="steel-ball-title">Confidence should feel heavy.</h2>
           </div>
           <SteelBallPresence />
-        </div>
-      </section>
-
-      <section
-        className="content-section ruled ambassador-network-section"
-        id="network"
-        aria-labelledby="network-title"
-      >
-        <div className="content-block wide network-block">
-          <div className="network-heading">
-            <p className="section-kicker">Human Network</p>
-            <h2 id="network-title">
-              A growing intelligence network for decisions that cross reality.
-            </h2>
-            <p>
-              Ambassadors are a trusted international council: cultural,
-              creative and strategic specialists who bring lived market context
-              into decisions that cannot be solved from one room alone.
-            </p>
-          </div>
-
-          <div className="network-map">
-            <div className="network-metrics" aria-label="Network metrics">
-              <div>
-                <strong>{humanAmbassadors.length}</strong>
-                <span>people</span>
-              </div>
-              <div>
-                <strong>{countries.length}</strong>
-                <span>countries</span>
-              </div>
-              <div>
-                <strong>{cities.length}</strong>
-                <span>cities</span>
-              </div>
-            </div>
-
-            <div className="ambassador-face-grid" aria-label="Ambassador network preview">
-              {networkPreview.map((ambassador) => (
-                <Link
-                  className="ambassador-face"
-                  href="/ambassadors/"
-                  key={ambassador.id}
-                >
-                  {ambassador.image ? (
-                    <Image
-                      src={ambassador.image}
-                      alt=""
-                      fill
-                      sizes="(max-width: 900px) 100vw, 28vw"
-                    />
-                  ) : (
-                    <span>{ambassador.name.slice(0, 1)}</span>
-                  )}
-                  <div>
-                    <strong>{ambassador.name}</strong>
-                    <small>
-                      Creative Ambassador / {ambassador.city}, {ambassador.country}
-                    </small>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <div className="specialisation-ribbon" aria-label="Network specialisations">
-            {networkSpecialisations.map((specialisation) => (
-              <span key={specialisation}>{specialisation}</span>
-            ))}
-          </div>
         </div>
       </section>
 

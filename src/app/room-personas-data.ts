@@ -5,18 +5,6 @@ export type RoomPersona = {
   line: string;
   contribution?: string;
   portrait?: string;
-  motion?: PersonaMotionConfig;
-};
-
-export type PersonaMotionConfig = {
-  blink?: boolean;
-  breathing?: boolean;
-  eyeRefocus?: boolean;
-  parallax?: boolean;
-  ambientEffect?: "dust" | "grain" | "grid" | "glitch" | "data" | "type" | "none";
-  intensity?: "minimal" | "subtle";
-  hoverResponse?: boolean;
-  reducedMotionFallback?: boolean;
 };
 
 export const coreRoomPersonas: RoomPersona[] = [
@@ -28,15 +16,6 @@ export const coreRoomPersonas: RoomPersona[] = [
     contribution:
       "Reframes the decision around the human need underneath the stated brief.",
     portrait: "/room/personas/maya-elise-harper.webp",
-    motion: {
-      blink: true,
-      breathing: true,
-      parallax: true,
-      ambientEffect: "dust",
-      intensity: "minimal",
-      hoverResponse: true,
-      reducedMotionFallback: true,
-    },
   },
   {
     id: "simon-cross",
@@ -46,15 +25,6 @@ export const coreRoomPersonas: RoomPersona[] = [
     contribution:
       "Applies constructive skepticism before the market does it less politely.",
     portrait: "/room/personas/simon-cross.webp",
-    motion: {
-      blink: true,
-      breathing: true,
-      parallax: true,
-      ambientEffect: "glitch",
-      intensity: "minimal",
-      hoverResponse: true,
-      reducedMotionFallback: true,
-    },
   },
   {
     id: "nick-deckman",
@@ -64,15 +34,6 @@ export const coreRoomPersonas: RoomPersona[] = [
     contribution:
       "Tests whether the recommendation can survive budget, timing and commercial reality.",
     portrait: "/room/personas/nick-deckman.jpg",
-    motion: {
-      blink: true,
-      breathing: true,
-      parallax: true,
-      ambientEffect: "grid",
-      intensity: "minimal",
-      hoverResponse: true,
-      reducedMotionFallback: true,
-    },
   },
   {
     id: "lexi-arden",
@@ -82,15 +43,6 @@ export const coreRoomPersonas: RoomPersona[] = [
     contribution:
       "Reads the cultural risk, memory and meaning surrounding the decision.",
     portrait: "/room/personas/lexi-arden.jpg",
-    motion: {
-      blink: true,
-      breathing: true,
-      parallax: true,
-      ambientEffect: "grain",
-      intensity: "subtle",
-      hoverResponse: true,
-      reducedMotionFallback: true,
-    },
   },
   {
     id: "akiko-hayashi",
@@ -100,15 +52,6 @@ export const coreRoomPersonas: RoomPersona[] = [
     contribution:
       "Keeps the room honest about second-order effects, unintended consequences and future regret.",
     portrait: "/room/personas/akiko-hayashi.jpg",
-    motion: {
-      blink: true,
-      breathing: true,
-      parallax: true,
-      ambientEffect: "data",
-      intensity: "minimal",
-      hoverResponse: true,
-      reducedMotionFallback: true,
-    },
   },
   {
     id: "adrian-mbeki",
@@ -118,15 +61,6 @@ export const coreRoomPersonas: RoomPersona[] = [
     contribution:
       "Pushes the idea against operational pressure, customer behavior and messy reality.",
     portrait: "/room/personas/adrian-mbeki.jpg",
-    motion: {
-      blink: true,
-      breathing: true,
-      parallax: true,
-      ambientEffect: "glitch",
-      intensity: "subtle",
-      hoverResponse: true,
-      reducedMotionFallback: true,
-    },
   },
   {
     id: "the-customer",
@@ -136,14 +70,6 @@ export const coreRoomPersonas: RoomPersona[] = [
     contribution:
       "Pulls the room back to the person who has to choose, pay for, use or ignore the thing.",
     portrait: "/room/personas/the-customer.webp",
-    motion: {
-      breathing: true,
-      parallax: true,
-      ambientEffect: "none",
-      intensity: "minimal",
-      hoverResponse: true,
-      reducedMotionFallback: true,
-    },
   },
 ];
 
