@@ -12802,3 +12802,30 @@ h3 {
     transition: none;
   }
 }
+
+/* Final fixed-control placement lock. Keep these controls inline across deploys. */
+.theme-toggle,
+[data-theme-toggle].theme-toggle {
+  right: auto !important;
+  left: var(--fixed-control-left, max(1rem, env(safe-area-inset-left))) !important;
+  top: var(--fixed-control-top, 1rem) !important;
+}
+
+.soundtrack-toggle {
+  right: var(--fixed-control-right, max(1rem, env(safe-area-inset-right))) !important;
+  left: auto !important;
+  top: var(--fixed-control-top, 1rem) !important;
+}
+
+@media (max-width: 680px) {
+  .theme-toggle,
+  [data-theme-toggle].theme-toggle {
+    left: var(--fixed-control-left, max(0.75rem, env(safe-area-inset-left))) !important;
+    right: auto !important;
+  }
+
+  .soundtrack-toggle {
+    left: auto !important;
+    right: var(--fixed-control-right, max(0.75rem, env(safe-area-inset-right))) !important;
+  }
+}
