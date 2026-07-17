@@ -141,6 +141,7 @@ export function BackgroundSoundtrack() {
 
   const isPlaying = audioState === "playing";
   const isLoading = audioState === "loading";
+  const buttonLabel = isPlaying ? "Sound on" : isLoading ? "Loading sound" : "Sound off";
 
   return (
     <button
@@ -151,7 +152,10 @@ export function BackgroundSoundtrack() {
       disabled={audioState === "unavailable"}
       onClick={toggleSoundtrack}
     >
-      <span aria-hidden="true">{isPlaying ? "♪" : isLoading ? "…" : "◦"}</span>
+      <span className="soundtrack-toggle__mark" aria-hidden="true">
+        {isPlaying ? "♪" : isLoading ? "…" : "×"}
+      </span>
+      <span className="soundtrack-toggle__label">{buttonLabel}</span>
     </button>
   );
 }
