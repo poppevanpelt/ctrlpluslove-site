@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { routeMetadata, SITE_URL } from "./seo";
+import { SteelBallCursor } from "./steel-ball-cursor";
 
 export const metadata: Metadata = {
   ...routeMetadata("/"),
@@ -32,6 +33,7 @@ export default function RootLayout({
       </head>
       <body>
         {children}
+        <SteelBallCursor />
         <Analytics />
         <SpeedInsights />
       </body>

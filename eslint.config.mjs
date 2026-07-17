@@ -15,6 +15,7 @@ const eslintConfig = defineConfig([
     "static-preview/**",
     "private-prototype/**",
     ".codex-checkpoints/**",
+    ".vercel/**",
     "next-env.d.ts",
   ]),
 ]);

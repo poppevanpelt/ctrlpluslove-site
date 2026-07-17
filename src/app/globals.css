@@ -77,6 +77,93 @@ body,
     color 0.24s ease;
 }
 
+.steel-ball-cursor {
+  position: fixed;
+  z-index: 2147483000;
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  border: 1px solid rgb(255 255 255 / 48%);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 31% 24%, rgb(255 255 255 / 96%) 0 8%, transparent 18%),
+    radial-gradient(circle at 62% 70%, rgb(18 17 16 / 54%) 0 18%, transparent 44%),
+    linear-gradient(135deg, #f8f6ef 0%, #a6aaa9 22%, #f1f2ee 42%, #696d70 67%, #f9f8f3 100%);
+  box-shadow:
+    inset -0.18rem -0.2rem 0.32rem rgb(16 17 18 / 42%),
+    inset 0.16rem 0.12rem 0.26rem rgb(255 255 255 / 72%),
+    0 0.08rem 0.22rem rgb(0 0 0 / 28%),
+    0 0 0.82rem color-mix(in srgb, var(--paper) 40%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(-50px, -50px, 0) translate(-50%, -50%);
+  transition: opacity 140ms ease, filter 180ms ease;
+  will-change: transform;
+}
+
+.steel-ball-cursor[data-visible] {
+  opacity: 0.94;
+}
+
+.steel-ball-cursor[data-interactive] {
+  filter: brightness(1.14) contrast(1.08) saturate(1.08);
+  box-shadow:
+    inset -0.18rem -0.2rem 0.32rem rgb(16 17 18 / 38%),
+    inset 0.16rem 0.12rem 0.28rem rgb(255 255 255 / 84%),
+    0 0.08rem 0.24rem rgb(0 0 0 / 30%),
+    0 0 1rem color-mix(in srgb, var(--team-cold) 32%, transparent);
+}
+
+@media (hover: hover) and (pointer: fine) and (min-width: 760px) {
+  .steel-ball-cursor-active,
+  .steel-ball-cursor-active body,
+  .steel-ball-cursor-active :where(a, button, [role="button"], summary, .persona-card, .product-card, .ambassador-face, .theme-toggle) {
+    cursor: none;
+  }
+
+  .steel-ball-cursor-active[data-steel-cursor-native],
+  .steel-ball-cursor-active[data-steel-cursor-native] body,
+  .steel-ball-cursor-active :where(input, textarea, select, option, [contenteditable="true"]) {
+    cursor: auto;
+  }
+
+  .steel-ball-cursor-active[data-steel-cursor-native] .steel-ball-cursor {
+    opacity: 0;
+  }
+
+  .home-hero-cta[data-steel-cursor-near="true"],
+  .home-hero-secondary[data-steel-cursor-near="true"],
+  .theme-toggle[data-steel-cursor-near="true"] {
+    box-shadow:
+      0 0.8rem 2rem color-mix(in srgb, var(--ink) 10%, transparent),
+      0 0 1.1rem color-mix(in srgb, var(--team-cold) 20%, transparent);
+  }
+
+  .product-card[data-steel-cursor-near="true"],
+  .steel-ball-home-card[data-steel-cursor-near="true"],
+  .steel-ball-signature-card[data-steel-cursor-near="true"] {
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--team-cold) 22%, transparent),
+      0 0.85rem 2rem color-mix(in srgb, var(--ink) 8%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .steel-ball-cursor {
+    transition: opacity 80ms ease;
+  }
+
+  .home-hero-cta[data-steel-cursor-near="true"],
+  .home-hero-secondary[data-steel-cursor-near="true"],
+  .theme-toggle[data-steel-cursor-near="true"],
+  .product-card[data-steel-cursor-near="true"],
+  .steel-ball-home-card[data-steel-cursor-near="true"],
+  .steel-ball-signature-card[data-steel-cursor-near="true"] {
+    box-shadow: inherit;
+  }
+}
+
 a {
   color: inherit;
 }
