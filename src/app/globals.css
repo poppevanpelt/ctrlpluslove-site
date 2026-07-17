@@ -968,8 +968,11 @@ h3 {
   position: relative;
   z-index: 2;
   display: inline-flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   align-self: stretch;
+  justify-content: center;
+  gap: 0.35rem;
   padding: 0.88rem clamp(1rem, 3vw, 2rem);
   border-right: 1px solid color-mix(in srgb, var(--rule) 52%, transparent);
   background: color-mix(in srgb, var(--paper) 82%, transparent);
@@ -979,6 +982,39 @@ h3 {
   letter-spacing: 0.11em;
   line-height: 1;
   white-space: nowrap;
+}
+
+.global-mood-label > span {
+  display: block;
+}
+
+.global-mood-soundtrack {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: color-mix(in srgb, var(--ink) 48%, var(--muted));
+  font-size: 0.58rem;
+  font-weight: 760;
+  letter-spacing: 0.08em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.global-mood-soundtrack span {
+  display: block;
+  width: 0.32rem;
+  height: 0.32rem;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.34;
+}
+
+.global-mood-soundtrack[data-active="true"] {
+  color: color-mix(in srgb, var(--team-warm) 54%, var(--ink));
+}
+
+.global-mood-soundtrack[data-active="true"] span {
+  animation: global-mood-sound-pulse 3.8s ease-in-out infinite;
 }
 
 .global-mood-window {
@@ -1091,6 +1127,19 @@ h3 {
 
   to {
     transform: translateX(-50%);
+  }
+}
+
+@keyframes global-mood-sound-pulse {
+  0%,
+  100% {
+    opacity: 0.28;
+    transform: scale(0.88);
+  }
+
+  50% {
+    opacity: 0.82;
+    transform: scale(1.15);
   }
 }
 
@@ -6662,16 +6711,29 @@ h3 {
     left: 0 !important;
     top: 0 !important;
     bottom: 0 !important;
+    justify-content: center !important;
+    gap: 0.24rem !important;
     align-self: stretch !important;
-    min-width: 7.4rem !important;
+    min-width: 8.35rem !important;
     border-right-color: color-mix(in srgb, var(--rule) 72%, transparent) !important;
     background: color-mix(in srgb, var(--paper) 88%, transparent) !important;
     box-shadow: 0.9rem 0 1.5rem color-mix(in srgb, var(--paper) 86%, transparent) !important;
   }
 
+  .global-mood-soundtrack {
+    gap: 0.25rem !important;
+    font-size: 0.48rem !important;
+    letter-spacing: 0.06em !important;
+  }
+
+  .global-mood-soundtrack span {
+    width: 0.24rem !important;
+    height: 0.24rem !important;
+  }
+
   .global-mood-window {
     width: 100% !important;
-    padding-left: 7.4rem !important;
+    padding-left: 8.35rem !important;
     -webkit-mask-image: linear-gradient(90deg, #000 0, #000 92%, transparent) !important;
     mask-image: linear-gradient(90deg, #000 0, #000 92%, transparent) !important;
   }
@@ -12647,6 +12709,10 @@ h3 {
 
 @media (prefers-reduced-motion: reduce) {
   .living-institution span {
+    animation: none;
+  }
+
+  .global-mood-soundtrack[data-active="true"] span {
     animation: none;
   }
 

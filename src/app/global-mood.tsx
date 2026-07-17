@@ -1,15 +1,5 @@
-const globalMoodEntries = [
-  { city: "Seoul", mood: "Playful", direction: "up" },
-  { city: "Tokyo", mood: "Focused", direction: "steady" },
-  { city: "Valencia", mood: "Relaxed", direction: "up" },
-  { city: "Amsterdam", mood: "Curious", direction: "steady" },
-  { city: "São Paulo", mood: "Energetic", direction: "up" },
-  { city: "San Francisco", mood: "Building", direction: "steady" },
-  { city: "Helsinki", mood: "Reflective", direction: "steady" },
-  { city: "Mexico City", mood: "Hopeful", direction: "up" },
-  { city: "London", mood: "Restless", direction: "steady" },
-  { city: "Nairobi", mood: "Inventive", direction: "up" },
-];
+import { WorldEmotionBridge } from "./world-emotion-bridge";
+import { globalMoodEntries } from "./world-emotion-engine";
 
 const globalMoodDescription =
   "A living interpretation of the world’s emotional climate.";
@@ -25,7 +15,8 @@ export function GlobalMood() {
         {globalMoodDescription}
       </p>
       <div className="global-mood-label" id="global-mood-label">
-        GLOBAL MOOD
+        <span>GLOBAL MOOD</span>
+        <WorldEmotionBridge />
       </div>
       <div className="global-mood-window">
         <div className="global-mood-track">
