@@ -92,7 +92,7 @@ export function SteelBallCursor() {
         cursor?.setAttribute("data-glint", "true");
         glintTimeout = window.setTimeout(() => {
           cursor?.removeAttribute("data-glint");
-        }, 460);
+        }, 680);
       });
     };
 
@@ -163,8 +163,8 @@ export function SteelBallCursor() {
         nextY = pointerY + clamp((centerY - pointerY) * 0.07, -8, 8) + edgeOffset.y;
       }
 
-      targetScale = isInteractive ? 1.08 : 1;
-      const targetPressScale = isPressed ? 0.94 : 1;
+      targetScale = isInteractive ? 1.14 : 1;
+      const targetPressScale = isPressed ? 0.86 : 1;
 
       if (reducedMotion) {
         renderX = nextX;

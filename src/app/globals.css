@@ -139,15 +139,15 @@ body,
 }
 
 .steel-ball-cursor[data-interactive] {
-  filter: brightness(1.1) contrast(1.08) saturate(1.02);
+  filter: brightness(1.16) contrast(1.1) saturate(1.03);
   box-shadow:
     inset -0.16rem -0.18rem 0.3rem rgb(16 17 18 / 42%),
-    inset 0.12rem 0.1rem 0.24rem rgb(255 255 255 / 76%),
+    inset 0.12rem 0.1rem 0.24rem rgb(255 255 255 / 82%),
     0 0.08rem 0.22rem rgb(0 0 0 / 32%);
 }
 
 .steel-ball-cursor[data-glint]::after {
-  animation: steel-cursor-glint 420ms ease-out;
+  animation: steel-cursor-glint 620ms ease-out;
 }
 
 .steel-ball-cursor[data-clicking] {
@@ -189,7 +189,7 @@ body,
   }
 
   42% {
-    opacity: 0.52;
+    opacity: 0.72;
   }
 
   100% {
