@@ -22,13 +22,13 @@ const INTERACTIVE_SELECTOR = [
   ".text-link",
 ].join(",");
 const NATIVE_SELECTOR = "input, textarea, select, option, [contenteditable='true']";
-const RESPONSIVE_SELECTOR = [
-  ".home-hero-cta",
-  ".home-hero-secondary",
+const CARD_EDGE_SELECTOR = [
+  ".persona-card",
   ".product-card",
+  ".ambassador-face",
   ".steel-ball-signature-card",
   ".steel-ball-home-card",
-  ".theme-toggle",
+  ".museum-card",
 ].join(",");
 
 function closestElement(target: EventTarget | null) {
@@ -57,28 +57,10 @@ export function SteelBallCursor() {
     let renderY = pointerY;
     let targetScale = 1;
     let scale = 1;
+    let pressScaleX = 1;
+    let pressScaleY = 1;
+    let isPressed = false;
     let activeTarget: Element | null = null;
-    let responsiveTarget: Element | null = null;
-
-    const clearResponsiveTarget = () => {
-      if (responsiveTarget) {
-        responsiveTarget.removeAttribute("data-steel-cursor-near");
-        responsiveTarget = null;
-      }
-    };
-
-    const setResponsiveTarget = (nextTarget: Element | null) => {
-      if (responsiveTarget === nextTarget) {
-        return;
-      }
-
-      clearResponsiveTarget();
-
-      if (nextTarget) {
-        responsiveTarget = nextTarget;
-        responsiveTarget.setAttribute("data-steel-cursor-near", "true");
-      }
-    };
 
     const setNativeCursor = (isNative: boolean) => {
       document.documentElement.toggleAttribute("data-steel-cursor-native", isNative);
@@ -90,14 +72,54 @@ export function SteelBallCursor() {
 
       if (nativeTarget) {
         activeTarget = null;
-        setResponsiveTarget(null);
         setNativeCursor(true);
         return;
       }
 
       setNativeCursor(false);
       activeTarget = element?.closest(INTERACTIVE_SELECTOR) ?? null;
-      setResponsiveTarget(activeTarget?.closest(RESPONSIVE_SELECTOR) ?? null);
+    };
+
+    const getCardEdgeOffset = (target: Element | null) => {
+      const edgeTarget = target?.closest(CARD_EDGE_SELECTOR);
+
+      if (!edgeTarget) {
+        return { x: 0, y: 0 };
+      }
+
+      const rect = edgeTarget.getBoundingClientRect();
+
+      if (
+        pointerX < rect.left ||
+        pointerX > rect.right ||
+        pointerY < rect.top ||
+        pointerY > rect.bottom
+      ) {
+        return { x: 0, y: 0 };
+      }
+
+      const edgeZone = 26;
+      const force = 2.8;
+      const left = pointerX - rect.left;
+      const right = rect.right - pointerX;
+      const top = pointerY - rect.top;
+      const bottom = rect.bottom - pointerY;
+      let x = 0;
+      let y = 0;
+
+      if (left < edgeZone) {
+        x += (1 - left / edgeZone) * force;
+      } else if (right < edgeZone) {
+        x -= (1 - right / edgeZone) * force;
+      }
+
+      if (top < edgeZone) {
+        y += (1 - top / edgeZone) * force;
+      } else if (bottom < edgeZone) {
+        y -= (1 - bottom / edgeZone) * force;
+      }
+
+      return { x, y };
     };
 
     const render = () => {
@@ -114,24 +136,32 @@ export function SteelBallCursor() {
         const rect = activeTarget.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
-        nextX = pointerX + clamp((centerX - pointerX) * 0.18, -18, 18);
-        nextY = pointerY + clamp((centerY - pointerY) * 0.18, -18, 18);
+        const edgeOffset = getCardEdgeOffset(activeTarget);
+        nextX = pointerX + clamp((centerX - pointerX) * 0.07, -8, 8) + edgeOffset.x;
+        nextY = pointerY + clamp((centerY - pointerY) * 0.07, -8, 8) + edgeOffset.y;
       }
 
-      targetScale = isInteractive ? 1.2 : 1;
+      targetScale = isInteractive ? 1.08 : 1;
+      const targetPressScaleX = isPressed ? 1.06 : 1;
+      const targetPressScaleY = isPressed ? 0.94 : 1;
 
       if (reducedMotion) {
         renderX = nextX;
         renderY = nextY;
         scale = targetScale;
+        pressScaleX = targetPressScaleX;
+        pressScaleY = targetPressScaleY;
       } else {
-        renderX += (nextX - renderX) * 0.36;
-        renderY += (nextY - renderY) * 0.36;
-        scale += (targetScale - scale) * 0.28;
+        renderX += (nextX - renderX) * 0.46;
+        renderY += (nextY - renderY) * 0.46;
+        scale += (targetScale - scale) * 0.22;
+        pressScaleX += (targetPressScaleX - pressScaleX) * 0.42;
+        pressScaleY += (targetPressScaleY - pressScaleY) * 0.42;
       }
 
-      cursor.style.transform = `translate3d(${renderX}px, ${renderY}px, 0) translate(-50%, -50%) scale(${scale})`;
+      cursor.style.transform = `translate3d(${renderX}px, ${renderY}px, 0) translate(-50%, -50%) scale(${scale}) scale(${pressScaleX}, ${pressScaleY})`;
       cursor.toggleAttribute("data-interactive", isInteractive);
+      cursor.toggleAttribute("data-clicking", isPressed);
       frame = window.requestAnimationFrame(render);
     };
 
@@ -152,8 +182,8 @@ export function SteelBallCursor() {
     const disable = () => {
       enabled = false;
       visible = false;
+      isPressed = false;
       activeTarget = null;
-      clearResponsiveTarget();
       setNativeCursor(false);
       document.documentElement.classList.remove("steel-ball-cursor-active");
       window.cancelAnimationFrame(frame);
@@ -189,26 +219,45 @@ export function SteelBallCursor() {
       updateCursorPosition(event.clientX, event.clientY, event.target);
     };
 
+    const handlePointerDown = (event: PointerEvent) => {
+      if (event.pointerType && event.pointerType !== "mouse") {
+        return;
+      }
+
+      isPressed = true;
+      updateCursorPosition(event.clientX, event.clientY, event.target);
+    };
+
+    const handlePointerUp = () => {
+      isPressed = false;
+    };
+
     const handleMouseMove = (event: MouseEvent) => {
       updateCursorPosition(event.clientX, event.clientY, event.target);
     };
 
     const handlePointerLeave = () => {
       visible = false;
+      isPressed = false;
       activeTarget = null;
-      setResponsiveTarget(null);
       cursor?.removeAttribute("data-visible");
     };
 
     syncEnabled();
     activeMedia.addEventListener("change", syncEnabled);
     window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    window.addEventListener("pointerdown", handlePointerDown, { passive: true });
+    window.addEventListener("pointerup", handlePointerUp, { passive: true });
+    window.addEventListener("pointercancel", handlePointerUp, { passive: true });
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
     document.addEventListener("pointerleave", handlePointerLeave);
 
     return () => {
       activeMedia.removeEventListener("change", syncEnabled);
       window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerdown", handlePointerDown);
+      window.removeEventListener("pointerup", handlePointerUp);
+      window.removeEventListener("pointercancel", handlePointerUp);
       window.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("pointerleave", handlePointerLeave);
       disable();

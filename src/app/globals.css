@@ -102,17 +102,42 @@ body,
   will-change: transform;
 }
 
+.steel-ball-cursor::after {
+  position: absolute;
+  inset: 0.08rem;
+  border-radius: inherit;
+  background: linear-gradient(
+    118deg,
+    transparent 0%,
+    transparent 34%,
+    rgb(255 255 255 / 56%) 45%,
+    transparent 56%,
+    transparent 100%
+  );
+  opacity: 0;
+  transform: translateX(-72%) rotate(8deg);
+  content: "";
+}
+
 .steel-ball-cursor[data-visible] {
   opacity: 0.94;
 }
 
 .steel-ball-cursor[data-interactive] {
-  filter: brightness(1.14) contrast(1.08) saturate(1.08);
+  filter: brightness(1.08) contrast(1.05) saturate(1.03);
   box-shadow:
     inset -0.18rem -0.2rem 0.32rem rgb(16 17 18 / 38%),
-    inset 0.16rem 0.12rem 0.28rem rgb(255 255 255 / 84%),
+    inset 0.16rem 0.12rem 0.28rem rgb(255 255 255 / 78%),
     0 0.08rem 0.24rem rgb(0 0 0 / 30%),
-    0 0 1rem color-mix(in srgb, var(--team-cold) 32%, transparent);
+    0 0 0.48rem color-mix(in srgb, var(--paper) 22%, transparent);
+}
+
+.steel-ball-cursor[data-interactive]::after {
+  animation: steel-cursor-glint 520ms ease-out;
+}
+
+.steel-ball-cursor[data-clicking] {
+  filter: brightness(1.03) contrast(1.09) saturate(0.98);
 }
 
 @media (hover: hover) and (pointer: fine) and (min-width: 760px) {
@@ -132,21 +157,6 @@ body,
     opacity: 0;
   }
 
-  .home-hero-cta[data-steel-cursor-near="true"],
-  .home-hero-secondary[data-steel-cursor-near="true"],
-  .theme-toggle[data-steel-cursor-near="true"] {
-    box-shadow:
-      0 0.8rem 2rem color-mix(in srgb, var(--ink) 10%, transparent),
-      0 0 1.1rem color-mix(in srgb, var(--team-cold) 20%, transparent);
-  }
-
-  .product-card[data-steel-cursor-near="true"],
-  .steel-ball-home-card[data-steel-cursor-near="true"],
-  .steel-ball-signature-card[data-steel-cursor-near="true"] {
-    box-shadow:
-      inset 0 0 0 1px color-mix(in srgb, var(--team-cold) 22%, transparent),
-      0 0.85rem 2rem color-mix(in srgb, var(--ink) 8%, transparent);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -154,13 +164,24 @@ body,
     transition: opacity 80ms ease;
   }
 
-  .home-hero-cta[data-steel-cursor-near="true"],
-  .home-hero-secondary[data-steel-cursor-near="true"],
-  .theme-toggle[data-steel-cursor-near="true"],
-  .product-card[data-steel-cursor-near="true"],
-  .steel-ball-home-card[data-steel-cursor-near="true"],
-  .steel-ball-signature-card[data-steel-cursor-near="true"] {
-    box-shadow: inherit;
+  .steel-ball-cursor::after {
+    animation: none !important;
+  }
+}
+
+@keyframes steel-cursor-glint {
+  0% {
+    opacity: 0;
+    transform: translateX(-78%) rotate(8deg);
+  }
+
+  34% {
+    opacity: 0.34;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(72%) rotate(8deg);
   }
 }
 
