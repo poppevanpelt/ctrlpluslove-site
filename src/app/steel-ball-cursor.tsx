@@ -163,8 +163,8 @@ export function SteelBallCursor() {
         nextY = pointerY + clamp((centerY - pointerY) * 0.07, -8, 8) + edgeOffset.y;
       }
 
-      targetScale = isInteractive ? 1.14 : 1;
-      const targetPressScale = isPressed ? 0.86 : 1;
+      targetScale = isInteractive ? 1.32 : 1;
+      const targetPressScale = isPressed ? 0.72 : 1;
 
       if (reducedMotion) {
         renderX = nextX;
