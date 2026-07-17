@@ -2535,9 +2535,10 @@ h3 {
   z-index: 100;
   top: 0.8rem;
   left: 0.8rem;
-  transform: translateY(0);
-  opacity: 1;
-  pointer-events: auto;
+  max-width: calc(100vw - 1.6rem);
+  transform: translateY(-150%);
+  opacity: 0;
+  pointer-events: none;
   border: 1px solid var(--ink);
   border-radius: 999px;
   background: var(--paper);
@@ -2552,6 +2553,10 @@ h3 {
 }
 
 .skip-link:focus-visible {
+  top: 4.2rem;
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
   outline: 2px solid color-mix(in srgb, var(--team-warm) 72%, transparent);
   outline-offset: 0.2rem;
 }
