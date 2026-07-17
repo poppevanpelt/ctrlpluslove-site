@@ -169,16 +169,28 @@ export function SteelBallCursor() {
       }
     };
 
+    const updateCursorPosition = (
+      clientX: number,
+      clientY: number,
+      target: EventTarget | null,
+    ) => {
+      pointerX = clientX;
+      pointerY = clientY;
+      visible = true;
+      cursor?.toggleAttribute("data-visible", visible);
+      updateTarget(target);
+    };
+
     const handlePointerMove = (event: PointerEvent) => {
-      if (event.pointerType !== "mouse") {
+      if (event.pointerType && event.pointerType !== "mouse") {
         return;
       }
 
-      pointerX = event.clientX;
-      pointerY = event.clientY;
-      visible = true;
-      cursor?.toggleAttribute("data-visible", visible);
-      updateTarget(event.target);
+      updateCursorPosition(event.clientX, event.clientY, event.target);
+    };
+
+    const handleMouseMove = (event: MouseEvent) => {
+      updateCursorPosition(event.clientX, event.clientY, event.target);
     };
 
     const handlePointerLeave = () => {
@@ -191,11 +203,13 @@ export function SteelBallCursor() {
     syncEnabled();
     activeMedia.addEventListener("change", syncEnabled);
     window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
     document.addEventListener("pointerleave", handlePointerLeave);
 
     return () => {
       activeMedia.removeEventListener("change", syncEnabled);
       window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("pointerleave", handlePointerLeave);
       disable();
     };
