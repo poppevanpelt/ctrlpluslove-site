@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { routeMetadata, SITE_URL } from "./seo";
+import { BackgroundSoundtrack } from "./background-soundtrack";
 import { SteelBallCursor } from "./steel-ball-cursor";
 
 export const metadata: Metadata = {
@@ -33,6 +34,7 @@ export default function RootLayout({
       </head>
       <body>
         {children}
+        <BackgroundSoundtrack />
         <SteelBallCursor />
         <Analytics />
         <SpeedInsights />
