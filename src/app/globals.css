@@ -12621,7 +12621,7 @@ h3 {
 .soundtrack-toggle {
   position: fixed !important;
   right: var(--fixed-control-right, max(1rem, env(safe-area-inset-right))) !important;
-  top: calc(var(--fixed-control-top, 1rem) + var(--fixed-control-gap, 0.72rem) + var(--fixed-control-height, 2.65rem)) !important;
+  top: var(--fixed-control-top, 1rem) !important;
   bottom: auto !important;
   left: auto !important;
   z-index: 320 !important;
@@ -12687,10 +12687,10 @@ h3 {
 .theme-toggle,
 [data-theme-toggle].theme-toggle {
   position: fixed !important;
-  right: var(--fixed-control-right, max(1rem, env(safe-area-inset-right))) !important;
+  right: auto !important;
   top: var(--fixed-control-top, 1rem) !important;
   bottom: auto !important;
-  left: auto !important;
+  left: var(--fixed-control-left, max(1rem, env(safe-area-inset-left))) !important;
   display: inline-flex !important;
   width: var(--fixed-control-width, 10rem) !important;
   min-width: var(--fixed-control-width, 10rem) !important;
@@ -12709,6 +12709,7 @@ h3 {
 
 @media (max-width: 680px) {
   :root {
+    --fixed-control-left: max(0.75rem, env(safe-area-inset-left));
     --fixed-control-right: max(0.75rem, env(safe-area-inset-right));
     --fixed-control-top: 0.75rem;
     --fixed-control-width: 2.45rem;
