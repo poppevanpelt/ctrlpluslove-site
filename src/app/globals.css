@@ -10417,7 +10417,7 @@ h3 {
 }
 
 .chapter-arrival .home-hero-logo {
-  max-width: 62rem;
+  max-width: 70rem;
   background: linear-gradient(
     96deg,
     #ff19c8 0%,
@@ -10444,7 +10444,7 @@ h3 {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  font-size: clamp(2.35rem, 7.4vw, 6.9rem);
+  font-size: clamp(3.15rem, 8.8vw, 8.45rem);
   font-weight: 650;
   line-height: 0.92;
   animation: home-logo-spectrum 14s linear infinite;
@@ -11164,7 +11164,7 @@ h3 {
 
 @media (max-width: 900px) {
   .chapter-arrival .home-hero-logo {
-    font-size: clamp(2.15rem, 11vw, 5.4rem);
+    font-size: clamp(2.55rem, 13vw, 6rem);
   }
 
   .chapter-arrival .home-hero-line {
