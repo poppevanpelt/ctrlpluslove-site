@@ -11363,6 +11363,7 @@ h3 {
 .persona-grid {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
   border-top: 1px solid var(--ink);
 }
 
@@ -11949,6 +11950,7 @@ h3 {
   .persona-grid,
   .ambassador-face-grid {
     grid-template-columns: 1fr;
+    grid-auto-rows: auto;
   }
 
   .persona-card {
