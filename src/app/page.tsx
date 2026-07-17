@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { confirmedAmbassadors } from "./ambassadors-data";
+import { GlobalMood } from "./global-mood";
 import { getAmbassadorProfile } from "./ambassador-profiles-data";
 import { HomeHero } from "./home-hero";
 import { getPublicRadarSignals } from "@/lib/radar/notion";
@@ -329,6 +330,7 @@ export default async function Home() {
       <ThemeToggle />
 
       <HomeHero />
+      <GlobalMood />
 
       <section
         className="content-section ruled homepage-radar-section"
