@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 
 import { confirmedAmbassadors } from "./ambassadors-data";
 import { GlobalMood } from "./global-mood";
@@ -645,6 +646,9 @@ export default async function Home() {
                     persona.portrait ? "" : " persona-portrait-silhouette"
                   }`}
                   aria-hidden="true"
+                  style={{
+                    "--portrait-position": persona.portraitPosition,
+                  } as CSSProperties}
                 >
                   {persona.portrait ? (
                     <Image

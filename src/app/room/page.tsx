@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 
 import {
   roomPersonas,
@@ -45,6 +46,9 @@ export default function RoomPage() {
                     className="room-persona-portrait-link"
                     href={`/room/${persona.id}/`}
                     aria-label={`${persona.name} profile`}
+                    style={{
+                      "--portrait-position": persona.portraitPosition,
+                    } as CSSProperties}
                   >
                     <Image
                       src={persona.portrait}
@@ -92,6 +96,9 @@ export default function RoomPage() {
                       className="supporting-persona-portrait-link"
                       href={`/room/${persona.id}/`}
                       aria-label={`${persona.name} profile`}
+                      style={{
+                        "--portrait-position": persona.portraitPosition,
+                      } as CSSProperties}
                     >
                       <Image
                         src={persona.portrait}

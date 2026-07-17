@@ -5,6 +5,7 @@ export type RoomPersona = {
   line: string;
   contribution?: string;
   portrait?: string;
+  portraitPosition?: string;
 };
 
 export const coreRoomPersonas: RoomPersona[] = [
@@ -16,6 +17,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     contribution:
       "Reframes the decision around the human need underneath the stated brief.",
     portrait: "/room/personas/maya-elise-harper.webp",
+    portraitPosition: "50% 43%",
   },
   {
     id: "simon-cross",
@@ -25,6 +27,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     contribution:
       "Applies constructive skepticism before the market does it less politely.",
     portrait: "/room/personas/simon-cross.webp",
+    portraitPosition: "50% 42%",
   },
   {
     id: "nick-deckman",
@@ -34,6 +37,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     contribution:
       "Tests whether the recommendation can survive budget, timing and commercial reality.",
     portrait: "/room/personas/nick-deckman.jpg",
+    portraitPosition: "50% 39%",
   },
   {
     id: "lexi-arden",
@@ -43,6 +47,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     contribution:
       "Reads the cultural risk, memory and meaning surrounding the decision.",
     portrait: "/room/personas/lexi-arden.jpg",
+    portraitPosition: "50% 40%",
   },
   {
     id: "akiko-hayashi",
@@ -52,6 +57,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     contribution:
       "Keeps the room honest about second-order effects, unintended consequences and future regret.",
     portrait: "/room/personas/akiko-hayashi.jpg",
+    portraitPosition: "50% 40%",
   },
   {
     id: "adrian-mbeki",
@@ -61,6 +67,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     contribution:
       "Pushes the idea against operational pressure, customer behavior and messy reality.",
     portrait: "/room/personas/adrian-mbeki.jpg",
+    portraitPosition: "50% 38%",
   },
   {
     id: "the-customer",
@@ -70,6 +77,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     contribution:
       "Pulls the room back to the person who has to choose, pay for, use or ignore the thing.",
     portrait: "/room/personas/the-customer.webp",
+    portraitPosition: "50% 42%",
   },
 ];
 
@@ -80,6 +88,7 @@ export const supportingRoomPersonas: RoomPersona[] = [
     role: "Executive Judgment",
     line: "Clarifies the real decision, the stakes and what success must look like.",
     portrait: "/room/personas/charles-whitmore.webp",
+    portraitPosition: "50% 42%",
   },
   {
     id: "clare-mercer",
@@ -89,6 +98,7 @@ export const supportingRoomPersonas: RoomPersona[] = [
     contribution:
       "Ensures the Room reaches a coherent recommendation rather than a collection of opinions.",
     portrait: "/room/personas/clare-mercer.webp",
+    portraitPosition: "50% 42%",
   },
   {
     id: "judy-law",
@@ -96,6 +106,7 @@ export const supportingRoomPersonas: RoomPersona[] = [
     role: "Legal Exposure",
     line: "Identifies legal, ethical and regulatory risks before they become expensive.",
     portrait: "/room/personas/judy-law.jpg",
+    portraitPosition: "50% 39%",
   },
   {
     id: "grace-holloway",
@@ -103,6 +114,7 @@ export const supportingRoomPersonas: RoomPersona[] = [
     role: "Reputation",
     line: "Protects long-term trust, legitimacy and public confidence.",
     portrait: "/room/personas/grace-holloway.webp",
+    portraitPosition: "50% 42%",
   },
   {
     id: "brigitte-brussels",
@@ -110,6 +122,7 @@ export const supportingRoomPersonas: RoomPersona[] = [
     role: "Institutional Systems",
     line: "Brings the perspective of governments, regulators and large institutions.",
     portrait: "/room/personas/brigitte-brussels.jpg",
+    portraitPosition: "50% 39%",
   },
   {
     id: "sandra-soskic",
@@ -117,6 +130,7 @@ export const supportingRoomPersonas: RoomPersona[] = [
     role: "Execution Reality",
     line: "Asks whether the recommendation can be produced, delivered and maintained.",
     portrait: "/room/personas/sandra-soskic.webp",
+    portraitPosition: "50% 42%",
   },
   {
     id: "vera-elise-hartmann",
@@ -126,6 +140,7 @@ export const supportingRoomPersonas: RoomPersona[] = [
     contribution:
       "Reminds the Room what history is trying to teach.",
     portrait: "/room/personas/vera-elise-hartmann.jpg",
+    portraitPosition: "50% 39%",
   },
   {
     id: "wade-ellison",
@@ -135,6 +150,7 @@ export const supportingRoomPersonas: RoomPersona[] = [
     contribution:
       "Surfaces emotional signals and unfinished thinking before they disappear.",
     portrait: "/room/personas/wade-ellison.jpg",
+    portraitPosition: "50% 39%",
   },
   {
     id: "johan-cruyff",
@@ -142,6 +158,7 @@ export const supportingRoomPersonas: RoomPersona[] = [
     role: "Simple Truth",
     line: "Leaves the Room with the observation that makes the pattern obvious.",
     portrait: "/room/personas/johan-cruyff-silhouette.jpg",
+    portraitPosition: "50% 39%",
   },
 ];
 

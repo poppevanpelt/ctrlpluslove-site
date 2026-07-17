@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { CSSProperties } from "react";
 
 import {
   allRoomPersonas,
@@ -107,6 +108,9 @@ export default async function SyntheticPersonaPage({
               <div
                 className="synthetic-detail-portrait"
                 aria-label={`Synthetic portrait for ${persona.name}`}
+                style={{
+                  "--portrait-position": persona.portraitPosition,
+                } as CSSProperties}
               >
                 {persona.portrait ? (
                   <Image
