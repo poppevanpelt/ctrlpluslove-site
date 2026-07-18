@@ -11711,6 +11711,24 @@ h3 {
   filter: blur(0.2rem);
 }
 
+.chapter-arrival-scene::after {
+  position: absolute;
+  z-index: 1;
+  top: 18%;
+  left: 23%;
+  width: 44%;
+  height: 56%;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse at 54% 74%, rgb(255 255 255 / 13%) 0 8%, rgb(255 255 255 / 5%) 28%, transparent 64%),
+    linear-gradient(160deg, rgb(255 255 255 / 10%) 0%, rgb(255 255 255 / 4%) 38%, transparent 72%);
+  content: "";
+  filter: blur(1.2rem);
+  opacity: 0.72;
+  pointer-events: none;
+  transform: rotate(-8deg);
+}
+
 .chapter-arrival-floor {
   position: absolute;
   z-index: 0;
