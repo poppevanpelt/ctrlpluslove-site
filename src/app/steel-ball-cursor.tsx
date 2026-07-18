@@ -110,6 +110,15 @@ export function SteelBallCursor() {
       }
     };
 
+    const isStageRefresh = () => {
+      try {
+        const [navigation] = performance.getEntriesByType("navigation") as PerformanceNavigationTiming[];
+        return navigation?.type === "reload" && Boolean(document.querySelector(".home-hero-section.chapter-arrival"));
+      } catch {
+        return false;
+      }
+    };
+
     const canUseSteelCursor = () => activeMedia.matches || isLocalReplay();
     const shouldReduceMotion = () => reducedMotionMedia.matches && !isLocalReplay();
 
@@ -122,7 +131,7 @@ export function SteelBallCursor() {
 
     const hasAwakenedThisSession = () => {
       try {
-        if (isLocalReplay()) {
+        if (isLocalReplay() || isStageRefresh()) {
           window.sessionStorage.removeItem(SESSION_KEY);
           return false;
         }
