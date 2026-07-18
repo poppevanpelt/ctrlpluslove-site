@@ -31,7 +31,21 @@ export function HomeHero() {
             id="homepage-start"
             tabIndex={-1}
           >
-            Shortcut to reality.
+            Shortcut to{" "}
+            <span className="home-hero-reality-word">
+              reality.
+              <span
+                className="steel-ball-stage-origin"
+                aria-hidden="true"
+              >
+                <span
+                  className="steel-ball-cursor steel-ball-stage-ball"
+                  data-visible="true"
+                  data-origin-resting="true"
+                  data-origin-settling="true"
+                />
+              </span>
+            </span>
             <CtrlLayerNote className="ctrl-layer-note-hero">
               HUMAN SIGNAL DETECTED
             </CtrlLayerNote>
