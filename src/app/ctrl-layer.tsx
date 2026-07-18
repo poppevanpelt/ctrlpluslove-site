@@ -31,6 +31,13 @@ const LONG_PRESS_MS = 700;
 const KEYBOARD_ACTIVATION_DELAY_MS = 520;
 const ACTIVE_CLASS = "ctrl-layer-active";
 const ACTIVE_ATTRIBUTE = "data-ctrl-layer-active";
+const SYSTEM_READOUTS = [
+  "HUMAN SIGNAL DETECTED",
+  "MACHINE-ASSISTED, HUMAN-LED",
+  "LISTENING FOR CONTRADICTIONS",
+  "NOT EVERYTHING HERE IS OPTIMIZED",
+  "VERSION 0.∞",
+];
 
 type CtrlLayerContextValue = {
   active: boolean;
@@ -269,12 +276,36 @@ export function CtrlLayerProvider({ children }: { children: React.ReactNode }) {
   return (
     <CtrlLayerContext.Provider value={value}>
       {children}
+      {active ? <CtrlLayerSystemPanel keyLabel={keyLabel} /> : null}
       {!discovered && hintReady ? (
         <div className="ctrl-layer-hint" aria-hidden="true">
           HOLD {keyLabel}
         </div>
       ) : null}
     </CtrlLayerContext.Provider>
+  );
+}
+
+function CtrlLayerSystemPanel({
+  keyLabel,
+}: {
+  keyLabel: CtrlLayerContextValue["keyLabel"];
+}) {
+  return (
+    <aside className="ctrl-layer-system-panel" aria-hidden="true">
+      <div className="ctrl-layer-system-panel-header">
+        <span>CTRL LAYER</span>
+        <span>ROOM INTERFACE</span>
+      </div>
+      <div className="ctrl-layer-system-panel-body">
+        {SYSTEM_READOUTS.map((readout) => (
+          <span key={readout}>{readout}</span>
+        ))}
+      </div>
+      <div className="ctrl-layer-system-panel-footer">
+        HOLD {keyLabel} TO KEEP SIGNAL OPEN
+      </div>
+    </aside>
   );
 }
 
