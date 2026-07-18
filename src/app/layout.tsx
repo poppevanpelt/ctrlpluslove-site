@@ -8,6 +8,7 @@ import { routeMetadata, SITE_URL } from "./seo";
 import { BackgroundSoundtrack } from "./background-soundtrack";
 import { CtrlLayerProvider } from "./ctrl-layer";
 import { LivingOffice } from "./living-office";
+import { ProjectNavigation } from "./project-navigation";
 import { SteelBallCursor } from "./steel-ball-cursor";
 import { TimeAwareAmbience } from "./time-aware-ambience";
 
@@ -40,6 +41,7 @@ export default function RootLayout({
           Skip to content
         </a>
         <CtrlLayerProvider>
+          <ProjectNavigation />
           {children}
           <TimeAwareAmbience />
           <LivingOffice />

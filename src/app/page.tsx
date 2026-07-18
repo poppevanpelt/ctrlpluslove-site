@@ -972,8 +972,12 @@ export default async function Home() {
           >
             Bring us a decision
           </Link>
-          <div className="living-institution" aria-label="Currently inside the Room">
-            <p>CURRENTLY INSIDE THE ROOM</p>
+          <div
+            className="living-institution"
+            id="shared-office"
+            aria-label="Shared office status"
+          >
+            <p>SHARED OFFICE STATUS</p>
             <dl>
               <div>
                 <dt>17</dt>
@@ -987,8 +991,12 @@ export default async function Home() {
                 <dt>{availablePerspectives}</dt>
                 <dd>perspectives available</dd>
               </div>
+              <div>
+                <dt>01</dt>
+                <dd>shared steel ball</dd>
+              </div>
             </dl>
-            <span>Decision 015 entering. Reality still pending.</span>
+            <span>Decision 015 entering. The office still has the steel ball in view.</span>
           </div>
         </div>
       </section>
@@ -1003,7 +1011,10 @@ export default async function Home() {
             <Link href="/radar/">Radar</Link>
           </p>
           <p>
-            <Link href="/museum/">The Museum</Link>
+            <Link href="/museum/">Museum Store</Link>
+          </p>
+          <p>
+            <Link href="/steel-ball/">The Steel Ball</Link>
           </p>
           <p>
             <Link href="/artifacts/">Artifacts</Link>

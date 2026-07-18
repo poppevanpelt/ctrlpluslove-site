@@ -12,6 +12,7 @@ const artifacts = [
     status: "Replica available.",
     price: "EUR 29,00",
     availability: "In stock",
+    href: "/steel-ball/",
   },
   {
     code: "Artifact 002",
@@ -108,7 +109,11 @@ export default function ArtifactsPage() {
               <div className="artifact-purchase-row">
                 <strong>{artifact.price}</strong>
 
-                {artifact.availability === "Out of stock" ? (
+                {artifact.href ? (
+                  <Link href={artifact.href}>
+                    View status
+                  </Link>
+                ) : artifact.availability === "Out of stock" ? (
                   <button type="button">
                     Notify me
                   </button>

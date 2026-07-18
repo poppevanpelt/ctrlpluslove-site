@@ -154,6 +154,9 @@ export function MuseumShop() {
           <span>museum shop</span>
         </Link>
         <p>Ideas. Artifacts. Consequences.</p>
+        <Link className="museum-status-link" href="/steel-ball/">
+          Steel Ball status
+        </Link>
         <button className="museum-cart-button" type="button" onClick={() => setCartOpen(true)} aria-label={`Open cart with ${itemCount} items`}>
           <span aria-hidden="true">▱</span>
           <b>{itemCount}</b>
@@ -184,6 +187,11 @@ export function MuseumShop() {
               <div className="museum-product-label">
                 <p><strong>Museum label</strong>{product.label}</p>
                 <div className="museum-product-actions">
+                  {product.id === "steel-ball" ? (
+                    <Link className="museum-object-link" href="/steel-ball/">
+                      View object status
+                    </Link>
+                  ) : null}
                   <button type="button" className="museum-info-button" onClick={() => setRequestProduct(product)}>Request information</button>
                   <button type="button" className="museum-add-button" onClick={() => addToCart(product)}>Add to cart</button>
                 </div>

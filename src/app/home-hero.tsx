@@ -19,8 +19,11 @@ export function HomeHero() {
           <Link href="/radar/">RADAR</Link>
           <a href="#the-room">THE ROOM</a>
           <Link href="/room-runner/">LIVE ROOM</Link>
+          <a href="#shared-office">SHARED OFFICE</a>
           <a href="#personas">PERSONAS</a>
           <a href="#products">PRODUCTS</a>
+          <Link href="/museum/">MUSEUM STORE</Link>
+          <Link href="/steel-ball/">STEEL BALL</Link>
           <a href="#cases">CASES</a>
           <a href="#network">NETWORK</a>
           <Link href="/embassies/">EMBASSIES</Link>

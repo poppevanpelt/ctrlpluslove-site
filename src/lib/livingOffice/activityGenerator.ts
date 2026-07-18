@@ -21,7 +21,7 @@ export type OfficeActivityContext = {
 export type OfficeActivity = {
   id: string;
   text: string;
-  source: "persona" | "embassy" | "mood" | "time" | "memory" | "bell";
+  source: "persona" | "embassy" | "mood" | "time" | "memory" | "bell" | "steel-ball";
 };
 
 const personaVerbs: Record<string, string[]> = {

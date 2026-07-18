@@ -2,12 +2,18 @@
 
 import { useEffect } from "react";
 
+import { applyBallAppearance, clearBallAppearance } from "@/lib/steelBall/ballAppearance";
+import { installSteelBallBrowserApi, steelBall } from "@/lib/steelBall/ballMemory";
+import type { SteelBallState } from "@/lib/steelBall/ballState";
+
 const ACTIVE_QUERY = "(hover: hover) and (pointer: fine) and (min-width: 760px)";
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 const SESSION_KEY = "ctrl-love-steel-ball-awakened";
 const MEANINGFUL_MOTION_THRESHOLD = 8;
 const SETTLING_DURATION = 720;
 const HANDOFF_DURATION = 560;
+const BORROW_DURATION = 740;
+const RETURN_DURATION = 820;
 const INTERACTIVE_SELECTOR = [
   "a[href]",
   "button:not(:disabled)",
@@ -50,7 +56,7 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
 }
 
-type CursorState = "resting" | "awakening" | "cursor-active" | "skipped";
+type CursorState = "resting" | "awakening" | "cursor-active" | "borrowed" | "skipped";
 type RestingPosition = {
   hero: HTMLElement;
   x: number;
@@ -69,6 +75,8 @@ export function SteelBallCursor() {
     let armingTimeout = 0;
     let settlingFrame = 0;
     let handoffFrame = 0;
+    let borrowFrame = 0;
+    let returnFrame = 0;
     let enabled = false;
     let visible = false;
     let originArmed = false;
@@ -92,6 +100,9 @@ export function SteelBallCursor() {
     let slowFrameCount = 0;
     let routeObserver: MutationObserver | null = null;
     let stageOriginCreatedByCursor = false;
+    let currentBallState: SteelBallState = steelBall.getState();
+    let unsubscribeSteelBall: (() => void) | null = null;
+    let returnAudioContext: AudioContext | null = null;
 
     const isLocalReplay = () => {
       try {
@@ -126,6 +137,19 @@ export function SteelBallCursor() {
     const setState = (nextState: CursorState) => {
       state = nextState;
       document.documentElement.dataset.steelCursorState = nextState;
+    };
+
+    const applyMemoryToElement = (element: HTMLElement | null) => {
+      if (element) {
+        applyBallAppearance(element, currentBallState.trace);
+      }
+    };
+
+    const applyMemoryToVisibleBall = () => {
+      applyMemoryToElement(cursor);
+      applyMemoryToElement(stageBall);
+      applyBallAppearance(document.documentElement, currentBallState.trace);
+      document.documentElement.toggleAttribute("data-steel-ball-borrowed", currentBallState.borrowed);
     };
 
     document.documentElement.toggleAttribute("data-steel-extreme-stage", isExtremeStagePrototype());
@@ -204,6 +228,48 @@ export function SteelBallCursor() {
 
     const setNativeCursor = (isNative: boolean) => {
       document.documentElement.toggleAttribute("data-steel-cursor-native", isNative);
+    };
+
+    const playRollingReturnSound = () => {
+      if (shouldReduceMotion()) {
+        return;
+      }
+
+      try {
+        const AudioContextClass =
+          window.AudioContext ||
+          (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+
+        if (!AudioContextClass) {
+          return;
+        }
+
+        returnAudioContext ??= new AudioContextClass();
+        const context = returnAudioContext;
+        const now = context.currentTime;
+        const noiseBuffer = context.createBuffer(1, Math.floor(context.sampleRate * 0.55), context.sampleRate);
+        const data = noiseBuffer.getChannelData(0);
+
+        for (let index = 0; index < data.length; index += 1) {
+          data[index] = (Math.random() * 2 - 1) * Math.pow(1 - index / data.length, 1.8);
+        }
+
+        const noise = context.createBufferSource();
+        const lowPass = context.createBiquadFilter();
+        const gain = context.createGain();
+        noise.buffer = noiseBuffer;
+        lowPass.type = "lowpass";
+        lowPass.frequency.setValueAtTime(460, now);
+        lowPass.frequency.exponentialRampToValueAtTime(1160, now + 0.5);
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(0.028, now + 0.04);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.58);
+        noise.connect(lowPass);
+        lowPass.connect(gain);
+        gain.connect(context.destination);
+        noise.start(now);
+        noise.stop(now + 0.6);
+      } catch {}
     };
 
     const updateTarget = (target: EventTarget | null) => {
@@ -337,6 +403,115 @@ export function SteelBallCursor() {
       frame = window.requestAnimationFrame(render);
     };
 
+    const animateBorrowAway = () => {
+      if (!enabled || !cursor || shouldReduceMotion()) {
+        cursor?.removeAttribute("data-visible");
+        document.documentElement.classList.remove("steel-ball-cursor-active");
+        setNativeCursor(false);
+        setState("borrowed");
+        return;
+      }
+
+      window.cancelAnimationFrame(frame);
+      window.cancelAnimationFrame(borrowFrame);
+      setState("borrowed");
+      const startX = renderX;
+      const startY = renderY;
+      const exitRight = startX > window.innerWidth * 0.5;
+      const endX = exitRight ? window.innerWidth + 42 : -42;
+      const endY = clamp(startY + (pointerY > window.innerHeight * 0.5 ? 18 : -18), 24, window.innerHeight - 24);
+      const startedAt = performance.now();
+
+      const rollAway = (time: number) => {
+        if (!cursor || state !== "borrowed") {
+          return;
+        }
+
+        const progress = clamp((time - startedAt) / BORROW_DURATION, 0, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const x = startX + (endX - startX) * eased;
+        const y = startY + (endY - startY) * eased + Math.sin(progress * Math.PI) * -3;
+        const rotation = (exitRight ? 1 : -1) * progress * 1.8;
+        renderX = x;
+        renderY = y;
+        cursor.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) rotate(${rotation}turn) scale(${scale})`;
+
+        if (progress >= 1) {
+          cursor.removeAttribute("data-visible");
+          document.documentElement.classList.remove("steel-ball-cursor-active");
+          setNativeCursor(false);
+          return;
+        }
+
+        borrowFrame = window.requestAnimationFrame(rollAway);
+      };
+
+      borrowFrame = window.requestAnimationFrame(rollAway);
+    };
+
+    const animateReturn = () => {
+      if (!enabled) {
+        return;
+      }
+
+      window.cancelAnimationFrame(borrowFrame);
+      window.cancelAnimationFrame(returnFrame);
+
+      if (!cursor) {
+        cursor = document.createElement("div");
+        cursor.className = "steel-ball-cursor";
+        cursor.setAttribute("aria-hidden", "true");
+        document.body.append(cursor);
+      }
+
+      applyMemoryToVisibleBall();
+
+      if (shouldReduceMotion()) {
+        renderX = pointerX;
+        renderY = pointerY;
+        cursor.style.transform = `translate3d(${renderX}px, ${renderY}px, 0) translate(-50%, -50%)`;
+        beginCursorLoop("skipped", true);
+        return;
+      }
+
+      playRollingReturnSound();
+      const startX = pointerX > window.innerWidth * 0.5 ? window.innerWidth + 42 : -42;
+      const startY = clamp(pointerY + 16, 24, window.innerHeight - 24);
+      const endX = pointerX;
+      const endY = pointerY;
+      const rollDirection = startX > window.innerWidth * 0.5 ? -1 : 1;
+      const startedAt = performance.now();
+      cursor.setAttribute("data-visible", "true");
+      document.documentElement.classList.add("steel-ball-cursor-active");
+
+      const rollBack = (time: number) => {
+        if (!cursor) {
+          return;
+        }
+
+        const progress = clamp((time - startedAt) / RETURN_DURATION, 0, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const x = startX + (endX - startX) * eased;
+        const y = startY + (endY - startY) * eased + Math.sin(progress * Math.PI) * -4;
+        const rotation = rollDirection * (1 - progress) * -1.9;
+        renderX = x;
+        renderY = y;
+        cursor.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) rotate(${rotation}turn) scale(1)`;
+
+        if (progress >= 1) {
+          renderX = endX;
+          renderY = endY;
+          cursor.style.transform = `translate3d(${renderX}px, ${renderY}px, 0) translate(-50%, -50%)`;
+          beginCursorLoop("skipped", true);
+          return;
+        }
+
+        returnFrame = window.requestAnimationFrame(rollBack);
+      };
+
+      returnFrame = window.requestAnimationFrame(rollBack);
+    };
+
     const renderRestingBall = () => {
       if (!stageBall) {
         return;
@@ -396,6 +571,7 @@ export function SteelBallCursor() {
       cursor?.removeAttribute("data-origin-awakening");
       cursor?.removeAttribute("data-origin-settling");
       cursor?.toggleAttribute("data-visible", showImmediately);
+      applyMemoryToVisibleBall();
       visible = showImmediately;
       previousFrameTime = performance.now();
       slowFrameCount = 0;
@@ -460,6 +636,7 @@ export function SteelBallCursor() {
       cursor = document.createElement("div");
       cursor.className = "steel-ball-cursor";
       cursor.setAttribute("aria-hidden", "true");
+      applyMemoryToElement(cursor);
       cursor.style.transform = `translate3d(${startX}px, ${startY}px, 0) translate(-50%, -50%) scale(${startScale})`;
       cursor.setAttribute("data-origin-awakening", "true");
       cursor.setAttribute("data-visible", "true");
@@ -507,6 +684,14 @@ export function SteelBallCursor() {
       enabled = true;
       initialPointerX = null;
       initialPointerY = null;
+      applyMemoryToVisibleBall();
+
+      if (currentBallState.borrowed) {
+        setState("borrowed");
+        document.documentElement.classList.remove("steel-ball-cursor-active");
+        setNativeCursor(false);
+        return;
+      }
 
       const restingPosition = getRestingPosition();
       const shouldSkipOrigin = shouldReduceMotion() || hasAwakenedThisSession() || !restingPosition;
@@ -516,6 +701,7 @@ export function SteelBallCursor() {
         cursor = document.createElement("div");
         cursor.className = "steel-ball-cursor";
         cursor.setAttribute("aria-hidden", "true");
+        applyMemoryToElement(cursor);
         document.body.append(cursor);
         beginCursorLoop("skipped");
         return;
@@ -534,6 +720,7 @@ export function SteelBallCursor() {
         stageBall = document.createElement("span");
         stageBall.className = "steel-ball-cursor steel-ball-stage-ball";
         stageBall.setAttribute("aria-hidden", "true");
+        applyMemoryToElement(stageBall);
         stage.append(stageBall);
         restingPosition.hero.append(stage);
         stageOriginCreatedByCursor = true;
@@ -541,6 +728,8 @@ export function SteelBallCursor() {
         const stage = stageBall.closest<HTMLElement>(".steel-ball-stage-origin");
         stageOriginCreatedByCursor = stage?.dataset.stageOriginSource === "cursor";
       }
+
+      applyMemoryToElement(stageBall);
 
       const stageRect = stageBall.getBoundingClientRect();
       restX = stageRect.left + stageRect.width / 2;
@@ -563,10 +752,13 @@ export function SteelBallCursor() {
       window.clearTimeout(armingTimeout);
       window.cancelAnimationFrame(settlingFrame);
       window.cancelAnimationFrame(handoffFrame);
+      window.cancelAnimationFrame(borrowFrame);
+      window.cancelAnimationFrame(returnFrame);
       setNativeCursor(false);
       setState("skipped");
       document.documentElement.removeAttribute("data-steel-cursor-state");
       document.documentElement.removeAttribute("data-steel-extreme-stage");
+      document.documentElement.removeAttribute("data-steel-ball-borrowed");
       document.documentElement.classList.remove("steel-ball-cursor-active");
       window.cancelAnimationFrame(frame);
       removeStageOrigin();
@@ -612,6 +804,10 @@ export function SteelBallCursor() {
     ) => {
       pointerX = clientX;
       pointerY = clientY;
+
+      if (state === "borrowed") {
+        return;
+      }
 
       if (state === "awakening") {
         updateTarget(target);
@@ -726,6 +922,24 @@ export function SteelBallCursor() {
       }
     };
 
+    const handleSteelBallState = (nextState: SteelBallState) => {
+      const wasBorrowed = currentBallState.borrowed;
+      currentBallState = nextState;
+      applyMemoryToVisibleBall();
+
+      if (nextState.borrowed && !wasBorrowed) {
+        animateBorrowAway();
+        return;
+      }
+
+      if (!nextState.borrowed && wasBorrowed) {
+        animateReturn();
+      }
+    };
+
+    installSteelBallBrowserApi();
+    document.documentElement.dataset.steelBallApi = "ready";
+    unsubscribeSteelBall = steelBall.subscribe(handleSteelBallState);
     syncEnabled();
     routeObserver = new MutationObserver(handleRouteMutation);
     routeObserver.observe(document.body, { childList: true, subtree: true });
@@ -751,6 +965,10 @@ export function SteelBallCursor() {
       window.removeEventListener("blur", handleBlurOrVisibilityChange);
       document.removeEventListener("visibilitychange", handleBlurOrVisibilityChange);
       document.removeEventListener("pointerleave", handlePointerLeave);
+      unsubscribeSteelBall?.();
+      returnAudioContext?.close().catch(() => {});
+      clearBallAppearance(document.documentElement);
+      delete document.documentElement.dataset.steelBallApi;
       routeObserver?.disconnect();
       cancelOriginAndUseNativeCursor();
       disable();

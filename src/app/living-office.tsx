@@ -13,6 +13,10 @@ import {
   createLivingOfficeState,
   type LivingOfficeState,
 } from "@/lib/livingOffice/officeState";
+import {
+  STEEL_BALL_ACTIVITY_EVENT,
+  type SteelBallActivityDetail,
+} from "@/lib/steelBall/ballEvents";
 import { useCtrlLayer } from "./ctrl-layer";
 
 const MEMORY_KEY = "ctrl-love-living-office-memory";
@@ -135,6 +139,46 @@ function maybeTriggerMicroIntervention(seed: string) {
     delete root.dataset.officeIntervention;
     delete root.dataset.officeStolenKey;
   }, type === "stolen-key" ? 3000 : 4200);
+}
+
+function getSteelBallActivityText(detail: SteelBallActivityDetail) {
+  if (detail.note) {
+    return detail.note;
+  }
+
+  const actor = detail.actor ?? "The office";
+
+  if (detail.activity === "borrowed") {
+    return `${actor} borrowed the steel ball.`;
+  }
+
+  if (detail.activity === "returned") {
+    return `${actor} returned the steel ball.`;
+  }
+
+  if (detail.activity === "condition-cleared") {
+    return "The steel ball appears pristine again.";
+  }
+
+  const condition = detail.state.trace?.condition;
+
+  if (condition === "scratched") {
+    return "The steel ball returned with minor surface wear.";
+  }
+
+  if (condition === "polished") {
+    return `${actor} polished the steel ball.`;
+  }
+
+  if (condition === "dusty") {
+    return "The steel ball is carrying microscopic residue.";
+  }
+
+  if (condition === "warm") {
+    return "The steel ball is slightly warm.";
+  }
+
+  return "The steel ball changed almost imperceptibly.";
 }
 
 export function LivingOffice() {
@@ -299,6 +343,29 @@ export function LivingOffice() {
     visitor.isFamiliar,
     visitor.isReturning,
   ]);
+
+  useEffect(() => {
+    const handleSteelBallActivity = (event: Event) => {
+      const detail = (event as CustomEvent<SteelBallActivityDetail>).detail;
+
+      if (!detail) {
+        return;
+      }
+
+      setActivity({
+        id: `steel-ball:${detail.activity}:${Date.now()}`,
+        source: "steel-ball",
+        text: getSteelBallActivityText(detail),
+      });
+      setFeedKey((current) => current + 1);
+    };
+
+    window.addEventListener(STEEL_BALL_ACTIVITY_EVENT, handleSteelBallActivity);
+
+    return () => {
+      window.removeEventListener(STEEL_BALL_ACTIVITY_EVENT, handleSteelBallActivity);
+    };
+  }, []);
 
   const ringOfficeBell = () => {
     const now = new Date();

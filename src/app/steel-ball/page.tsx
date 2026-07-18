@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { createPageMetadata } from "../seo";
 import { ThemeToggle } from "../theme-toggle";
+import { SteelBallMemoryPanel } from "./steel-ball-memory-panel";
 
 const steelBallStory = [
   "When Tesla unveiled the Cybertruck in 2019, one steel ball changed everything.",
@@ -49,9 +50,14 @@ export default function SteelBallPage() {
 
       <section className="content-section steel-ball-section" aria-labelledby="steel-ball-title">
         <div className="content-block steel-ball-block">
-          <Link className="back-home-link" href="/">
-            ← Home
-          </Link>
+          <nav className="page-backlinks" aria-label="Steel Ball page links">
+            <Link className="back-home-link" href="/">
+              ← Home
+            </Link>
+            <Link className="back-home-link" href="/museum/">
+              Museum shop
+            </Link>
+          </nav>
 
           <section className="steel-ball-hero">
             <div className="steel-ball-hero-copy">
@@ -121,6 +127,8 @@ export default function SteelBallPage() {
           <aside className="steel-ball-warning" aria-label="Steel Ball warning">
             Warning: May expose weak ideas before the market does.
           </aside>
+
+          <SteelBallMemoryPanel />
 
           <section className="steel-ball-story" aria-labelledby="steel-ball-story-title">
             <details>
