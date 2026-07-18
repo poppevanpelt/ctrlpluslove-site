@@ -343,6 +343,15 @@ body,
   border-color: color-mix(in srgb, var(--team-cold) 52%, transparent);
 }
 
+.ctrl-layer-system-panel[data-ctrl-variant="drift"] {
+  right: clamp(3.2rem, 12vw, 11rem);
+  bottom: calc(1.55rem + env(safe-area-inset-bottom));
+}
+
+.ctrl-layer-system-panel[data-ctrl-variant="displaced"] {
+  bottom: calc(2.3rem + env(safe-area-inset-bottom));
+}
+
 .ctrl-layer-system-panel[data-ctrl-depth="leak"] {
   right: auto;
   left: clamp(0.85rem, 2vw, 1.5rem);

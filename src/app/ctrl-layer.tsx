@@ -44,6 +44,8 @@ const MUTATED_READOUTS = [
   "OPTIMIZATION PAUSED ITSELF",
   "A BETTER QUESTION IS FORMING",
   "THE ROOM KEPT ONE DOUBT",
+  "THE ANSWER ARRIVED TOO CLEAN",
+  "REALITY DID NOT SIGN OFF",
 ];
 const CONTRADICTION_READOUTS = [
   "RECOMMENDATION: PROCEED / DO NOT PROCEED",
@@ -64,9 +66,27 @@ const LEAKAGE_LINES = [
   "Some decisions arrive before anyone admits they are decisions.",
   "The system is not confused. It is withholding premature certainty.",
   "A contradiction has been preserved for later use.",
+  "The page is presenting confidence as a courtesy.",
+];
+const QUIET_FOOTERS = [
+  "HOLD TO KEEP SIGNAL OPEN",
+  "SIGNAL STABLE, NOT SETTLED",
+  "ROOM INTERFACE LISTENING",
+  "OBSERVATION HELD IN PLACE",
+];
+const CONTRADICTION_FOOTERS = [
+  "HOLDING TWO TRUE THINGS",
+  "ANSWER DELAYED BY CONTEXT",
+  "DISAGREEMENT REMAINS USEFUL",
+];
+const LEAK_FOOTERS = [
+  "SIGNAL REMAINS AFTER RELEASE",
+  "VISIBLE SITE PARTIALLY OVERRIDDEN",
+  "SECONDARY LAYER DID NOT CLOSE",
 ];
 
 type CtrlLayerDepth = "quiet" | "contradictory" | "leak";
+type CtrlLayerVariant = "anchored" | "drift" | "displaced";
 
 type CtrlLayerStrayDetail = {
   text: string;
@@ -76,6 +96,7 @@ type CtrlLayerStrayDetail = {
 type CtrlLayerActivation = {
   id: number;
   depth: CtrlLayerDepth;
+  variant: CtrlLayerVariant;
   header: string;
   readouts: string[];
   footer: string;
@@ -103,14 +124,25 @@ function shuffled<T>(items: T[]) {
 function createCtrlLayerActivation(): CtrlLayerActivation {
   const chance = Math.random();
   const depth: CtrlLayerDepth =
-    chance > 0.96 ? "leak" : chance > 0.78 ? "contradictory" : "quiet";
+    chance > 0.9 ? "leak" : chance > 0.56 ? "contradictory" : "quiet";
+  const variantChance = Math.random();
+  const variant: CtrlLayerVariant =
+    depth === "leak"
+      ? "displaced"
+      : variantChance > 0.58
+        ? "drift"
+        : "anchored";
   const readouts = shuffled(SYSTEM_READOUTS);
   const strays: CtrlLayerStrayDetail[] = [
     { text: randomItem(STRAY_DETAILS), position: "upper" },
   ];
 
-  if (Math.random() > 0.72) {
+  if (depth !== "quiet" || Math.random() > 0.45) {
     readouts.splice(1, 0, randomItem(MUTATED_READOUTS));
+  }
+
+  if (depth === "quiet" && Math.random() > 0.62) {
+    strays.push({ text: randomItem(STRAY_DETAILS), position: "middle" });
   }
 
   if (depth !== "quiet") {
@@ -126,6 +158,7 @@ function createCtrlLayerActivation(): CtrlLayerActivation {
   return {
     id: Date.now(),
     depth,
+    variant,
     header:
       depth === "leak"
         ? "ROOM INTERFACE / UNSUPERVISED"
@@ -135,10 +168,10 @@ function createCtrlLayerActivation(): CtrlLayerActivation {
     readouts: readouts.slice(0, depth === "quiet" ? 5 : 6),
     footer:
       depth === "leak"
-        ? "SIGNAL REMAINS AFTER RELEASE"
+        ? randomItem(LEAK_FOOTERS)
         : depth === "contradictory"
-          ? "HOLDING TWO TRUE THINGS"
-          : "HOLD TO KEEP SIGNAL OPEN",
+          ? randomItem(CONTRADICTION_FOOTERS)
+          : randomItem(QUIET_FOOTERS),
     strays,
     leakLines: depth === "leak" ? shuffled(LEAKAGE_LINES).slice(0, 2) : [],
   };
@@ -401,6 +434,7 @@ function CtrlLayerSystemPanel({
     <aside
       className="ctrl-layer-system-panel"
       data-ctrl-depth={activation.depth}
+      data-ctrl-variant={activation.variant}
       aria-hidden="true"
     >
       <div className="ctrl-layer-system-panel-header">
