@@ -1,5 +1,5 @@
 import { WorldEmotionBridge } from "./world-emotion-bridge";
-import { globalMoodEntries } from "./world-emotion-engine";
+import { globalMoodEntries, type GlobalMood as GlobalMoodEntry } from "@/content/global-mood";
 
 const globalMoodDescription =
   "A living interpretation of the world’s emotional climate.";
@@ -19,7 +19,7 @@ export function GlobalMood() {
         <WorldEmotionBridge />
       </div>
       <div className="global-mood-window">
-        <div className="global-mood-track">
+        <div className="global-mood-track" aria-live="off">
           <GlobalMoodRun />
           <GlobalMoodRun ariaHidden />
         </div>
@@ -35,9 +35,17 @@ function GlobalMoodRun({ ariaHidden = false }: { ariaHidden?: boolean }) {
         <span className="global-mood-item" key={`${entry.city}-${entry.mood}`}>
           <span>{entry.city.toUpperCase()}</span>
           <strong>{entry.mood.toUpperCase()}</strong>
-          <em aria-hidden="true">{entry.direction === "up" ? "↑" : "→"}</em>
+          <em aria-hidden="true">{formatMoodDirection(entry)}</em>
         </span>
       ))}
     </div>
   );
+}
+
+function formatMoodDirection(entry: GlobalMoodEntry) {
+  if (entry.direction === "down") {
+    return "↓";
+  }
+
+  return entry.direction === "up" ? "↑" : "→";
 }

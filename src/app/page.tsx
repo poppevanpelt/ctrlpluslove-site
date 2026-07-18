@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 
 import { confirmedAmbassadors } from "./ambassadors-data";
+import { embassies } from "@/content/embassies";
 import { CtrlLayerNote } from "./ctrl-layer-note";
 import { GlobalMood } from "./global-mood";
 import { getAmbassadorProfile } from "./ambassador-profiles-data";
@@ -578,9 +579,9 @@ export default async function Home() {
               A growing intelligence network for decisions that cross reality.
             </h2>
             <p>
-              Ambassadors are a trusted international council: cultural,
-              creative and strategic specialists who bring lived market context
-              into decisions that cannot be solved from one room alone.
+              Ambassadors form the wider room. Embassies are the permanent
+              local signal: trusted creative leaders who help ideas arrive with
+              cultural nuance, relationships and human judgment.
             </p>
           </div>
 
@@ -597,6 +598,10 @@ export default async function Home() {
               <div>
                 <strong>{cities.length}</strong>
                 <span>cities</span>
+              </div>
+              <div>
+                <strong>{embassies.length}</strong>
+                <span>embassies</span>
               </div>
             </div>
 
@@ -627,6 +632,11 @@ export default async function Home() {
               ))}
             </div>
           </div>
+
+          <Link className="embassy-home-link" href="/embassies/">
+            <span>Embassy Network</span>
+            <strong>Ideas don’t scale. Trusted people do.</strong>
+          </Link>
 
           <div className="specialisation-ribbon ctrl-layer-anchor" aria-label="Network specialisations">
             {networkSpecialisations.map((specialisation) => (

@@ -58,8 +58,6 @@ Repository: `ctrlpluslove-site`
 ?? public/ambassadors/portraits/009-umberto-bartolini-20260712.png
 ?? public/ambassadors/portraits/009-umberto-bartolini-portrait-20260712.jpeg
 ?? public/ambassadors/portraits/010-flip-portrait-20260712.jpeg
-?? public/ambassadors/portraits/010-lysbeth-portrait-20260712.jpeg
-?? public/ambassadors/portraits/010-lysbeth.png
 ?? src/app/api/cron/
 ?? src/app/api/room-refresh/
 ?? src/app/api/room/

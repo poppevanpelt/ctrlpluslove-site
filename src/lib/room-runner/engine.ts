@@ -84,17 +84,17 @@ export const participantPool: Participant[] = [
       "How would creative professionals in Spain actually receive ctrl+love: what would make them curious, sceptical, enthusiastic, or resistant?",
   },
   {
-    id: "lysbeth-bijlstra",
-    name: "Lysbeth Bijlstra",
+    id: "mats-utberg",
+    name: "Mats Utberg",
     kind: "Human ambassador",
-    locationOrRole: "Cape Town",
+    locationOrRole: "Stockholm",
     primaryLens: "Cultural and market perspective",
     assignedLens: "Cultural and market perspective",
-    description: "Brings cultural and market perspective from outside Europe.",
+    description: "Brings cultural and market perspective from Stockholm.",
     reasonToInclude:
-      "She broadens the room beyond a European launch reflex.",
+      "He can test whether the ambassador model earns trust before it asks for attention.",
     likelyTension:
-      "May challenge assumptions that feel obvious from Amsterdam or Milan.",
+      "May challenge anything that feels louder than it is useful.",
   },
   {
     id: "simon-cross",
@@ -395,7 +395,7 @@ export function buildDecision(frame: DecisionQuestion, synthesis: Synthesis): De
       "Real ambassador responses, first-market reactions, and examples of local language that still preserves the ctrl+love lineage principle.",
     owner: frame.owner || "Poppe van Pelt",
     nextAction:
-      "Send the core-and-local-expression prompt to Mats, Umberto, Jorge, and Lysbeth, then rerun the Room with real responses.",
+      "Send the core-and-local-expression prompt to Mats, Umberto, Jorge, and Shun, then rerun the Room with real responses.",
   };
 }
 
@@ -496,7 +496,7 @@ export function createSeedRooms(): Room[] {
       owner: "Poppe van Pelt",
     },
     participantPool.filter((participant) =>
-      ["lysbeth-bijlstra", "simon-cross", "clare-mercer"].includes(participant.id),
+      ["mats-utberg", "simon-cross", "clare-mercer"].includes(participant.id),
     ),
     "Internal decision note",
     "Complete",

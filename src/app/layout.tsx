@@ -8,6 +8,7 @@ import { routeMetadata, SITE_URL } from "./seo";
 import { BackgroundSoundtrack } from "./background-soundtrack";
 import { CtrlLayerProvider } from "./ctrl-layer";
 import { SteelBallCursor } from "./steel-ball-cursor";
+import { TimeAwareAmbience } from "./time-aware-ambience";
 
 export const metadata: Metadata = {
   ...routeMetadata("/"),
@@ -34,8 +35,12 @@ export default function RootLayout({
         <Script src="/theme-init.js" strategy="beforeInteractive" />
       </head>
       <body>
+        <a className="skip-link" href="#main-content">
+          Skip to content
+        </a>
         <CtrlLayerProvider>
           {children}
+          <TimeAwareAmbience />
           <BackgroundSoundtrack />
           <SteelBallCursor />
           <Analytics />

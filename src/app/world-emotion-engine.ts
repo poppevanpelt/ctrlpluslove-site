@@ -1,3 +1,8 @@
+import {
+  globalMoodEntries,
+  type GlobalMood as GlobalMoodEntry,
+} from "@/content/global-mood";
+
 export type WorldEmotionState = {
   energy: number;
   warmth: number;
@@ -5,12 +10,6 @@ export type WorldEmotionState = {
   curiosity: number;
   playfulness: number;
   calm: number;
-};
-
-export type GlobalMoodEntry = {
-  city: string;
-  mood: keyof typeof moodPresets;
-  direction: "up" | "steady";
 };
 
 export const WORLD_EMOTION_EVENT = "ctrl-love-world-emotion-change";
@@ -107,19 +106,6 @@ export const moodPresets = {
     calm: 0.38,
   },
 } satisfies Record<string, WorldEmotionState>;
-
-export const globalMoodEntries: GlobalMoodEntry[] = [
-  { city: "Seoul", mood: "playful", direction: "up" },
-  { city: "Tokyo", mood: "focused", direction: "steady" },
-  { city: "Valencia", mood: "relaxed", direction: "up" },
-  { city: "Amsterdam", mood: "curious", direction: "steady" },
-  { city: "São Paulo", mood: "energetic", direction: "up" },
-  { city: "San Francisco", mood: "building", direction: "steady" },
-  { city: "Helsinki", mood: "reflective", direction: "steady" },
-  { city: "Mexico City", mood: "hopeful", direction: "up" },
-  { city: "London", mood: "restless", direction: "steady" },
-  { city: "Nairobi", mood: "inventive", direction: "up" },
-];
 
 const emotionKeys = Object.keys(neutralWorldEmotionState) as Array<
   keyof WorldEmotionState

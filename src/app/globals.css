@@ -68,6 +68,50 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+:root[data-daypart="morning"] {
+  --daypart-wash: color-mix(in srgb, var(--yellow) 4%, transparent);
+}
+
+:root[data-daypart="day"] {
+  --daypart-wash: transparent;
+}
+
+:root[data-daypart="evening"] {
+  --daypart-wash: color-mix(in srgb, var(--team-warm) 5%, transparent);
+}
+
+:root[data-daypart="night"] {
+  --daypart-wash: color-mix(in srgb, var(--team-cold) 5%, transparent);
+}
+
+body {
+  background:
+    linear-gradient(var(--daypart-wash, transparent), var(--daypart-wash, transparent)),
+    var(--paper);
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 2147483647;
+  top: 0.8rem;
+  left: 0.8rem;
+  border: 1px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  padding: 0.62rem 0.8rem;
+  font-size: 0.78rem;
+  font-weight: 780;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transform: translateY(calc(-100% - 1.2rem));
+  transition: transform 160ms ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 body::before {
   position: fixed;
   z-index: 20;
@@ -5377,6 +5421,455 @@ h3 {
   font-size: clamp(1.05rem, 1.5vw, 1.28rem);
   font-weight: 620;
   line-height: 1.2;
+}
+
+.embassy-page,
+.embassy-detail-page {
+  background:
+    linear-gradient(var(--daypart-wash, transparent), var(--daypart-wash, transparent)),
+    var(--paper);
+}
+
+.embassy-hero-section,
+.embassy-detail-hero-section {
+  min-height: auto;
+  padding: clamp(5.5rem, 12vw, 9rem) 0 clamp(3rem, 7vw, 5.5rem);
+}
+
+.embassy-hero-block,
+.embassy-index-block,
+.embassy-detail-block {
+  display: grid;
+  gap: clamp(2rem, 5vw, 4rem);
+}
+
+.embassy-backlinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem 1.2rem;
+}
+
+.embassy-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.62fr) minmax(18rem, 0.38fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: end;
+}
+
+.embassy-hero-grid h1,
+.embassy-detail-copy h1 {
+  max-width: 12ch;
+  color: var(--ink);
+  font-size: clamp(3.2rem, 9vw, 7.6rem);
+  font-weight: 580;
+  letter-spacing: 0;
+  line-height: 0.94;
+}
+
+.embassy-hero-grid p:not(.section-kicker),
+.embassy-detail-lede {
+  max-width: 34rem;
+  color: color-mix(in srgb, var(--ink) 72%, var(--muted));
+  font-size: clamp(1.05rem, 1.55vw, 1.35rem);
+  font-weight: 520;
+  line-height: 1.5;
+}
+
+.embassy-atlas {
+  display: grid;
+  grid-template-columns: minmax(15rem, 0.28fr) minmax(0, 0.72fr);
+  gap: clamp(1.4rem, 4vw, 4rem);
+  align-items: center;
+}
+
+.embassy-atlas-copy {
+  display: grid;
+  gap: 1rem;
+}
+
+.embassy-atlas-copy h2 {
+  max-width: 12ch;
+  color: var(--ink);
+  font-size: clamp(2rem, 4vw, 4rem);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.embassy-atlas-copy p:not(.section-kicker) {
+  color: color-mix(in srgb, var(--ink) 68%, var(--muted));
+  font-size: 1rem;
+  font-weight: 520;
+  line-height: 1.55;
+}
+
+.embassy-atlas-stage {
+  position: relative;
+  min-height: clamp(18rem, 44vw, 34rem);
+  overflow: hidden;
+  border-top: 1px solid color-mix(in srgb, var(--rule) 86%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--rule) 86%, transparent);
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--ink) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(180deg, color-mix(in srgb, var(--ink) 5%, transparent) 1px, transparent 1px);
+  background-size: 8.333% 16.666%;
+}
+
+.embassy-atlas-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.embassy-atlas-land {
+  fill: color-mix(in srgb, var(--ink) 7%, transparent);
+  stroke: color-mix(in srgb, var(--ink) 13%, transparent);
+  stroke-width: 0.28;
+}
+
+.embassy-atlas-thread {
+  fill: none;
+  stroke: color-mix(in srgb, var(--team-cold) 36%, transparent);
+  stroke-dasharray: 0.8 2.2;
+  stroke-linecap: round;
+  stroke-width: 0.22;
+}
+
+.embassy-atlas-point {
+  color: color-mix(in srgb, var(--ink) 70%, var(--team-warm));
+  outline: none;
+  text-decoration: none;
+}
+
+.embassy-atlas-point circle {
+  fill: currentColor;
+  stroke: color-mix(in srgb, var(--paper) 88%, transparent);
+  stroke-width: 0.42;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 170ms ease, fill 170ms ease;
+}
+
+.embassy-atlas-point text {
+  fill: currentColor;
+  font-size: 1.45px;
+  font-weight: 780;
+  letter-spacing: 0.12em;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 170ms ease;
+}
+
+.embassy-atlas-point:hover circle,
+.embassy-atlas-point:focus-visible circle,
+.embassy-atlas-point[data-active="true"] circle {
+  fill: var(--team-warm);
+  transform: scale(1.35);
+}
+
+.embassy-atlas-point:hover text,
+.embassy-atlas-point:focus-visible text,
+.embassy-atlas-point[data-active="true"] text {
+  opacity: 0.86;
+}
+
+.embassy-atlas-point:focus-visible circle {
+  stroke: var(--ink);
+  stroke-width: 0.68;
+}
+
+.embassy-atlas-readout {
+  position: absolute;
+  right: clamp(1rem, 3vw, 2rem);
+  bottom: clamp(1rem, 3vw, 2rem);
+  display: grid;
+  gap: 0.2rem;
+  min-width: min(15rem, calc(100% - 2rem));
+  border-top: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+  background: color-mix(in srgb, var(--paper) 80%, transparent);
+  color: var(--ink);
+  padding: 0.8rem 0 0;
+}
+
+.embassy-atlas-readout span,
+.embassy-card-copy p,
+.embassy-related span,
+.embassy-detail-nav span {
+  color: color-mix(in srgb, var(--ink) 46%, var(--muted));
+  font-size: 0.66rem;
+  font-weight: 820;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.embassy-atlas-readout strong {
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.embassy-atlas-readout em,
+.embassy-card-copy span,
+.embassy-card-copy em {
+  color: color-mix(in srgb, var(--ink) 62%, var(--muted));
+  font-size: 0.9rem;
+  font-style: normal;
+  font-weight: 560;
+  line-height: 1.35;
+}
+
+.embassy-atlas-list {
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.embassy-atlas-list-item {
+  display: grid;
+  gap: 0.12rem;
+  border: 1px solid color-mix(in srgb, var(--rule) 78%, transparent);
+  background: transparent;
+  color: inherit;
+  padding: 0.9rem;
+  text-align: left;
+}
+
+.embassy-atlas-list-item strong {
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 680;
+  line-height: 1.1;
+}
+
+.embassy-atlas-list-item span,
+.embassy-atlas-list-item em {
+  color: color-mix(in srgb, var(--ink) 50%, var(--muted));
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 720;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.embassy-atlas-list-item[data-active="true"],
+.embassy-atlas-list-item:focus-visible {
+  border-color: color-mix(in srgb, var(--team-warm) 58%, var(--rule));
+  outline: none;
+}
+
+.embassy-atlas-noscript {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.embassy-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+.embassy-card a {
+  display: grid;
+  min-height: 100%;
+  border: 1px solid color-mix(in srgb, var(--rule) 84%, transparent);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 180ms ease, transform 180ms ease;
+}
+
+.embassy-card a:hover,
+.embassy-card a:focus-visible {
+  border-color: color-mix(in srgb, var(--team-warm) 50%, var(--rule));
+  outline: none;
+  transform: translateY(-0.12rem);
+}
+
+.embassy-card-media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--paper-soft);
+}
+
+.embassy-card-media img,
+.embassy-detail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.86) contrast(1.03);
+}
+
+.embassy-card-copy {
+  display: grid;
+  gap: 0.35rem;
+  padding: clamp(1rem, 2vw, 1.35rem);
+}
+
+.embassy-card-copy h2 {
+  color: var(--ink);
+  font-size: clamp(1.7rem, 3vw, 2.65rem);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.embassy-detail-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 0.52fr) minmax(19rem, 0.48fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: end;
+}
+
+.embassy-detail-copy {
+  display: grid;
+  gap: clamp(1rem, 2vw, 1.6rem);
+}
+
+.embassy-detail-copy blockquote {
+  max-width: 32rem;
+  margin: clamp(1.5rem, 4vw, 3rem) 0 0;
+  border-left: 1px solid color-mix(in srgb, var(--team-warm) 54%, var(--rule));
+  padding-left: clamp(1rem, 2vw, 1.4rem);
+}
+
+.embassy-detail-copy blockquote p {
+  color: var(--ink);
+  font-size: clamp(1.35rem, 2.4vw, 2.1rem);
+  font-weight: 560;
+  letter-spacing: 0;
+  line-height: 1.15;
+}
+
+.embassy-detail-media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--paper-soft);
+}
+
+.embassy-detail-panel {
+  display: grid;
+  grid-template-columns: minmax(13rem, 0.3fr) minmax(0, 0.7fr);
+  gap: clamp(1.4rem, 4vw, 4rem);
+  border-top: 1px solid color-mix(in srgb, var(--rule) 84%, transparent);
+  padding-top: clamp(2rem, 5vw, 4rem);
+}
+
+.embassy-detail-facts,
+.embassy-detail-story {
+  display: grid;
+  gap: 1rem;
+}
+
+.embassy-detail-facts div {
+  display: grid;
+  gap: 0.18rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--rule) 60%, transparent);
+  padding-bottom: 0.75rem;
+}
+
+.embassy-detail-facts dt {
+  color: color-mix(in srgb, var(--ink) 46%, var(--muted));
+  font-size: 0.66rem;
+  font-weight: 820;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.embassy-detail-facts dd {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.embassy-detail-story h2,
+.embassy-related h2 {
+  color: var(--ink);
+  font-size: clamp(1.55rem, 2.4vw, 2.35rem);
+  font-weight: 620;
+  letter-spacing: 0;
+  line-height: 1.08;
+}
+
+.embassy-detail-story p:not(.section-kicker),
+.embassy-related p {
+  max-width: 42rem;
+  color: color-mix(in srgb, var(--ink) 70%, var(--muted));
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.58;
+}
+
+.embassy-related {
+  display: grid;
+  gap: 1rem;
+  margin-top: clamp(1.4rem, 3vw, 2.4rem);
+}
+
+.embassy-related article {
+  display: grid;
+  gap: 0.25rem;
+  border-top: 1px solid color-mix(in srgb, var(--rule) 64%, transparent);
+  padding-top: 0.9rem;
+}
+
+.embassy-related strong {
+  color: var(--ink);
+  font-size: 1.05rem;
+  font-weight: 680;
+}
+
+.embassy-detail-nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.embassy-detail-nav a,
+.embassy-home-link {
+  display: grid;
+  gap: 0.3rem;
+  border: 1px solid color-mix(in srgb, var(--rule) 78%, transparent);
+  color: inherit;
+  padding: 1rem;
+  text-decoration: none;
+}
+
+.embassy-detail-nav a:hover,
+.embassy-detail-nav a:focus-visible,
+.embassy-home-link:hover,
+.embassy-home-link:focus-visible {
+  border-color: color-mix(in srgb, var(--team-warm) 56%, var(--rule));
+  outline: none;
+}
+
+.embassy-detail-nav strong,
+.embassy-home-link strong {
+  color: var(--ink);
+  font-size: 1.1rem;
+  font-weight: 660;
+  line-height: 1.2;
+}
+
+.embassy-home-link {
+  max-width: 29rem;
+}
+
+.embassy-home-link span {
+  color: color-mix(in srgb, var(--ink) 48%, var(--muted));
+  font-size: 0.68rem;
+  font-weight: 820;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  text-transform: uppercase;
 }
 
 .room-directory-section {
@@ -13289,5 +13782,64 @@ h3 {
   .soundtrack-toggle {
     left: auto !important;
     right: var(--fixed-control-right, max(0.75rem, env(safe-area-inset-right))) !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .embassy-hero-grid,
+  .embassy-atlas,
+  .embassy-detail-hero,
+  .embassy-detail-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .embassy-atlas-list {
+    grid-column: auto;
+  }
+
+  .embassy-detail-media {
+    order: -1;
+  }
+}
+
+@media (max-width: 620px) {
+  .embassy-card-grid,
+  .embassy-atlas-list,
+  .embassy-detail-nav {
+    grid-template-columns: 1fr;
+  }
+
+  .embassy-hero-section,
+  .embassy-detail-hero-section {
+    padding-top: 5.2rem;
+  }
+
+  .embassy-hero-grid h1,
+  .embassy-detail-copy h1 {
+    max-width: 10ch;
+    font-size: clamp(2.65rem, 17vw, 4.8rem);
+  }
+
+  .embassy-atlas-stage {
+    min-height: 18rem;
+  }
+
+  .embassy-atlas-readout {
+    right: 1rem;
+    bottom: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .embassy-atlas-point circle,
+  .embassy-atlas-point text,
+  .embassy-card a,
+  .skip-link {
+    transition: none;
+  }
+
+  .global-mood-track {
+    animation: none;
+    transform: none;
   }
 }

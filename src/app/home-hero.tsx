@@ -20,6 +20,7 @@ export function HomeHero() {
           <a href="#products">PRODUCTS</a>
           <a href="#cases">CASES</a>
           <a href="#network">NETWORK</a>
+          <a href="/embassies/">EMBASSIES</a>
           <a href="#founder">FOUNDER</a>
           <a href="/constitution/">THE CONSTITUTION</a>
           <a href="mailto:hello@ctrlpluslove.com">ADMISSION</a>

@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 import {
   calculateWorldEmotionState,
   dispatchWorldEmotionState,
-  globalMoodEntries,
   SOUNDTRACK_STATUS_EVENT,
 } from "./world-emotion-engine";
+import { globalMoodEntries } from "@/content/global-mood";
 
 export function WorldEmotionBridge() {
   const [soundtrackActive, setSoundtrackActive] = useState(false);

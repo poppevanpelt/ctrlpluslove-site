@@ -152,6 +152,14 @@ export const publicRoutes: PublicRoute[] = [
     priority: 0.8,
   },
   {
+    path: "/embassies/",
+    title: "Embassy Network — ctrl+love",
+    description:
+      "A growing group of trusted creative leaders bringing local intelligence into the ctrl+love ecosystem.",
+    changeFrequency: "monthly",
+    priority: 0.82,
+  },
+  {
     path: "/steel-ball/",
     title: "The Steel Ball — ctrl+love",
     description:

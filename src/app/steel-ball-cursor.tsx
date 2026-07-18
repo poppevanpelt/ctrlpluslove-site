@@ -13,6 +13,8 @@ const INTERACTIVE_SELECTOR = [
   ".persona-portrait",
   ".product-card",
   ".ambassador-face",
+  ".embassy-card",
+  ".embassy-home-link",
   ".steel-ball-signature-card",
   ".steel-ball-home-card",
   ".museum-card",
@@ -26,6 +28,7 @@ const CARD_EDGE_SELECTOR = [
   ".persona-card",
   ".product-card",
   ".ambassador-face",
+  ".embassy-card",
   ".steel-ball-signature-card",
   ".steel-ball-home-card",
   ".museum-card",
@@ -62,6 +65,8 @@ export function SteelBallCursor() {
     let activeTarget: Element | null = null;
     let previousInteractiveTarget: Element | null = null;
     let glintTimeout = 0;
+    let previousFrameTime = performance.now();
+    let slowFrameCount = 0;
 
     const setNativeCursor = (isNative: boolean) => {
       document.documentElement.toggleAttribute("data-steel-cursor-native", isNative);
@@ -138,8 +143,17 @@ export function SteelBallCursor() {
       return { x, y };
     };
 
-    const render = () => {
+    const render = (time: number) => {
       if (!enabled || !cursor) {
+        return;
+      }
+
+      const frameDelta = time - previousFrameTime;
+      previousFrameTime = time;
+      slowFrameCount = frameDelta > 80 ? slowFrameCount + 1 : Math.max(0, slowFrameCount - 1);
+
+      if (slowFrameCount > 24) {
+        disable();
         return;
       }
 
@@ -195,6 +209,8 @@ export function SteelBallCursor() {
       cursor.setAttribute("aria-hidden", "true");
       document.body.append(cursor);
       document.documentElement.classList.add("steel-ball-cursor-active");
+      previousFrameTime = performance.now();
+      slowFrameCount = 0;
       frame = window.requestAnimationFrame(render);
     };
 
