@@ -91,6 +91,7 @@ export function SteelBallCursor() {
     let previousFrameTime = performance.now();
     let slowFrameCount = 0;
     let routeObserver: MutationObserver | null = null;
+    let stageOriginCreatedByCursor = false;
 
     const isLocalReplay = () => {
       try {
@@ -189,10 +190,16 @@ export function SteelBallCursor() {
       return Boolean(element.closest(".chapter-arrival-message"));
     };
 
-    const removeStageOrigin = () => {
+    const removeStageOrigin = (force = false) => {
       const stage = stageBall?.closest(".steel-ball-stage-origin") ?? document.querySelector(".home-hero-section .steel-ball-stage-origin");
-      stage?.remove();
+      const isTemporaryStage = stage instanceof HTMLElement && stage.dataset.stageOriginSource === "cursor";
+
+      if (force || stageOriginCreatedByCursor || isTemporaryStage) {
+        stage?.remove();
+      }
+
       stageBall = null;
+      stageOriginCreatedByCursor = false;
     };
 
     const setNativeCursor = (isNative: boolean) => {
@@ -458,7 +465,7 @@ export function SteelBallCursor() {
       cursor.setAttribute("data-visible", "true");
       document.body.append(cursor);
 
-      removeStageOrigin();
+      removeStageOrigin(true);
 
       const liftX = clamp(pointerX - startX, -20, 20);
       const liftY = clamp(pointerY - startY, -18, 10) - 18;
@@ -505,7 +512,7 @@ export function SteelBallCursor() {
       const shouldSkipOrigin = shouldReduceMotion() || hasAwakenedThisSession() || !restingPosition;
 
       if (shouldSkipOrigin) {
-        removeStageOrigin();
+        removeStageOrigin(true);
         cursor = document.createElement("div");
         cursor.className = "steel-ball-cursor";
         cursor.setAttribute("aria-hidden", "true");
@@ -521,6 +528,7 @@ export function SteelBallCursor() {
       if (!stageBall) {
         const stage = document.createElement("span");
         stage.className = "steel-ball-stage-origin";
+        stage.dataset.stageOriginSource = "cursor";
         stage.style.left = `${restingPosition.localX}px`;
         stage.style.top = `${restingPosition.localY}px`;
         stageBall = document.createElement("span");
@@ -528,6 +536,10 @@ export function SteelBallCursor() {
         stageBall.setAttribute("aria-hidden", "true");
         stage.append(stageBall);
         restingPosition.hero.append(stage);
+        stageOriginCreatedByCursor = true;
+      } else {
+        const stage = stageBall.closest<HTMLElement>(".steel-ball-stage-origin");
+        stageOriginCreatedByCursor = stage?.dataset.stageOriginSource === "cursor";
       }
 
       const stageRect = stageBall.getBoundingClientRect();
@@ -570,7 +582,7 @@ export function SteelBallCursor() {
       window.cancelAnimationFrame(handoffFrame);
       window.cancelAnimationFrame(settlingFrame);
       window.clearTimeout(armingTimeout);
-      removeStageOrigin();
+      removeStageOrigin(true);
       cursor?.remove();
       cursor = null;
       enabled = false;
@@ -670,7 +682,7 @@ export function SteelBallCursor() {
       updateCursorPosition(event.clientX, event.clientY, event.target);
 
       if (state === "resting") {
-        if (canActivateOriginFromTarget(event.target)) {
+        if (canActivateOriginFromTarget(event.target) && !isExtremeStagePrototype()) {
           startHandoff(event.target);
         }
       }

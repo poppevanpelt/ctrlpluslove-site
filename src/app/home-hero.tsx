@@ -33,6 +33,7 @@ export function HomeHero() {
               <span
                 className="steel-ball-stage-origin"
                 aria-hidden="true"
+                data-stage-origin-source="hero"
               >
                 <span
                   className="steel-ball-cursor steel-ball-stage-ball"
