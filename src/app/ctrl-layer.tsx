@@ -140,7 +140,7 @@ export function CtrlLayerProvider({ children }: { children: React.ReactNode }) {
     return () => {
       writeRootState(false);
     };
-  }, [active, discovered, writeRootState]);
+  }, [active, writeRootState]);
 
   useEffect(() => {
     const isActivationKey = (key: string) =>
@@ -153,10 +153,6 @@ export function CtrlLayerProvider({ children }: { children: React.ReactNode }) {
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (!isActivationKey(event.key) || isTypingTarget(event.target)) {
-        return;
-      }
-
-      if (keyboardActive) {
         return;
       }
 
@@ -192,7 +188,7 @@ export function CtrlLayerProvider({ children }: { children: React.ReactNode }) {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       deactivate();
     };
-  }, [keyboardActive, markDiscovered, writeRootState]);
+  }, [markDiscovered, writeRootState]);
 
   useEffect(() => {
     window.setTimeout(() => {
