@@ -646,48 +646,49 @@ body,
 
 .home-hero-reality-word {
   position: relative;
-  display: inline-block;
-  white-space: nowrap;
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .steel-ball-stage-origin {
   position: absolute;
   z-index: 2;
-  top: 78%;
-  left: calc(100% + 0.04em);
+  top: 50%;
+  left: 50%;
   display: block;
-  width: 0.72em;
-  height: 0.54em;
+  width: clamp(4.5rem, 8vw, 7rem);
+  height: clamp(3.6rem, 6vw, 5.4rem);
   pointer-events: none;
-  transform: translate(0, -12%) translate3d(0, 0, 0);
+  transform: translate(-50%, -50%) translate3d(0, 0, 0);
 }
 
 .steel-ball-stage-origin::after {
   position: absolute;
   z-index: 0;
-  bottom: 0.02em;
+  bottom: 0.18rem;
   left: 50%;
-  width: 0.36em;
-  height: 0.12em;
+  width: 52%;
+  height: 14%;
   border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgb(0 0 0 / 30%) 0 28%, rgb(0 0 0 / 15%) 42%, rgb(0 0 0 / 0%) 76%);
-  filter: blur(0.045em);
-  opacity: 0.66;
+  background: radial-gradient(ellipse at center, rgb(0 0 0 / 82%) 0 18%, rgb(0 0 0 / 42%) 42%, rgb(0 0 0 / 0%) 76%);
   content: "";
-  transform: translateX(-50%) scaleX(1.45);
+  filter: blur(0.28rem);
+  opacity: 0.82;
+  transform: translateX(-50%) scaleX(1.18);
   transform-origin: center;
 }
 
 .steel-ball-stage-origin .steel-ball-stage-ball {
   position: absolute;
   z-index: 1;
-  top: 34%;
+  top: 50%;
   left: 50%;
   display: block;
-  width: 0.32em;
-  height: 0.32em;
+  width: clamp(2.25rem, 3.65vw, 3.28rem);
+  height: clamp(2.25rem, 3.65vw, 3.28rem);
   opacity: 0.94;
-  filter: drop-shadow(0 0.09em 0.06em rgb(0 0 0 / 24%));
+  filter: drop-shadow(0 0.2rem 0.18rem rgb(0 0 0 / 54%));
   transform: translate(-50%, -50%);
 }
 
@@ -765,6 +766,10 @@ body,
   .steel-ball-stage-origin {
     display: none;
   }
+}
+
+:root[data-steel-extreme-stage] .steel-ball-stage-origin {
+  display: block;
 }
 
 @keyframes steel-cursor-glint {
@@ -11583,14 +11588,47 @@ h3 {
 
 .chapter-arrival {
   min-height: min(92svh, 54rem) !important;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 34% 32%, rgb(255 255 255 / 10%) 0 6rem, transparent 18rem),
+    radial-gradient(ellipse at 50% 100%, rgb(255 255 255 / 7%) 0 10rem, transparent 34rem),
+    linear-gradient(180deg, #080806 0%, #020202 55%, #0a0907 100%) !important;
+  color: #f4efe6;
+  overflow: hidden !important;
   padding-bottom: clamp(4rem, 8svh, 7rem) !important;
+  text-align: left !important;
+}
+
+.chapter-arrival::before,
+.chapter-arrival::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+}
+
+.chapter-arrival::before {
+  z-index: 0;
+  background:
+    linear-gradient(90deg, transparent calc(50% - 1px), rgb(255 255 255 / 5%) 50%, transparent calc(50% + 1px)),
+    linear-gradient(180deg, transparent 61%, rgb(255 255 255 / 8%) 61.1%, transparent 61.4%),
+    radial-gradient(ellipse at 42% 62%, rgb(255 255 255 / 8%), transparent 28rem);
+}
+
+.chapter-arrival::after {
+  z-index: 0;
+  background: linear-gradient(180deg, transparent 0 52%, rgb(0 0 0 / 28%) 72%, rgb(0 0 0 / 62%) 100%);
 }
 
 .chapter-arrival-copy {
+  z-index: 1;
   gap: clamp(1.05rem, 2.2svh, 1.85rem);
+  width: min(100%, calc(100vw - 2rem), 82rem);
+  justify-items: stretch;
 }
 
 .chapter-arrival .home-hero-logo {
+  display: none;
   max-width: 70rem;
   background: linear-gradient(
     96deg,
@@ -11634,11 +11672,11 @@ h3 {
 .chapter-arrival .home-hero-nav {
   order: -1;
   gap: 0.5rem clamp(0.7rem, 1.8vw, 1.35rem);
-  margin: 0 0 clamp(1.4rem, 3svh, 2.6rem);
+  margin: 0 0 clamp(1rem, 2.2svh, 1.8rem);
 }
 
 .chapter-arrival .home-hero-nav a {
-  color: color-mix(in srgb, var(--ink) 58%, var(--muted));
+  color: rgb(244 239 230 / 52%);
   font-size: clamp(0.64rem, 0.8vw, 0.76rem);
   font-weight: 820;
   letter-spacing: 0.08em;
@@ -11646,16 +11684,122 @@ h3 {
 
 .chapter-arrival-message {
   display: grid;
-  gap: clamp(0.9rem, 2.1svh, 1.45rem);
-  justify-items: center;
+  grid-template-columns: minmax(17rem, 0.92fr) minmax(21rem, 1.08fr);
+  align-items: center;
+  gap: clamp(1.8rem, 5vw, 5.5rem);
+  min-height: clamp(26rem, 58svh, 39rem);
+  justify-items: stretch;
+}
+
+.chapter-arrival-scene {
+  position: relative;
+  align-self: center;
+  width: min(100%, 40rem);
+  aspect-ratio: 1.42;
+  isolation: isolate;
+}
+
+.chapter-arrival-scene::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 44%, rgb(255 255 255 / 9%) 0 2.4rem, transparent 12rem),
+    radial-gradient(ellipse at 52% 70%, rgb(255 255 255 / 7%), transparent 18rem);
+  content: "";
+  filter: blur(0.2rem);
+}
+
+.chapter-arrival-floor {
+  position: absolute;
+  z-index: 0;
+  right: 3%;
+  bottom: 16%;
+  left: 4%;
+  height: 22%;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse at 48% 16%, rgb(255 255 255 / 18%) 0 1px, transparent 2px),
+    radial-gradient(ellipse at 50% 50%, rgb(255 255 255 / 14%) 0 7%, rgb(255 255 255 / 4%) 32%, transparent 70%);
+  filter: blur(0.02rem);
+  transform: perspective(46rem) rotateX(68deg);
+  transform-origin: center;
+}
+
+.chapter-arrival-incident-mark {
+  position: absolute;
+  z-index: 1;
+  top: 63.4%;
+  left: 43.8%;
+  width: clamp(3rem, 6.2vw, 5.1rem);
+  height: clamp(0.5rem, 0.85vw, 0.78rem);
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgb(255 255 255 / 12%) 0 4%, rgb(255 255 255 / 5%) 18%, transparent 68%);
+  filter: blur(0.07rem);
+  opacity: 0.3;
+  transform: translate(-50%, -50%) rotate(-4deg);
+}
+
+.chapter-arrival-title-lockup {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: clamp(0.55rem, 1.4svh, 0.9rem);
+  align-self: center;
+  justify-items: start;
+  max-width: 44rem;
+  transform: translateY(clamp(-3.2rem, -5svh, -1.6rem));
+}
+
+.chapter-arrival-signature {
+  order: -1;
+  margin: 0;
+  background: linear-gradient(
+    96deg,
+    #ff19c8 0%,
+    #ff245f 10%,
+    #ff7a1a 21%,
+    #ffd21d 32%,
+    #39df33 43%,
+    #00d9be 54%,
+    #1787ff 67%,
+    #4c22ff 79%,
+    #a225e8 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: clamp(2.1rem, 5vw, 5.8rem);
+  font-weight: 690;
+  line-height: 0.95;
+  text-transform: lowercase;
+}
+
+@supports (-webkit-background-clip: text) {
+  .chapter-arrival-signature {
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.chapter-arrival-scene .steel-ball-stage-origin {
+  top: 63.1%;
+  left: 43.8%;
+}
+
+.chapter-arrival-scene .steel-ball-stage-origin::after {
+  background: radial-gradient(ellipse at center, rgb(0 0 0 / 92%) 0 16%, rgb(0 0 0 / 48%) 40%, rgb(0 0 0 / 0%) 74%);
+  opacity: 0.9;
 }
 
 .chapter-arrival .home-hero-line {
-  max-width: 11ch;
+  max-width: 10.5ch;
   min-height: auto;
-  font-size: clamp(3.2rem, 9.2vw, 8.8rem);
+  color: #f8f4ed;
+  font-size: clamp(3rem, 7.2vw, 8rem);
   font-weight: 690;
-  line-height: 0.94;
+  line-height: 0.9;
+  place-items: start;
+  text-align: left;
 }
 
 .chapter-arrival .home-hero-line::after {
@@ -11672,12 +11816,54 @@ h3 {
 }
 
 .chapter-arrival .home-hero-subline {
+  grid-column: 2;
   max-width: min(100%, 44rem);
-  color: color-mix(in srgb, var(--ink) 86%, var(--muted));
+  color: rgb(244 239 230 / 72%);
+  text-align: left;
 }
 
-.chapter-arrival .home-hero-category {
-  margin-top: clamp(0.25rem, 0.9svh, 0.72rem);
+.chapter-arrival .home-hero-proposition,
+.chapter-arrival .home-hero-category,
+.chapter-arrival .arrival-status {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .chapter-arrival-message {
+    grid-template-columns: 1fr;
+    gap: clamp(0.8rem, 2.4svh, 1.45rem);
+    min-height: auto;
+  }
+
+  .chapter-arrival-scene {
+    width: min(100%, 30rem);
+    justify-self: center;
+  }
+
+  .chapter-arrival-title-lockup {
+    transform: translateY(clamp(-2.35rem, -4svh, -1.15rem));
+  }
+
+  .chapter-arrival-signature {
+    font-size: clamp(2rem, 9vw, 4.2rem);
+  }
+
+  .chapter-arrival .home-hero-line {
+    font-size: clamp(2.82rem, 10.8vw, 5.45rem);
+    max-width: 10ch;
+  }
+
+  .chapter-arrival-title-lockup,
+  .chapter-arrival .home-hero-line,
+  .chapter-arrival .home-hero-subline {
+    justify-items: center;
+    text-align: center;
+  }
+
+  .chapter-arrival .home-hero-subline {
+    grid-column: auto;
+    justify-self: center;
+  }
 }
 
 .sequence-reveal {

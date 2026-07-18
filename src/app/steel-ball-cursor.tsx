@@ -101,6 +101,15 @@ export function SteelBallCursor() {
       }
     };
 
+    const isExtremeStagePrototype = () => {
+      try {
+        const isLocalPreview = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+        return isLocalPreview && new URLSearchParams(window.location.search).has("extreme-stage");
+      } catch {
+        return false;
+      }
+    };
+
     const canUseSteelCursor = () => activeMedia.matches || isLocalReplay();
     const shouldReduceMotion = () => reducedMotionMedia.matches && !isLocalReplay();
 
@@ -108,6 +117,8 @@ export function SteelBallCursor() {
       state = nextState;
       document.documentElement.dataset.steelCursorState = nextState;
     };
+
+    document.documentElement.toggleAttribute("data-steel-extreme-stage", isExtremeStagePrototype());
 
     const hasAwakenedThisSession = () => {
       try {
@@ -158,6 +169,16 @@ export function SteelBallCursor() {
     const getStageOrigin = () => (
       document.querySelector<HTMLElement>(".home-hero-section .steel-ball-stage-ball")
     );
+
+    const canActivateOriginFromTarget = (target: EventTarget | null) => {
+      const element = closestElement(target);
+
+      if (!element) {
+        return false;
+      }
+
+      return Boolean(element.closest(".chapter-arrival-message"));
+    };
 
     const removeStageOrigin = () => {
       const stage = stageBall?.closest(".steel-ball-stage-origin") ?? document.querySelector(".home-hero-section .steel-ball-stage-origin");
@@ -524,6 +545,7 @@ export function SteelBallCursor() {
       setNativeCursor(false);
       setState("skipped");
       document.documentElement.removeAttribute("data-steel-cursor-state");
+      document.documentElement.removeAttribute("data-steel-extreme-stage");
       document.documentElement.classList.remove("steel-ball-cursor-active");
       window.cancelAnimationFrame(frame);
       removeStageOrigin();
@@ -599,6 +621,20 @@ export function SteelBallCursor() {
           return;
         }
 
+        if (!canActivateOriginFromTarget(target)) {
+          initialPointerX = clientX;
+          initialPointerY = clientY;
+          updateTarget(target);
+          return;
+        }
+
+        if (isExtremeStagePrototype()) {
+          initialPointerX = clientX;
+          initialPointerY = clientY;
+          updateTarget(target);
+          return;
+        }
+
         startHandoff(target);
         return;
       }
@@ -625,7 +661,9 @@ export function SteelBallCursor() {
       updateCursorPosition(event.clientX, event.clientY, event.target);
 
       if (state === "resting") {
-        startHandoff(event.target);
+        if (canActivateOriginFromTarget(event.target)) {
+          startHandoff(event.target);
+        }
       }
     };
 

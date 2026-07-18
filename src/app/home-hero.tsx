@@ -26,14 +26,10 @@ export function HomeHero() {
           <a href="mailto:hello@ctrlpluslove.com">ADMISSION</a>
         </nav>
         <div className="chapter-arrival-message">
-          <h1
-            className="home-hero-line sequence-reveal sequence-shortcut"
-            id="homepage-start"
-            tabIndex={-1}
-          >
-            Shortcut to{" "}
+          <div className="chapter-arrival-scene" aria-hidden="true">
+            <span className="chapter-arrival-floor" />
+            <span className="chapter-arrival-incident-mark" />
             <span className="home-hero-reality-word">
-              reality.
               <span
                 className="steel-ball-stage-origin"
                 aria-hidden="true"
@@ -46,10 +42,20 @@ export function HomeHero() {
                 />
               </span>
             </span>
-            <CtrlLayerNote className="ctrl-layer-note-hero">
-              HUMAN SIGNAL DETECTED
-            </CtrlLayerNote>
-          </h1>
+          </div>
+          <div className="chapter-arrival-title-lockup">
+            <h1
+              className="home-hero-line sequence-reveal sequence-shortcut"
+              id="homepage-start"
+              tabIndex={-1}
+            >
+              Shortcut to reality.
+              <CtrlLayerNote className="ctrl-layer-note-hero">
+                HUMAN SIGNAL DETECTED
+              </CtrlLayerNote>
+            </h1>
+            <p className="chapter-arrival-signature">ctrl+love</p>
+          </div>
           <p className="home-hero-subline sequence-reveal sequence-hero-orientation">
             Bring the decision into the room.
             <CtrlLayerNote className="ctrl-layer-note-subline">
