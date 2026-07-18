@@ -5486,7 +5486,8 @@ h3 {
 .embassy-atlas {
   display: grid;
   grid-template-columns: minmax(15rem, 0.28fr) minmax(0, 0.72fr);
-  gap: clamp(1.4rem, 4vw, 4rem);
+  column-gap: clamp(1.4rem, 4vw, 4rem);
+  row-gap: clamp(0.7rem, 1.6vw, 1.15rem);
   align-items: center;
 }
 
@@ -5528,6 +5529,7 @@ h3 {
   inset: 0;
   width: 100%;
   height: 100%;
+  color: color-mix(in srgb, var(--team-cold) 54%, var(--ink));
 }
 
 .embassy-atlas-land {
@@ -5544,10 +5546,59 @@ h3 {
   stroke-width: 0.22;
 }
 
+.embassy-atlas-arc {
+  fill: none;
+  stroke: url("#embassy-arc-gradient");
+  stroke-linecap: round;
+  stroke-width: 0.22;
+  opacity: 0.46;
+  vector-effect: non-scaling-stroke;
+  animation: embassy-arc-breathe 14s ease-in-out infinite;
+}
+
+.embassy-atlas-influence,
+.embassy-atlas-ghost-aura {
+  transform-box: fill-box;
+  transform-origin: center;
+  vector-effect: non-scaling-stroke;
+}
+
+.embassy-atlas-influence {
+  fill: color-mix(in srgb, var(--team-cold) 13%, transparent);
+  stroke: color-mix(in srgb, var(--team-cold) 18%, transparent);
+  stroke-width: 0.18;
+  opacity: 0.46;
+  animation: embassy-influence-breathe 11s ease-in-out infinite;
+}
+
+.embassy-atlas-influence[data-active="true"] {
+  fill: color-mix(in srgb, var(--team-warm) 14%, transparent);
+  stroke: color-mix(in srgb, var(--team-warm) 22%, transparent);
+  opacity: 0.58;
+}
+
+.embassy-atlas-ghost-aura {
+  fill: color-mix(in srgb, var(--ink) 5%, transparent);
+  stroke: color-mix(in srgb, var(--ink) 14%, transparent);
+  stroke-dasharray: 0.35 0.82;
+  stroke-width: 0.16;
+  opacity: 0.32;
+}
+
+.embassy-atlas-ghost-aura[data-active="true"] {
+  opacity: 0.48;
+}
+
 .embassy-atlas-point {
   color: color-mix(in srgb, var(--ink) 70%, var(--team-warm));
+  cursor: pointer;
   outline: none;
   text-decoration: none;
+}
+
+.embassy-atlas-point[data-location-kind="ghost"] {
+  color: color-mix(in srgb, var(--ink) 42%, var(--muted));
+  opacity: 0.58;
 }
 
 .embassy-atlas-point circle {
@@ -5569,6 +5620,16 @@ h3 {
   transition: opacity 170ms ease;
 }
 
+.embassy-atlas-point[data-location-kind="ghost"] circle {
+  fill: color-mix(in srgb, currentColor 34%, transparent);
+  stroke: currentColor;
+  stroke-width: 0.24;
+}
+
+.embassy-atlas-point[data-location-kind="ghost"] text {
+  font-size: 1.08px;
+}
+
 .embassy-atlas-point:hover circle,
 .embassy-atlas-point:focus-visible circle,
 .embassy-atlas-point[data-active="true"] circle {
@@ -5587,6 +5648,13 @@ h3 {
   stroke-width: 0.68;
 }
 
+.embassy-atlas-point[data-location-kind="ghost"]:hover circle,
+.embassy-atlas-point[data-location-kind="ghost"]:focus-visible circle,
+.embassy-atlas-point[data-location-kind="ghost"][data-active="true"] circle {
+  fill: color-mix(in srgb, var(--team-cold) 40%, transparent);
+  transform: scale(1.22);
+}
+
 .embassy-atlas-readout {
   position: absolute;
   right: clamp(1rem, 3vw, 2rem);
@@ -5594,6 +5662,8 @@ h3 {
   display: grid;
   gap: 0.2rem;
   min-width: min(15rem, calc(100% - 2rem));
+  max-width: min(23rem, calc(100% - 2rem));
+  min-height: 7.6rem;
   border-top: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
   background: color-mix(in srgb, var(--paper) 80%, transparent);
   color: var(--ink);
@@ -5629,10 +5699,38 @@ h3 {
   line-height: 1.35;
 }
 
+.embassy-atlas-readout p {
+  max-width: 28ch;
+  color: color-mix(in srgb, var(--ink) 62%, var(--muted));
+  font-size: 0.76rem;
+  font-weight: 560;
+  line-height: 1.45;
+}
+
+.embassy-atlas-counter,
+.embassy-atlas-caption {
+  grid-column: 2;
+  margin: 0;
+  color: color-mix(in srgb, var(--ink) 48%, var(--muted));
+  font-size: 0.72rem;
+  font-weight: 780;
+  letter-spacing: 0.08em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.embassy-atlas-caption {
+  color: color-mix(in srgb, var(--ink) 58%, var(--muted));
+  font-size: 0.82rem;
+  font-weight: 560;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
 .embassy-atlas-list {
   grid-column: 2;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.7rem;
 }
 
@@ -5670,10 +5768,49 @@ h3 {
   outline: none;
 }
 
+.embassy-atlas-list-item[data-location-kind="ghost"] {
+  border-color: color-mix(in srgb, var(--rule) 54%, transparent);
+  opacity: 0.64;
+}
+
+.embassy-atlas-list-item[data-location-kind="ghost"] strong {
+  color: color-mix(in srgb, var(--ink) 66%, var(--muted));
+}
+
+.embassy-atlas-list-item[data-location-kind="ghost"][data-active="true"],
+.embassy-atlas-list-item[data-location-kind="ghost"]:focus-visible {
+  border-color: color-mix(in srgb, var(--team-cold) 40%, var(--rule));
+  opacity: 0.9;
+}
+
 .embassy-atlas-noscript {
   display: grid;
   gap: 0.5rem;
   margin-top: 1rem;
+}
+
+@keyframes embassy-influence-breathe {
+  0%,
+  100% {
+    opacity: 0.36;
+    transform: scale(0.96);
+  }
+
+  48% {
+    opacity: 0.55;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes embassy-arc-breathe {
+  0%,
+  100% {
+    opacity: 0.28;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
 }
 
 .embassy-card-grid {
@@ -13806,6 +13943,11 @@ h3 {
     grid-column: auto;
   }
 
+  .embassy-atlas-counter,
+  .embassy-atlas-caption {
+    grid-column: auto;
+  }
+
   .embassy-detail-media {
     order: -1;
   }
@@ -13840,10 +13982,14 @@ h3 {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .embassy-atlas-arc,
+  .embassy-atlas-influence,
+  .embassy-atlas-ghost-aura,
   .embassy-atlas-point circle,
   .embassy-atlas-point text,
   .embassy-card a,
   .skip-link {
+    animation: none;
     transition: none;
   }
 
