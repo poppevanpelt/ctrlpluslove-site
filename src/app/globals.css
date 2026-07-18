@@ -130,8 +130,38 @@ body,
     color 0.24s ease, filter 190ms ease;
 }
 
+.site-shell::before {
+  position: fixed;
+  z-index: 2147482998;
+  top: calc(0.9rem + env(safe-area-inset-top));
+  left: clamp(0.85rem, 2vw, 1.35rem);
+  width: min(26rem, calc(100vw - 1.7rem));
+  border-top: 1px solid color-mix(in srgb, var(--team-cold) 46%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--team-cold) 18%, transparent);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--paper) 90%, transparent), transparent);
+  color: color-mix(in srgb, var(--team-cold) 82%, var(--ink) 18%);
+  content: "CTRL LAYER // HUMAN SIGNAL DETECTED // ROOM INTERFACE";
+  font-size: 0.58rem;
+  font-weight: 820;
+  letter-spacing: 0.1em;
+  line-height: 1.25;
+  opacity: 0;
+  padding: 0.42rem 0;
+  pointer-events: none;
+  text-transform: uppercase;
+  transform: translateY(-0.3rem);
+  transition: opacity 150ms ease, transform 150ms ease;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
 :root.ctrl-layer-active .site-shell {
   filter: contrast(1.07) saturate(1.045);
+}
+
+:root.ctrl-layer-active .site-shell::before {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 :root.ctrl-layer-active .steel-ball-cursor {
@@ -393,6 +423,7 @@ body,
   body::before,
   body::after,
   .site-shell,
+  .site-shell::before,
   .ctrl-layer-note,
   [data-ctrl-note]::after,
   .ctrl-layer-system-panel {
@@ -405,6 +436,7 @@ body,
   .ctrl-layer-note-logo,
   .ctrl-layer-note-hero,
   .ctrl-layer-note-subline,
+  .site-shell::before,
   .ctrl-layer-system-panel {
     transform: none;
   }

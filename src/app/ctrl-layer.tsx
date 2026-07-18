@@ -28,7 +28,6 @@ const TYPING_SELECTOR = [
 const TOUCH_POINTER_QUERY = "(hover: none), (pointer: coarse)";
 const HINT_DELAY_MS = 4200;
 const LONG_PRESS_MS = 700;
-const KEYBOARD_ACTIVATION_DELAY_MS = 520;
 const ACTIVE_CLASS = "ctrl-layer-active";
 const ACTIVE_ATTRIBUTE = "data-ctrl-layer-active";
 const SYSTEM_READOUTS = [
@@ -90,19 +89,11 @@ export function CtrlLayerProvider({ children }: { children: React.ReactNode }) {
   const [touchCapable, setTouchCapable] = useState(false);
   const isMacRef = useRef(false);
   const discoveredRef = useRef(true);
-  const keyboardActivationTimerRef = useRef<number | null>(null);
   const active = keyboardActive || touchActive;
 
   const writeRootState = useCallback((nextActive: boolean) => {
     document.documentElement.classList.toggle(ACTIVE_CLASS, nextActive);
     document.documentElement.toggleAttribute(ACTIVE_ATTRIBUTE, nextActive);
-  }, []);
-
-  const cancelKeyboardActivation = useCallback(() => {
-    if (keyboardActivationTimerRef.current !== null) {
-      window.clearTimeout(keyboardActivationTimerRef.current);
-      keyboardActivationTimerRef.current = null;
-    }
   }, []);
 
   const markDiscovered = useCallback(() => {
@@ -154,22 +145,13 @@ export function CtrlLayerProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const isActivationKey = (key: string) =>
       key === "Meta" || key === "Control";
-    const activationModifierHeld = (event: KeyboardEvent) =>
-      event.metaKey || event.ctrlKey;
 
     const deactivate = () => {
-      cancelKeyboardActivation();
       setKeyboardActive(false);
       setTouchActiveState(false);
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (activationModifierHeld(event) && !isActivationKey(event.key)) {
-        cancelKeyboardActivation();
-        setKeyboardActive(false);
-        return;
-      }
-
       if (!isActivationKey(event.key) || isTypingTarget(event.target)) {
         return;
       }
@@ -178,13 +160,9 @@ export function CtrlLayerProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      cancelKeyboardActivation();
-      keyboardActivationTimerRef.current = window.setTimeout(() => {
-        keyboardActivationTimerRef.current = null;
-        writeRootState(true);
-        setKeyboardActive(true);
-        markDiscovered();
-      }, KEYBOARD_ACTIVATION_DELAY_MS);
+      writeRootState(true);
+      setKeyboardActive(true);
+      markDiscovered();
     };
 
     const handleKeyUp = (event: KeyboardEvent) => {
@@ -192,7 +170,6 @@ export function CtrlLayerProvider({ children }: { children: React.ReactNode }) {
         isActivationKey(event.key) || (!event.metaKey && !event.ctrlKey);
 
       if (modifierReleased) {
-        cancelKeyboardActivation();
         setKeyboardActive(false);
       }
     };
@@ -215,7 +192,7 @@ export function CtrlLayerProvider({ children }: { children: React.ReactNode }) {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       deactivate();
     };
-  }, [cancelKeyboardActivation, keyboardActive, markDiscovered, writeRootState]);
+  }, [keyboardActive, markDiscovered, writeRootState]);
 
   useEffect(() => {
     window.setTimeout(() => {
