@@ -1009,7 +1009,7 @@ export default async function Home() {
             <Link href="/artifacts/">Artifacts</Link>
           </p>
           <p>
-            <Link href="/room-runner/">Room Runner</Link>
+            <Link href="/room-runner/">Live Room</Link>
           </p>
           <p>
             <Link href="/ambassadors/">Ambassadors</Link>

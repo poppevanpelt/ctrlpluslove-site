@@ -19,9 +19,14 @@ export default function RoomPage() {
 
       <section className="content-section room-directory-section">
         <div className="content-block room-directory-block">
-          <Link className="back-home-link" href="/">
-            ← Home
-          </Link>
+          <div className="page-backlinks">
+            <Link className="back-home-link" href="/">
+              ← Home
+            </Link>
+            <Link className="back-home-link" href="/room-runner/">
+              Live Room
+            </Link>
+          </div>
 
           <div className="section-heading quiet-heading">
             <div>
@@ -124,8 +129,8 @@ export default function RoomPage() {
             <h2 id="room-closing-title">
               Watch the Room think through a live example.
             </h2>
-            <Link className="text-link" href="/living-decision-review/">
-              Open the decision review →
+            <Link className="text-link" href="/room-runner/">
+              Open the Live Room →
             </Link>
           </section>
         </div>

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { CtrlLayerLogoTrigger } from "./ctrl-layer";
 import { CtrlLayerNote } from "./ctrl-layer-note";
 
@@ -14,15 +16,16 @@ export function HomeHero() {
           </p>
         </CtrlLayerLogoTrigger>
         <nav className="home-hero-nav" aria-label="Institution">
-          <a href="/radar/">RADAR</a>
+          <Link href="/radar/">RADAR</Link>
           <a href="#the-room">THE ROOM</a>
+          <Link href="/room-runner/">LIVE ROOM</Link>
           <a href="#personas">PERSONAS</a>
           <a href="#products">PRODUCTS</a>
           <a href="#cases">CASES</a>
           <a href="#network">NETWORK</a>
-          <a href="/embassies/">EMBASSIES</a>
+          <Link href="/embassies/">EMBASSIES</Link>
           <a href="#founder">FOUNDER</a>
-          <a href="/constitution/">THE CONSTITUTION</a>
+          <Link href="/constitution/">THE CONSTITUTION</Link>
           <a href="mailto:hello@ctrlpluslove.com">ADMISSION</a>
         </nav>
         <div className="chapter-arrival-message">

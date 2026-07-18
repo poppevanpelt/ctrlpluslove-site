@@ -10,6 +10,7 @@ import {
 } from "./world-emotion-engine";
 
 const STORAGE_KEY = "ctrl-love-soundtrack-muted";
+const OFFICE_SOUNDTRACK_EVENT = "ctrl-love-office-soundtrack-shift";
 const BASE_VOLUME = 0.12;
 const HIDDEN_VOLUME = 0.025;
 const GRAPH_UPDATE_INTERVAL_MS = 150;
@@ -52,6 +53,14 @@ function getTargetVolume(state: WorldEmotionState, isHidden: boolean) {
     state.calm * 0.18;
 
   return BASE_VOLUME + Math.min(0.035, intensity * 0.035);
+}
+
+function getOfficeAdjustedVolume(
+  state: WorldEmotionState,
+  isHidden: boolean,
+  officeDensity: number,
+) {
+  return getTargetVolume(state, isHidden) * clamp(officeDensity, 0.42, 1.14);
 }
 
 function getAudioContext() {
@@ -102,6 +111,7 @@ export function BackgroundSoundtrack() {
   const panRef = useRef<StereoPannerNode | null>(null);
   const targetEmotionRef = useRef<WorldEmotionState>(neutralWorldEmotionState);
   const currentEmotionRef = useRef<WorldEmotionState>(neutralWorldEmotionState);
+  const officeDensityRef = useRef(1);
   const playingRef = useRef(false);
   const hiddenRef = useRef(false);
   const [audioState, setAudioState] = useState<AudioState>(() => {
@@ -169,26 +179,33 @@ export function BackgroundSoundtrack() {
     if (!context) {
       const audio = audioRef.current;
       if (audio) {
-        audio.volume = getTargetVolume(state, hiddenRef.current);
+        audio.volume = getOfficeAdjustedVolume(
+          state,
+          hiddenRef.current,
+          officeDensityRef.current,
+        );
       }
       return;
     }
 
-    const volume = getTargetVolume(state, hiddenRef.current);
+    const officeDensity = officeDensityRef.current;
+    const volume = getOfficeAdjustedVolume(state, hiddenRef.current, officeDensity);
     const lowGain = clamp(
-      -1.2 + state.energy * 2.4 + state.focus * 0.6,
+      -1.2 + state.energy * 2.4 + state.focus * 0.6 + (officeDensity - 1) * 0.7,
       -1.2,
       1.8,
     );
     const cutoff = clamp(
-      7600 + state.curiosity * 3600 + state.calm * 1500,
+      7600 + state.curiosity * 3600 + state.calm * 1500 + (officeDensity - 1) * 900,
       7200,
       12700,
     );
     const pan = clamp((state.playfulness - state.focus) * 0.07, -0.07, 0.07);
     const now = context.currentTime;
 
-    audioRef.current && (audioRef.current.volume = 1);
+    if (audioRef.current) {
+      audioRef.current.volume = 1;
+    }
     setSmoothedParam(lowShelfRef.current?.gain, lowGain, now, 2.8);
     setSmoothedParam(lowPassRef.current?.frequency, cutoff, now, 4.2);
     setSmoothedParam(panRef.current?.pan, pan, now, 3.4);
@@ -215,9 +232,10 @@ export function BackgroundSoundtrack() {
       audio.loop = true;
       audio.muted = false;
       const context = setupAudioGraph(audio);
-      const targetVolume = getTargetVolume(
+      const targetVolume = getOfficeAdjustedVolume(
         currentEmotionRef.current,
         hiddenRef.current,
+        officeDensityRef.current,
       );
 
       audio.volume = context ? 1 : targetVolume;
@@ -294,13 +312,22 @@ export function BackgroundSoundtrack() {
       return;
     }
 
-    audio.volume = getTargetVolume(neutralWorldEmotionState, hiddenRef.current);
+    audio.volume = getOfficeAdjustedVolume(
+      neutralWorldEmotionState,
+      hiddenRef.current,
+      officeDensityRef.current,
+    );
 
     const handleError = () => setAudioState("unavailable");
     const handleEnded = () => setAudioState("muted");
     const handleEmotion = (event: Event) => {
       const customEvent = event as CustomEvent<WorldEmotionState>;
       targetEmotionRef.current = customEvent.detail ?? neutralWorldEmotionState;
+    };
+    const handleOfficeSoundtrack = (event: Event) => {
+      const customEvent = event as CustomEvent<{ density?: number }>;
+      officeDensityRef.current = clamp(customEvent.detail?.density ?? 1, 0.42, 1.14);
+      applyEmotionToGraph(currentEmotionRef.current);
     };
     const handleVisibility = () => {
       hiddenRef.current = document.visibilityState === "hidden";
@@ -310,6 +337,7 @@ export function BackgroundSoundtrack() {
     audio.addEventListener("error", handleError);
     audio.addEventListener("ended", handleEnded);
     window.addEventListener(WORLD_EMOTION_EVENT, handleEmotion);
+    window.addEventListener(OFFICE_SOUNDTRACK_EVENT, handleOfficeSoundtrack);
     document.addEventListener("visibilitychange", handleVisibility);
 
     let frame = 0;
@@ -349,6 +377,7 @@ export function BackgroundSoundtrack() {
       audio.removeEventListener("error", handleError);
       audio.removeEventListener("ended", handleEnded);
       window.removeEventListener(WORLD_EMOTION_EVENT, handleEmotion);
+      window.removeEventListener(OFFICE_SOUNDTRACK_EVENT, handleOfficeSoundtrack);
       document.removeEventListener("visibilitychange", handleVisibility);
     };
   }, []);

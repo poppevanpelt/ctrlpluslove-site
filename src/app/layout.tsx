@@ -7,6 +7,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { routeMetadata, SITE_URL } from "./seo";
 import { BackgroundSoundtrack } from "./background-soundtrack";
 import { CtrlLayerProvider } from "./ctrl-layer";
+import { LivingOffice } from "./living-office";
 import { SteelBallCursor } from "./steel-ball-cursor";
 import { TimeAwareAmbience } from "./time-aware-ambience";
 
@@ -41,6 +42,7 @@ export default function RootLayout({
         <CtrlLayerProvider>
           {children}
           <TimeAwareAmbience />
+          <LivingOffice />
           <BackgroundSoundtrack />
           <SteelBallCursor />
           <Analytics />

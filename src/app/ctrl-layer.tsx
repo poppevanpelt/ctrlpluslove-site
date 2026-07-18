@@ -283,14 +283,19 @@ export function CtrlLayerProvider({ children }: { children: React.ReactNode }) {
   }, [markDiscovered]);
 
   useEffect(() => {
+    let resetTimer = 0;
+
     writeRootState(active);
 
     if (!active) {
       activeRef.current = false;
-      setActivation(null);
+      resetTimer = window.setTimeout(() => {
+        setActivation(null);
+      }, 0);
     }
 
     return () => {
+      window.clearTimeout(resetTimer);
       writeRootState(false);
     };
   }, [active, writeRootState]);

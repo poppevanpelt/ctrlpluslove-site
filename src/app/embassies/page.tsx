@@ -23,6 +23,9 @@ export default function EmbassiesPage() {
             <Link className="back-home-link" href="/ambassadors/">
               Around the Table
             </Link>
+            <Link className="back-home-link" href="/room-runner/">
+              Live Room
+            </Link>
           </div>
 
           <div className="embassy-hero-grid">
@@ -30,10 +33,15 @@ export default function EmbassiesPage() {
               <p className="section-kicker">Embassy Network</p>
               <h1>Ideas don’t scale. Trusted people do.</h1>
             </div>
-            <p>
-              The ctrl+love Embassy Network is a growing community of creative
-              leaders who help ideas arrive with local intelligence.
-            </p>
+            <div className="embassy-hero-copy">
+              <p>
+                The ctrl+love Embassy Network is a growing community of creative
+                leaders who help ideas arrive with local intelligence.
+              </p>
+              <Link className="text-link" href="/room-runner/">
+                Open the Live Room →
+              </Link>
+            </div>
           </div>
         </div>
       </section>

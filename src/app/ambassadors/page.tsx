@@ -15,9 +15,14 @@ export default function AmbassadorsPage() {
 
       <section className="content-section ambassador-directory-section">
         <div className="content-block ambassador-directory-block">
-          <Link className="back-home-link" href="/">
-            ← Home
-          </Link>
+          <div className="page-backlinks">
+            <Link className="back-home-link" href="/">
+              ← Home
+            </Link>
+            <Link className="back-home-link" href="/room-runner/">
+              Live Room
+            </Link>
+          </div>
 
           <div className="section-heading quiet-heading">
             <div>
@@ -46,8 +51,8 @@ export default function AmbassadorsPage() {
             <h2 id="ambassador-closing-title">
               Bring in the people the decision actually needs.
             </h2>
-            <Link className="text-link" href="/#room">
-              Bring a decision into the Room →
+            <Link className="text-link" href="/room-runner/">
+              Open the Live Room →
             </Link>
           </section>
         </div>
