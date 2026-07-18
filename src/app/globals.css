@@ -762,7 +762,7 @@ body,
   }
 }
 
-@media (hover: none), (pointer: coarse), (max-width: 759px) {
+@media ((hover: none) and (pointer: coarse)), (max-width: 759px) {
   .steel-ball-stage-origin {
     display: none;
   }
@@ -11855,6 +11855,14 @@ h3 {
 
 .chapter-arrival .arrival-status strong {
   color: #f8f4ed;
+}
+
+.home-hero-section.chapter-arrival {
+  background:
+    radial-gradient(circle at 34% 32%, rgb(255 255 255 / 10%) 0 6rem, transparent 18rem),
+    radial-gradient(ellipse at 50% 100%, rgb(255 255 255 / 7%) 0 10rem, transparent 34rem),
+    linear-gradient(180deg, #080806 0%, #020202 55%, #0a0907 100%) !important;
+  color: #f4efe6;
 }
 
 @media (max-width: 900px) {
