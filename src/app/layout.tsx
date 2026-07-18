@@ -6,6 +6,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { routeMetadata, SITE_URL } from "./seo";
 import { BackgroundSoundtrack } from "./background-soundtrack";
+import { CtrlLayerProvider } from "./ctrl-layer";
 import { SteelBallCursor } from "./steel-ball-cursor";
 
 export const metadata: Metadata = {
@@ -33,11 +34,13 @@ export default function RootLayout({
         <Script src="/theme-init.js" strategy="beforeInteractive" />
       </head>
       <body>
-        {children}
-        <BackgroundSoundtrack />
-        <SteelBallCursor />
-        <Analytics />
-        <SpeedInsights />
+        <CtrlLayerProvider>
+          {children}
+          <BackgroundSoundtrack />
+          <SteelBallCursor />
+          <Analytics />
+          <SpeedInsights />
+        </CtrlLayerProvider>
       </body>
     </html>
   );

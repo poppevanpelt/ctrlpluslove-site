@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 
 import { confirmedAmbassadors } from "./ambassadors-data";
+import { CtrlLayerNote } from "./ctrl-layer-note";
 import { GlobalMood } from "./global-mood";
 import { getAmbassadorProfile } from "./ambassador-profiles-data";
 import { HomeHero } from "./home-hero";
@@ -342,7 +343,12 @@ export default async function Home() {
           <div className="homepage-radar-intro">
             <div>
               <p className="section-kicker">CTRL+LOVE RADAR</p>
-              <h2 id="homepage-radar-title">Before the Room, there is Radar.</h2>
+              <h2 id="homepage-radar-title" className="ctrl-layer-anchor">
+                Before the Room, there is Radar.
+                <CtrlLayerNote className="ctrl-layer-note-right">
+                  LISTENING FOR CONTRADICTIONS
+                </CtrlLayerNote>
+              </h2>
               <p className="homepage-radar-deck">
                 Radar collects small human observations before they become
                 bigger decisions.
@@ -395,7 +401,10 @@ export default async function Home() {
               }
             >
               {radarPreview.signals.map((signal) => (
-                <article className="homepage-radar-card" key={`${signal.location}-${signal.signal}`}>
+                <article
+                  className="homepage-radar-card ctrl-layer-anchor"
+                  key={`${signal.location}-${signal.signal}`}
+                >
                   <div className="homepage-radar-card-meta">
                     <span>{signal.location}</span>
                     <span>{signal.type}</span>
@@ -405,6 +414,9 @@ export default async function Home() {
                     {signal.confidence ? <span>{signal.confidence} confidence</span> : null}
                     {signal.source ? <span>{signal.source}</span> : null}
                   </div>
+                  <CtrlLayerNote className="ctrl-layer-note-card">
+                    THE SYSTEM NOTICED YOU
+                  </CtrlLayerNote>
                 </article>
               ))}
             </div>
@@ -444,8 +456,11 @@ export default async function Home() {
               <p>Decision 014</p>
               <span>Initial confidence 82%</span>
             </div>
-            <h2 id="first-room-title">
+            <h2 id="first-room-title" className="ctrl-layer-anchor">
               Should we expand into Brazil next quarter?
+              <CtrlLayerNote className="ctrl-layer-note-right">
+                THIS PART HAS DOUBTS
+              </CtrlLayerNote>
             </h2>
             <dl className="decision-card-facts">
               <div>
@@ -466,12 +481,17 @@ export default async function Home() {
           <div className="room-theatre" aria-label="Live Room sequence">
             <div className="decision-journey" aria-label="Decision journey">
               {decisionJourney.map((step, index) => (
-                <div className="decision-journey-step" key={step.label}>
+                <div className="decision-journey-step ctrl-layer-anchor" key={step.label}>
                   <span>{String(index + 1).padStart(2, "0")}</span>
                   <div>
                     <p>{step.label}</p>
                     <strong>{step.value}</strong>
                   </div>
+                  {index === 4 ? (
+                    <CtrlLayerNote className="ctrl-layer-note-card">
+                      NOT EVERYTHING HERE IS OPTIMIZED
+                    </CtrlLayerNote>
+                  ) : null}
                 </div>
               ))}
             </div>
@@ -608,10 +628,13 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className="specialisation-ribbon" aria-label="Network specialisations">
+          <div className="specialisation-ribbon ctrl-layer-anchor" aria-label="Network specialisations">
             {networkSpecialisations.map((specialisation) => (
               <span key={specialisation}>{specialisation}</span>
             ))}
+            <CtrlLayerNote className="ctrl-layer-note-left">
+              EMOTIONAL INFRASTRUCTURE
+            </CtrlLayerNote>
           </div>
         </div>
       </section>
@@ -671,6 +694,11 @@ export default async function Home() {
                     <dd>{persona.contribution ?? persona.line}</dd>
                   </div>
                 </dl>
+                {index === 1 ? (
+                  <CtrlLayerNote className="ctrl-layer-note-card">
+                    MACHINE-ASSISTED, HUMAN-LED
+                  </CtrlLayerNote>
+                ) : null}
               </Link>
             ))}
           </div>
@@ -693,7 +721,7 @@ export default async function Home() {
           </div>
           <div className="product-grid">
             {products.map((product) => (
-              <Link className="product-card" href={product.href} key={product.name}>
+              <Link className="product-card ctrl-layer-anchor" href={product.href} key={product.name}>
                 <span>{product.object}</span>
                 <h3>{product.name}</h3>
                 <dl>
@@ -718,6 +746,11 @@ export default async function Home() {
                     <dd>{product.startingPoint}</dd>
                   </div>
                 </dl>
+                {product.name === "Decision Stress-Test™" ? (
+                  <CtrlLayerNote className="ctrl-layer-note-card">
+                    BUILT WITH CURIOSITY
+                  </CtrlLayerNote>
+                ) : null}
               </Link>
             ))}
           </div>
@@ -763,8 +796,11 @@ export default async function Home() {
         <div className="content-block wide cases-block">
           <div className="cases-heading">
             <p className="section-kicker">Selected Decisions</p>
-            <h2 id="cases-title">
+            <h2 id="cases-title" className="ctrl-layer-anchor">
               Real decisions improved. Names withheld. Lessons intact.
+              <CtrlLayerNote className="ctrl-layer-note-right">
+                ACCIDENTALLY MEANINGFUL
+              </CtrlLayerNote>
             </h2>
             <aside className="human-proof-note">
               The visible issue was performance. The deeper issue was that
@@ -805,7 +841,12 @@ export default async function Home() {
         <div className="content-block wide homepage-block">
           <div className="chapter-object-heading">
             <p className="section-kicker">Artifact 001</p>
-            <h2 id="steel-ball-title">Confidence should feel heavy.</h2>
+            <h2 id="steel-ball-title" className="ctrl-layer-anchor">
+              Confidence should feel heavy.
+              <CtrlLayerNote className="ctrl-layer-note-right">
+                VERSION 0.∞
+              </CtrlLayerNote>
+            </h2>
           </div>
           <SteelBallPresence />
         </div>
@@ -819,8 +860,11 @@ export default async function Home() {
         <div className="content-block wide founders-block">
           <div className="founders-manifesto">
             <p className="section-kicker">Founder</p>
-            <h2 id="founders-title">
+            <h2 id="founders-title" className="ctrl-layer-anchor">
               Built for the moment before certainty becomes expensive.
+              <CtrlLayerNote className="ctrl-layer-note-right">
+                GOOD IDEAS KEEP STRANGE HOURS
+              </CtrlLayerNote>
             </h2>
             <p>
               ctrl+love is most useful before consensus hardens, before the
@@ -867,7 +911,7 @@ export default async function Home() {
             <h2 id="artifact-title">Decision 014 / Reality Contact Record</h2>
           </div>
 
-          <article className="decision-artifact" aria-label="Decision Record 014">
+          <article className="decision-artifact ctrl-layer-anchor" aria-label="Decision Record 014">
             <div className="artifact-topline">
               <span>ctrl+love</span>
               <span>ROOM OUTPUT / 001</span>
@@ -880,6 +924,9 @@ export default async function Home() {
                 </div>
               ))}
             </dl>
+            <CtrlLayerNote className="ctrl-layer-note-card">
+              PROBABLY NOT FINISHED
+            </CtrlLayerNote>
           </article>
         </div>
       </section>

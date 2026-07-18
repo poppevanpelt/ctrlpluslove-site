@@ -1,10 +1,18 @@
+import { CtrlLayerLogoTrigger } from "./ctrl-layer";
+import { CtrlLayerNote } from "./ctrl-layer-note";
+
 export function HomeHero() {
   return (
     <section className="hero-section home-hero-section chapter-arrival">
       <div className="home-hero-copy chapter-arrival-copy">
-        <p className="home-hero-logo" aria-label="ctrl+love">
-          ctrl+love
-        </p>
+        <CtrlLayerLogoTrigger>
+          <p className="home-hero-logo ctrl-layer-anchor" aria-label="ctrl+love">
+            ctrl+love
+            <CtrlLayerNote className="ctrl-layer-note-logo">
+              CONTROL REVEALS ANOTHER LAYER
+            </CtrlLayerNote>
+          </p>
+        </CtrlLayerLogoTrigger>
         <nav className="home-hero-nav" aria-label="Institution">
           <a href="/radar/">RADAR</a>
           <a href="#the-room">THE ROOM</a>
@@ -23,9 +31,15 @@ export function HomeHero() {
             tabIndex={-1}
           >
             Shortcut to reality.
+            <CtrlLayerNote className="ctrl-layer-note-hero">
+              HUMAN SIGNAL DETECTED
+            </CtrlLayerNote>
           </h1>
           <p className="home-hero-subline sequence-reveal sequence-hero-orientation">
             Bring the decision into the room.
+            <CtrlLayerNote className="ctrl-layer-note-subline">
+              STILL THINKING
+            </CtrlLayerNote>
           </p>
           <p className="home-hero-proposition sequence-reveal sequence-hero-orientation">
             AI finds patterns. Human judgment decides what matters.
@@ -39,6 +53,9 @@ export function HomeHero() {
           >
             <span>ROOM STATUS</span>
             <strong>Decision entering...</strong>
+            <CtrlLayerNote className="ctrl-layer-note-status">
+              CURRENTLY BROADCASTING
+            </CtrlLayerNote>
           </div>
         </div>
       </div>
