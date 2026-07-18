@@ -29,6 +29,7 @@ export function HomeHero() {
           <div className="chapter-arrival-scene" aria-hidden="true">
             <span className="chapter-arrival-floor" />
             <span className="chapter-arrival-incident-mark" />
+            <span className="chapter-arrival-dust" />
             <span className="home-hero-reality-word">
               <span
                 className="steel-ball-stage-origin"
