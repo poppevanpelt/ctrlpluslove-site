@@ -37,6 +37,51 @@ const SYSTEM_READOUTS = [
   "NOT EVERYTHING HERE IS OPTIMIZED",
   "VERSION 0.∞",
 ];
+const MUTATED_READOUTS = [
+  "HUMAN SIGNAL DISAGREES",
+  "CONFIDENCE HAS NOT SETTLED",
+  "THE BRIEF IS WATCHING BACK",
+  "OPTIMIZATION PAUSED ITSELF",
+  "A BETTER QUESTION IS FORMING",
+  "THE ROOM KEPT ONE DOUBT",
+];
+const CONTRADICTION_READOUTS = [
+  "RECOMMENDATION: PROCEED / DO NOT PROCEED",
+  "CONSENSUS DETECTED, TRUST REDUCED",
+  "ANSWER ACCEPTED, QUESTION REOPENED",
+  "THE SYSTEM AGREES WITH ITS OBJECTION",
+];
+const STRAY_DETAILS = [
+  "UNLABELED CONSEQUENCE",
+  "EDGE OF THE DECISION",
+  "THIS NOTE MOVED",
+  "QUIET EXCEPTION",
+  "SIGNAL WITHOUT OWNER",
+  "PARTIAL TRUTH HELD HERE",
+];
+const LEAKAGE_LINES = [
+  "The visible site is a negotiated version.",
+  "Some decisions arrive before anyone admits they are decisions.",
+  "The system is not confused. It is withholding premature certainty.",
+  "A contradiction has been preserved for later use.",
+];
+
+type CtrlLayerDepth = "quiet" | "contradictory" | "leak";
+
+type CtrlLayerStrayDetail = {
+  text: string;
+  position: "upper" | "middle" | "lower";
+};
+
+type CtrlLayerActivation = {
+  id: number;
+  depth: CtrlLayerDepth;
+  header: string;
+  readouts: string[];
+  footer: string;
+  strays: CtrlLayerStrayDetail[];
+  leakLines: string[];
+};
 
 type CtrlLayerContextValue = {
   active: boolean;
@@ -46,6 +91,58 @@ type CtrlLayerContextValue = {
 };
 
 const CtrlLayerContext = createContext<CtrlLayerContextValue | null>(null);
+
+function randomItem<T>(items: T[]) {
+  return items[Math.floor(Math.random() * items.length)];
+}
+
+function shuffled<T>(items: T[]) {
+  return [...items].sort(() => Math.random() - 0.5);
+}
+
+function createCtrlLayerActivation(): CtrlLayerActivation {
+  const chance = Math.random();
+  const depth: CtrlLayerDepth =
+    chance > 0.96 ? "leak" : chance > 0.78 ? "contradictory" : "quiet";
+  const readouts = shuffled(SYSTEM_READOUTS);
+  const strays: CtrlLayerStrayDetail[] = [
+    { text: randomItem(STRAY_DETAILS), position: "upper" },
+  ];
+
+  if (Math.random() > 0.72) {
+    readouts.splice(1, 0, randomItem(MUTATED_READOUTS));
+  }
+
+  if (depth !== "quiet") {
+    readouts.splice(2, 0, randomItem(CONTRADICTION_READOUTS));
+    strays.push({ text: randomItem(STRAY_DETAILS), position: "middle" });
+  }
+
+  if (depth === "leak") {
+    readouts.splice(0, 0, "SECONDARY SITE BLEEDING THROUGH");
+    strays.push({ text: "INTERFACE DETAIL DETACHED", position: "lower" });
+  }
+
+  return {
+    id: Date.now(),
+    depth,
+    header:
+      depth === "leak"
+        ? "ROOM INTERFACE / UNSUPERVISED"
+        : depth === "contradictory"
+          ? "ROOM INTERFACE / DISAGREEMENT"
+          : "ROOM INTERFACE",
+    readouts: readouts.slice(0, depth === "quiet" ? 5 : 6),
+    footer:
+      depth === "leak"
+        ? "SIGNAL REMAINS AFTER RELEASE"
+        : depth === "contradictory"
+          ? "HOLDING TWO TRUE THINGS"
+          : "HOLD TO KEEP SIGNAL OPEN",
+    strays,
+    leakLines: depth === "leak" ? shuffled(LEAKAGE_LINES).slice(0, 2) : [],
+  };
+}
 
 function isMacLike() {
   const platform = navigator.platform || "";
@@ -87,8 +184,10 @@ export function CtrlLayerProvider({ children }: { children: React.ReactNode }) {
   const [hintReady, setHintReady] = useState(false);
   const [discovered, setDiscovered] = useState(true);
   const [touchCapable, setTouchCapable] = useState(false);
+  const [activation, setActivation] = useState<CtrlLayerActivation | null>(null);
   const isMacRef = useRef(false);
   const discoveredRef = useRef(true);
+  const activeRef = useRef(false);
   const active = keyboardActive || touchActive;
 
   const writeRootState = useCallback((nextActive: boolean) => {
@@ -105,6 +204,22 @@ export function CtrlLayerProvider({ children }: { children: React.ReactNode }) {
     writeDiscovered();
     setDiscovered(true);
   }, []);
+
+  const beginActivation = useCallback(() => {
+    if (!activeRef.current) {
+      setActivation(createCtrlLayerActivation());
+    }
+
+    activeRef.current = true;
+    writeRootState(true);
+    markDiscovered();
+  }, [markDiscovered, writeRootState]);
+
+  const endActivation = useCallback(() => {
+    activeRef.current = false;
+    writeRootState(false);
+    setActivation(null);
+  }, [writeRootState]);
 
   useEffect(() => {
     isMacRef.current = isMacLike();
@@ -137,6 +252,11 @@ export function CtrlLayerProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     writeRootState(active);
 
+    if (!active) {
+      activeRef.current = false;
+      setActivation(null);
+    }
+
     return () => {
       writeRootState(false);
     };
@@ -149,6 +269,7 @@ export function CtrlLayerProvider({ children }: { children: React.ReactNode }) {
     const deactivate = () => {
       setKeyboardActive(false);
       setTouchActiveState(false);
+      endActivation();
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -156,9 +277,8 @@ export function CtrlLayerProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      writeRootState(true);
+      beginActivation();
       setKeyboardActive(true);
-      markDiscovered();
     };
 
     const handleKeyUp = (event: KeyboardEvent) => {
@@ -188,15 +308,15 @@ export function CtrlLayerProvider({ children }: { children: React.ReactNode }) {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       deactivate();
     };
-  }, [markDiscovered, writeRootState]);
+  }, [beginActivation, endActivation]);
 
   useEffect(() => {
     window.setTimeout(() => {
-      writeRootState(false);
+      endActivation();
       setKeyboardActive(false);
       setTouchActiveState(false);
     }, 0);
-  }, [pathname, writeRootState]);
+  }, [pathname, endActivation]);
 
   useEffect(() => {
     if (!touchCapable || !touchActive) {
@@ -228,28 +348,39 @@ export function CtrlLayerProvider({ children }: { children: React.ReactNode }) {
       keyLabel,
       setTouchActive: (nextActive) => {
         if (nextActive) {
-          markDiscovered();
+          beginActivation();
+        } else {
+          endActivation();
         }
 
-        writeRootState(nextActive);
         setTouchActiveState(nextActive);
       },
       toggleTouchActive: () => {
-        markDiscovered();
         setTouchActiveState((current) => {
           const nextActive = !current;
-          writeRootState(nextActive);
+
+          if (nextActive) {
+            beginActivation();
+          } else {
+            endActivation();
+          }
+
           return nextActive;
         });
       },
     }),
-    [active, keyLabel, markDiscovered, writeRootState],
+    [active, beginActivation, endActivation, keyLabel],
   );
 
   return (
     <CtrlLayerContext.Provider value={value}>
       {children}
-      {active ? <CtrlLayerSystemPanel keyLabel={keyLabel} /> : null}
+      {active && activation ? (
+        <>
+          <CtrlLayerSystemPanel activation={activation} keyLabel={keyLabel} />
+          <CtrlLayerStrayDetails activation={activation} />
+        </>
+      ) : null}
       {!discovered && hintReady ? (
         <div className="ctrl-layer-hint" aria-hidden="true">
           HOLD {keyLabel}
@@ -260,25 +391,59 @@ export function CtrlLayerProvider({ children }: { children: React.ReactNode }) {
 }
 
 function CtrlLayerSystemPanel({
+  activation,
   keyLabel,
 }: {
+  activation: CtrlLayerActivation;
   keyLabel: CtrlLayerContextValue["keyLabel"];
 }) {
   return (
-    <aside className="ctrl-layer-system-panel" aria-hidden="true">
+    <aside
+      className="ctrl-layer-system-panel"
+      data-ctrl-depth={activation.depth}
+      aria-hidden="true"
+    >
       <div className="ctrl-layer-system-panel-header">
         <span>CTRL LAYER</span>
-        <span>ROOM INTERFACE</span>
+        <span>{activation.header}</span>
       </div>
       <div className="ctrl-layer-system-panel-body">
-        {SYSTEM_READOUTS.map((readout) => (
+        {activation.readouts.map((readout) => (
           <span key={readout}>{readout}</span>
         ))}
       </div>
+      {activation.leakLines.length > 0 ? (
+        <div className="ctrl-layer-leakage">
+          {activation.leakLines.map((line) => (
+            <p key={line}>{line}</p>
+          ))}
+        </div>
+      ) : null}
       <div className="ctrl-layer-system-panel-footer">
-        HOLD {keyLabel} TO KEEP SIGNAL OPEN
+        {activation.footer} / {keyLabel}
       </div>
     </aside>
+  );
+}
+
+function CtrlLayerStrayDetails({
+  activation,
+}: {
+  activation: CtrlLayerActivation;
+}) {
+  return (
+    <>
+      {activation.strays.map((detail, index) => (
+        <span
+          className="ctrl-layer-stray-detail"
+          data-position={detail.position}
+          aria-hidden="true"
+          key={`${activation.id}-${detail.position}-${index}`}
+        >
+          {detail.text}
+        </span>
+      ))}
+    </>
   );
 }
 
