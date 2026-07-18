@@ -13939,6 +13939,15 @@ h3 {
     grid-template-columns: 1fr;
   }
 
+  .embassy-hero-grid h1 {
+    max-width: 100%;
+    font-size: clamp(3.15rem, 10vw, 5.75rem);
+    line-height: 0.98;
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+  }
+
   .embassy-atlas-list {
     grid-column: auto;
   }
@@ -13965,7 +13974,10 @@ h3 {
     padding-top: 5.2rem;
   }
 
-  .embassy-hero-grid h1,
+  .embassy-hero-grid h1 {
+    font-size: clamp(3rem, 12.5vw, 4.35rem);
+  }
+
   .embassy-detail-copy h1 {
     max-width: 10ch;
     font-size: clamp(2.65rem, 17vw, 4.8rem);
