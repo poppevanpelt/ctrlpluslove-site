@@ -5456,11 +5456,19 @@ h3 {
   align-items: end;
 }
 
-.embassy-hero-grid h1,
-.embassy-detail-copy h1 {
+.embassy-hero-grid h1 {
   max-width: 12ch;
   color: var(--ink);
   font-size: clamp(3.2rem, 9vw, 7.6rem);
+  font-weight: 580;
+  letter-spacing: 0;
+  line-height: 0.94;
+}
+
+.embassy-detail-copy h1 {
+  max-width: 7ch;
+  color: var(--ink);
+  font-size: clamp(3.1rem, 6.8vw, 6.35rem);
   font-weight: 580;
   letter-spacing: 0;
   line-height: 0.94;
@@ -5721,8 +5729,8 @@ h3 {
 
 .embassy-detail-hero {
   display: grid;
-  grid-template-columns: minmax(0, 0.52fr) minmax(19rem, 0.48fr);
-  gap: clamp(2rem, 5vw, 5rem);
+  grid-template-columns: minmax(18rem, 0.42fr) minmax(21rem, 0.58fr);
+  gap: clamp(2rem, 6vw, 6.5rem);
   align-items: end;
 }
 
@@ -5749,6 +5757,7 @@ h3 {
 .embassy-detail-media {
   position: relative;
   aspect-ratio: 4 / 5;
+  max-height: min(68rem, calc(100svh - 9rem));
   overflow: hidden;
   background: var(--paper-soft);
 }
