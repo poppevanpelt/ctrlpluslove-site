@@ -11686,13 +11686,14 @@ h3 {
   display: grid;
   grid-template-columns: minmax(17rem, 0.92fr) minmax(21rem, 1.08fr);
   align-items: center;
-  gap: clamp(1.8rem, 5vw, 5.5rem);
+  gap: clamp(0.78rem, 2svh, 1.2rem) clamp(1.8rem, 5vw, 5.5rem);
   min-height: clamp(26rem, 58svh, 39rem);
   justify-items: stretch;
 }
 
 .chapter-arrival-scene {
   position: relative;
+  grid-row: 1 / span 5;
   align-self: center;
   width: min(100%, 40rem);
   aspect-ratio: 1.42;
@@ -11745,10 +11746,10 @@ h3 {
   z-index: 2;
   display: grid;
   gap: clamp(0.55rem, 1.4svh, 0.9rem);
-  align-self: center;
+  align-self: end;
   justify-items: start;
   max-width: 44rem;
-  transform: translateY(clamp(-3.2rem, -5svh, -1.6rem));
+  transform: translateY(clamp(-1.35rem, -2.2svh, -0.75rem));
 }
 
 .chapter-arrival-signature {
@@ -11807,25 +11808,53 @@ h3 {
 }
 
 .chapter-arrival .home-hero-proposition {
+  grid-column: 2;
   max-width: min(100%, 42rem);
-  margin-top: clamp(0.8rem, 1.9svh, 1.45rem);
-  color: color-mix(in srgb, var(--ink) 84%, var(--muted));
-  font-size: clamp(1.2rem, 1.8vw, 1.7rem);
+  margin: 0;
+  color: rgb(244 239 230 / 78%);
+  font-size: clamp(1.04rem, 1.45vw, 1.38rem);
   font-weight: 620;
-  line-height: 1.22;
+  line-height: 1.26;
+  text-align: left;
 }
 
 .chapter-arrival .home-hero-subline {
   grid-column: 2;
   max-width: min(100%, 44rem);
+  margin: 0;
   color: rgb(244 239 230 / 72%);
+  font-size: clamp(1.04rem, 1.5vw, 1.36rem);
   text-align: left;
 }
 
-.chapter-arrival .home-hero-proposition,
-.chapter-arrival .home-hero-category,
+.chapter-arrival .home-hero-category {
+  grid-column: 2;
+  margin: 0;
+  color: rgb(244 239 230 / 46%);
+  font-size: clamp(0.82rem, 0.95vw, 0.95rem);
+  font-weight: 720;
+  letter-spacing: 0.04em;
+  line-height: 1.22;
+  text-align: left;
+  text-transform: uppercase;
+}
+
 .chapter-arrival .arrival-status {
-  display: none;
+  grid-column: 2;
+  justify-self: start;
+  min-width: min(100%, 20rem);
+  border-color: rgb(244 239 230 / 24%);
+  background: rgb(244 239 230 / 5%);
+  color: rgb(244 239 230 / 72%);
+  box-shadow: 0 1.2rem 3rem rgb(0 0 0 / 26%);
+}
+
+.chapter-arrival .arrival-status span {
+  color: rgb(244 239 230 / 42%);
+}
+
+.chapter-arrival .arrival-status strong {
+  color: #f8f4ed;
 }
 
 @media (max-width: 900px) {
@@ -11836,12 +11865,13 @@ h3 {
   }
 
   .chapter-arrival-scene {
+    grid-row: auto;
     width: min(100%, 30rem);
     justify-self: center;
   }
 
   .chapter-arrival-title-lockup {
-    transform: translateY(clamp(-2.35rem, -4svh, -1.15rem));
+    transform: translateY(clamp(-1.25rem, -2.2svh, -0.7rem));
   }
 
   .chapter-arrival-signature {
@@ -11855,14 +11885,23 @@ h3 {
 
   .chapter-arrival-title-lockup,
   .chapter-arrival .home-hero-line,
-  .chapter-arrival .home-hero-subline {
+  .chapter-arrival .home-hero-subline,
+  .chapter-arrival .home-hero-proposition,
+  .chapter-arrival .home-hero-category {
     justify-items: center;
     text-align: center;
   }
 
-  .chapter-arrival .home-hero-subline {
+  .chapter-arrival .home-hero-subline,
+  .chapter-arrival .home-hero-proposition,
+  .chapter-arrival .home-hero-category,
+  .chapter-arrival .arrival-status {
     grid-column: auto;
     justify-self: center;
+  }
+
+  .chapter-arrival .arrival-status {
+    width: min(100%, 20rem);
   }
 }
 
