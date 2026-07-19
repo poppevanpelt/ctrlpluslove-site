@@ -253,6 +253,7 @@ export function SteelBallCursor() {
       let previewTouchInfluenceX = 0;
       let previewFallbackDirection = 1;
       let previewFallbackLastFlipAt = 0;
+      let previewFallbackRollStartedAt = 0;
       let previewSensorSeenAt = 0;
       let previewSensorListening = false;
       let previewSensorStatus = "starting";
@@ -264,7 +265,7 @@ export function SteelBallCursor() {
       const previousPreviewDocumentPointerMove = document.onpointermove;
 
       const updatePreviewSensorLabel = () => {
-        previewBall.setAttribute("data-steel-preview-version", "visible-roll-v47");
+        previewBall.setAttribute("data-steel-preview-version", "visible-roll-v48");
         previewBall.setAttribute("data-steel-sensor-status", previewSensorStatus);
       };
 
@@ -498,6 +499,7 @@ export function SteelBallCursor() {
           previewHasLanded = true;
           previewLandedAt = now - 160;
           previewFallbackLastFlipAt = now;
+          previewFallbackRollStartedAt = now;
         }
 
         const isDropping = !previewHasLanded;
@@ -596,6 +598,7 @@ export function SteelBallCursor() {
           if (!previewHasLanded) {
             previewLandedAt = now;
             previewFallbackLastFlipAt = now;
+            previewFallbackRollStartedAt = now;
           }
           previewHasLanded = true;
         }
@@ -604,6 +607,30 @@ export function SteelBallCursor() {
           previewHasLanded = true;
           previewLandedAt = now - 160;
           previewFallbackLastFlipAt = now;
+          previewFallbackRollStartedAt = now;
+        }
+
+        if (hasFallbackDeskRoll && !previewPointerActive) {
+          if (!previewFallbackRollStartedAt) {
+            previewFallbackRollStartedAt = now;
+          }
+
+          const edgeMargin = Math.max(42, bounds.radius * 1.2);
+          const travelMinX = minX + edgeMargin;
+          const travelMaxX = maxX - edgeMargin;
+          const travelWidth = Math.max(1, travelMaxX - travelMinX);
+          const rollAge = Math.max(0, now - previewFallbackRollStartedAt);
+          const travelPeriod = 8200;
+          const phase = (rollAge % travelPeriod) / travelPeriod;
+          const wave = 0.5 - Math.cos(phase * Math.PI * 2) * 0.5;
+          const targetX = travelMinX + travelWidth * wave;
+          const direction = phase < 0.5 ? 1 : -1;
+
+          nextX = clamp(targetX, minX, maxX);
+          nextY = maxY;
+          vx = direction * 160;
+          vy = 0;
+          previewFallbackDirection = direction;
         }
 
         const verticalSettled = (nextY === maxY && effectiveGravity.y >= 0) || (nextY === minY && effectiveGravity.y <= 0);
@@ -1000,11 +1027,11 @@ export function SteelBallCursor() {
       document.documentElement.dataset.steelCursorState = "resting";
       document.documentElement.dataset.steelBallApi = "preview";
       document.documentElement.dataset.steelTiltPreview = "true";
-      document.documentElement.dataset.steelPreviewVersion = "visible-roll-v47";
+      document.documentElement.dataset.steelPreviewVersion = "visible-roll-v48";
       document.documentElement.dataset.steelGravityInput = "office-floor";
       document.documentElement.dataset.steelGravityConfidence = "0.000";
-      if (process.env.NODE_ENV !== "production" && !document.title.includes("visible-roll-v47")) {
-        document.title = `${document.title} [visible-roll-v47]`;
+      if (process.env.NODE_ENV !== "production" && !document.title.includes("visible-roll-v48")) {
+        document.title = `${document.title} [visible-roll-v48]`;
       }
       window.onmousemove = null;
       document.onmousemove = null;
