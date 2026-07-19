@@ -5535,7 +5535,6 @@ h3 {
   height: clamp(4.2rem, 14vw, 6rem);
   margin-bottom: 0.2rem;
   aspect-ratio: 430 / 414;
-  clip-path: var(--steel-ball-surface-mask);
   place-items: center;
   transform-origin: 50% 51%;
 }
@@ -5650,7 +5649,6 @@ h3 {
   background: transparent;
   transform-origin: 50% 51%;
   animation: steel-ball-product-roll 5.8s linear infinite alternate;
-  clip-path: var(--steel-ball-surface-mask);
   will-change: transform;
 }
 
@@ -5677,7 +5675,7 @@ h3 {
   clip-path: var(--steel-ball-surface-mask);
   content: "";
   mix-blend-mode: multiply;
-  opacity: 0.58;
+  opacity: 0.46;
   pointer-events: none;
 }
 
@@ -5695,7 +5693,7 @@ h3 {
   z-index: 3;
   clip-path: var(--steel-ball-surface-mask);
   mix-blend-mode: screen;
-  opacity: 0.72;
+  opacity: 0.54;
   transform-origin: 50% 51%;
   animation: steel-ball-reflection-counter-roll 5.8s linear infinite alternate;
 }
