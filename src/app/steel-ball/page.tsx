@@ -62,15 +62,18 @@ export default function SteelBallPage() {
           <section className="steel-ball-hero">
             <div className="steel-ball-hero-copy">
               <p className="section-kicker">Artifact 001</p>
-              <Image
-                className="steel-ball-hero-orb"
-                src="/museum/steel-ball-packshot.png"
-                alt=""
-                width={430}
-                height={414}
-                sizes="(max-width: 720px) 54vw, 0px"
-                priority
-              />
+              <span className="steel-ball-hero-orb" aria-hidden="true">
+                <Image
+                  className="steel-ball-hero-orb-image steel-ball-visible-image"
+                  src="/museum/steel-ball-packshot.png"
+                  alt=""
+                  width={430}
+                  height={414}
+                  sizes="(max-width: 720px) 54vw, 0px"
+                  priority
+                />
+                <span className="steel-ball-product-reflections steel-ball-hero-reflections" />
+              </span>
               <h1 id="steel-ball-title">The Steel Ball</h1>
               <p className="steel-ball-subheading">The original replica.</p>
               <p className="steel-ball-price">€29.95</p>

@@ -1172,6 +1172,7 @@ body,
   }
 
   .steel-ball-product-ball,
+  .steel-ball-hero-orb-image,
   .steel-ball-product-reflections,
   .steel-ball-product-reflections::before,
   .steel-ball-product-reflections::after,
@@ -5527,9 +5528,18 @@ h3 {
 
 .steel-ball-hero-orb {
   display: none;
+  position: relative;
   width: clamp(4.2rem, 14vw, 6rem);
   height: clamp(4.2rem, 14vw, 6rem);
   margin-bottom: 0.2rem;
+  aspect-ratio: 430 / 414;
+  place-items: center;
+  transform-origin: 50% 51%;
+}
+
+.steel-ball-hero-orb-image {
+  animation: steel-ball-hero-orb-roll 5.8s linear infinite alternate;
+  will-change: transform;
 }
 
 .steel-ball-section,
@@ -5648,7 +5658,8 @@ h3 {
   object-fit: contain;
 }
 
-.steel-ball-product-ball::before {
+.steel-ball-product-ball::before,
+.steel-ball-hero-orb::before {
   position: absolute;
   z-index: 2;
   inset: 0;
@@ -5713,6 +5724,20 @@ h3 {
 
   100% {
     transform: translateX(var(--steel-ball-roll-distance)) rotate(1.05turn);
+  }
+}
+
+@keyframes steel-ball-hero-orb-roll {
+  0% {
+    transform: rotate(-1.05turn);
+  }
+
+  50% {
+    transform: rotate(0turn);
+  }
+
+  100% {
+    transform: rotate(1.05turn);
   }
 }
 
@@ -10035,7 +10060,7 @@ h3 {
   }
 
   .steel-ball-hero-orb {
-    display: block;
+    display: grid;
   }
 
   .steel-ball-hero h1,
