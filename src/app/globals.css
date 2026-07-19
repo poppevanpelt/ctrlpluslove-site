@@ -5527,12 +5527,15 @@ h3 {
 }
 
 .steel-ball-hero-orb {
+  --steel-ball-surface-mask: ellipse(35% 40% at 50% 51%);
+
   display: none;
   position: relative;
   width: clamp(4.2rem, 14vw, 6rem);
   height: clamp(4.2rem, 14vw, 6rem);
   margin-bottom: 0.2rem;
   aspect-ratio: 430 / 414;
+  clip-path: var(--steel-ball-surface-mask);
   place-items: center;
   transform-origin: 50% 51%;
 }
@@ -5626,6 +5629,7 @@ h3 {
 
 .steel-ball-product-frame {
   --steel-ball-roll-distance: min(34vw, 26rem);
+  --steel-ball-surface-mask: ellipse(35% 40% at 50% 51%);
 
   display: grid;
   gap: 1rem;
@@ -5636,6 +5640,8 @@ h3 {
 }
 
 .steel-ball-product-ball {
+  --steel-ball-surface-mask: ellipse(35% 40% at 50% 51%);
+
   position: relative;
   display: grid;
   width: clamp(10rem, 34vw, 25rem);
@@ -5644,6 +5650,7 @@ h3 {
   background: transparent;
   transform-origin: 50% 51%;
   animation: steel-ball-product-roll 5.8s linear infinite alternate;
+  clip-path: var(--steel-ball-surface-mask);
   will-change: transform;
 }
 
@@ -5665,13 +5672,12 @@ h3 {
   inset: 0;
   border-radius: 50%;
   background:
-    radial-gradient(circle at 30% 24%, rgb(12 13 14 / 34%) 0 12%, transparent 28%),
-    radial-gradient(circle at 63% 42%, transparent 0 18%, rgb(255 255 255 / 9%) 28%, transparent 48%),
-    radial-gradient(circle at 58% 74%, rgb(3 4 5 / 24%) 0 18%, transparent 43%);
-  clip-path: circle(45.8% at 50% 50%);
+    radial-gradient(circle at 30% 24%, rgb(12 13 14 / 20%) 0 11%, transparent 25%),
+    radial-gradient(circle at 58% 74%, rgb(3 4 5 / 18%) 0 17%, transparent 38%);
+  clip-path: var(--steel-ball-surface-mask);
   content: "";
   mix-blend-mode: multiply;
-  opacity: 0.8;
+  opacity: 0.58;
   pointer-events: none;
 }
 
@@ -5687,18 +5693,18 @@ h3 {
 
 .steel-ball-product-reflections {
   z-index: 3;
-  clip-path: circle(45.8% at 50% 50%);
+  clip-path: var(--steel-ball-surface-mask);
   mix-blend-mode: screen;
-  opacity: 0.88;
+  opacity: 0.72;
   transform-origin: 50% 51%;
   animation: steel-ball-reflection-counter-roll 5.8s linear infinite alternate;
 }
 
 .steel-ball-product-reflections::before {
   background:
-    radial-gradient(circle at 29% 23%, rgb(255 255 255 / 92%) 0 4.8%, rgb(255 255 255 / 34%) 8.5%, transparent 18%),
-    radial-gradient(circle at 64% 37%, rgb(255 255 255 / 62%) 0 3.2%, transparent 10%),
-    linear-gradient(112deg, transparent 16%, rgb(255 255 255 / 26%) 39%, transparent 60%);
+    radial-gradient(circle at 33% 24%, rgb(255 255 255 / 78%) 0 3.2%, rgb(255 255 255 / 18%) 6.5%, transparent 12%),
+    radial-gradient(circle at 62% 38%, rgb(255 255 255 / 44%) 0 2.2%, transparent 7%),
+    linear-gradient(112deg, transparent 31%, rgb(255 255 255 / 12%) 43%, transparent 56%);
   filter: blur(0.035rem);
   transform: translateX(-9%) rotate(-8deg);
   animation: steel-ball-reflection-glide 4.6s ease-in-out infinite alternate;
@@ -5706,8 +5712,8 @@ h3 {
 
 .steel-ball-product-reflections::after {
   background:
-    radial-gradient(ellipse at 58% 70%, rgb(255 255 255 / 18%) 0 13%, transparent 34%),
-    linear-gradient(78deg, transparent 22%, rgb(255 255 255 / 16%) 41%, rgb(255 255 255 / 38%) 48%, transparent 64%);
+    radial-gradient(circle at 57% 68%, rgb(255 255 255 / 30%) 0 2.8%, transparent 8%),
+    linear-gradient(78deg, transparent 35%, rgb(255 255 255 / 13%) 47%, rgb(255 255 255 / 24%) 50%, transparent 60%);
   filter: blur(0.08rem);
   transform: translateX(12%) rotate(12deg);
   animation: steel-ball-reflection-sweep 3.2s ease-in-out infinite alternate;
@@ -5757,30 +5763,30 @@ h3 {
 
 @keyframes steel-ball-reflection-glide {
   0% {
-    transform: translateX(-18%) translateY(4%) rotate(-14deg) scale(0.96);
-    opacity: 0.72;
+    transform: translateX(-7%) translateY(2%) rotate(-8deg) scale(0.98);
+    opacity: 0.58;
   }
 
   45% {
-    transform: translateX(4%) translateY(-7%) rotate(5deg) scale(1.04);
-    opacity: 0.96;
+    transform: translateX(3%) translateY(-4%) rotate(4deg) scale(1.02);
+    opacity: 0.84;
   }
 
   100% {
-    transform: translateX(22%) translateY(4%) rotate(16deg) scale(0.98);
-    opacity: 0.66;
+    transform: translateX(8%) translateY(2%) rotate(9deg) scale(0.99);
+    opacity: 0.54;
   }
 }
 
 @keyframes steel-ball-reflection-sweep {
   0% {
-    transform: translateX(24%) translateY(-5%) rotate(18deg);
-    opacity: 0.5;
+    transform: translateX(9%) translateY(-3%) rotate(10deg);
+    opacity: 0.38;
   }
 
   100% {
-    transform: translateX(-25%) translateY(6%) rotate(-12deg);
-    opacity: 0.86;
+    transform: translateX(-10%) translateY(4%) rotate(-8deg);
+    opacity: 0.62;
   }
 }
 
