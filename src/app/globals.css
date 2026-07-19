@@ -5526,6 +5526,7 @@ h3 {
   width: clamp(4.2rem, 14vw, 6rem);
   height: clamp(4.2rem, 14vw, 6rem);
   margin-bottom: 0.2rem;
+  clip-path: circle(46% at 50% 50%);
 }
 
 .steel-ball-section,
@@ -5614,16 +5615,17 @@ h3 {
   display: grid;
   gap: 1rem;
   place-items: center;
-  min-height: clamp(18rem, 38vw, 32rem);
+  min-height: clamp(14rem, 30vw, 22rem);
   overflow: hidden;
   background: transparent;
 }
 
 .steel-ball-visible-image {
   display: block;
-  width: clamp(10rem, 34vw, 25rem);
+  width: clamp(9rem, 24vw, 18rem);
   height: auto;
   background: transparent;
+  clip-path: circle(46% at 50% 50%);
   object-fit: contain;
 }
 
@@ -9899,7 +9901,7 @@ h3 {
   }
 
   .steel-ball-visible-image {
-    width: min(10rem, 48vw);
+    width: min(8rem, 42vw);
   }
 
   .steel-ball-hero-orb {
