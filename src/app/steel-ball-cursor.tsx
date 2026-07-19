@@ -467,6 +467,7 @@ export function SteelBallCursor() {
 
       const getPreviewGravityBounds = (): GravityBounds => {
         const radius = Math.max(previewSize.width, previewSize.height) / 2;
+        const floorY = clamp(getPreviewFloorY(), 96 + radius, window.innerHeight - 24 - radius);
 
         return {
           width: window.innerWidth,
@@ -474,7 +475,7 @@ export function SteelBallCursor() {
           radius,
           safeTop: 24,
           safeRight: 0,
-          safeBottom: 24,
+          safeBottom: Math.max(24, window.innerHeight - floorY - radius),
           safeLeft: 0,
         };
       };
@@ -519,7 +520,7 @@ export function SteelBallCursor() {
           }
         }
 
-        const fallbackDeskSlope = hasFallbackDeskRoll ? previewFallbackDirection * 0.2 : 0;
+        const fallbackDeskSlope = hasFallbackDeskRoll ? previewFallbackDirection * 0.34 : 0;
         const touchBias = !previewPointerActive && Math.abs(previewTouchInfluenceX) > 0.002
           ? previewTouchInfluenceX * Math.exp(-touchAge / 1800)
           : 0;
@@ -529,7 +530,7 @@ export function SteelBallCursor() {
           confidence: clamp(Math.max(previewGravity.confidence, isDropping ? 0.9 : hasUsefulLiveTilt ? 0.62 : 0.38), 0, 1),
         };
         const force = effectiveGravity.confidence;
-        const horizontalAcceleration = previewPointerActive ? 0 : (isDropping ? 210 : 330) * force;
+        const horizontalAcceleration = previewPointerActive ? 0 : (isDropping ? 210 : 430) * force;
         const verticalAcceleration = previewPointerActive ? 0 : (isDropping ? 1850 : 430) * force;
         const recentlyTouched = touchAge < 1400;
         const damping = Math.pow(previewPointerActive ? 0.12 : isDropping ? 0.996 : hasFallbackDeskRoll ? 0.992 : recentlyTouched ? 0.68 : 0.42, dt);
@@ -554,16 +555,16 @@ export function SteelBallCursor() {
           previewGravityInput = "touch";
         }
 
-        if (hasFallbackDeskRoll && !previewPointerActive && !recentlyTouched) {
-          const targetVx = previewFallbackDirection * 118;
-          const blend = Math.min(1, dt * 1.6);
+        if (hasFallbackDeskRoll && !previewPointerActive) {
+          const targetVx = previewFallbackDirection * (recentlyTouched ? 88 : 148);
+          const blend = Math.min(1, dt * 3.2);
 
           vx += (targetVx - vx) * blend;
           vy *= Math.pow(0.08, dt);
           previewGravityInput = "desk-slope";
         }
 
-        const maxVelocity = previewPointerActive ? 180 : isDropping ? 620 : recentlyTouched ? 270 : hasFallbackDeskRoll ? 140 : 210;
+        const maxVelocity = previewPointerActive ? 180 : isDropping ? 620 : recentlyTouched ? 270 : hasFallbackDeskRoll ? 170 : 210;
         const speed = Math.hypot(vx, vy);
 
         if (speed > maxVelocity) {
