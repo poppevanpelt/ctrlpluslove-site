@@ -11,6 +11,8 @@ import {
 } from "react";
 import type React from "react";
 import { usePathname } from "next/navigation";
+import { steelBall } from "@/lib/steelBall/ballContinuity";
+import type { SteelBallState } from "@/lib/steelBall/ballState";
 
 const DISCOVERED_STORAGE_KEY = "ctrl-love-ctrl-layer-discovered";
 const TYPING_SELECTOR = [
@@ -451,6 +453,7 @@ function CtrlLayerSystemPanel({
           <span key={readout}>{readout}</span>
         ))}
       </div>
+      <CtrlLayerOfficeAssets />
       {activation.leakLines.length > 0 ? (
         <div className="ctrl-layer-leakage">
           {activation.leakLines.map((line) => (
@@ -462,6 +465,26 @@ function CtrlLayerSystemPanel({
         {activation.footer} / {keyLabel}
       </div>
     </aside>
+  );
+}
+
+function CtrlLayerOfficeAssets() {
+  const [state, setState] = useState<SteelBallState>(() => steelBall.getState());
+  const status = state.status[0].toUpperCase() + state.status.slice(1);
+
+  useEffect(() => steelBall.subscribe(setState), []);
+
+  return (
+    <div className="ctrl-layer-office-assets">
+      <span>Office Assets</span>
+      <span>✓ Steel Ball SB-01 — {status}</span>
+      <button
+        type="button"
+        onClick={() => window.dispatchEvent(new Event("ctrl-love-steel-ball-enable-gravity"))}
+      >
+        Enable physical tilt
+      </button>
+    </div>
   );
 }
 

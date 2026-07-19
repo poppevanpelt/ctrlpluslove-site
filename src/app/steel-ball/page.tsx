@@ -40,7 +40,7 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "The original replica. A physical reminder to test confidence before reality does.",
   image: "/museum/steel-ball-packshot.png",
-  imageAlt: "The Steel Ball by ctrl+love",
+  imageAlt: "Steel Ball SB-01 by ctrl+love",
 });
 
 export default function SteelBallPage() {
@@ -90,7 +90,7 @@ export default function SteelBallPage() {
             <div
               className="steel-ball-product-frame"
               role="img"
-              aria-label="A single polished steel ball on a clean surface"
+              aria-label="Steel Ball SB-01 with slight surface wear"
             >
               <Image
                 className="steel-ball-visible-image"
@@ -101,7 +101,7 @@ export default function SteelBallPage() {
                 sizes="(max-width: 720px) 48vw, 34vw"
                 priority
               />
-              <span className="steel-ball-product-label">Polished steel ball</span>
+              <span className="steel-ball-product-label">Steel Ball SB-01</span>
             </div>
           </section>
 

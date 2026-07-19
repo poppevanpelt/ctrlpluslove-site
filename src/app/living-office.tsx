@@ -157,7 +157,19 @@ function getSteelBallActivityText(detail: SteelBallActivityDetail) {
   }
 
   if (detail.activity === "condition-cleared") {
-    return "The steel ball appears pristine again.";
+    return "The steel ball is back to its baseline surface.";
+  }
+
+  if (detail.activity === "integrity-changed") {
+    return "SB-01 registered a meaningful surface impact.";
+  }
+
+  if (detail.activity === "maintenance-requested") {
+    return "SB-01 marked for routine inspection.";
+  }
+
+  if (detail.activity === "maintenance-completed") {
+    return detail.note ?? "SB-01 routine inspection completed.";
   }
 
   const condition = detail.state.trace?.condition;

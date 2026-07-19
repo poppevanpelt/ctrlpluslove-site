@@ -2,16 +2,13 @@
 
 import { useEffect, useState } from "react";
 
-import type { SteelBallState } from "@/lib/steelBall/ballState";
+import { pristineSteelBallState, type SteelBallState } from "@/lib/steelBall/ballState";
 
-const fallbackState: SteelBallState = {
-  borrowed: false,
-  trace: null,
-};
+const fallbackState: SteelBallState = pristineSteelBallState;
 
 function getSurfaceLabel(state: SteelBallState) {
   if (!state.trace) {
-    return "Pristine";
+    return "Baseline scratches";
   }
 
   if (state.trace.condition === "dusty") {
@@ -42,7 +39,8 @@ export function SteelBallMemoryPanel() {
 
   const borrowBall = () => {
     window.steelBall?.borrow({
-      actor: "The office",
+      by: "ctrl-love-office",
+      destination: "calibration-range",
       note: "The office borrowed the steel ball for a quiet calibration check.",
     });
   };
@@ -53,9 +51,9 @@ export function SteelBallMemoryPanel() {
       note: "The steel ball returned with a small trace of handling.",
       condition: {
         condition: "polished",
-        source: "office",
+        source: "maintenance.polished",
         intensity: 0.24,
-        expiresAfter: 75_000,
+        durationMs: 75_000,
       },
     });
   };
@@ -65,7 +63,7 @@ export function SteelBallMemoryPanel() {
       condition: "dusty",
       source: "tokyo",
       intensity: 0.16,
-      expiresAfter: 90_000,
+      durationMs: 90_000,
     });
   };
 
@@ -107,6 +105,15 @@ export function SteelBallMemoryPanel() {
         <button type="button" onClick={addSurfaceTrace} disabled={!isReady}>
           Add trace
         </button>
+        {process.env.NODE_ENV !== "production" ? (
+          <button
+            type="button"
+            onClick={() => window.steelBall?.debug?.setGravity({ x: 0.42, y: 0.22 })}
+            disabled={!isReady}
+          >
+            Tilt
+          </button>
+        ) : null}
         <button type="button" onClick={clearTrace} disabled={!isReady || !state.trace}>
           Clear
         </button>
