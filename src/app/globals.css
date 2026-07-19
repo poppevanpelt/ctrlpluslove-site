@@ -1090,25 +1090,6 @@ body,
   transform: rotate(var(--steel-ball-roll-angle, 0rad));
 }
 
-.steel-ball-tilt-sensor-badge {
-  position: fixed;
-  top: 0.75rem;
-  left: 0.75rem;
-  z-index: 2147483647;
-  display: block;
-  max-width: calc(100vw - 1.5rem);
-  padding: 0.42rem 0.54rem;
-  border: 1px solid rgb(255 255 255 / 28%);
-  border-radius: 6px;
-  background: rgb(11 13 16 / 86%);
-  color: rgb(255 255 255 / 92%);
-  font: 11px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
-  letter-spacing: 0;
-  white-space: nowrap;
-  pointer-events: none;
-  box-shadow: 0 0.28rem 0.9rem rgb(0 0 0 / 34%);
-}
-
 .steel-ball-cursor[data-origin-resting] {
   filter: drop-shadow(0 0.42rem 0.34rem rgb(0 0 0 / 34%));
   opacity: 0.94;
@@ -5390,34 +5371,18 @@ h3 {
   width: 12.5rem;
   height: 12.5rem;
   flex: 0 0 auto;
-  border-radius: 999px;
-  background:
-    radial-gradient(circle at 33% 24%, rgba(255, 255, 255, 0.22) 0 3.6%, rgba(255, 255, 255, 0.08) 7%, transparent 12%),
-    radial-gradient(circle at 50% 50%, transparent 0 58%, rgba(0, 0, 0, 0.18) 77%, rgba(0, 0, 0, 0.32) 100%),
-    var(--steel-ball-asset);
+  border-radius: 0;
+  background: var(--steel-ball-asset);
   background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
-  box-shadow:
-    inset -1.7rem -1.95rem 2.8rem rgba(0, 0, 0, 0.42),
-    inset 1.05rem 0.9rem 1.7rem rgba(255, 255, 255, 0.62),
-    0 1.35rem 2.3rem color-mix(in srgb, var(--ink) 18%, transparent);
-  overflow: hidden;
+  background-size: contain;
+  filter: drop-shadow(0 1.35rem 1.45rem color-mix(in srgb, var(--ink) 18%, transparent));
+  overflow: visible;
   transition: transform 180ms ease;
 }
 
 .steel-ball-object::before {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background:
-    linear-gradient(118deg, rgba(255, 255, 255, 0.42), transparent 23%),
-    linear-gradient(292deg, rgba(255, 255, 255, 0.24), transparent 31%),
-    radial-gradient(circle at 50% 104%, rgba(0, 0, 0, 0.46), transparent 42%);
-  content: "";
-  mix-blend-mode: screen;
-  opacity: 0.72;
-  pointer-events: none;
+  content: none;
 }
 
 .steel-ball-object::after {

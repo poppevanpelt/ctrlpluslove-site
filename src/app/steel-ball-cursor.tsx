@@ -210,7 +210,6 @@ export function SteelBallCursor() {
     if (isTiltGravityMode()) {
       const previewBall = document.createElement("span");
       const previewShadow = document.createElement("span");
-      const previewSensorBadge = document.createElement("output");
       const getPreviewFloorY = () => clamp(window.innerHeight * 0.68, 128, window.innerHeight - 150);
       const getPreviewStartSnapshot = () => {
         const existingBall = document.querySelector<HTMLElement>(".home-hero-section .steel-ball-stage-ball");
@@ -265,19 +264,8 @@ export function SteelBallCursor() {
       const previousPreviewDocumentPointerMove = document.onpointermove;
 
       const updatePreviewSensorLabel = () => {
-        const gravityX = previewGravity.x.toFixed(2);
-        const gravityY = previewGravity.y.toFixed(2);
-        const statusLabel = previewSensorStatus === "no-live-tilt"
-          ? "browser reports no live laptop tilt"
-          : previewSensorStatus === "sensor-unavailable"
-            ? "tilt sensor unavailable in this browser"
-            : previewSensorStatus === "sensor-blocked"
-              ? "tilt sensor blocked"
-              : previewSensorStatus;
-        const label = `visible-roll-v47 ${statusLabel} x:${gravityX} y:${gravityY}`;
         previewBall.setAttribute("data-steel-preview-version", "visible-roll-v47");
-        previewSensorBadge.textContent = label;
-        previewSensorBadge.setAttribute("data-steel-sensor-status", previewSensorStatus);
+        previewBall.setAttribute("data-steel-sensor-status", previewSensorStatus);
       };
 
       const getPreviewScreenAngle = () => {
@@ -1029,28 +1017,10 @@ export function SteelBallCursor() {
       updatePreviewSensorLabel();
       previewShadow.className = "steel-ball-tilt-contact-shadow";
       previewShadow.setAttribute("aria-hidden", "true");
-      previewSensorBadge.className = "steel-ball-tilt-sensor-badge";
-      previewSensorBadge.setAttribute("aria-live", "polite");
-      previewSensorBadge.style.cssText = [
-        "position:fixed",
-        "top:12px",
-        "left:12px",
-        "z-index:2147483647",
-        "display:block",
-        "padding:7px 9px",
-        "border:1px solid rgba(255,255,255,.55)",
-        "border-radius:6px",
-        "background:rgba(8,10,12,.92)",
-        "color:white",
-        "font:12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace",
-        "letter-spacing:0",
-        "pointer-events:none",
-      ].join(";");
       applyBallAppearance(previewBall, currentBallState.trace, currentBallState.integrity);
       removePreviewCursorArtifacts();
       document.body.append(previewShadow);
       document.body.append(previewBall);
-      document.body.append(previewSensorBadge);
       renderPreviewBall();
       previewBall.addEventListener("pointerdown", handlePreviewPointerDown);
       previewBall.addEventListener("mousedown", handlePreviewMouseDown);
@@ -1089,7 +1059,6 @@ export function SteelBallCursor() {
         }
         previewShadow.remove();
         previewBall.remove();
-        previewSensorBadge.remove();
         delete document.documentElement.dataset.steelBallApi;
         delete document.documentElement.dataset.steelTiltPreview;
         delete document.documentElement.dataset.steelPreviewVersion;
