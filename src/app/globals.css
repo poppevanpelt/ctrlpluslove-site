@@ -5526,7 +5526,6 @@ h3 {
   width: clamp(4.2rem, 14vw, 6rem);
   height: clamp(4.2rem, 14vw, 6rem);
   margin-bottom: 0.2rem;
-  clip-path: circle(46% at 50% 50%);
 }
 
 .steel-ball-section,
@@ -5626,8 +5625,6 @@ h3 {
   width: clamp(7rem, 16vw, 12rem);
   height: auto;
   background: transparent;
-  clip-path: circle(46% at 50% 50%);
-  opacity: 0.72;
   object-fit: contain;
 }
 

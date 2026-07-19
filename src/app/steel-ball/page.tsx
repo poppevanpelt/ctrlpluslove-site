@@ -39,7 +39,7 @@ export const metadata: Metadata = createPageMetadata({
   title: "The Steel Ball — ctrl+love",
   description:
     "The original replica. A physical reminder to test confidence before reality does.",
-  image: "/museum/steel-ball-packshot.png",
+  image: "/museum/steel-ball-packshot-cutout.png",
   imageAlt: "Steel Ball SB-01 by ctrl+love",
 });
 
@@ -64,7 +64,7 @@ export default function SteelBallPage() {
               <p className="section-kicker">Artifact 001</p>
               <Image
                 className="steel-ball-hero-orb"
-                src="/museum/steel-ball-packshot.png"
+                src="/museum/steel-ball-packshot-cutout.png"
                 alt=""
                 width={430}
                 height={414}
@@ -94,7 +94,7 @@ export default function SteelBallPage() {
             >
               <Image
                 className="steel-ball-visible-image"
-                src="/museum/steel-ball-packshot.png"
+                src="/museum/steel-ball-packshot-cutout.png"
                 alt=""
                 width={430}
                 height={414}
