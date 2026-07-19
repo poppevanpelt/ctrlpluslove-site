@@ -1171,8 +1171,6 @@ body,
     transition: opacity 80ms ease;
   }
 
-  .steel-ball-hero-orb,
-  .steel-ball-visible-image,
   .steel-ball-tilt-ball {
     animation: none;
   }
@@ -5528,9 +5526,6 @@ h3 {
   width: clamp(4.2rem, 14vw, 6rem);
   height: clamp(4.2rem, 14vw, 6rem);
   margin-bottom: 0.2rem;
-  transform-origin: 50% 51%;
-  animation: steel-ball-hero-orb-roll 5.8s linear infinite alternate;
-  will-change: transform;
 }
 
 .steel-ball-section,
@@ -5616,8 +5611,6 @@ h3 {
 }
 
 .steel-ball-product-frame {
-  --steel-ball-roll-distance: min(34vw, 26rem);
-
   display: grid;
   gap: 1rem;
   place-items: center;
@@ -5632,37 +5625,6 @@ h3 {
   height: auto;
   background: transparent;
   object-fit: contain;
-  transform-origin: 50% 51%;
-  animation: steel-ball-product-roll 5.8s linear infinite alternate;
-  will-change: transform;
-}
-
-@keyframes steel-ball-product-roll {
-  0% {
-    transform: translateX(calc(var(--steel-ball-roll-distance) * -1)) rotate(-1.05turn);
-  }
-
-  50% {
-    transform: translateX(0) rotate(0turn);
-  }
-
-  100% {
-    transform: translateX(var(--steel-ball-roll-distance)) rotate(1.05turn);
-  }
-}
-
-@keyframes steel-ball-hero-orb-roll {
-  0% {
-    transform: rotate(-1.05turn);
-  }
-
-  50% {
-    transform: rotate(0turn);
-  }
-
-  100% {
-    transform: rotate(1.05turn);
-  }
 }
 
 .steel-ball-product-svg {
