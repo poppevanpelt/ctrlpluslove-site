@@ -5544,8 +5544,8 @@ h3 {
 
 .steel-ball-hero {
   display: grid;
-  grid-template-columns: minmax(0, 0.58fr) minmax(18rem, 0.42fr);
-  gap: clamp(2rem, 6vw, 6rem);
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.2rem, 4vw, 3rem);
   align-items: center;
 }
 
@@ -5610,35 +5610,8 @@ h3 {
   line-height: 1.46;
 }
 
-.steel-ball-product-frame {
-  display: grid;
-  gap: 1rem;
-  place-items: center;
-  min-height: clamp(11rem, 22vw, 16rem);
-  overflow: hidden;
-  background: transparent;
-  pointer-events: none;
-}
-
-.steel-ball-visible-image {
-  display: block;
-  width: clamp(7rem, 16vw, 12rem);
-  height: auto;
-  background: transparent;
-  object-fit: contain;
-}
-
 .steel-ball-product-svg {
   filter: drop-shadow(0 1.35rem 1.7rem color-mix(in srgb, var(--ink) 18%, transparent));
-}
-
-.steel-ball-product-label {
-  color: color-mix(in srgb, var(--ink) 58%, var(--muted));
-  font-size: 0.72rem;
-  font-weight: 820;
-  letter-spacing: 0.08em;
-  line-height: 1.35;
-  text-transform: uppercase;
 }
 
 .steel-ball-description {

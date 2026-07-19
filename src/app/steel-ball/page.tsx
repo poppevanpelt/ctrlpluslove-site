@@ -87,22 +87,6 @@ export default function SteelBallPage() {
               </p>
             </div>
 
-            <div
-              className="steel-ball-product-frame"
-              role="img"
-              aria-label="Steel Ball SB-01 with slight surface wear"
-            >
-              <Image
-                className="steel-ball-visible-image"
-                src="/museum/steel-ball-packshot-cutout.png"
-                alt=""
-                width={430}
-                height={414}
-                sizes="(max-width: 720px) 48vw, 34vw"
-                priority
-              />
-              <span className="steel-ball-product-label">Steel Ball SB-01</span>
-            </div>
           </section>
 
           <section className="steel-ball-description" aria-labelledby="steel-ball-description-title">
