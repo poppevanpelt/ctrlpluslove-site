@@ -92,15 +92,18 @@ export default function SteelBallPage() {
               role="img"
               aria-label="Steel Ball SB-01 with slight surface wear"
             >
-              <Image
-                className="steel-ball-visible-image"
-                src="/museum/steel-ball-packshot.png"
-                alt=""
-                width={430}
-                height={414}
-                sizes="(max-width: 720px) 48vw, 34vw"
-                priority
-              />
+              <span className="steel-ball-product-ball" aria-hidden="true">
+                <Image
+                  className="steel-ball-visible-image"
+                  src="/museum/steel-ball-packshot.png"
+                  alt=""
+                  width={430}
+                  height={414}
+                  sizes="(max-width: 720px) 48vw, 34vw"
+                  priority
+                />
+                <span className="steel-ball-product-reflections" />
+              </span>
               <span className="steel-ball-product-label">Steel Ball SB-01</span>
             </div>
           </section>
