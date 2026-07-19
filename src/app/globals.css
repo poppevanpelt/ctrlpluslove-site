@@ -5612,6 +5612,8 @@ h3 {
 }
 
 .steel-ball-product-frame {
+  --steel-ball-roll-distance: min(34vw, 26rem);
+
   display: grid;
   gap: 1rem;
   place-items: center;
@@ -5627,21 +5629,21 @@ h3 {
   background: transparent;
   object-fit: contain;
   transform-origin: 50% 51%;
-  animation: steel-ball-product-roll 8.4s ease-in-out infinite alternate;
+  animation: steel-ball-product-roll 5.8s linear infinite alternate;
   will-change: transform;
 }
 
 @keyframes steel-ball-product-roll {
   0% {
-    transform: translateX(-18%) rotate(-0.18turn);
+    transform: translateX(calc(var(--steel-ball-roll-distance) * -1)) rotate(-1.05turn);
   }
 
-  42% {
-    transform: translateX(4%) rotate(0.04turn);
+  50% {
+    transform: translateX(0) rotate(0turn);
   }
 
   100% {
-    transform: translateX(18%) rotate(0.18turn);
+    transform: translateX(var(--steel-ball-roll-distance)) rotate(1.05turn);
   }
 }
 
