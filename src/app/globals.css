@@ -5615,17 +5615,19 @@ h3 {
   display: grid;
   gap: 1rem;
   place-items: center;
-  min-height: clamp(14rem, 30vw, 22rem);
+  min-height: clamp(11rem, 22vw, 16rem);
   overflow: hidden;
   background: transparent;
+  pointer-events: none;
 }
 
 .steel-ball-visible-image {
   display: block;
-  width: clamp(9rem, 24vw, 18rem);
+  width: clamp(7rem, 16vw, 12rem);
   height: auto;
   background: transparent;
   clip-path: circle(46% at 50% 50%);
+  opacity: 0.72;
   object-fit: contain;
 }
 
@@ -9901,7 +9903,7 @@ h3 {
   }
 
   .steel-ball-visible-image {
-    width: min(8rem, 42vw);
+    width: min(6.4rem, 34vw);
   }
 
   .steel-ball-hero-orb {
