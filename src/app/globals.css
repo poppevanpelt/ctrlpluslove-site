@@ -5338,11 +5338,6 @@ h3 {
   text-decoration: none;
 }
 
-.steel-ball-home-card:hover .steel-ball-object,
-.steel-ball-home-card:focus-visible .steel-ball-object {
-  transform: translateY(-0.12rem);
-}
-
 .steel-ball-home-card:focus-visible {
   outline: 2px solid color-mix(in srgb, var(--team-warm) 72%, transparent);
   outline-offset: 0.22rem;
@@ -5385,7 +5380,7 @@ h3 {
 }
 
 .steel-ball-object {
-  --steel-ball-asset: url("/museum/steel-ball-packshot.png");
+  --steel-ball-asset: url("/museum/steel-ball-packshot-cutout.png");
   position: relative;
   display: block;
   width: 12.5rem;
@@ -5396,9 +5391,8 @@ h3 {
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
-  filter: drop-shadow(0 1.35rem 1.45rem color-mix(in srgb, var(--ink) 18%, transparent));
+  filter: none;
   overflow: visible;
-  transition: transform 180ms ease;
 }
 
 .steel-ball-object::before {
@@ -5415,10 +5409,6 @@ h3 {
 }
 
 .steel-ball-signature-card {
-  --steel-tilt-x: 0deg;
-  --steel-tilt-y: 0deg;
-  --steel-shift-x: 0rem;
-  --steel-shift-y: 0rem;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(13rem, 23rem);
   gap: clamp(1.2rem, 4vw, 3.4rem);
@@ -5427,7 +5417,6 @@ h3 {
   border-bottom: 1px solid var(--rule);
   color: var(--ink);
   padding: clamp(1.4rem, 3.4vw, 2.6rem) 0;
-  perspective: 56rem;
   text-decoration: none;
 }
 
@@ -5476,44 +5465,13 @@ h3 {
 }
 
 .steel-ball-signature-stage::after {
-  position: absolute;
-  z-index: 0;
-  bottom: clamp(1.2rem, 3vw, 2.4rem);
-  left: 50%;
-  width: clamp(8rem, 18vw, 14rem);
-  height: 1.4rem;
-  border-radius: 50%;
-  background: radial-gradient(
-    ellipse at center,
-    color-mix(in srgb, var(--ink) 18%, transparent) 0%,
-    color-mix(in srgb, var(--ink) 9%, transparent) 44%,
-    transparent 72%
-  );
-  content: "";
-  filter: blur(0.9rem);
-  pointer-events: none;
-  transform: translateX(-50%);
+  content: none;
 }
 
 .steel-ball-signature-stage .steel-ball-object {
   z-index: 1;
   width: clamp(11rem, 23vw, 18rem);
   height: clamp(11rem, 23vw, 18rem);
-  backface-visibility: hidden;
-  transform:
-    translate3d(var(--steel-shift-x), var(--steel-shift-y), 0)
-    rotateX(var(--steel-tilt-x))
-    rotateY(var(--steel-tilt-y));
-  transition: transform 180ms ease;
-  will-change: transform;
-}
-
-.steel-ball-signature-card:hover .steel-ball-signature-stage .steel-ball-object,
-.steel-ball-signature-card:focus-visible .steel-ball-signature-stage .steel-ball-object {
-  box-shadow:
-    inset -1.7rem -1.95rem 2.8rem rgba(0, 0, 0, 0.42),
-    inset 1.05rem 0.9rem 1.7rem rgba(255, 255, 255, 0.62),
-    0 1.65rem 3rem color-mix(in srgb, var(--ink) 22%, transparent);
 }
 
 .steel-ball-svg {
@@ -6889,10 +6847,6 @@ h3 {
 
   .room-persona-profile {
     gap: 0.6rem;
-  }
-
-  .steel-ball-product-frame {
-    min-height: clamp(17rem, 70vw, 28rem);
   }
 
   .steel-ball-story summary {
@@ -9862,18 +9816,9 @@ h3 {
     gap: 1.2rem;
   }
 
-  .steel-ball-product-frame {
-    justify-content: start;
-    min-height: 9rem;
-  }
-
   .steel-ball-object-large {
     width: min(10rem, 48vw);
     height: min(10rem, 48vw);
-  }
-
-  .steel-ball-visible-image {
-    width: min(6.4rem, 34vw);
   }
 
   .steel-ball-hero-orb {
