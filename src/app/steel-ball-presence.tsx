@@ -11,9 +11,6 @@ export function SteelBallPresence() {
         </span>
         <em>View the object</em>
       </span>
-      <span className="steel-ball-signature-stage" aria-hidden="true">
-        <span className="steel-ball-object" />
-      </span>
     </Link>
   );
 }

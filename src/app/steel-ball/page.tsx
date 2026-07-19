@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 
 import { createPageMetadata } from "../seo";
@@ -62,15 +61,6 @@ export default function SteelBallPage() {
           <section className="steel-ball-hero">
             <div className="steel-ball-hero-copy">
               <p className="section-kicker">Artifact 001</p>
-              <Image
-                className="steel-ball-hero-orb"
-                src="/museum/steel-ball-packshot-cutout.png"
-                alt=""
-                width={430}
-                height={414}
-                sizes="(max-width: 720px) 54vw, 0px"
-                priority
-              />
               <h1 id="steel-ball-title">The Steel Ball</h1>
               <p className="steel-ball-subheading">The original replica.</p>
               <p className="steel-ball-price">€29.95</p>
