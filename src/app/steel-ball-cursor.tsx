@@ -14,6 +14,7 @@ import {
   stepGravitySimulation,
   type GravityBounds,
 } from "@/lib/steelBall/ballGravity";
+import { createSteelBallPresenceEngine } from "@/lib/steelBall/ballPresence";
 import type { SteelBallState } from "@/lib/steelBall/ballState";
 import type { BallGravityState, GravityVector } from "@/lib/steelBall/types";
 
@@ -89,6 +90,7 @@ export function SteelBallCursor() {
     let borrowFrame = 0;
     let returnFrame = 0;
     let gravityFrame = 0;
+    let tiltFallbackFrame = 0;
     let followRepairTimeout = 0;
     let enabled = false;
     let visible = false;
@@ -117,6 +119,8 @@ export function SteelBallCursor() {
     let gravityState: BallGravityState = createGravityState();
     let gravityVector: GravityVector = { x: 0, y: 0, confidence: 0 };
     let gravityLastTime = 0;
+    let tiltFallbackLastTime = 0;
+    let tiltFallbackDirection = 1;
     let gravityListening = false;
     let gravityActive = false;
     let gravityPermissionDismissed = false;
@@ -132,7 +136,9 @@ export function SteelBallCursor() {
     let motionLeanY = 0;
     let lastImpactAt = 0;
     let lastPointerMoveAt = performance.now();
+    let lastScrollAt = 0;
     let lastIntegrityTickAt = 0;
+    const presence = createSteelBallPresenceEngine(currentBallState.identity.id);
 
     const isLocalReplay = () => {
       try {
@@ -218,7 +224,7 @@ export function SteelBallCursor() {
         if (existingRect && existingRect.width > 0 && existingRect.height > 0) {
           return {
             x: existingRect.left + existingRect.width / 2,
-            y: existingRect.top + existingRect.height / 2,
+            y: getPreviewFloorY(),
             width: existingRect.width,
             height: existingRect.height,
           };
@@ -558,7 +564,7 @@ export function SteelBallCursor() {
         }
 
         if (hasFallbackDeskRoll && !previewPointerActive) {
-          const targetVx = previewFallbackDirection * (recentlyTouched ? 88 : 148);
+          const targetVx = previewFallbackDirection * (recentlyTouched ? 112 : 218);
           const blend = Math.min(1, dt * 3.2);
 
           vx += (targetVx - vx) * blend;
@@ -608,29 +614,6 @@ export function SteelBallCursor() {
           previewLandedAt = now - 160;
           previewFallbackLastFlipAt = now;
           previewFallbackRollStartedAt = now;
-        }
-
-        if (hasFallbackDeskRoll && !previewPointerActive) {
-          if (!previewFallbackRollStartedAt) {
-            previewFallbackRollStartedAt = now;
-          }
-
-          const edgeMargin = Math.max(42, bounds.radius * 1.2);
-          const travelMinX = minX + edgeMargin;
-          const travelMaxX = maxX - edgeMargin;
-          const travelWidth = Math.max(1, travelMaxX - travelMinX);
-          const rollAge = Math.max(0, now - previewFallbackRollStartedAt);
-          const travelPeriod = 8200;
-          const phase = (rollAge % travelPeriod) / travelPeriod;
-          const wave = 0.5 - Math.cos(phase * Math.PI * 2) * 0.5;
-          const targetX = travelMinX + travelWidth * wave;
-          const direction = phase < 0.5 ? 1 : -1;
-
-          nextX = clamp(targetX, minX, maxX);
-          nextY = maxY;
-          vx = direction * 160;
-          vy = 0;
-          previewFallbackDirection = direction;
         }
 
         const verticalSettled = (nextY === maxY && effectiveGravity.y >= 0) || (nextY === minY && effectiveGravity.y <= 0);
@@ -1322,13 +1305,23 @@ export function SteelBallCursor() {
 
       const offsetX = gravityState.position.x;
       const offsetY = gravityState.position.y;
-      const roll = gravityVector.confidence > 0 ? (offsetX + offsetY) / 52 : 0;
+      const roll = isTiltGravityMode()
+        ? offsetX / 18
+        : gravityVector.confidence > 0
+          ? (offsetX + offsetY) / 52
+          : 0;
       stageBall.style.transform = `translate(calc(-50% + ${offsetX.toFixed(2)}px), calc(-50% + ${offsetY.toFixed(2)}px)) rotate(${roll.toFixed(3)}rad)`;
       steelBall.markCursorState({
         active: false,
         resting: true,
         gravityOffset: { x: offsetX, y: offsetY },
       });
+    };
+
+    const stopTiltFallback = () => {
+      window.cancelAnimationFrame(tiltFallbackFrame);
+      tiltFallbackFrame = 0;
+      tiltFallbackLastTime = 0;
     };
 
     const stopGravity = (clearOffset = false) => {
@@ -1338,6 +1331,7 @@ export function SteelBallCursor() {
 
       if (clearOffset) {
         window.cancelAnimationFrame(debugGravityFrame);
+        stopTiltFallback();
         debugGravityFrame = 0;
         gravityState = createGravityState();
         cursorGravityState = createGravityState();
@@ -1465,6 +1459,85 @@ export function SteelBallCursor() {
       gravityFrame = window.requestAnimationFrame(gravityStep);
     };
 
+    const tiltFallbackStep = (time: number) => {
+      if (
+        !enabled ||
+        state !== "resting" ||
+        !stageBall?.classList.contains("steel-ball-tilt-ball") ||
+        shouldReduceMotion()
+      ) {
+        stopTiltFallback();
+        return;
+      }
+
+      if (gravityVector.confidence > 0.02) {
+        stageBall.setAttribute("data-live-gravity", "true");
+        stopTiltFallback();
+        startGravity();
+        return;
+      }
+
+      const bounds = getGravityBounds();
+
+      if (!bounds) {
+        stopTiltFallback();
+        return;
+      }
+
+      const delta = tiltFallbackLastTime ? time - tiltFallbackLastTime : 16;
+      tiltFallbackLastTime = time;
+      const dt = clamp(delta / 1000, 0, 0.05);
+      const minX = bounds.minX ?? (bounds.safeLeft ?? 0) + bounds.radius;
+      const maxX = bounds.maxX ?? bounds.width - (bounds.safeRight ?? 0) - bounds.radius;
+      const velocity = 132 * tiltFallbackDirection;
+      let nextX = gravityState.position.x + velocity * dt;
+
+      if (nextX <= minX) {
+        nextX = minX;
+        tiltFallbackDirection = 1;
+      } else if (nextX >= maxX) {
+        nextX = maxX;
+        tiltFallbackDirection = -1;
+      }
+
+      gravityState = {
+        ...gravityState,
+        gravity: { x: tiltFallbackDirection * 0.32, y: 0.46, confidence: 0.38 },
+        isSettled: false,
+        position: { x: nextX, y: 0 },
+        velocity: { x: 132 * tiltFallbackDirection, y: 0 },
+      };
+      lastGravityInput = "desk-slope";
+      exposeGravityState();
+      renderRestingGravity();
+      tiltFallbackFrame = window.requestAnimationFrame(tiltFallbackStep);
+    };
+
+    const startTiltFallback = () => {
+      if (tiltFallbackFrame || !isTiltGravityMode() || shouldReduceMotion()) {
+        return;
+      }
+
+      const bounds = getGravityBounds();
+
+      if (!bounds) {
+        return;
+      }
+
+      stageBall?.removeAttribute("data-live-gravity");
+      const minX = bounds.minX ?? (bounds.safeLeft ?? 0) + bounds.radius;
+      const maxX = bounds.maxX ?? bounds.width - (bounds.safeRight ?? 0) - bounds.radius;
+      const currentX = gravityState.position.x;
+      gravityState = {
+        ...gravityState,
+        isSettled: false,
+        position: { x: clamp(currentX, minX, maxX), y: 0 },
+        velocity: { x: 132 * tiltFallbackDirection, y: 0 },
+      };
+      tiltFallbackLastTime = 0;
+      tiltFallbackFrame = window.requestAnimationFrame(tiltFallbackStep);
+    };
+
     const startGravity = () => {
       if (gravityActive || !stageBall || state !== "resting" || shouldReduceMotion()) {
         return;
@@ -1476,6 +1549,8 @@ export function SteelBallCursor() {
         return;
       }
 
+      stopTiltFallback();
+      stageBall?.setAttribute("data-live-gravity", "true");
       gravityActive = true;
       gravityLastTime = 0;
       gravityState = {
@@ -1518,12 +1593,15 @@ export function SteelBallCursor() {
       stageBall.style.top = `${restY}px`;
       stageBall.setAttribute("data-visible", "true");
       stageBall.setAttribute("data-origin-resting", "true");
+      stageBall.setAttribute("data-tilt-fallback", "css-margin-roll");
+      stageBall.removeAttribute("data-live-gravity");
       applyMemoryToElement(stageBall);
       gravityState = createGravityState({ x: 0, y: 0 }, gravityVector);
       setState("resting");
       renderRestingGravity();
       startGravityListening();
       startDebugGravityPreview();
+      startTiltFallback();
     };
 
     const handleOrientation = (event: DeviceOrientationEvent) => {
@@ -1550,6 +1628,8 @@ export function SteelBallCursor() {
         state === "resting" &&
         (gravityVector.confidence > 0 || Math.hypot(gravityState.velocity.x, gravityState.velocity.y) > 0)
       ) {
+        stageBall?.setAttribute("data-live-gravity", "true");
+        stopTiltFallback();
         startGravity();
       }
     };
@@ -1584,6 +1664,8 @@ export function SteelBallCursor() {
         state === "resting" &&
         (gravityVector.confidence > 0 || Math.hypot(gravityState.velocity.x, gravityState.velocity.y) > 0)
       ) {
+        stageBall?.setAttribute("data-live-gravity", "true");
+        stopTiltFallback();
         startGravity();
       }
     };
@@ -1923,6 +2005,22 @@ export function SteelBallCursor() {
       const gravityOffset = getCursorGravityOffset(time, reducedMotion, isInteractive);
       nextX += gravityOffset.x;
       nextY += gravityOffset.y;
+      const presenceOffset = presence.step({
+        now: time,
+        pointerX,
+        pointerY,
+        lastPointerMoveAt,
+        lastScrollAt,
+        activeTarget,
+        isPressed,
+        isInteractive,
+        reducedMotion,
+        enabled,
+        desktop: activeMedia.matches || hasMousePointerControl,
+        borrowed: currentBallState.borrowed,
+      });
+      nextX += presenceOffset.x;
+      nextY += presenceOffset.y;
 
       targetScale = 1;
       const targetPressScale = 1;
@@ -1935,15 +2033,16 @@ export function SteelBallCursor() {
         motionLeanX = 0;
         motionLeanY = 0;
       } else {
-        renderX += (nextX - renderX) * 0.16;
-        renderY += (nextY - renderY) * 0.16;
+        const follow = Math.max(0.09, 0.16 - presenceOffset.slowdown);
+        renderX += (nextX - renderX) * follow;
+        renderY += (nextY - renderY) * follow;
         scale += (targetScale - scale) * 0.22;
         pressScale += (targetPressScale - pressScale) * 0.5;
         motionLeanX *= 0.82;
         motionLeanY *= 0.82;
       }
 
-      cursor.style.transform = `translate3d(${renderX}px, ${renderY}px, 0) translate(-50%, -50%) translate(${motionLeanX.toFixed(2)}px, ${motionLeanY.toFixed(2)}px) rotate(${rollRotation.toFixed(3)}rad) scale(${scale}) scale(${pressScale})`;
+      cursor.style.transform = `translate3d(${renderX}px, ${renderY}px, 0) translate(-50%, -50%) translate(${motionLeanX.toFixed(2)}px, ${motionLeanY.toFixed(2)}px) rotate(${(rollRotation + presenceOffset.rotation).toFixed(3)}rad) scale(${scale * presenceOffset.scale}) scale(${pressScale})`;
       cursor.toggleAttribute("data-interactive", isInteractive);
       cursor.toggleAttribute("data-clicking", isPressed);
       frame = window.requestAnimationFrame(render);
@@ -2565,6 +2664,10 @@ export function SteelBallCursor() {
       }
     };
 
+    const handleScroll = () => {
+      lastScrollAt = performance.now();
+    };
+
     const handleRouteMutation = () => {
       if ((state === "resting" || state === "awakening") && !document.querySelector(".home-hero-section")) {
         if (state === "awakening") {
@@ -2600,7 +2703,14 @@ export function SteelBallCursor() {
       }
     };
 
-    installSteelBallBrowserApi();
+    const steelBallApi = installSteelBallBrowserApi();
+    steelBallApi.debugPresence = presence.debugPresence;
+    steelBallApi.disablePresence = presence.disablePresence;
+    steelBallApi.enablePresence = presence.enablePresence;
+    steelBallApi.forceIdle = presence.forceIdle;
+    steelBallApi.attentionTargets = presence.attentionTargets;
+    window.steelBall = steelBallApi;
+    window.SB = steelBallApi;
     document.documentElement.dataset.steelBallApi = "ready";
     unsubscribeSteelBall = steelBall.subscribe(handleSteelBallState);
     const pointerListenerOptions: AddEventListenerOptions = { passive: true, capture: true };
@@ -2661,6 +2771,7 @@ export function SteelBallCursor() {
     window.addEventListener("blur", handleBlurOrVisibilityChange);
     document.addEventListener("visibilitychange", handleBlurOrVisibilityChange);
     document.addEventListener("pointerleave", handlePointerLeave);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("click", handleGestureForGravity, { passive: true });
     window.addEventListener("touchstart", handleGestureForGravity, { passive: true });
     window.addEventListener("keydown", handleKeyboardGestureForGravity, { passive: true });
@@ -2686,6 +2797,7 @@ export function SteelBallCursor() {
       window.removeEventListener("blur", handleBlurOrVisibilityChange);
       document.removeEventListener("visibilitychange", handleBlurOrVisibilityChange);
       document.removeEventListener("pointerleave", handlePointerLeave);
+      window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("click", handleGestureForGravity);
       window.removeEventListener("touchstart", handleGestureForGravity);
       window.removeEventListener("keydown", handleKeyboardGestureForGravity);
@@ -2698,6 +2810,9 @@ export function SteelBallCursor() {
       returnAudioContext?.close().catch(() => {});
       clearBallAppearance(document.documentElement);
       delete document.documentElement.dataset.steelBallApi;
+      if (window.SB === steelBallApi) {
+        delete window.SB;
+      }
       routeObserver?.disconnect();
       cancelOriginAndUseNativeCursor();
       disable();

@@ -1074,6 +1074,12 @@ body,
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100% 100%;
+  animation: steel-ball-tilt-auto-roll 7.2s linear infinite alternate;
+  will-change: margin-left;
+}
+
+.steel-ball-tilt-ball[data-live-gravity="true"] {
+  animation: none;
 }
 
 .steel-ball-tilt-ball::after {
@@ -1088,6 +1094,16 @@ body,
   opacity: 0.58;
   pointer-events: none;
   transform: rotate(var(--steel-ball-roll-angle, 0rad));
+}
+
+@keyframes steel-ball-tilt-auto-roll {
+  from {
+    margin-left: calc(-50vw + 24px);
+  }
+
+  to {
+    margin-left: calc(50vw - 24px);
+  }
 }
 
 .steel-ball-cursor[data-origin-resting] {
@@ -1153,6 +1169,11 @@ body,
 @media (prefers-reduced-motion: reduce) {
   .steel-ball-cursor {
     transition: opacity 80ms ease;
+  }
+
+  .steel-ball-visible-image,
+  .steel-ball-tilt-ball {
+    animation: none;
   }
 
   .steel-ball-stage-origin {
@@ -5595,6 +5616,7 @@ h3 {
   gap: 1rem;
   place-items: center;
   min-height: clamp(18rem, 38vw, 32rem);
+  overflow: hidden;
   background: transparent;
 }
 
@@ -5604,6 +5626,23 @@ h3 {
   height: auto;
   background: transparent;
   object-fit: contain;
+  transform-origin: 50% 51%;
+  animation: steel-ball-product-roll 8.4s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes steel-ball-product-roll {
+  0% {
+    transform: translateX(-18%) rotate(-0.18turn);
+  }
+
+  42% {
+    transform: translateX(4%) rotate(0.04turn);
+  }
+
+  100% {
+    transform: translateX(18%) rotate(0.18turn);
+  }
 }
 
 .steel-ball-product-svg {

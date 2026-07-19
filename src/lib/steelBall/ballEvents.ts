@@ -54,6 +54,11 @@ export type SteelBallBrowserApi = {
     setWear: (value: number) => SteelBallState;
     setFatigue: (value: number) => SteelBallState;
   };
+  debugPresence?: () => Record<string, unknown>;
+  disablePresence?: () => boolean;
+  enablePresence?: () => boolean;
+  forceIdle?: () => boolean;
+  attentionTargets?: () => Array<Record<string, unknown>>;
 };
 
 export type SteelBallEventInput =
@@ -116,5 +121,6 @@ export type SteelBallEventInput =
 declare global {
   interface Window {
     steelBall?: SteelBallBrowserApi;
+    SB?: SteelBallBrowserApi;
   }
 }
