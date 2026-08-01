@@ -5,6 +5,7 @@ import type { CSSProperties } from "react";
 import { confirmedAmbassadors } from "./ambassadors-data";
 import { embassies } from "@/content/embassies";
 import { CtrlLayerNote } from "./ctrl-layer-note";
+import { DecisionColliderInstrument } from "./decision-collider/decision-collider-instrument";
 import { GlobalMood } from "./global-mood";
 import { getAmbassadorProfile } from "./ambassador-profiles-data";
 import { HomeHero } from "./home-hero";
@@ -149,6 +150,14 @@ export default async function Home() {
 
       <HomeHero />
       <GlobalMood />
+
+      <section
+        className="content-section decision-collider-home-section"
+        id="decision-collider"
+        aria-label="Decision Collider"
+      >
+        <DecisionColliderInstrument embedded />
+      </section>
 
       <section
         className="content-section ruled ambassador-network-section"

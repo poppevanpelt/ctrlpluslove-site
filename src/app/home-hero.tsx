@@ -20,7 +20,7 @@ export function HomeHero() {
           <a href="#shared-office">SHARED OFFICE</a>
           <a href="#personas">PERSONAS</a>
           <a href="#products">PRODUCTS</a>
-          <Link href="/decision-collider/">DECISION COLLIDER</Link>
+          <a href="#decision-collider">DECISION COLLIDER</a>
           <Link href="/museum/">MUSEUM STORE</Link>
           <Link href="/steel-ball/">STEEL BALL</Link>
           <a href="#cases">CASES</a>
