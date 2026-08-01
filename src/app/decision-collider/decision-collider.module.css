@@ -1,6 +1,7 @@
 .page {
   display: grid;
   min-height: 100svh;
+  min-width: 100%;
   overflow-x: hidden;
   padding: clamp(1.25rem, 4vw, 2rem);
   background: #080909;
@@ -183,15 +184,18 @@
 
 .force span {
   position: absolute;
-  top: -1.9rem;
-  right: 0;
-  max-width: 7rem;
+  top: 50%;
+  right: 3.35rem;
+  max-width: min(4.2rem, 46%);
   color: var(--force-color);
-  font-size: 0.64rem;
+  font-size: 0.54rem;
   font-weight: 750;
-  letter-spacing: 0.12em;
-  text-align: right;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  text-align: center;
   text-transform: uppercase;
+  text-wrap: balance;
+  transform: translateY(-50%);
 }
 
 .forceCustomer {
@@ -255,7 +259,7 @@
 .stageDetect .force,
 .stageDecide .force {
   opacity: 1;
-  transform: rotate(var(--angle)) translateX(4.2rem);
+  transform: rotate(var(--angle)) translateX(3rem);
   visibility: visible;
   transition-delay: 260ms, 260ms, 0s;
 }
@@ -383,6 +387,13 @@
 
   .chamber {
     min-height: auto;
+  }
+
+  .force span {
+    right: 2.45rem;
+    max-width: min(3.4rem, 44%);
+    font-size: 0.48rem;
+    letter-spacing: 0.06em;
   }
 
   .controls {
