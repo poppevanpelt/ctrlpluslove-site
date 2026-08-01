@@ -219,6 +219,8 @@
 }
 
 .frame {
+  position: relative;
+  z-index: 2;
   display: grid;
   width: min(100%, 78rem);
   gap: clamp(1.3rem, 3vw, 2.4rem);
@@ -273,6 +275,8 @@
 }
 
 .startButton {
+  position: relative;
+  z-index: 24;
   display: inline-flex;
   width: fit-content;
   min-height: 3.45rem;
