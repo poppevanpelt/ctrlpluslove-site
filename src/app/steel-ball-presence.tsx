@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export function SteelBallPresence() {
@@ -10,6 +11,15 @@ export function SteelBallPresence() {
           A physical reminder to test confidence before reality does.
         </span>
         <em>View the object</em>
+      </span>
+      <span className="steel-ball-signature-visual" aria-hidden="true">
+        <Image
+          className="steel-ball-signature-image"
+          src="/museum/steel-ball-packshot-cutout.png"
+          alt=""
+          fill
+          sizes="(max-width: 720px) 72vw, 28vw"
+        />
       </span>
     </Link>
   );

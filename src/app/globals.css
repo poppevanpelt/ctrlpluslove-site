@@ -5376,8 +5376,8 @@ h3 {
 
 .steel-ball-signature-card {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: clamp(0.8rem, 2vw, 1.6rem);
+  grid-template-columns: minmax(0, 0.58fr) minmax(10rem, 0.42fr);
+  gap: clamp(1.2rem, 4vw, 4rem);
   align-items: center;
   border-top: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
@@ -5422,6 +5422,34 @@ h3 {
   text-transform: uppercase;
 }
 
+.steel-ball-signature-visual {
+  position: relative;
+  display: block;
+  width: min(100%, clamp(12rem, 26vw, 24rem));
+  aspect-ratio: 1;
+  justify-self: end;
+  isolation: isolate;
+}
+
+.steel-ball-signature-visual::after {
+  position: absolute;
+  right: 12%;
+  bottom: 5%;
+  left: 12%;
+  height: 14%;
+  border-radius: 999px;
+  background: radial-gradient(ellipse at center, rgb(0 0 0 / 38%) 0 12%, rgb(0 0 0 / 18%) 42%, transparent 72%);
+  content: "";
+  filter: blur(0.35rem);
+  transform: translateY(22%);
+  z-index: -1;
+}
+
+.steel-ball-signature-image {
+  object-fit: contain;
+  filter: drop-shadow(0 1.1rem 1.5rem color-mix(in srgb, var(--ink) 22%, transparent));
+}
+
 .steel-ball-section,
 .ambassador-detail-section {
   min-height: 100svh;
@@ -5438,8 +5466,8 @@ h3 {
 
 .steel-ball-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: clamp(1.2rem, 4vw, 3rem);
+  grid-template-columns: minmax(0, 0.52fr) minmax(12rem, 0.48fr);
+  gap: clamp(1.6rem, 5vw, 5rem);
   align-items: center;
 }
 
@@ -5502,6 +5530,33 @@ h3 {
   font-size: 0.88rem;
   font-weight: 560;
   line-height: 1.46;
+}
+
+.steel-ball-hero-object {
+  position: relative;
+  width: min(100%, clamp(16rem, 36vw, 34rem));
+  aspect-ratio: 1;
+  justify-self: center;
+  isolation: isolate;
+}
+
+.steel-ball-hero-object::after {
+  position: absolute;
+  right: 10%;
+  bottom: 4%;
+  left: 10%;
+  height: 13%;
+  border-radius: 999px;
+  background: radial-gradient(ellipse at center, rgb(0 0 0 / 42%) 0 12%, rgb(0 0 0 / 18%) 44%, transparent 74%);
+  content: "";
+  filter: blur(0.45rem);
+  transform: translateY(24%);
+  z-index: -1;
+}
+
+.steel-ball-hero-image {
+  object-fit: contain;
+  filter: drop-shadow(0 1.35rem 1.7rem color-mix(in srgb, var(--ink) 18%, transparent));
 }
 
 .steel-ball-product-svg {
@@ -9726,8 +9781,15 @@ h3 {
     gap: 2rem;
   }
 
-  .steel-ball-home-card {
+  .steel-ball-home-card,
+  .steel-ball-signature-card,
+  .steel-ball-hero {
     grid-template-columns: 1fr;
+  }
+
+  .steel-ball-signature-visual,
+  .steel-ball-hero-object {
+    justify-self: start;
   }
 
   .steel-ball-section,
