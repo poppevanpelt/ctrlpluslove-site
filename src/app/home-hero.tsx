@@ -16,9 +16,7 @@ export function HomeHero() {
           </p>
         </CtrlLayerLogoTrigger>
         <nav className="home-hero-nav" aria-label="Institution">
-          <Link href="/radar/">RADAR</Link>
-          <a href="#the-room">THE ROOM</a>
-          <Link href="/room-runner/">LIVE ROOM</Link>
+
           <a href="#shared-office">SHARED OFFICE</a>
           <a href="#personas">PERSONAS</a>
           <a href="#products">PRODUCTS</a>

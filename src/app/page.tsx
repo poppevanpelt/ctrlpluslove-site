@@ -8,65 +8,9 @@ import { CtrlLayerNote } from "./ctrl-layer-note";
 import { GlobalMood } from "./global-mood";
 import { getAmbassadorProfile } from "./ambassador-profiles-data";
 import { HomeHero } from "./home-hero";
-import { getPublicRadarSignals } from "@/lib/radar/notion";
 import { allRoomPersonas } from "./room-personas-data";
 import { SteelBallPresence } from "./steel-ball-presence";
 import { ThemeToggle } from "./theme-toggle";
-
-const roomEntries = [
-  {
-    label: "Emotional Truth",
-    participant: "MAYA ELISE HARPER",
-    role: "Human Need",
-    sequenceClass: "sequence-perspective-one",
-    title: "Maya asks what people are buying beneath the brief.",
-    observation:
-      "The expansion logic is sound. The human reason to return is still too vague.",
-    interruption: "The customer chair becomes visible.",
-    before: "82%",
-    after: "71%",
-    verdict: "Emotional truth admitted.",
-  },
-  {
-    label: "Contrarian Pressure",
-    participant: "SIMON CROSS",
-    role: "Useful Disagreement",
-    sequenceClass: "sequence-perspective-two",
-    title: "Simon challenges the answer everyone likes.",
-    observation:
-      "The Room is not asking whether expansion is possible. It is asking whether expansion is being used to avoid fixing the model.",
-    interruption: "Momentum loses its costume.",
-    before: "71%",
-    after: "59%",
-    verdict: "Consensus interrupted.",
-  },
-  {
-    label: "Commercial Realism",
-    participant: "NICK DECKMAN",
-    role: "Cost of Being Wrong",
-    sequenceClass: "sequence-perspective-three",
-    title: "Nick prices the mistake.",
-    observation:
-      "If Brazil exposes the same retention weakness at larger scale, the cost is not launch spend. It is organisational belief in a false proof.",
-    interruption: "The budget stops behaving like evidence.",
-    before: "59%",
-    after: "48%",
-    verdict: "Commercial pressure applied.",
-  },
-  {
-    label: "Reality Stress",
-    participant: "ADRIAN MBEKI",
-    role: "Outside the Room",
-    sequenceClass: "sequence-perspective-four",
-    title: "Adrian brings the world into the room.",
-    observation:
-      "The strongest signal is not demand. It is the absence of renewed usage after the first month.",
-    interruption: "The decision is no longer about launch.",
-    before: "48%",
-    after: "91%",
-    verdict: "Question reframed.",
-  },
-];
 
 const personas = allRoomPersonas;
 
@@ -159,32 +103,6 @@ const caseStudies = [
   },
 ];
 
-const artifactFields = [
-  ["Original decision", "Expand into Brazil next quarter."],
-  [
-    "Participants",
-    "Emotional Truth, Contrarian Pressure, Commercial Realism and Reality Stress.",
-  ],
-  [
-    "Tensions surfaced",
-    "The team was treating Brazil as one market and expansion as proof of model strength.",
-  ],
-  [
-    "Reframed question",
-    "What must become true before expansion is responsible?",
-  ],
-  [
-    "Recommendation",
-    "Delay launch. Run six weeks of retention and regional-entry validation. Re-enter the Room.",
-  ],
-  ["Confidence", "91% after reframing, not before."],
-  [
-    "Unresolved questions",
-    "Which regions behave differently, and what retention signal is strong enough to proceed?",
-  ],
-  ["Next action", "Run the validation sprint and return with evidence."],
-];
-
 const founder = {
   name: "Poppe van Pelt",
   role: "Founder",
@@ -202,110 +120,7 @@ const networkSpecialisations = [
   "irreversible decisions",
 ];
 
-const decisionJourney = [
-  {
-    label: "Decision enters",
-    value: "Expand into Brazil next quarter.",
-  },
-  {
-    label: "82% confidence",
-    value: "Proceed.",
-  },
-  {
-    label: "Commercial pressure",
-    value: "What is the cost of being wrong at scale?",
-  },
-  {
-    label: "Human reality",
-    value: "Demand is visible. Return behaviour is not.",
-  },
-  {
-    label: "Regional insight",
-    value: "One market story hides several local truths.",
-  },
-  {
-    label: "Execution consequence",
-    value: "Launch spend would turn a weak signal into false proof.",
-  },
-  {
-    label: "Blind spot exposed",
-    value: "Expansion was protecting confidence in the existing model.",
-  },
-  {
-    label: "Question reframed",
-    value: "What must become true before expansion is responsible?",
-  },
-  {
-    label: "91% confidence",
-    value: "Delay launch. Validate retention. Re-enter the Room.",
-  },
-  {
-    label: "Decision leaves",
-    value: "Reality contact recovered.",
-  },
-];
-
-type HomepageRadarSignal = {
-  location: string;
-  type: string;
-  signal: string;
-  confidence?: string;
-  source?: string;
-};
-
-const editorialRadarSignals: HomepageRadarSignal[] = [
-  {
-    location: "Amsterdam",
-    type: "Observation",
-    signal:
-      "Parents are increasingly using cargo bikes as temporary waiting rooms between school, work and errands.",
-    confidence: "Medium",
-    source: "Editorial example",
-  },
-  {
-    location: "São Paulo",
-    type: "Cultural Note",
-    signal:
-      "Clients are asking how quickly AI helped, rather than whether AI was used.",
-    confidence: "Medium",
-    source: "Editorial example",
-  },
-  {
-    location: "Cape Town",
-    type: "Contradiction",
-    signal:
-      "Local workarounds often protect context, safety or trust that central processes cannot see.",
-    confidence: "High",
-    source: "Editorial example",
-  },
-];
-
-async function getHomepageRadarSignals(): Promise<{
-  signals: HomepageRadarSignal[];
-  source: "live" | "editorial";
-}> {
-  try {
-    const publicSignals = await getPublicRadarSignals();
-    const signals = publicSignals.slice(0, 3).map((signal) => ({
-      location: signal.location || signal.market || "Radar",
-      type: signal.type || "Signal",
-      signal: signal.signal,
-      confidence: signal.confidence || undefined,
-      source: signal.market || undefined,
-    }));
-
-    if (signals.length === 3) {
-      return { signals, source: "live" };
-    }
-  } catch {
-    // The homepage must stay available even when Radar's private source is unavailable.
-  }
-
-  return { signals: editorialRadarSignals, source: "editorial" };
-}
-
 export default async function Home() {
-  const radarPreview = await getHomepageRadarSignals();
   const humanAmbassadors = confirmedAmbassadors.filter(
     (ambassador) => ambassador.status === "ambassador",
   );
@@ -327,245 +142,13 @@ export default async function Home() {
 
   return (
     <main className="site-shell chapter-one" id="main-content">
-      <a className="skip-link" href="#room-changed-question">
+      <a className="skip-link" href="#network">
         Skip to main content
       </a>
       <ThemeToggle />
 
       <HomeHero />
       <GlobalMood />
-
-      <section
-        className="content-section ruled homepage-radar-section"
-        id="radar"
-        aria-labelledby="homepage-radar-title"
-      >
-        <div className="content-block wide homepage-radar-block">
-          <div className="homepage-radar-intro">
-            <div>
-              <p className="section-kicker">CTRL+LOVE RADAR</p>
-              <h2 id="homepage-radar-title" className="ctrl-layer-anchor">
-                Before the Room, there is Radar.
-                <CtrlLayerNote className="ctrl-layer-note-right">
-                  LISTENING FOR CONTRADICTIONS
-                </CtrlLayerNote>
-              </h2>
-              <p className="homepage-radar-deck">
-                Radar collects small human observations before they become
-                bigger decisions.
-              </p>
-            </div>
-            <div className="homepage-radar-copy">
-              <p>
-                Not every important question begins as a brief.
-              </p>
-              <p>
-                Sometimes it begins as a small observation from Amsterdam, São
-                Paulo, Cape Town or Tokyo. A contradiction. A local habit.
-                Something that changed before the dashboard noticed.
-              </p>
-              <p>
-                Radar makes those signals visible before they become obvious.
-              </p>
-              <p>
-                AI helps surface patterns quickly. People decide which ones
-                carry judgment, context or useful disagreement.
-              </p>
-              <div className="homepage-radar-actions">
-                <Link className="home-hero-cta" href="/radar/">
-                  Explore Radar {"->"}
-                </Link>
-                <Link className="home-hero-secondary" href="/radar/#submit-signal">
-                  Send a signal
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          <div className="homepage-radar-preview" aria-labelledby="homepage-live-radar-title">
-            <div className="homepage-radar-preview-heading">
-              <p className="section-kicker">
-                {radarPreview.source === "live" ? "LIVE RADAR" : "RADAR PREVIEW"}
-              </p>
-              <h3 id="homepage-live-radar-title">
-                What the network is learning to notice.
-              </h3>
-            </div>
-
-            <div
-              className="homepage-radar-grid"
-              data-source={radarPreview.source}
-              aria-label={
-                radarPreview.source === "live"
-                  ? "Public Radar signals"
-                  : "Editorial Radar examples"
-              }
-            >
-              {radarPreview.signals.map((signal) => (
-                <article
-                  className="homepage-radar-card ctrl-layer-anchor"
-                  key={`${signal.location}-${signal.signal}`}
-                >
-                  <div className="homepage-radar-card-meta">
-                    <span>{signal.location}</span>
-                    <span>{signal.type}</span>
-                  </div>
-                  <p>{signal.signal}</p>
-                  <div className="homepage-radar-card-footer">
-                    {signal.confidence ? <span>{signal.confidence} confidence</span> : null}
-                    {signal.source ? <span>{signal.source}</span> : null}
-                  </div>
-                  <CtrlLayerNote className="ctrl-layer-note-card">
-                    THE SYSTEM NOTICED YOU
-                  </CtrlLayerNote>
-                </article>
-              ))}
-            </div>
-
-            <Link className="text-link homepage-radar-link" href="/radar/">
-              View all signals {"->"}
-            </Link>
-          </div>
-
-          <div className="homepage-radar-bridge" aria-label="From signal to decision">
-            <p className="section-kicker">FROM SIGNAL TO DECISION</p>
-            <p>
-              When a signal matters enough, it becomes a question worth
-              discussing.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section
-        className="content-section ruled chapter-room-section"
-        id="the-room"
-        tabIndex={-1}
-        aria-labelledby="first-room-title"
-      >
-        <div className="content-block chapter-room-block">
-          <div
-            className="room-status sequence-reveal sequence-room-status"
-            aria-label="Room status"
-          >
-            <span>ROOM STATUS</span>
-            <strong>Decision entering. Humans summoned.</strong>
-          </div>
-
-          <article className="chapter-decision-card sequence-reveal sequence-decision-card">
-            <div className="decision-card-header">
-              <p>Decision 014</p>
-              <span>Initial confidence 82%</span>
-            </div>
-            <h2 id="first-room-title" className="ctrl-layer-anchor">
-              Should we expand into Brazil next quarter?
-              <CtrlLayerNote className="ctrl-layer-note-right">
-                THIS PART HAS DOUBTS
-              </CtrlLayerNote>
-            </h2>
-            <dl className="decision-card-facts">
-              <div>
-                <dt>Current recommendation</dt>
-                <dd>Proceed.</dd>
-              </div>
-              <div>
-                <dt>Visible pressure</dt>
-                <dd>Board momentum. Competitor entry. Partner enthusiasm.</dd>
-              </div>
-              <div>
-                <dt>Uninvited reality</dt>
-                <dd>Retention, regional difference, reversibility.</dd>
-              </div>
-            </dl>
-          </article>
-
-          <div className="room-theatre" aria-label="Live Room sequence">
-            <div className="decision-journey" aria-label="Decision journey">
-              {decisionJourney.map((step, index) => (
-                <div className="decision-journey-step ctrl-layer-anchor" key={step.label}>
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <div>
-                    <p>{step.label}</p>
-                    <strong>{step.value}</strong>
-                  </div>
-                  {index === 4 ? (
-                    <CtrlLayerNote className="ctrl-layer-note-card">
-                      NOT EVERYTHING HERE IS OPTIMIZED
-                    </CtrlLayerNote>
-                  ) : null}
-                </div>
-              ))}
-            </div>
-
-            <div className="room-entry-list">
-              {roomEntries.map((entry) => (
-                <article
-                  className={`room-entry sequence-reveal ${entry.sequenceClass}`}
-                  key={entry.participant}
-                >
-                  <div>
-                    <p>{entry.label}</p>
-                    <h3>{entry.participant}</h3>
-                    <span>{entry.role}</span>
-                  </div>
-                  <div className="room-entry-contribution">
-                    <strong>{entry.title}</strong>
-                    <p>{entry.observation}</p>
-                    <span>{entry.interruption}</span>
-                  </div>
-                  <dl>
-                    <div>
-                      <dt>Before</dt>
-                      <dd>{entry.before}</dd>
-                    </div>
-                    <div>
-                      <dt>After</dt>
-                      <dd>{entry.after}</dd>
-                    </div>
-                  </dl>
-                  <em>{entry.verdict}</em>
-                </article>
-              ))}
-            </div>
-          </div>
-
-          <div
-            className="room-changed-mind sequence-reveal sequence-changed-mind"
-            id="room-changed-question"
-            role="status"
-            tabIndex={-1}
-          >
-            <p>The Room has changed the question.</p>
-          </div>
-
-          <div className="reframed-question sequence-reveal sequence-reframed-question">
-            <dl>
-              <div>
-                <dt>Original question</dt>
-                <dd>Should we expand into Brazil next quarter?</dd>
-              </div>
-              <div>
-                <dt>Reframed question</dt>
-                <dd>What must become true before expansion is responsible?</dd>
-              </div>
-            </dl>
-          </div>
-        </div>
-      </section>
-
-      <section
-        className="content-section ruled room-afterword-section"
-        aria-labelledby="after-room-title"
-      >
-        <div className="content-block afterword-block">
-          <p className="section-kicker">What happened</p>
-          <h2 id="after-room-title">Reality entered. Confidence moved.</h2>
-          <p>
-            The Room turned a yes/no launch question into a testable
-            responsibility.
-          </p>
-        </div>
-      </section>
 
       <section
         className="content-section ruled ambassador-network-section"
@@ -912,36 +495,6 @@ export default async function Home() {
       </section>
 
       <section
-        className="content-section ruled decision-artifact-section"
-        aria-labelledby="artifact-title"
-      >
-        <div className="content-block artifact-block">
-          <div className="artifact-heading">
-            <p className="section-kicker">Decision Record</p>
-            <h2 id="artifact-title">Decision 014 / Reality Contact Record</h2>
-          </div>
-
-          <article className="decision-artifact ctrl-layer-anchor" aria-label="Decision Record 014">
-            <div className="artifact-topline">
-              <span>ctrl+love</span>
-              <span>ROOM OUTPUT / 001</span>
-            </div>
-            <dl>
-              {artifactFields.map(([term, detail]) => (
-                <div key={term}>
-                  <dt>{term}</dt>
-                  <dd>{detail}</dd>
-                </div>
-              ))}
-            </dl>
-            <CtrlLayerNote className="ctrl-layer-note-card">
-              PROBABLY NOT FINISHED
-            </CtrlLayerNote>
-          </article>
-        </div>
-      </section>
-
-      <section
         className="content-section ruled constitution-article-section"
         aria-labelledby="article-one-title"
       >
@@ -1007,9 +560,7 @@ export default async function Home() {
           <p>
             <Link href="/room/">The Room</Link>
           </p>
-          <p>
-            <Link href="/radar/">Radar</Link>
-          </p>
+          <p>          </p>
           <p>
             <Link href="/museum/">Museum Store</Link>
           </p>
@@ -1019,9 +570,7 @@ export default async function Home() {
           <p>
             <Link href="/artifacts/">Artifacts</Link>
           </p>
-          <p>
-            <Link href="/room-runner/">Live Room</Link>
-          </p>
+          <p>          </p>
           <p>
             <Link href="/ambassadors/">Ambassadors</Link>
           </p>
