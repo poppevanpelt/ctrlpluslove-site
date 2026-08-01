@@ -1,6 +1,7 @@
 .page {
   display: grid;
   min-height: 100svh;
+  overflow-x: hidden;
   padding: clamp(1.25rem, 4vw, 2rem);
   background: #080909;
   color: #f3efe7;
@@ -63,6 +64,7 @@
   align-items: center;
   gap: clamp(1.25rem, 4vw, 2rem);
   grid-template-columns: minmax(12rem, 0.72fr) minmax(21rem, 1.6fr) minmax(14rem, 0.82fr);
+  min-height: 0;
 }
 
 .stageCopy {
@@ -94,7 +96,7 @@
 .chamber {
   position: relative;
   display: grid;
-  min-height: 22.5rem;
+  min-height: min(22.5rem, 42svh);
   overflow: hidden;
   place-items: center;
   border: 1px solid rgba(243, 239, 231, 0.2);
@@ -307,10 +309,14 @@
 }
 
 .controls {
+  position: relative;
+  z-index: 20;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  padding-top: 0.5rem;
+  background: linear-gradient(180deg, transparent, #080909 28%);
 }
 
 .stageLine {
