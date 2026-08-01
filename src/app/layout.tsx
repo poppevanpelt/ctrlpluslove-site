@@ -1,16 +1,9 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { routeMetadata, SITE_URL } from "./seo";
-import { BackgroundSoundtrack } from "./background-soundtrack";
-import { CtrlLayerProvider } from "./ctrl-layer";
-import { LivingOffice } from "./living-office";
-import { ProjectNavigation } from "./project-navigation";
-import { SteelBallCursor } from "./steel-ball-cursor";
-import { TimeAwareAmbience } from "./time-aware-ambience";
 
 export const metadata: Metadata = {
   ...routeMetadata("/"),
@@ -32,24 +25,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <Script src="/theme-init.js" strategy="beforeInteractive" />
-      </head>
+    <html lang="en">
       <body>
-        <a className="skip-link" href="#main-content">
-          Skip to content
-        </a>
-        <CtrlLayerProvider>
-          <ProjectNavigation />
-          {children}
-          <TimeAwareAmbience />
-          <LivingOffice />
-          <BackgroundSoundtrack />
-          <SteelBallCursor />
-          <Analytics />
-          <SpeedInsights />
-        </CtrlLayerProvider>
+        {children}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
