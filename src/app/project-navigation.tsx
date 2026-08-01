@@ -23,7 +23,7 @@ const projectLinks = [
 export function ProjectNavigation() {
   const pathname = usePathname();
 
-  if (pathname === "/") {
+  if (pathname === "/" || pathname === "/decision-collider") {
     return null;
   }
 
