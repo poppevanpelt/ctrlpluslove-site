@@ -72,11 +72,11 @@
 
 .stage h2 {
   max-width: 100%;
-  font-size: clamp(2rem, 3.8vw, 3.4rem);
+  font-size: clamp(1.8rem, 3vw, 2.85rem);
   font-weight: 650;
   letter-spacing: 0;
-  line-height: 0.92;
-  overflow-wrap: anywhere;
+  line-height: 1;
+  overflow-wrap: normal;
 }
 
 .purpose,
