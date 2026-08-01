@@ -210,6 +210,14 @@ export const publicRoutes: PublicRoute[] = [
     priority: 0.45,
   },
   {
+    path: "/decision-collider/",
+    title: "Decision Collider — ctrl+love",
+    description:
+      "An interactive ctrl+love instrument for pushing one decision through observation, framing, collision, detection, and human judgment.",
+    changeFrequency: "monthly",
+    priority: 0.82,
+  },
+  {
     path: "/living-decision-review/",
     title: "Live Decision Simulator — ctrl+love",
     description: "A decision room that thinks in public.",
