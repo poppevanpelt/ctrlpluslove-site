@@ -185,7 +185,7 @@
 .force span {
   position: absolute;
   top: 50%;
-  right: 3.35rem;
+  right: 3.85rem;
   max-width: min(4.2rem, 46%);
   color: var(--force-color);
   font-size: 0.54rem;
@@ -390,7 +390,7 @@
   }
 
   .force span {
-    right: 2.45rem;
+    right: 2.85rem;
     max-width: min(3.4rem, 44%);
     font-size: 0.48rem;
     letter-spacing: 0.06em;
