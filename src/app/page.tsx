@@ -71,7 +71,7 @@ const caseStudies = [
     client: "COMFORA",
     status: "disclosed",
     category: "Homecare",
-    headline: ["Nobody wanted a chair.", "They wanted their life back."],
+    headline: ["Nobody wanted a comfy chair.", "They wanted their life back."],
     supporting:
       "The brief entered as a product question. It left as a question about independence.",
     cta: "See what the Room surfaced",
