@@ -2515,7 +2515,7 @@ export function SteelBallCursor() {
 
       if (canUseSteelCursor()) {
         const fixedHeroBall = document.querySelector<HTMLElement>(".homepage-steel-ball-object");
-        const fixedHeroRect = state === "skipped" && fixedHeroBall?.getAttribute("data-cursor-handed-off") !== "true"
+        const fixedHeroRect = fixedHeroBall?.getAttribute("data-cursor-handed-off") !== "true"
           ? fixedHeroBall?.getBoundingClientRect()
           : null;
 
