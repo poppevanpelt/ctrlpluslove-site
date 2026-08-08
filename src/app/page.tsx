@@ -11,7 +11,6 @@ import { getAmbassadorProfile } from "./ambassador-profiles-data";
 import { HomeHero } from "./home-hero";
 import { allRoomPersonas } from "./room-personas-data";
 import { SteelBallPresence } from "./steel-ball-presence";
-import { ThemeToggle } from "./theme-toggle";
 
 const personas = allRoomPersonas;
 
@@ -142,8 +141,6 @@ export default async function Home() {
       <a className="skip-link" href="#personas">
         Skip to main content
       </a>
-      <ThemeToggle />
-
       <HomeHero />
       <GlobalMood />
 
