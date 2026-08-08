@@ -152,6 +152,24 @@ export default async function Home() {
       <GlobalMood />
 
       <section
+        className="content-section homepage-positioning-section"
+        aria-labelledby="homepage-positioning-title"
+      >
+        <div className="homepage-positioning-copy">
+          <h2 id="homepage-positioning-title">
+            A global network for better decisions.
+          </h2>
+          <p className="homepage-positioning-principle">Powered by reality.</p>
+          <p className="homepage-positioning-explanation">
+            AI reveals patterns. People decide what matters.
+          </p>
+          <a className="homepage-positioning-cta" href="#decision-collider">
+            Try the Decision Collider
+          </a>
+        </div>
+      </section>
+
+      <section
         className="content-section decision-collider-home-section"
         id="decision-collider"
         aria-label="Decision Collider"
