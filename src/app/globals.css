@@ -14008,6 +14008,7 @@ h3 {
 
 .case-story-featured .case-story-meta {
   color: var(--team-warm);
+  font-size: 0.78rem;
 }
 
 .case-story-copy {
