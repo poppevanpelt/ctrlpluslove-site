@@ -2514,6 +2514,11 @@ export function SteelBallCursor() {
       }
 
       if (canUseSteelCursor()) {
+        const fixedHeroBall = document.querySelector<HTMLElement>(".homepage-steel-ball-object");
+        const fixedHeroRect = state === "skipped" && fixedHeroBall?.getAttribute("data-cursor-handed-off") !== "true"
+          ? fixedHeroBall?.getBoundingClientRect()
+          : null;
+
         if (!cursor) {
           cursor = document.createElement("div");
           cursor.className = "steel-ball-cursor";
@@ -2541,6 +2546,23 @@ export function SteelBallCursor() {
         applyMemoryToElement(cursor);
         updateTarget(target);
         cursor.style.transform = `translate3d(${renderX}px, ${renderY}px, 0) translate(-50%, -50%) scale(${scale}) scale(${pressScale})`;
+
+        if (fixedHeroBall && fixedHeroRect) {
+          const fixedX = fixedHeroRect.left + fixedHeroRect.width / 2;
+          const fixedY = fixedHeroRect.top + fixedHeroRect.height / 2;
+          fixedHeroBall.setAttribute("data-cursor-handed-off", "true");
+          cursor.animate(
+            [
+              { transform: `translate3d(${fixedX}px, ${fixedY}px, 0) translate(-50%, -50%) scale(1)` },
+              { transform: `translate3d(${renderX}px, ${renderY}px, 0) translate(-50%, -50%) scale(${scale})` },
+            ],
+            {
+              duration: 360,
+              easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+            },
+          );
+        }
+
         previousFrameTime = performance.now();
         slowFrameCount = 0;
         window.cancelAnimationFrame(frame);
