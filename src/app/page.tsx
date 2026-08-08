@@ -68,39 +68,35 @@ const engagementOptions = [
 
 const caseStudies = [
   {
-    sector: "Consumer wellbeing platform",
-    question: "Should we spend our way out of declining engagement?",
-    blindSpot:
-      "People wanted their lives back. The Room discovered that declining engagement was not a marketing problem; it was accumulated exhaustion.",
-    outcome:
-      "The team stopped chasing frequency and redesigned the product around permission, recovery, and return.",
-    sentence: "The growth problem was a fatigue signal wearing a dashboard costume.",
+    client: "COMFORA",
+    status: "disclosed",
+    category: "Homecare",
+    headline: ["Nobody wanted a chair.", "They wanted their life back."],
+    supporting:
+      "The brief entered as a product question. It left as a question about independence.",
+    cta: "See what the Room surfaced",
+    disclosed: true,
   },
   {
-    sector: "Global consumer brand",
-    question: "Should we reposition for a younger audience?",
-    blindSpot: "The company was not becoming old. It had become predictable.",
-    outcome:
-      "The Room preserved the brand memory, removed inherited habits, and rebuilt the launch around useful surprise.",
-    sentence: "Youth was not the target. Aliveness was.",
+    client: "UNDISCLOSED",
+    status: "confidential",
+    category: "Global consumer brand",
+    headline: [
+      "They came in asking how to reach younger people.",
+      "Age wasn’t the problem. Predictability was.",
+    ],
+    cta: "Client confidential",
+    disclosed: false,
   },
   {
-    sector: "Public healthcare network",
-    question: "Should we centralise the process every region keeps adapting?",
-    blindSpot:
-      "The inefficiency was partly a safety ritual. One local workaround was protecting patients from a central blind spot.",
-    outcome:
-      "The rollout became a hybrid protocol. Speed improved without erasing the human safeguard.",
-    sentence: "What looked messy was carrying memory.",
-  },
-  {
-    sector: "Climate infrastructure venture",
-    question: "Should we accept a fast strategic partnership?",
-    blindSpot:
-      "The partner brought distribution, but also a dependency that would narrow future choices before anyone noticed.",
-    outcome:
-      "The deal was renegotiated with exit rights, technical independence, and a slower first commitment.",
-    sentence: "The Room protected the future from a very attractive shortcut.",
+    client: "UNDISCLOSED",
+    status: "confidential",
+    category: "Organisation / transformation",
+    headline: ["The inefficiency was there for a reason."],
+    supporting:
+      "What looked like resistance to change turned out to be people quietly protecting something the new system had forgotten.",
+    cta: "Client confidential",
+    disclosed: false,
   },
 ];
 
@@ -424,38 +420,29 @@ export default async function Home() {
       >
         <div className="content-block wide cases-block">
           <div className="cases-heading">
-            <p className="section-kicker">Selected Decisions</p>
-            <h2 id="cases-title" className="ctrl-layer-anchor">
-              Real decisions improved. Names withheld. Lessons intact.
-              <CtrlLayerNote className="ctrl-layer-note-right">
-                ACCIDENTALLY MEANINGFUL
-              </CtrlLayerNote>
+            <h2 id="cases-title">
+              A few things that changed inside the Room.
             </h2>
-            <aside className="human-proof-note">
-              The visible issue was performance. The deeper issue was that
-              people wanted their lives back.
-            </aside>
           </div>
           <div className="case-ledger">
-            {caseStudies.map((study, index) => (
-              <article className="case-row" key={study.question}>
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <div>
-                  <p>Anonymised project</p>
-                  <small>{study.sector}</small>
+            {caseStudies.map((study) => (
+              <article
+                className={`case-story${study.disclosed ? " case-story-featured" : ""}`}
+                key={`${study.client}-${study.category}`}
+              >
+                <div className="case-story-meta">
+                  <strong>{study.client}</strong>
+                  <span>{study.status}</span>
+                  <span>{study.category}</span>
                 </div>
-                <div>
-                  <strong>Decision question</strong>
-                  <h3>{study.question}</h3>
-                </div>
-                <div>
-                  <strong>Hidden tension</strong>
-                  <p>{study.blindSpot}</p>
-                </div>
-                <div>
-                  <strong>Room outcome</strong>
-                  <p>{study.outcome}</p>
-                  <em>{study.sentence}</em>
+                <div className="case-story-copy">
+                  <h3>
+                    {study.headline.map((line) => (
+                      <span key={line}>{line}</span>
+                    ))}
+                  </h3>
+                  {study.supporting ? <p>{study.supporting}</p> : null}
+                  <small>{study.cta}</small>
                 </div>
               </article>
             ))}
