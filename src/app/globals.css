@@ -14006,6 +14006,10 @@ h3 {
   font: inherit;
 }
 
+.case-story-featured .case-story-meta {
+  color: var(--team-warm);
+}
+
 .case-story-copy {
   display: grid;
   align-content: end;
