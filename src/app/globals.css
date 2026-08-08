@@ -14006,12 +14006,6 @@ h3 {
   font: inherit;
 }
 
-.case-story-meta span + span::before {
-  margin-right: 1rem;
-  content: "/";
-  opacity: 0.45;
-}
-
 .case-story-copy {
   display: grid;
   align-content: end;
