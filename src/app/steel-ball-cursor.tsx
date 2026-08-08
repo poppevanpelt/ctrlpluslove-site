@@ -197,7 +197,7 @@ export function SteelBallCursor() {
 
     const canUseSteelCursor = () =>
       !isTiltGravityMode() &&
-      (hasMousePointerControl || activeMedia.matches || isLocalReplay() || isDebugGravityPreview());
+      (activeMedia.matches || isLocalReplay() || isDebugGravityPreview());
     const shouldReduceMotion = () => reducedMotionMedia.matches && !isLocalReplay();
     const canUseOrientationGravity = () => {
       if (shouldReduceMotion() || typeof window === "undefined") {
@@ -1129,7 +1129,7 @@ export function SteelBallCursor() {
       clientY: number,
       target: EventTarget | null,
     ) => {
-      if (state === "borrowed" || isTiltGravityMode()) {
+      if (state === "borrowed" || !canUseSteelCursor()) {
         return;
       }
 
@@ -2482,6 +2482,9 @@ export function SteelBallCursor() {
       removeStageOrigin();
       cursor?.remove();
       cursor = null;
+      document
+        .querySelector<HTMLElement>(".homepage-steel-ball-object")
+        ?.removeAttribute("data-cursor-handed-off");
       steelBall.markCursorState({ active: false, resting: false, gravityOffset: { x: 0, y: 0 } });
     };
 
@@ -2510,6 +2513,17 @@ export function SteelBallCursor() {
       if (enabled && isTiltGravityMode()) {
         enableTiltGravityMode();
         return;
+      }
+
+      if (!canUseSteelCursor() && !isTiltGravityMode()) {
+        cursor?.remove();
+        cursor = null;
+        visible = false;
+        document.documentElement.classList.remove("steel-ball-cursor-active");
+        setNativeCursor(false);
+        document
+          .querySelector<HTMLElement>(".homepage-steel-ball-object")
+          ?.removeAttribute("data-cursor-handed-off");
       }
 
       if (!canUseSteelBallExperience()) {
@@ -2627,7 +2641,7 @@ export function SteelBallCursor() {
     };
 
     const handlePointerMove = (event: PointerEvent) => {
-      if (isTiltGravityMode()) {
+      if (isTiltGravityMode() || (event.pointerType && event.pointerType !== "mouse")) {
         return;
       }
 
@@ -2691,6 +2705,10 @@ export function SteelBallCursor() {
       }
 
       if (!(event instanceof PointerEvent)) {
+        return;
+      }
+
+      if (event.pointerType && event.pointerType !== "mouse") {
         return;
       }
 
@@ -2791,7 +2809,7 @@ export function SteelBallCursor() {
       previousDocumentMouseMove?.call(document, event);
     };
     const handleAssignedPointerMove = (event: PointerEvent) => {
-      if (isTiltGravityMode()) {
+      if (isTiltGravityMode() || (event.pointerType && event.pointerType !== "mouse")) {
         return;
       }
 
@@ -2799,7 +2817,7 @@ export function SteelBallCursor() {
       previousWindowPointerMove?.call(window, event);
     };
     const handleAssignedDocumentPointerMove = (event: PointerEvent) => {
-      if (isTiltGravityMode()) {
+      if (isTiltGravityMode() || (event.pointerType && event.pointerType !== "mouse")) {
         return;
       }
 
