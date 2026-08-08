@@ -12407,6 +12407,7 @@ h3 {
 }
 
 .chapter-arrival-scene .homepage-steel-ball-object {
+  z-index: 3;
   top: 63.1%;
   left: 43.8%;
 }
