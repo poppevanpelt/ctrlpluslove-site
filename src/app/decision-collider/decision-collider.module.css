@@ -12,10 +12,16 @@
 }
 
 .embedded {
-  min-height: auto;
-  border-top: 1px solid rgba(243, 239, 231, 0.14);
-  border-bottom: 1px solid rgba(243, 239, 231, 0.14);
-  padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 2rem);
+  width: 100%;
+  min-height: 100svh;
+  border-top: 0;
+  border-bottom: 0;
+  padding:
+    clamp(1.5rem, 4svh, 3rem)
+    clamp(1.25rem, 4vw, 3.5rem)
+    clamp(1.25rem, 3svh, 2.25rem);
+  gap: clamp(1rem, 2.5svh, 2rem);
+  grid-template-rows: auto minmax(0, 1fr) auto;
 }
 
 .returnLink {
@@ -376,6 +382,15 @@
 }
 
 @media (max-width: 900px) {
+  .embedded {
+    min-height: 100svh;
+    padding:
+      clamp(1.25rem, 3svh, 2rem)
+      clamp(1rem, 4vw, 1.5rem)
+      clamp(1rem, 2.5svh, 1.5rem);
+    grid-template-rows: auto auto auto;
+  }
+
   .stage {
     grid-template-columns: 1fr;
   }
