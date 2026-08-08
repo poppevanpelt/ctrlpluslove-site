@@ -131,7 +131,6 @@ export function SteelBallCursor() {
     let lastGravityInput = "none";
     let debugGravityFrame = 0;
     let hasMousePointerControl = false;
-    let rollRotation = 0;
     let reflectionPhase = 0;
     let reflectionRenderX = renderX;
     let reflectionInitialized = false;
@@ -1146,8 +1145,6 @@ export function SteelBallCursor() {
       maybeRecordImpact(velocity, clientX, clientY);
 
       if (travel > 0.2 && !shouldReduceMotion()) {
-        const direction = deltaX || deltaY;
-        rollRotation += clamp(travel / 16, 0, 0.42) * Math.sign(direction || 1);
         motionLeanX = clamp(deltaX * 0.035, -3.5, 3.5);
         motionLeanY = clamp(deltaY * 0.035, -3.5, 3.5);
       }
@@ -1175,9 +1172,8 @@ export function SteelBallCursor() {
       window.clearTimeout(armingTimeout);
       stopGravity(true);
       updateTarget(target);
-      const directSurfaceRotation = rollRotation * 0.24;
-      updateRollingReflection(directCursor, renderX, directSurfaceRotation);
-      directCursor.style.transform = `translate3d(${renderX}px, ${renderY}px, 0) translate(-50%, -50%) translate(${motionLeanX.toFixed(2)}px, ${motionLeanY.toFixed(2)}px) rotate(${directSurfaceRotation.toFixed(3)}rad) scale(${scale}) scale(${pressScale})`;
+      updateRollingReflection(directCursor, renderX, 0);
+      directCursor.style.transform = `translate3d(${renderX}px, ${renderY}px, 0) translate(-50%, -50%) translate(${motionLeanX.toFixed(2)}px, ${motionLeanY.toFixed(2)}px) scale(${scale}) scale(${pressScale})`;
       previousFrameTime = performance.now();
       slowFrameCount = 0;
       window.cancelAnimationFrame(frame);
@@ -2074,9 +2070,8 @@ export function SteelBallCursor() {
         motionLeanY *= 0.82;
       }
 
-      const visualRotation = rollRotation * 0.24 + presenceOffset.rotation;
-      updateRollingReflection(cursor, renderX, visualRotation);
-      cursor.style.transform = `translate3d(${renderX}px, ${renderY}px, 0) translate(-50%, -50%) translate(${motionLeanX.toFixed(2)}px, ${motionLeanY.toFixed(2)}px) rotate(${visualRotation.toFixed(3)}rad) scale(${scale * presenceOffset.scale}) scale(${pressScale})`;
+      updateRollingReflection(cursor, renderX, 0);
+      cursor.style.transform = `translate3d(${renderX}px, ${renderY}px, 0) translate(-50%, -50%) translate(${motionLeanX.toFixed(2)}px, ${motionLeanY.toFixed(2)}px) scale(${scale * presenceOffset.scale}) scale(${pressScale})`;
       cursor.toggleAttribute("data-interactive", isInteractive);
       cursor.toggleAttribute("data-clicking", isPressed);
       frame = window.requestAnimationFrame(render);
@@ -2110,11 +2105,10 @@ export function SteelBallCursor() {
         const eased = 1 - Math.pow(1 - progress, 3);
         const x = startX + (endX - startX) * eased;
         const y = startY + (endY - startY) * eased + Math.sin(progress * Math.PI) * -3;
-        const rotation = (exitRight ? 1 : -1) * progress * 0.48;
         renderX = x;
         renderY = y;
-        updateRollingReflection(cursor, x, rotation * Math.PI * 2);
-        cursor.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) rotate(${rotation}turn) scale(${scale})`;
+        updateRollingReflection(cursor, x, 0);
+        cursor.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${scale})`;
 
         if (progress >= 1) {
           cursor.removeAttribute("data-visible");
@@ -2159,7 +2153,6 @@ export function SteelBallCursor() {
       const startY = clamp(pointerY + 16, 24, window.innerHeight - 24);
       const endX = pointerX;
       const endY = pointerY;
-      const rollDirection = startX > window.innerWidth * 0.5 ? -1 : 1;
       const startedAt = performance.now();
       cursor.setAttribute("data-visible", "true");
       document.documentElement.classList.add("steel-ball-cursor-active");
@@ -2173,11 +2166,10 @@ export function SteelBallCursor() {
         const eased = 1 - Math.pow(1 - progress, 3);
         const x = startX + (endX - startX) * eased;
         const y = startY + (endY - startY) * eased + Math.sin(progress * Math.PI) * -4;
-        const rotation = rollDirection * (1 - progress) * -0.5;
         renderX = x;
         renderY = y;
-        updateRollingReflection(cursor, x, rotation * Math.PI * 2);
-        cursor.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) rotate(${rotation}turn) scale(1)`;
+        updateRollingReflection(cursor, x, 0);
+        cursor.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(1)`;
 
         if (progress >= 1) {
           renderX = endX;
@@ -2363,13 +2355,12 @@ export function SteelBallCursor() {
         const lift = Math.sin(progress * Math.PI);
         const x = startX + (pointerX - startX) * eased + liftX * lift * 0.36;
         const y = startY + (pointerY - startY) * eased + liftY * lift * 0.34;
-        const rotation = progress * 0.18;
         const handoffScale = startScale + (1 - startScale) * eased;
 
         renderX = x;
         renderY = y;
-        updateRollingReflection(cursor, x, rotation * Math.PI * 2);
-        cursor.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) rotate(${rotation}turn) scale(${handoffScale})`;
+        updateRollingReflection(cursor, x, 0);
+        cursor.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${handoffScale})`;
 
         if (progress >= 1) {
           completeHandoff();
