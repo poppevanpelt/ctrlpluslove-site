@@ -41,6 +41,7 @@ export function HomeHero() {
                 aria-hidden="true"
                 data-stage-origin-source="hero"
               >
+                <span className="steel-ball-hero-object" />
                 <span
                   className="steel-ball-cursor steel-ball-stage-ball"
                   data-visible="true"
