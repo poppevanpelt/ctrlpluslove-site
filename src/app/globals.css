@@ -1236,6 +1236,10 @@ body,
   .steel-ball-stage-ball {
     display: none;
   }
+
+  .steel-ball-cursor:not(.steel-ball-stage-ball, .steel-ball-tilt-ball) {
+    display: none !important;
+  }
 }
 
 :root[data-steel-gravity-supported] .steel-ball-stage-origin {
