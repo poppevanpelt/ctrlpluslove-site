@@ -907,21 +907,22 @@ body,
   border-radius: 50%;
   clip-path: circle(49.2% at 50% 50%);
   background:
+    radial-gradient(circle at 34% 30%, rgb(255 255 255 / 20%) 0 14%, transparent 42%),
     radial-gradient(
       circle at var(--steel-ball-reflection-x, 32%) var(--steel-ball-reflection-y, 25%),
-      rgb(255 255 255 / 24%) 0 6%,
+      rgb(255 255 255 / 22%) 0 6%,
       transparent 15%
     ),
-    radial-gradient(circle at 68% 74%, rgb(22 24 26 / 40%) 0 20%, transparent 46%),
+    radial-gradient(circle at 68% 74%, rgb(22 24 26 / 24%) 0 20%, transparent 48%),
     var(--steel-ball-asset);
   background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: auto, auto, auto, cover;
   box-shadow:
     inset -0.16rem -0.18rem 0.3rem rgb(8 9 10 / 62%),
     inset 0.12rem 0.1rem 0.24rem rgb(255 255 255 / 36%),
     0 0.08rem 0.2rem rgb(0 0 0 / 46%);
-  filter: saturate(0.35) contrast(1.16) brightness(0.86);
+  filter: saturate(0.3) contrast(1.08) brightness(0.94);
   isolation: isolate;
   opacity: 0;
   pointer-events: none;
@@ -942,12 +943,12 @@ body,
   background:
     radial-gradient(
       circle at var(--steel-ball-reflection-x, 28%) var(--steel-ball-reflection-y, 24%),
-      rgb(255 255 255 / 42%) 0 7%,
+      rgb(255 255 255 / 38%) 0 7%,
       transparent 16%
     ),
     linear-gradient(145deg, rgb(255 255 255 / 14%), transparent 30%, rgb(0 0 0 / calc(0.3 + var(--steel-ball-wear-visibility) * 0.42)) 72%, rgb(255 255 255 / 8%));
   mix-blend-mode: soft-light;
-  opacity: calc(0.62 + var(--steel-ball-fatigue-instability) * 0.08);
+  opacity: calc(0.58 + var(--steel-ball-fatigue-instability) * 0.08);
   transform: rotate(var(--steel-ball-reflection-counter-rotation, 0rad)) scale(1.08);
   transform-origin: center;
   will-change: transform;
@@ -984,12 +985,12 @@ body,
 }
 
 .steel-ball-cursor[data-ball-condition="scratched"] {
-  filter: saturate(0.3) contrast(calc(1.16 + var(--steel-ball-memory-intensity) * 0.16)) brightness(calc(0.86 - var(--steel-ball-memory-intensity) * 0.035));
+  filter: saturate(0.28) contrast(calc(1.08 + var(--steel-ball-memory-intensity) * 0.16)) brightness(calc(0.94 - var(--steel-ball-memory-intensity) * 0.035));
 }
 
 .steel-ball-cursor[data-ball-condition="polished"] {
   border-color: rgb(255 255 255 / calc(0.58 + var(--steel-ball-memory-intensity) * 0.16));
-  filter: saturate(0.35) brightness(calc(0.86 + var(--steel-ball-memory-intensity) * 0.1)) contrast(calc(1.16 + var(--steel-ball-memory-intensity) * 0.06));
+  filter: saturate(0.3) brightness(calc(0.94 + var(--steel-ball-memory-intensity) * 0.08)) contrast(calc(1.08 + var(--steel-ball-memory-intensity) * 0.06));
   box-shadow:
     inset -0.16rem -0.18rem 0.3rem rgb(8 9 10 / 58%),
     inset 0.12rem 0.1rem 0.24rem rgb(255 255 255 / calc(0.36 + var(--steel-ball-memory-intensity) * 0.12)),
@@ -1005,7 +1006,7 @@ body,
 }
 
 .steel-ball-cursor[data-ball-condition="warm"] {
-  filter: saturate(calc(0.35 + var(--steel-ball-memory-intensity) * 0.08)) contrast(1.16) brightness(calc(0.86 + var(--steel-ball-memory-intensity) * 0.035));
+  filter: saturate(calc(0.3 + var(--steel-ball-memory-intensity) * 0.08)) contrast(1.08) brightness(calc(0.94 + var(--steel-ball-memory-intensity) * 0.035));
 }
 
 .steel-ball-cursor[data-ball-condition="warm"]::before {
@@ -1083,7 +1084,7 @@ body,
     inset -0.16rem -0.18rem 0.3rem rgb(8 9 10 / 62%),
     inset 0.12rem 0.1rem 0.24rem rgb(255 255 255 / 36%),
     0 0.42rem 0.34rem rgb(0 0 0 / 46%);
-  filter: saturate(0.35) contrast(1.16) brightness(0.86);
+  filter: saturate(0.3) contrast(1.08) brightness(0.94);
   opacity: 0.98;
   pointer-events: none;
   transform: translate(-50%, -50%);
@@ -1179,7 +1180,7 @@ body,
 
 .steel-ball-cursor[data-interactive] {
   border-color: rgb(255 255 255 / 58%);
-  filter: saturate(0.35) contrast(1.16) brightness(0.86);
+  filter: saturate(0.3) contrast(1.08) brightness(0.94);
   box-shadow:
     inset -0.16rem -0.18rem 0.3rem rgb(8 9 10 / 62%),
     inset 0.12rem 0.1rem 0.24rem rgb(255 255 255 / 36%),
@@ -1195,7 +1196,7 @@ body,
 }
 
 .steel-ball-cursor[data-clicking] {
-  filter: saturate(0.35) contrast(1.16) brightness(0.86);
+  filter: saturate(0.3) contrast(1.08) brightness(0.94);
 }
 
 @media (hover: hover) and (pointer: fine) and (min-width: 760px) {
