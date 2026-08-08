@@ -1044,7 +1044,7 @@ body,
   transform: translate(-50%, -50%);
 }
 
-.steel-ball-hero-object {
+.homepage-steel-ball-object {
   --steel-ball-asset: url("/museum/steel-ball-packshot.png");
   position: absolute;
   z-index: 1;
