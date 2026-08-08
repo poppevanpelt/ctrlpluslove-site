@@ -36,12 +36,12 @@ export function HomeHero() {
             <span className="chapter-arrival-incident-mark" />
             <span className="chapter-arrival-dust" />
             <span className="home-hero-reality-word">
+              <span className="homepage-steel-ball-object" />
               <span
                 className="steel-ball-stage-origin"
                 aria-hidden="true"
                 data-stage-origin-source="hero"
               >
-                <span className="homepage-steel-ball-object" />
                 <span
                   className="steel-ball-cursor steel-ball-stage-ball"
                   data-visible="true"
