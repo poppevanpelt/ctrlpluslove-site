@@ -132,6 +132,9 @@ export function SteelBallCursor() {
     let debugGravityFrame = 0;
     let hasMousePointerControl = false;
     let rollRotation = 0;
+    let reflectionPhase = 0;
+    let reflectionRenderX = renderX;
+    let reflectionInitialized = false;
     let motionLeanX = 0;
     let motionLeanY = 0;
     let lastImpactAt = 0;
@@ -1094,6 +1097,33 @@ export function SteelBallCursor() {
       return cursor;
     };
 
+    const updateRollingReflection = (
+      element: HTMLElement | null,
+      x: number,
+      rotation: number,
+    ) => {
+      if (!element) {
+        return;
+      }
+
+      if (!reflectionInitialized) {
+        reflectionRenderX = x;
+        reflectionInitialized = true;
+      } else if (!shouldReduceMotion()) {
+        reflectionPhase += (x - reflectionRenderX) / 9.5;
+      }
+
+      reflectionRenderX = x;
+      const reflectionX = 50 + Math.sin(reflectionPhase) * 30;
+      const reflectionY = 25 + Math.cos(reflectionPhase) * 5;
+      element.style.setProperty("--steel-ball-reflection-x", `${reflectionX.toFixed(2)}%`);
+      element.style.setProperty("--steel-ball-reflection-y", `${reflectionY.toFixed(2)}%`);
+      element.style.setProperty(
+        "--steel-ball-reflection-counter-rotation",
+        shouldReduceMotion() ? "0rad" : `${(-rotation).toFixed(3)}rad`,
+      );
+    };
+
     const moveCursorDirectly = (
       clientX: number,
       clientY: number,
@@ -1145,6 +1175,7 @@ export function SteelBallCursor() {
       window.clearTimeout(armingTimeout);
       stopGravity(true);
       updateTarget(target);
+      updateRollingReflection(directCursor, renderX, rollRotation);
       directCursor.style.transform = `translate3d(${renderX}px, ${renderY}px, 0) translate(-50%, -50%) translate(${motionLeanX.toFixed(2)}px, ${motionLeanY.toFixed(2)}px) rotate(${rollRotation.toFixed(3)}rad) scale(${scale}) scale(${pressScale})`;
       previousFrameTime = performance.now();
       slowFrameCount = 0;
@@ -2042,7 +2073,9 @@ export function SteelBallCursor() {
         motionLeanY *= 0.82;
       }
 
-      cursor.style.transform = `translate3d(${renderX}px, ${renderY}px, 0) translate(-50%, -50%) translate(${motionLeanX.toFixed(2)}px, ${motionLeanY.toFixed(2)}px) rotate(${(rollRotation + presenceOffset.rotation).toFixed(3)}rad) scale(${scale * presenceOffset.scale}) scale(${pressScale})`;
+      const visualRotation = rollRotation + presenceOffset.rotation;
+      updateRollingReflection(cursor, renderX, visualRotation);
+      cursor.style.transform = `translate3d(${renderX}px, ${renderY}px, 0) translate(-50%, -50%) translate(${motionLeanX.toFixed(2)}px, ${motionLeanY.toFixed(2)}px) rotate(${visualRotation.toFixed(3)}rad) scale(${scale * presenceOffset.scale}) scale(${pressScale})`;
       cursor.toggleAttribute("data-interactive", isInteractive);
       cursor.toggleAttribute("data-clicking", isPressed);
       frame = window.requestAnimationFrame(render);
