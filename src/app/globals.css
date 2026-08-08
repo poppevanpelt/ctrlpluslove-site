@@ -12417,10 +12417,10 @@ h3 {
 }
 
 .chapter-arrival .home-hero-line {
-  max-width: 10.5ch;
+  max-width: 12ch;
   min-height: auto;
   color: #f8f4ed;
-  font-size: clamp(3rem, 7.2vw, 8rem);
+  font-size: clamp(2.8rem, 5.5vw, 6.4rem);
   font-weight: 690;
   line-height: 0.9;
   place-items: start;
@@ -12461,6 +12461,32 @@ h3 {
   line-height: 1.22;
   text-align: left;
   text-transform: uppercase;
+}
+
+.chapter-arrival .home-hero-collider-cta {
+  grid-column: 2;
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  min-height: 3rem;
+  border: 1px solid rgb(244 239 230 / 46%);
+  border-radius: 999px;
+  padding: 0.72rem 1.15rem;
+  color: #f8f4ed;
+  font-size: clamp(0.82rem, 0.95vw, 0.95rem);
+  font-weight: 760;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+
+.chapter-arrival .home-hero-collider-cta:hover,
+.chapter-arrival .home-hero-collider-cta:focus-visible {
+  border-color: #f8f4ed;
+  background: #f8f4ed;
+  color: #080806;
 }
 
 .chapter-arrival .arrival-status {
@@ -12527,6 +12553,7 @@ h3 {
   .chapter-arrival .home-hero-subline,
   .chapter-arrival .home-hero-proposition,
   .chapter-arrival .home-hero-category,
+  .chapter-arrival .home-hero-collider-cta,
   .chapter-arrival .arrival-status {
     grid-column: auto;
     justify-self: center;
@@ -12535,6 +12562,27 @@ h3 {
   .chapter-arrival .arrival-status {
     width: min(100%, 20rem);
   }
+}
+
+.decision-collider-closing-section {
+  display: grid;
+  min-height: clamp(32rem, 72svh, 48rem);
+  place-items: center;
+  padding: clamp(5rem, 12vw, 9rem) 1.5rem;
+  background: #080909;
+  color: #f4f0e8;
+  text-align: center;
+}
+
+.decision-collider-closing-section h2 {
+  max-width: 14ch;
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.8rem, 7vw, 7rem);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 0.96;
+  text-wrap: balance;
 }
 
 .sequence-reveal {
