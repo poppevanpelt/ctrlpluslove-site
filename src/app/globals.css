@@ -1070,6 +1070,11 @@ body,
   opacity: 0.98;
   pointer-events: none;
   transform: translate(-50%, -50%);
+  transition: opacity 180ms ease;
+}
+
+.homepage-steel-ball-object[data-cursor-handed-off="true"] {
+  opacity: 0;
 }
 
 :root[data-steel-tilt-preview="true"] .steel-ball-stage-origin {
