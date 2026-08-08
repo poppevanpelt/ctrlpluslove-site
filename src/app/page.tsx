@@ -160,6 +160,15 @@ export default async function Home() {
       </section>
 
       <section
+        className="content-section decision-collider-closing-section"
+        aria-labelledby="decision-collider-closing-title"
+      >
+        <h2 id="decision-collider-closing-title">
+          Every important decision deserves the right room.
+        </h2>
+      </section>
+
+      <section
         className="content-section ruled ambassador-network-section"
         id="network"
         aria-labelledby="network-title"
