@@ -909,18 +909,19 @@ body,
   background:
     radial-gradient(
       circle at var(--steel-ball-reflection-x, 32%) var(--steel-ball-reflection-y, 25%),
-      rgb(255 255 255 / 42%) 0 8%,
-      transparent 18%
+      rgb(255 255 255 / 24%) 0 6%,
+      transparent 15%
     ),
-    radial-gradient(circle at 68% 74%, rgb(30 32 34 / 24%) 0 18%, transparent 42%),
+    radial-gradient(circle at 68% 74%, rgb(22 24 26 / 40%) 0 20%, transparent 46%),
     var(--steel-ball-asset);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   box-shadow:
-    inset -0.16rem -0.18rem 0.3rem rgb(16 17 18 / 46%),
-    inset 0.12rem 0.1rem 0.24rem rgb(255 255 255 / 70%),
-    0 0.08rem 0.2rem rgb(0 0 0 / 30%);
+    inset -0.16rem -0.18rem 0.3rem rgb(8 9 10 / 62%),
+    inset 0.12rem 0.1rem 0.24rem rgb(255 255 255 / 36%),
+    0 0.08rem 0.2rem rgb(0 0 0 / 46%);
+  filter: saturate(0.35) contrast(1.16) brightness(0.86);
   isolation: isolate;
   opacity: 0;
   pointer-events: none;
@@ -941,12 +942,12 @@ body,
   background:
     radial-gradient(
       circle at var(--steel-ball-reflection-x, 28%) var(--steel-ball-reflection-y, 24%),
-      rgb(255 255 255 / 72%) 0 9%,
-      transparent 18%
+      rgb(255 255 255 / 42%) 0 7%,
+      transparent 16%
     ),
-    linear-gradient(145deg, rgb(255 255 255 / 26%), transparent 34%, rgb(0 0 0 / calc(0.18 + var(--steel-ball-wear-visibility) * 0.5)) 74%, rgb(255 255 255 / 20%));
-  mix-blend-mode: screen;
-  opacity: calc(0.78 + var(--steel-ball-fatigue-instability) * 0.08);
+    linear-gradient(145deg, rgb(255 255 255 / 14%), transparent 30%, rgb(0 0 0 / calc(0.3 + var(--steel-ball-wear-visibility) * 0.42)) 72%, rgb(255 255 255 / 8%));
+  mix-blend-mode: soft-light;
+  opacity: calc(0.62 + var(--steel-ball-fatigue-instability) * 0.08);
   transform: rotate(var(--steel-ball-reflection-counter-rotation, 0rad)) scale(1.08);
   transform-origin: center;
   will-change: transform;
@@ -958,13 +959,13 @@ body,
     112deg,
     transparent 0%,
     transparent 40%,
-    rgb(255 255 255 / 78%) 48%,
+    rgb(255 255 255 / 52%) 48%,
     transparent 56%,
     transparent 100%
   );
   opacity: 0;
   transform: translateX(-58%) rotate(10deg);
-  mix-blend-mode: screen;
+  mix-blend-mode: soft-light;
 }
 
 .steel-ball-cursor[data-visible] {
@@ -975,40 +976,40 @@ body,
   background:
     radial-gradient(
       circle at var(--steel-ball-reflection-x, 28%) var(--steel-ball-reflection-y, 24%),
-      rgb(255 255 255 / 72%) 0 9%,
-      transparent 18%
+      rgb(255 255 255 / 42%) 0 7%,
+      transparent 16%
     ),
-    linear-gradient(145deg, rgb(255 255 255 / 18%), transparent 34%, rgb(0 0 0 / calc(0.18 + var(--steel-ball-memory-intensity) * 0.16)) 74%, rgb(255 255 255 / 16%));
-  opacity: calc(0.66 + var(--steel-ball-memory-intensity) * 0.1);
+    linear-gradient(145deg, rgb(255 255 255 / 10%), transparent 32%, rgb(0 0 0 / calc(0.3 + var(--steel-ball-memory-intensity) * 0.16)) 74%, rgb(255 255 255 / 8%));
+  opacity: calc(0.56 + var(--steel-ball-memory-intensity) * 0.1);
 }
 
 .steel-ball-cursor[data-ball-condition="scratched"] {
-  filter: contrast(calc(1 + var(--steel-ball-memory-intensity) * 0.16)) brightness(calc(1 - var(--steel-ball-memory-intensity) * 0.035));
+  filter: saturate(0.3) contrast(calc(1.16 + var(--steel-ball-memory-intensity) * 0.16)) brightness(calc(0.86 - var(--steel-ball-memory-intensity) * 0.035));
 }
 
 .steel-ball-cursor[data-ball-condition="polished"] {
   border-color: rgb(255 255 255 / calc(0.58 + var(--steel-ball-memory-intensity) * 0.16));
-  filter: brightness(calc(1 + var(--steel-ball-memory-intensity) * 0.1)) contrast(calc(1 + var(--steel-ball-memory-intensity) * 0.06));
+  filter: saturate(0.35) brightness(calc(0.86 + var(--steel-ball-memory-intensity) * 0.1)) contrast(calc(1.16 + var(--steel-ball-memory-intensity) * 0.06));
   box-shadow:
-    inset -0.16rem -0.18rem 0.3rem rgb(16 17 18 / 42%),
-    inset 0.12rem 0.1rem 0.24rem rgb(255 255 255 / calc(0.7 + var(--steel-ball-memory-intensity) * 0.14)),
-    0 0.08rem 0.2rem rgb(0 0 0 / 30%);
+    inset -0.16rem -0.18rem 0.3rem rgb(8 9 10 / 58%),
+    inset 0.12rem 0.1rem 0.24rem rgb(255 255 255 / calc(0.36 + var(--steel-ball-memory-intensity) * 0.12)),
+    0 0.08rem 0.2rem rgb(0 0 0 / 44%);
 }
 
 .steel-ball-cursor[data-ball-condition="dusty"] {
   box-shadow:
-    inset -0.16rem -0.18rem 0.3rem rgb(16 17 18 / 46%),
-    inset 0.12rem 0.1rem 0.24rem rgb(255 255 255 / 70%),
+    inset -0.16rem -0.18rem 0.3rem rgb(8 9 10 / 62%),
+    inset 0.12rem 0.1rem 0.24rem rgb(255 255 255 / 36%),
     inset 0.18rem -0.1rem 0.24rem rgb(var(--steel-ball-residue-color) / calc(var(--steel-ball-memory-intensity) * 0.08)),
-    0 0.08rem 0.2rem rgb(0 0 0 / 30%);
+    0 0.08rem 0.2rem rgb(0 0 0 / 46%);
 }
 
 .steel-ball-cursor[data-ball-condition="warm"] {
-  filter: saturate(calc(1 + var(--steel-ball-memory-intensity) * 0.08)) brightness(calc(1 + var(--steel-ball-memory-intensity) * 0.035));
+  filter: saturate(calc(0.35 + var(--steel-ball-memory-intensity) * 0.08)) contrast(1.16) brightness(calc(0.86 + var(--steel-ball-memory-intensity) * 0.035));
 }
 
 .steel-ball-cursor[data-ball-condition="warm"]::before {
-  opacity: calc(0.78 + var(--steel-ball-memory-intensity) * 0.08);
+  opacity: calc(0.62 + var(--steel-ball-memory-intensity) * 0.08);
 }
 
 .home-hero-reality-word {
@@ -1072,16 +1073,17 @@ body,
   border-radius: 50%;
   clip-path: circle(49.2% at 50% 50%);
   background:
-    radial-gradient(circle at 28% 24%, rgb(255 255 255 / 72%) 0 9%, transparent 18%),
-    radial-gradient(circle at 68% 74%, rgb(30 32 34 / 24%) 0 18%, transparent 42%),
+    radial-gradient(circle at 28% 24%, rgb(255 255 255 / 34%) 0 7%, transparent 16%),
+    radial-gradient(circle at 68% 74%, rgb(22 24 26 / 40%) 0 20%, transparent 46%),
     var(--steel-ball-asset);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   box-shadow:
-    inset -0.16rem -0.18rem 0.3rem rgb(16 17 18 / 46%),
-    inset 0.12rem 0.1rem 0.24rem rgb(255 255 255 / 70%),
-    0 0.42rem 0.34rem rgb(0 0 0 / 34%);
+    inset -0.16rem -0.18rem 0.3rem rgb(8 9 10 / 62%),
+    inset 0.12rem 0.1rem 0.24rem rgb(255 255 255 / 36%),
+    0 0.42rem 0.34rem rgb(0 0 0 / 46%);
+  filter: saturate(0.35) contrast(1.16) brightness(0.86);
   opacity: 0.98;
   pointer-events: none;
   transform: translate(-50%, -50%);
@@ -1177,11 +1179,11 @@ body,
 
 .steel-ball-cursor[data-interactive] {
   border-color: rgb(255 255 255 / 58%);
-  filter: none;
+  filter: saturate(0.35) contrast(1.16) brightness(0.86);
   box-shadow:
-    inset -0.16rem -0.18rem 0.3rem rgb(16 17 18 / 46%),
-    inset 0.12rem 0.1rem 0.24rem rgb(255 255 255 / 70%),
-    0 0.08rem 0.2rem rgb(0 0 0 / 30%);
+    inset -0.16rem -0.18rem 0.3rem rgb(8 9 10 / 62%),
+    inset 0.12rem 0.1rem 0.24rem rgb(255 255 255 / 36%),
+    0 0.08rem 0.2rem rgb(0 0 0 / 46%);
 }
 
 .steel-ball-cursor[data-interactive]::after {
@@ -1193,7 +1195,7 @@ body,
 }
 
 .steel-ball-cursor[data-clicking] {
-  filter: none;
+  filter: saturate(0.35) contrast(1.16) brightness(0.86);
 }
 
 @media (hover: hover) and (pointer: fine) and (min-width: 760px) {
