@@ -64,6 +64,28 @@ export function HomeHero() {
             </h1>
             <p className="chapter-arrival-signature">ctrl+love</p>
           </div>
+          <p className="home-hero-subline sequence-reveal sequence-hero-orientation">
+            Bring the decision into the room.
+            <CtrlLayerNote className="ctrl-layer-note-subline">
+              STILL THINKING
+            </CtrlLayerNote>
+          </p>
+          <p className="home-hero-proposition sequence-reveal sequence-hero-orientation">
+            AI finds patterns. Human judgment decides what matters.
+          </p>
+          <p className="home-hero-category sequence-reveal sequence-hero-orientation">
+            A global network for better decisions.
+          </p>
+          <div
+            className="arrival-status sequence-reveal sequence-hero-status"
+            aria-label="Room status"
+          >
+            <span>ROOM STATUS</span>
+            <strong>Decision entering...</strong>
+            <CtrlLayerNote className="ctrl-layer-note-status">
+              CURRENTLY BROADCASTING
+            </CtrlLayerNote>
+          </div>
         </div>
       </div>
     </section>
