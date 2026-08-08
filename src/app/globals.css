@@ -907,7 +907,11 @@ body,
   border-radius: 50%;
   clip-path: circle(49.2% at 50% 50%);
   background:
-    radial-gradient(circle at 32% 25%, rgb(255 255 255 / 42%) 0 8%, transparent 18%),
+    radial-gradient(
+      circle at var(--steel-ball-reflection-x, 32%) var(--steel-ball-reflection-y, 25%),
+      rgb(255 255 255 / 42%) 0 8%,
+      transparent 18%
+    ),
     radial-gradient(circle at 68% 74%, rgb(30 32 34 / 24%) 0 18%, transparent 42%),
     var(--steel-ball-asset);
   background-position: center;
@@ -935,10 +939,17 @@ body,
 .steel-ball-cursor::before {
   inset: 0;
   background:
-    radial-gradient(circle at 28% 24%, rgb(255 255 255 / 72%) 0 9%, transparent 18%),
+    radial-gradient(
+      circle at var(--steel-ball-reflection-x, 28%) var(--steel-ball-reflection-y, 24%),
+      rgb(255 255 255 / 72%) 0 9%,
+      transparent 18%
+    ),
     linear-gradient(145deg, rgb(255 255 255 / 26%), transparent 34%, rgb(0 0 0 / calc(0.18 + var(--steel-ball-wear-visibility) * 0.5)) 74%, rgb(255 255 255 / 20%));
   mix-blend-mode: screen;
   opacity: calc(0.78 + var(--steel-ball-fatigue-instability) * 0.08);
+  transform: rotate(var(--steel-ball-reflection-counter-rotation, 0rad)) scale(1.08);
+  transform-origin: center;
+  will-change: transform;
 }
 
 .steel-ball-cursor::after {
@@ -962,7 +973,11 @@ body,
 
 .steel-ball-cursor[data-ball-condition="scratched"]::before {
   background:
-    radial-gradient(circle at 28% 24%, rgb(255 255 255 / 72%) 0 9%, transparent 18%),
+    radial-gradient(
+      circle at var(--steel-ball-reflection-x, 28%) var(--steel-ball-reflection-y, 24%),
+      rgb(255 255 255 / 72%) 0 9%,
+      transparent 18%
+    ),
     linear-gradient(145deg, rgb(255 255 255 / 18%), transparent 34%, rgb(0 0 0 / calc(0.18 + var(--steel-ball-memory-intensity) * 0.16)) 74%, rgb(255 255 255 / 16%));
   opacity: calc(0.66 + var(--steel-ball-memory-intensity) * 0.1);
 }
