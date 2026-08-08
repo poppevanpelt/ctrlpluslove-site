@@ -2368,7 +2368,8 @@ export function SteelBallCursor() {
       }
 
       const restingPosition = getRestingPosition();
-      const shouldSkipOrigin = shouldReduceMotion() || !restingPosition;
+      const hasFixedHeroBall = Boolean(document.querySelector(".homepage-steel-ball-object"));
+      const shouldSkipOrigin = shouldReduceMotion() || !restingPosition || hasFixedHeroBall;
 
       if (shouldSkipOrigin) {
         removeStageOrigin(true);
