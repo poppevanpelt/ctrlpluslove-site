@@ -1068,6 +1068,7 @@ body,
     inset 0.12rem 0.1rem 0.24rem rgb(255 255 255 / 70%),
     0 0.42rem 0.34rem rgb(0 0 0 / 34%);
   opacity: 0.98;
+  pointer-events: none;
   transform: translate(-50%, -50%);
 }
 
@@ -12372,7 +12373,6 @@ h3 {
 }
 
 .chapter-arrival-signature {
-  order: -1;
   margin: 0;
   background: linear-gradient(
     96deg,
@@ -12402,6 +12402,11 @@ h3 {
 }
 
 .chapter-arrival-scene .steel-ball-stage-origin {
+  top: 63.1%;
+  left: 43.8%;
+}
+
+.chapter-arrival-scene .homepage-steel-ball-object {
   top: 63.1%;
   left: 43.8%;
 }
