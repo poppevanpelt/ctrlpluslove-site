@@ -139,7 +139,7 @@ export default async function Home() {
 
   return (
     <main className="site-shell chapter-one" id="main-content">
-      <a className="skip-link" href="#network">
+      <a className="skip-link" href="#personas">
         Skip to main content
       </a>
       <ThemeToggle />
@@ -171,6 +171,72 @@ export default async function Home() {
         aria-label="Decision Collider"
       >
         <DecisionColliderInstrument embedded />
+      </section>
+
+      <section
+        className="content-section ruled personas-section"
+        id="personas"
+        aria-labelledby="personas-title"
+      >
+        <div className="content-block wide personas-block">
+          <div className="personas-heading">
+            <p className="section-kicker">Synthetic personas</p>
+            <h2 id="personas-title">
+              The synthetic minds inside the Room.
+            </h2>
+            <p>
+              Always inside the Room. Never asleep. Each one represents a
+              specialised way of thinking, not a human member of the network.
+            </p>
+          </div>
+          <div className="persona-grid">
+            {personas.map((persona, index) => (
+              <Link
+                className="persona-card"
+                data-persona-id={persona.id}
+                href={`/room/${persona.id}/`}
+                key={persona.name}
+              >
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <div
+                  className={`persona-portrait${
+                    persona.portrait ? "" : " persona-portrait-silhouette"
+                  }`}
+                  aria-hidden="true"
+                  style={{
+                    "--portrait-position": persona.portraitPosition,
+                  } as CSSProperties}
+                >
+                  {persona.portrait ? (
+                    <Image
+                      className="persona-portrait-frame"
+                      src={persona.portrait}
+                      alt=""
+                      fill
+                      sizes="(max-width: 680px) 58vw, (max-width: 1100px) 24vw, 13vw"
+                    />
+                  ) : (
+                    <span className="persona-silhouette" />
+                  )}
+                </div>
+                <h3>{persona.name}</h3>
+                <p>{persona.role}</p>
+                <blockquote>{persona.line}</blockquote>
+                <dl>
+                  <div>
+                    <dt>Function</dt>
+                    <dd>{persona.contribution ?? persona.line}</dd>
+                  </div>
+                </dl>
+                {index === 1 ? (
+                  <CtrlLayerNote className="ctrl-layer-note-card">
+                    MACHINE-ASSISTED, HUMAN-LED
+                  </CtrlLayerNote>
+                ) : null}
+              </Link>
+            ))}
+          </div>
+        </div>
       </section>
 
       <section
@@ -260,72 +326,6 @@ export default async function Home() {
             <CtrlLayerNote className="ctrl-layer-note-left">
               EMOTIONAL INFRASTRUCTURE
             </CtrlLayerNote>
-          </div>
-        </div>
-      </section>
-
-      <section
-        className="content-section ruled personas-section"
-        id="personas"
-        aria-labelledby="personas-title"
-      >
-        <div className="content-block wide personas-block">
-          <div className="personas-heading">
-            <p className="section-kicker">Synthetic personas</p>
-            <h2 id="personas-title">
-              The synthetic minds inside the Room.
-            </h2>
-            <p>
-              Always inside the Room. Never asleep. Each one represents a
-              specialised way of thinking, not a human member of the network.
-            </p>
-          </div>
-          <div className="persona-grid">
-            {personas.map((persona, index) => (
-              <Link
-                className="persona-card"
-                data-persona-id={persona.id}
-                href={`/room/${persona.id}/`}
-                key={persona.name}
-              >
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <div
-                  className={`persona-portrait${
-                    persona.portrait ? "" : " persona-portrait-silhouette"
-                  }`}
-                  aria-hidden="true"
-                  style={{
-                    "--portrait-position": persona.portraitPosition,
-                  } as CSSProperties}
-                >
-                  {persona.portrait ? (
-                    <Image
-                      className="persona-portrait-frame"
-                      src={persona.portrait}
-                      alt=""
-                      fill
-                      sizes="(max-width: 680px) 58vw, (max-width: 1100px) 24vw, 13vw"
-                    />
-                  ) : (
-                    <span className="persona-silhouette" />
-                  )}
-                </div>
-                <h3>{persona.name}</h3>
-                <p>{persona.role}</p>
-                <blockquote>{persona.line}</blockquote>
-                <dl>
-                  <div>
-                    <dt>Function</dt>
-                    <dd>{persona.contribution ?? persona.line}</dd>
-                  </div>
-                </dl>
-                {index === 1 ? (
-                  <CtrlLayerNote className="ctrl-layer-note-card">
-                    MACHINE-ASSISTED, HUMAN-LED
-                  </CtrlLayerNote>
-                ) : null}
-              </Link>
-            ))}
           </div>
         </div>
       </section>
