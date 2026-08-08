@@ -57,27 +57,13 @@ export function HomeHero() {
               id="homepage-start"
               tabIndex={-1}
             >
-              A global network for better decisions.
+              Shortcut to reality.
               <CtrlLayerNote className="ctrl-layer-note-hero">
                 HUMAN SIGNAL DETECTED
               </CtrlLayerNote>
             </h1>
+            <p className="chapter-arrival-signature">ctrl+love</p>
           </div>
-          <p className="home-hero-subline sequence-reveal sequence-hero-orientation">
-            Powered by reality.
-            <CtrlLayerNote className="ctrl-layer-note-subline">
-              STILL THINKING
-            </CtrlLayerNote>
-          </p>
-          <p className="home-hero-proposition sequence-reveal sequence-hero-orientation">
-            AI reveals patterns. People decide what matters.
-          </p>
-          <a
-            className="home-hero-collider-cta sequence-reveal sequence-hero-orientation"
-            href="#decision-collider"
-          >
-            Try the Decision Collider
-          </a>
         </div>
       </div>
     </section>
