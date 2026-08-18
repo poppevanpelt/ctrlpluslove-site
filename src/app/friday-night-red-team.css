@@ -151,6 +151,16 @@
   transform: rotate(4deg);
 }
 
+.friday-red-team__normal .friday-red-team__coaster span,
+.friday-red-team__normal .friday-red-team__coaster small {
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+}
+
+.friday-red-team__normal .friday-red-team__coaster strong {
+  font-size: clamp(0.95rem, 1.45vw, 1.12rem);
+}
+
 .friday-red-team__steel-ball {
   position: absolute;
   display: none;
@@ -219,4 +229,3 @@
     transition: none;
   }
 }
-
