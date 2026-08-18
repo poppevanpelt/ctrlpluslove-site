@@ -1,0 +1,222 @@
+.friday-red-team-section {
+  padding: clamp(3.5rem, 7vw, 6.5rem) 1.35rem !important;
+  transition: background-color 240ms ease, color 240ms ease;
+}
+
+.friday-red-team-section[data-state="friday"] {
+  background: #100f0e;
+  color: #f3f0e8;
+}
+
+.friday-red-team {
+  position: relative;
+  display: grid;
+  width: min(100%, 72rem);
+  min-height: clamp(20rem, 34vw, 27rem);
+  align-items: center;
+}
+
+.friday-red-team__normal,
+.friday-red-team__active {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(10rem, 0.42fr);
+  gap: clamp(2rem, 7vw, 7rem);
+  align-items: center;
+}
+
+.friday-red-team__normal[hidden],
+.friday-red-team__active[hidden] {
+  display: none;
+}
+
+.friday-red-team__normal-copy,
+.friday-red-team__active-copy {
+  display: grid;
+  justify-items: start;
+}
+
+.friday-red-team__normal-copy {
+  gap: 0.85rem;
+}
+
+.friday-red-team__normal-copy h2 {
+  color: var(--ink);
+  font-size: clamp(1.45rem, 2.4vw, 2.15rem);
+  font-weight: 650;
+  line-height: 1.06;
+}
+
+.friday-red-team__normal-copy p {
+  color: var(--muted);
+  font-size: clamp(1rem, 1.35vw, 1.18rem);
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.friday-red-team__normal-copy a {
+  color: var(--ink);
+  font-size: clamp(1.35rem, 2.2vw, 1.9rem);
+  font-weight: 650;
+  line-height: 1.15;
+  text-decoration-color: color-mix(in srgb, var(--ink) 28%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.24em;
+}
+
+.friday-red-team__active {
+  grid-template-columns: minmax(0, 1.2fr) minmax(17rem, 0.8fr);
+}
+
+.friday-red-team__active-copy {
+  gap: clamp(0.85rem, 1.8vw, 1.35rem);
+}
+
+.friday-red-team__active-copy h2 {
+  display: grid;
+  color: #f3f0e8;
+  font-size: clamp(2rem, 4.6vw, 4.8rem);
+  font-weight: 650;
+  letter-spacing: -0.025em;
+  line-height: 0.98;
+}
+
+.friday-red-team__phone {
+  color: #f3f0e8;
+  font-size: clamp(2.5rem, 6.2vw, 6rem);
+  font-weight: 680;
+  letter-spacing: -0.05em;
+  line-height: 0.92;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.friday-red-team__active-copy p {
+  color: #f3f0e8;
+  font-size: clamp(1.15rem, 1.8vw, 1.5rem);
+  font-weight: 560;
+  line-height: 1.35;
+}
+
+.friday-red-team__active-copy small {
+  color: #928b80;
+  font-size: 0.74rem;
+  font-weight: 720;
+  letter-spacing: 0.06em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+.friday-red-team__coaster {
+  position: relative;
+  display: grid;
+  width: min(100%, 18rem);
+  aspect-ratio: 1;
+  justify-self: end;
+  align-content: center;
+  justify-items: center;
+  gap: clamp(0.7rem, 2vw, 1.2rem);
+  border: 1px solid color-mix(in srgb, #1a1815 38%, transparent);
+  border-radius: 0.55rem;
+  background:
+    radial-gradient(circle at 18% 22%, rgb(26 24 21 / 7%) 0 0.7px, transparent 0.9px) 0 0 / 0.45rem 0.45rem,
+    #d7c7a4;
+  box-shadow:
+    0 0.15rem 0 rgb(85 69 49 / 52%),
+    0 1.5rem 2.7rem rgb(0 0 0 / 20%);
+  color: #1a1815;
+  padding: 1.4rem;
+  text-align: center;
+  transform: rotate(1.5deg);
+}
+
+.friday-red-team__coaster span,
+.friday-red-team__coaster small {
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  line-height: 1.1;
+}
+
+.friday-red-team__coaster strong {
+  font-size: clamp(1.2rem, 2.2vw, 1.75rem);
+  font-weight: 760;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.friday-red-team__normal .friday-red-team__coaster {
+  width: min(100%, 12rem);
+  opacity: 0.46;
+  transform: rotate(4deg);
+}
+
+.friday-red-team__steel-ball {
+  position: absolute;
+  display: none;
+  right: clamp(0.2rem, 1.8vw, 1.5rem);
+  bottom: clamp(-1.25rem, -1.4vw, -0.4rem);
+  width: 2.25rem;
+  height: 2.25rem;
+  filter: drop-shadow(0 0.42rem 0.38rem rgb(0 0 0 / 42%));
+  transition: transform 520ms cubic-bezier(0.22, 0.78, 0.2, 1);
+}
+
+.friday-red-team__steel-ball img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.friday-red-team a:focus-visible {
+  outline: 2px solid var(--team-warm);
+  outline-offset: 0.28rem;
+}
+
+@media (max-width: 760px) {
+  .friday-red-team__normal,
+  .friday-red-team__active {
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+  }
+
+  .friday-red-team__normal .friday-red-team__coaster {
+    display: none;
+  }
+
+  .friday-red-team__active .friday-red-team__coaster {
+    grid-row: 1;
+    width: min(78vw, 17rem);
+    justify-self: center;
+  }
+
+  .friday-red-team__steel-ball {
+    display: block;
+    right: 0.5rem;
+    bottom: -0.4rem;
+  }
+
+  .friday-red-team__phone {
+    font-size: clamp(2rem, 10.4vw, 3.5rem);
+  }
+}
+
+@media (max-width: 420px) {
+  .friday-red-team-section {
+    padding-right: 1rem !important;
+    padding-left: 1rem !important;
+  }
+
+  .friday-red-team__phone {
+    font-size: clamp(1.85rem, 9.4vw, 2.5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .friday-red-team-section,
+  .friday-red-team__steel-ball {
+    transition: none;
+  }
+}
+
