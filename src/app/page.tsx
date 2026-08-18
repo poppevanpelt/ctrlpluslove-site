@@ -9,6 +9,8 @@ import { DecisionColliderInstrument } from "./decision-collider/decision-collide
 import { GlobalMood } from "./global-mood";
 import { getAmbassadorProfile } from "./ambassador-profiles-data";
 import { HomeHero } from "./home-hero";
+import { FridayNightRedTeam } from "./friday-night-red-team";
+import "./friday-night-red-team.css";
 import { allRoomPersonas } from "./room-personas-data";
 import { SteelBallPresence } from "./steel-ball-presence";
 
@@ -573,6 +575,8 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      <FridayNightRedTeam />
 
       <footer className="site-footer">
         <div className="footer-copy">
