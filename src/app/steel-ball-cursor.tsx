@@ -123,6 +123,7 @@ export function SteelBallCursor() {
     let tiltFallbackDirection = 1;
     let gravityListening = false;
     let gravityActive = false;
+    let gravityPermissionGranted = false;
     let gravityPermissionDismissed = false;
     let gravityStartedRecorded = false;
     let cursorGravityState: BallGravityState = createGravityState();
@@ -214,6 +215,19 @@ export function SteelBallCursor() {
     };
     const canUseSensorGravity = () => canUseOrientationGravity() || canUseMotionGravity() || isDebugGravityPreview() || isTiltGravityMode();
     const canUseSteelBallExperience = () => canUseSteelCursor() || canUseSensorGravity();
+    const requiresGravityPermission = () => {
+      const orientationEvent = window.DeviceOrientationEvent as typeof DeviceOrientationEvent & {
+        requestPermission?: () => Promise<PermissionState>;
+      };
+      const motionEvent = window.DeviceMotionEvent as typeof DeviceMotionEvent & {
+        requestPermission?: () => Promise<PermissionState>;
+      };
+
+      return (
+        typeof orientationEvent?.requestPermission === "function" ||
+        typeof motionEvent?.requestPermission === "function"
+      );
+    };
 
     if (isTiltGravityMode()) {
       const previewBall = document.createElement("span");
@@ -1699,7 +1713,12 @@ export function SteelBallCursor() {
     };
 
     const startGravityListening = () => {
-      if (gravityListening || gravityPermissionDismissed || !canUseSensorGravity()) {
+      if (
+        gravityListening ||
+        gravityPermissionDismissed ||
+        !canUseSensorGravity() ||
+        (requiresGravityPermission() && !gravityPermissionGranted)
+      ) {
         return;
       }
 
@@ -1725,23 +1744,26 @@ export function SteelBallCursor() {
         requestPermission?: () => Promise<PermissionState>;
       };
 
-      if (
-        typeof orientationEvent.requestPermission !== "function" &&
-        typeof motionEvent.requestPermission !== "function"
-      ) {
+      const permissionRequests: Array<Promise<PermissionState>> = [];
+
+      if (typeof orientationEvent.requestPermission === "function") {
+        permissionRequests.push(orientationEvent.requestPermission());
+      }
+      if (typeof motionEvent.requestPermission === "function") {
+        permissionRequests.push(motionEvent.requestPermission());
+      }
+
+      if (permissionRequests.length === 0) {
+        gravityPermissionGranted = true;
         startGravityListening();
         return;
       }
 
       try {
-        const orientationResult = typeof orientationEvent.requestPermission === "function"
-          ? await orientationEvent.requestPermission()
-          : "granted";
-        const motionResult = typeof motionEvent.requestPermission === "function"
-          ? await motionEvent.requestPermission()
-          : "granted";
+        const permissionResults = await Promise.all(permissionRequests);
 
-        if (orientationResult === "granted" || motionResult === "granted") {
+        if (permissionResults.some((result) => result === "granted")) {
+          gravityPermissionGranted = true;
           startGravityListening();
         } else {
           gravityPermissionDismissed = true;
