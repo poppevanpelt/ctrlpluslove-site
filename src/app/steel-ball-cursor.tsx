@@ -132,6 +132,7 @@ export function SteelBallCursor() {
     let lastGravityInput = "none";
     let debugGravityFrame = 0;
     let hasMousePointerControl = false;
+    let touchPointerActive = false;
     let reflectionPhase = 0;
     let reflectionRenderX = renderX;
     let reflectionInitialized = false;
@@ -1142,11 +1143,13 @@ export function SteelBallCursor() {
       clientY: number,
       target: EventTarget | null,
     ) => {
-      if (state === "borrowed" || !canUseSteelCursor()) {
+      if (state === "borrowed" || (!canUseSteelCursor() && !touchPointerActive)) {
         return;
       }
 
-      hasMousePointerControl = true;
+      if (!touchPointerActive) {
+        hasMousePointerControl = true;
+      }
       enabled = true;
       const deltaX = clientX - pointerX;
       const deltaY = clientY - pointerY;
@@ -1174,6 +1177,11 @@ export function SteelBallCursor() {
       setState("cursor-active");
 
       const directCursor = ensureCursor();
+      if (touchPointerActive) {
+        document
+          .querySelector<HTMLElement>(".homepage-steel-ball-object")
+          ?.setAttribute("data-cursor-handed-off", "true");
+      }
       applyMemoryToElement(directCursor);
       document.documentElement.classList.add("steel-ball-cursor-active");
       directCursor.setAttribute("data-visible", "true");
@@ -2686,7 +2694,17 @@ export function SteelBallCursor() {
     };
 
     const handlePointerMove = (event: PointerEvent) => {
-      if (isTiltGravityMode() || (event.pointerType && event.pointerType !== "mouse")) {
+      if (isTiltGravityMode()) {
+        return;
+      }
+
+      if (event.pointerType === "touch") {
+        touchPointerActive = true;
+        moveCursorDirectly(event.clientX, event.clientY, event.target);
+        return;
+      }
+
+      if (event.pointerType && event.pointerType !== "mouse") {
         return;
       }
 
@@ -2702,6 +2720,13 @@ export function SteelBallCursor() {
 
       requestGravityPermission();
 
+      if (event.pointerType === "touch") {
+        touchPointerActive = true;
+        isPressed = true;
+        moveCursorDirectly(event.clientX, event.clientY, event.target);
+        return;
+      }
+
       if (event.pointerType && event.pointerType !== "mouse") {
         return;
       }
@@ -2716,8 +2741,14 @@ export function SteelBallCursor() {
       }
     };
 
-    const handlePointerUp = () => {
+    const handlePointerUp = (event: PointerEvent) => {
       isPressed = false;
+
+      if (event.pointerType === "touch") {
+        touchPointerActive = false;
+        disable();
+        syncEnabled();
+      }
     };
 
     const handleGestureForGravity = () => {
