@@ -1833,6 +1833,12 @@ export function SteelBallCursor() {
       const stage = stageBall?.closest(".steel-ball-stage-origin") ?? document.querySelector(".home-hero-section .steel-ball-stage-origin");
       const isTemporaryStage = stage instanceof HTMLElement && stage.dataset.stageOriginSource === "cursor";
 
+      if (stageBall?.classList.contains("homepage-steel-ball-object")) {
+        stageBall.style.removeProperty("transform");
+        stageBall.removeAttribute("data-live-gravity");
+        stageBall.removeAttribute("data-origin-resting");
+      }
+
       if (force || stageOriginCreatedByCursor || isTemporaryStage) {
         stage?.remove();
       }
@@ -2396,7 +2402,29 @@ export function SteelBallCursor() {
       }
 
       const restingPosition = getRestingPosition();
-      const hasFixedHeroBall = Boolean(document.querySelector(".homepage-steel-ball-object"));
+      const fixedHeroBall = document.querySelector<HTMLElement>(".homepage-steel-ball-object");
+      const hasFixedHeroBall = Boolean(fixedHeroBall);
+      const shouldUseFixedHeroBallForGravity = Boolean(
+        fixedHeroBall &&
+        canUseSensorGravity() &&
+        !canUseSteelCursor() &&
+        !shouldReduceMotion(),
+      );
+
+      if (shouldUseFixedHeroBallForGravity && fixedHeroBall) {
+        removeStageOrigin(true);
+        stageBall = fixedHeroBall;
+        const ballRect = fixedHeroBall.getBoundingClientRect();
+        restX = ballRect.left + ballRect.width / 2;
+        restY = ballRect.top + ballRect.height / 2;
+        gravityState = createGravityState({ x: 0, y: 0 }, gravityVector);
+        stageBall.setAttribute("data-origin-resting", "true");
+        setState("resting");
+        renderRestingGravity();
+        startGravityListening();
+        return;
+      }
+
       const shouldSkipOrigin = shouldReduceMotion() || !restingPosition || hasFixedHeroBall;
 
       if (shouldSkipOrigin) {
