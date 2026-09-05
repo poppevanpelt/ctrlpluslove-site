@@ -32,6 +32,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <Script src="/theme-init.js" strategy="beforeInteractive" />
+        <Script id="masslytics" strategy="beforeInteractive">
+          {`!function(s,e,t,r){var a=e.createElement("script");a.async=!0;a.src="https://cdn.masslytics.io/masslytics.js";var c=e.getElementsByTagName("script")[0];c.parentNode.insertBefore(a,c);s.masslyticsApiSubdomain="app";s.masslyticsBrandId="SW-729448";}(window,document);`}
+        </Script>
       </head>
       <body>
         <a className="skip-link" href="#main-content">
