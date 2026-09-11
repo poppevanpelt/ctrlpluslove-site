@@ -76,9 +76,9 @@ export function createPageMetadata({
 export const publicRoutes: PublicRoute[] = [
   {
     path: "/",
-    title: "ctrl+love — Shortcut to reality",
+    title: "ctrl+love — Applied intelligence for better decisions",
     description:
-      "A decision company for moments when the real question matters more than another answer.",
+      "ctrl+love is an applied-intelligence practice that exposes weak evidence, missing voices, hidden conflict and decisions nobody owns. A shortcut to reality.",
     changeFrequency: "weekly",
     priority: 1,
   },
