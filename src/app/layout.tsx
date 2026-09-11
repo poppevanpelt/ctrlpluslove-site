@@ -23,6 +23,41 @@ export const metadata: Metadata = {
   },
 };
 
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "ctrl+love",
+  url: "https://www.ctrlpluslove.com/",
+  description:
+    "ctrl+love is an applied-intelligence practice that exposes weak evidence, missing voices, hidden conflict and decisions nobody owns. A shortcut to reality.",
+  founder: {
+    "@type": "Person",
+    name: "Poppe van Pelt",
+  },
+  slogan: "Shortcut to reality.",
+  knowsAbout: [
+    "Organizational decision-making",
+    "Applied artificial intelligence",
+    "Human-AI collaboration",
+    "Collective intelligence",
+    "Evidence and uncertainty",
+    "Live group intelligence",
+  ],
+};
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "ctrl+love",
+  url: "https://www.ctrlpluslove.com/",
+  description:
+    "Applied intelligence for better organizational decisions.",
+  publisher: {
+    "@type": "Organization",
+    name: "ctrl+love",
+  },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -32,6 +67,14 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <Script src="/theme-init.js" strategy="beforeInteractive" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
         <Script id="masslytics" strategy="beforeInteractive">
           {`!function(s,e,t,r){var a=e.createElement("script");a.async=!0;a.src="https://cdn.masslytics.io/masslytics.js";var c=e.getElementsByTagName("script")[0];c.parentNode.insertBefore(a,c);s.masslyticsApiSubdomain="app";s.masslyticsBrandId="SW-729448";}(window,document);`}
         </Script>
