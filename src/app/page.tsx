@@ -165,6 +165,54 @@ export default async function Home() {
       </section>
 
       <section
+        className="content-section ruled constitution-article-section"
+        aria-labelledby="what-must-survive-title"
+      >
+        <div className="content-block article-block">
+          <p className="section-kicker">What must survive</p>
+          <h2 id="what-must-survive-title">
+            Applied intelligence with the friction left in.
+          </h2>
+          <p className="article-law">
+            ctrl+love is not an AI consultancy. It is an applied-intelligence
+            practice built to expose what meetings smooth over: weak evidence,
+            missing voices, hidden conflict and decisions nobody truly owns.
+            It uses AI to increase productive friction, not remove it.
+          </p>
+          <p className="article-note">
+            Better decisions need more than intelligence. They need friction,
+            evidence and someone willing to break the pattern.
+          </p>
+          <dl aria-label="ctrl+love decision instruments">
+            <div>
+              <dt>Opposition Seat</dt>
+              <dd>Assigns someone to challenge the preferred conclusion.</dd>
+            </div>
+            <div>
+              <dt>Kill Question</dt>
+              <dd>Asks what evidence would make us abandon the conclusion.</dd>
+            </div>
+            <div>
+              <dt>Do-Nothing Control</dt>
+              <dd>Compares action against the cost and outcome of doing nothing.</dd>
+            </div>
+            <div>
+              <dt>Miss Archive</dt>
+              <dd>Preserves failed predictions, missed signals and wrong conclusions.</dd>
+            </div>
+            <div>
+              <dt>Evidence Tags</dt>
+              <dd>Separates Observed, Inferred, Assumed, Tested and Proven.</dd>
+            </div>
+            <div>
+              <dt>Decision Collider</dt>
+              <dd>Collides evidence, interpretations and missing perspectives before a decision is made.</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <section
         className="content-section decision-collider-home-section"
         id="decision-collider"
         aria-label="Decision Collider"
