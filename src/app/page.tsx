@@ -11,6 +11,7 @@ import { getAmbassadorProfile } from "./ambassador-profiles-data";
 import { HomeHero } from "./home-hero";
 import { FridayNightRedTeam } from "./friday-night-red-team";
 import "./friday-night-red-team.css";
+import "./cabinet-drawers.css";
 import { allRoomPersonas } from "./room-personas-data";
 import { SteelBallPresence } from "./steel-ball-presence";
 
@@ -46,24 +47,6 @@ const products = [
     startingPoint: "Scoped to the decision",
     object: "verdict switch",
     href: "/pricing/kill-or-scale/",
-  },
-];
-
-const engagementOptions = [
-  {
-    name: "Decision Stress-Test™",
-    purpose: "Pressure-test one strategic decision.",
-    terms: "From €4,500",
-  },
-  {
-    name: "On-Call Room™",
-    purpose: "Continuous decision support.",
-    terms: "Monthly engagement",
-  },
-  {
-    name: "Kill or Scale™",
-    purpose: "Pressure-test ventures before serious investment.",
-    terms: "Custom engagement",
   },
 ];
 
@@ -238,49 +221,58 @@ export default async function Home() {
           </div>
           <div className="persona-grid">
             {personas.map((persona, index) => (
-              <Link
-                className="persona-card"
+              <details
+                className="persona-card persona-drawer cabinet-drawer"
                 data-persona-id={persona.id}
-                href={`/room/${persona.id}/`}
                 key={persona.name}
               >
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <div
-                  className={`persona-portrait${
-                    persona.portrait ? "" : " persona-portrait-silhouette"
-                  }`}
-                  aria-hidden="true"
-                  style={{
-                    "--portrait-position": persona.portraitPosition,
-                  } as CSSProperties}
-                >
-                  {persona.portrait ? (
-                    <Image
-                      className="persona-portrait-frame"
-                      src={persona.portrait}
-                      alt=""
-                      fill
-                      sizes="(max-width: 680px) 58vw, (max-width: 1100px) 24vw, 13vw"
-                    />
-                  ) : (
-                    <span className="persona-silhouette" />
-                  )}
-                </div>
-                <h3>{persona.name}</h3>
-                <p>{persona.role}</p>
-                <blockquote>{persona.line}</blockquote>
-                <dl>
-                  <div>
-                    <dt>Function</dt>
-                    <dd>{persona.contribution ?? persona.line}</dd>
+                <summary>
+                  <span className="persona-index">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <div
+                    className={`persona-portrait${
+                      persona.portrait ? "" : " persona-portrait-silhouette"
+                    }`}
+                    aria-hidden="true"
+                    style={{
+                      "--portrait-position": persona.portraitPosition,
+                    } as CSSProperties}
+                  >
+                    {persona.portrait ? (
+                      <Image
+                        className="persona-portrait-frame"
+                        src={persona.portrait}
+                        alt=""
+                        fill
+                        sizes="(max-width: 680px) 58vw, (max-width: 1100px) 24vw, 13vw"
+                      />
+                    ) : (
+                      <span className="persona-silhouette" />
+                    )}
                   </div>
-                </dl>
-                {index === 1 ? (
-                  <CtrlLayerNote className="ctrl-layer-note-card">
-                    MACHINE-ASSISTED, HUMAN-LED
-                  </CtrlLayerNote>
-                ) : null}
-              </Link>
+                  <h3>{persona.name}</h3>
+                  <p>{persona.role}</p>
+                  <blockquote>{persona.line}</blockquote>
+                  <span className="drawer-toggle-label">Open drawer</span>
+                  {index === 1 ? (
+                    <CtrlLayerNote className="ctrl-layer-note-card">
+                      MACHINE-ASSISTED, HUMAN-LED
+                    </CtrlLayerNote>
+                  ) : null}
+                </summary>
+                <div className="drawer-panel">
+                  <dl>
+                    <div>
+                      <dt>Function</dt>
+                      <dd>{persona.contribution ?? persona.line}</dd>
+                    </div>
+                  </dl>
+                  <Link className="drawer-link" href={`/room/${persona.id}/`}>
+                    Enter profile →
+                  </Link>
+                </div>
+              </details>
             ))}
           </div>
         </div>
@@ -384,7 +376,7 @@ export default async function Home() {
       >
         <div className="content-block wide products-block">
           <div className="products-heading">
-            <p className="section-kicker">Products</p>
+            <p className="section-kicker">Ways to use it</p>
             <h2 id="products-title">Three ways to engage the Room.</h2>
             <p>
               Three entry points, each built around a decision that needs
@@ -393,70 +385,47 @@ export default async function Home() {
           </div>
           <div className="product-grid">
             {products.map((product) => (
-              <Link className="product-card ctrl-layer-anchor" href={product.href} key={product.name}>
-                <span>{product.object}</span>
-                <h3>{product.name}</h3>
-                <dl>
-                  <div>
-                    <dt>What it is</dt>
-                    <dd>{product.what}</dd>
-                  </div>
-                  <div>
-                    <dt>When you need it</dt>
-                    <dd>{product.when}</dd>
-                  </div>
-                  <div>
-                    <dt>What you receive</dt>
-                    <dd>{product.receive}</dd>
-                  </div>
-                  <div>
-                    <dt>What changes</dt>
-                    <dd>{product.outcome}</dd>
-                  </div>
-                  <div>
-                    <dt>Starting point</dt>
-                    <dd>{product.startingPoint}</dd>
-                  </div>
-                </dl>
-                {product.name === "Decision Stress-Test™" ? (
-                  <CtrlLayerNote className="ctrl-layer-note-card">
-                    BUILT WITH CURIOSITY
-                  </CtrlLayerNote>
-                ) : null}
-              </Link>
+              <details
+                className="product-card product-drawer cabinet-drawer ctrl-layer-anchor"
+                key={product.name}
+              >
+                <summary>
+                  <span>{product.object}</span>
+                  <h3>{product.name}</h3>
+                  <strong className="drawer-price">{product.startingPoint}</strong>
+                  <span className="drawer-toggle-label">Open drawer</span>
+                  {product.name === "Decision Stress-Test™" ? (
+                    <CtrlLayerNote className="ctrl-layer-note-card">
+                      BUILT WITH CURIOSITY
+                    </CtrlLayerNote>
+                  ) : null}
+                </summary>
+                <div className="drawer-panel">
+                  <dl>
+                    <div>
+                      <dt>What it is</dt>
+                      <dd>{product.what}</dd>
+                    </div>
+                    <div>
+                      <dt>When you need it</dt>
+                      <dd>{product.when}</dd>
+                    </div>
+                    <div>
+                      <dt>What you receive</dt>
+                      <dd>{product.receive}</dd>
+                    </div>
+                    <div>
+                      <dt>What changes</dt>
+                      <dd>{product.outcome}</dd>
+                    </div>
+                  </dl>
+                  <Link className="drawer-link" href={product.href}>
+                    Full engagement →
+                  </Link>
+                </div>
+              </details>
             ))}
           </div>
-        </div>
-      </section>
-
-      <section
-        className="content-section ruled engagement-section"
-        aria-labelledby="engagement-title"
-      >
-        <div className="content-block wide engagement-block">
-          <div className="engagement-heading">
-            <p className="section-kicker">Engagements</p>
-            <h2 id="engagement-title">Commercial clarity, institutional form.</h2>
-            <p>
-              Every engagement creates pressure before commitment: selected
-              perspectives, a written record and a sharper decision.
-            </p>
-          </div>
-
-          <div className="engagement-list">
-            {engagementOptions.map((option) => (
-              <article className="engagement-item" key={option.name}>
-                <h3>{option.name}</h3>
-                <p>{option.purpose}</p>
-                <strong>{option.terms}</strong>
-              </article>
-            ))}
-          </div>
-
-          <p className="engagement-note">
-            No dashboards. No generic workshop theatre. Every engagement ends
-            with a documented Decision Record.
-          </p>
         </div>
       </section>
 
@@ -549,14 +518,20 @@ export default async function Home() {
                 <h3>{founder.name}</h3>
                 <span>{founder.note}</span>
                 {founderProfile ? (
-                  <section
-                    className="founder-biography"
-                    aria-label="Founder biography"
-                  >
-                    {founderProfile.biography.map((paragraph) => (
-                      <p key={paragraph}>{paragraph}</p>
-                    ))}
-                  </section>
+                  <details className="founder-dossier cabinet-drawer">
+                    <summary>
+                      <span>Open dossier</span>
+                      <span className="drawer-toggle-label" aria-hidden="true" />
+                    </summary>
+                    <section
+                      className="drawer-panel"
+                      aria-label="Founder biography"
+                    >
+                      {founderProfile.biography.map((paragraph) => (
+                        <p key={paragraph}>{paragraph}</p>
+                      ))}
+                    </section>
+                  </details>
                 ) : null}
               </div>
             </article>
