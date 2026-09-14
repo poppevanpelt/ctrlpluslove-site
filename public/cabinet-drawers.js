@@ -107,6 +107,11 @@
     biography.replaceWith(details);
   }
 
+  function removeDuplicateEngagements(root) {
+    const duplicate = root.querySelector(".engagement-section");
+    if (duplicate) duplicate.remove();
+  }
+
   function initCabinetDrawers() {
     const root = document.querySelector("main.chapter-one");
     if (!root || root.dataset.cabinetDrawers === "true") return;
@@ -119,6 +124,7 @@
       makeDrawerFromCard(card, "product"),
     );
     foldFounderBiography(root);
+    removeDuplicateEngagements(root);
   }
 
   if (document.readyState === "loading") {
