@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
+import "./cabinet-drawers.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -78,6 +79,7 @@ export default function RootLayout({
         <Script id="masslytics" strategy="beforeInteractive">
           {`!function(s,e,t,r){var a=e.createElement("script");a.async=!0;a.src="https://cdn.masslytics.io/masslytics.js";var c=e.getElementsByTagName("script")[0];c.parentNode.insertBefore(a,c);s.masslyticsApiSubdomain="app";s.masslyticsBrandId="SW-729448";}(window,document);`}
         </Script>
+        <Script src="/cabinet-drawers.js" strategy="afterInteractive" />
       </head>
       <body>
         <a className="skip-link" href="#main-content">
