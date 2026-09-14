@@ -1,0 +1,212 @@
+/* Homepage cabinet drawers: keep the information, reduce the wall of copy. */
+
+.cabinet-drawer {
+  color: inherit;
+}
+
+.cabinet-drawer > summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.cabinet-drawer > summary::-webkit-details-marker {
+  display: none;
+}
+
+.cabinet-drawer > summary:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+.drawer-toggle-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: color-mix(in srgb, currentColor 62%, var(--muted));
+  font-size: 0.62rem;
+  font-weight: 850;
+  letter-spacing: 0.11em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.drawer-toggle-label::after {
+  content: "+";
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 0.8;
+}
+
+.cabinet-drawer[open] > summary .drawer-toggle-label::after {
+  content: "−";
+}
+
+.drawer-panel {
+  border-top: 1px solid color-mix(in srgb, currentColor 18%, var(--rule));
+}
+
+.drawer-link {
+  display: inline-block;
+  margin-top: 1rem;
+  color: inherit;
+  font-size: 0.7rem;
+  font-weight: 850;
+  letter-spacing: 0.09em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.drawer-link:hover,
+.drawer-link:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+
+/* Synthetic minds: portrait, name, role and line stay visible. Function lives in the drawer. */
+.persona-card.persona-drawer {
+  display: block;
+  min-height: 0;
+  height: auto;
+  padding: 0;
+  overflow: clip;
+}
+
+.persona-drawer > summary {
+  display: grid;
+  grid-template-rows: auto auto auto auto 1fr auto;
+  min-height: 27rem;
+  align-content: start;
+  gap: 0.58rem;
+  padding: clamp(1rem, 1.7vw, 1.45rem);
+}
+
+.persona-drawer .persona-index {
+  color: color-mix(in srgb, currentColor 54%, var(--muted));
+  font-size: 0.7rem;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+  line-height: 1;
+}
+
+.persona-drawer .drawer-toggle-label {
+  margin-top: 0.25rem;
+  align-self: end;
+  color: color-mix(in srgb, currentColor 66%, var(--muted));
+  font-size: 0.62rem;
+}
+
+.persona-drawer .drawer-panel {
+  padding: 1rem clamp(1rem, 1.7vw, 1.45rem) 1.35rem;
+}
+
+.persona-drawer .drawer-panel dl {
+  margin: 0;
+}
+
+.persona-drawer .drawer-panel dt {
+  color: color-mix(in srgb, currentColor 56%, var(--muted));
+  font-size: 0.58rem;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.persona-drawer .drawer-panel dd {
+  margin: 0.35rem 0 0;
+  color: color-mix(in srgb, currentColor 82%, var(--muted));
+  font-size: 0.94rem;
+  font-weight: 510;
+  line-height: 1.45;
+}
+
+/* Products: commercial signal stays visible; explanation is pull-out detail. */
+.product-card.product-drawer {
+  display: block;
+  min-height: 0;
+  padding: 0;
+  overflow: clip;
+}
+
+.product-drawer > summary {
+  display: grid;
+  min-height: 13rem;
+  align-content: space-between;
+  gap: 1rem;
+  padding: clamp(1rem, 2vw, 1.45rem);
+}
+
+.product-drawer .drawer-price {
+  color: currentColor;
+  font-size: clamp(1rem, 1.35vw, 1.18rem);
+  font-weight: 680;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.product-drawer .drawer-toggle-label {
+  align-self: end;
+  justify-self: start;
+}
+
+.product-drawer .drawer-panel {
+  padding: 1rem clamp(1rem, 2vw, 1.45rem) 1.45rem;
+}
+
+.product-drawer .drawer-panel dl {
+  margin: 0;
+}
+
+.product-drawer[open] {
+  transform: none;
+}
+
+/* Founder: keep the human signal visible, archive the long biography. */
+.founder-dossier {
+  margin-top: 1rem;
+  border-top: 1px solid color-mix(in srgb, var(--ink) 18%, var(--rule));
+}
+
+.founder-dossier > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 0;
+  color: color-mix(in srgb, var(--ink) 76%, var(--muted));
+  font-size: 0.66rem;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.founder-dossier .drawer-panel {
+  display: grid;
+  gap: 0.7rem;
+  padding: 0.95rem 0 0;
+}
+
+.founder-card .founder-dossier .drawer-panel p {
+  margin: 0;
+  color: color-mix(in srgb, var(--ink) 72%, var(--muted));
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.48;
+}
+
+@media (max-width: 760px) {
+  .persona-drawer > summary {
+    min-height: 16rem;
+  }
+
+  .product-drawer > summary {
+    min-height: 10.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cabinet-drawer,
+  .cabinet-drawer > summary {
+    scroll-behavior: auto;
+  }
+}
