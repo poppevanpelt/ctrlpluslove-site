@@ -21,7 +21,7 @@ const instruments: readonly Instrument[] = [
   { no: "002", name: "DECISION COLLIDER", status: "LIVE INSTRUMENT", line: "A decision becomes visible when its interests collide.", href: "/decision-collider/" },
   { no: "003", name: "LIVING TICKER", status: "PROTOTYPE 001", line: "Minutes record words. The ticker records movement." },
   { no: "004", name: "BRAND TRANSPLANT", status: "TESTED", line: "What survives the transplant is probably the brand." },
-  { no: "005", name: "SIGNAL DISTORTION", status: "LIVE RUN", line: "Premium quality disappeared before the campaign began." },
+  { no: "005", name: "SIGNAL DISTORTION", status: "LIVE RUN", line: "Premium quality disappeared before the campaign began.", href: "/five-guys-signal/" },
   { no: "006", name: "DECISION SURFACE", status: "PROTOTYPE 001", line: "Every surface edits the brand before the audience sees it." },
   { no: "007", name: "DECISION MEMORY", status: "LIVE SYSTEM", line: "A forgotten decision must win its argument again." },
   { no: "008", name: "MEETING FILTER", status: "WORKING PROTOTYPE", line: "Most bad meetings fail before they begin.", href: "/meeting-filter/" },
@@ -38,9 +38,7 @@ const instruments: readonly Instrument[] = [
 function spriteStyle(index: number): CSSProperties {
   const col = index % 4;
   const row = Math.floor(index / 4);
-  return {
-    backgroundPosition: `${(col / 3) * 100}% ${(row / 3) * 100}%`,
-  };
+  return { backgroundPosition: `${(col / 3) * 100}% ${(row / 3) * 100}%` };
 }
 
 export default function InstrumentCabinetPage() {
@@ -51,78 +49,11 @@ export default function InstrumentCabinetPage() {
         <span className={styles.serial}>APPLIED AI / INSTRUMENT FAMILY 001</span>
         <Link href="/" className={styles.back}>BACK TO MOTHERSHIP ↗</Link>
       </header>
-
-      <section className={styles.hero}>
-        <div className={styles.heroCopy}>
-          <p className={styles.kicker}>CALIFORNIA PROTOTYPE SHOP</p>
-          <h1>INSTRUMENT<br />CABINET</h1>
-          <p className={styles.lead}>Ideas enter. Evidence leaves.</p>
-        </div>
-        <div className={styles.heroMeta}>
-          <span>16 instruments</span>
-          <span>physical / analytical / slightly unreasonable</span>
-          <span>built for human judgment</span>
-        </div>
-      </section>
-
-      <section className={styles.intro} aria-label="Cabinet introduction">
-        <div>
-          <p>A family of working objects for seeing what is happening, exposing what has to be true, testing what survives pressure and finding the smallest useful move.</p>
-          <small className={styles.doorNote}>Only finished doors open. The others stay in the cabinet until the experience earns the object.</small>
-        </div>
-        <div className={styles.legend}>
-          <span><i className={styles.dotLive} /> LIVE</span>
-          <span><i className={styles.dotProto} /> PROTOTYPE</span>
-          <span><i className={styles.dotProtocol} /> PROTOCOL</span>
-        </div>
-      </section>
-
-      <section className={styles.grid} aria-label="Sixteen ctrl+love instruments">
-        {instruments.map((instrument, index) => (
-          <article className={`${styles.card}${instrument.href ? ` ${styles.openCard}` : ""}`} key={instrument.no}>
-            <div className={styles.imageWrap}>
-              <div
-                className={styles.spriteImage}
-                style={spriteStyle(index)}
-                role="img"
-                aria-label={`${instrument.name}, ctrl+love instrument ${instrument.no}`}
-              />
-              <div className={styles.imageTag}>{instrument.status}</div>
-            </div>
-            <div className={styles.cardBody}>
-              <div className={styles.cardTitleRow}>
-                <span className={styles.number}>{instrument.no}</span>
-                <h2>{instrument.name}</h2>
-              </div>
-              <p>{instrument.line}</p>
-              {instrument.href ? (
-                <Link className={styles.openLink} href={instrument.href}>
-                  OPEN INSTRUMENT ↗
-                </Link>
-              ) : (
-                <span className={styles.cabinetOnly}>CABINET OBJECT</span>
-              )}
-            </div>
-          </article>
-        ))}
-      </section>
-
-      <section className={styles.protocols}>
-        <p className={styles.kicker}>FOUNDATIONAL PROTOCOLS</p>
-        <div className={styles.protocolGrid}>
-          <div><span>01</span><strong>OPPOSITION SEAT</strong><p>Pay someone to disagree.</p></div>
-          <div><span>02</span><strong>DO-NOTHING CONTROL</strong><p>Make change beat reality left alone.</p></div>
-          <div><span>03</span><strong>BLIND TRIAL</strong><p>Remove the label before judging the thing.</p></div>
-          <div><span>04</span><strong>MISS ARCHIVE</strong><p>Keep the wrong calls. Extract the lesson.</p></div>
-          <div><span>05</span><strong>EVIDENCE TAGS</strong><p>Observed / Inferred / Assumed / Tested / Proven.</p></div>
-          <div className={styles.kill}><span>KQ</span><strong>KILL QUESTION</strong><p>What evidence would make us abandon this conclusion?</p></div>
-        </div>
-      </section>
-
-      <footer className={styles.footer}>
-        <p>LET US HELP YOU BREAK SOMETHING.</p>
-        <Link href="/">ctrlpluslove.com ↗</Link>
-      </footer>
+      <section className={styles.hero}><div className={styles.heroCopy}><p className={styles.kicker}>CALIFORNIA PROTOTYPE SHOP</p><h1>INSTRUMENT<br />CABINET</h1><p className={styles.lead}>Ideas enter. Evidence leaves.</p></div><div className={styles.heroMeta}><span>16 instruments</span><span>physical / analytical / slightly unreasonable</span><span>built for human judgment</span></div></section>
+      <section className={styles.intro} aria-label="Cabinet introduction"><div><p>A family of working objects for seeing what is happening, exposing what has to be true, testing what survives pressure and finding the smallest useful move.</p><small className={styles.doorNote}>Only finished doors open. The others stay in the cabinet until the experience earns the object.</small></div><div className={styles.legend}><span><i className={styles.dotLive} /> LIVE</span><span><i className={styles.dotProto} /> PROTOTYPE</span><span><i className={styles.dotProtocol} /> PROTOCOL</span></div></section>
+      <section className={styles.grid} aria-label="Sixteen ctrl+love instruments">{instruments.map((instrument,index)=>(<article className={`${styles.card}${instrument.href ? ` ${styles.openCard}` : ""}`} key={instrument.no}><div className={styles.imageWrap}><div className={styles.spriteImage} style={spriteStyle(index)} role="img" aria-label={`${instrument.name}, ctrl+love instrument ${instrument.no}`} /><div className={styles.imageTag}>{instrument.status}</div></div><div className={styles.cardBody}><div className={styles.cardTitleRow}><span className={styles.number}>{instrument.no}</span><h2>{instrument.name}</h2></div><p>{instrument.line}</p>{instrument.href ? <Link className={styles.openLink} href={instrument.href}>OPEN INSTRUMENT ↗</Link> : <span className={styles.cabinetOnly}>CABINET OBJECT</span>}</div></article>))}</section>
+      <section className={styles.protocols}><p className={styles.kicker}>FOUNDATIONAL PROTOCOLS</p><div className={styles.protocolGrid}><div><span>01</span><strong>OPPOSITION SEAT</strong><p>Pay someone to disagree.</p></div><div><span>02</span><strong>DO-NOTHING CONTROL</strong><p>Make change beat reality left alone.</p></div><div><span>03</span><strong>BLIND TRIAL</strong><p>Remove the label before judging the thing.</p></div><div><span>04</span><strong>MISS ARCHIVE</strong><p>Keep the wrong calls. Extract the lesson.</p></div><div><span>05</span><strong>EVIDENCE TAGS</strong><p>Observed / Inferred / Assumed / Tested / Proven.</p></div><div className={styles.kill}><span>KQ</span><strong>KILL QUESTION</strong><p>What evidence would make us abandon this conclusion?</p></div></div></section>
+      <footer className={styles.footer}><p>LET US HELP YOU BREAK SOMETHING.</p><Link href="/">ctrlpluslove.com ↗</Link></footer>
     </main>
   );
 }
