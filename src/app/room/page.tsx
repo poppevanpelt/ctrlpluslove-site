@@ -23,9 +23,6 @@ export default function RoomPage() {
             <Link className="back-home-link" href="/">
               ← Home
             </Link>
-            <Link className="back-home-link" href="/room-runner/">
-              Live Room
-            </Link>
           </div>
 
           <div className="section-heading quiet-heading">
@@ -127,10 +124,10 @@ export default function RoomPage() {
           <section className="room-closing" aria-labelledby="room-closing-title">
             <p className="section-kicker">Then the decision enters</p>
             <h2 id="room-closing-title">
-              Watch the Room think through a live example.
+              Every decision gets the perspectives it actually needs.
             </h2>
-            <Link className="text-link" href="/room-runner/">
-              Open the Live Room →
+            <Link className="text-link" href="/decision-collider/">
+              Open the Decision Collider →
             </Link>
           </section>
         </div>
