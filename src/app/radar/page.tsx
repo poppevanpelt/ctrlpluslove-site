@@ -47,14 +47,12 @@ const fallbackSignals: PublicRadarSignal[] = [
 ];
 
 const pathSteps = [
-  "Website /radar",
-  "Radar Signals",
+  "Signal",
   "Review",
   "Decision Question",
   "Room",
-  "Knowledge + Output",
   "Evidence",
-  "New Question",
+  "Decision",
 ];
 
 async function loadSignals() {
@@ -79,16 +77,15 @@ export default async function RadarPage() {
       <section className="radar-hero">
         <div className="radar-hero-copy">
           <p className="radar-kicker">ctrl+love Radar</p>
-          <h1>The sensing layer before the Room.</h1>
+          <h1>Notice it before it becomes obvious.</h1>
           <p className="radar-intro">
-            Radar makes the network&apos;s observations visible: weak signals,
-            contradictions, cultural shifts and open questions that may deserve
-            a Decision Question.
+            Radar collects weak signals, contradictions and cultural shifts before
+            they harden into strategy. The useful ones become Decision Questions.
           </p>
           <div className="radar-actions">
-            <a href="#submit-signal">Send to Radar</a>
-            <Link href="/">Home</Link>
-            <Link href="/room/">See the Room</Link>
+            <a href="#submit-signal">Send a signal</a>
+            <Link href="/instruments/">See the instruments</Link>
+            <Link href="/inside-ctrl-love/">Inside ctrl+love</Link>
           </div>
         </div>
 
@@ -144,8 +141,8 @@ export default async function RadarPage() {
           <p className="radar-kicker">Contribute</p>
           <h2>Send a signal into review.</h2>
           <p>
-            A signal does not need to be complete. It needs to be alive enough
-            to ask: does this reveal a question worth putting in a Room?
+            It does not need to be complete. It needs to be specific enough to
+            make someone ask a better question.
           </p>
           <ul>
             <li>Something changed before the dashboard noticed.</li>
