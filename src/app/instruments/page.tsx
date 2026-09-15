@@ -8,7 +8,15 @@ export const metadata: Metadata = {
   description: "A cabinet of applied AI instruments for seeing, testing, deciding and moving.",
 };
 
-const instruments = [
+type Instrument = {
+  no: string;
+  name: string;
+  status: string;
+  line: string;
+  href?: string;
+};
+
+const instruments: readonly Instrument[] = [
   { no: "001", name: "PITCH CRASH TEST", status: "LIVE RUN", line: "Prepared cupboards are not prepared communities." },
   { no: "002", name: "DECISION COLLIDER", status: "LIVE INSTRUMENT", line: "A decision becomes visible when its interests collide.", href: "/decision-collider/" },
   { no: "003", name: "LIVING TICKER", status: "PROTOTYPE 001", line: "Minutes record words. The ticker records movement." },
@@ -25,7 +33,7 @@ const instruments = [
   { no: "014", name: "DO-NOTHING CONTROL", status: "PROTOCOL", line: "Change must beat the cost of leaving reality alone." },
   { no: "015", name: "MISS ARCHIVE", status: "PROTOCOL", line: "Wrong Marcel. Correct lesson." },
   { no: "016", name: "EVIDENCE TAGS", status: "PROTOCOL", line: "Confidence becomes useful when its source is visible." },
-] as const;
+];
 
 function spriteStyle(index: number): CSSProperties {
   const col = index % 4;
