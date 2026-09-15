@@ -33,11 +33,13 @@ const instruments: readonly Instrument[] = [
   { no: "014", name: "DO-NOTHING CONTROL", status: "PROTOCOL", line: "Change must beat the cost of leaving reality alone." },
   { no: "015", name: "MISS ARCHIVE", status: "PROTOCOL", line: "Wrong Marcel. Correct lesson." },
   { no: "016", name: "EVIDENCE TAGS", status: "PROTOCOL", line: "Confidence becomes useful when its source is visible." },
+  { no: "017", name: "CTRL+SWAT", status: "LIVE RAPID RESPONSE", line: "Detect. Judge. Build. Dispatch before the moment disappears.", href: "/swat/" },
+  { no: "018", name: "CTRL+FIZZ", status: "PHYSICAL PRODUCT", line: "Carbonated judgment for meetings that have gone flat.", href: "/fizz/" },
 ];
 
 function spriteStyle(index: number): CSSProperties {
   const col = index % 4;
-  const row = Math.floor(index / 4);
+  const row = Math.floor(index / 4) % 4;
   return { backgroundPosition: `${(col / 3) * 100}% ${(row / 3) * 100}%` };
 }
 
@@ -49,9 +51,9 @@ export default function InstrumentCabinetPage() {
         <span className={styles.serial}>APPLIED AI / INSTRUMENT FAMILY 001</span>
         <Link href="/" className={styles.back}>BACK TO MOTHERSHIP ↗</Link>
       </header>
-      <section className={styles.hero}><div className={styles.heroCopy}><p className={styles.kicker}>CALIFORNIA PROTOTYPE SHOP</p><h1>INSTRUMENT<br />CABINET</h1><p className={styles.lead}>Ideas enter. Evidence leaves.</p></div><div className={styles.heroMeta}><span>16 instruments</span><span>physical / analytical / slightly unreasonable</span><span>built for human judgment</span></div></section>
+      <section className={styles.hero}><div className={styles.heroCopy}><p className={styles.kicker}>CALIFORNIA PROTOTYPE SHOP</p><h1>INSTRUMENT<br />CABINET</h1><p className={styles.lead}>Ideas enter. Evidence leaves.</p></div><div className={styles.heroMeta}><span>{instruments.length} instruments</span><span>physical / analytical / slightly unreasonable</span><span>built for human judgment</span></div></section>
       <section className={styles.intro} aria-label="Cabinet introduction"><div><p>A family of working objects for seeing what is happening, exposing what has to be true, testing what survives pressure and finding the smallest useful move.</p><small className={styles.doorNote}>Only finished doors open. The others stay in the cabinet until the experience earns the object.</small></div><div className={styles.legend}><span><i className={styles.dotLive} /> LIVE</span><span><i className={styles.dotProto} /> PROTOTYPE</span><span><i className={styles.dotProtocol} /> PROTOCOL</span></div></section>
-      <section className={styles.grid} aria-label="Sixteen ctrl+love instruments">{instruments.map((instrument,index)=>(<article className={`${styles.card}${instrument.href ? ` ${styles.openCard}` : ""}`} key={instrument.no}><div className={styles.imageWrap}><div className={styles.spriteImage} style={spriteStyle(index)} role="img" aria-label={`${instrument.name}, ctrl+love instrument ${instrument.no}`} /><div className={styles.imageTag}>{instrument.status}</div></div><div className={styles.cardBody}><div className={styles.cardTitleRow}><span className={styles.number}>{instrument.no}</span><h2>{instrument.name}</h2></div><p>{instrument.line}</p>{instrument.href ? <Link className={styles.openLink} href={instrument.href}>OPEN INSTRUMENT ↗</Link> : <span className={styles.cabinetOnly}>CABINET OBJECT</span>}</div></article>))}</section>
+      <section className={styles.grid} aria-label={`${instruments.length} ctrl+love instruments`}>{instruments.map((instrument,index)=>(<article className={`${styles.card}${instrument.href ? ` ${styles.openCard}` : ""}`} key={instrument.no}><div className={styles.imageWrap}><div className={styles.spriteImage} style={spriteStyle(index)} role="img" aria-label={`${instrument.name}, ctrl+love instrument ${instrument.no}`} /><div className={styles.imageTag}>{instrument.status}</div></div><div className={styles.cardBody}><div className={styles.cardTitleRow}><span className={styles.number}>{instrument.no}</span><h2>{instrument.name}</h2></div><p>{instrument.line}</p>{instrument.href ? <Link className={styles.openLink} href={instrument.href}>OPEN INSTRUMENT ↗</Link> : <span className={styles.cabinetOnly}>CABINET OBJECT</span>}</div></article>))}</section>
       <section className={styles.protocols}><p className={styles.kicker}>FOUNDATIONAL PROTOCOLS</p><div className={styles.protocolGrid}><div><span>01</span><strong>OPPOSITION SEAT</strong><p>Pay someone to disagree.</p></div><div><span>02</span><strong>DO-NOTHING CONTROL</strong><p>Make change beat reality left alone.</p></div><div><span>03</span><strong>BLIND TRIAL</strong><p>Remove the label before judging the thing.</p></div><div><span>04</span><strong>MISS ARCHIVE</strong><p>Keep the wrong calls. Extract the lesson.</p></div><div><span>05</span><strong>EVIDENCE TAGS</strong><p>Observed / Inferred / Assumed / Tested / Proven.</p></div><div className={styles.kill}><span>KQ</span><strong>KILL QUESTION</strong><p>What evidence would make us abandon this conclusion?</p></div></div></section>
       <footer className={styles.footer}><p>LET US HELP YOU BREAK SOMETHING.</p><Link href="/">ctrlpluslove.com ↗</Link></footer>
     </main>

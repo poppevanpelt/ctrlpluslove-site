@@ -3,6 +3,7 @@ import Link from "next/link";
 import { CtrlLayerLogoTrigger } from "./ctrl-layer";
 import { CtrlLayerNote } from "./ctrl-layer-note";
 import { EarthriseMoment } from "./earthrise-moment";
+import "./home-cabinet-entry.css";
 
 export function HomeHero() {
   return (
@@ -18,7 +19,7 @@ export function HomeHero() {
             </p>
           </CtrlLayerLogoTrigger>
           <nav className="home-hero-nav" aria-label="Institution">
-            <Link href="/instruments/">INSTRUMENTS</Link>
+            <Link href="/instruments/">INSTRUMENT CABINET</Link>
             <Link href="/prompt-shoppe/">PROMPT SHOPPE</Link>
             <a href="#personas">PERSONAS</a>
             <a href="#products">PRODUCTS</a>
@@ -31,6 +32,11 @@ export function HomeHero() {
             <Link href="/constitution/">THE CONSTITUTION</Link>
             <a href="mailto:hello@ctrlpluslove.com">ADMISSION</a>
           </nav>
+          <Link className="home-cabinet-entry" href="/instruments/">
+            <span className="home-cabinet-entry__index">001</span>
+            <span className="home-cabinet-entry__title">Instrument Cabinet</span>
+            <span className="home-cabinet-entry__action">Open the cabinet ↗</span>
+          </Link>
           <div className="chapter-arrival-message">
             <div className="chapter-arrival-scene" aria-hidden="true">
               <span className="chapter-arrival-floor" />
