@@ -59,16 +59,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  async redirects() {
-    return [
-      {
-        source: "/",
-        has: [{ type: "host", value: "ctrlpluslove.com" }],
-        destination: "https://www.ctrlpluslove.com/",
-        permanent: true,
-      },
-    ];
-  },
   async headers() {
     return [
       {
@@ -76,22 +66,6 @@ const nextConfig: NextConfig = {
         headers: securityHeaders,
       },
     ];
-  },
-  async rewrites() {
-    return {
-      beforeFiles: [
-        {
-          source: "/instruments",
-          destination: "https://ctrl-love-instruments.ctrl-love-4138.chatgpt.site/",
-        },
-        {
-          source: "/instruments/:path*",
-          destination: "https://ctrl-love-instruments.ctrl-love-4138.chatgpt.site/:path*",
-        },
-      ],
-      afterFiles: [],
-      fallback: [],
-    };
   },
 };
 
