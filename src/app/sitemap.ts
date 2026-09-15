@@ -30,6 +30,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: absoluteUrl("/five-guys-signal/"),
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.78,
+    },
+    {
       url: absoluteUrl("/swat/"),
       lastModified: swatLastModified,
       changeFrequency: "weekly" as const,
