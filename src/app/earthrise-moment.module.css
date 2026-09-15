@@ -1,0 +1,230 @@
+.section {
+  --earth-x: 55%;
+  --earth-y: 30%;
+  position: relative;
+  overflow: hidden;
+  min-height: min(86vh, 920px);
+  border-bottom: 1px solid #302d29;
+  background: #0d0d0d;
+  color: #f4f0e6;
+}
+
+.meta {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.2rem clamp(1rem, 4vw, 4.5rem);
+  border-bottom: 1px solid rgb(244 240 230 / 22%);
+  font-size: 0.62rem;
+  font-weight: 760;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgb(244 240 230 / 56%);
+}
+
+.copy {
+  position: relative;
+  z-index: 5;
+  max-width: 60rem;
+  padding: clamp(2.5rem, 6vw, 5rem) clamp(1rem, 4vw, 4.5rem) 0;
+}
+
+.copy p {
+  margin: 0;
+  font-size: clamp(2rem, 5.7vw, 5.8rem);
+  font-weight: 720;
+  letter-spacing: -0.045em;
+  line-height: 0.94;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.stars {
+  position: absolute;
+  inset: 0;
+  opacity: 0.38;
+  background-image:
+    radial-gradient(circle at 14% 18%, white 0 1px, transparent 1.5px),
+    radial-gradient(circle at 79% 22%, white 0 1px, transparent 1.4px),
+    radial-gradient(circle at 63% 55%, white 0 1px, transparent 1.5px),
+    radial-gradient(circle at 28% 64%, white 0 1px, transparent 1.3px),
+    radial-gradient(circle at 91% 47%, white 0 1px, transparent 1.4px),
+    radial-gradient(circle at 47% 35%, white 0 0.7px, transparent 1.2px);
+}
+
+.earthWrap {
+  position: absolute;
+  z-index: 2;
+  left: var(--earth-x);
+  top: var(--earth-y);
+  width: clamp(7.2rem, 13vw, 13.5rem);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+}
+
+.earth {
+  position: absolute;
+  z-index: 4;
+  inset: 8%;
+  overflow: hidden;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 64% 28%, rgb(243 248 238 / 92%) 0 4%, transparent 5%),
+    radial-gradient(ellipse at 38% 52%, #b4aa64 0 10%, transparent 11%),
+    radial-gradient(ellipse at 62% 63%, #6d7d48 0 8%, transparent 9%),
+    radial-gradient(circle at 38% 35%, #3ca6d4 0 30%, #18558c 68%, #092643 100%);
+  box-shadow:
+    inset -1.6rem -0.7rem 2.4rem rgb(0 0 0 / 58%),
+    0 0 0 1px rgb(255 255 255 / 25%);
+}
+
+.earth::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background: linear-gradient(112deg, transparent 35%, rgb(255 255 255 / 17%) 50%, transparent 65%);
+  transform: rotate(-16deg);
+}
+
+.cloudOne,
+.cloudTwo,
+.cloudThree {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  height: 8%;
+  border-radius: 100%;
+  background: rgb(255 255 255 / 66%);
+  filter: blur(1.5px);
+  transform: rotate(-12deg);
+}
+.cloudOne { top: 30%; left: 20%; width: 47%; }
+.cloudTwo { top: 48%; left: 43%; width: 38%; }
+.cloudThree { top: 67%; left: 23%; width: 31%; }
+
+.halo,
+.core,
+.streak,
+.ghost {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+/* All optical layers are anchored to the Earth wrapper, never to the viewport. */
+.halo {
+  left: 3%;
+  top: 55%;
+  width: 52%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(255 250 210 / 78%) 0%, rgb(255 220 148 / 28%) 28%, transparent 68%);
+  filter: blur(9px);
+  animation: contact 3.4s cubic-bezier(.2,.72,.2,1) both;
+}
+
+.core {
+  left: 4%;
+  top: 55%;
+  width: clamp(0.75rem, 1.4vw, 1.35rem);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #fffbe5;
+  box-shadow: 0 0 1.2rem #ffe9a5;
+  animation: contact 3.4s cubic-bezier(.2,.72,.2,1) both;
+}
+
+.streak {
+  left: 4%;
+  top: 55%;
+  width: clamp(13rem, 29vw, 34rem);
+  height: 2px;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(90deg, transparent, rgb(255 242 201 / 32%) 42%, rgb(255 250 224 / 82%) 50%, rgb(255 242 201 / 32%) 58%, transparent);
+  filter: blur(1px);
+  animation: contact 3.4s cubic-bezier(.2,.72,.2,1) both;
+}
+
+.ghost {
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(217 237 255 / 38%), transparent 72%);
+}
+.ghostOne { left: 115%; top: 74%; width: 7%; aspect-ratio: 1; }
+.ghostTwo { left: 147%; top: 86%; width: 11%; aspect-ratio: 1; opacity: 0.44; }
+
+.moon {
+  position: absolute;
+  z-index: 3;
+  left: -8%;
+  right: -8%;
+  bottom: -29%;
+  height: 51%;
+  border-radius: 50% 50% 0 0 / 34% 34% 0 0;
+  background:
+    radial-gradient(circle at 23% 27%, rgb(24 23 21 / 58%) 0 3.2%, transparent 3.5%),
+    radial-gradient(circle at 64% 18%, rgb(20 19 18 / 42%) 0 2.8%, transparent 3.1%),
+    radial-gradient(circle at 78% 38%, rgb(22 21 19 / 47%) 0 4%, transparent 4.3%),
+    linear-gradient(#665f55, #2b2925 68%, #181715);
+  box-shadow: 0 -1px 0 rgb(255 255 255 / 11%);
+}
+
+.endline {
+  position: absolute;
+  z-index: 6;
+  right: clamp(1rem, 4vw, 4.5rem);
+  bottom: clamp(1.6rem, 4vw, 3rem);
+  left: clamp(1rem, 4vw, 4.5rem);
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.endline strong {
+  font-size: clamp(2rem, 5vw, 4.8rem);
+  letter-spacing: -0.045em;
+}
+.endline span {
+  max-width: 27rem;
+  font-size: 0.6rem;
+  font-weight: 760;
+  letter-spacing: 0.15em;
+  line-height: 1.5;
+  text-align: right;
+  color: rgb(244 240 230 / 55%);
+}
+
+@keyframes contact {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(.55); }
+  35% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: .82; transform: translate(-50%, -50%) scale(1.03); }
+}
+
+@media (max-width: 760px) {
+  .section {
+    --earth-x: 62%;
+    --earth-y: 39%;
+    min-height: 78vh;
+  }
+  .meta { align-items: flex-start; flex-direction: column; gap: .35rem; }
+  .copy { padding-top: 2rem; padding-right: 2rem; }
+  .copy p { font-size: clamp(1.8rem, 9vw, 3.2rem); }
+  .earthWrap { width: clamp(7.5rem, 38vw, 10.5rem); }
+  .moon { bottom: -17%; height: 43%; left: -28%; right: -28%; }
+  .endline { align-items: flex-start; flex-direction: column; gap: .8rem; }
+  .endline strong { font-size: clamp(2rem, 9vw, 3.4rem); }
+  .endline span { text-align: left; max-width: 19rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .halo, .core, .streak { animation: none; opacity: .9; }
+}
