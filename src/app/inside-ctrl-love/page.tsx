@@ -60,6 +60,11 @@ const instruments = [
     note: "Empty thoughts in. Thought leadership out.",
   },
   {
+    name: "Out-house",
+    href: "/out-house/",
+    note: "External pressure for in-house teams. Keep the uncomfortable seat occupied.",
+  },
+  {
     name: "Live Decision Simulator",
     href: "/living-decision-review/",
     note: "A decision room that thinks in public.",
