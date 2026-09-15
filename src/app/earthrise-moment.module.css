@@ -11,22 +11,22 @@
 
 .meta {
   position: relative;
-  z-index: 5;
+  z-index: 8;
   display: flex;
   justify-content: space-between;
   gap: 1rem;
   padding: 1.2rem clamp(1rem, 4vw, 4.5rem);
   border-bottom: 1px solid rgb(244 240 230 / 22%);
-  font-size: 0.62rem;
+  font-size: 0.7rem;
   font-weight: 760;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgb(244 240 230 / 56%);
+  color: rgb(244 240 230 / 62%);
 }
 
 .copy {
   position: relative;
-  z-index: 5;
+  z-index: 8;
   max-width: 60rem;
   padding: clamp(2.5rem, 6vw, 5rem) clamp(1rem, 4vw, 4.5rem) 0;
 }
@@ -43,6 +43,7 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
+  isolation: isolate;
 }
 
 .stars {
@@ -60,7 +61,7 @@
 
 .earthWrap {
   position: absolute;
-  z-index: 2;
+  z-index: 4;
   left: var(--earth-x);
   top: var(--earth-y);
   width: clamp(7.2rem, 13vw, 13.5rem);
@@ -70,7 +71,7 @@
 
 .earth {
   position: absolute;
-  z-index: 4;
+  z-index: 5;
   inset: 8%;
   overflow: hidden;
   border-radius: 50%;
@@ -113,53 +114,73 @@
 .streak,
 .ghost {
   position: absolute;
-  z-index: 5;
   pointer-events: none;
   mix-blend-mode: screen;
 }
 
-/* All optical layers are anchored to the Earth wrapper, never to the viewport. */
+/* Optical layers stay attached to Earth, but now sit in front of it. */
 .halo {
-  left: 3%;
+  z-index: 9;
+  left: 1%;
   top: 55%;
-  width: 52%;
+  width: 88%;
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: radial-gradient(circle, rgb(255 250 210 / 78%) 0%, rgb(255 220 148 / 28%) 28%, transparent 68%);
-  filter: blur(9px);
+  background: radial-gradient(circle,
+    rgb(255 255 244 / 100%) 0 5%,
+    rgb(255 247 205 / 88%) 9%,
+    rgb(255 213 135 / 48%) 24%,
+    rgb(255 177 94 / 18%) 42%,
+    transparent 72%);
+  filter: blur(13px);
   animation: contact 3.4s cubic-bezier(.2,.72,.2,1) both;
 }
 
 .core {
-  left: 4%;
+  z-index: 11;
+  left: 2%;
   top: 55%;
-  width: clamp(0.75rem, 1.4vw, 1.35rem);
+  width: clamp(0.9rem, 1.8vw, 1.7rem);
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: #fffbe5;
-  box-shadow: 0 0 1.2rem #ffe9a5;
+  background: #fffef4;
+  box-shadow:
+    0 0 0.45rem #fff,
+    0 0 1.3rem #ffe9a5,
+    0 0 3.8rem rgb(255 190 96 / 78%);
   animation: contact 3.4s cubic-bezier(.2,.72,.2,1) both;
 }
 
 .streak {
-  left: 4%;
+  z-index: 10;
+  left: 2%;
   top: 55%;
-  width: clamp(13rem, 29vw, 34rem);
-  height: 2px;
+  width: clamp(28rem, 68vw, 72rem);
+  height: 3px;
   transform: translate(-50%, -50%);
-  background: linear-gradient(90deg, transparent, rgb(255 242 201 / 32%) 42%, rgb(255 250 224 / 82%) 50%, rgb(255 242 201 / 32%) 58%, transparent);
-  filter: blur(1px);
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgb(255 213 153 / 12%) 31%,
+    rgb(255 239 197 / 55%) 44%,
+    #fffce8 50%,
+    rgb(255 239 197 / 55%) 56%,
+    rgb(255 213 153 / 12%) 69%,
+    transparent 100%);
+  box-shadow: 0 0 12px rgb(255 225 169 / 42%);
+  filter: blur(0.7px);
   animation: contact 3.4s cubic-bezier(.2,.72,.2,1) both;
 }
 
 .ghost {
+  z-index: 8;
   border-radius: 50%;
-  background: radial-gradient(circle, rgb(217 237 255 / 38%), transparent 72%);
+  background: radial-gradient(circle, rgb(217 237 255 / 44%), transparent 72%);
+  filter: blur(1px);
 }
-.ghostOne { left: 115%; top: 74%; width: 7%; aspect-ratio: 1; }
-.ghostTwo { left: 147%; top: 86%; width: 11%; aspect-ratio: 1; opacity: 0.44; }
+.ghostOne { left: 122%; top: 73%; width: 9%; aspect-ratio: 1; }
+.ghostTwo { left: 165%; top: 88%; width: 14%; aspect-ratio: 1; opacity: 0.5; }
 
 .moon {
   position: absolute;
@@ -179,7 +200,7 @@
 
 .endline {
   position: absolute;
-  z-index: 6;
+  z-index: 8;
   right: clamp(1rem, 4vw, 4.5rem);
   bottom: clamp(1.6rem, 4vw, 3rem);
   left: clamp(1rem, 4vw, 4.5rem);
@@ -195,18 +216,19 @@
 }
 .endline span {
   max-width: 27rem;
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   font-weight: 760;
   letter-spacing: 0.15em;
   line-height: 1.5;
   text-align: right;
-  color: rgb(244 240 230 / 55%);
+  color: rgb(244 240 230 / 62%);
 }
 
 @keyframes contact {
-  0% { opacity: 0; transform: translate(-50%, -50%) scale(.55); }
-  35% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  100% { opacity: .82; transform: translate(-50%, -50%) scale(1.03); }
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(.42); }
+  26% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); }
+  48% { opacity: .88; transform: translate(-50%, -50%) scale(.98); }
+  100% { opacity: .94; transform: translate(-50%, -50%) scale(1.02); }
 }
 
 @media (max-width: 760px) {
@@ -215,16 +237,19 @@
     --earth-y: 39%;
     min-height: 78vh;
   }
-  .meta { align-items: flex-start; flex-direction: column; gap: .35rem; }
+  .meta { align-items: flex-start; flex-direction: column; gap: .35rem; font-size: .74rem; }
   .copy { padding-top: 2rem; padding-right: 2rem; }
   .copy p { font-size: clamp(1.8rem, 9vw, 3.2rem); }
   .earthWrap { width: clamp(7.5rem, 38vw, 10.5rem); }
+  .halo { width: 108%; left: -2%; }
+  .streak { width: min(86vw, 34rem); left: 0; }
+  .core { left: 0; }
   .moon { bottom: -17%; height: 43%; left: -28%; right: -28%; }
   .endline { align-items: flex-start; flex-direction: column; gap: .8rem; }
   .endline strong { font-size: clamp(2rem, 9vw, 3.4rem); }
-  .endline span { text-align: left; max-width: 19rem; }
+  .endline span { text-align: left; max-width: 19rem; font-size: .74rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .halo, .core, .streak { animation: none; opacity: .9; }
+  .halo, .core, .streak { animation: none; opacity: .94; }
 }
