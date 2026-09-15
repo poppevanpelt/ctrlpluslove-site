@@ -16,13 +16,12 @@ export function HomeHero() {
           </p>
         </CtrlLayerLogoTrigger>
         <nav className="home-hero-nav" aria-label="Institution">
-
-          <a href="#shared-office">SHARED OFFICE</a>
+          <Link href="/instruments/">INSTRUMENTS</Link>
+          <Link href="/prompt-shoppe/">PROMPT SHOPPE</Link>
           <a href="#personas">PERSONAS</a>
           <a href="#products">PRODUCTS</a>
           <a href="#decision-collider">DECISION COLLIDER</a>
-          <Link href="/museum/">MUSEUM STORE</Link>
-          <Link href="/steel-ball/">STEEL BALL</Link>
+          <Link href="/museum/">MUSEUM</Link>
           <a href="#cases">CASES</a>
           <a href="#network">NETWORK</a>
           <Link href="/embassies/">EMBASSIES</Link>
