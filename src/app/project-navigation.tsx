@@ -25,26 +25,22 @@ export function ProjectNavigation() {
     pathname === "/decision-collider/" ||
     pathname === "/swat" ||
     pathname === "/swat/" ||
-    pathname.startsWith("/swat/")
+    pathname.startsWith("/swat/") ||
+    pathname === "/five-guys-signal" ||
+    pathname === "/five-guys-signal/"
   ) {
     return null;
   }
 
   return (
     <nav className="project-navigation" aria-label="Project navigation">
-      <Link className="project-navigation__brand" href="/">
-        ctrl+love
-      </Link>
+      <Link className="project-navigation__brand" href="/">ctrl+love</Link>
       <div>
         {projectLinks.map((link) =>
           link.href.startsWith("mailto:") ? (
-            <a href={link.href} key={link.href}>
-              {link.label}
-            </a>
+            <a href={link.href} key={link.href}>{link.label}</a>
           ) : (
-            <Link href={link.href} key={link.href}>
-              {link.label}
-            </Link>
+            <Link href={link.href} key={link.href}>{link.label}</Link>
           ),
         )}
       </div>
