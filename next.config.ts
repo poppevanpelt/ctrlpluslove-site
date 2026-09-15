@@ -67,6 +67,22 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async rewrites() {
+    return {
+      beforeFiles: [
+        {
+          source: "/instruments",
+          destination: "https://ctrl-love-instruments.ctrl-love-4138.chatgpt.site/",
+        },
+        {
+          source: "/instruments/:path*",
+          destination: "https://ctrl-love-instruments.ctrl-love-4138.chatgpt.site/:path*",
+        },
+      ],
+      afterFiles: [],
+      fallback: [],
+    };
+  },
 };
 
 export default nextConfig;
