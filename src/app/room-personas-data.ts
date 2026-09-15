@@ -109,12 +109,10 @@ export const supportingRoomPersonas: RoomPersona[] = [
     portraitPosition: "50% 39%",
   },
   {
-    id: "grace-holloway",
-    name: "Grace Holloway",
+    id: "graham-holloway",
+    name: "Graham Holloway",
     role: "Reputation",
     line: "Protects long-term trust, legitimacy and public confidence.",
-    portrait: "/room/personas/grace-holloway.webp",
-    portraitPosition: "50% 42%",
   },
   {
     id: "brigitte-brussels",
