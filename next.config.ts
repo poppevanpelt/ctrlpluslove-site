@@ -63,15 +63,9 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/",
-        has: [
-          {
-            type: "header",
-            key: "referer",
-            value: "https?://(?:www\\.)?ctrlpluslove\\.com/instruments(?:/.*)?",
-          },
-        ],
+        has: [{ type: "host", value: "ctrlpluslove.com" }],
         destination: "https://www.ctrlpluslove.com/",
-        permanent: false,
+        permanent: true,
       },
     ];
   },
