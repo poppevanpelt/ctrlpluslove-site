@@ -266,20 +266,6 @@ export const publicRoutes: PublicRoute[] = [
     changeFrequency: "yearly",
     priority: 0.35,
   },
-  {
-    path: "/rob/",
-    title: "Dear Rob — ctrl+love",
-    description: "A ctrl+love document from the archive.",
-    changeFrequency: "yearly",
-    priority: 0.3,
-  },
-  {
-    path: "/marjan/",
-    title: "Dear Marjan — ctrl+love",
-    description: "A ctrl+love document from the archive.",
-    changeFrequency: "yearly",
-    priority: 0.3,
-  },
 ];
 
 export function routeMetadata(path: string) {
