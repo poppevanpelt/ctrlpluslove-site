@@ -1,0 +1,469 @@
+.page {
+  --cream: #f1eee4;
+  --paper: #f7f4eb;
+  --graphite: #1d1f1c;
+  --muted: #6f716b;
+  --line: rgba(29, 31, 28, 0.18);
+  --steel: #c7c9c2;
+  --signal: #d8ff37;
+  background: var(--cream);
+  color: var(--graphite);
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.utilityBar {
+  min-height: 48px;
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1.8fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.brand {
+  color: inherit;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.hero {
+  min-height: 82vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 36px 24px 28px;
+  border-bottom: 1px solid var(--line);
+}
+
+.heroLabel,
+.sectionCode,
+.eyebrow,
+.formatCode,
+.panelTopline {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.hero h1,
+.splitStatement h2,
+.seatIntro h2,
+.promise h2,
+.cta h2 {
+  margin: 0;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 0.89;
+}
+
+.hero h1 {
+  font-size: clamp(72px, 11vw, 176px);
+  max-width: 14ch;
+}
+
+.hero > p {
+  max-width: 630px;
+  font-size: clamp(20px, 2.4vw, 34px);
+  line-height: 1.08;
+  margin: 0;
+}
+
+.signal {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.signal span {
+  width: 14px;
+  height: 14px;
+  background: var(--signal);
+  border: 1px solid var(--graphite);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(216, 255, 55, 0.35);
+}
+
+.splitStatement {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--line);
+}
+
+.splitStatement > div {
+  min-height: 420px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.splitStatement > div:first-child {
+  border-right: 1px solid var(--line);
+}
+
+.splitStatement h2 {
+  font-size: clamp(46px, 6.3vw, 96px);
+  max-width: 8ch;
+}
+
+.argument {
+  display: grid;
+  grid-template-columns: minmax(140px, 0.45fr) 1.55fr;
+  gap: 28px;
+  padding: 96px 24px 112px;
+  border-bottom: 1px solid var(--line);
+}
+
+.argumentCopy {
+  max-width: 900px;
+}
+
+.argumentCopy p {
+  font-size: clamp(24px, 2.5vw, 42px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin: 0 0 34px;
+}
+
+.seatSection {
+  padding: 96px 24px 112px;
+  border-bottom: 1px solid var(--line);
+}
+
+.seatIntro {
+  display: grid;
+  grid-template-columns: 160px 1fr minmax(220px, 0.55fr);
+  gap: 24px;
+  align-items: end;
+  margin-bottom: 42px;
+}
+
+.seatIntro h2 {
+  font-size: clamp(54px, 7vw, 110px);
+  max-width: 8ch;
+}
+
+.seatIntro p,
+.formatsHead p,
+.cta p {
+  font-size: 18px;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.panel {
+  background: linear-gradient(145deg, #d9d9d1 0%, #bfc0ba 52%, #d0d2cb 100%);
+  border: 1px solid rgba(29,31,28,0.42);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), inset 0 -1px 0 rgba(0,0,0,0.08);
+}
+
+.panelTopline {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(29,31,28,0.28);
+}
+
+.panelSeat {
+  min-height: 330px;
+  display: grid;
+  place-items: center;
+  padding: 36px 20px;
+  border-bottom: 1px solid rgba(29,31,28,0.28);
+}
+
+.seatPlate {
+  width: min(380px, 72vw);
+  aspect-ratio: 1.45 / 1;
+  background: var(--paper);
+  border: 1px solid var(--graphite);
+  border-radius: 22px 22px 56px 56px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  align-items: center;
+  justify-items: center;
+  padding: 16px 18px 20px;
+  box-shadow: 0 24px 48px rgba(0,0,0,0.13), inset 0 0 0 6px rgba(0,0,0,0.03);
+}
+
+.seatPlate span,
+.seatPlate small {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.seatPlate strong {
+  font-size: 120px;
+  line-height: 0.9;
+  letter-spacing: -0.08em;
+}
+
+.instrumentGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.instrument {
+  padding: 22px 18px 26px;
+  min-height: 220px;
+  background: rgba(247,244,235,0.34);
+}
+
+.instrument + .instrument {
+  border-left: 1px solid rgba(29,31,28,0.28);
+}
+
+.instrumentNumber {
+  display: block;
+  font-size: 10px;
+  margin-bottom: 46px;
+}
+
+.instrument h3,
+.formatCard h3 {
+  margin: 0 0 12px;
+  text-transform: uppercase;
+  font-size: 28px;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+
+.instrument p,
+.formatCard p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.promise {
+  padding: 110px 24px 120px;
+  border-bottom: 1px solid var(--line);
+}
+
+.promise h2 {
+  font-size: clamp(70px, 10vw, 160px);
+  margin-top: 26px;
+}
+
+.promise p {
+  font-size: clamp(24px, 3vw, 44px);
+  margin: 26px 0 0;
+}
+
+.formatsSection {
+  border-bottom: 1px solid var(--line);
+}
+
+.formatsHead {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding: 28px 24px 42px;
+  border-bottom: 1px solid var(--line);
+}
+
+.formatsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.formatCard {
+  min-height: 320px;
+  padding: 22px 24px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--paper);
+}
+
+.formatCard + .formatCard {
+  border-left: 1px solid var(--line);
+}
+
+.formatCard h3 {
+  font-size: clamp(38px, 4vw, 68px);
+  margin-top: auto;
+  margin-bottom: 20px;
+}
+
+.cta {
+  display: grid;
+  grid-template-columns: 1.4fr 0.6fr;
+  gap: 28px;
+  padding: 100px 24px 110px;
+  align-items: end;
+  border-bottom: 1px solid var(--line);
+}
+
+.cta h2 {
+  font-size: clamp(64px, 8vw, 130px);
+  margin: 24px 0 24px;
+  max-width: 8ch;
+}
+
+.ctaActions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.primaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  padding: 0 24px;
+  background: var(--signal);
+  border: 1px solid var(--graphite);
+  color: var(--graphite);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.secondaryLink {
+  color: inherit;
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.footer {
+  min-height: 92px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  align-items: center;
+  padding: 0 24px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.footer span:nth-child(2) {
+  text-align: center;
+}
+
+.footer span:last-child {
+  text-align: right;
+}
+
+@media (max-width: 900px) {
+  .utilityBar {
+    grid-template-columns: 1fr auto;
+    min-height: auto;
+    padding: 14px 18px;
+  }
+
+  .utilityBar span:nth-of-type(1),
+  .utilityBar span:nth-of-type(2) {
+    display: none;
+  }
+
+  .hero {
+    min-height: 78vh;
+    padding: 24px 18px 22px;
+  }
+
+  .hero h1 {
+    font-size: clamp(58px, 16vw, 100px);
+  }
+
+  .splitStatement {
+    grid-template-columns: 1fr;
+  }
+
+  .splitStatement > div {
+    min-height: 320px;
+    padding: 18px;
+  }
+
+  .splitStatement > div:first-child {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .argument {
+    grid-template-columns: 1fr;
+    padding: 70px 18px 80px;
+  }
+
+  .seatSection {
+    padding: 70px 18px 80px;
+  }
+
+  .seatIntro {
+    grid-template-columns: 1fr;
+  }
+
+  .instrumentGrid,
+  .formatsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .instrument + .instrument,
+  .formatCard + .formatCard {
+    border-left: 0;
+    border-top: 1px solid rgba(29,31,28,0.22);
+  }
+
+  .instrument {
+    min-height: 190px;
+  }
+
+  .promise {
+    padding: 80px 18px 90px;
+  }
+
+  .promise h2 {
+    font-size: clamp(58px, 16vw, 100px);
+  }
+
+  .formatsHead,
+  .cta {
+    grid-template-columns: 1fr;
+  }
+
+  .formatsHead {
+    padding: 24px 18px 34px;
+  }
+
+  .formatCard {
+    min-height: 250px;
+    padding: 20px 18px 24px;
+  }
+
+  .cta {
+    padding: 76px 18px 84px;
+  }
+
+  .cta h2 {
+    font-size: clamp(54px, 15vw, 94px);
+  }
+
+  .footer {
+    grid-template-columns: 1fr;
+    padding: 22px 18px;
+    gap: 8px;
+  }
+
+  .footer span:nth-child(2),
+  .footer span:last-child {
+    text-align: left;
+  }
+}
