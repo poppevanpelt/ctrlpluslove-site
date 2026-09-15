@@ -8,16 +8,19 @@ const pricingDocuments = [
     name: "Decision Stress-Test™",
     href: "/pricing/decision-stress-test/",
     src: "/pricing/decision-stress-test.webp",
+    line: "One live decision. Maximum useful pressure.",
   },
   {
     name: "On-Call Room™",
     href: "/pricing/on-call-room/",
     src: "/pricing/on-call-room.webp",
+    line: "For teams who need a trusted outside Room on call.",
   },
   {
     name: "Kill or Scale™",
     href: "/pricing/kill-or-scale/",
     src: "/pricing/kill-or-scale.webp",
+    line: "Give the idea force, or stop feeding it.",
   },
 ];
 
@@ -41,7 +44,11 @@ export default function PricingPage() {
 
           <div className="ways-heading">
             <p className="section-kicker">Rooms and pricing</p>
-            <h1 className="section-title">Rooms and pricing</h1>
+            <h1 className="section-title">What kind of decision are we dealing with?</h1>
+            <p>
+              Pick the pressure that fits the decision. If none of these fit,
+              we probably need a stranger room.
+            </p>
           </div>
 
           <div className="pricing-document-grid" aria-label="Pricing documents">
@@ -61,6 +68,7 @@ export default function PricingPage() {
                     sizes="(max-width: 900px) 33vw, 28vw"
                   />
                   <span>{document.name} ↗</span>
+                  <small>{document.line}</small>
                 </a>
               </article>
             ))}
@@ -70,7 +78,7 @@ export default function PricingPage() {
             className="text-link"
             href="mailto:hello@ctrlpluslove.com?subject=Find%20the%20right%20room"
           >
-            Find the right room →
+            Bring us the decision →
           </a>
         </div>
       </section>
