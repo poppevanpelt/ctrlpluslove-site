@@ -318,10 +318,17 @@ export default async function Home() {
 
             <div className="ambassador-face-grid" aria-label="Ambassador network preview">
               {networkPreview.map((ambassador) => (
-                <Link
+                <a
                   className="ambassador-face"
-                  href="/ambassadors/"
+                  href={ambassador.linkedin ?? "/ambassadors/"}
                   key={ambassador.id}
+                  target={ambassador.linkedin ? "_blank" : undefined}
+                  rel={ambassador.linkedin ? "noopener noreferrer" : undefined}
+                  aria-label={
+                    ambassador.linkedin
+                      ? `Open ${ambassador.name}'s LinkedIn profile in a new tab`
+                      : `View ${ambassador.name} in the ctrl+love network`
+                  }
                 >
                   {ambassador.image ? (
                     <Image
@@ -339,7 +346,7 @@ export default async function Home() {
                       Creative Ambassador / {ambassador.city}, {ambassador.country}
                     </small>
                   </div>
-                </Link>
+                </a>
               ))}
             </div>
           </div>
