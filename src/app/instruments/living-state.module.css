@@ -1,0 +1,137 @@
+.panel {
+  position: absolute;
+  inset: auto 0.8rem 0.8rem 0.8rem;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.4rem;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid rgb(24 23 20 / 42%);
+  background: rgb(24 23 20 / 88%);
+  color: #eee9de;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 4%);
+  overflow: hidden;
+}
+
+.rail {
+  display: flex;
+  align-items: center;
+  gap: 0.42rem;
+  font-size: 0.52rem;
+  font-weight: 850;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.lamp {
+  width: 0.48rem;
+  height: 0.48rem;
+  border-radius: 50%;
+  background: #7e2519;
+  box-shadow: 0 0 0 1px #40130e, 0 0 0 transparent;
+  animation: lamp-breathe 7s ease-in-out infinite;
+}
+
+.panel[data-state="WORKING"] .lamp,
+.panel[data-state="FIELD TEST"] .lamp {
+  background: #ef4a2d;
+  box-shadow: 0 0 0 1px #6d1d13, 0 0 10px rgb(239 74 45 / 82%), 0 0 22px rgb(239 74 45 / 34%);
+}
+
+.panel[data-state="PROTOTYPE"] .lamp {
+  background: #d38f2b;
+  box-shadow: 0 0 0 1px #6b4515, 0 0 8px rgb(211 143 43 / 46%);
+}
+
+.panel[data-state="IN DEVELOPMENT"] .lamp {
+  animation-duration: 11s;
+  opacity: 0.58;
+}
+
+.clock {
+  justify-self: end;
+  display: flex;
+  align-items: baseline;
+  min-width: 4.4rem;
+  padding: 0.12rem 0.3rem;
+  border: 1px solid #3b3935;
+  background: #0c0c0b;
+  color: #f2eee6;
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 0.92rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  box-shadow: inset 0 1px 2px #000, inset 0 -1px 0 rgb(255 255 255 / 5%);
+}
+
+.clock em {
+  margin: 0 0.08rem;
+  color: #b7b0a6;
+  font-style: normal;
+}
+
+.minuteLeaf {
+  display: inline-block;
+  transform-origin: 50% 0%;
+  animation: minute-flip 640ms cubic-bezier(.2,.75,.15,1) 1;
+}
+
+.waveform {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 1.1rem;
+  opacity: 0.9;
+  overflow: hidden;
+}
+
+.waveform i {
+  display: block;
+  width: 2px;
+  height: calc(3px + (var(--bar) % 5) * 2px);
+  background: #d8d1c7;
+  transform-origin: center;
+  animation: wave-drift 5.2s ease-in-out infinite;
+  animation-delay: calc(var(--bar) * -190ms);
+}
+
+.controlHold {
+  display: flex;
+  align-items: baseline;
+  gap: 0.42rem;
+  font-size: 0.48rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.controlHold span { color: #aaa39a; }
+.controlHold b { color: #e7e0d6; }
+
+@keyframes lamp-breathe {
+  0%, 76%, 100% { opacity: 0.62; filter: brightness(0.8); }
+  82%, 90% { opacity: 1; filter: brightness(1.28); }
+}
+
+@keyframes minute-flip {
+  0% { transform: perspective(120px) rotateX(-82deg); opacity: 0; }
+  55% { transform: perspective(120px) rotateX(7deg); opacity: 1; }
+  100% { transform: perspective(120px) rotateX(0deg); }
+}
+
+@keyframes wave-drift {
+  0%, 100% { transform: scaleY(0.55); opacity: 0.45; }
+  35% { transform: scaleY(1.5); opacity: 1; }
+  68% { transform: scaleY(0.8); opacity: 0.7; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lamp,
+  .minuteLeaf,
+  .waveform i {
+    animation: none !important;
+  }
+}
