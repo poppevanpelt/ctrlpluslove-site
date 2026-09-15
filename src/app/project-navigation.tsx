@@ -4,19 +4,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const projectLinks = [
+  { href: "/instruments/", label: "Instruments" },
+  { href: "/decision-collider/", label: "Decision Collider" },
+  { href: "/meeting-filter/", label: "Meeting Filter" },
+  { href: "/ai-y-fier/", label: "AI-Y-fier" },
   { href: "/radar/", label: "Radar" },
-  { href: "/#the-room", label: "The Room" },
-  { href: "/room-runner/", label: "Live Room" },
-  { href: "/#shared-office", label: "Shared Office" },
-  { href: "/#personas", label: "Personas" },
-  { href: "/#products", label: "Products" },
-  { href: "/museum/", label: "Museum Store" },
-  { href: "/steel-ball/", label: "Steel Ball" },
-  { href: "/#cases", label: "Cases" },
-  { href: "/#network", label: "Network" },
-  { href: "/embassies/", label: "Embassies" },
-  { href: "/#founder", label: "Founder" },
-  { href: "/constitution/", label: "The Constitution" },
+  { href: "/museum/", label: "Museum" },
+  { href: "/ambassadors/", label: "Network" },
+  { href: "/inside-ctrl-love/", label: "Inside" },
+  { href: "/pricing/", label: "Pricing" },
   { href: "mailto:hello@ctrlpluslove.com", label: "Admission" },
 ];
 
