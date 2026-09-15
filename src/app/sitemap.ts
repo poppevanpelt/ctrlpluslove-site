@@ -15,6 +15,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: route.changeFrequency ?? "monthly",
       priority: route.priority ?? 0.5,
     })),
+    {
+      url: absoluteUrl("/prompt-shoppe/"),
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    },
     ...ambassadorProfiles.map((profile) => ({
       url: absoluteUrl(`/ambassadors/${profile.slug}/`),
       lastModified,
