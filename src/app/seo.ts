@@ -107,14 +107,6 @@ export const publicRoutes: PublicRoute[] = [
     priority: 0.85,
   },
   {
-    path: "/room-runner/",
-    title: "Room Runner — ctrl+love",
-    description:
-      "An internal ctrl+love prototype for turning decision questions into visible discussion lineage.",
-    changeFrequency: "monthly",
-    priority: 0.25,
-  },
-  {
     path: "/radar/",
     title: "Radar — ctrl+love",
     description:
