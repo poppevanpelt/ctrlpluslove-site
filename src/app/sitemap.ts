@@ -6,7 +6,7 @@ import { absoluteUrl, publicRoutes } from "./seo";
 import { embassies } from "@/content/embassies";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date("2026-07-14");
+  const lastModified = new Date("2026-09-15");
 
   return [
     ...publicRoutes.map((route) => ({
@@ -15,6 +15,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: route.changeFrequency ?? "monthly",
       priority: route.priority ?? 0.5,
     })),
+    {
+      url: absoluteUrl("/out-house/"),
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.82,
+    },
     {
       url: absoluteUrl("/prompt-shoppe/"),
       lastModified,
