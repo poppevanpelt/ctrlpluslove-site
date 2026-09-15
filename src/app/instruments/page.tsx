@@ -10,15 +10,15 @@ export const metadata: Metadata = {
 
 const instruments = [
   { no: "001", name: "PITCH CRASH TEST", status: "LIVE RUN", line: "Prepared cupboards are not prepared communities." },
-  { no: "002", name: "DECISION COLLIDER", status: "LIVE INSTRUMENT", line: "A decision becomes visible when its interests collide." },
+  { no: "002", name: "DECISION COLLIDER", status: "LIVE INSTRUMENT", line: "A decision becomes visible when its interests collide.", href: "/decision-collider/" },
   { no: "003", name: "LIVING TICKER", status: "PROTOTYPE 001", line: "Minutes record words. The ticker records movement." },
   { no: "004", name: "BRAND TRANSPLANT", status: "TESTED", line: "What survives the transplant is probably the brand." },
   { no: "005", name: "SIGNAL DISTORTION", status: "LIVE RUN", line: "Premium quality disappeared before the campaign began." },
   { no: "006", name: "DECISION SURFACE", status: "PROTOTYPE 001", line: "Every surface edits the brand before the audience sees it." },
   { no: "007", name: "DECISION MEMORY", status: "LIVE SYSTEM", line: "A forgotten decision must win its argument again." },
-  { no: "008", name: "MEETING FILTER", status: "WORKING PROTOTYPE", line: "Most bad meetings fail before they begin." },
+  { no: "008", name: "MEETING FILTER", status: "WORKING PROTOTYPE", line: "Most bad meetings fail before they begin.", href: "/meeting-filter/" },
   { no: "009", name: "DECISION IN A BOX", status: "PHYSICAL PROTOTYPE", line: "Five options enter. One imperfect object leaves." },
-  { no: "010", name: "PROMPT SHOPPE", status: "WORKING INSTRUMENT", line: "A prompt without a decision is decoration." },
+  { no: "010", name: "PROMPT SHOPPE", status: "WORKING INSTRUMENT", line: "A prompt without a decision is decoration.", href: "/prompt-shoppe/" },
   { no: "011", name: "USB DECISION ACCELERATOR", status: "LIMITED EDITION", line: "Ten decisions. No subscription. No ceremony." },
   { no: "012", name: "READ THE ROOM", status: "PROTOTYPE", line: "The room has a strategy before the strategy has the room." },
   { no: "013", name: "OPPOSITION SEAT", status: "PROTOCOL", line: "Every important decision needs someone paid to disagree." },
@@ -58,7 +58,10 @@ export default function InstrumentCabinetPage() {
       </section>
 
       <section className={styles.intro} aria-label="Cabinet introduction">
-        <p>A family of working objects for seeing what is happening, exposing what has to be true, testing what survives pressure and finding the smallest useful move.</p>
+        <div>
+          <p>A family of working objects for seeing what is happening, exposing what has to be true, testing what survives pressure and finding the smallest useful move.</p>
+          <small className={styles.doorNote}>Only finished doors open. The others stay in the cabinet until the experience earns the object.</small>
+        </div>
         <div className={styles.legend}>
           <span><i className={styles.dotLive} /> LIVE</span>
           <span><i className={styles.dotProto} /> PROTOTYPE</span>
@@ -68,7 +71,7 @@ export default function InstrumentCabinetPage() {
 
       <section className={styles.grid} aria-label="Sixteen ctrl+love instruments">
         {instruments.map((instrument, index) => (
-          <article className={styles.card} key={instrument.no}>
+          <article className={`${styles.card}${instrument.href ? ` ${styles.openCard}` : ""}`} key={instrument.no}>
             <div className={styles.imageWrap}>
               <div
                 className={styles.spriteImage}
@@ -84,6 +87,13 @@ export default function InstrumentCabinetPage() {
                 <h2>{instrument.name}</h2>
               </div>
               <p>{instrument.line}</p>
+              {instrument.href ? (
+                <Link className={styles.openLink} href={instrument.href}>
+                  OPEN INSTRUMENT ↗
+                </Link>
+              ) : (
+                <span className={styles.cabinetOnly}>CABINET OBJECT</span>
+              )}
             </div>
           </article>
         ))}
