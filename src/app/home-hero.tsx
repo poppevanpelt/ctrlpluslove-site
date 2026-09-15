@@ -8,6 +8,10 @@ import "./home-cabinet-entry.css";
 export function HomeHero() {
   return (
     <>
+      <Link className="home-exec-chute" href="/exec/">
+        <span>NO TIME FOR THE WHOLE BUILDING?</span>
+        <strong>EXEC CHUTE →</strong>
+      </Link>
       <section className="hero-section home-hero-section chapter-arrival">
         <div className="home-hero-copy chapter-arrival-copy">
           <CtrlLayerLogoTrigger>
@@ -19,7 +23,7 @@ export function HomeHero() {
             </p>
           </CtrlLayerLogoTrigger>
           <nav className="home-hero-nav" aria-label="Institution">
-            <Link href="/instruments/">INSTRUMENT CABINET</Link>
+            <Link href="/instruments/">INSTRUMENT ROOM</Link>
             <Link href="/prompt-shoppe/">PROMPT SHOPPE</Link>
             <a href="#personas">PERSONAS</a>
             <a href="#products">PRODUCTS</a>
@@ -34,8 +38,8 @@ export function HomeHero() {
           </nav>
           <Link className="home-cabinet-entry" href="/instruments/">
             <span className="home-cabinet-entry__index">001</span>
-            <span className="home-cabinet-entry__title">Instrument Cabinet</span>
-            <span className="home-cabinet-entry__action">Open the cabinet ↗</span>
+            <span className="home-cabinet-entry__title">The Instrument Room</span>
+            <span className="home-cabinet-entry__action">Enter the room ↗</span>
           </Link>
           <div className="chapter-arrival-message">
             <div className="chapter-arrival-scene" aria-hidden="true">
