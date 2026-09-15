@@ -1,4 +1,5 @@
-import type { CSSProperties, Metadata } from "react";
+import type { Metadata } from "next";
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import styles from "./page.module.css";
 
