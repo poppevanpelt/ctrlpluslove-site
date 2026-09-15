@@ -106,7 +106,10 @@ export default function BlackoutClient() {
       <header className="blackout-topbar">
         <div className="brand-lockup">ctrl+love</div>
         <div className="protocol">PROTOCOL 001 / AI CONTINUITY</div>
-        <a className="home-link" href="https://ctrlpluslove.com/">shortcut to reality ↗</a>
+        <div style={{display:"flex",gap:"16px"}}>
+          <a className="home-link" href="/ctrl-devices">all devices</a>
+          <a className="home-link" href="https://ctrlpluslove.com/">shortcut to reality ↗</a>
+        </div>
       </header>
 
       {stage === "arm" && (
