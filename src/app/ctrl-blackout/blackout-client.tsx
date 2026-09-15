@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type Decision = {
   id: string;
@@ -63,22 +63,39 @@ export default function BlackoutClient() {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [redlines, setRedlines] = useState<Record<string, string>>({});
   const [elapsed, setElapsed] = useState(0);
+  const [startTime, setStartTime] = useState<number | null>(null);
 
   const completed = Object.keys(answers).length;
   const unresolved = useMemo(() => {
     return decisions.filter((d) => !answers[d.id]).length + redlineActions.filter((a) => !redlines[a]).length;
   }, [answers, redlines]);
+  const hardBoundaries = useMemo(
+    () => Object.values(redlines).filter((zone) => zone === "HUMAN ONLY" || zone === "NEVER").length,
+    [redlines],
+  );
+
+  useEffect(() => {
+    if (startTime === null || (stage !== "decisions" && stage !== "redline")) return;
+
+    const updateElapsed = () => setElapsed(Math.floor((Date.now() - startTime) / 1000));
+    updateElapsed();
+    const timer = window.setInterval(updateElapsed, 250);
+    return () => window.clearInterval(timer);
+  }, [stage, startTime]);
 
   const begin = () => {
     setStage("scenario");
     setElapsed(0);
+    setStartTime(null);
   };
 
-  const tickForward = () => setElapsed((v) => v + 37 + Math.floor(Math.random() * 48));
+  const enterIncident = () => {
+    setStartTime(Date.now());
+    setStage("decisions");
+  };
 
   const choose = (decision: Decision, choice: string) => {
     setAnswers((prev) => ({ ...prev, [decision.id]: choice }));
-    tickForward();
     if (decisionIndex < decisions.length - 1) setDecisionIndex((i) => i + 1);
     else setStage("redline");
   };
@@ -87,7 +104,10 @@ export default function BlackoutClient() {
     setRedlines((prev) => ({ ...prev, [action]: zone }));
   };
 
-  const finishRedline = () => setStage("debrief");
+  const finishRedline = () => {
+    if (startTime !== null) setElapsed(Math.floor((Date.now() - startTime) / 1000));
+    setStage("debrief");
+  };
 
   const reset = () => {
     setStage("arm");
@@ -95,6 +115,7 @@ export default function BlackoutClient() {
     setAnswers({});
     setRedlines({});
     setElapsed(0);
+    setStartTime(null);
   };
 
   const minutes = Math.floor(elapsed / 60);
@@ -106,7 +127,7 @@ export default function BlackoutClient() {
       <header className="blackout-topbar">
         <div className="brand-lockup">ctrl+love</div>
         <div className="protocol">PROTOCOL 001 / AI CONTINUITY</div>
-        <div style={{display:"flex",gap:"16px"}}>
+        <div style={{ display: "flex", gap: "16px" }}>
           <a className="home-link" href="/ctrl-devices">all devices</a>
           <a className="home-link" href="https://ctrlpluslove.com/">shortcut to reality ↗</a>
         </div>
@@ -131,10 +152,10 @@ export default function BlackoutClient() {
 
       {stage === "scenario" && (
         <section className="instrument-panel">
-          <div className="panel-meta"><span>INCIDENT / 09:14</span><span>STATUS: ACTIVE</span></div>
+          <div className="panel-meta"><span>SIMULATION / 09:14</span><span>STATUS: DRILL</span></div>
           <div className="incident-card">
             <div className="incident-time">09:14</div>
-            <h2>Frontier model access is unavailable across Europe.</h2>
+            <h2>SIMULATION: Frontier model access is unavailable across Europe.</h2>
             <div className="incident-facts">
               <p>CAUSE <strong>UNKNOWN</strong></p>
               <p>RESTORATION <strong>NO ESTIMATE</strong></p>
@@ -143,9 +164,9 @@ export default function BlackoutClient() {
           </div>
           <div className="countdown-block">
             <div className="countdown">46:00</div>
-            <div className="countdown-copy">You do not have 46 minutes to discuss what to do. You have 46 minutes to discover what was never decided.</div>
+            <div className="countdown-copy">SCENARIO WINDOW. You do not have 46 minutes to discuss what to do. You have 46 minutes to discover what was never decided.</div>
           </div>
-          <button className="primary" onClick={() => setStage("decisions")}>ENTER INCIDENT</button>
+          <button className="primary" onClick={enterIncident}>ENTER INCIDENT</button>
         </section>
       )}
 
@@ -203,16 +224,16 @@ export default function BlackoutClient() {
             <div className="report-header">
               <div>
                 <h2>AI continuity field report</h2>
-                <p>Protocol v0.1 / local simulation</p>
+                <p>Protocol v0.1 / simulated incident / local session</p>
               </div>
-              <div className="report-stamp">OBSERVED<br/>NOT SCORED</div>
+              <div className="report-stamp">OBSERVED<br />NOT SCORED</div>
             </div>
 
             <div className="metrics-grid">
-              <div><span>OBSERVED</span><strong>{minutes}:{String(seconds).padStart(2, "0")}</strong><small>time across forced decisions</small></div>
+              <div><span>OBSERVED</span><strong>{minutes}:{String(seconds).padStart(2, "0")}</strong><small>actual session time</small></div>
               <div><span>OBSERVED</span><strong>{completed}</strong><small>decisions recorded</small></div>
-              <div><span>INFERRED</span><strong>{answers.manual ? 1 : 0}</strong><small>critical fallback exposed</small></div>
-              <div><span>ASSUMED</span><strong>{unresolved}</strong><small>unresolved items</small></div>
+              <div><span>OBSERVED</span><strong>{hardBoundaries}</strong><small>human-only / never boundaries</small></div>
+              <div><span>OBSERVED</span><strong>{unresolved}</strong><small>unresolved required items</small></div>
             </div>
 
             <div className="report-section">
