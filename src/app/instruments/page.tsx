@@ -1,61 +1,140 @@
 import type { Metadata } from "next";
-import type { CSSProperties } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
-  title: "Instrument Cabinet | ctrl+love",
-  description: "A cabinet of applied AI instruments for seeing, testing, deciding and moving.",
+  title: "The Instrument Room | ctrl+love",
+  description: "A physical room of ctrl+love instruments, protocols, field tests and decision artifacts.",
 };
 
+type State = "WORKING" | "PROTOTYPE" | "FIELD TEST" | "ARCHIVE" | "IN DEVELOPMENT";
 type Instrument = {
   no: string;
   name: string;
-  status: string;
+  state: State;
   line: string;
+  why: string;
   href?: string;
+  action?: string;
+  family: "SEE" | "TEST" | "DECIDE" | "MOVE" | "ARTIFACT";
 };
 
 const instruments: readonly Instrument[] = [
-  { no: "001", name: "PITCH CRASH TEST", status: "LIVE RUN", line: "Prepared cupboards are not prepared communities." },
-  { no: "002", name: "DECISION COLLIDER", status: "LIVE INSTRUMENT", line: "A decision becomes visible when its interests collide.", href: "/decision-collider/" },
-  { no: "003", name: "LIVING TICKER", status: "PROTOTYPE 001", line: "Minutes record words. The ticker records movement." },
-  { no: "004", name: "BRAND TRANSPLANT", status: "TESTED", line: "What survives the transplant is probably the brand." },
-  { no: "005", name: "SIGNAL DISTORTION", status: "LIVE RUN", line: "Premium quality disappeared before the campaign began.", href: "/five-guys-signal/" },
-  { no: "006", name: "DECISION SURFACE", status: "PROTOTYPE 001", line: "Every surface edits the brand before the audience sees it." },
-  { no: "007", name: "DECISION MEMORY", status: "LIVE SYSTEM", line: "A forgotten decision must win its argument again." },
-  { no: "008", name: "MEETING FILTER", status: "WORKING PROTOTYPE", line: "Most bad meetings fail before they begin.", href: "/meeting-filter/" },
-  { no: "009", name: "DECISION IN A BOX", status: "PHYSICAL PROTOTYPE", line: "Five options enter. One imperfect object leaves." },
-  { no: "010", name: "PROMPT SHOPPE", status: "WORKING INSTRUMENT", line: "A prompt without a decision is decoration.", href: "/prompt-shoppe/" },
-  { no: "011", name: "USB DECISION ACCELERATOR", status: "LIMITED EDITION", line: "Ten decisions. No subscription. No ceremony." },
-  { no: "012", name: "READ THE ROOM", status: "PROTOTYPE", line: "The room has a strategy before the strategy has the room." },
-  { no: "013", name: "OPPOSITION SEAT", status: "PROTOCOL", line: "Every important decision needs someone paid to disagree." },
-  { no: "014", name: "DO-NOTHING CONTROL", status: "PROTOCOL", line: "Change must beat the cost of leaving reality alone." },
-  { no: "015", name: "MISS ARCHIVE", status: "PROTOCOL", line: "Wrong Marcel. Correct lesson." },
-  { no: "016", name: "EVIDENCE TAGS", status: "PROTOCOL", line: "Confidence becomes useful when its source is visible." },
-  { no: "017", name: "CTRL+SWAT", status: "LIVE RAPID RESPONSE", line: "Detect. Judge. Build. Dispatch before the moment disappears.", href: "/swat/" },
-  { no: "018", name: "CTRL+FIZZ", status: "PHYSICAL PRODUCT", line: "Carbonated judgment for meetings that have gone flat.", href: "/fizz/" },
+  { no: "001", name: "DECISION COLLIDER", state: "WORKING", family: "DECIDE", line: "Collide assumptions before people collide.", why: "Built because agreement can hide incompatible definitions of the same decision.", href: "/decision-collider/", action: "RUN INSTRUMENT" },
+  { no: "002", name: "MEETING FILTER", state: "WORKING", family: "SEE", line: "Decide whether the meeting should exist.", why: "Built after too many rooms were booked before anyone asked what the room was for.", href: "/meeting-filter/", action: "RUN FILTER" },
+  { no: "003", name: "LIVING TICKER", state: "PROTOTYPE", family: "SEE", line: "Minutes record words. The ticker records movement.", why: "Tracks challenge, reframing, ownership and rupture while a room is changing." },
+  { no: "004", name: "DECISION MEMORY", state: "PROTOTYPE", family: "ARTIFACT", line: "A forgotten decision must win its argument again.", why: "Preserves the evidence, assumptions and reversals that created a decision." },
+  { no: "005", name: "CTRL+SWAT", state: "FIELD TEST", family: "MOVE", line: "Detect. Judge. Build. Dispatch before the moment disappears.", why: "A rapid-response instrument for situations where strategic latency is the problem.", href: "/swat/", action: "ENTER SWAT" },
+  { no: "006", name: "CTRL+FIZZ", state: "PROTOTYPE", family: "ARTIFACT", line: "Carbonated judgment for meetings that have gone flat.", why: "A physical reminder that perspective sometimes changes faster when the object changes.", href: "/fizz/", action: "OPEN BOTTLE" },
+  { no: "007", name: "SIGNAL FIRE", state: "PROTOTYPE", family: "SEE", line: "Weak signals before they become obvious opportunities.", why: "Maps pressure, incumbent weakness and decision gaps before the market names them." },
+  { no: "008", name: "POLICY PRISM", state: "PROTOTYPE", family: "TEST", line: "What happens after the policy meets behaviour?", why: "Separates stated intent from second-order effects and likely human response." },
+  { no: "009", name: "PROMPT SHOPPE", state: "WORKING", family: "MOVE", line: "A prompt without a decision is decoration.", why: "Tunes instructions by finding the real judgment hidden inside them.", href: "/prompt-shoppe/", action: "OPEN SHOPPE" },
+  { no: "010", name: "FRICTION FINDER", state: "PROTOTYPE", family: "SEE", line: "Find the pothole before blaming the driver.", why: "Separates recurring system friction from the people forced to work around it." },
+  { no: "011", name: "HUMAN TEST", state: "FIELD TEST", family: "TEST", line: "Can you still detect lived detail?", why: "A small forensic test for the qualities human writing loses when it becomes generic." },
+  { no: "012", name: "MOMENTUM BUILDER", state: "FIELD TEST", family: "MOVE", line: "Make the next useful move smaller than the hesitation.", why: "Built to turn interpretation into an immediate concrete action." },
+  { no: "013", name: "DO-NOTHING CONTROL", state: "WORKING", family: "TEST", line: "Change has to beat reality left alone.", why: "Stops action from being treated as automatically wiser than deliberate inaction." },
+  { no: "014", name: "OPPOSITION SEAT", state: "WORKING", family: "TEST", line: "Pay someone to disagree.", why: "Makes dissent structural instead of depending on bravery in the room." },
+  { no: "015", name: "BLIND TRIAL", state: "WORKING", family: "TEST", line: "Remove the label before judging the thing.", why: "Separates the work from status, authorship and expectation." },
+  { no: "016", name: "EVIDENCE TAGGER", state: "PROTOTYPE", family: "SEE", line: "Observed is not the same as assumed.", why: "Makes the source of confidence visible: Observed / Inferred / Assumed / Tested / Proven." },
+  { no: "017", name: "MISSING SEAT", state: "PROTOTYPE", family: "SEE", line: "Who lives with the decision but is absent from it?", why: "Surfaces constituencies who inherit the consequences without shaping the choice." },
+  { no: "018", name: "CONFLICT CAMERA", state: "IN DEVELOPMENT", family: "SEE", line: "Point it at the disagreement, not the people.", why: "An experimental interface for making competing forces visible in ordinary situations." },
+  { no: "019", name: "DECISION IN A BOX", state: "PROTOTYPE", family: "ARTIFACT", line: "Five options enter. One imperfect object leaves.", why: "Turns an abstract decision into something that can be handled, compared and committed to." },
+  { no: "020", name: "PURGE", state: "IN DEVELOPMENT", family: "MOVE", line: "Remove what the decision no longer needs.", why: "A subtraction instrument for accumulated arguments, features and political furniture." },
+  { no: "021", name: "MISS ARCHIVE", state: "ARCHIVE", family: "ARTIFACT", line: "Keep the wrong calls. Extract the lesson.", why: "Stores misses because a laboratory that only displays wins cannot learn." },
+  { no: "022", name: "TRAJECTORY / ATLAS / MARIA", state: "IN DEVELOPMENT", family: "ARTIFACT", line: "Map how a decision travels, not only where it ends.", why: "A developing system for human coordination terrain, protocol primitives and decision trajectories." },
 ];
 
-function spriteStyle(index: number): CSSProperties {
-  const col = index % 4;
-  const row = Math.floor(index / 4) % 4;
-  return { backgroundPosition: `${(col / 3) * 100}% ${(row / 3) * 100}%` };
-}
+const stateClass: Record<State, string> = {
+  WORKING: styles.stateWorking,
+  PROTOTYPE: styles.statePrototype,
+  "FIELD TEST": styles.stateField,
+  ARCHIVE: styles.stateArchive,
+  "IN DEVELOPMENT": styles.stateDevelopment,
+};
 
-export default function InstrumentCabinetPage() {
+export default function InstrumentRoomPage() {
   return (
     <main className={styles.page}>
       <header className={styles.topbar}>
         <Link href="/" className={styles.brand}>ctrl+love</Link>
-        <span className={styles.serial}>APPLIED AI / INSTRUMENT FAMILY 001</span>
-        <Link href="/" className={styles.back}>BACK TO MOTHERSHIP ↗</Link>
+        <span className={styles.serial}>INSTRUMENT DIVISION · SUNNYVALE · ROOM 001</span>
+        <Link href="/exec/" className={styles.exec}>EXEC CHUTE →</Link>
       </header>
-      <section className={styles.hero}><div className={styles.heroCopy}><p className={styles.kicker}>CALIFORNIA PROTOTYPE SHOP</p><h1>INSTRUMENT<br />CABINET</h1><p className={styles.lead}>Ideas enter. Evidence leaves.</p></div><div className={styles.heroMeta}><span>{instruments.length} instruments</span><span>physical / analytical / slightly unreasonable</span><span>built for human judgment</span></div></section>
-      <section className={styles.intro} aria-label="Cabinet introduction"><div><p>A family of working objects for seeing what is happening, exposing what has to be true, testing what survives pressure and finding the smallest useful move.</p><small className={styles.doorNote}>Only finished doors open. The others stay in the cabinet until the experience earns the object.</small></div><div className={styles.legend}><span><i className={styles.dotLive} /> LIVE</span><span><i className={styles.dotProto} /> PROTOTYPE</span><span><i className={styles.dotProtocol} /> PROTOCOL</span></div></section>
-      <section className={styles.grid} aria-label={`${instruments.length} ctrl+love instruments`}>{instruments.map((instrument,index)=>(<article className={`${styles.card}${instrument.href ? ` ${styles.openCard}` : ""}`} key={instrument.no}><div className={styles.imageWrap}><div className={styles.spriteImage} style={spriteStyle(index)} role="img" aria-label={`${instrument.name}, ctrl+love instrument ${instrument.no}`} /><div className={styles.imageTag}>{instrument.status}</div></div><div className={styles.cardBody}><div className={styles.cardTitleRow}><span className={styles.number}>{instrument.no}</span><h2>{instrument.name}</h2></div><p>{instrument.line}</p>{instrument.href ? <Link className={styles.openLink} href={instrument.href}>OPEN INSTRUMENT ↗</Link> : <span className={styles.cabinetOnly}>CABINET OBJECT</span>}</div></article>))}</section>
-      <section className={styles.protocols}><p className={styles.kicker}>FOUNDATIONAL PROTOCOLS</p><div className={styles.protocolGrid}><div><span>01</span><strong>OPPOSITION SEAT</strong><p>Pay someone to disagree.</p></div><div><span>02</span><strong>DO-NOTHING CONTROL</strong><p>Make change beat reality left alone.</p></div><div><span>03</span><strong>BLIND TRIAL</strong><p>Remove the label before judging the thing.</p></div><div><span>04</span><strong>MISS ARCHIVE</strong><p>Keep the wrong calls. Extract the lesson.</p></div><div><span>05</span><strong>EVIDENCE TAGS</strong><p>Observed / Inferred / Assumed / Tested / Proven.</p></div><div className={styles.kill}><span>KQ</span><strong>KILL QUESTION</strong><p>What evidence would make us abandon this conclusion?</p></div></div></section>
-      <footer className={styles.footer}><p>LET US HELP YOU BREAK SOMETHING.</p><Link href="/">ctrlpluslove.com ↗</Link></footer>
+
+      <section className={styles.arrival} aria-labelledby="instrument-room-title">
+        <div className={styles.arrivalCopy}>
+          <p className={styles.kicker}>APPLIED INTELLIGENCE / PHYSICAL EVIDENCE</p>
+          <h1 id="instrument-room-title">THE<br />INSTRUMENT<br />ROOM</h1>
+          <p className={styles.lead}>An unreasonable number of ways to make reality harder to avoid.</p>
+        </div>
+        <div className={styles.doorway} aria-hidden="true">
+          <div className={styles.roomPlate}><span>ROOM</span><strong>001</strong><small>HUMAN JUDGMENT LAB</small></div>
+          <div className={styles.window}><span className={styles.bench} /><span className={styles.lamp} /><span className={styles.cabinetSilhouette} /></div>
+          <div className={styles.calibration}>
+            <Image src="/museum/steel-ball-packshot-cutout.png" alt="" width={118} height={118} priority />
+            <span>CALIBRATION MASS<br /><b>40.00 MM</b></span>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.roomStatus} aria-label="Room status">
+        <strong>{instruments.length} SPECIMENS</strong>
+        <span>WORKING / TESTING / FAILING / LEARNING</span>
+        <span>ONLY REAL DOORS OPEN</span>
+      </section>
+
+      <section className={styles.floor} aria-label="ctrl+love instrument collection">
+        <div className={styles.wallLabel}><span>INSTRUMENTS</span><small>RUN THEM. PRESS THEM. DISAGREE WITH THEM.</small></div>
+        <div className={styles.specimenWall}>
+          {instruments.filter((item) => item.family !== "ARTIFACT").map((instrument) => (
+            <details className={styles.specimen} key={instrument.no}>
+              <summary>
+                <div className={styles.specimenTop}>
+                  <span className={styles.number}>{instrument.no}</span>
+                  <span className={`${styles.state} ${stateClass[instrument.state]}`}>{instrument.state}</span>
+                </div>
+                <div className={styles.device} data-family={instrument.family} aria-hidden="true">
+                  <span className={styles.deviceScreen}>{instrument.family}</span>
+                  <span className={styles.dial} />
+                  <span className={styles.switch} />
+                  <span className={styles.slot} />
+                </div>
+                <h2>{instrument.name}</h2>
+                <p>{instrument.line}</p>
+                <span className={styles.pull}>PULL TO INSPECT</span>
+              </summary>
+              <div className={styles.drawer}>
+                <div><span>WHY IT EXISTS</span><p>{instrument.why}</p></div>
+                {instrument.href ? <Link href={instrument.href}>{instrument.action ?? "OPEN"} ↗</Link> : <span className={styles.noDoor}>NO PUBLIC DOOR YET</span>}
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <section className={styles.archiveZone} aria-label="Artifacts and archive">
+        <div className={styles.wallLabel}><span>ARTIFACT BAY</span><small>OBJECTS, TRACES, MISSES, THINGS THAT REFUSED TO DISAPPEAR.</small></div>
+        <div className={styles.artifactBench}>
+          {instruments.filter((item) => item.family === "ARTIFACT" && item.name !== "MISS ARCHIVE").map((instrument) => (
+            <details className={styles.artifact} key={instrument.no}>
+              <summary><span>{instrument.no} · {instrument.state}</span><strong>{instrument.name}</strong><p>{instrument.line}</p></summary>
+              <div><p>{instrument.why}</p>{instrument.href ? <Link href={instrument.href}>{instrument.action ?? "OPEN"} ↗</Link> : <span>SPECIMEN HELD IN LAB</span>}</div>
+            </details>
+          ))}
+          <details className={styles.missArchive}>
+            <summary><span>021 · ARCHIVE CABINET</span><strong>MISS ARCHIVE</strong><p>Wrong calls kept on purpose.</p><i aria-hidden="true" /></summary>
+            <div><p>A laboratory that only displays wins cannot learn. Failed predictions, missed signals and conclusions we later changed belong here.</p><span>ARCHIVE / INTERNAL EVIDENCE</span></div>
+          </details>
+        </div>
+      </section>
+
+      <section className={styles.protocolRail} aria-label="Foundational protocols">
+        <span>FOUNDATIONAL RAIL</span>
+        <strong>OPPOSITION SEAT</strong><b>DO-NOTHING CONTROL</b><strong>BLIND TRIAL</strong><b>EVIDENCE TAGS</b><strong>KILL QUESTION</strong>
+      </section>
+
+      <footer className={styles.footer}><p>Observe. Understand. Judge. Remain human.</p><Link href="/">RETURN TO MOTHERSHIP ↗</Link></footer>
     </main>
   );
 }
