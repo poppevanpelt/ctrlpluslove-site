@@ -19,7 +19,14 @@ const projectLinks = [
 export function ProjectNavigation() {
   const pathname = usePathname();
 
-  if (pathname === "/" || pathname === "/decision-collider") {
+  if (
+    pathname === "/" ||
+    pathname === "/decision-collider" ||
+    pathname === "/decision-collider/" ||
+    pathname === "/swat" ||
+    pathname === "/swat/" ||
+    pathname.startsWith("/swat/")
+  ) {
     return null;
   }
 
