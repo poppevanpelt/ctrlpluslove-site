@@ -19,19 +19,19 @@ export default function AmbassadorsPage() {
             <Link className="back-home-link" href="/">
               ← Home
             </Link>
-            <Link className="back-home-link" href="/room-runner/">
-              Live Room
+            <Link className="back-home-link" href="/inside-ctrl-love/">
+              Inside ctrl+love
             </Link>
           </div>
 
           <div className="section-heading quiet-heading">
             <div>
               <p className="section-kicker">Around the Table</p>
-              <h1>A distributed human network for better rooms.</h1>
+              <h1>A distributed human network for better decisions.</h1>
             </div>
             <p>
-              The current public network of people ctrl+love can bring into
-              the Room.
+              The public human network ctrl+love can bring into a decision when
+              local knowledge, lived experience or an inconvenient perspective matters.
             </p>
           </div>
 
@@ -47,12 +47,12 @@ export default function AmbassadorsPage() {
           <AmbassadorGrid ambassadors={confirmedAmbassadors} />
 
           <section className="ambassador-closing" aria-labelledby="ambassador-closing-title">
-            <p className="section-kicker">The Room changes with the question</p>
+            <p className="section-kicker">The decision changes the table</p>
             <h2 id="ambassador-closing-title">
               Bring in the people the decision actually needs.
             </h2>
-            <Link className="text-link" href="/room-runner/">
-              Open the Live Room →
+            <Link className="text-link" href="/instruments/">
+              See the instruments they work with →
             </Link>
           </section>
         </div>
