@@ -59,6 +59,22 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/",
+        has: [
+          {
+            type: "header",
+            key: "referer",
+            value: "https?://(?:www\\.)?ctrlpluslove\\.com/instruments(?:/.*)?",
+          },
+        ],
+        destination: "https://www.ctrlpluslove.com/",
+        permanent: false,
+      },
+    ];
+  },
   async headers() {
     return [
       {
