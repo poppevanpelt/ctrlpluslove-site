@@ -42,7 +42,7 @@ const instruments: readonly Instrument[] = [
   { no: "019", name: "DECISION IN A BOX", state: "PROTOTYPE", family: "ARTIFACT", line: "Five options enter. One imperfect object leaves.", why: "Turns an abstract decision into something that can be handled, compared and committed to." },
   { no: "020", name: "PURGE", state: "IN DEVELOPMENT", family: "MOVE", line: "Remove what the decision no longer needs.", why: "A subtraction instrument for accumulated arguments, features and political furniture." },
   { no: "021", name: "MISS ARCHIVE", state: "ARCHIVE", family: "ARTIFACT", line: "Keep the wrong calls. Extract the lesson.", why: "Stores misses because a laboratory that only displays wins cannot learn." },
-  { no: "022", name: "TRAJECTORY / ATLAS / MARIA", state: "IN DEVELOPMENT", family: "ARTIFACT", line: "Map how a decision travels, not only where it ends.", why: "A developing system for human coordination terrain, protocol primitives and decision trajectories." },
+  { no: "022", name: "TRAJECTORY / ATLAS / MARIA", state: "IN DEVELOPMENT", family: "ARTIFACT", line: "Map how a decision travels, not only where it ends.", why: "A developing system for human coordination terrain, protocol primitives and decision trajectories.", href: "/maria/", action: "ENTER EXCAVATION 001" },
 ];
 
 const stateClass: Record<State, string> = {
