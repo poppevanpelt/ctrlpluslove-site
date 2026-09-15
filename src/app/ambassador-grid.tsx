@@ -19,6 +19,41 @@ function portraitSrc(src: string) {
   return src;
 }
 
+function LinkedInPortrait({ ambassador, compact = false }: { ambassador: Ambassador; compact?: boolean }) {
+  const portrait = ambassador.image ? (
+    <Image
+      src={portraitSrc(ambassador.image)}
+      alt={`Portrait of ${ambassador.name}`}
+      width={compact ? 240 : 720}
+      height={compact ? 300 : 900}
+      className={compact ? "ambassador-portrait-image" : "ambassador-profile-image"}
+      loading="lazy"
+      sizes={compact ? "7.5rem" : "(max-width: 980px) 100vw, 42vw"}
+    />
+  ) : (
+    <span className="ambassador-initials" aria-label={ambassador.name}>
+      {ambassador.name
+        .split(" ")
+        .map((part) => part[0])
+        .join("")
+        .slice(0, 2)}
+    </span>
+  );
+
+  if (!ambassador.linkedin) return portrait;
+
+  return (
+    <a
+      href={ambassador.linkedin}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Open ${ambassador.name}'s LinkedIn profile in a new tab`}
+    >
+      {portrait}
+    </a>
+  );
+}
+
 export function AmbassadorCard({ ambassador }: AmbassadorCardProps) {
   return (
     <article
@@ -32,25 +67,7 @@ export function AmbassadorCard({ ambassador }: AmbassadorCardProps) {
         >
           {ambassador.flag}
         </span>
-        {ambassador.image ? (
-          <Image
-            src={portraitSrc(ambassador.image)}
-            alt={`Portrait of ${ambassador.name}, ctrl+love table member from ${ambassador.country}`}
-            width={720}
-            height={900}
-            className="ambassador-profile-image"
-            loading="lazy"
-            sizes="(max-width: 980px) 100vw, 42vw"
-          />
-        ) : (
-          <div className="ambassador-initials" aria-label={ambassador.name}>
-            {ambassador.name
-              .split(" ")
-              .map((part) => part[0])
-              .join("")
-              .slice(0, 2)}
-          </div>
-        )}
+        <LinkedInPortrait ambassador={ambassador} />
       </div>
 
       <div className="ambassador-profile-copy">
@@ -66,7 +83,18 @@ export function AmbassadorCard({ ambassador }: AmbassadorCardProps) {
             >
               {ambassador.flag}
             </span>
-            {ambassador.name}
+            {ambassador.linkedin ? (
+              <a
+                href={ambassador.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Open ${ambassador.name}'s LinkedIn profile in a new tab`}
+              >
+                {ambassador.name}
+              </a>
+            ) : (
+              ambassador.name
+            )}
           </h3>
           <p className="ambassador-profile-role">
             {ambassador.role}
@@ -91,17 +119,6 @@ export function AmbassadorCard({ ambassador }: AmbassadorCardProps) {
         </dl>
 
         <div className="ambassador-profile-actions">
-          {ambassador.linkedin ? (
-            <a
-              className="ambassador-action"
-              href={ambassador.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`Open ${ambassador.name}'s LinkedIn profile in a new tab`}
-            >
-              View LinkedIn profile ↗
-            </a>
-          ) : null}
           {ambassador.website ? (
             <a
               className="ambassador-action"
@@ -134,10 +151,7 @@ export function AmbassadorGrid({
             className="ambassador-portrait-card"
             key={ambassador.id}
           >
-            <a
-              className="ambassador-portrait-main"
-              href={`/ambassadors/#ambassador-${ambassador.id}`}
-            >
+            <div className="ambassador-portrait-main">
               <span className="ambassador-portrait-frame">
                 <span
                   className="ambassador-flag-badge"
@@ -145,25 +159,7 @@ export function AmbassadorGrid({
                 >
                   {ambassador.flag}
                 </span>
-                {ambassador.image ? (
-                  <Image
-                    src={portraitSrc(ambassador.image)}
-                    alt={`Portrait of ${ambassador.name}`}
-                    width={240}
-                    height={300}
-                    className="ambassador-portrait-image"
-                    loading="lazy"
-                    sizes="7.5rem"
-                  />
-                ) : (
-                  <span className="ambassador-initials">
-                    {ambassador.name
-                      .split(" ")
-                      .map((part) => part[0])
-                      .join("")
-                      .slice(0, 2)}
-                  </span>
-                )}
+                <LinkedInPortrait ambassador={ambassador} compact />
               </span>
               <span className="ambassador-portrait-copy">
                 <strong>
@@ -173,25 +169,25 @@ export function AmbassadorGrid({
                   >
                     {ambassador.flag}
                   </span>
-                  {ambassador.name}
+                  {ambassador.linkedin ? (
+                    <a
+                      href={ambassador.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Open ${ambassador.name}'s LinkedIn profile in a new tab`}
+                    >
+                      {ambassador.name}
+                    </a>
+                  ) : (
+                    ambassador.name
+                  )}
                 </strong>
                 <span>
                   {ambassador.number} · {ambassador.city}, {ambassador.country}
                 </span>
                 <em>{ambassador.participationLabel}</em>
               </span>
-            </a>
-            {ambassador.linkedin ? (
-              <a
-                className="ambassador-portrait-link"
-                href={ambassador.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Open ${ambassador.name}'s LinkedIn profile in a new tab`}
-              >
-                View LinkedIn profile ↗
-              </a>
-            ) : null}
+            </div>
           </article>
         ))}
       </div>
