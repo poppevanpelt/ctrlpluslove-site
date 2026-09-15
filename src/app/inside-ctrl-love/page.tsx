@@ -38,26 +38,44 @@ const departments = [
   },
 ];
 
-const featureLinks = [
+const instruments = [
   {
-    name: "Live Decision Simulator",
-    href: "/living-decision-simulator-episode-002/",
-    note: "A decision room that thinks in public.",
+    name: "Instrument Cabinet",
+    href: "/instruments/",
+    note: "The physical family. Ideas enter. Evidence leaves.",
   },
   {
-    name: "AI-y-fier",
-    href: "/ai-y-fier/",
-    note: "Empty thoughts in. Thought leadership out.",
+    name: "Decision Collider",
+    href: "/decision-collider/",
+    note: "Push one decision through collision and judgment.",
   },
   {
     name: "Meeting Filter",
     href: "/meeting-filter/",
-    note: "Should we be in this meeting?",
+    note: "Should this meeting exist?",
   },
   {
-    name: "Museum Shop",
+    name: "AI-Y-fier",
+    href: "/ai-y-fier/",
+    note: "Empty thoughts in. Thought leadership out.",
+  },
+  {
+    name: "Live Decision Simulator",
+    href: "/living-decision-review/",
+    note: "A decision room that thinks in public.",
+  },
+];
+
+const archive = [
+  {
+    name: "Museum",
     href: "/museum/",
-    note: "Ideas, artifacts, consequences.",
+    note: "Ideas. Artifacts. Consequences.",
+  },
+  {
+    name: "Artifact Registry",
+    href: "/artifacts/",
+    note: "Objects, consequences and decision folklore.",
   },
   {
     name: "Constitution",
@@ -75,14 +93,25 @@ export default function InsideCtrlLovePage() {
           <div className="section-heading quiet-heading">
             <div>
               <p className="section-kicker">Inside ctrl+love</p>
-              <h1>How the engine works.</h1>
+              <h1>The engine room.</h1>
             </div>
             <p>
-              Internal labels, tools and artifacts moved out of the homepage
-              path so the offer can be understood first.
+              Working instruments, internal departments and strange objects that
+              earn their place by helping a decision get closer to reality.
             </p>
           </div>
 
+          <p className="section-kicker">Working instruments</p>
+          <div className="features-list">
+            {instruments.map((instrument) => (
+              <a className="feature-link" href={instrument.href} key={instrument.name}>
+                <span>{instrument.name} →</span>
+                <em>{instrument.note}</em>
+              </a>
+            ))}
+          </div>
+
+          <p className="section-kicker">Departments</p>
           <div className="departments-list">
             {departments.map((department) => (
               <a className="department-link" href={department.href} key={department.name}>
@@ -92,11 +121,12 @@ export default function InsideCtrlLovePage() {
             ))}
           </div>
 
+          <p className="section-kicker">Archive</p>
           <div className="features-list">
-            {featureLinks.map((feature) => (
-              <a className="feature-link" href={feature.href} key={feature.name}>
-                <span>{feature.name} →</span>
-                <em>{feature.note}</em>
+            {archive.map((item) => (
+              <a className="feature-link" href={item.href} key={item.name}>
+                <span>{item.name} →</span>
+                <em>{item.note}</em>
               </a>
             ))}
           </div>
