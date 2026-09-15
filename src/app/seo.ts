@@ -83,6 +83,14 @@ export const publicRoutes: PublicRoute[] = [
     priority: 1,
   },
   {
+    path: "/instruments/",
+    title: "Instrument Cabinet — ctrl+love",
+    description:
+      "A cabinet of working ctrl+love instruments for seeing, testing, deciding and moving.",
+    changeFrequency: "weekly",
+    priority: 0.95,
+  },
+  {
     path: "/stress-test/",
     title: "Decision Stress-Test™ — ctrl+love",
     description:
