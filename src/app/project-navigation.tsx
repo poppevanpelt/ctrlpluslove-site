@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const projectLinks = [
-  { href: "/instruments/", label: "Instruments" },
+  { href: "/instruments/", label: "Instrument Cabinet" },
   { href: "/decision-collider/", label: "Decision Collider" },
   { href: "/meeting-filter/", label: "Meeting Filter" },
   { href: "/ai-y-fier/", label: "AI-Y-fier" },
@@ -27,7 +27,9 @@ export function ProjectNavigation() {
     pathname === "/swat/" ||
     pathname.startsWith("/swat/") ||
     pathname === "/five-guys-signal" ||
-    pathname === "/five-guys-signal/"
+    pathname === "/five-guys-signal/" ||
+    pathname === "/fizz" ||
+    pathname === "/fizz/"
   ) {
     return null;
   }
