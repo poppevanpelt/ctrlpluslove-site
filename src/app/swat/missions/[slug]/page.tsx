@@ -101,7 +101,7 @@ export default async function MissionPage({ params }: MissionPageProps) {
 
       <footer className={styles.footer}>
         <p>CTRL+SWAT / RAPID INTERVENTION FOR LIVE SITUATIONS</p>
-        <Link href="/">CTRL+LOVE ↗</Link>
+        <Link href="/instruments/">INSTRUMENT CABINET ↗</Link>
       </footer>
     </main>
   );

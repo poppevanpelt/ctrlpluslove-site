@@ -125,8 +125,8 @@ export function DecisionColliderInstrument({
       aria-labelledby="decision-collider-title"
     >
       {embedded ? null : (
-        <Link className={styles.returnLink} href="/">
-          Return to ctrl+love
+        <Link className={styles.returnLink} href="/instruments/">
+          Return to Instrument Cabinet
         </Link>
       )}
 
@@ -147,33 +147,17 @@ export function DecisionColliderInstrument({
 
         <div className={chamberClass} aria-label="Decision transformation">
           <div className={styles.transformation} aria-hidden="true" />
-          <div className={`${styles.force} ${styles.forceCustomer}`}>
-            <span>CUSTOMER</span>
-          </div>
-          <div className={`${styles.force} ${styles.forceFinance}`}>
-            <span>FINANCE</span>
-          </div>
-          <div className={`${styles.force} ${styles.forceLegal}`}>
-            <span>LEGAL</span>
-          </div>
-          <div className={`${styles.force} ${styles.forceBrand}`}>
-            <span>BRAND</span>
-          </div>
-          <div className={`${styles.force} ${styles.forceOperations}`}>
-            <span>OPERATIONS</span>
-          </div>
-          <div className={`${styles.force} ${styles.forceMissing}`}>
-            <span>THE MISSING SEAT</span>
-          </div>
-          <div className={styles.particle}>
-            <span className={styles.particleLabel}>Decision</span>
-          </div>
+          <div className={`${styles.force} ${styles.forceCustomer}`}><span>CUSTOMER</span></div>
+          <div className={`${styles.force} ${styles.forceFinance}`}><span>FINANCE</span></div>
+          <div className={`${styles.force} ${styles.forceLegal}`}><span>LEGAL</span></div>
+          <div className={`${styles.force} ${styles.forceBrand}`}><span>BRAND</span></div>
+          <div className={`${styles.force} ${styles.forceOperations}`}><span>OPERATIONS</span></div>
+          <div className={`${styles.force} ${styles.forceMissing}`}><span>THE MISSING SEAT</span></div>
+          <div className={styles.particle}><span className={styles.particleLabel}>Decision</span></div>
           <div className={styles.collisionRipple} aria-hidden="true" />
         </div>
 
-        <div className={styles.output}>
-          <StageOutputView output={stage.output} />
-        </div>
+        <div className={styles.output}><StageOutputView output={stage.output} /></div>
       </section>
 
       <footer className={styles.controls}>
@@ -193,9 +177,7 @@ export function DecisionColliderInstrument({
         <button
           className={styles.next}
           type="button"
-          onClick={() =>
-            setActiveStage(activeStage === stages.length - 1 ? 0 : activeStage + 1)
-          }
+          onClick={() => setActiveStage(activeStage === stages.length - 1 ? 0 : activeStage + 1)}
         >
           {stage.button}
         </button>

@@ -91,7 +91,7 @@ export default function SwatPage() {
 
       <footer className={styles.footer}>
         <p>SWAT IS A CTRL+LOVE RAPID RESPONSE INSTRUMENT.</p>
-        <Link href="/">BACK TO CTRL+LOVE ↗</Link>
+        <Link href="/instruments/">BACK TO INSTRUMENT CABINET ↗</Link>
       </footer>
     </main>
   );
