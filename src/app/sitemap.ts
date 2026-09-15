@@ -3,10 +3,12 @@ import type { MetadataRoute } from "next";
 import { ambassadorProfiles } from "./ambassador-profiles-data";
 import { allRoomPersonas } from "./room-personas-data";
 import { absoluteUrl, publicRoutes } from "./seo";
+import { swatMissions } from "./swat/missions-data";
 import { embassies } from "@/content/embassies";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date("2026-07-14");
+  const swatLastModified = new Date("2026-09-15");
 
   return [
     ...publicRoutes.map((route) => ({
@@ -21,6 +23,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.8,
     },
+    {
+      url: absoluteUrl("/swat/"),
+      lastModified: swatLastModified,
+      changeFrequency: "weekly" as const,
+      priority: 0.82,
+    },
+    ...swatMissions.map((mission) => ({
+      url: absoluteUrl(`/swat/missions/${mission.slug}/`),
+      lastModified: swatLastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.74,
+    })),
     ...ambassadorProfiles.map((profile) => ({
       url: absoluteUrl(`/ambassadors/${profile.slug}/`),
       lastModified,
