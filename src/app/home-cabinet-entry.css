@@ -1,0 +1,42 @@
+.home-cabinet-entry {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.4rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid currentColor;
+  color: inherit;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+}
+
+.home-cabinet-entry:hover {
+  transform: translateY(-2px);
+  background: #181714;
+  color: #f4f0e6;
+}
+
+.home-cabinet-entry__index,
+.home-cabinet-entry__action {
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.home-cabinet-entry__title {
+  font-size: clamp(1rem, 1.7vw, 1.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+@media (max-width: 720px) {
+  .home-cabinet-entry {
+    grid-template-columns: auto 1fr;
+  }
+
+  .home-cabinet-entry__action {
+    grid-column: 2;
+  }
+}
