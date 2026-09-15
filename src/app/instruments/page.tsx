@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { CSSProperties, Metadata } from "react";
 import Link from "next/link";
 import styles from "./page.module.css";
 
@@ -8,23 +8,31 @@ export const metadata: Metadata = {
 };
 
 const instruments = [
-  { no: "001", name: "PITCH CRASH TEST", status: "LIVE RUN", image: "/instruments/01-pitch-crash-test.webp", line: "Prepared cupboards are not prepared communities." },
-  { no: "002", name: "DECISION COLLIDER", status: "LIVE INSTRUMENT", image: "/instruments/02-decision-collider.webp", line: "A decision becomes visible when its interests collide." },
-  { no: "003", name: "LIVING TICKER", status: "PROTOTYPE 001", image: "/instruments/03-living-ticker.webp", line: "Minutes record words. The ticker records movement." },
-  { no: "004", name: "BRAND TRANSPLANT", status: "TESTED", image: "/instruments/04-brand-transplant.webp", line: "What survives the transplant is probably the brand." },
-  { no: "005", name: "SIGNAL DISTORTION", status: "LIVE RUN", image: "/instruments/05-signal-distortion.webp", line: "Premium quality disappeared before the campaign began." },
-  { no: "006", name: "DECISION SURFACE", status: "PROTOTYPE 001", image: "/instruments/06-decision-surface.webp", line: "Every surface edits the brand before the audience sees it." },
-  { no: "007", name: "DECISION MEMORY", status: "LIVE SYSTEM", image: "/instruments/07-decision-memory.webp", line: "A forgotten decision must win its argument again." },
-  { no: "008", name: "MEETING FILTER", status: "WORKING PROTOTYPE", image: "/instruments/08-meeting-filter.webp", line: "Most bad meetings fail before they begin." },
-  { no: "009", name: "DECISION IN A BOX", status: "PHYSICAL PROTOTYPE", image: "/instruments/09-decision-in-a-box.webp", line: "Five options enter. One imperfect object leaves." },
-  { no: "010", name: "PROMPT SHOPPE", status: "WORKING INSTRUMENT", image: "/instruments/10-prompt-shoppe.webp", line: "A prompt without a decision is decoration." },
-  { no: "011", name: "USB DECISION ACCELERATOR", status: "LIMITED EDITION", image: "/instruments/11-usb-decision-accelerator.webp", line: "Ten decisions. No subscription. No ceremony." },
-  { no: "012", name: "READ THE ROOM", status: "PROTOTYPE", image: "/instruments/12-read-the-room.webp", line: "The room has a strategy before the strategy has the room." },
-  { no: "013", name: "OPPOSITION SEAT", status: "PROTOCOL", image: "/instruments/13-opposition-seat.webp", line: "Every important decision needs someone paid to disagree." },
-  { no: "014", name: "DO-NOTHING CONTROL", status: "PROTOCOL", image: "/instruments/14-do-nothing-control.webp", line: "Change must beat the cost of leaving reality alone." },
-  { no: "015", name: "MISS ARCHIVE", status: "PROTOCOL", image: "/instruments/15-miss-archive.webp", line: "Wrong Marcel. Correct lesson." },
-  { no: "016", name: "EVIDENCE TAGS", status: "PROTOCOL", image: "/instruments/16-evidence-tags.webp", line: "Confidence becomes useful when its source is visible." },
+  { no: "001", name: "PITCH CRASH TEST", status: "LIVE RUN", line: "Prepared cupboards are not prepared communities." },
+  { no: "002", name: "DECISION COLLIDER", status: "LIVE INSTRUMENT", line: "A decision becomes visible when its interests collide." },
+  { no: "003", name: "LIVING TICKER", status: "PROTOTYPE 001", line: "Minutes record words. The ticker records movement." },
+  { no: "004", name: "BRAND TRANSPLANT", status: "TESTED", line: "What survives the transplant is probably the brand." },
+  { no: "005", name: "SIGNAL DISTORTION", status: "LIVE RUN", line: "Premium quality disappeared before the campaign began." },
+  { no: "006", name: "DECISION SURFACE", status: "PROTOTYPE 001", line: "Every surface edits the brand before the audience sees it." },
+  { no: "007", name: "DECISION MEMORY", status: "LIVE SYSTEM", line: "A forgotten decision must win its argument again." },
+  { no: "008", name: "MEETING FILTER", status: "WORKING PROTOTYPE", line: "Most bad meetings fail before they begin." },
+  { no: "009", name: "DECISION IN A BOX", status: "PHYSICAL PROTOTYPE", line: "Five options enter. One imperfect object leaves." },
+  { no: "010", name: "PROMPT SHOPPE", status: "WORKING INSTRUMENT", line: "A prompt without a decision is decoration." },
+  { no: "011", name: "USB DECISION ACCELERATOR", status: "LIMITED EDITION", line: "Ten decisions. No subscription. No ceremony." },
+  { no: "012", name: "READ THE ROOM", status: "PROTOTYPE", line: "The room has a strategy before the strategy has the room." },
+  { no: "013", name: "OPPOSITION SEAT", status: "PROTOCOL", line: "Every important decision needs someone paid to disagree." },
+  { no: "014", name: "DO-NOTHING CONTROL", status: "PROTOCOL", line: "Change must beat the cost of leaving reality alone." },
+  { no: "015", name: "MISS ARCHIVE", status: "PROTOCOL", line: "Wrong Marcel. Correct lesson." },
+  { no: "016", name: "EVIDENCE TAGS", status: "PROTOCOL", line: "Confidence becomes useful when its source is visible." },
 ] as const;
+
+function spriteStyle(index: number): CSSProperties {
+  const col = index % 4;
+  const row = Math.floor(index / 4);
+  return {
+    backgroundPosition: `${(col / 3) * 100}% ${(row / 3) * 100}%`,
+  };
+}
 
 export default function InstrumentCabinetPage() {
   return (
@@ -58,10 +66,15 @@ export default function InstrumentCabinetPage() {
       </section>
 
       <section className={styles.grid} aria-label="Sixteen ctrl+love instruments">
-        {instruments.map((instrument) => (
+        {instruments.map((instrument, index) => (
           <article className={styles.card} key={instrument.no}>
             <div className={styles.imageWrap}>
-              <img src={instrument.image} alt={`${instrument.name}, ctrl+love instrument ${instrument.no}`} loading={Number(instrument.no) > 4 ? "lazy" : "eager"} />
+              <div
+                className={styles.spriteImage}
+                style={spriteStyle(index)}
+                role="img"
+                aria-label={`${instrument.name}, ctrl+love instrument ${instrument.no}`}
+              />
               <div className={styles.imageTag}>{instrument.status}</div>
             </div>
             <div className={styles.cardBody}>
