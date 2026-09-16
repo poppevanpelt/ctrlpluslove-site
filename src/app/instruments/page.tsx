@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import LivingInstrumentState from "./living-instrument-state";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -94,11 +95,12 @@ export default function InstrumentRoomPage() {
                   <span className={styles.number}>{instrument.no}</span>
                   <span className={`${styles.state} ${stateClass[instrument.state]}`}>{instrument.state}</span>
                 </div>
-                <div className={styles.device} data-family={instrument.family} aria-hidden="true">
+                <div className={styles.device} data-family={instrument.family}>
                   <span className={styles.deviceScreen}>{instrument.family}</span>
                   <span className={styles.dial} />
                   <span className={styles.switch} />
                   <span className={styles.slot} />
+                  <LivingInstrumentState no={instrument.no} state={instrument.state} family={instrument.family} />
                 </div>
                 <h2>{instrument.name}</h2>
                 <p>{instrument.line}</p>
