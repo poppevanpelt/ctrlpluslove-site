@@ -25,7 +25,7 @@ const instruments: readonly Instrument[] = [
   { no: "001", name: "DECISION COLLIDER", state: "WORKING", family: "DECIDE", line: "Collide assumptions before people collide.", why: "Built because agreement can hide incompatible definitions of the same decision.", href: "/decision-collider/", action: "RUN INSTRUMENT" },
   { no: "002", name: "MEETING FILTER", state: "WORKING", family: "SEE", line: "Decide whether the meeting should exist.", why: "Built after too many rooms were booked before anyone asked what the room was for.", href: "/meeting-filter/", action: "RUN FILTER" },
   { no: "003", name: "LIVING TICKER", state: "PROTOTYPE", family: "SEE", line: "Minutes record words. The ticker records movement.", why: "Tracks challenge, reframing, ownership and rupture while a room is changing." },
-  { no: "004", name: "DECISION MEMORY", state: "PROTOTYPE", family: "ARTIFACT", line: "A forgotten decision must win its argument again.", why: "Preserves the evidence, assumptions and reversals that created a decision." },
+  { no: "004", name: "DECISION MEMORY", state: "PROTOTYPE", family: "ARTIFACT", line: "A forgotten decision must win its argument again.", why: "Preserves the evidence, assumptions and reversals that created a decision.", href: "/decision-memory/", action: "OPEN MEMORY" },
   { no: "005", name: "CTRL+SWAT", state: "FIELD TEST", family: "MOVE", line: "Detect. Judge. Build. Dispatch before the moment disappears.", why: "A rapid-response instrument for situations where strategic latency is the problem.", href: "/swat/", action: "ENTER SWAT" },
   { no: "006", name: "CTRL+FIZZ", state: "PROTOTYPE", family: "ARTIFACT", line: "Carbonated judgment for meetings that have gone flat.", why: "A physical reminder that perspective sometimes changes faster when the object changes.", href: "/fizz/", action: "OPEN BOTTLE" },
   { no: "007", name: "SIGNAL FIRE", state: "PROTOTYPE", family: "SEE", line: "Weak signals before they become obvious opportunities.", why: "Maps pressure, incumbent weakness and decision gaps before the market names them." },
@@ -44,6 +44,7 @@ const instruments: readonly Instrument[] = [
   { no: "020", name: "PURGE", state: "IN DEVELOPMENT", family: "MOVE", line: "Remove what the decision no longer needs.", why: "A subtraction instrument for accumulated arguments, features and political furniture." },
   { no: "021", name: "MISS ARCHIVE", state: "ARCHIVE", family: "ARTIFACT", line: "Keep the wrong calls. Extract the lesson.", why: "Stores misses because a laboratory that only displays wins cannot learn." },
   { no: "022", name: "TRAJECTORY / ATLAS / MARIA", state: "IN DEVELOPMENT", family: "ARTIFACT", line: "Map how a decision travels, not only where it ends.", why: "A developing system for human coordination terrain, protocol primitives and decision trajectories.", href: "/maria/", action: "ENTER EXCAVATION 001" },
+  { no: "023", name: "CTRL+CHASE", state: "PROTOTYPE", family: "MOVE", line: "A question either produces evidence or earns its death.", why: "Keeps unresolved signals moving until they become evidence, a next move, or a justified stop.", href: "/chase/", action: "START CHASE" },
 ];
 
 const stateClass: Record<State, string> = {
@@ -60,7 +61,7 @@ export default function InstrumentRoomPage() {
       <header className={styles.topbar}>
         <Link href="/" className={styles.brand}>ctrl+love</Link>
         <span className={styles.serial}>INSTRUMENT DIVISION · SUNNYVALE · ROOM 001</span>
-        <Link href="/exec/" className={styles.exec}>EXEC CHUTE →</Link>
+        <Link href="/factory/" className={styles.exec}>FACTORY: OPEN →</Link>
       </header>
 
       <section className={styles.arrival} aria-labelledby="instrument-room-title">
@@ -83,6 +84,11 @@ export default function InstrumentRoomPage() {
         <strong>{instruments.length} SPECIMENS</strong>
         <span>WORKING / TESTING / FAILING / LEARNING</span>
         <span>ONLY REAL DOORS OPEN</span>
+      </section>
+
+      <section className={styles.protocolRail} aria-label="Live field evidence">
+        <span>LIVE FIELD EVIDENCE</span>
+        <strong>MISSION 001 · CTRL+SWAT</strong><b>ROYAL SWINKELS · DISPATCHED</b><strong>≈12 MIN DETECTION → INBOX</strong><Link href="/swat/">OPEN FIELD RECORD ↗</Link>
       </section>
 
       <section className={styles.floor} aria-label="ctrl+love instrument collection">
@@ -136,7 +142,7 @@ export default function InstrumentRoomPage() {
         <strong>OPPOSITION SEAT</strong><b>DO-NOTHING CONTROL</b><strong>BLIND TRIAL</strong><b>EVIDENCE TAGS</b><strong>KILL QUESTION</strong>
       </section>
 
-      <footer className={styles.footer}><p>Observe. Understand. Judge. Remain human.</p><Link href="/">RETURN TO MOTHERSHIP ↗</Link></footer>
+      <footer className={styles.footer}><p>Observe. Understand. Judge. Remain human.</p><Link href="/factory/">ENTER FACTORY ↗</Link></footer>
     </main>
   );
 }
