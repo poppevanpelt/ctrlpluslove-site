@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ExecMachine from "./exec-machine";
+import layout from "./exec-layout.module.css";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -49,14 +50,14 @@ export default function ExecChutePage() {
           <p className={styles.kicker}>NO TIME FOR THE WHOLE BUILDING?</p>
           <h1 id="exec-title">EXEC<br />CHUTE</h1>
           <p className={styles.lead}>Four questions. One human decision. No tour.</p>
-          <div className={styles.unitPlateCompact}>
+          <div className={layout.unitPlateCompact}>
             <span>CTRL+LOVE</span>
             <strong>EXEC CHUTE</strong>
             <small>MODEL E-04 · HUMAN OVERRIDE FITTED</small>
           </div>
         </div>
 
-        <div className={styles.machineHero}>
+        <div className={layout.machineHero}>
           <ExecMachine />
         </div>
       </section>
@@ -68,7 +69,7 @@ export default function ExecChutePage() {
         </div>
         <ol>
           {stages.map((stage) => (
-            <li key={stage.no} className={stage.no === "03" ? styles.humanStage : undefined}>
+            <li key={stage.no} className={stage.no === "03" ? layout.humanStage : undefined}>
               <div className={styles.stageIndex}>
                 <span>{stage.no}</span>
                 <strong>{stage.label}</strong>
