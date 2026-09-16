@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import ExecMachine from "./exec-machine";
+import layout from "./exec-layout.module.css";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -48,32 +50,15 @@ export default function ExecChutePage() {
           <p className={styles.kicker}>NO TIME FOR THE WHOLE BUILDING?</p>
           <h1 id="exec-title">EXEC<br />CHUTE</h1>
           <p className={styles.lead}>Four questions. One human decision. No tour.</p>
-        </div>
-
-        <div className={styles.wallUnit} aria-label="Executive decision chute">
-          <div className={styles.unitPlate}>
+          <div className={layout.unitPlateCompact}>
             <span>CTRL+LOVE</span>
             <strong>EXEC CHUTE</strong>
             <small>MODEL E-04 · HUMAN OVERRIDE FITTED</small>
           </div>
+        </div>
 
-          <div className={styles.feedTray}>
-            <span>INSERT LIVE SITUATION</span>
-            <i aria-hidden="true" />
-          </div>
-
-          <div className={styles.chute} aria-hidden="true">
-            <span className={styles.trackA} />
-            <span className={styles.trackB} />
-            <span className={styles.trackC} />
-            <span className={styles.trackD} />
-            <span className={styles.packet}>LIVE<br />ISSUE</span>
-          </div>
-
-          <div className={styles.outputTray}>
-            <span>HUMAN DECISION OUT</span>
-            <strong>→</strong>
-          </div>
+        <div className={layout.machineHero}>
+          <ExecMachine />
         </div>
       </section>
 
@@ -84,7 +69,7 @@ export default function ExecChutePage() {
         </div>
         <ol>
           {stages.map((stage) => (
-            <li key={stage.no}>
+            <li key={stage.no} className={stage.no === "03" ? layout.humanStage : undefined}>
               <div className={styles.stageIndex}>
                 <span>{stage.no}</span>
                 <strong>{stage.label}</strong>
@@ -92,6 +77,7 @@ export default function ExecChutePage() {
               <div className={styles.stageBody}>
                 <h2>{stage.question}</h2>
                 <p>{stage.answer}</p>
+                {stage.no === "03" ? <small>HUMAN OWNERSHIP / IRREVERSIBLE GATE</small> : null}
               </div>
               <div className={styles.stageMechanism} aria-hidden="true">
                 <span className={styles.guide} />
