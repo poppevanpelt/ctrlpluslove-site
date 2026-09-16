@@ -24,6 +24,7 @@ export function HomeHero() {
           </CtrlLayerLogoTrigger>
           <nav className="home-hero-nav" aria-label="Institution">
             <Link href="/instruments/">INSTRUMENT ROOM</Link>
+            <Link href="/organic-ai/">ORGANIC AI</Link>
             <Link href="/prompt-shoppe/">PROMPT SHOPPE</Link>
             <a href="#personas">PERSONAS</a>
             <a href="#products">PRODUCTS</a>
