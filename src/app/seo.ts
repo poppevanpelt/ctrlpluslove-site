@@ -99,6 +99,14 @@ export const publicRoutes: PublicRoute[] = [
     priority: 0.95,
   },
   {
+    path: "/brand-survival/",
+    title: "Brand Survival — ctrl+love",
+    description:
+      "A subtraction instrument that shows what remains distinctive when a brand's obvious identifiers are systematically removed.",
+    changeFrequency: "monthly",
+    priority: 0.82,
+  },
+  {
     path: "/stress-test/",
     title: "Decision Stress-Test™ — ctrl+love",
     description:
