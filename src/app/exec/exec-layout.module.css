@@ -1,0 +1,46 @@
+.machineHero {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  padding: clamp(2rem, 5vw, 5rem) clamp(1rem, 3vw, 3rem);
+  background:
+    linear-gradient(rgb(24 23 20 / 3%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(24 23 20 / 3%) 1px, transparent 1px),
+    #d9d3c8;
+  background-size: 32px 32px;
+}
+
+.unitPlateCompact {
+  display: grid;
+  gap: 0.3rem;
+  margin-top: clamp(3rem, 8vw, 6rem);
+  padding: 1rem;
+  border: 1px solid #3f3b35;
+  background: linear-gradient(115deg, #b9b5ae, #e0ddd6 48%, #aaa69f);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 52%), 3px 4px 0 rgb(24 23 20 / 14%);
+  font-size: 0.58rem;
+  font-weight: 820;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+.unitPlateCompact strong { font-size: 1.2rem; letter-spacing: 0.04em; }
+.unitPlateCompact small { font-size: 0.5rem; }
+
+.humanStage {
+  background: linear-gradient(90deg, rgb(233 104 67 / 8%), transparent 58%);
+}
+.humanStage :global(small) {
+  display: inline-block;
+  margin-top: 1.1rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #df6438;
+  color: #a63c1f;
+  font-size: 0.52rem;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .machineHero { padding: 2rem 1rem 3rem; }
+}
