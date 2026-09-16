@@ -78,17 +78,17 @@ export const publicRoutes: PublicRoute[] = [
     path: "/",
     title: "ctrl+love — Applied AI, Organic AI and better decisions",
     description:
-      "ctrl+love is an Applied AI practice for better decisions. We explore Organic AI: what machines remember, surface and believe about brands before paid AI enters the conversation.",
+      "ctrl+love is an applied-AI and applied-intelligence practice for better decisions. We work with Organic AI: what machines remember, infer and surface about brands before paid AI enters the conversation.",
     changeFrequency: "weekly",
     priority: 1,
   },
   {
     path: "/organic-ai/",
-    title: "Organic AI — What the machine believes before you pay | ctrl+love",
+    title: "Organic AI — what the machine believes about your brand | ctrl+love",
     description:
-      "Organic AI is the machine's earned understanding of a brand before paid placement, sponsored answers or branded AI agents enter the conversation.",
+      "Organic AI is what the machine believes about you before you pay to enter the conversation. ctrl+love maps Organic AI presence, prominence, portrayal, persuasion and AI reputation.",
     changeFrequency: "weekly",
-    priority: 0.92,
+    priority: 0.9,
   },
   {
     path: "/instruments/",
