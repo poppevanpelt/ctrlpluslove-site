@@ -9,11 +9,15 @@ export type BatchCondition = "brand" | "wallpaper";
 
 export type BatchObservation = {
   id: string;
+  participantId: string;
+  specimenId: string;
   stage: BatchStageId;
   condition: BatchCondition;
   sourceRecognised: boolean;
   categoryRecognised: boolean;
   confidence: 1 | 2 | 3 | 4 | 5;
+  sourceGuess: string;
+  recordedAt: string;
 };
 
 export type BatchStage = {
@@ -63,14 +67,12 @@ export const batch001Stages: readonly BatchStage[] = [
 ] as const;
 
 /**
- * Batch 001 evidence lives here.
+ * Committed Batch 001 evidence lives here.
  *
- * One row = one recorded response to one blinded specimen.
- * `condition: "brand"` is a distinctive-brand specimen.
- * `condition: "wallpaper"` is its generic/category-control counterpart.
- *
- * Deliberately empty until observations actually exist. The public instrument
- * must never turn a reference shape, intuition or design hypothesis into data.
+ * The lab bench can collect observations locally first. Once a run is checked,
+ * export the JSON and promote only verified rows into this array. The public
+ * curve therefore remains evidence-backed while the operator can still watch
+ * a live local curve during the experiment.
  */
 export const batch001Observations: readonly BatchObservation[] = [];
 
@@ -85,6 +87,40 @@ export type StageResult = {
   brand: StageMeasurement;
   wallpaper: StageMeasurement;
 };
+
+const stageIds = new Set<BatchStageId>(batch001Stages.map((stage) => stage.id));
+const conditions = new Set<BatchCondition>(["brand", "wallpaper"]);
+
+function isConfidence(value: unknown): value is 1 | 2 | 3 | 4 | 5 {
+  return typeof value === "number" && Number.isInteger(value) && value >= 1 && value <= 5;
+}
+
+export function isBatchObservation(value: unknown): value is BatchObservation {
+  if (!value || typeof value !== "object") return false;
+  const row = value as Record<string, unknown>;
+
+  return (
+    typeof row.id === "string" &&
+    typeof row.participantId === "string" &&
+    typeof row.specimenId === "string" &&
+    stageIds.has(row.stage as BatchStageId) &&
+    conditions.has(row.condition as BatchCondition) &&
+    typeof row.sourceRecognised === "boolean" &&
+    typeof row.categoryRecognised === "boolean" &&
+    isConfidence(row.confidence) &&
+    typeof row.sourceGuess === "string" &&
+    typeof row.recordedAt === "string"
+  );
+}
+
+export function parseBatch001Observations(input: string): BatchObservation[] {
+  try {
+    const value: unknown = JSON.parse(input);
+    return Array.isArray(value) ? value.filter(isBatchObservation) : [];
+  } catch {
+    return [];
+  }
+}
 
 function measure(
   observations: readonly BatchObservation[],
