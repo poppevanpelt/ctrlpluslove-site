@@ -1,5 +1,6 @@
 "use client";
 
+// Deployment retry marker: PURGE scalpel production sync.
 import { FormEvent, useMemo, useState } from "react";
 import styles from "./page.module.css";
 
