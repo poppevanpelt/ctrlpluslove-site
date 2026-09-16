@@ -45,6 +45,7 @@ const instruments: readonly Instrument[] = [
   { no: "021", name: "MISS ARCHIVE", state: "ARCHIVE", family: "ARTIFACT", line: "Keep the wrong calls. Extract the lesson.", why: "Stores misses because a laboratory that only displays wins cannot learn." },
   { no: "022", name: "TRAJECTORY / ATLAS / MARIA", state: "IN DEVELOPMENT", family: "ARTIFACT", line: "Map how a decision travels, not only where it ends.", why: "A developing system for human coordination terrain, protocol primitives and decision trajectories.", href: "/maria/", action: "ENTER EXCAVATION 001" },
   { no: "023", name: "CTRL+CHASE", state: "PROTOTYPE", family: "MOVE", line: "A question either produces evidence or earns its death.", why: "Keeps unresolved signals moving until they become evidence, a next move, or a justified stop.", href: "/chase/", action: "START CHASE" },
+  { no: "024", name: "BRAND SURVIVAL", state: "PROTOTYPE", family: "TEST", line: "How much can we take away before it stops being you?", why: "Built to make distinctiveness visible as a survival curve instead of collapsing it into a score.", href: "/brand-survival/", action: "RUN BATCH 001" },
 ];
 
 const stateClass: Record<State, string> = {
