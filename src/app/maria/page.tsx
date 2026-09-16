@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import ExcavationBench from "./excavation-bench";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -62,6 +63,8 @@ export default function MariaExcavationPage() {
           ))}
         </ol>
       </section>
+
+      <ExcavationBench />
 
       <section className={styles.depth}>
         <p className={styles.kicker}>SAME EXCAVATION. DIFFERENT DEPTH.</p>
