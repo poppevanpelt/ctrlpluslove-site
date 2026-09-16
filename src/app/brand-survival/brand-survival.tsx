@@ -11,6 +11,7 @@ import {
 } from "./batch-001";
 import styles from "./brand-survival.module.css";
 import labStyles from "./brand-survival-lab.module.css";
+import readingStyles from "./reading-001.module.css";
 
 const chart = {
   width: 1200,
@@ -49,6 +50,13 @@ function pathFor(values: readonly (number | null)[]) {
 
 function formatRate(value: number | null) {
   return value === null ? "NO DATA" : `${value}%`;
+}
+
+function formatReadingDate(recordedAt: string | undefined) {
+  if (!recordedAt) return "AWAITING FIRST ROW";
+  const [year, month, day] = recordedAt.slice(0, 10).split("-");
+  if (!year || !month || !day) return "DATE UNVERIFIED";
+  return `${day}.${month}.${year}`;
 }
 
 function makeObservationId() {
@@ -98,6 +106,11 @@ export default function BrandSurvival() {
   const brandY = active.brand.rate === null ? null : yFor(active.brand.rate);
   const wallpaperY = active.wallpaper.rate === null ? null : yFor(active.wallpaper.rate);
   const reveal = (activeStage / (batch001Stages.length - 1)) * 100;
+  const firstObservation = observations.reduce<BatchObservation | undefined>((earliest, row) => {
+    if (!earliest) return row;
+    return row.recordedAt < earliest.recordedAt ? row : earliest;
+  }, undefined);
+  const readingDate = formatReadingDate(firstObservation?.recordedAt);
 
   function persistLocal(next: BatchObservation[]) {
     setLocalObservations(next);
@@ -292,6 +305,59 @@ export default function BrandSurvival() {
           {activeStage === batch001Stages.length - 1 ? "BACK TO FULL" : "NEXT CUT"}
         </button>
       </div>
+
+      <section className={readingStyles.reading} aria-labelledby="reading-001-title">
+        <div className={readingStyles.plaque}>
+          <div className={readingStyles.identity}>
+            <span>{hasAnyData ? "READING 001" : "READING 001 / ARMED"}</span>
+            <strong id="reading-001-title">BATCH 001</strong>
+          </div>
+          <div className={readingStyles.cell}>
+            <span>INPUT</span>
+            <strong>HUMAN OBSERVATIONS</strong>
+          </div>
+          <div className={readingStyles.cell}>
+            <span>TRACE</span>
+            <strong>UNSMOOTHED DATA</strong>
+          </div>
+          <div className={readingStyles.cell}>
+            <span>DATE</span>
+            <strong>{readingDate}</strong>
+          </div>
+        </div>
+
+        <div className={readingStyles.ledger}>
+          <article>
+            <span>OBSERVED</span>
+            <strong>{hasAnyData ? `${totalResponses} HUMAN ROW${totalResponses === 1 ? "" : "S"}` : "NOTHING YET"}</strong>
+            <p>
+              {hasAnyData
+                ? "Recognition calls, category calls, confidence and source guesses stay attached to the raw response."
+                : "The instrument is waiting for its first human observation. No reference reading is standing in for reality."}
+            </p>
+          </article>
+          <article>
+            <span>CALCULATED</span>
+            <strong>{hasAnyData ? "SOURCE RECOGNITION / CUT" : "WITHHELD"}</strong>
+            <p>
+              {hasAnyData
+                ? "Rates are computed by subtraction stage. No smoothing, weighting or reference geometry is added."
+                : "No calculation is shown until observation 001 exists."}
+            </p>
+          </article>
+          <article>
+            <span>INTERPRETED</span>
+            <strong>{hasCompleteCurve ? "OPEN FOR HUMANS" : "WITHHELD"}</strong>
+            <p>
+              {hasCompleteCurve
+                ? "The curve is complete enough to discuss. The instrument still does not generate its own verdict."
+                : "The machine is not allowed to explain an incomplete curve."}
+            </p>
+          </article>
+        </div>
+
+        <p className={readingStyles.rule}>DO NOT IMPROVE THE CURVE. IMPROVE THE INSTRUMENT.</p>
+      </section>
 
       {labMode ? (
         <section className={labStyles.labBench} aria-labelledby="batch-001-lab-title">
