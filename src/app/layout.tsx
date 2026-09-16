@@ -39,6 +39,9 @@ const organizationJsonLd = {
   knowsAbout: [
     "Organizational decision-making",
     "Applied artificial intelligence",
+    "Organic AI",
+    "Organic AI presence",
+    "AI reputation",
     "Human-AI collaboration",
     "Collective intelligence",
     "Evidence and uncertainty",
@@ -52,7 +55,7 @@ const websiteJsonLd = {
   name: "ctrl+love",
   url: "https://www.ctrlpluslove.com/",
   description:
-    "Applied intelligence for better organizational decisions.",
+    "Applied AI, Organic AI and better organizational decisions.",
   publisher: {
     "@type": "Organization",
     name: "ctrl+love",

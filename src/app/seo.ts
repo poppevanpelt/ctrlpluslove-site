@@ -76,11 +76,19 @@ export function createPageMetadata({
 export const publicRoutes: PublicRoute[] = [
   {
     path: "/",
-    title: "ctrl+love — Applied intelligence for better decisions",
+    title: "ctrl+love — Applied AI, Organic AI and better decisions",
     description:
-      "ctrl+love is an applied-intelligence practice that exposes weak evidence, missing voices, hidden conflict and decisions nobody owns. A shortcut to reality.",
+      "ctrl+love is an applied-AI and applied-intelligence practice for better decisions. We work with Organic AI: what machines remember, infer and surface about brands before paid AI enters the conversation.",
     changeFrequency: "weekly",
     priority: 1,
+  },
+  {
+    path: "/organic-ai/",
+    title: "Organic AI — what the machine believes about your brand | ctrl+love",
+    description:
+      "Organic AI is what the machine believes about you before you pay to enter the conversation. ctrl+love maps Organic AI presence, prominence, portrayal, persuasion and AI reputation.",
+    changeFrequency: "weekly",
+    priority: 0.9,
   },
   {
     path: "/instruments/",
