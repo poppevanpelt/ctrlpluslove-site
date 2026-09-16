@@ -1,0 +1,286 @@
+.labBench {
+  margin-top: clamp(2.5rem, 5vw, 4.5rem);
+  border: 1px solid #24231f;
+  background: rgb(242 238 228 / 88%);
+  box-shadow: 0 22px 50px rgb(36 35 31 / 8%);
+}
+
+.labTopline {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2rem;
+  align-items: end;
+  padding: 1.35rem;
+  border-bottom: 1px solid #24231f;
+  background: #24231f;
+  color: #f2eee4;
+}
+
+.labTopline span,
+.labContext span,
+.labField > span,
+.labStage > span,
+.confidenceField > span,
+.guessField > span,
+.captureStatus,
+.labFootnote span {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.labTopline h2 {
+  margin: 0.4rem 0 0;
+  font-size: clamp(1.4rem, 3vw, 2.35rem);
+  line-height: 1;
+  letter-spacing: 0.04em;
+}
+
+.labCounter {
+  display: grid;
+  justify-items: end;
+  gap: 0.25rem;
+}
+
+.labCounter strong {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 2.2rem;
+  line-height: 1;
+}
+
+.labContext {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.35fr;
+  border-bottom: 1px solid #8f8a82;
+}
+
+.labContext label,
+.labContext .labField {
+  display: grid;
+  gap: 0.65rem;
+  padding: 1rem;
+  border-right: 1px solid #b8b2a8;
+}
+
+.labContext > :last-child {
+  border-right: 0;
+}
+
+.labContext input,
+.guessField input,
+.confidenceField select {
+  width: 100%;
+  min-height: 2.8rem;
+  border: 1px solid #8f8a82;
+  border-radius: 0;
+  background: rgb(255 255 255 / 30%);
+  color: #24231f;
+  padding: 0 0.75rem;
+  font: inherit;
+  outline: none;
+}
+
+.labContext input:focus,
+.guessField input:focus,
+.confidenceField select:focus {
+  border-color: #24231f;
+  box-shadow: inset 0 0 0 1px #24231f;
+}
+
+.segmented,
+.binaryChoice {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.segmented button,
+.binaryChoice button,
+.labActions button {
+  appearance: none;
+  min-height: 2.8rem;
+  border: 1px solid #8f8a82;
+  background: transparent;
+  color: #24231f;
+  padding: 0 0.8rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.segmented button + button,
+.binaryChoice button + button {
+  border-left: 0;
+}
+
+.segmented .selected,
+.binaryChoice .selected {
+  background: #24231f;
+  color: #f2eee4;
+  border-color: #24231f;
+}
+
+.labStage {
+  display: grid;
+  grid-template-columns: auto minmax(8rem, 0.4fr) minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: center;
+  padding: 1.1rem 1rem;
+  border-bottom: 1px solid #8f8a82;
+}
+
+.labStage > span {
+  color: #9c3025;
+}
+
+.labStage strong {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.9rem;
+  letter-spacing: 0.14em;
+}
+
+.labStage p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.labCalls {
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.55fr 1.45fr;
+  border-bottom: 1px solid #8f8a82;
+}
+
+.labCalls > * {
+  display: grid;
+  align-content: start;
+  gap: 0.65rem;
+  padding: 1rem;
+  border-right: 1px solid #b8b2a8;
+}
+
+.labCalls > :last-child {
+  border-right: 0;
+}
+
+.labActions {
+  display: grid;
+  grid-template-columns: minmax(12rem, 1fr) minmax(12rem, 1fr) auto auto auto;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #8f8a82;
+}
+
+.labActions .recordButton {
+  border-color: #24231f;
+  background: #24231f;
+  color: #f2eee4;
+}
+
+.labActions .dangerButton {
+  color: #9c3025;
+  border-color: #9c3025;
+}
+
+.captureStatus {
+  color: #6f6a62;
+}
+
+.labFootnote {
+  display: grid;
+  grid-template-columns: auto auto auto 1fr;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  color: #6f6a62;
+}
+
+.labFootnote p {
+  margin: 0;
+  text-align: right;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.58rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 1000px) {
+  .labCalls {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .labCalls > *:nth-child(2) {
+    border-right: 0;
+  }
+
+  .labCalls > *:nth-child(-n + 2) {
+    border-bottom: 1px solid #b8b2a8;
+  }
+
+  .labActions {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .captureStatus {
+    grid-column: span 2;
+  }
+
+  .labFootnote {
+    grid-template-columns: auto auto auto;
+  }
+
+  .labFootnote p {
+    grid-column: 1 / -1;
+    text-align: left;
+  }
+}
+
+@media (max-width: 900px) {
+  .labContext {
+    grid-template-columns: 1fr;
+  }
+
+  .labContext label,
+  .labContext .labField {
+    border-right: 0;
+    border-bottom: 1px solid #b8b2a8;
+  }
+
+  .labContext > :last-child {
+    border-bottom: 0;
+  }
+
+  .labStage {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .labTopline,
+  .labCalls,
+  .labActions,
+  .labFootnote {
+    grid-template-columns: 1fr;
+  }
+
+  .labCounter {
+    justify-items: start;
+  }
+
+  .labCalls > * {
+    border-right: 0;
+    border-bottom: 1px solid #b8b2a8;
+  }
+
+  .labCalls > :last-child {
+    border-bottom: 0;
+  }
+
+  .captureStatus,
+  .labFootnote p {
+    grid-column: auto;
+  }
+}
