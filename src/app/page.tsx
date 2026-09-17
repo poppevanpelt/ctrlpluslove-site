@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { EarthriseMoment } from "./earthrise-moment";
 import styles from "./home-2026.module.css";
+import visuals from "./home-2026-visuals.module.css";
 
 const recentInstruments = [
   {
@@ -120,6 +122,31 @@ export default function Home() {
         <span>CALIFORNIA / HAARLEM</span>
       </section>
 
+      <section className={visuals.pictureSection} aria-labelledby="library-title">
+        <div className={visuals.pictureHeader}>
+          <div>
+            <span>INSTRUMENT ROOM / ACTUAL HARDWARE</span>
+            <h2 id="library-title">THE MACHINES<br />ARE REAL NOW.</h2>
+          </div>
+          <p>
+            Not decoration. Not AI theatre. A growing cabinet of objects, interfaces,
+            provocations and instruments built to make judgment observable.
+          </p>
+        </div>
+        <div className={`${visuals.heroPicture} ${visuals.libraryPicture}`}>
+          <Image
+            src="/home/instrument-library.webp"
+            alt="The ctrl+love Instrument Library with physical decision instruments and laboratory objects"
+            fill
+            sizes="100vw"
+          />
+        </div>
+        <div className={visuals.caption}>
+          <span>INSTRUMENT LIBRARY · SUNNYVALE ANNEX</span>
+          <Link href="/instruments/">OPEN THE CABINET ↗</Link>
+        </div>
+      </section>
+
       <section className={styles.reading} aria-labelledby="reading-title">
         <div className={styles.sectionLabel}>
           <span>CURRENT READING</span>
@@ -175,6 +202,28 @@ export default function Home() {
         </div>
       </section>
 
+      <section className={visuals.promptSection} aria-labelledby="shoppe-title">
+        <div className={visuals.promptGrid}>
+          <div className={visuals.promptCopy}>
+            <span className={visuals.foundationEyebrow}>FIELD WORK / EST. WHEN NEEDED</span>
+            <h2 id="shoppe-title">POPPE&apos;S<br />PROMPT<br />SHOPPE.</h2>
+            <p>
+              Old prompts bought and sold. Better questions made to order. Part workshop,
+              part curiosity store, part evidence that this got slightly out of hand.
+            </p>
+            <Link href="/factory/">WANDER INTO THE FACTORY ↗</Link>
+          </div>
+          <div className={visuals.promptPicture}>
+            <Image
+              src="/home/prompt-shoppe.webp"
+              alt="Poppe's Prompt Shoppe storefront, a handmade field-lab curiosity shop"
+              fill
+              sizes="(max-width: 900px) 100vw, 62vw"
+            />
+          </div>
+        </div>
+      </section>
+
       <section className={styles.institute} aria-labelledby="institute-title">
         <Image
           className={styles.controlRoomImage}
@@ -226,6 +275,32 @@ export default function Home() {
         </div>
       </section>
 
+      <section className={visuals.foundationSection} aria-labelledby="foundation-title">
+        <div className={visuals.foundationGrid}>
+          <div className={visuals.foundationCopy}>
+            <span className={visuals.foundationEyebrow}>ctrl+love FOUNDATION</span>
+            <h2 id="foundation-title">MORE<br />CURIOSITY.<br />EARLIER.</h2>
+            <p>
+              The same instinct, pointed outward: make tools for curiosity, judgment and
+              agency available where they can open something up.
+            </p>
+            <Link href="/contact/">TALK TO THE FOUNDATION ↗</Link>
+          </div>
+          <div className={visuals.foundationImage}>
+            <Image
+              src="/home/foundation-kids.webp"
+              alt="Children gathered around a tablet, used as the ctrl+love Foundation field image"
+              fill
+              sizes="(max-width: 900px) 100vw, 62vw"
+            />
+          </div>
+        </div>
+      </section>
+
+      <div className={visuals.earthriseWrap}>
+        <EarthriseMoment />
+      </div>
+
       <section className={styles.humans} aria-labelledby="humans-title">
         <div className={styles.sectionLabel}>
           <span>WHO IS OPERATING THE MACHINERY</span>
@@ -233,7 +308,7 @@ export default function Home() {
         </div>
         <div className={styles.humansGrid}>
           <div>
-            <h2 id="humans-title">25 YEARS<br />ADVERTISING.<br />8 YEARS APPLE.<br /><em>THEN THIS.</em></h2>
+            <h2 id="humans-title">THREE DECADES<br />ADVERTISING.<br />8 YEARS APPLE.<br /><em>THEN THIS.</em></h2>
           </div>
           <div className={styles.humanCopy}>
             <p>
