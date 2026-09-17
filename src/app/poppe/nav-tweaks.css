@@ -1,0 +1,43 @@
+/* Portfolio identity/nav scale refinement. Scoped structurally to /poppe markup. */
+
+main#main-content > header:first-child > a:first-child {
+  width: 38px;
+  height: 38px;
+  font-size: 13px;
+}
+
+main#main-content > header:first-child > div {
+  gap: 20px;
+  font-size: 13px !important;
+  letter-spacing: 0.065em !important;
+}
+
+main#main-content > header:first-child > nav {
+  gap: 24px;
+  font-size: 13px !important;
+  letter-spacing: 0.045em !important;
+}
+
+main#main-content > section:first-of-type > div:first-child > div:first-child {
+  font-size: 12px !important;
+}
+
+@media (max-width: 900px) {
+  main#main-content > header:first-child > nav {
+    gap: 18px;
+    font-size: 12px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  main#main-content > header:first-child > a:first-child {
+    width: 36px;
+    height: 36px;
+    font-size: 12px;
+  }
+
+  main#main-content > header:first-child > nav {
+    gap: 11px;
+    font-size: 10px !important;
+  }
+}
