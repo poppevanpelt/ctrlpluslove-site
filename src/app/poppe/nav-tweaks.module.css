@@ -1,0 +1,41 @@
+.wordmark {
+  width: 38px;
+  height: 38px;
+  font-size: 13px;
+}
+
+.identity {
+  gap: 20px;
+  font-size: 13px;
+  letter-spacing: 0.065em;
+}
+
+.navigation {
+  gap: 24px;
+  font-size: 13px;
+  letter-spacing: 0.045em;
+}
+
+.heroIndex {
+  font-size: 12px;
+}
+
+@media (max-width: 900px) {
+  .navigation {
+    gap: 18px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 640px) {
+  .wordmark {
+    width: 36px;
+    height: 36px;
+    font-size: 12px;
+  }
+
+  .navigation {
+    gap: 11px;
+    font-size: 10px;
+  }
+}
