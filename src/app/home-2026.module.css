@@ -517,6 +517,8 @@
 
 .hero {
   min-height: 100svh;
+  padding-top: clamp(2.5rem, 4vw, 4.5rem);
+  padding-bottom: clamp(2.5rem, 4vw, 4.5rem);
   color: white;
   border-bottom: 0;
   isolation: isolate;
