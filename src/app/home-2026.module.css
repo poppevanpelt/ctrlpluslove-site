@@ -881,3 +881,226 @@
     padding-top: 2rem;
   }
 }
+
+
+/* CTRL+LOVE FIELD STATIONS */
+.offices {
+  position: relative;
+  padding: clamp(5.5rem, 9vw, 9rem) clamp(1.35rem, 4vw, 4.5rem);
+  overflow: hidden;
+  border-bottom: 1px solid var(--rule);
+  background: #071522;
+  color: white;
+}
+
+.officeIntro {
+  position: relative;
+  z-index: 2;
+  margin-bottom: clamp(2.5rem, 5vw, 5rem);
+}
+
+.offices .sectionLabel {
+  border-color: rgb(255 255 255 / 28%);
+  color: #cbe6f8;
+}
+
+.officeIntroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.65fr);
+  gap: clamp(2rem, 6vw, 7rem);
+  align-items: end;
+  padding-top: clamp(2.6rem, 5vw, 5rem);
+}
+
+.officeIntroGrid h2 {
+  max-width: 9ch;
+  margin: 0;
+  font-size: clamp(4rem, 8.4vw, 8.4rem);
+  font-weight: 820;
+  line-height: 0.84;
+  letter-spacing: -0.07em;
+}
+
+.officeIntroGrid h2 em {
+  color: #ffd77a;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: -0.055em;
+}
+
+.officeIntroGrid > p {
+  max-width: 34rem;
+  margin: 0;
+  color: #dfeaf2;
+  font-size: clamp(1.12rem, 1.7vw, 1.5rem);
+  line-height: 1.45;
+}
+
+.officeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  background: rgb(255 255 255 / 18%);
+  border: 1px solid rgb(255 255 255 / 18%);
+}
+
+.office {
+  position: relative;
+  min-height: clamp(38rem, 62vw, 56rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  isolation: isolate;
+  padding: 1.25rem;
+}
+
+.officeImage {
+  z-index: -3;
+  object-fit: cover;
+  transition: transform 700ms cubic-bezier(.2,.75,.2,1);
+}
+
+.office:hover .officeImage {
+  transform: scale(1.025);
+}
+
+.officeVeil {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  pointer-events: none;
+}
+
+.officeSunnyvale .officeVeil {
+  background:
+    linear-gradient(180deg, rgb(4 35 63 / 20%) 0%, rgb(4 31 54 / 72%) 100%),
+    linear-gradient(90deg, rgb(5 42 77 / 36%), transparent 62%);
+}
+
+.officeTokyo .officeImage {
+  object-position: 54% center;
+  filter: saturate(1.04) contrast(1.03);
+}
+
+.officeTokyo .officeVeil {
+  background:
+    linear-gradient(180deg, rgb(3 8 18 / 22%) 0%, rgb(2 6 16 / 83%) 100%),
+    linear-gradient(90deg, rgb(6 13 29 / 72%) 0%, transparent 58%);
+}
+
+.officeBloemendaal .officeImage {
+  object-position: center;
+  filter: saturate(0.56) contrast(1.06);
+}
+
+.officeBloemendaal .officeVeil {
+  background:
+    linear-gradient(180deg, rgb(8 16 18 / 10%) 0%, rgb(8 15 15 / 82%) 100%),
+    linear-gradient(90deg, rgb(15 25 23 / 48%) 0%, transparent 65%);
+}
+
+.officeTopline {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid rgb(255 255 255 / 48%);
+  font-size: 0.61rem;
+  font-weight: 820;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 16px rgb(0 0 0 / 42%);
+}
+
+.officeCopy {
+  max-width: 31rem;
+  text-shadow: 0 2px 20px rgb(0 0 0 / 70%);
+}
+
+.officeStatus {
+  margin: 0 0 0.85rem;
+  color: #ffe1a0;
+  font-size: 0.62rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.officeCopy h3 {
+  margin: 0;
+  color: white;
+  font-size: clamp(3.6rem, 5.5vw, 6rem);
+  font-weight: 850;
+  letter-spacing: -0.07em;
+  line-height: 0.85;
+}
+
+.officeCopy > p:not(.officeStatus) {
+  max-width: 28rem;
+  margin: 1rem 0 0;
+  color: white;
+  font-size: clamp(1rem, 1.4vw, 1.26rem);
+  line-height: 1.42;
+}
+
+.officeLink {
+  display: inline-block;
+  margin-top: 1.2rem;
+  color: white;
+  font-size: 0.64rem;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+}
+
+.officeFootnote {
+  margin: 0.8rem 0 0;
+  color: rgb(255 255 255 / 40%);
+  font-size: 0.48rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 1000px) {
+  .officeGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .office {
+    min-height: 72svh;
+  }
+
+  .officeIntroGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .officeIntroGrid h2 {
+    max-width: 10ch;
+  }
+}
+
+@media (max-width: 620px) {
+  .offices {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .office {
+    min-height: 76svh;
+    padding: 1rem;
+  }
+
+  .officeCopy h3 {
+    font-size: clamp(3.7rem, 18vw, 6rem);
+  }
+
+  .officeTopline {
+    font-size: 0.54rem;
+  }
+
+  .officeFootnote {
+    line-height: 1.4;
+  }
+}
