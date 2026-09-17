@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import PrintButton from "./print-button";
-import styles from "../portfolio.module.css";
+import styles from "./resume.module.css";
 
 export const metadata: Metadata = {
   title: "Resume — Poppe van Pelt",
