@@ -169,11 +169,6 @@
 .footerMeta { display:flex; flex-direction:column; gap:14px; font-size:.63rem; line-height:1.45; }
 .footerMeta a { color:inherit; font-size:1rem; text-transform:none; letter-spacing:0; }
 
-:global(body.website-002-active .project-navigation),
-:global(body.website-002-active .steel-ball-cursor),
-:global(body.website-002-active .steel-ball-stage-origin),
-:global(body.website-002-active [data-steel-preview-owner="true"]) { display:none !important; }
-
 @media (max-width: 900px) {
   .hero { min-height: 84svh; }
   .heroImage { object-position: 58% center; }
