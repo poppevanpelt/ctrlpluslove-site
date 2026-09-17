@@ -10,6 +10,8 @@ const recentInstruments = [
     state: "READING 001",
     line: "How much can we take away before it stops being you?",
     href: "/brand-survival/",
+    image: "/home/instruments/brand-survival.webp",
+    alt: "A semicircular analogue judgment meter with three response controls",
   },
   {
     no: "023",
@@ -17,6 +19,8 @@ const recentInstruments = [
     state: "PROTOTYPE",
     line: "A question either produces evidence or earns its death.",
     href: "/chase/",
+    image: "/home/instruments/ctrl-chase.webp",
+    alt: "Three optical scopes showing a target, a spiral and a grid",
   },
   {
     no: "022",
@@ -24,6 +28,8 @@ const recentInstruments = [
     state: "ONGOING",
     line: "Map how a decision travels, not only where it ends.",
     href: "/maria/",
+    image: "/home/instruments/maria-excavation.webp",
+    alt: "A transparent archive cylinder holding punched paper records",
   },
   {
     no: "020",
@@ -31,6 +37,8 @@ const recentInstruments = [
     state: "PROTOTYPE",
     line: "Cut the fat. Keep the organ.",
     href: "/purge/",
+    image: "/home/instruments/purge.webp",
+    alt: "A document suspended inside a cylindrical pressure chamber",
   },
   {
     no: "004",
@@ -38,6 +46,8 @@ const recentInstruments = [
     state: "PROTOTYPE",
     line: "A forgotten decision must win its argument again.",
     href: "/decision-memory/",
+    image: "/home/instruments/decision-memory.webp",
+    alt: "An orange memory instrument with numbered mechanical drums",
   },
   {
     no: "001",
@@ -45,6 +55,35 @@ const recentInstruments = [
     state: "WORKING",
     line: "Collide assumptions before people collide.",
     href: "/decision-collider/",
+    image: "/home/instruments/decision-collider.webp",
+    alt: "A large decision collider with two opposing mechanical assemblies",
+  },
+] as const;
+
+const benchInstruments = [
+  {
+    code: "ASSEMBLY 008",
+    name: "DECISION TABLE",
+    image: "/home/instruments/decision-table.webp",
+    alt: "A circular steel decision table with six stations",
+  },
+  {
+    code: "ARRAY 013",
+    name: "LISTENING ARRAY",
+    image: "/home/instruments/listening-array.webp",
+    alt: "Six microphone instruments arranged around a warning light",
+  },
+  {
+    code: "FIELD KIT 019",
+    name: "EVIDENCE CASE",
+    image: "/home/instruments/evidence-case.webp",
+    alt: "An open orange field case containing calibrated objects",
+  },
+  {
+    code: "PRESS 021",
+    name: "MEANING PRESS",
+    image: "/home/instruments/meaning-press.webp",
+    alt: "An industrial press producing labelled metal forms",
   },
 ] as const;
 
@@ -86,8 +125,9 @@ export default function Home() {
         </div>
 
         <div className={styles.heroBody}>
-          <p className={styles.kicker}>SUNNYVALE ANNEX / APPLIED INTELLIGENCE</p>
-          <h1 id="home-title">WE BUILD<br />INSTRUMENTS<br />FOR HUMAN<br />JUDGMENT.</h1>
+          <p className={styles.annex}>SUNNYVALE<br />ANNEX</p>
+          <p className={styles.kicker}>APPLIED INTELLIGENCE / CALIFORNIA STATION</p>
+          <h1 id="home-title">INSTRUMENTS FOR<br />HUMAN JUDGMENT.</h1>
           <p className={styles.heroLead}>
             AI can generate more answers than we will ever need.<br />
             The interesting problem is knowing what deserves to be believed.
@@ -163,6 +203,10 @@ export default function Home() {
         <div className={styles.instrumentGrid}>
           {recentInstruments.map((instrument) => (
             <Link href={instrument.href} className={styles.instrument} key={instrument.no}>
+              <div className={styles.instrumentImage}>
+                <Image src={instrument.image} alt={instrument.alt} fill sizes="(max-width: 900px) 50vw, 33vw" />
+              </div>
+              <div className={styles.instrumentDetails}>
               <div className={styles.instrumentMeta}>
                 <span>{instrument.no}</span>
                 <span>{instrument.state}</span>
@@ -170,7 +214,23 @@ export default function Home() {
               <h3>{instrument.name}</h3>
               <p>{instrument.line}</p>
               <span className={styles.instrumentOpen}>OPEN ↗</span>
+              </div>
             </Link>
+          ))}
+        </div>
+
+        <div className={styles.benchHeader}>
+          <span>PROTOTYPE BENCH / SUNNYVALE</span>
+          <span>DO NOT CLEAN THE EVIDENCE</span>
+        </div>
+        <div className={styles.benchGrid}>
+          {benchInstruments.map((instrument) => (
+            <figure className={styles.benchInstrument} key={instrument.code}>
+              <div className={styles.benchImage}>
+                <Image src={instrument.image} alt={instrument.alt} fill sizes="(max-width: 620px) 100vw, 25vw" />
+              </div>
+              <figcaption><span>{instrument.code}</span><strong>{instrument.name}</strong></figcaption>
+            </figure>
           ))}
         </div>
       </section>

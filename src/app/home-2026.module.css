@@ -545,8 +545,8 @@
 
 .heroVeil {
   background:
-    linear-gradient(90deg, rgb(2 24 48 / 86%) 0%, rgb(2 28 52 / 64%) 37%, rgb(2 33 60 / 12%) 68%),
-    linear-gradient(180deg, rgb(0 22 43 / 44%) 0%, transparent 36%, rgb(0 24 48 / 48%) 100%);
+    linear-gradient(90deg, rgb(2 24 48 / 66%) 0%, rgb(2 28 52 / 30%) 39%, transparent 67%),
+    linear-gradient(180deg, rgb(0 22 43 / 28%) 0%, transparent 48%, rgb(0 24 48 / 42%) 100%);
 }
 
 .heroTopline,
@@ -556,22 +556,32 @@
 }
 
 .heroBody {
-  max-width: none;
+  max-width: 50rem;
 }
 
 .hero h1 {
-  max-width: 8.1ch;
+  max-width: 13ch;
   color: white;
-  font-size: clamp(4.8rem, 9.6vw, 9.7rem);
-  letter-spacing: -0.072em;
-  line-height: 0.79;
+  font-size: clamp(3.2rem, 6.1vw, 6.7rem);
+  letter-spacing: -0.06em;
+  line-height: 0.86;
   text-shadow: 0 0.08em 0.28em rgb(0 18 37 / 26%);
+}
+
+.annex {
+  margin: 0 0 1.7rem;
+  color: #ffd66b;
+  font-size: clamp(1.9rem, 3.4vw, 3.8rem);
+  font-weight: 850;
+  letter-spacing: -0.045em;
+  line-height: 0.82;
+  text-shadow: 0 2px 20px rgb(0 19 38 / 52%);
 }
 
 .heroLead {
   max-width: 35rem;
   color: white;
-  font-size: clamp(1.2rem, 1.75vw, 1.7rem);
+  font-size: clamp(1.05rem, 1.4vw, 1.35rem);
   text-shadow: 0 1px 18px rgb(0 20 40 / 60%);
 }
 
@@ -657,36 +667,102 @@
   position: relative;
   overflow: hidden;
   border-color: color-mix(in srgb, var(--deep-sky) 70%, white);
-  background: linear-gradient(145deg, white, #eef7ff);
-}
-
-.instrument::after {
-  position: absolute;
-  right: -3rem;
-  bottom: -4.5rem;
-  width: 9rem;
-  height: 9rem;
-  border: 1px solid rgb(7 80 146 / 28%);
-  border-radius: 50%;
-  box-shadow: inset 0 0 0 1.25rem rgb(8 120 209 / 5%);
-  content: "";
+  min-height: 35rem;
+  padding: 0;
+  background: white;
 }
 
 .instrument:nth-child(2n) {
-  background: linear-gradient(145deg, #fff8e9, white);
+  background: white;
 }
 
 .instrument:hover {
-  background: #dcedfa;
   transform: translateY(-0.3rem);
 }
 
+.instrumentImage {
+  position: relative;
+  min-height: 22rem;
+  overflow: hidden;
+  background: #f3c44e;
+}
+
+.instrumentImage img,
+.benchImage img {
+  object-fit: cover;
+  transition: transform 450ms cubic-bezier(.2, .7, .2, 1);
+}
+
+.instrument:hover .instrumentImage img,
+.benchInstrument:hover .benchImage img {
+  transform: scale(1.025);
+}
+
+.instrumentDetails {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 1.2rem 1.35rem 1.35rem;
+}
+
 .instrument h3 {
+  margin-top: 2.2rem;
   color: var(--deep-sky);
 }
 
 .instrumentOpen {
   color: var(--signal);
+}
+
+.benchHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: clamp(4rem, 8vw, 8rem);
+  padding: 0 0 0.8rem;
+  border-bottom: 1px solid var(--deep-sky);
+  color: var(--deep-sky);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+}
+
+.benchGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-left: 1px solid var(--deep-sky);
+}
+
+.benchInstrument {
+  min-width: 0;
+  margin: 0;
+  border-right: 1px solid var(--deep-sky);
+  border-bottom: 1px solid var(--deep-sky);
+}
+
+.benchImage {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #efbc39;
+}
+
+.benchInstrument figcaption {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.9rem;
+  color: var(--deep-sky);
+}
+
+.benchInstrument figcaption span {
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.benchInstrument figcaption strong {
+  font-size: clamp(0.85rem, 1.2vw, 1.05rem);
+  letter-spacing: -0.02em;
 }
 
 .institute {
@@ -829,6 +905,18 @@
     min-height: 100svh;
     align-content: end;
   }
+
+  .instrument {
+    min-height: 31rem;
+  }
+
+  .instrumentImage {
+    min-height: 19rem;
+  }
+
+  .benchGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 620px) {
@@ -844,8 +932,12 @@
 
   .hero h1 {
     max-width: none;
-    font-size: clamp(3.55rem, 17vw, 5.6rem);
-    line-height: 0.82;
+    font-size: clamp(2.75rem, 12.8vw, 4.4rem);
+    line-height: 0.87;
+  }
+
+  .annex {
+    font-size: clamp(1.65rem, 9vw, 2.6rem);
   }
 
   .heroLead br {
@@ -879,5 +971,17 @@
 
   .instituteCopy {
     padding-top: 2rem;
+  }
+
+  .instrument {
+    min-height: 0;
+  }
+
+  .instrumentImage {
+    min-height: 22rem;
+  }
+
+  .benchGrid {
+    grid-template-columns: 1fr;
   }
 }
