@@ -1,20 +1,20 @@
-:global(.project-navigation),
-:global(.steel-ball-cursor) {
+:global(body):has(.shell) :global(.project-navigation),
+:global(body):has(.shell) :global(.steel-ball-cursor) {
   display: none !important;
 }
 
-:global(body) {
+:global(body):has(.shell) {
   margin: 0;
   background: #f1efe8;
   color: #171717;
   cursor: auto !important;
 }
 
-:global(body *) {
+:global(body):has(.shell) * {
   cursor: auto !important;
 }
 
-:global(body a) {
+:global(body):has(.shell) a {
   cursor: pointer !important;
 }
 
