@@ -100,7 +100,24 @@ function InstrumentReadout({ type }: { type: (typeof systems)[number]["diagram"]
     return (
       <div className={styles.systemReadout} aria-hidden="true">
         <div className={styles.survivalDiagram}>
-          <span /><span /><span /><span /><span />
+          <svg viewBox="0 0 520 108" width="100%" height="100%" role="presentation">
+            <path
+              d="M6 18 C92 20 150 24 218 29 C302 35 383 39 510 44"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            />
+            <path
+              d="M6 20 C76 28 124 47 176 68 C233 91 319 91 510 91"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeDasharray="5 4"
+              opacity="0.62"
+            />
+            <text x="404" y="37" fontSize="10" fontFamily="monospace" letterSpacing="1">BRAND</text>
+            <text x="373" y="84" fontSize="10" fontFamily="monospace" letterSpacing="1" opacity="0.62">WALLPAPER</text>
+          </svg>
         </div>
         <span className={styles.diagramLabel}>remove → remove → remove</span>
       </div>
@@ -196,13 +213,13 @@ export default function PoppePortfolioPage() {
 
       <section className={styles.hero}>
         <div>
-          <div className={styles.heroIndex}>CURRENT PRACTICE / 001</div>
+          <div className={styles.heroIndex}>POPPE VAN PELT / CURRENT PRACTICE 001</div>
           <h1>
             Applied AI
             <br />
             Decision Systems
             <br />
-            Engineer.
+            Engineer
           </h1>
         </div>
         <div className={styles.heroLower}>
