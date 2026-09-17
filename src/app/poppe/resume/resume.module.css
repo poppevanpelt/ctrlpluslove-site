@@ -1,0 +1,230 @@
+.resumeShell {
+  min-height: 100vh;
+  padding: 36px;
+  background: #d8d7d0;
+  color: #171717;
+  font-family: Arial, Helvetica, sans-serif;
+  cursor: auto;
+}
+
+.resumeShell * {
+  cursor: auto;
+}
+
+.resumeShell a,
+.resumeShell button {
+  cursor: pointer;
+}
+
+.resumeToolbar {
+  display: flex;
+  width: min(100%, 980px);
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto 18px;
+}
+
+.resumeToolbar a,
+.resumeToolbar button {
+  border: 0;
+  background: none;
+  color: inherit;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.resumeToolbar button {
+  padding: 10px 12px;
+  border: 1px solid #171717;
+}
+
+.resumePage {
+  width: min(100%, 980px);
+  min-height: 1386px;
+  margin: 0 auto;
+  padding: 58px 62px 54px;
+  background: #f7f5ed;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.12);
+}
+
+.resumeHeader {
+  display: grid;
+  grid-template-columns: 1.55fr 0.75fr;
+  gap: 42px;
+  padding-bottom: 34px;
+  border-bottom: 2px solid #171717;
+}
+
+.resumeHeader h1 {
+  margin: 0 0 18px;
+  font-size: 52px;
+  font-weight: 500;
+  letter-spacing: -0.055em;
+  line-height: 0.92;
+}
+
+.resumeHeader h2 {
+  max-width: 540px;
+  margin: 0;
+  font-size: 29px;
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+.resumeMeta,
+.resumeLabel {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.resumeMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.resumeMeta a {
+  color: inherit;
+}
+
+.resumeIntro,
+.resumeSection {
+  display: grid;
+  grid-template-columns: 0.75fr 1.55fr;
+  gap: 42px;
+  padding: 30px 0 32px;
+  border-bottom: 1px solid rgba(23, 23, 23, 0.32);
+}
+
+.resumeLabel {
+  color: rgba(23, 23, 23, 0.56);
+}
+
+.resumeIntro p {
+  margin: 0;
+  font-size: 20px;
+  letter-spacing: -0.025em;
+  line-height: 1.35;
+}
+
+.resumeItems {
+  display: grid;
+  gap: 22px;
+}
+
+.resumeItem {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 18px;
+}
+
+.resumeItem > span {
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(23, 23, 23, 0.56);
+}
+
+.resumeItem h3 {
+  margin: 0 0 5px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.resumeItem p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.resumeTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.resumeTags span {
+  padding: 7px 9px;
+  border: 1px solid rgba(23, 23, 23, 0.42);
+  font-size: 12px;
+}
+
+.resumeFooter {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  padding-top: 26px;
+  font-size: 12px;
+}
+
+.resumeFooter strong {
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .resumeHeader,
+  .resumeIntro,
+  .resumeSection {
+    grid-template-columns: 1fr;
+  }
+
+  .resumePage {
+    min-height: auto;
+    padding: 44px 34px;
+  }
+}
+
+@media (max-width: 640px) {
+  .resumeShell {
+    padding: 0;
+  }
+
+  .resumeToolbar {
+    padding: 12px 16px;
+    margin: 0;
+  }
+
+  .resumePage {
+    width: 100%;
+    padding: 34px 20px;
+    box-shadow: none;
+  }
+
+  .resumeHeader h1 {
+    font-size: 44px;
+  }
+
+  .resumeItem {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+}
+
+@media print {
+  .resumeShell {
+    padding: 0;
+    background: #fff;
+  }
+
+  .resumeToolbar {
+    display: none;
+  }
+
+  .resumePage {
+    width: 100%;
+    min-height: auto;
+    margin: 0;
+    padding: 12mm 14mm;
+    background: #fff;
+    box-shadow: none;
+  }
+}
