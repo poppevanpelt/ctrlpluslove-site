@@ -21,6 +21,7 @@ export function ProjectNavigation() {
 
   if (
     pathname === "/" ||
+    pathname.startsWith("/website-002") ||
     pathname === "/decision-collider" ||
     pathname === "/decision-collider/" ||
     pathname === "/swat" ||
