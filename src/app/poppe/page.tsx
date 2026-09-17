@@ -4,6 +4,7 @@ import Link from "next/link";
 import FoundationTeller from "./foundation-teller";
 import additions from "./portfolio-additions.module.css";
 import styles from "./portfolio-page.module.css";
+import tweaks from "./nav-tweaks.module.css";
 
 export const metadata: Metadata = {
   title: "Poppe van Pelt — Applied AI Decision Systems Engineer",
@@ -181,13 +182,13 @@ export default function PoppePortfolioPage() {
   return (
     <main id="main-content" className={styles.shell}>
       <header className={styles.topbar}>
-        <Link className={styles.wordmark} href="/poppe/" aria-label="Poppe van Pelt home">PP</Link>
-        <div className={styles.topbarMeta}>
+        <Link className={`${styles.wordmark} ${tweaks.wordmark}`} href="/poppe/" aria-label="Poppe van Pelt home">PP</Link>
+        <div className={`${styles.topbarMeta} ${tweaks.identity}`}>
           <span>POPPE VAN PELT</span>
           <span>HAARLEM / NL</span>
           <span>2026</span>
         </div>
-        <nav className={styles.nav} aria-label="Portfolio navigation">
+        <nav className={`${styles.nav} ${tweaks.navigation}`} aria-label="Portfolio navigation">
           <a href="#systems">Systems</a>
           <a href="#machine-studies">Machine studies</a>
           <a href="#foundation">Foundation</a>
@@ -197,7 +198,7 @@ export default function PoppePortfolioPage() {
 
       <section className={styles.hero}>
         <div>
-          <div className={styles.heroIndex}>POPPE VAN PELT / CURRENT PRACTICE 001</div>
+          <div className={`${styles.heroIndex} ${tweaks.heroIndex}`}>POPPE VAN PELT / CURRENT PRACTICE 001</div>
           <h1>Applied AI<br />Decision Systems<br />Engineer</h1>
         </div>
         <div className={styles.heroLower}>
