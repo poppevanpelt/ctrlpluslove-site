@@ -1191,3 +1191,46 @@
 
   .exit { min-height: 68svh; }
 }
+
+
+/* WEBSITE 002 / MOBILE PASS 01: CURRENT READING ONLY */
+@media (max-width: 620px) {
+  .reading {
+    padding-top: 2rem;
+    padding-bottom: 2.35rem;
+  }
+
+  .reading .sectionLabel {
+    padding-bottom: .65rem;
+  }
+
+  .readingGrid {
+    gap: 1.5rem;
+    padding-top: 1.7rem;
+    padding-bottom: 0;
+  }
+
+  .readingCopy h2 {
+    max-width: 100%;
+    font-size: clamp(2.8rem, 11.8vw, 4rem);
+    line-height: .86;
+    letter-spacing: -.055em;
+  }
+
+  .readingCopy > p:not(.kicker) {
+    margin: 1.25rem 0 1.5rem;
+    font-size: 1rem;
+    line-height: 1.35;
+  }
+
+  .readingCopy .kicker {
+    margin-bottom: .8rem;
+  }
+
+  .curve {
+    min-height: 15rem;
+    margin-top: .4rem;
+    margin-left: 1.2rem;
+    margin-bottom: 2.8rem;
+  }
+}
