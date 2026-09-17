@@ -87,6 +87,39 @@ const benchInstruments = [
   },
 ] as const;
 
+const annexViews = [
+  {
+    code: "LAB FLOOR / 07:42",
+    name: "MORNING CALIBRATION",
+    image: "/home/instruments/annex-workshop.webp",
+    alt: "The Sunnyvale Annex workshop filled with analogue research instruments",
+  },
+  {
+    code: "BENCH 03",
+    name: "APPARATUS UNDER TEST",
+    image: "/home/instruments/apparatus-bench.webp",
+    alt: "A sunlit workbench holding several mechanical instruments",
+  },
+  {
+    code: "ARCHIVE / LIVE",
+    name: "FAILED READINGS RETAINED",
+    image: "/home/instruments/evidence-archive.webp",
+    alt: "An open laboratory archive drawer filled with paper evidence",
+  },
+  {
+    code: "CALIBRATION 02",
+    name: "CONTROL / VARIABLE",
+    image: "/home/instruments/calibration-cloches.webp",
+    alt: "Two objects beneath glass calibration cloches with analogue meters",
+  },
+  {
+    code: "ROOM 01",
+    name: "HUMAN OVERRIDE TABLE",
+    image: "/home/instruments/annex-table.webp",
+    alt: "A circular decision table and orange chair in the Sunnyvale Annex",
+  },
+] as const;
+
 const fieldNotes = [
   {
     stamp: "FIELD NOTE 017",
@@ -158,6 +191,26 @@ export default function Home() {
         <strong>REALITY HAS CLEARED THE TOWER.</strong>
         <span>HUMAN OVERRIDE · ARMED</span>
         <span>CALIFORNIA / HAARLEM</span>
+      </section>
+
+      <section className={styles.annexInterior} aria-labelledby="annex-title">
+        <div className={styles.annexHeading}>
+          <div>
+            <p className={styles.kicker}>INSIDE THE ANNEX</p>
+            <h2 id="annex-title">BUILT IN<br />SUNLIGHT.</h2>
+          </div>
+          <p>Analogue machines for the brief moment between having an answer and believing it.</p>
+        </div>
+        <div className={styles.annexGallery}>
+          {annexViews.map((view, index) => (
+            <figure className={index === 0 ? styles.annexViewLead : styles.annexView} key={view.code}>
+              <div className={styles.annexViewImage}>
+                <Image src={view.image} alt={view.alt} fill sizes={index === 0 ? "100vw" : "50vw"} />
+              </div>
+              <figcaption><span>{view.code}</span><strong>{view.name}</strong></figcaption>
+            </figure>
+          ))}
+        </div>
       </section>
 
       <section className={styles.reading} aria-labelledby="reading-title">

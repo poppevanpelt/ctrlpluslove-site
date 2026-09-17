@@ -8,6 +8,7 @@
 }
 
 .hero,
+.annexInterior,
 .reading,
 .factory,
 .institute,
@@ -613,6 +614,86 @@
   font-size: clamp(0.82rem, 1.35vw, 1.15rem);
 }
 
+.annexInterior {
+  background: #fffaf0;
+}
+
+.annexHeading {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(18rem, 0.6fr);
+  gap: clamp(2rem, 7vw, 8rem);
+  align-items: end;
+  margin-bottom: clamp(3rem, 6vw, 6rem);
+}
+
+.annexHeading h2 {
+  margin: 0;
+  color: var(--deep-sky);
+  font-size: clamp(3.6rem, 7.4vw, 7.6rem);
+  font-weight: 820;
+  letter-spacing: -0.065em;
+  line-height: 0.84;
+}
+
+.annexHeading > p {
+  max-width: 31rem;
+  margin: 0;
+  font-size: clamp(1.1rem, 1.6vw, 1.45rem);
+  line-height: 1.45;
+}
+
+.annexGallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--deep-sky);
+  border-left: 1px solid var(--deep-sky);
+}
+
+.annexView,
+.annexViewLead {
+  min-width: 0;
+  margin: 0;
+  border-right: 1px solid var(--deep-sky);
+  border-bottom: 1px solid var(--deep-sky);
+}
+
+.annexViewLead {
+  grid-column: 1 / -1;
+}
+
+.annexViewImage {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #edbd42;
+}
+
+.annexViewImage img {
+  object-fit: cover;
+  transition: transform 500ms cubic-bezier(.2, .7, .2, 1);
+}
+
+.annexView:hover .annexViewImage img,
+.annexViewLead:hover .annexViewImage img {
+  transform: scale(1.018);
+}
+
+.annexView figcaption,
+.annexViewLead figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  color: var(--deep-sky);
+  font-size: 0.62rem;
+  letter-spacing: 0.09em;
+}
+
+.annexView figcaption strong,
+.annexViewLead figcaption strong {
+  text-align: right;
+}
+
 .reading {
   background:
     linear-gradient(90deg, transparent 49.95%, rgb(8 120 209 / 12%) 50%, transparent 50.05%),
@@ -906,6 +987,10 @@
     align-content: end;
   }
 
+  .annexHeading {
+    grid-template-columns: 1fr;
+  }
+
   .instrument {
     min-height: 31rem;
   }
@@ -971,6 +1056,19 @@
 
   .instituteCopy {
     padding-top: 2rem;
+  }
+
+  .annexInterior {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .annexGallery {
+    grid-template-columns: 1fr;
+  }
+
+  .annexViewLead {
+    grid-column: auto;
   }
 
   .instrument {
