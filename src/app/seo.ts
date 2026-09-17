@@ -179,17 +179,116 @@ export const publicRoutes: PublicRoute[] = [
     path: "/steel-ball/",
     title: "The Steel Ball — ctrl+love",
     description:
-      "A small physical instrument for noticing movement, instability and the things the room would rather smooth over.",
+      "The original replica. A physical reminder to test confidence before reality does.",
     changeFrequency: "monthly",
-    priority: 0.72,
+    priority: 0.75,
+  },
+  {
+    path: "/museum/",
+    title: "Museum Shop — ctrl+love",
+    description: "Ideas. Artifacts. Consequences. Objects from the ctrl+love archive.",
+    changeFrequency: "monthly",
+    priority: 0.7,
+  },
+  {
+    path: "/artifacts/",
+    title: "The Artifact Registry — ctrl+love",
+    description: "A registry of ctrl+love objects, consequences and decision folklore.",
+    changeFrequency: "monthly",
+    priority: 0.65,
+  },
+  {
+    path: "/ai-y-fier/",
+    title: "AI-y-fier — ctrl+love",
+    description: "Empty thoughts in. Thought leadership out.",
+    changeFrequency: "monthly",
+    priority: 0.65,
+  },
+  {
+    path: "/meeting-filter/",
+    title: "The Meeting Filter — ctrl+love",
+    description: "A ctrl+love filter for deciding whether the meeting should exist.",
+    changeFrequency: "monthly",
+    priority: 0.65,
+  },
+  {
+    path: "/inside-ctrl-love/",
+    title: "Inside ctrl+love — ctrl+love",
+    description: "Tools, departments and artifacts from the ctrl+love engine.",
+    changeFrequency: "monthly",
+    priority: 0.55,
+  },
+  {
+    path: "/constitution/",
+    title: "ctrl+love constitution",
+    description: "Download the ctrl+love constitution archive.",
+    changeFrequency: "yearly",
+    priority: 0.45,
+  },
+  {
+    path: "/decision-collider/",
+    title: "Decision Collider — ctrl+love",
+    description:
+      "An interactive ctrl+love instrument for pushing one decision through observation, framing, collision, detection, and human judgment.",
+    changeFrequency: "monthly",
+    priority: 0.82,
+  },
+  {
+    path: "/living-decision-review/",
+    title: "Live Decision Simulator — ctrl+love",
+    description: "A decision room that thinks in public.",
+    changeFrequency: "yearly",
+    priority: 0.45,
+  },
+  {
+    path: "/reality/",
+    title: "Department of Reality Preservation — ctrl+love",
+    description: "A ctrl+love department document for preserving contact with reality.",
+    changeFrequency: "yearly",
+    priority: 0.35,
+  },
+  {
+    path: "/unfinished-thoughts/",
+    title: "Department of Unanswered Questions — ctrl+love",
+    description: "A ctrl+love department document for questions that refuse to close.",
+    changeFrequency: "yearly",
+    priority: 0.35,
+  },
+  {
+    path: "/necessary-elimination/",
+    title: "Department of Necessary Elimination — ctrl+love",
+    description: "A ctrl+love department document about removing what weakens the decision.",
+    changeFrequency: "yearly",
+    priority: 0.35,
+  },
+  {
+    path: "/irreversible-decisions/",
+    title: "Department of Irreversible Decisions — ctrl+love",
+    description: "A ctrl+love department document about decisions that cannot be walked back.",
+    changeFrequency: "yearly",
+    priority: 0.35,
+  },
+  {
+    path: "/essential-things/",
+    title: "Department of Essential Things — ctrl+love",
+    description: "A ctrl+love department document about protecting the thing that matters.",
+    changeFrequency: "yearly",
+    priority: 0.35,
+  },
+  {
+    path: "/consequential-belief/",
+    title: "Department of Consequential Belief — ctrl+love",
+    description: "A ctrl+love department document about belief with consequences attached.",
+    changeFrequency: "yearly",
+    priority: 0.35,
   },
 ];
 
-export function routeMetadata(path: string): Metadata {
-  const route = publicRoutes.find((item) => item.path === canonicalPath(path));
+export function routeMetadata(path: string) {
+  const route = publicRoutes.find((entry) => canonicalPath(entry.path) === canonicalPath(path));
 
   if (!route) {
-    return {};
+    throw new Error(`Missing public route metadata for ${path}`);
   }
 
   return createPageMetadata(route);
