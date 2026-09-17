@@ -70,6 +70,15 @@ export default function Home() {
   return (
     <main className={styles.page} id="main-content">
       <section className={styles.hero} aria-labelledby="home-title">
+        <Image
+          className={styles.heroImage}
+          src="/home/sunnyvale-campus.webp"
+          alt="A sunlit California research campus with palms and a steel calibration sphere"
+          fill
+          priority
+          sizes="100vw"
+        />
+        <div className={styles.heroVeil} aria-hidden="true" />
         <div className={styles.heroTopline}>
           <Link href="/" className={styles.brand}>ctrl+love</Link>
           <span>INSTITUTE FOR DECISION RESEARCH</span>
@@ -77,7 +86,7 @@ export default function Home() {
         </div>
 
         <div className={styles.heroBody}>
-          <p className={styles.kicker}>APPLIED INTELLIGENCE / HUMAN JUDGMENT</p>
+          <p className={styles.kicker}>SUNNYVALE ANNEX / APPLIED INTELLIGENCE</p>
           <h1 id="home-title">WE BUILD<br />INSTRUMENTS<br />FOR HUMAN<br />JUDGMENT.</h1>
           <p className={styles.heroLead}>
             AI can generate more answers than we will ever need.<br />
@@ -88,7 +97,7 @@ export default function Home() {
         <div className={styles.heroStatus}>
           <span>FACTORY STATUS</span>
           <strong>024 instruments</strong>
-          <span>READING 001 UNDERWAY</span>
+          <span>ALL SYSTEMS CURIOUS</span>
           <Link href="/instruments/">ENTER INSTRUMENT ROOM ↗</Link>
         </div>
 
@@ -102,6 +111,13 @@ export default function Home() {
           />
           <span>CALIBRATION MASS · 40.00 MM</span>
         </div>
+      </section>
+
+      <section className={styles.missionStrip} aria-label="Mission status">
+        <span>MISSION 2026.260</span>
+        <strong>REALITY HAS CLEARED THE TOWER.</strong>
+        <span>HUMAN OVERRIDE · ARMED</span>
+        <span>CALIFORNIA / HAARLEM</span>
       </section>
 
       <section className={styles.reading} aria-labelledby="reading-title">
@@ -160,6 +176,14 @@ export default function Home() {
       </section>
 
       <section className={styles.institute} aria-labelledby="institute-title">
+        <Image
+          className={styles.controlRoomImage}
+          src="/home/judgment-control-room.webp"
+          alt="An optimistic analog control room where people examine a polished steel sphere"
+          fill
+          sizes="100vw"
+        />
+        <div className={styles.controlRoomVeil} aria-hidden="true" />
         <div className={styles.instituteStatement}>
           <p className={styles.kicker}>THE LARGER QUESTION</p>
           <h2 id="institute-title">INTELLIGENCE<br />IS GETTING<br />CHEAPER.<br /><em>JUDGMENT ISN&apos;T.</em></h2>
@@ -174,6 +198,7 @@ export default function Home() {
             The work sits somewhere between a lab, a creative practice and a small
             institution that keeps building things to test what it thinks it knows.
           </p>
+          <p className={styles.transmission}>TRANSMISSION: THE FUTURE REMAINS A HUMAN DECISION.</p>
           <div className={styles.instituteLinks}>
             <Link href="/constitution/">INSTITUTE FOR DECISION RESEARCH ↗</Link>
             <Link href="/maria/">MARIA EXCAVATION ↗</Link>
