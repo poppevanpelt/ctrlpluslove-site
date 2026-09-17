@@ -1,0 +1,503 @@
+.page {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.page a {
+  color: inherit;
+}
+
+.hero,
+.reading,
+.factory,
+.institute,
+.field,
+.humans,
+.exit {
+  position: relative;
+  padding: clamp(5.5rem, 9vw, 9rem) clamp(1.35rem, 4vw, 4.5rem);
+  border-bottom: 1px solid var(--rule);
+}
+
+.hero {
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 2rem;
+  overflow: hidden;
+}
+
+.heroTopline,
+.sectionLabel,
+.heroStatus,
+.instrumentMeta,
+.exitFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.68rem;
+  font-weight: 760;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.heroTopline {
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.brand {
+  font-size: 0.92rem;
+  font-weight: 820;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  text-transform: none;
+}
+
+.heroBody {
+  align-self: center;
+  max-width: 88rem;
+}
+
+.kicker {
+  margin: 0 0 1.3rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.hero h1,
+.reading h2,
+.factory h2,
+.institute h2,
+.field h2,
+.humans h2,
+.exit h2 {
+  margin: 0;
+  font-weight: 820;
+  letter-spacing: -0.065em;
+  line-height: 0.86;
+  text-wrap: balance;
+}
+
+.hero h1 {
+  max-width: 10ch;
+  font-size: clamp(4.7rem, 11vw, 10.5rem);
+}
+
+.heroLead {
+  max-width: 52rem;
+  margin: clamp(2rem, 4vw, 3.5rem) 0 0;
+  font-size: clamp(1.35rem, 2.1vw, 2rem);
+  line-height: 1.24;
+}
+
+.heroStatus {
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--rule);
+}
+
+.heroStatus a,
+.readingCopy a,
+.instituteLinks a,
+.humanLinks a,
+.exit > a,
+.sectionLabel a {
+  font-weight: 800;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+}
+
+.calibration {
+  position: absolute;
+  right: clamp(1rem, 4vw, 4.5rem);
+  bottom: clamp(5.5rem, 10vw, 8.5rem);
+  width: 10rem;
+  text-align: center;
+  font-size: 0.55rem;
+  font-weight: 760;
+  letter-spacing: 0.08em;
+}
+
+.calibration img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-bottom: 0.45rem;
+  filter: grayscale(1) contrast(1.08);
+}
+
+.sectionLabel {
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.readingGrid,
+.institute,
+.humansGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2rem, 6vw, 7rem);
+}
+
+.readingGrid {
+  align-items: end;
+  padding-top: clamp(2.5rem, 6vw, 5.5rem);
+}
+
+.readingCopy h2,
+.factory h2,
+.field h2,
+.humans h2,
+.exit h2 {
+  font-size: clamp(4rem, 9vw, 8.8rem);
+}
+
+.readingCopy p:not(.kicker),
+.factoryIntro p,
+.instituteCopy p,
+.note p,
+.humanCopy p,
+.exit > p:not(.kicker) {
+  font-size: clamp(1.1rem, 1.6vw, 1.45rem);
+  line-height: 1.45;
+}
+
+.readingCopy > p:not(.kicker) {
+  max-width: 30rem;
+  margin: 2rem 0 2.25rem;
+}
+
+.curve {
+  position: relative;
+  min-height: clamp(24rem, 42vw, 36rem);
+  border-left: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  margin: 0 0 1.7rem 2.3rem;
+}
+
+.curvePlot {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.curveBrand,
+.curveWallpaper {
+  position: absolute;
+  left: 3%;
+  width: 94%;
+  height: 55%;
+  border-top: 3px solid currentColor;
+  border-radius: 48% 52% 0 0;
+  transform-origin: left center;
+}
+
+.curveBrand {
+  top: 18%;
+  transform: rotate(7deg) skewX(-13deg);
+}
+
+.curveWallpaper {
+  top: 47%;
+  transform: rotate(23deg) skewX(-22deg);
+  opacity: 0.35;
+}
+
+.curveMarkOne,
+.curveMarkTwo {
+  position: absolute;
+  right: 2%;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+}
+
+.curveMarkOne {
+  top: 24%;
+}
+
+.curveMarkTwo {
+  top: 67%;
+  opacity: 0.45;
+}
+
+.curveAxisX,
+.curveAxisY,
+.curveNote {
+  position: absolute;
+  font-size: 0.58rem;
+  font-weight: 760;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.curveAxisX {
+  right: 0;
+  bottom: -1.45rem;
+}
+
+.curveAxisY {
+  left: -2.2rem;
+  top: 0;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.curveNote {
+  left: 0;
+  bottom: -3.3rem;
+  margin: 0;
+  opacity: 0.55;
+}
+
+.factoryIntro,
+.fieldIntro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(16rem, 0.6fr);
+  gap: clamp(2rem, 5vw, 6rem);
+  align-items: end;
+  padding: clamp(3rem, 6vw, 6rem) 0;
+}
+
+.factoryIntro p {
+  max-width: 28rem;
+  margin: 0;
+}
+
+.instrumentGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--rule);
+  border-left: 1px solid var(--rule);
+}
+
+.instrument {
+  min-height: 19rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1.35rem;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  text-decoration: none;
+  transition: background-color 160ms ease, transform 160ms ease;
+}
+
+.instrument:hover {
+  background: var(--paper-soft);
+}
+
+.instrument h3 {
+  margin: 3.5rem 0 0.9rem;
+  font-size: clamp(1.6rem, 2.5vw, 2.65rem);
+  line-height: 0.94;
+  letter-spacing: -0.045em;
+}
+
+.instrument p {
+  max-width: 22rem;
+  margin: 0;
+  line-height: 1.35;
+}
+
+.instrumentOpen {
+  margin-top: auto;
+  padding-top: 2rem;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.institute {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: color-mix(in srgb, var(--paper) 22%, transparent);
+}
+
+.institute h2 {
+  font-size: clamp(4rem, 8.6vw, 8rem);
+}
+
+.institute h2 em,
+.humans h2 em {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: -0.055em;
+}
+
+.instituteCopy {
+  align-self: end;
+  max-width: 38rem;
+}
+
+.instituteCopy p:first-child {
+  font-size: clamp(1.35rem, 2.15vw, 2rem);
+}
+
+.instituteLinks,
+.humanLinks {
+  display: grid;
+  gap: 0.8rem;
+  margin-top: 2.5rem;
+  font-size: 0.72rem;
+  font-weight: 760;
+  letter-spacing: 0.09em;
+}
+
+.notes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--rule);
+  border-left: 1px solid var(--rule);
+}
+
+.note {
+  min-height: 22rem;
+  padding: 1.4rem;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+.note > span {
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+}
+
+.note h3 {
+  margin: 4.5rem 0 1rem;
+  font-size: clamp(1.65rem, 2.7vw, 2.9rem);
+  line-height: 0.93;
+  letter-spacing: -0.05em;
+}
+
+.humansGrid {
+  padding-top: clamp(3rem, 6vw, 6rem);
+}
+
+.humanCopy {
+  align-self: end;
+  max-width: 38rem;
+}
+
+.exit {
+  min-height: 85svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.exit > p:not(.kicker) {
+  max-width: 45rem;
+  margin: 2rem 0;
+}
+
+.exit > a {
+  width: fit-content;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.exitFooter {
+  position: absolute;
+  left: clamp(1.35rem, 4vw, 4.5rem);
+  right: clamp(1.35rem, 4vw, 4.5rem);
+  bottom: 1.8rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--rule);
+}
+
+@media (max-width: 900px) {
+  .heroTopline span:nth-child(2),
+  .heroStatus > span:nth-child(3) {
+    display: none;
+  }
+
+  .calibration {
+    width: 7rem;
+    right: 1rem;
+    bottom: 7.5rem;
+    opacity: 0.78;
+  }
+
+  .readingGrid,
+  .institute,
+  .humansGrid,
+  .factoryIntro,
+  .fieldIntro {
+    grid-template-columns: 1fr;
+  }
+
+  .instrumentGrid,
+  .notes {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .curve {
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 620px) {
+  .hero,
+  .reading,
+  .factory,
+  .institute,
+  .field,
+  .humans,
+  .exit {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .hero {
+    min-height: 92svh;
+  }
+
+  .heroTopline,
+  .heroStatus,
+  .sectionLabel,
+  .exitFooter {
+    font-size: 0.58rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(4.2rem, 20vw, 7rem);
+  }
+
+  .readingCopy h2,
+  .factory h2,
+  .field h2,
+  .humans h2,
+  .exit h2,
+  .institute h2 {
+    font-size: clamp(3.6rem, 17vw, 6.2rem);
+  }
+
+  .calibration {
+    display: none;
+  }
+
+  .instrumentGrid,
+  .notes {
+    grid-template-columns: 1fr;
+  }
+
+  .instrument,
+  .note {
+    min-height: 16rem;
+  }
+
+  .curve {
+    min-height: 20rem;
+    margin-left: 1.6rem;
+  }
+
+  .exitFooter span:last-child {
+    display: none;
+  }
+}

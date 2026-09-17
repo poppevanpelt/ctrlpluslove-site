@@ -76,9 +76,9 @@ export function createPageMetadata({
 export const publicRoutes: PublicRoute[] = [
   {
     path: "/",
-    title: "ctrl+love — Applied AI, Organic AI and better decisions",
+    title: "ctrl+love — Instruments for human judgment",
     description:
-      "ctrl+love is an applied-AI and applied-intelligence practice for better decisions. We work with Organic AI: what machines remember, infer and surface about brands before paid AI enters the conversation.",
+      "ctrl+love is a small experimental institution for human judgment. We build and field-test instruments that expose weak evidence, hidden assumptions, missing voices and the things decisions smooth over.",
     changeFrequency: "weekly",
     priority: 1,
   },
