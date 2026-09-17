@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import FoundationTeller from "./foundation-teller";
+import additions from "./portfolio-additions.module.css";
 import styles from "./portfolio-page.module.css";
 
 export const metadata: Metadata = {
@@ -60,11 +62,18 @@ const systems = [
   },
 ] as const;
 
+const machineStudies = [
+  { number: "STUDY 01", title: "Observation optics", system: "PRIME THE ROOM" },
+  { number: "STUDY 02", title: "Collision rig", system: "DECISION COLLIDER" },
+  { number: "STUDY 03", title: "Signal reader", system: "LIVING TICKER" },
+  { number: "STUDY 04", title: "Pressure chamber", system: "DECISION MEMORY" },
+  { number: "STUDY 05", title: "Field key", system: "FIELD UNIT / 001" },
+] as const;
+
 const lab = [
   "Atlas Mentis Humanae",
   "Human Protocol Library",
   "Protocol Compiler",
-  "ctrl+love Foundation",
   "Institute for Decision Research",
   "Field Notes / Batch Experiments",
 ];
@@ -101,20 +110,8 @@ function InstrumentReadout({ type }: { type: (typeof systems)[number]["diagram"]
       <div className={styles.systemReadout} aria-hidden="true">
         <div className={styles.survivalDiagram}>
           <svg viewBox="0 0 520 108" width="100%" height="100%" role="presentation">
-            <path
-              d="M6 18 C92 20 150 24 218 29 C302 35 383 39 510 44"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            />
-            <path
-              d="M6 20 C76 28 124 47 176 68 C233 91 319 91 510 91"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeDasharray="5 4"
-              opacity="0.62"
-            />
+            <path d="M6 18 C92 20 150 24 218 29 C302 35 383 39 510 44" fill="none" stroke="currentColor" strokeWidth="2" />
+            <path d="M6 20 C76 28 124 47 176 68 C233 91 319 91 510 91" fill="none" stroke="currentColor" strokeWidth="2" strokeDasharray="5 4" opacity="0.62" />
             <text x="404" y="37" fontSize="10" fontFamily="monospace" letterSpacing="1">BRAND</text>
             <text x="373" y="84" fontSize="10" fontFamily="monospace" letterSpacing="1" opacity="0.62">WALLPAPER</text>
           </svg>
@@ -141,9 +138,7 @@ function InstrumentReadout({ type }: { type: (typeof systems)[number]["diagram"]
   if (type === "ticker") {
     return (
       <div className={styles.systemReadout} aria-hidden="true">
-        <div className={styles.tickerDiagram}>
-          <span /><span /><span /><span /><span />
-        </div>
+        <div className={styles.tickerDiagram}><span /><span /><span /><span /><span /></div>
         <span className={styles.diagramLabel}>room movement / now</span>
       </div>
     );
@@ -151,21 +146,13 @@ function InstrumentReadout({ type }: { type: (typeof systems)[number]["diagram"]
 
   return (
     <div className={styles.systemReadout} aria-hidden="true">
-      <div className={styles.filterDiagram}>
-        <span>?</span><span>?</span><span>GO</span>
-      </div>
+      <div className={styles.filterDiagram}><span>?</span><span>?</span><span>GO</span></div>
       <span className={styles.diagramLabel}>calendar theatre blocked</span>
     </div>
   );
 }
 
-function SystemCard({
-  system,
-  index,
-}: {
-  system: (typeof systems)[number];
-  index: number;
-}) {
+function SystemCard({ system, index }: { system: (typeof systems)[number]; index: number }) {
   const body = (
     <>
       <div className={styles.systemMeta}>
@@ -184,9 +171,7 @@ function SystemCard({
   );
 
   return system.href ? (
-    <Link className={styles.systemCard} href={system.href}>
-      {body}
-    </Link>
+    <Link className={styles.systemCard} href={system.href}>{body}</Link>
   ) : (
     <article className={styles.systemCard}>{body}</article>
   );
@@ -196,9 +181,7 @@ export default function PoppePortfolioPage() {
   return (
     <main id="main-content" className={styles.shell}>
       <header className={styles.topbar}>
-        <Link className={styles.wordmark} href="/poppe/" aria-label="Poppe van Pelt home">
-          PP
-        </Link>
+        <Link className={styles.wordmark} href="/poppe/" aria-label="Poppe van Pelt home">PP</Link>
         <div className={styles.topbarMeta}>
           <span>POPPE VAN PELT</span>
           <span>HAARLEM / NL</span>
@@ -206,7 +189,8 @@ export default function PoppePortfolioPage() {
         </div>
         <nav className={styles.nav} aria-label="Portfolio navigation">
           <a href="#systems">Systems</a>
-          <a href="#experience">Field experience</a>
+          <a href="#machine-studies">Machine studies</a>
+          <a href="#foundation">Foundation</a>
           <Link href="/poppe/resume/">Resume</Link>
         </nav>
       </header>
@@ -214,21 +198,11 @@ export default function PoppePortfolioPage() {
       <section className={styles.hero}>
         <div>
           <div className={styles.heroIndex}>POPPE VAN PELT / CURRENT PRACTICE 001</div>
-          <h1>
-            Applied AI
-            <br />
-            Decision Systems
-            <br />
-            Engineer
-          </h1>
+          <h1>Applied AI<br />Decision Systems<br />Engineer</h1>
         </div>
         <div className={styles.heroLower}>
-          <p className={styles.heroStatement}>
-            I build instruments that make judgment observable, challengeable and better.
-          </p>
-          <p className={styles.heroBridge}>
-            I spent three decades making ideas. Now I build systems that help humans decide which ideas deserve to survive.
-          </p>
+          <p className={styles.heroStatement}>I build instruments that make judgment observable, challengeable and better.</p>
+          <p className={styles.heroBridge}>I spent three decades making ideas. Now I build systems that help humans decide which ideas deserve to survive.</p>
         </div>
       </section>
 
@@ -238,44 +212,50 @@ export default function PoppePortfolioPage() {
           <p>Working prototypes, live instruments and research machinery.</p>
         </div>
         <div className={styles.systemGrid}>
-          {systems.map((system, index) => (
-            <SystemCard key={system.name} system={system} index={index} />
+          {systems.map((system, index) => <SystemCard key={system.name} system={system} index={index} />)}
+        </div>
+      </section>
+
+      <section id="machine-studies" className={`${styles.section} ${additions.machineStudies}`}>
+        <div className={styles.sectionHeading}>
+          <span>02 / MACHINE STUDIES</span>
+          <p>Physical studies for systems that currently live mostly in software.</p>
+        </div>
+        <div className={additions.studyGrid}>
+          {machineStudies.map((study) => (
+            <figure className={additions.study} key={study.number}>
+              <div className={additions.studyImage} role="img" aria-label={`${study.title}, a physical machine study`} />
+              <figcaption><span>{study.number} / {study.title}</span><span>{study.system}</span></figcaption>
+            </figure>
           ))}
         </div>
       </section>
 
+      <section id="foundation" className={additions.foundation}>
+        <div className={additions.foundationHeading}>
+          <span>03 / CTRL+LOVE FOUNDATION</span>
+          <p>Measure what reading is worth before pretending attention is free.</p>
+        </div>
+        <FoundationTeller />
+        <p className={additions.foundationNote}>A live teller. Reading time in one column. Value created in the other. The number is allowed to move. The argument is not.</p>
+      </section>
+
       <section id="experience" className={`${styles.section} ${styles.experience}`}>
         <div className={styles.sectionHeading}>
-          <span>02 / FIELD EXPERIENCE</span>
+          <span>04 / FIELD EXPERIENCE</span>
           <p>Thirty years inside decisions before engineering them.</p>
         </div>
         <div className={styles.timeline}>
-          <div className={styles.timelineRow}>
-            <span>NOW</span>
-            <strong>ctrl+love</strong>
-            <p>Founder. Applied AI decision systems, instruments and live experiments.</p>
-          </div>
-          <div className={styles.timelineRow}>
-            <span>PREVIOUSLY</span>
-            <strong>Saint Amsterdam</strong>
-            <p>Co-founder. Creative practice, strategy and making things real.</p>
-          </div>
-          <div className={styles.timelineRow}>
-            <span>8 YEARS</span>
-            <strong>Apple</strong>
-            <p>Lead Creative Director, global.</p>
-          </div>
-          <div className={styles.timelineRow}>
-            <span>EARLIER</span>
-            <strong>Selmore / TBWA / advertising</strong>
-            <p>Co-founder, creative leadership and three decades of watching beautiful ideas meet organisational reality.</p>
-          </div>
+          <div className={styles.timelineRow}><span>NOW</span><strong>ctrl+love</strong><p>Founder. Applied AI decision systems, instruments and live experiments.</p></div>
+          <div className={styles.timelineRow}><span>PREVIOUSLY</span><strong>Saint Amsterdam</strong><p>Co-founder. Creative practice, strategy and making things real.</p></div>
+          <div className={styles.timelineRow}><span>8 YEARS</span><strong>Apple</strong><p>Lead Creative Director, global.</p></div>
+          <div className={styles.timelineRow}><span>EARLIER</span><strong>Selmore / TBWA / advertising</strong><p>Co-founder, creative leadership and three decades of watching beautiful ideas meet organisational reality.</p></div>
         </div>
       </section>
 
       <section className={`${styles.section} ${styles.lab}`}>
         <div className={styles.sectionHeading}>
-          <span>03 / CURRENT LAB</span>
+          <span>05 / CURRENT LAB</span>
           <p>Research that may become an instrument, or may fail usefully.</p>
         </div>
         <div className={styles.labGrid}>
@@ -289,19 +269,14 @@ export default function PoppePortfolioPage() {
       </section>
 
       <section className={styles.interruption}>
-        <span>04 / THE SUBARU</span>
+        <span>06 / THE SUBARU</span>
         <h2>Wait, what?</h2>
-        <p>
-          The recurring interruption behind the work. Not contrarianism. A reflex against premature certainty.
-        </p>
+        <p>The recurring interruption behind the work. Not contrarianism. A reflex against premature certainty.</p>
         <blockquote>If everybody agrees too quickly, inspect the room.</blockquote>
       </section>
 
       <footer className={styles.footer}>
-        <div>
-          <span>POPPE VAN PELT</span>
-          <strong>Applied AI Decision Systems Engineer</strong>
-        </div>
+        <div><span>POPPE VAN PELT</span><strong>Applied AI Decision Systems Engineer</strong></div>
         <div className={styles.footerLinks}>
           <Link href="/poppe/resume/">Resume</Link>
           <a href="https://www.linkedin.com/in/poppevanpelt/">LinkedIn ↗</a>
