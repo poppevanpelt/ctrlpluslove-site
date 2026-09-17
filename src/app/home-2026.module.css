@@ -1000,6 +1000,119 @@
     linear-gradient(90deg, rgb(15 25 23 / 48%) 0%, transparent 65%);
 }
 
+.bloemendaalArchitecture {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+}
+
+.observationWindow {
+  position: absolute;
+  top: 31%;
+  left: 8%;
+  width: 84%;
+  height: clamp(1.15rem, 2.1vw, 2rem);
+  display: grid;
+  grid-template-columns: 1fr 0.32fr 0.72fr;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid rgb(205 224 221 / 68%);
+  background: rgb(7 14 15 / 76%);
+  box-shadow:
+    0 0 0 0.45rem rgb(34 39 36 / 54%),
+    0 0.55rem 2rem rgb(0 0 0 / 42%);
+  transform: perspective(900px) rotateY(-2deg);
+}
+
+.observationWindow i {
+  display: block;
+  background:
+    linear-gradient(180deg, rgb(185 208 207 / 62%), rgb(73 101 102 / 46%) 48%, rgb(5 17 20 / 82%) 49%),
+    linear-gradient(90deg, transparent, rgb(255 255 255 / 12%), transparent);
+}
+
+.weatherMast {
+  position: absolute;
+  top: 8%;
+  right: 17%;
+  width: 5.8rem;
+  height: 10rem;
+  filter: drop-shadow(0 0.35rem 0.45rem rgb(0 0 0 / 34%));
+}
+
+.weatherMast i {
+  position: absolute;
+  display: block;
+}
+
+.mastStem {
+  left: 50%;
+  bottom: 0;
+  width: 2px;
+  height: 8.7rem;
+  background: rgb(218 224 216 / 88%);
+}
+
+.mastVane {
+  top: 1.8rem;
+  left: 50%;
+  width: 4.9rem;
+  height: 1px;
+  background: rgb(218 224 216 / 88%);
+  transform: translateX(-50%) rotate(-12deg);
+  transform-origin: center;
+}
+
+.mastVane::after {
+  position: absolute;
+  right: -0.15rem;
+  top: -0.28rem;
+  width: 0;
+  height: 0;
+  border-top: 0.3rem solid transparent;
+  border-bottom: 0.3rem solid transparent;
+  border-left: 0.7rem solid rgb(218 224 216 / 88%);
+  content: "";
+}
+
+.mastCup {
+  top: 0.25rem;
+  left: 50%;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 1px solid rgb(218 224 216 / 88%);
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+
+.mastCup::before,
+.mastCup::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2.9rem;
+  height: 1px;
+  background: rgb(218 224 216 / 88%);
+  content: "";
+  transform: translate(-50%, -50%);
+}
+
+.mastCup::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.weatherReadout {
+  position: absolute;
+  top: 24%;
+  right: 1.25rem;
+  font-size: 0.48rem;
+  font-weight: 780;
+  letter-spacing: 0.11em;
+  color: rgb(222 235 227 / 72%);
+  text-shadow: 0 1px 12px rgb(0 0 0 / 72%);
+}
+
 .officeTopline {
   display: flex;
   justify-content: space-between;
