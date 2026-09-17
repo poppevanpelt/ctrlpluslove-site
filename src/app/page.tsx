@@ -191,16 +191,29 @@ export default function Home() {
               sizes="(max-width: 900px) 100vw, 34vw"
             />
             <div className={styles.officeVeil} aria-hidden="true" />
+            <div className={styles.bloemendaalArchitecture} aria-hidden="true">
+              <span className={styles.observationWindow}>
+                <i />
+                <i />
+                <i />
+              </span>
+              <span className={styles.weatherMast}>
+                <i className={styles.mastStem} />
+                <i className={styles.mastVane} />
+                <i className={styles.mastCup} />
+              </span>
+              <span className={styles.weatherReadout}>WIND 284° / 7.2 M/S · PRESS 1011.4 HPA</span>
+            </div>
             <div className={styles.officeTopline}>
               <span>STATION 03</span>
               <span>BLOEMENDAAL · NL</span>
             </div>
             <div className={styles.officeCopy}>
-              <p className={styles.officeStatus}>DUNE STATION / QUIET / LOW SIGNAL</p>
+              <p className={styles.officeStatus}>DUNE STATION / QUIET / WESTERLY 7.2 M/S</p>
               <h3>BLOEMENDAAL</h3>
               <p>
-                Concrete, dune grass, wind. A building with very little interest in being found.
-                For decisions that need less input, not more.
+                Almost buried. One absurdly wide window across the dunes, and a weather mast
+                measuring conditions nobody has proved are relevant to decisions yet.
               </p>
             </div>
           </article>
