@@ -1,3 +1,4 @@
+// Vercel preview rebuild marker: 2026-09-17 10:32 Europe/Amsterdam
 import Image from "next/image";
 import Link from "next/link";
 
