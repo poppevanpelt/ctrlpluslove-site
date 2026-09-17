@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import styles from "./portfolio-page.module.css";
+import styles from "./portfolio-additions.module.css";
 
 const BASE_MINUTES = 17;
 const BASE_VALUE = 42000;
