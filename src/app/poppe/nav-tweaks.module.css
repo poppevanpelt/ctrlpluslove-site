@@ -17,7 +17,11 @@
 }
 
 .heroIndex {
-  font-size: 12px;
+  font-size: clamp(16px, 1.45vw, 22px);
+  font-weight: 700;
+  letter-spacing: 0.045em;
+  color: #171717;
+  margin-bottom: 24px;
 }
 
 @media (max-width: 900px) {
@@ -37,5 +41,10 @@
   .navigation {
     gap: 11px;
     font-size: 10px;
+  }
+
+  .heroIndex {
+    font-size: 14px;
+    line-height: 1.2;
   }
 }
