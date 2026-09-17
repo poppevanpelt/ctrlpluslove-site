@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import styles from "./portfolio.module.css";
+import styles from "./portfolio-page.module.css";
 
 export const metadata: Metadata = {
   title: "Poppe van Pelt — Applied AI Decision Systems Engineer",
@@ -14,36 +14,48 @@ const systems = [
     name: "Decision Collider",
     description:
       "A six-chamber live decision experiment: observe, interpret, frame, collide, detect, decide.",
+    spec: "LIVE / SIX CHAMBERS",
     href: "/decision-collider/",
+    diagram: "collider",
   },
   {
     name: "Prime the Room",
     description:
       "Tests whether the room itself is quietly steering people toward a conclusion before the work even begins.",
+    spec: "ROOM BIAS / PRE-DECISION",
+    diagram: "prime",
   },
   {
     name: "Brand Survival",
     description:
       "Subtract recognition layer by layer and watch what still breathes. Distinctive brand or category wallpaper?",
+    spec: "SUBTRACTION / SIGNAL",
     href: "/brand-survival/",
+    diagram: "survival",
   },
   {
     name: "Decision Memory",
     description:
       "Preserves assumptions, opposition, evidence, controls and uncertainty so an organisation remembers why it decided, not only what.",
+    spec: "EVIDENCE / ORGANISATIONAL MEMORY",
+    diagram: "memory",
   },
   {
     name: "Living Ticker",
     description:
       "Turns live room movement into observable signals: challenge, reframe, build, ownership and rupture.",
+    spec: "LIVE SIGNALS / ROOM MOVEMENT",
+    diagram: "ticker",
   },
   {
     name: "Meeting Filter",
     description:
       "A three-question gate for deciding whether a meeting deserves to exist before calendars fill up.",
+    spec: "THREE GATES / BEFORE CALENDAR",
     href: "/meeting-filter/",
+    diagram: "filter",
   },
-];
+] as const;
 
 const lab = [
   "Atlas Mentis Humanae",
@@ -53,6 +65,79 @@ const lab = [
   "Institute for Decision Research",
   "Field Notes / Batch Experiments",
 ];
+
+function InstrumentReadout({ type }: { type: (typeof systems)[number]["diagram"] }) {
+  if (type === "collider") {
+    return (
+      <div className={styles.systemReadout} aria-hidden="true">
+        <div className={styles.colliderDiagram}>
+          {['OBSERVE', 'INTERPRET', 'FRAME', 'COLLIDE', 'DETECT', 'DECIDE'].map((label) => (
+            <span key={label}>{label}</span>
+          ))}
+        </div>
+        <span className={styles.diagramLabel}>cause → observation</span>
+      </div>
+    );
+  }
+
+  if (type === "prime") {
+    return (
+      <div className={styles.systemReadout} aria-hidden="true">
+        <div className={styles.primeDiagram}>
+          <span className={styles.primeInput}>WORK ENTERS</span>
+          <span className={styles.primeRoom}>ROOM ALREADY LEANS</span>
+          <span className={styles.primeTarget}>?</span>
+        </div>
+        <span className={styles.diagramLabel}>pre-existing vector</span>
+      </div>
+    );
+  }
+
+  if (type === "survival") {
+    return (
+      <div className={styles.systemReadout} aria-hidden="true">
+        <div className={styles.survivalDiagram}>
+          <span /><span /><span /><span /><span />
+        </div>
+        <span className={styles.diagramLabel}>remove → remove → remove</span>
+      </div>
+    );
+  }
+
+  if (type === "memory") {
+    return (
+      <div className={styles.systemReadout} aria-hidden="true">
+        <div className={styles.memoryDiagram}>
+          <span>ASSUMPTION</span>
+          <span>OPPOSITION</span>
+          <span>EVIDENCE</span>
+          <span>UNCERTAINTY</span>
+        </div>
+        <span className={styles.diagramLabel}>decision provenance</span>
+      </div>
+    );
+  }
+
+  if (type === "ticker") {
+    return (
+      <div className={styles.systemReadout} aria-hidden="true">
+        <div className={styles.tickerDiagram}>
+          <span /><span /><span /><span /><span />
+        </div>
+        <span className={styles.diagramLabel}>room movement / now</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.systemReadout} aria-hidden="true">
+      <div className={styles.filterDiagram}>
+        <span>?</span><span>?</span><span>GO</span>
+      </div>
+      <span className={styles.diagramLabel}>calendar theatre blocked</span>
+    </div>
+  );
+}
 
 function SystemCard({
   system,
@@ -67,6 +152,11 @@ function SystemCard({
         <span>SELECTED SYSTEM</span>
         <span>{String(index + 1).padStart(2, "0")}</span>
       </div>
+      <div className={styles.systemSpec}>
+        <span>INSTRUMENT</span>
+        <span>{system.spec}</span>
+      </div>
+      <InstrumentReadout type={system.diagram} />
       <h3>{system.name}</h3>
       <p>{system.description}</p>
       <span className={styles.systemAction}>{system.href ? "OPEN SYSTEM ↗" : "IN DEVELOPMENT"}</span>
@@ -102,14 +192,16 @@ export default function PoppePortfolioPage() {
       </header>
 
       <section className={styles.hero}>
-        <div className={styles.heroIndex}>CURRENT PRACTICE / 001</div>
-        <h1>
-          Applied AI
-          <br />
-          Decision Systems
-          <br />
-          Engineer.
-        </h1>
+        <div>
+          <div className={styles.heroIndex}>CURRENT PRACTICE / 001</div>
+          <h1>
+            Applied AI
+            <br />
+            Decision Systems
+            <br />
+            Engineer.
+          </h1>
+        </div>
         <div className={styles.heroLower}>
           <p className={styles.heroStatement}>
             I build instruments that make judgment observable, challengeable and better.
@@ -118,10 +210,6 @@ export default function PoppePortfolioPage() {
             I spent three decades making ideas. Now I build systems that help humans decide which ideas deserve to survive.
           </p>
         </div>
-        <aside className={styles.waitTag} aria-label="Recurring question">
-          <span>RECURRING INTERRUPTION</span>
-          <strong>Wait, what?</strong>
-        </aside>
       </section>
 
       <section id="systems" className={styles.section}>
@@ -181,7 +269,7 @@ export default function PoppePortfolioPage() {
       </section>
 
       <section className={styles.interruption}>
-        <span>THE SUBARU</span>
+        <span>04 / THE SUBARU</span>
         <h2>Wait, what?</h2>
         <p>
           The recurring interruption behind the work. Not contrarianism. A reflex against premature certainty.
