@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import styles from "./home-2026.module.css";
+import progress from "./home-progress.module.css";
 
 const recentInstruments = [
   {
@@ -48,6 +49,15 @@ const recentInstruments = [
   },
 ] as const;
 
+const instrumentCabinet = [
+  { name: "PITCH CRASH TEST", image: "/instruments/01-pitch-crash-test.webp" },
+  { name: "DECISION COLLIDER", image: "/instruments/02-decision-collider.webp" },
+  { name: "LIVING TICKER", image: "/instruments/03-living-ticker.webp" },
+  { name: "BRAND TRANSPLANT", image: "/instruments/04-brand-transplant.webp" },
+  { name: "SIGNAL DISTORTION", image: "/instruments/05-signal-distortion.webp" },
+  { name: "DECISION SURFACE", image: "/instruments/06-decision-surface.webp" },
+] as const;
+
 const fieldNotes = [
   {
     stamp: "FIELD NOTE 017",
@@ -69,23 +79,23 @@ const fieldNotes = [
 export default function Home() {
   return (
     <main className={styles.page} id="main-content">
-      <section className={styles.hero} aria-labelledby="home-title">
+      <section className={`${styles.hero} ${progress.hero}`} aria-labelledby="home-title">
         <Image
-          className={styles.heroImage}
+          className={`${styles.heroImage} ${progress.heroImage}`}
           src="/home/sunnyvale-campus.webp"
           alt="A sunlit California research campus with palms and a steel calibration sphere"
           fill
           priority
           sizes="100vw"
         />
-        <div className={styles.heroVeil} aria-hidden="true" />
+        <div className={`${styles.heroVeil} ${progress.heroVeil}`} aria-hidden="true" />
         <div className={styles.heroTopline}>
           <Link href="/" className={styles.brand}>ctrl+love</Link>
           <span>INSTITUTE FOR DECISION RESEARCH</span>
           <span>HAARLEM · NL</span>
         </div>
 
-        <div className={styles.heroBody}>
+        <div className={`${styles.heroBody} ${progress.heroBody}`}>
           <p className={styles.kicker}>SUNNYVALE ANNEX / APPLIED INTELLIGENCE</p>
           <h1 id="home-title">WE BUILD<br />INSTRUMENTS<br />FOR HUMAN<br />JUDGMENT.</h1>
           <p className={styles.heroLead}>
@@ -94,22 +104,17 @@ export default function Home() {
           </p>
         </div>
 
+        <div className={progress.annexPlate} aria-label="Sunnyvale Annex">
+          <strong>SUNNYVALE ANNEX</strong>
+          <span>CALIFORNIA FIELD STATION</span>
+          <span>HUMAN JUDGMENT LAB</span>
+        </div>
+
         <div className={styles.heroStatus}>
           <span>FACTORY STATUS</span>
           <strong>024 instruments</strong>
           <span>ALL SYSTEMS CURIOUS</span>
           <Link href="/instruments/">ENTER INSTRUMENT ROOM ↗</Link>
-        </div>
-
-        <div className={styles.calibration} aria-hidden="true">
-          <Image
-            src="/museum/steel-ball-packshot-cutout.png"
-            alt=""
-            width={156}
-            height={156}
-            priority
-          />
-          <span>CALIBRATION MASS · 40.00 MM</span>
         </div>
       </section>
 
@@ -156,10 +161,30 @@ export default function Home() {
           <Link href="/instruments/">ALL 024 INSTRUMENTS ↗</Link>
         </div>
         <div className={styles.factoryIntro}>
-          <h2 id="factory-title">RECENTLY<br />BUILT.</h2>
-          <p>Working instruments, prototypes, field tests and useful failures.</p>
+          <h2 id="factory-title">THE<br />MACHINERY.</h2>
+          <p>Not dashboards dressed up as tools. Objects with a job, a behavior and a way to fail.</p>
         </div>
 
+        <div className={progress.instrumentShelf} aria-label="Instrument cabinet">
+          {instrumentCabinet.map((instrument) => (
+            <Link href="/instruments/" className={progress.instrumentObject} key={instrument.name}>
+              <div className={progress.instrumentImage}>
+                <Image
+                  src={instrument.image}
+                  alt={`${instrument.name} instrument`}
+                  fill
+                  sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                />
+              </div>
+              <span>{instrument.name}</span>
+            </Link>
+          ))}
+        </div>
+
+        <div className={progress.recentLabel}>
+          <span>RECENTLY BUILT / TESTED / BROKEN</span>
+          <span>LIVE INVENTORY</span>
+        </div>
         <div className={styles.instrumentGrid}>
           {recentInstruments.map((instrument) => (
             <Link href={instrument.href} className={styles.instrument} key={instrument.no}>
@@ -226,6 +251,35 @@ export default function Home() {
         </div>
       </section>
 
+      <section className={`${styles.humans} ${progress.genealogy}`} aria-labelledby="genealogy-title">
+        <div className={styles.sectionLabel}>
+          <span>PERSONA GENEALOGY</span>
+          <span>NOT A DEMOGRAPHIC · A LINEAGE</span>
+        </div>
+        <div className={progress.genealogyGrid}>
+          <div className={progress.genealogyPortrait}>
+            <Image
+              src="/room/personas/nick-deckman.jpg"
+              alt="Nick Deckman synthetic persona"
+              fill
+              sizes="(max-width: 800px) 100vw, 42vw"
+            />
+            <span>NICK DECKMAN</span>
+          </div>
+          <div className={progress.genealogyCopy}>
+            <p className={styles.kicker}>GENEALOGY SAMPLE / NICK DECKMAN</p>
+            <h2 id="genealogy-title">60% SIMON.<br />30% ERIK.<br />10% MAXIME.</h2>
+            <div className={progress.genealogyRows}>
+              <div><strong>60%</strong><span>SIMON NEEFJES</span></div>
+              <div><strong>30%</strong><span>ERIK KELLERHUIS</span></div>
+              <div><strong>10%</strong><span>MAXIME HARTMAN</span></div>
+            </div>
+            <p>Our synthetic people have ancestry. The mix matters because the pressure they apply comes from somewhere.</p>
+            <Link href="/room/">MEET THE ROOM ↗</Link>
+          </div>
+        </div>
+      </section>
+
       <section className={styles.humans} aria-labelledby="humans-title">
         <div className={styles.sectionLabel}>
           <span>WHO IS OPERATING THE MACHINERY</span>
@@ -233,11 +287,11 @@ export default function Home() {
         </div>
         <div className={styles.humansGrid}>
           <div>
-            <h2 id="humans-title">25 YEARS<br />ADVERTISING.<br />8 YEARS APPLE.<br /><em>THEN THIS.</em></h2>
+            <h2 id="humans-title">3 DECADES<br />ADVERTISING.<br /><em>THEN THIS.</em></h2>
           </div>
           <div className={styles.humanCopy}>
             <p>
-              Poppe van Pelt founded ctrl+love after decades spent making things clearer,
+              Poppe van Pelt founded ctrl+love after three decades spent making ideas clearer,
               sharper and more persuasive. The current obsession is different: building
               instruments for the moments when clarity itself needs to be tested.
             </p>
