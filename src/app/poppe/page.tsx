@@ -23,6 +23,7 @@ const systems = [
     description:
       "Tests whether the room itself is quietly steering people toward a conclusion before the work even begins.",
     spec: "ROOM BIAS / PRE-DECISION",
+    href: undefined,
     diagram: "prime",
   },
   {
@@ -38,6 +39,7 @@ const systems = [
     description:
       "Preserves assumptions, opposition, evidence, controls and uncertainty so an organisation remembers why it decided, not only what.",
     spec: "EVIDENCE / ORGANISATIONAL MEMORY",
+    href: undefined,
     diagram: "memory",
   },
   {
@@ -45,6 +47,7 @@ const systems = [
     description:
       "Turns live room movement into observable signals: challenge, reframe, build, ownership and rupture.",
     spec: "LIVE SIGNALS / ROOM MOVEMENT",
+    href: undefined,
     diagram: "ticker",
   },
   {
@@ -71,7 +74,7 @@ function InstrumentReadout({ type }: { type: (typeof systems)[number]["diagram"]
     return (
       <div className={styles.systemReadout} aria-hidden="true">
         <div className={styles.colliderDiagram}>
-          {['OBSERVE', 'INTERPRET', 'FRAME', 'COLLIDE', 'DETECT', 'DECIDE'].map((label) => (
+          {["OBSERVE", "INTERPRET", "FRAME", "COLLIDE", "DETECT", "DECIDE"].map((label) => (
             <span key={label}>{label}</span>
           ))}
         </div>
