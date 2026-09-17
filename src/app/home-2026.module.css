@@ -83,8 +83,11 @@
 }
 
 .hero h1 {
-  max-width: 10ch;
+  max-width: none;
   font-size: clamp(4.7rem, 11vw, 10.5rem);
+  overflow-wrap: normal;
+  word-break: keep-all;
+  hyphens: none;
 }
 
 .heroLead {
@@ -499,5 +502,382 @@
 
   .exitFooter span:last-child {
     display: none;
+  }
+}
+
+/* SUNNYVALE ANNEX / CALIFORNIA OPTIMISM PASS */
+.page {
+  --sun: #ffb000;
+  --sky: #0878d1;
+  --deep-sky: #075092;
+  --cloud: #f7f5ed;
+  --signal: #ff5a24;
+  background: var(--cloud);
+}
+
+.hero {
+  min-height: 100svh;
+  padding-top: clamp(2.5rem, 4vw, 4.5rem);
+  padding-bottom: clamp(2.5rem, 4vw, 4.5rem);
+  color: white;
+  border-bottom: 0;
+  isolation: isolate;
+}
+
+.heroImage,
+.controlRoomImage {
+  z-index: -3;
+  object-fit: cover;
+}
+
+.heroImage {
+  object-position: 58% center;
+  transform: scale(1.002);
+}
+
+.heroVeil,
+.controlRoomVeil {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  pointer-events: none;
+}
+
+.heroVeil {
+  background:
+    linear-gradient(90deg, rgb(2 24 48 / 86%) 0%, rgb(2 28 52 / 64%) 37%, rgb(2 33 60 / 12%) 68%),
+    linear-gradient(180deg, rgb(0 22 43 / 44%) 0%, transparent 36%, rgb(0 24 48 / 48%) 100%);
+}
+
+.heroTopline,
+.heroStatus {
+  border-color: rgb(255 255 255 / 52%);
+  text-shadow: 0 1px 20px rgb(0 20 43 / 45%);
+}
+
+.heroBody {
+  max-width: none;
+}
+
+.hero h1 {
+  max-width: 8.1ch;
+  color: white;
+  font-size: clamp(4.8rem, 9.6vw, 9.7rem);
+  letter-spacing: -0.072em;
+  line-height: 0.79;
+  text-shadow: 0 0.08em 0.28em rgb(0 18 37 / 26%);
+}
+
+.heroLead {
+  max-width: 35rem;
+  color: white;
+  font-size: clamp(1.2rem, 1.75vw, 1.7rem);
+  text-shadow: 0 1px 18px rgb(0 20 40 / 60%);
+}
+
+.hero .kicker {
+  color: #ffe9a9;
+}
+
+.calibration {
+  display: none;
+}
+
+.missionStrip {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 1.5rem;
+  align-items: center;
+  min-height: 4.3rem;
+  padding: 0.85rem clamp(1.35rem, 4vw, 4.5rem);
+  background: var(--signal);
+  color: white;
+  border-bottom: 1px solid #9f2a0b;
+  font-size: 0.66rem;
+  font-weight: 820;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.missionStrip strong {
+  font-size: clamp(0.82rem, 1.35vw, 1.15rem);
+}
+
+.reading {
+  background:
+    linear-gradient(90deg, transparent 49.95%, rgb(8 120 209 / 12%) 50%, transparent 50.05%),
+    var(--cloud);
+}
+
+.reading .sectionLabel,
+.factory .sectionLabel,
+.field .sectionLabel,
+.humans .sectionLabel {
+  color: var(--deep-sky);
+  border-color: color-mix(in srgb, var(--sky) 45%, var(--rule));
+}
+
+.readingCopy h2 {
+  color: var(--deep-sky);
+}
+
+.readingCopy a,
+.factory a,
+.humanLinks a,
+.exit > a {
+  color: inherit;
+}
+
+.curve {
+  color: var(--signal);
+  border-color: var(--deep-sky);
+  background:
+    linear-gradient(rgb(8 120 209 / 8%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(8 120 209 / 8%) 1px, transparent 1px);
+  background-size: 2rem 2rem;
+}
+
+.curveWallpaper {
+  color: var(--deep-sky);
+}
+
+.factory {
+  background: white;
+}
+
+.factoryIntro h2 {
+  color: var(--deep-sky);
+}
+
+.instrumentGrid {
+  border-color: var(--deep-sky);
+}
+
+.instrument {
+  position: relative;
+  overflow: hidden;
+  border-color: color-mix(in srgb, var(--deep-sky) 70%, white);
+  background: linear-gradient(145deg, white, #eef7ff);
+}
+
+.instrument::after {
+  position: absolute;
+  right: -3rem;
+  bottom: -4.5rem;
+  width: 9rem;
+  height: 9rem;
+  border: 1px solid rgb(7 80 146 / 28%);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.25rem rgb(8 120 209 / 5%);
+  content: "";
+}
+
+.instrument:nth-child(2n) {
+  background: linear-gradient(145deg, #fff8e9, white);
+}
+
+.instrument:hover {
+  background: #dcedfa;
+  transform: translateY(-0.3rem);
+}
+
+.instrument h3 {
+  color: var(--deep-sky);
+}
+
+.instrumentOpen {
+  color: var(--signal);
+}
+
+.institute {
+  min-height: min(92rem, 100svh);
+  align-items: end;
+  overflow: hidden;
+  color: white;
+  border: 0;
+  isolation: isolate;
+}
+
+.controlRoomImage {
+  object-position: center;
+}
+
+.controlRoomVeil {
+  background:
+    linear-gradient(90deg, rgb(3 28 50 / 82%) 0%, rgb(3 31 54 / 52%) 48%, rgb(3 28 50 / 24%) 100%),
+    linear-gradient(180deg, rgb(1 22 43 / 18%) 0%, rgb(1 22 43 / 74%) 100%);
+}
+
+.instituteStatement,
+.instituteCopy {
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 2px 22px rgb(0 15 32 / 62%);
+}
+
+.institute h2 {
+  color: white;
+}
+
+.institute h2 em {
+  color: #ffd77a;
+}
+
+.instituteLinks a {
+  color: white;
+}
+
+.transmission {
+  margin-top: 2.2rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgb(255 214 122 / 78%);
+  color: #ffe4a6;
+  font-size: 0.68rem !important;
+  font-weight: 850;
+  letter-spacing: 0.13em;
+}
+
+.field {
+  background:
+    radial-gradient(circle at 83% 16%, rgb(255 255 255 / 88%) 0 2.5rem, transparent 2.6rem),
+    linear-gradient(180deg, #a9dcff 0%, #e6f5ff 47%, #fff6d2 47.2%, #f7d16c 100%);
+}
+
+.fieldIntro h2 {
+  color: var(--deep-sky);
+}
+
+.notes {
+  border-color: var(--deep-sky);
+  box-shadow: 0 1.5rem 5rem rgb(0 64 117 / 13%);
+}
+
+.note {
+  border-color: var(--deep-sky);
+  background: rgb(255 255 255 / 82%);
+  backdrop-filter: blur(10px);
+}
+
+.note > span {
+  color: var(--signal);
+}
+
+.humans {
+  background: #eaf6ff;
+}
+
+.humans h2 {
+  color: var(--deep-sky);
+}
+
+.humans h2 em {
+  color: var(--signal);
+}
+
+.exit {
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 82% 45%, rgb(255 182 0 / 94%) 0 0.45rem, transparent 0.5rem),
+    radial-gradient(circle at 82% 45%, transparent 0 7rem, rgb(255 255 255 / 22%) 7.05rem 7.12rem, transparent 7.18rem),
+    radial-gradient(circle at 82% 45%, transparent 0 14rem, rgb(255 255 255 / 14%) 14.05rem 14.12rem, transparent 14.18rem),
+    linear-gradient(135deg, #0878d1, #064681);
+  color: white;
+}
+
+.exit::after {
+  position: absolute;
+  right: -4vw;
+  bottom: -14vw;
+  width: 45vw;
+  height: 45vw;
+  border: 1px solid rgb(255 255 255 / 24%);
+  border-radius: 50%;
+  content: "";
+}
+
+.exit h2,
+.exit .kicker,
+.exit > p,
+.exit > a,
+.exitFooter {
+  position: relative;
+  z-index: 1;
+}
+
+.exit > a {
+  padding: 0.9rem 1.15rem;
+  background: var(--signal);
+  color: white;
+  text-decoration: none;
+}
+
+.exitFooter {
+  border-color: rgb(255 255 255 / 42%);
+}
+
+@media (max-width: 900px) {
+  .missionStrip {
+    grid-template-columns: 1fr auto;
+  }
+
+  .missionStrip span:nth-child(3),
+  .missionStrip span:nth-child(4) {
+    display: none;
+  }
+
+  .institute {
+    min-height: 100svh;
+    align-content: end;
+  }
+}
+
+@media (max-width: 620px) {
+  .heroImage {
+    object-position: 67% center;
+  }
+
+  .heroVeil {
+    background:
+      linear-gradient(90deg, rgb(2 24 48 / 82%) 0%, rgb(2 28 52 / 55%) 72%, rgb(2 33 60 / 25%) 100%),
+      linear-gradient(180deg, rgb(0 22 43 / 38%) 0%, transparent 30%, rgb(0 24 48 / 60%) 100%);
+  }
+
+  .hero h1 {
+    max-width: none;
+    font-size: clamp(3.55rem, 17vw, 5.6rem);
+    line-height: 0.82;
+  }
+
+  .heroLead br {
+    display: none;
+  }
+
+  .heroStatus {
+    display: grid;
+    grid-template-columns: 1fr auto;
+  }
+
+  .heroStatus > span:nth-child(3) {
+    display: none;
+  }
+
+  .missionStrip {
+    grid-template-columns: 1fr;
+  }
+
+  .missionStrip > span:first-child {
+    display: none;
+  }
+
+  .controlRoomImage {
+    object-position: 56% center;
+  }
+
+  .institute {
+    min-height: 115svh;
+  }
+
+  .instituteCopy {
+    padding-top: 2rem;
   }
 }
