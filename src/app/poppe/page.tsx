@@ -234,16 +234,8 @@ export default function PoppePortfolioPage() {
 
       <section id="foundation" className={additions.foundation}>
         <div className={additions.foundationIntro}>
-          <div className={additions.foundationBrand} aria-label="ctrl+love Foundation">
-            <div className={additions.foundationPath} aria-hidden="true">
-              <span className={additions.foundationNode}>ACCESS</span>
-              <span className={additions.foundationArrow}>→</span>
-              <span className={additions.foundationNode}>SKILLS</span>
-              <span className={additions.foundationArrow}>→</span>
-              <span className={additions.foundationNode}>LOCAL IMPACT</span>
-            </div>
-            <div className={additions.foundationLogo}>ctrl+love</div>
-            <div className={additions.foundationWord}>foundation</div>
+          <div className={additions.foundationBrand}>
+            <img className={additions.foundationArtwork} src="/poppe/foundation-logo.svg" alt="ctrl+love Foundation. Access, skills, local impact." />
           </div>
           <div className={additions.foundationMission}>
             <span>03 / CTRL+LOVE FOUNDATION</span>
