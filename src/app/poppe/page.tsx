@@ -233,12 +233,26 @@ export default function PoppePortfolioPage() {
       </section>
 
       <section id="foundation" className={additions.foundation}>
-        <div className={additions.foundationHeading}>
-          <span>03 / CTRL+LOVE FOUNDATION</span>
-          <p>Measure what reading is worth before pretending attention is free.</p>
+        <div className={additions.foundationIntro}>
+          <div className={additions.foundationBrand} aria-label="ctrl+love Foundation">
+            <div className={additions.foundationPath} aria-hidden="true">
+              <span className={additions.foundationNode}>ACCESS</span>
+              <span className={additions.foundationArrow}>→</span>
+              <span className={additions.foundationNode}>SKILLS</span>
+              <span className={additions.foundationArrow}>→</span>
+              <span className={additions.foundationNode}>LOCAL IMPACT</span>
+            </div>
+            <div className={additions.foundationLogo}>ctrl+love</div>
+            <div className={additions.foundationWord}>foundation</div>
+          </div>
+          <div className={additions.foundationMission}>
+            <span>03 / CTRL+LOVE FOUNDATION</span>
+            <h2>AI access shouldn’t depend on where you were born.</h2>
+            <p>We want to give children without access to paid AI tools the chance to learn, explore and build. Then help them turn those same tools toward the problems around them: water, drought, schooling and whatever matters locally.</p>
+          </div>
         </div>
         <FoundationTeller />
-        <p className={additions.foundationNote}>A live teller. Reading time in one column. Value created in the other. The number is allowed to move. The argument is not.</p>
+        <p className={additions.foundationNote}>The teller makes one thing visible: attention has value. The Foundation’s job is to turn that value into access, capability and locally useful AI projects.</p>
       </section>
 
       <section id="experience" className={`${styles.section} ${styles.experience}`}>
