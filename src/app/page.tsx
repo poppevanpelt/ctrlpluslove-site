@@ -2,6 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 import styles from "./home-2026.module.css";
+import { EarthriseMoment } from "./earthrise-moment";
+import { coreRoomPersonas } from "./room-personas-data";
+import { confirmedAmbassadors } from "./ambassadors-data";
 
 const recentInstruments = [
   {
@@ -47,6 +50,9 @@ const recentInstruments = [
     href: "/decision-collider/",
   },
 ] as const;
+
+const homepagePersonas = coreRoomPersonas.slice(0, 4);
+const homepageAmbassadors = confirmedAmbassadors.slice(0, 6);
 
 const fieldNotes = [
   {
@@ -175,6 +181,51 @@ export default function Home() {
         </div>
       </section>
 
+      <section className={styles.personas} aria-labelledby="personas-title">
+        <div className={styles.sectionLabel}>
+          <span>SYNTHETIC PERSONAS</span>
+          <Link href="/room/">ENTER THE ROOM ↗</Link>
+        </div>
+        <div className={styles.personaIntro}>
+          <h2 id="personas-title">THE ROOM<br />IS NOT EMPTY.</h2>
+          <p>Built perspectives with jobs to do, not decorative avatars.</p>
+        </div>
+        <div className={styles.personaGrid}>
+          {homepagePersonas.map((persona, index) => (
+            <article className={styles.personaCard} key={persona.id}>
+              <div className={styles.personaPortrait}>
+                {persona.portrait ? (
+                  <Image
+                    src={persona.portrait}
+                    alt={persona.name}
+                    fill
+                    sizes="(max-width: 620px) 46vw, 24vw"
+                    style={{ objectPosition: persona.portraitPosition ?? "50% 40%" }}
+                  />
+                ) : null}
+              </div>
+              <span>PERSONA {String(index + 1).padStart(2, "0")}</span>
+              <h3>{persona.name}</h3>
+              <strong>{persona.role}</strong>
+              <p>{persona.line}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className={styles.geneticBio}>
+          <div>
+            <span className={styles.kicker}>GENETIC BIO / SPECIMEN NICK DECKMAN</span>
+            <h3>60% SIMON NEEFJES<br />30% ERIK KELLERHUIS<br />10% MAXIME HARTMAN</h3>
+          </div>
+          <div className={styles.dnaBars} aria-label="Nick Deckman synthetic genealogy">
+            <span style={{ width: "60%" }}>60</span>
+            <span style={{ width: "30%" }}>30</span>
+            <span style={{ width: "10%" }}>10</span>
+          </div>
+          <p>Not a biography. A deliberately assembled point of view.</p>
+        </div>
+      </section>
+
       <section className={styles.institute} aria-labelledby="institute-title">
         <Image
           className={styles.controlRoomImage}
@@ -226,6 +277,31 @@ export default function Home() {
         </div>
       </section>
 
+      <section className={styles.ambassadors} aria-labelledby="ambassadors-title">
+        <div className={styles.sectionLabel}>
+          <span>AMBASSADOR NETWORK</span>
+          <Link href="/ambassadors/">MEET EVERYONE ↗</Link>
+        </div>
+        <div className={styles.ambassadorIntro}>
+          <h2 id="ambassadors-title">NOT A<br />SOLO LAB.</h2>
+          <p>Human operators around the world, each carrying a different piece of reality into the room.</p>
+        </div>
+        <div className={styles.ambassadorGrid}>
+          {homepageAmbassadors.map((ambassador) => (
+            <Link className={styles.ambassadorCard} href={`/ambassadors/${ambassador.id}/`} key={ambassador.id}>
+              <div className={styles.ambassadorPortrait}>
+                {ambassador.image ? (
+                  <Image src={ambassador.image} alt={ambassador.name} fill sizes="(max-width: 620px) 48vw, 16vw" />
+                ) : null}
+              </div>
+              <span>{ambassador.number} · {ambassador.flag}</span>
+              <h3>{ambassador.preferredName ?? ambassador.name}</h3>
+              <p>{ambassador.city}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
       <section className={styles.humans} aria-labelledby="humans-title">
         <div className={styles.sectionLabel}>
           <span>WHO IS OPERATING THE MACHINERY</span>
@@ -233,7 +309,7 @@ export default function Home() {
         </div>
         <div className={styles.humansGrid}>
           <div>
-            <h2 id="humans-title">25 YEARS<br />ADVERTISING.<br />8 YEARS APPLE.<br /><em>THEN THIS.</em></h2>
+            <h2 id="humans-title">3 DECADES<br />ADVERTISING.<br />8 YEARS APPLE.<br /><em>THEN THIS.</em></h2>
           </div>
           <div className={styles.humanCopy}>
             <p>
@@ -252,6 +328,21 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <section className={styles.shoppe} aria-labelledby="shoppe-title">
+        <div className={styles.shoppePlate}>BENCH 02 · SAN GREGORIO / CALIFORNIA</div>
+        <div className={styles.shoppeCopy}>
+          <p className={styles.kicker}>POPPE&apos;S PROMPT SHOPPE</p>
+          <h2 id="shoppe-title">OLD PROMPTS<br />BOUGHT &amp; SOLD.</h2>
+          <p>Bring in the tired ones. The guys will put them on the dyno, find the hidden assumptions and see if there is a decision inside.</p>
+          <Link href="/prompt-shoppe/">ENTER THE SHOPPE ↗</Link>
+        </div>
+        <div className={styles.shoppeMachine} aria-hidden="true">
+          <span>TEST</span><span>LOAD</span><span>INTENT</span>
+        </div>
+      </section>
+
+      <EarthriseMoment />
 
       <section className={styles.exit} aria-labelledby="exit-title">
         <p className={styles.kicker}>OPEN DOOR</p>
