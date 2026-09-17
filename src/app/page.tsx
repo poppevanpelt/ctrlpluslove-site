@@ -120,6 +120,97 @@ export default function Home() {
         <span>CALIFORNIA / HAARLEM</span>
       </section>
 
+      <section className={styles.offices} aria-labelledby="offices-title">
+        <div className={styles.officeIntro}>
+          <div className={styles.sectionLabel}>
+            <span>CTRL+LOVE FIELD STATIONS</span>
+            <span>03 OFFICES / 03 CONDITIONS</span>
+          </div>
+          <div className={styles.officeIntroGrid}>
+            <h2 id="offices-title">SAME INSTITUTE.<br /><em>DIFFERENT WEATHER.</em></h2>
+            <p>
+              We keep different places for different kinds of thought: one open to the sun,
+              one buried in signal, and one deliberately hard to find.
+            </p>
+          </div>
+        </div>
+
+        <div className={styles.officeGrid}>
+          <article className={`${styles.office} ${styles.officeSunnyvale}`}>
+            <Image
+              className={styles.officeImage}
+              src="/home/sunnyvale-campus.webp"
+              alt="The sunlit ctrl+love Sunnyvale Annex in California"
+              fill
+              sizes="(max-width: 900px) 100vw, 34vw"
+            />
+            <div className={styles.officeVeil} aria-hidden="true" />
+            <div className={styles.officeTopline}>
+              <span>STATION 01</span>
+              <span>CALIFORNIA · US</span>
+            </div>
+            <div className={styles.officeCopy}>
+              <p className={styles.officeStatus}>DAYLIGHT / CALIBRATION / OPTIMISM</p>
+              <h3>SUNNYVALE</h3>
+              <p>Palms, test rigs, blue sky. Where impossible things get treated as Tuesday.</p>
+            </div>
+          </article>
+
+          <article className={`${styles.office} ${styles.officeTokyo}`}>
+            <Image
+              className={styles.officeImage}
+              src="https://images.unsplash.com/photo-1532236395709-7d70320fec2d?auto=format&fit=crop&w=1800&q=84"
+              alt="Busy central Tokyo at night, the visual setting for ctrl+love Tokyo"
+              fill
+              sizes="(max-width: 900px) 100vw, 34vw"
+            />
+            <div className={styles.officeVeil} aria-hidden="true" />
+            <div className={styles.officeTopline}>
+              <span>STATION 02</span>
+              <span>TOKYO · JP</span>
+            </div>
+            <div className={styles.officeCopy}>
+              <p className={styles.officeStatus}>NIGHT SHIFT / CENTRAL TOKYO / WINDOWS STILL ON</p>
+              <h3>TOKYO</h3>
+              <p>
+                Dead centre. The city is still moving and somebody has apparently decided
+                23:47 is a perfectly sensible time to run one more test.
+              </p>
+              <Link href="/embassies/tokyo/" className={styles.officeLink}>
+                TOKYO EMBASSY / HUMAN NETWORK ↗
+              </Link>
+            </div>
+          </article>
+
+          <article className={`${styles.office} ${styles.officeBloemendaal}`}>
+            <Image
+              className={styles.officeImage}
+              src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Batterie_Heerenduin%2C_Regelbau_M_272_%28Stand_3%29_1.JPG"
+              alt="A concrete bunker tucked into North Holland dunes, architectural context for ctrl+love Bloemendaal"
+              fill
+              sizes="(max-width: 900px) 100vw, 34vw"
+            />
+            <div className={styles.officeVeil} aria-hidden="true" />
+            <div className={styles.officeTopline}>
+              <span>STATION 03</span>
+              <span>BLOEMENDAAL · NL</span>
+            </div>
+            <div className={styles.officeCopy}>
+              <p className={styles.officeStatus}>DUNE STATION / QUIET / LOW SIGNAL</p>
+              <h3>BLOEMENDAAL</h3>
+              <p>
+                Concrete, dune grass, wind. A building with very little interest in being found.
+                For decisions that need less input, not more.
+              </p>
+            </div>
+          </article>
+        </div>
+
+        <p className={styles.officeFootnote}>
+          BLOEMENDAAL IMAGE: NORTH HOLLAND DUNE-BUNKER FIELD REFERENCE · PUBLIC DOMAIN
+        </p>
+      </section>
+
       <section className={styles.reading} aria-labelledby="reading-title">
         <div className={styles.sectionLabel}>
           <span>CURRENT READING</span>
