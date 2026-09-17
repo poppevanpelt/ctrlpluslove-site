@@ -58,14 +58,69 @@
   background: #f1efe8;
 }
 
-.foundationHeading {
+.foundationIntro {
   display: grid;
-  grid-template-columns: minmax(180px, 0.62fr) 1.38fr;
-  gap: 32px;
-  margin-bottom: 46px;
+  grid-template-columns: minmax(300px, .86fr) 1.14fr;
+  gap: 54px;
+  align-items: stretch;
+  margin-bottom: 44px;
 }
 
-.foundationHeading > span,
+.foundationBrand {
+  display: flex;
+  min-height: 330px;
+  flex-direction: column;
+  justify-content: center;
+  padding: 28px;
+  background: #050505;
+  color: #fff;
+  border: 1px solid #171717;
+}
+
+.foundationPath {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: auto;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 0.13em;
+}
+
+.foundationNode:first-child { color: #ff3e93; }
+.foundationNode:nth-child(3) { color: #ffd54a; }
+.foundationNode:last-child { color: #7df5d8; }
+.foundationArrow { color: rgba(255,255,255,.5); }
+
+.foundationLogo {
+  background: linear-gradient(90deg, #ff21c8 0%, #ff5438 26%, #ffb928 46%, #79ff12 64%, #5dd9ff 82%, #6a24ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: clamp(64px, 7.5vw, 116px);
+  font-weight: 700;
+  letter-spacing: -0.08em;
+  line-height: .78;
+}
+
+.foundationWord {
+  margin-top: 24px;
+  font-size: clamp(27px, 3vw, 46px);
+  font-weight: 300;
+  letter-spacing: .27em;
+  line-height: 1;
+}
+
+.foundationMission {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-top: 1px solid #171717;
+  border-bottom: 1px solid #171717;
+  padding: 34px 0 36px;
+}
+
+.foundationMission > span,
 .foundationLive,
 .foundationMetric > span {
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
@@ -74,17 +129,25 @@
   text-transform: uppercase;
 }
 
-.foundationHeading > span,
+.foundationMission > span,
 .foundationMetric > span {
   color: rgba(23, 23, 23, 0.56);
 }
 
-.foundationHeading p {
-  max-width: 730px;
+.foundationMission h2 {
+  max-width: 760px;
+  margin: 24px 0 26px;
+  font-size: clamp(42px, 5.6vw, 82px);
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  line-height: .91;
+}
+
+.foundationMission p {
+  max-width: 680px;
   margin: 0;
-  font-size: clamp(28px, 3.15vw, 48px);
-  letter-spacing: -0.045em;
-  line-height: 0.98;
+  font-size: 18px;
+  line-height: 1.47;
 }
 
 .foundationReadout {
@@ -133,7 +196,7 @@
 }
 
 .foundationNote {
-  max-width: 470px;
+  max-width: 620px;
   margin: 24px 0 0 auto;
   color: rgba(23, 23, 23, 0.56);
   font-size: 12px;
@@ -151,7 +214,7 @@
   .study:nth-child(4) { grid-column: 2 / span 5; }
   .study:nth-child(5) { grid-column: 7 / span 5; }
 
-  .foundationHeading {
+  .foundationIntro {
     grid-template-columns: 1fr;
   }
 
@@ -188,6 +251,31 @@
     width: 58%;
     grid-column: 1;
     margin: 4px 7% 0 auto;
+  }
+
+  .foundationBrand {
+    min-height: 260px;
+    padding: 20px;
+  }
+
+  .foundationPath {
+    flex-wrap: wrap;
+  }
+
+  .foundationLogo {
+    font-size: 64px;
+  }
+
+  .foundationWord {
+    font-size: 24px;
+  }
+
+  .foundationMission h2 {
+    font-size: 44px;
+  }
+
+  .foundationMission p {
+    font-size: 16px;
   }
 
   .foundationReadout {
