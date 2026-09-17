@@ -22,18 +22,17 @@
 .studyImage {
   width: 100%;
   aspect-ratio: 4 / 3;
-  background-image: url('/poppe/machine-studies.webp');
   background-repeat: no-repeat;
-  background-size: 100% 500%;
-  background-position-x: center;
+  background-size: cover;
+  background-position: center;
   border: 1px solid rgba(23, 23, 23, 0.18);
 }
 
-.study:nth-child(1) .studyImage { background-position-y: 0%; }
-.study:nth-child(2) .studyImage { background-position-y: 25%; }
-.study:nth-child(3) .studyImage { background-position-y: 50%; }
-.study:nth-child(4) .studyImage { background-position-y: 75%; }
-.study:nth-child(5) .studyImage { background-position-y: 100%; }
+.study:nth-child(1) .studyImage { background-image: url('/poppe/machine-studies/machine-01.webp'); }
+.study:nth-child(2) .studyImage { background-image: url('/poppe/machine-studies/machine-02.webp'); }
+.study:nth-child(3) .studyImage { background-image: url('/poppe/machine-studies/machine-03.webp'); }
+.study:nth-child(4) .studyImage { background-image: url('/poppe/machine-studies/machine-04.webp'); }
+.study:nth-child(5) .studyImage { background-image: url('/poppe/machine-studies/machine-05.webp'); }
 
 .study figcaption {
   display: flex;
