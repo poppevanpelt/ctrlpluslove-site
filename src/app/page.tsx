@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { EarthriseMoment } from "./earthrise-moment";
-import { coreRoomPersonas } from "./room-personas-data";
+import { allRoomPersonas } from "./room-personas-data";
 import styles from "./home-2026.module.css";
 
 const recentInstruments = [
@@ -56,7 +56,11 @@ const recentInstruments = [
   },
 ] as const;
 
-const homepagePersonas = coreRoomPersonas.slice(0, 4);
+const homepagePersonaIds = ["nick-deckman", "brigitte-brussels", "wade-ellison", "johan-cruyff"] as const;
+
+const homepagePersonas = homepagePersonaIds
+  .map((id) => allRoomPersonas.find((persona) => persona.id === id))
+  .filter((persona): persona is NonNullable<typeof persona> => Boolean(persona));
 
 const personaGenealogies: Record<
   string,
@@ -73,7 +77,31 @@ const personaGenealogies: Record<
     ],
   },
   "lexi-arden": { status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN" },
+  "brigitte-brussels": { status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN" },
+  "wade-ellison": { status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN" },
+  "johan-cruyff": { status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN" },
 };
+
+const clientSystems = [
+  {
+    client: "COMFORA",
+    category: "MOBILITY / INDEPENDENCE",
+    title: "Nobody wanted a comfy chair. They wanted their lives back.",
+    description:
+      "A product brief reframed around freedom, dignity and the life beyond the furniture, then carried into creative and production experiments.",
+    system: "CATEGORY REFRAME / CREATIVE TESTING",
+    diagram: "comfora",
+  },
+  {
+    client: "SUKI",
+    category: "RITUAL / GROWTH",
+    title: "Don’t franchise the store. Franchise what makes people return.",
+    description:
+      "A matcha brand became a live sensing system: store signals, creator intelligence, small ritual experiments and memory for the next Suki.",
+    system: "RITUAL INTELLIGENCE / LIVING FRANCHISE OS",
+    diagram: "suki",
+  },
+] as const;
 
 const fieldNotes = [
   {
@@ -334,6 +362,43 @@ export default function Home() {
               <span>{note.stamp}</span>
               <h3>{note.title}</h3>
               <p>{note.copy}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className={styles.clientWork} aria-labelledby="client-work-title">
+        <div className={styles.sectionLabel}>
+          <span>FIELD APPLICATIONS</span>
+          <span>REAL CLIENT SYSTEMS / 002</span>
+        </div>
+        <div className={styles.clientWorkIntro}>
+          <h2 id="client-work-title">THE INSTRUMENTS<br />HAVE LEFT<br />THE LAB.</h2>
+          <p>Two live examples of the same habit: find the thing underneath the brief, then build something that can keep learning.</p>
+        </div>
+        <div className={styles.clientGrid}>
+          {clientSystems.map((client) => (
+            <article className={styles.clientCase} key={client.client}>
+              <div className={styles.clientMeta}>
+                <strong>{client.client}</strong>
+                <span>{client.category}</span>
+              </div>
+              <div className={`${styles.clientDiagram} ${styles[client.diagram]}`} aria-hidden="true">
+                {client.diagram === "comfora" ? (
+                  <>
+                    <span>CHAIR</span><i>→</i><span>COMFORT</span><i>→</i><strong>LIFE</strong>
+                  </>
+                ) : (
+                  <>
+                    <span>STORE SIGNALS</span><span>CREATOR SENSING</span><span>EXPERIMENT</span><strong>MEMORY</strong>
+                  </>
+                )}
+              </div>
+              <div className={styles.clientBody}>
+                <p className={styles.clientSystem}>{client.system}</p>
+                <h3>{client.title}</h3>
+                <p>{client.description}</p>
+              </div>
             </article>
           ))}
         </div>
