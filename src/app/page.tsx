@@ -114,6 +114,7 @@ const pressNotes = [
   },
 ] as const;
 
+// NETLIFY PRODUCTION NUDGE 2026-09-18
 export default function Home() {
   return (
     <main className={styles.page} id="main-content">
