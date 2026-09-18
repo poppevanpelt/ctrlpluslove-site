@@ -185,18 +185,14 @@ export default function Home() {
           <article className={`${styles.office} ${styles.officeBloemendaal}`}>
             <Image
               className={styles.officeImage}
-              src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Batterie_Heerenduin%2C_Regelbau_M_272_%28Stand_3%29_1.JPG"
-              alt="A concrete bunker tucked into North Holland dunes, architectural context for ctrl+love Bloemendaal"
+              src="https://upload.wikimedia.org/wikipedia/commons/9/99/PanoBunker.jpg"
+              alt="A doorless concrete observation bunker in Dutch dunes, architectural context for ctrl+love Bloemendaal"
+              style={{ objectPosition: "38% center", filter: "saturate(0.46) contrast(1.08) brightness(0.9)" }}
               fill
               sizes="(max-width: 900px) 100vw, 34vw"
             />
             <div className={styles.officeVeil} aria-hidden="true" />
             <div className={styles.bloemendaalArchitecture} aria-hidden="true">
-              <span className={styles.observationWindow}>
-                <i />
-                <i />
-                <i />
-              </span>
               <span className={styles.weatherMast}>
                 <i className={styles.mastStem} />
                 <i className={styles.mastVane} />
@@ -209,18 +205,18 @@ export default function Home() {
               <span>BLOEMENDAAL · NL</span>
             </div>
             <div className={styles.officeCopy}>
-              <p className={styles.officeStatus}>DUNE STATION / QUIET / WESTERLY 7.2 M/S</p>
+              <p className={styles.officeStatus}>DUNE STATION / ACCESS UNMARKED / WESTERLY 7.2 M/S</p>
               <h3>BLOEMENDAAL</h3>
               <p>
-                Almost buried. One absurdly wide window across the dunes, and a weather mast
-                measuring conditions nobody has proved are relevant to decisions yet.
+                Tucked into the dunes. No visible front door. One long slit of glass, a weather mast,
+                and a path that simply disappears into the marram grass.
               </p>
             </div>
           </article>
         </div>
 
         <p className={styles.officeFootnote}>
-          BLOEMENDAAL IMAGE: NORTH HOLLAND DUNE-BUNKER FIELD REFERENCE · PUBLIC DOMAIN
+          BLOEMENDAAL FIELD REFERENCE: LOODSMANSDUIN, TEXEL · CHINA CRISIS / CC BY-SA 2.5
         </p>
       </section>
 
