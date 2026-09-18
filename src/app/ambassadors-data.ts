@@ -53,7 +53,7 @@ export const ambassadors: Ambassador[] = [
     linkedin: "https://www.linkedin.com/in/nadiaalmardini/",
     roomHref: "/#room",
     featured: true,
-    public: true,
+    public: false,
   },
   {
     id: "shun-iwai",
@@ -104,7 +104,7 @@ export const ambassadors: Ambassador[] = [
     image: "/ambassadors/portraits/005-mats-utberg-portrait-live-20260712.jpeg",
     linkedin: "https://www.linkedin.com/in/matsutberg/",
     roomHref: "/#room",
-    public: true,
+    public: false,
   },
   {
     id: "jorge-virgos",
@@ -152,7 +152,7 @@ export const ambassadors: Ambassador[] = [
     image: "/ambassadors/portraits/008-christophe-pernaudet-portrait-clean-20260712.jpeg",
     linkedin: "https://www.linkedin.com/in/christophe-pernaudet-14680716b/",
     roomHref: "/#room",
-    public: true,
+    public: false,
   },
   {
     id: "umberto-bartolini",

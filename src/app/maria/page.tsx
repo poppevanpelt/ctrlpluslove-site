@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import ExcavationBench from "./excavation-bench";
 import styles from "./page.module.css";
@@ -9,11 +10,11 @@ export const metadata: Metadata = {
 };
 
 const stages = [
-  ["BEFORE", "Isolated structures."],
-  ["REACH", "Processes extend."],
-  ["CONTACT", "A possible connection."],
-  ["NETWORK", "Structure becomes relationship."],
-  ["THOUGHT", "And somewhere much further up the stack, we call it an idea."],
+  ["BEFORE", "Isolated structures.", "/maria/neuron-01.webp"],
+  ["REACH", "Processes extend.", "/maria/neuron-02.webp"],
+  ["CONTACT", "A possible connection.", "/maria/neuron-03.webp"],
+  ["NETWORK", "Structure becomes relationship.", "/maria/neuron-04.webp"],
+  ["THOUGHT", "And somewhere much further up the stack, we call it an idea.", "/maria/neuron-04.webp"],
 ] as const;
 
 export default function MariaExcavationPage() {
@@ -32,30 +33,24 @@ export default function MariaExcavationPage() {
       </section>
 
       <section className={styles.specimen} aria-label="Microscopy specimen">
-        <div className={styles.micrograph} aria-hidden="true">
-          <span className={styles.soma} />
-          <span className={`${styles.branch} ${styles.b1}`} />
-          <span className={`${styles.branch} ${styles.b2}`} />
-          <span className={`${styles.branch} ${styles.b3}`} />
-          <span className={`${styles.branch} ${styles.b4}`} />
-          <span className={`${styles.branch} ${styles.b5}`} />
-          <span className={`${styles.node} ${styles.n1}`} />
-          <span className={`${styles.node} ${styles.n2}`} />
-          <span className={`${styles.node} ${styles.n3}`} />
+        <div className={styles.micrograph}>
+          <Image src="/maria/neuron-04.webp" alt="Microscope video frame showing a branching neuron-like cell structure" fill sizes="100vw" priority />
         </div>
         <div className={styles.evidenceGrid}>
-          <div><span>OBSERVED</span><p>Neuronal growth and branching in culture.</p></div>
+          <div><span>OBSERVED</span><p>Microscope footage presented as neuronal growth and contact.</p></div>
           <div><span>INTERPRETATION</span><p>A useful physical metaphor for learning and ideation.</p></div>
-          <div><span>CLAIM STATUS</span><p>Not a literal recording of one specific idea being born.</p></div>
+          <div><span>CLAIM STATUS</span><p>Field reference. Original source and protocol still to be verified.</p></div>
         </div>
       </section>
 
       <section className={styles.sequence}>
         <div className={styles.sequenceHead}><span>EXCAVATION SEQUENCE</span><span>MICRO → MEANING</span></div>
         <ol>
-          {stages.map(([label, copy], index) => (
+          {stages.map(([label, copy, image], index) => (
             <li key={label}>
-              <div className={styles.stageImage} aria-hidden="true"><span style={{ "--i": index } as React.CSSProperties} /></div>
+              <div className={styles.stageImage}>
+                <Image src={image} alt="" fill sizes="(max-width: 900px) 50vw, 20vw" />
+              </div>
               <small>0{index + 1}</small>
               <h2>{label}</h2>
               <p>{copy}</p>

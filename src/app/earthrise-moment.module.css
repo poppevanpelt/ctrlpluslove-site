@@ -46,6 +46,20 @@
   isolation: isolate;
 }
 
+.earthriseImage {
+  object-fit: cover;
+  object-position: center 52%;
+  filter: saturate(.92) contrast(1.05);
+}
+
+.imageVeil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgb(0 0 0 / 48%) 0%, transparent 32%, transparent 68%, rgb(0 0 0 / 56%) 100%),
+    linear-gradient(90deg, rgb(0 0 0 / 30%), transparent 55%);
+}
+
 .stars {
   position: absolute;
   inset: 0;
@@ -240,6 +254,7 @@
   .meta { align-items: flex-start; flex-direction: column; gap: .35rem; font-size: .74rem; }
   .copy { padding-top: 2rem; padding-right: 2rem; }
   .copy p { font-size: clamp(1.8rem, 9vw, 3.2rem); }
+  .earthriseImage { object-position: 58% center; }
   .earthWrap { width: clamp(7.5rem, 38vw, 10.5rem); }
   .halo { width: 108%; left: -2%; }
   .streak { width: min(86vw, 34rem); left: 0; }

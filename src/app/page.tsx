@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { EarthriseMoment } from "./earthrise-moment";
+import { coreRoomPersonas } from "./room-personas-data";
 import styles from "./home-2026.module.css";
 
 const recentInstruments = [
@@ -10,6 +12,7 @@ const recentInstruments = [
     state: "READING 001",
     line: "How much can we take away before it stops being you?",
     href: "/brand-survival/",
+    readout: ["REMOVE", "RECOGNISE", "SURVIVE"],
   },
   {
     no: "023",
@@ -17,6 +20,7 @@ const recentInstruments = [
     state: "PROTOTYPE",
     line: "A question either produces evidence or earns its death.",
     href: "/chase/",
+    readout: ["QUESTION", "EVIDENCE", "STOP"],
   },
   {
     no: "022",
@@ -24,6 +28,7 @@ const recentInstruments = [
     state: "ONGOING",
     line: "Map how a decision travels, not only where it ends.",
     href: "/maria/",
+    readout: ["TERRAIN", "TRAJECTORY", "MOVE"],
   },
   {
     no: "020",
@@ -31,6 +36,7 @@ const recentInstruments = [
     state: "PROTOTYPE",
     line: "Cut the fat. Keep the organ.",
     href: "/purge/",
+    readout: ["CUT", "TEST", "KEEP"],
   },
   {
     no: "004",
@@ -38,6 +44,7 @@ const recentInstruments = [
     state: "PROTOTYPE",
     line: "A forgotten decision must win its argument again.",
     href: "/decision-memory/",
+    readout: ["ASSUMPTION", "OPPOSITION", "MEMORY"],
   },
   {
     no: "001",
@@ -45,8 +52,28 @@ const recentInstruments = [
     state: "WORKING",
     line: "Collide assumptions before people collide.",
     href: "/decision-collider/",
+    readout: ["FRAME", "COLLIDE", "DECIDE"],
   },
 ] as const;
+
+const homepagePersonas = coreRoomPersonas.slice(0, 4);
+
+const personaGenealogies: Record<
+  string,
+  { status: string; sources?: Array<{ name: string; share: number }> }
+> = {
+  "maya-elise-harper": { status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN" },
+  "simon-cross": { status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN" },
+  "nick-deckman": {
+    status: "DESCENDS FROM",
+    sources: [
+      { name: "SIMON NEEFJES", share: 60 },
+      { name: "ERIK KELLERHUIS", share: 30 },
+      { name: "MAXIME HARTMAN", share: 10 },
+    ],
+  },
+  "lexi-arden": { status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN" },
+};
 
 const fieldNotes = [
   {
@@ -63,6 +90,27 @@ const fieldNotes = [
     stamp: "FIELD NOTE 011",
     title: "THE ROOM CHANGED BEFORE THE MINUTES DID.",
     copy: "Challenge, ownership and rupture move long before a meeting summary notices.",
+  },
+] as const;
+
+const pressNotes = [
+  {
+    outlet: "FRANK.NEWS",
+    date: "08 SEP 2026",
+    title: "Poppe van Pelt: ‘Smaak wordt alleen maar belangrijker’",
+    href: "https://www.frank.news/poppe-van-pelt-smaak-wordt-alleen-maar-belangrijker/",
+  },
+  {
+    outlet: "FONK",
+    date: "25 AUG 2026",
+    title: "Poppe van Pelt lanceert ‘per ongeluk’ nieuw bedrijf Ctrl+Live",
+    href: "https://fonkmagazine.com/artikelen/tech/poppe-van-pelt-lanceert-per-ongeluk-nieuw-bedrijf-ctrl-live-77582.html",
+  },
+  {
+    outlet: "BRIGHT",
+    date: "24 AUG 2026",
+    title: "Strenge AI als ultiem hulpmiddel voor betere (en leukere?) reclame",
+    href: "https://www.bright.nl/nieuws/2126819/deze-ai-zegt-als-je-reclame-idee-gewoon-slecht-is.html",
   },
 ] as const;
 
@@ -120,6 +168,83 @@ export default function Home() {
         <span>CALIFORNIA / HAARLEM</span>
       </section>
 
+      <section className={styles.nodes} aria-labelledby="nodes-title">
+        <div className={styles.sectionLabel}>
+          <span>CTRL+LOVE HUMAN NODES</span>
+          <span>REAL PEOPLE / SPECULATIVE BUILDINGS</span>
+        </div>
+        <div className={styles.nodesIntro}>
+          <h2 id="nodes-title">THE NETWORK<br />HAS AN ADDRESS.<br /><em>SORT OF.</em></h2>
+          <p>
+            Tokyo and Bloemendaal are real positions in the ctrl+love network.
+            The people are real. The buildings are architectural propositions.
+          </p>
+        </div>
+
+        <div className={styles.nodeGrid}>
+          <article className={styles.node}>
+            <Image
+              className={styles.nodeImage}
+              src="https://images.unsplash.com/photo-1532236395709-7d70320fec2d?auto=format&fit=crop&w=1800&q=84"
+              alt="Central Tokyo at night"
+              fill
+              sizes="(max-width: 800px) 100vw, 50vw"
+            />
+            <div className={styles.nodeVeil} aria-hidden="true" />
+            <div className={styles.nodeTopline}>
+              <span>ACTIVE HUMAN SIGNAL</span>
+              <span>ARCHITECTURE / SPECULATIVE</span>
+            </div>
+            <div className={styles.nodeOperator}>
+              <Image
+                src="/ambassadors/portraits/003-shun-iwai-portrait-live-20260712.jpeg"
+                alt="Shun Iwai"
+                width={88}
+                height={88}
+              />
+              <span>SHUN IWAI<br />AMBASSADOR / CULTURAL TRANSLATION</span>
+            </div>
+            <div className={styles.nodeCopy}>
+              <p>TOKYO · JP / LISTENING POST</p>
+              <h3>CTRL+LOVE<br />TOKYO</h3>
+              <Link href="/embassies/tokyo/">ENTER THE REAL HUMAN NODE ↗</Link>
+            </div>
+          </article>
+
+          <article className={styles.node}>
+            <Image
+              className={styles.nodeImage}
+              src="https://upload.wikimedia.org/wikipedia/commons/9/99/PanoBunker.jpg"
+              alt="A concrete observation bunker in Dutch dunes, used as an architectural reference"
+              fill
+              sizes="(max-width: 800px) 100vw, 50vw"
+            />
+            <div className={styles.nodeVeil} aria-hidden="true" />
+            <div className={styles.nodeTopline}>
+              <span>ACTIVE FOUNDER SIGNAL</span>
+              <span>BUNKER / PENDING</span>
+            </div>
+            <div className={styles.nodeOperator}>
+              <Image
+                src="/ambassadors/portraits/001-poppe-van-pelt-portrait-live-20260715.png"
+                alt="Poppe van Pelt"
+                width={88}
+                height={88}
+              />
+              <span>POPPE VAN PELT<br />FOUNDER / APPLIED AI DECISION SYSTEMS</span>
+            </div>
+            <div className={styles.nodeCopy}>
+              <p>BLOEMENDAAL · NL / DUNE POSITION</p>
+              <h3>CTRL+LOVE<br />BLOEMENDAAL</h3>
+              <span>OPERATING FROM THE DUNES. FUTURE BUNKER PENDING.</span>
+            </div>
+          </article>
+        </div>
+        <p className={styles.nodeFootnote}>
+          HUMAN NODES ARE OPERATIONAL. BUILDINGS SHOWN ARE VISUAL PROPOSITIONS, NOT PROPERTY CLAIMS.
+        </p>
+      </section>
+
       <section className={styles.reading} aria-labelledby="reading-title">
         <div className={styles.sectionLabel}>
           <span>CURRENT READING</span>
@@ -137,6 +262,10 @@ export default function Home() {
           </div>
 
           <div className={styles.curve} aria-label="Illustrative Brand Survival reading">
+            <div className={styles.curveContext}>
+              <strong>HOW MUCH CAN YOU REMOVE BEFORE PEOPLE STOP RECOGNISING THE BRAND?</strong>
+              <span>BRAND survives subtraction. WALLPAPER disappears with it.</span>
+            </div>
             <div className={styles.curveAxisY}>RECOGNITION</div>
             <div className={styles.curvePlot}>
               <span className={styles.curveBrand} />
@@ -147,31 +276,6 @@ export default function Home() {
             <div className={styles.curveAxisX}>MORE REMOVED →</div>
             <p className={styles.curveNote}>Observed data only. No reference curve.</p>
           </div>
-        </div>
-      </section>
-
-      <section className={styles.factory} aria-labelledby="factory-title">
-        <div className={styles.sectionLabel}>
-          <span>THE FACTORY</span>
-          <Link href="/instruments/">ALL 024 INSTRUMENTS ↗</Link>
-        </div>
-        <div className={styles.factoryIntro}>
-          <h2 id="factory-title">RECENTLY<br />BUILT.</h2>
-          <p>Working instruments, prototypes, field tests and useful failures.</p>
-        </div>
-
-        <div className={styles.instrumentGrid}>
-          {recentInstruments.map((instrument) => (
-            <Link href={instrument.href} className={styles.instrument} key={instrument.no}>
-              <div className={styles.instrumentMeta}>
-                <span>{instrument.no}</span>
-                <span>{instrument.state}</span>
-              </div>
-              <h3>{instrument.name}</h3>
-              <p>{instrument.line}</p>
-              <span className={styles.instrumentOpen}>OPEN ↗</span>
-            </Link>
-          ))}
         </div>
       </section>
 
@@ -208,6 +312,14 @@ export default function Home() {
       </section>
 
       <section className={styles.field} aria-labelledby="field-title">
+        <Image
+          className={styles.fieldImage}
+          src="/home/sunnyvale-campus.webp"
+          alt=""
+          fill
+          sizes="100vw"
+        />
+        <div className={styles.fieldVeil} aria-hidden="true" />
         <div className={styles.sectionLabel}>
           <span>FIELD NOTES</span>
           <span>REALITY, BEFORE THE FRAMEWORK</span>
@@ -226,14 +338,145 @@ export default function Home() {
         </div>
       </section>
 
+      <section className={styles.factory} aria-labelledby="factory-title">
+        <div className={styles.sectionLabel}>
+          <span>THE FACTORY / WORKING DOORS</span>
+          <Link href="/instruments/">ALL 024 INSTRUMENTS ↗</Link>
+        </div>
+        <div className={styles.factoryIntro}>
+          <h2 id="factory-title">RECENTLY<br />BUILT.</h2>
+          <p>Not case-study wallpaper. Six instruments you can open, inspect and run.</p>
+        </div>
+
+        <div className={styles.instrumentGrid}>
+          {recentInstruments.map((instrument) => (
+            <Link href={instrument.href} className={styles.instrument} key={instrument.no}>
+              <div className={styles.instrumentMeta}>
+                <span>{instrument.no}</span>
+                <span>{instrument.state}</span>
+              </div>
+              <div className={styles.instrumentReadout} aria-hidden="true">
+                {instrument.readout.map((step, index) => (
+                  <span key={step}><i>{String(index + 1).padStart(2, "0")}</i>{step}</span>
+                ))}
+              </div>
+              <h3>{instrument.name}</h3>
+              <p>{instrument.line}</p>
+              <span className={styles.instrumentOpen}>RUN INSTRUMENT ↗</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className={styles.shoppe} aria-labelledby="shoppe-title">
+        <div className={styles.sectionLabel}>
+          <span>POPPE’S PROMPT SHOPPE</span>
+          <span>WORKING BENCH / PHYSICAL OBJECTS</span>
+        </div>
+        <div className={styles.shoppeGrid}>
+          <div className={styles.shoppeCopy}>
+            <p className={styles.kicker}>SAN GREGORIO / CALIFORNIA</p>
+            <h2 id="shoppe-title">BRING IN<br />YOUR OLD<br />PROMPTS.</h2>
+            <p>Put one under load. Extract what it smuggles in. Find the decision it is actually trying to make.</p>
+            <Link href="/prompt-shoppe/">OPEN THE SHOPPE ↗</Link>
+          </div>
+          <div className={styles.shoppeVisuals}>
+            <Link className={styles.shoppeFacade} href="/prompt-shoppe/">
+              <Image src="/shoppe/poppes-prompt-shoppe.webp" alt="Poppe’s Prompt Shoppe in a wooded California setting" fill sizes="(max-width: 900px) 100vw, 58vw" />
+              <span>THE SHOPPE / OPEN ↗</span>
+            </Link>
+            <article className={styles.shoppeObject}>
+              <Image src="/instruments/objects/ten-decisions-usb.webp" alt="The ctrl+love Decision Stick in its sleeve" fill sizes="(max-width: 900px) 50vw, 29vw" />
+              <span>DECISION STICK · 001/100</span>
+            </article>
+            <article className={styles.shoppeObject}>
+              <Image src="/instruments/objects/decision-in-a-box.webp" alt="Decision in a Box with five metal forms and decision cards" fill sizes="(max-width: 900px) 50vw, 29vw" />
+              <span>DECISION IN A BOX · 5 CARDS / 1 DECISION</span>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.personas} aria-labelledby="personas-title">
+        <div className={styles.sectionLabel}>
+          <span>SYNTHETIC PERSONAS</span>
+          <Link href="/room/">ENTER THE ROOM ↗</Link>
+        </div>
+        <div className={styles.personaIntro}>
+          <h2 id="personas-title">THE ROOM<br />IS NOT EMPTY.</h2>
+          <p>Built perspectives with jobs to do, not decorative avatars.</p>
+        </div>
+        <div className={styles.personaGrid}>
+          {homepagePersonas.map((persona, index) => {
+            const genealogy = personaGenealogies[persona.id] ?? {
+              status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN",
+            };
+
+            return (
+              <article className={styles.personaCard} key={persona.id}>
+                <div className={styles.personaSpecimenTopline}>
+                  <span>SPECIMEN {String(index + 1).padStart(2, "0")}</span>
+                  <span>SYNTHETIC / ACTIVE</span>
+                </div>
+                <div className={styles.personaPortrait}>
+                  {persona.portrait ? (
+                    <Image
+                      src={persona.portrait}
+                      alt={persona.name}
+                      fill
+                      sizes="(max-width: 620px) 46vw, 24vw"
+                      style={{ objectPosition: persona.portraitPosition ?? "50% 40%" }}
+                    />
+                  ) : null}
+                  <span className={styles.personaSpecimenId}>ID · {persona.id.toUpperCase()}</span>
+                </div>
+                <div className={styles.personaIdentity}>
+                  <h3>{persona.name}</h3>
+                  <strong>{persona.role}</strong>
+                  <p>{persona.line}</p>
+                </div>
+                <div className={styles.personaGenealogy}>
+                  <span className={styles.genealogyLabel}>GENEALOGY / {genealogy.status}</span>
+                  {genealogy.sources ? (
+                    <div className={styles.genealogySources}>
+                      {genealogy.sources.map((source) => (
+                        <div className={styles.genealogySource} key={source.name}>
+                          <div>
+                            <span>{source.name}</span>
+                            <strong>{source.share}%</strong>
+                          </div>
+                          <i aria-hidden="true">
+                            <b style={{ width: `${source.share}%` }} />
+                          </i>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className={styles.genealogyOpen}>NO CLAIM ENTERED. KEEP THE LINE OPEN.</p>
+                  )}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
       <section className={styles.humans} aria-labelledby="humans-title">
+        <Image
+          className={styles.humansImage}
+          src="/home/judgment-control-room.webp"
+          alt=""
+          fill
+          sizes="100vw"
+        />
+        <div className={styles.humansVeil} aria-hidden="true" />
         <div className={styles.sectionLabel}>
           <span>WHO IS OPERATING THE MACHINERY</span>
           <span>HUMAN-LED</span>
         </div>
         <div className={styles.humansGrid}>
           <div>
-            <h2 id="humans-title">25 YEARS<br />ADVERTISING.<br />8 YEARS APPLE.<br /><em>THEN THIS.</em></h2>
+            <h2 id="humans-title">THREE DECADES<br />OF ADVERTISING.<br />8 YEARS APPLE.<br /><em>THEN THIS.</em></h2>
           </div>
           <div className={styles.humanCopy}>
             <p>
@@ -252,6 +495,41 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <section className={styles.press} aria-labelledby="press-title">
+        <div className={styles.sectionLabel}>
+          <span>OUTSIDE OBSERVATION</span>
+          <span>PRESS / AUG—SEP 2026</span>
+        </div>
+        <div className={styles.pressIntro}>
+          <h2 id="press-title">OTHER PEOPLE<br />LOOKED AT IT.<br /><em>THEY WROTE.</em></h2>
+          <p>
+            Three independent readings of the experiment: the thinking behind it,
+            the machinery inside it, and the strange new rooms growing out of it.
+          </p>
+        </div>
+        <div className={styles.pressGrid}>
+          {pressNotes.map((item, index) => (
+            <a
+              className={styles.pressItem}
+              href={item.href}
+              target="_blank"
+              rel="noreferrer"
+              key={item.outlet}
+            >
+              <span className={styles.pressNumber}>{String(index + 1).padStart(2, "0")}</span>
+              <div className={styles.pressMeta}>
+                <strong>{item.outlet}</strong>
+                <span>{item.date}</span>
+              </div>
+              <h3>{item.title}</h3>
+              <span className={styles.pressOpen}>READ ORIGINAL ↗</span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <EarthriseMoment />
 
       <section className={styles.exit} aria-labelledby="exit-title">
         <p className={styles.kicker}>OPEN DOOR</p>

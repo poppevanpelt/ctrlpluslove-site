@@ -85,30 +85,6 @@ export const embassies: Embassy[] = [
     relatedConversations: ["embassy-network-opening"],
   },
   {
-    id: "EMB-003",
-    slug: "berlin",
-    title: "Berlin Embassy",
-    city: "Berlin",
-    country: "Germany",
-    ambassador: "Nadia Al-Mardini",
-    coordinates: {
-      latitude: 52.52,
-      longitude: 13.405,
-    },
-    portrait: "/ambassadors/portraits/002-nadia-al-mardini-portrait-live-20260712.jpeg",
-    quote: "Local intelligence begins with knowing what will not translate cleanly.",
-    localIntelligence:
-      "Nadia Al-Mardini brings Berlin perspective and creative judgment into the Embassy Network.",
-    status: "active",
-    networkStatus: "ACTIVE",
-    yearEstablished: "2026",
-    currentFocus: "German market perspective and creative translation.",
-    timezone: "Europe/Berlin",
-    summary:
-      "The Berlin Embassy brings local intelligence and human judgment into the ctrl+love ecosystem through Nadia Al-Mardini.",
-    publishedAt: "2026-07-30",
-  },
-  {
     id: "EMB-004",
     slug: "seoul",
     title: "Seoul Embassy",
@@ -131,30 +107,6 @@ export const embassies: Embassy[] = [
     summary:
       "The Seoul Embassy brings local intelligence and human judgment into the ctrl+love ecosystem through Tayl Chung.",
     publishedAt: "2026-07-30",
-  },
-  {
-    id: "EMB-005",
-    slug: "stockholm",
-    title: "Stockholm Embassy",
-    city: "Stockholm",
-    country: "Sweden",
-    ambassador: "Mats Utberg",
-    coordinates: {
-      latitude: 59.3293,
-      longitude: 18.0686,
-    },
-    portrait: "/ambassadors/portraits/005-mats-utberg-portrait-live-20260712.jpeg",
-    quote: "Trust is not a distribution channel. It is the infrastructure.",
-    localIntelligence:
-      "Stockholm brings a northern editorial restraint to the network: clarity before theatre, usefulness before performance, and relationships before reach.",
-    status: "active",
-    networkStatus: "ACTIVE",
-    yearEstablished: "2026",
-    currentFocus: "Holding a northern standard for trust, restraint and useful beauty.",
-    timezone: "Europe/Stockholm",
-    summary:
-      "The Stockholm Embassy brings local intelligence and human judgment into the ctrl+love ecosystem through Mats Utberg.",
-    publishedAt: "2026-07-18",
   },
   {
     id: "EMB-006",
@@ -202,30 +154,6 @@ export const embassies: Embassy[] = [
     timezone: "Europe/Lisbon",
     summary:
       "The Lisbon Embassy brings local intelligence and human judgment into the ctrl+love ecosystem through José Ricardo Monteiro.",
-    publishedAt: "2026-07-30",
-  },
-  {
-    id: "EMB-008",
-    slug: "paris",
-    title: "Paris Embassy",
-    city: "Paris",
-    country: "France",
-    ambassador: "Christophe Pernaudet",
-    coordinates: {
-      latitude: 48.8566,
-      longitude: 2.3522,
-    },
-    portrait: "/ambassadors/portraits/008-christophe-pernaudet-portrait-clean-20260712.jpeg",
-    quote: "A market is never abstract when someone trusted is close enough to read it.",
-    localIntelligence:
-      "Christophe Pernaudet brings French market perspective and editorial proximity into the Embassy Network.",
-    status: "active",
-    networkStatus: "ACTIVE",
-    yearEstablished: "2026",
-    currentFocus: "French market perspective and editorial proximity.",
-    timezone: "Europe/Paris",
-    summary:
-      "The Paris Embassy brings local intelligence and human judgment into the ctrl+love ecosystem through Christophe Pernaudet.",
     publishedAt: "2026-07-30",
   },
   {
