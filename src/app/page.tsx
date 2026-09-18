@@ -120,6 +120,106 @@ export default function Home() {
         <span>CALIFORNIA / HAARLEM</span>
       </section>
 
+      <section className={styles.offices} aria-labelledby="offices-title">
+        <div className={styles.officeIntro}>
+          <div className={styles.sectionLabel}>
+            <span>CTRL+LOVE FIELD STATIONS</span>
+            <span>03 OFFICES / 03 CONDITIONS</span>
+          </div>
+          <div className={styles.officeIntroGrid}>
+            <h2 id="offices-title">SAME INSTITUTE.<br /><em>DIFFERENT WEATHER.</em></h2>
+            <p>
+              We keep different places for different kinds of thought: one open to the sun,
+              one buried in signal, and one deliberately hard to find.
+            </p>
+          </div>
+        </div>
+
+        <div className={styles.officeGrid}>
+          <article className={`${styles.office} ${styles.officeSunnyvale}`}>
+            <Image
+              className={styles.officeImage}
+              src="/home/sunnyvale-campus.webp"
+              alt="The sunlit ctrl+love Sunnyvale Annex in California"
+              fill
+              sizes="(max-width: 900px) 100vw, 34vw"
+            />
+            <div className={styles.officeVeil} aria-hidden="true" />
+            <div className={styles.officeTopline}>
+              <span>STATION 01</span>
+              <span>CALIFORNIA · US</span>
+            </div>
+            <div className={styles.officeCopy}>
+              <p className={styles.officeStatus}>DAYLIGHT / CALIBRATION / OPTIMISM</p>
+              <h3>SUNNYVALE</h3>
+              <p>Palms, test rigs, blue sky. Where impossible things get treated as Tuesday.</p>
+            </div>
+          </article>
+
+          <article className={`${styles.office} ${styles.officeTokyo}`}>
+            <Image
+              className={styles.officeImage}
+              src="https://images.unsplash.com/photo-1532236395709-7d70320fec2d?auto=format&fit=crop&w=1800&q=84"
+              alt="Busy central Tokyo at night, the visual setting for ctrl+love Tokyo"
+              fill
+              sizes="(max-width: 900px) 100vw, 34vw"
+            />
+            <div className={styles.officeVeil} aria-hidden="true" />
+            <div className={styles.officeTopline}>
+              <span>STATION 02</span>
+              <span>TOKYO · JP</span>
+            </div>
+            <div className={styles.officeCopy}>
+              <p className={styles.officeStatus}>NIGHT SHIFT / CENTRAL TOKYO / WINDOWS STILL ON</p>
+              <h3>TOKYO</h3>
+              <p>
+                Dead centre. The city is still moving and somebody has apparently decided
+                23:47 is a perfectly sensible time to run one more test.
+              </p>
+              <Link href="/embassies/tokyo/" className={styles.officeLink}>
+                TOKYO EMBASSY / HUMAN NETWORK ↗
+              </Link>
+            </div>
+          </article>
+
+          <article className={`${styles.office} ${styles.officeBloemendaal}`}>
+            <Image
+              className={styles.officeImage}
+              src="https://upload.wikimedia.org/wikipedia/commons/9/99/PanoBunker.jpg"
+              alt="A doorless concrete observation bunker in Dutch dunes, architectural context for ctrl+love Bloemendaal"
+              style={{ objectPosition: "38% center", filter: "saturate(0.46) contrast(1.08) brightness(0.9)" }}
+              fill
+              sizes="(max-width: 900px) 100vw, 34vw"
+            />
+            <div className={styles.officeVeil} aria-hidden="true" />
+            <div className={styles.bloemendaalArchitecture} aria-hidden="true">
+              <span className={styles.weatherMast}>
+                <i className={styles.mastStem} />
+                <i className={styles.mastVane} />
+                <i className={styles.mastCup} />
+              </span>
+              <span className={styles.weatherReadout}>WIND 284° / 7.2 M/S · PRESS 1011.4 HPA</span>
+            </div>
+            <div className={styles.officeTopline}>
+              <span>STATION 03</span>
+              <span>BLOEMENDAAL · NL</span>
+            </div>
+            <div className={styles.officeCopy}>
+              <p className={styles.officeStatus}>DUNE STATION / ACCESS UNMARKED / WESTERLY 7.2 M/S</p>
+              <h3>BLOEMENDAAL</h3>
+              <p>
+                Tucked into the dunes. No visible front door. One long slit of glass, a weather mast,
+                and a path that simply disappears into the marram grass.
+              </p>
+            </div>
+          </article>
+        </div>
+
+        <p className={styles.officeFootnote}>
+          BLOEMENDAAL FIELD REFERENCE: LOODSMANSDUIN, TEXEL · CHINA CRISIS / CC BY-SA 2.5
+        </p>
+      </section>
+
       <section className={styles.reading} aria-labelledby="reading-title">
         <div className={styles.sectionLabel}>
           <span>CURRENT READING</span>
