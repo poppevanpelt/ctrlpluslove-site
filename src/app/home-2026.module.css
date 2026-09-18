@@ -599,6 +599,180 @@
   text-transform: uppercase;
 }
 
+.nodes {
+  padding: clamp(5rem, 9vw, 8.5rem) clamp(1.25rem, 4vw, 4.5rem);
+  border-bottom: 1px solid var(--rule);
+  background: #071522;
+  color: #fff;
+}
+
+.nodes .sectionLabel {
+  border-color: rgb(255 255 255 / 28%);
+  color: #cbe6f8;
+}
+
+.nodesIntro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(18rem, .65fr);
+  gap: clamp(2rem, 6vw, 7rem);
+  align-items: end;
+  padding: clamp(2.5rem, 5vw, 5rem) 0 clamp(2.5rem, 5vw, 4.5rem);
+}
+
+.nodesIntro h2 {
+  max-width: 10ch;
+  margin: 0;
+  font-size: clamp(3.8rem, 8vw, 8rem);
+  font-weight: 820;
+  line-height: .84;
+  letter-spacing: -.07em;
+}
+
+.nodesIntro h2 em {
+  color: #ffd77a;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+}
+
+.nodesIntro p {
+  max-width: 34rem;
+  margin: 0;
+  color: #dfeaf2;
+  font-size: clamp(1.05rem, 1.6vw, 1.4rem);
+  line-height: 1.46;
+}
+
+.nodeGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid rgb(255 255 255 / 22%);
+  background: rgb(255 255 255 / 22%);
+}
+
+.node {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  min-height: clamp(38rem, 58vw, 54rem);
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.25rem;
+  overflow: hidden;
+}
+
+.nodeImage {
+  z-index: -3;
+  object-fit: cover;
+  filter: saturate(.68) contrast(1.08);
+}
+
+.nodeVeil {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgb(2 7 15 / 28%) 0%, rgb(2 7 15 / 46%) 45%, rgb(2 7 15 / 92%) 100%),
+    linear-gradient(90deg, rgb(2 7 15 / 56%), transparent 66%);
+}
+
+.nodeTopline {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: .8rem;
+  border-bottom: 1px solid rgb(255 255 255 / 48%);
+  font-size: .58rem;
+  font-weight: 820;
+  letter-spacing: .12em;
+}
+
+.nodeOperator {
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  width: fit-content;
+  margin: auto 0 1.5rem;
+  padding: .55rem .8rem .55rem .55rem;
+  border: 1px solid rgb(255 255 255 / 42%);
+  background: rgb(2 7 15 / 62%);
+  backdrop-filter: blur(10px);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: .56rem;
+  letter-spacing: .08em;
+  line-height: 1.55;
+}
+
+.nodeOperator img {
+  width: 4rem;
+  height: 4rem;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.08);
+}
+
+.nodeCopy > p,
+.nodeCopy > span,
+.nodeCopy > a {
+  color: #ffe1a0;
+  font-size: .6rem;
+  font-weight: 820;
+  letter-spacing: .11em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.nodeCopy h3 {
+  margin: .7rem 0 1rem;
+  font-size: clamp(3.8rem, 6.7vw, 7.4rem);
+  font-weight: 850;
+  letter-spacing: -.075em;
+  line-height: .82;
+}
+
+.nodeCopy a {
+  color: #fff;
+  text-underline-offset: .25em;
+}
+
+.nodeFootnote {
+  margin: .8rem 0 0;
+  color: rgb(255 255 255 / 44%);
+  font-size: .5rem;
+  font-weight: 720;
+  letter-spacing: .09em;
+}
+
+@media (max-width: 820px) {
+  .nodesIntro,
+  .nodeGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .node {
+    min-height: 72svh;
+  }
+}
+
+@media (max-width: 620px) {
+  .nodes {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .node {
+    min-height: 74svh;
+    padding: 1rem;
+  }
+
+  .nodeTopline {
+    font-size: .5rem;
+  }
+
+  .nodeCopy h3 {
+    font-size: clamp(3.3rem, 16vw, 5.4rem);
+  }
+}
+
 .missionStrip strong {
   font-size: clamp(0.82rem, 1.35vw, 1.15rem);
 }
