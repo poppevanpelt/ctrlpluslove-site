@@ -1742,3 +1742,129 @@
   .clientMeta { align-items:flex-start; flex-direction:column; }
   .clientBody h3 { font-size: clamp(2.6rem, 12vw, 4rem); }
 }
+
+
+/* WEBSITE 002.3 / MOBILE RHYTHM + APPROVED WEIRDO CAST */
+@media (max-width: 900px) {
+  .shoppeGrid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: stretch;
+  }
+
+  .shoppeCopy {
+    max-width: 34rem;
+  }
+
+  .shoppeVisuals {
+    width: 100%;
+  }
+}
+
+@media (max-width: 620px) {
+  .shoppe {
+    padding-top: 4.25rem;
+    padding-bottom: 4.5rem;
+  }
+
+  .shoppeGrid {
+    gap: 2.5rem;
+    padding-top: 2.4rem;
+  }
+
+  .shoppeCopy h2 {
+    max-width: 8.5ch;
+    font-size: clamp(3rem, 14vw, 4.35rem);
+    line-height: .9;
+    letter-spacing: -.055em;
+  }
+
+  .shoppeCopy > p:not(.kicker) {
+    margin: 1.5rem 0 1.8rem;
+    font-size: 1.2rem;
+    line-height: 1.42;
+  }
+
+  .shoppeFacade {
+    min-height: 76vw;
+  }
+
+  .shoppeObject {
+    min-height: 48vw;
+  }
+
+  .clientWork {
+    padding-top: 4.25rem;
+    padding-bottom: 4.5rem;
+  }
+
+  .clientWorkIntro {
+    gap: 1.6rem;
+    padding: 2.5rem 0 3rem;
+  }
+
+  .clientWorkIntro h2 {
+    max-width: 9.5ch;
+    font-size: clamp(2.85rem, 11.6vw, 4rem);
+    line-height: .9;
+    letter-spacing: -.06em;
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+    text-wrap: balance;
+  }
+
+  .clientWorkIntro p {
+    max-width: 29rem;
+    font-size: 1.12rem;
+    line-height: 1.45;
+  }
+
+  .clientCase {
+    min-height: 0;
+  }
+
+  .clientMeta {
+    gap: .35rem;
+    padding: 1rem;
+  }
+
+  .clientDiagram {
+    min-height: 7.5rem;
+  }
+
+  .clientBody {
+    padding: 1rem 1rem 1.25rem;
+  }
+
+  .personas {
+    padding-top: 4rem;
+  }
+
+  .personaIntro {
+    padding: 2.4rem 0 3rem;
+  }
+
+  .personaGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .personaIdentity {
+    padding: .75rem .65rem .85rem;
+  }
+
+  .personaIdentity h3 {
+    font-size: clamp(1.15rem, 5.5vw, 1.55rem);
+    line-height: .96;
+  }
+
+  .personaIdentity strong {
+    font-size: .58rem;
+    line-height: 1.18;
+  }
+
+  .personaIdentity p {
+    font-size: .92rem;
+    line-height: 1.28;
+  }
+}
