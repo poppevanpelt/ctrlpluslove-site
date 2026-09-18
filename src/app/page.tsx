@@ -242,6 +242,10 @@ export default function Home() {
           </div>
 
           <div className={styles.curve} aria-label="Illustrative Brand Survival reading">
+            <div className={styles.curveContext}>
+              <strong>HOW MUCH CAN YOU REMOVE BEFORE PEOPLE STOP RECOGNISING THE BRAND?</strong>
+              <span>BRAND survives subtraction. WALLPAPER disappears with it.</span>
+            </div>
             <div className={styles.curveAxisY}>RECOGNITION</div>
             <div className={styles.curvePlot}>
               <span className={styles.curveBrand} />
