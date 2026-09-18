@@ -71,6 +71,27 @@ const machineStudies = [
   { number: "STUDY 05", title: "Field key", system: "FIELD UNIT / 001" },
 ] as const;
 
+const clientSystems = [
+  {
+    client: "COMFORA",
+    category: "MOBILITY / INDEPENDENCE",
+    title: "Nobody wanted a comfy chair. They wanted their lives back.",
+    description:
+      "A product brief was reframed around freedom, dignity and the life beyond the furniture, then carried into creative and production experiments.",
+    system: "CATEGORY REFRAME / CREATIVE TESTING",
+    diagram: "comfora",
+  },
+  {
+    client: "SUKI",
+    category: "RITUAL / GROWTH",
+    title: "Don’t franchise the store. Franchise what makes people return.",
+    description:
+      "A matcha brand became a live sensing system: store signals, creator intelligence, small ritual experiments and memory for the next Suki.",
+    system: "RITUAL INTELLIGENCE / LIVING FRANCHISE OS",
+    diagram: "suki",
+  },
+] as const;
+
 const lab = [
   "Atlas Mentis Humanae",
   "Human Protocol Library",
@@ -190,6 +211,7 @@ export default function PoppePortfolioPage() {
         </div>
         <nav className={`${styles.nav} ${tweaks.navigation}`} aria-label="Portfolio navigation">
           <a href="#systems">Systems</a>
+          <a href="#client-work">Client work</a>
           <a href="#machine-studies">Machine studies</a>
           <a href="#foundation">Foundation</a>
           <Link href="/poppe/resume/">Resume</Link>
@@ -217,9 +239,42 @@ export default function PoppePortfolioPage() {
         </div>
       </section>
 
+      <section id="client-work" className={`${styles.section} ${styles.clientWork}`}>
+        <div className={styles.sectionHeading}>
+          <span>02 / SELECTED CLIENT SYSTEMS</span>
+          <p>Real briefs, rebuilt as things an organisation can observe, test and remember.</p>
+        </div>
+        <div className={styles.clientGrid}>
+          {clientSystems.map((client) => (
+            <article className={styles.clientCase} key={client.client}>
+              <div className={styles.clientMeta}>
+                <strong>{client.client}</strong>
+                <span>{client.category}</span>
+              </div>
+              <div className={`${styles.clientDiagram} ${styles[client.diagram]}`} aria-hidden="true">
+                {client.diagram === "comfora" ? (
+                  <>
+                    <span>CHAIR</span><i>→</i><span>COMFORT</span><i>→</i><strong>LIFE</strong>
+                  </>
+                ) : (
+                  <>
+                    <span>STORE SIGNALS</span><span>CREATOR SENSING</span><span>EXPERIMENT</span><strong>MEMORY</strong>
+                  </>
+                )}
+              </div>
+              <div className={styles.clientBody}>
+                <p className={styles.clientSystem}>{client.system}</p>
+                <h3>{client.title}</h3>
+                <p>{client.description}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section id="machine-studies" className={`${styles.section} ${additions.machineStudies}`}>
         <div className={styles.sectionHeading}>
-          <span>02 / MACHINE STUDIES</span>
+          <span>03 / MACHINE STUDIES</span>
           <p>Physical studies for systems that currently live mostly in software.</p>
         </div>
         <div className={additions.studyGrid}>
@@ -238,7 +293,7 @@ export default function PoppePortfolioPage() {
             <img className={additions.foundationArtwork} src="/poppe/foundation-logo.svg" alt="ctrl+love Foundation. Access, skills, local impact." />
           </div>
           <div className={additions.foundationMission}>
-            <span>03 / CTRL+LOVE FOUNDATION</span>
+            <span>04 / CTRL+LOVE FOUNDATION</span>
             <h2>AI access shouldn’t depend on where you were born.</h2>
             <p>We want to give children without access to paid AI tools the chance to learn, explore and build. Then help them turn those same tools toward the problems around them: water, drought, schooling and whatever matters locally.</p>
           </div>
@@ -249,7 +304,7 @@ export default function PoppePortfolioPage() {
 
       <section id="experience" className={`${styles.section} ${styles.experience}`}>
         <div className={styles.sectionHeading}>
-          <span>04 / FIELD EXPERIENCE</span>
+          <span>05 / FIELD EXPERIENCE</span>
           <p>Thirty years inside decisions before engineering them.</p>
         </div>
         <div className={styles.timeline}>
@@ -262,7 +317,7 @@ export default function PoppePortfolioPage() {
 
       <section className={`${styles.section} ${styles.lab}`}>
         <div className={styles.sectionHeading}>
-          <span>05 / CURRENT LAB</span>
+          <span>06 / CURRENT LAB</span>
           <p>Research that may become an instrument, or may fail usefully.</p>
         </div>
         <div className={styles.labGrid}>
@@ -276,7 +331,7 @@ export default function PoppePortfolioPage() {
       </section>
 
       <section className={styles.interruption}>
-        <span>06 / THE SUBARU</span>
+        <span>07 / THE SUBARU</span>
         <h2>Wait, what?</h2>
         <p>The recurring interruption behind the work. Not contrarianism. A reflex against premature certainty.</p>
         <blockquote>If everybody agrees too quickly, inspect the room.</blockquote>
