@@ -2126,3 +2126,62 @@
     aspect-ratio: 4 / 5.1;
   }
 }
+
+
+/* WEBSITE 002.6 / ORGANIC PROVENANCE */
+.provenanceCopy {
+  align-self: end;
+  display: grid;
+  gap: .85rem;
+  max-width: 34rem;
+}
+
+.provenanceCopy p {
+  margin: 0;
+  font-size: clamp(1.02rem, 1.45vw, 1.3rem);
+  line-height: 1.42;
+}
+
+.provenanceCopy strong {
+  display: block;
+  max-width: 30rem;
+  color: var(--signal);
+  font-size: .72rem;
+  font-weight: 900;
+  letter-spacing: .11em;
+  line-height: 1.35;
+}
+
+.provenanceNote {
+  color: color-mix(in srgb, currentColor 62%, transparent);
+  font-size: .82rem !important;
+  line-height: 1.45 !important;
+}
+
+.personas .provenanceCopy strong {
+  color: #ef6427;
+}
+
+.personas .provenanceNote {
+  color: #8f887f;
+}
+
+@media (max-width: 900px) {
+  .provenanceCopy {
+    max-width: 42rem;
+  }
+}
+
+@media (max-width: 620px) {
+  .provenanceCopy {
+    gap: .7rem;
+  }
+
+  .provenanceCopy p {
+    font-size: 1rem;
+  }
+
+  .provenanceCopy strong {
+    font-size: .62rem;
+  }
+}
