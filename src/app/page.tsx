@@ -142,7 +142,7 @@ const pressNotes = [
   },
 ] as const;
 
-// NETLIFY PRODUCTION NUDGE 2026-09-18
+// NETLIFY PRODUCTION NUDGE 2026-09-18 14:31 CEST
 export default function Home() {
   return (
     <main className={styles.page} id="main-content">
