@@ -61,6 +61,8 @@ const homepagePersonaIds = [
   "johan-cruyff",
   "the-customer",
   "wade-ellison",
+  "maya-elise-harper",
+  "simon-cross",
 ] as const;
 
 const homepagePersonas = homepagePersonaIds
