@@ -109,10 +109,14 @@ export const supportingRoomPersonas: RoomPersona[] = [
     portraitPosition: "50% 39%",
   },
   {
-    id: "graham-holloway",
-    name: "Graham Holloway",
+    id: "grace-holloway",
+    name: "Grace Holloway",
     role: "Reputation",
-    line: "Protects long-term trust, legitimacy and public confidence.",
+    line: "Watches trust move, and marks the moment credibility is being spent rather than earned.",
+    contribution:
+      "Tracks when confidence quietly leaves the room before anyone has named the loss.",
+    portrait: "/room/personas/grace-holloway.webp",
+    portraitPosition: "50% 40%",
   },
   {
     id: "brigitte-brussels",
@@ -139,6 +143,22 @@ export const supportingRoomPersonas: RoomPersona[] = [
       "Reminds the Room what history is trying to teach.",
     portrait: "/room/personas/vera-elise-hartmann.jpg",
     portraitPosition: "50% 39%",
+  },
+  {
+    id: "dr-mara-veld",
+    name: "Dr. Mara Veld",
+    role: "Structural Depth",
+    line: "What is this decision really sitting on?",
+    contribution:
+      "Looks past the argument to the system beneath it: incentives, history, dependencies and accumulated debt.",
+  },
+  {
+    id: "dr-lila-voss",
+    name: "Dr. Lila Voss",
+    role: "Institutional Ritual",
+    line: "What ritual is being performed instead of a decision?",
+    contribution:
+      "Reads hierarchy, deference and ritual agreement as visible operating evidence.",
   },
   {
     id: "wade-ellison",
