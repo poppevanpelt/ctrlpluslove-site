@@ -54,6 +54,29 @@ const recentInstruments = [
 const homepagePersonas = coreRoomPersonas.slice(0, 4);
 const homepageAmbassadors = confirmedAmbassadors.slice(0, 6);
 
+const personaGenealogies: Record<
+  string,
+  { status: string; sources?: Array<{ name: string; share: number }> }
+> = {
+  "maya-elise-harper": {
+    status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN",
+  },
+  "simon-cross": {
+    status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN",
+  },
+  "nick-deckman": {
+    status: "DESCENDS FROM",
+    sources: [
+      { name: "SIMON NEEFJES", share: 60 },
+      { name: "ERIK KELLERHUIS", share: 30 },
+      { name: "MAXIME HARTMAN", share: 10 },
+    ],
+  },
+  "lexi-arden": {
+    status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN",
+  },
+};
+
 const fieldNotes = [
   {
     stamp: "FIELD NOTE 017",
@@ -191,38 +214,60 @@ export default function Home() {
           <p>Built perspectives with jobs to do, not decorative avatars.</p>
         </div>
         <div className={styles.personaGrid}>
-          {homepagePersonas.map((persona, index) => (
-            <article className={styles.personaCard} key={persona.id}>
-              <div className={styles.personaPortrait}>
-                {persona.portrait ? (
-                  <Image
-                    src={persona.portrait}
-                    alt={persona.name}
-                    fill
-                    sizes="(max-width: 620px) 46vw, 24vw"
-                    style={{ objectPosition: persona.portraitPosition ?? "50% 40%" }}
-                  />
-                ) : null}
-              </div>
-              <span>PERSONA {String(index + 1).padStart(2, "0")}</span>
-              <h3>{persona.name}</h3>
-              <strong>{persona.role}</strong>
-              <p>{persona.line}</p>
-            </article>
-          ))}
-        </div>
+          {homepagePersonas.map((persona, index) => {
+            const genealogy = personaGenealogies[persona.id] ?? {
+              status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN",
+            };
 
-        <div className={styles.geneticBio}>
-          <div>
-            <span className={styles.kicker}>GENETIC BIO / SPECIMEN NICK DECKMAN</span>
-            <h3>60% SIMON NEEFJES<br />30% ERIK KELLERHUIS<br />10% MAXIME HARTMAN</h3>
-          </div>
-          <div className={styles.dnaBars} aria-label="Nick Deckman synthetic genealogy">
-            <span style={{ width: "60%" }}>60</span>
-            <span style={{ width: "30%" }}>30</span>
-            <span style={{ width: "10%" }}>10</span>
-          </div>
-          <p>Not a biography. A deliberately assembled point of view.</p>
+            return (
+              <article className={styles.personaCard} key={persona.id}>
+                <div className={styles.personaSpecimenTopline}>
+                  <span>SPECIMEN {String(index + 1).padStart(2, "0")}</span>
+                  <span>SYNTHETIC / ACTIVE</span>
+                </div>
+
+                <div className={styles.personaPortrait}>
+                  {persona.portrait ? (
+                    <Image
+                      src={persona.portrait}
+                      alt={persona.name}
+                      fill
+                      sizes="(max-width: 620px) 46vw, 24vw"
+                      style={{ objectPosition: persona.portraitPosition ?? "50% 40%" }}
+                    />
+                  ) : null}
+                  <span className={styles.personaSpecimenId}>ID · {persona.id.toUpperCase()}</span>
+                </div>
+
+                <div className={styles.personaIdentity}>
+                  <h3>{persona.name}</h3>
+                  <strong>{persona.role}</strong>
+                  <p>{persona.line}</p>
+                </div>
+
+                <div className={styles.personaGenealogy}>
+                  <span className={styles.genealogyLabel}>GENEALOGY / {genealogy.status}</span>
+                  {genealogy.sources ? (
+                    <div className={styles.genealogySources}>
+                      {genealogy.sources.map((source) => (
+                        <div className={styles.genealogySource} key={source.name}>
+                          <div>
+                            <span>{source.name}</span>
+                            <strong>{source.share}%</strong>
+                          </div>
+                          <i aria-hidden="true">
+                            <b style={{ width: `${source.share}%` }} />
+                          </i>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className={styles.genealogyOpen}>NO CLAIM ENTERED. KEEP THE LINE OPEN.</p>
+                  )}
+                </div>
+              </article>
+            );
+          })}
         </div>
       </section>
 
