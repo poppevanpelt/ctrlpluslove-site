@@ -288,6 +288,14 @@ export default function Home() {
       </section>
 
       <section className={styles.field} aria-labelledby="field-title">
+        <Image
+          className={styles.fieldImage}
+          src="/home/sunnyvale-campus.webp"
+          alt=""
+          fill
+          sizes="100vw"
+        />
+        <div className={styles.fieldVeil} aria-hidden="true" />
         <div className={styles.sectionLabel}>
           <span>FIELD NOTES</span>
           <span>REALITY, BEFORE THE FRAMEWORK</span>
@@ -312,8 +320,8 @@ export default function Home() {
           <Link href="/instruments/">ALL 024 INSTRUMENTS ↗</Link>
         </div>
         <div className={styles.factoryIntro}>
-          <h2 id="factory-title">RECENTLY<br />BUILT.</h2>
-          <p>Not case-study wallpaper. Six instruments you can open, inspect and run.</p>
+          <h2 id="factory-title">WE BUILT<br />THE<br /><em>INSTRUMENTS.</em></h2>
+          <p>Not case-study wallpaper. Six working pieces of decision machinery you can open, inspect and run.</p>
         </div>
 
         <div className={styles.instrumentGrid}>
@@ -366,6 +374,14 @@ export default function Home() {
       </section>
 
       <section className={styles.humans} aria-labelledby="humans-title">
+        <Image
+          className={styles.humansImage}
+          src="/home/judgment-control-room.webp"
+          alt=""
+          fill
+          sizes="100vw"
+        />
+        <div className={styles.humansVeil} aria-hidden="true" />
         <div className={styles.sectionLabel}>
           <span>WHO IS OPERATING THE MACHINERY</span>
           <span>HUMAN-LED</span>
