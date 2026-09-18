@@ -242,6 +242,28 @@
 }
 
 .curveAxisX,
+
+.curveContext {
+  display: grid;
+  gap: .35rem;
+  margin: 0 0 1.1rem;
+  max-width: 38rem;
+}
+
+.curveContext strong {
+  color: var(--deep-sky);
+  font-size: clamp(.78rem, 1.1vw, 1rem);
+  font-weight: 900;
+  letter-spacing: .055em;
+  line-height: 1.2;
+}
+
+.curveContext span {
+  color: rgb(21 21 21 / 64%);
+  font-size: .72rem;
+  line-height: 1.35;
+}
+
 .curveAxisY,
 .curveNote {
   position: absolute;
