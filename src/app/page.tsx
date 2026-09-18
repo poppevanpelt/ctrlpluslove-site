@@ -215,6 +215,7 @@ export default function Home() {
               Poppe spent eight years working with them, roughly three months a year in the same rooms.
             </p>
             <strong>ORGANIC RELATIONSHIPS. NOT BOUGHT BY THE KILO FROM META.</strong>
+            <span className={styles.metaFootnote}>@meta</span>
             <p className={styles.provenanceNote}>
               Tokyo and Bloemendaal are real positions in the ctrl+love network.
               The people are real. The buildings are architectural propositions.
@@ -349,6 +350,85 @@ export default function Home() {
             <Link href="/maria/">MARIA EXCAVATION ↗</Link>
             <Link href="/organic-ai/">ORGANIC AI ↗</Link>
           </div>
+        </div>
+      </section>
+
+      <section className={styles.science} aria-labelledby="science-title">
+        <div className={styles.sectionLabel}>
+          <span>SCIENTIFIC PROVENANCE</span>
+          <span>EVIDENCE BELOW / MYTH BESIDE IT</span>
+        </div>
+
+        <div className={styles.scienceIntro}>
+          <div>
+            <p className={styles.kicker}>THE SERIOUS LAYER</p>
+            <h2 id="science-title">WE DIDN&apos;T<br />MAKE ALL OF<br />THIS UP.</h2>
+          </div>
+          <p>
+            The instruments borrow from established work on judgment under uncertainty,
+            dissent, psychological safety and naturalistic decision-making. Sources stay
+            visible so a useful idea never has to pretend it arrived by magic.
+          </p>
+        </div>
+
+        <div className={styles.scienceGrid}>
+          <a
+            className={styles.scienceSource}
+            href="https://doi.org/10.1126/science.185.4157.1124"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span>01 / JUDGMENT UNDER UNCERTAINTY</span>
+            <strong>TVERSKY + KAHNEMAN · 1974</strong>
+            <p>Heuristics, uncertainty, anchoring and the predictable ways judgment can drift.</p>
+            <small>SCIENCE · PRIMARY SOURCE ↗</small>
+          </a>
+
+          <a
+            className={styles.scienceSource}
+            href="https://doi.org/10.1111/j.1559-1816.1987.tb00339.x"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span>02 / DISSENT</span>
+            <strong>CHARLAN NEMETH · 1987</strong>
+            <p>Minority disagreement can widen the search space instead of merely slowing agreement.</p>
+            <small>JOURNAL OF APPLIED SOCIAL PSYCHOLOGY ↗</small>
+          </a>
+
+          <a
+            className={styles.scienceSource}
+            href="https://doi.org/10.2307/2666999"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span>03 / PSYCHOLOGICAL SAFETY</span>
+            <strong>AMY EDMONDSON · 1999</strong>
+            <p>Teams learn differently when interpersonal risk can be taken without social punishment.</p>
+            <small>ADMINISTRATIVE SCIENCE QUARTERLY ↗</small>
+          </a>
+
+          <a
+            className={styles.scienceSource}
+            href="https://mitpress.mit.edu/9780262260862/sources-of-power/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span>04 / NATURALISTIC DECISION-MAKING</span>
+            <strong>GARY KLEIN · 1998</strong>
+            <p>Experienced judgment is shaped in real conditions: time pressure, stakes, pattern recognition and action.</p>
+            <small>MIT PRESS · SOURCES OF POWER ↗</small>
+          </a>
+
+          <aside className={styles.originSpecimen}>
+            <span>ORIGIN SPECIMEN 000 / APOCRYPHAL / NOT EVIDENCE</span>
+            <strong>PROF. DR. H. VON SCHMAALHAUZEN</strong>
+            <p>
+              Allegedly had the original eureka moment while passing Harvard on a bicycle,
+              after noticing that a room can agree perfectly and still be wrong.
+            </p>
+            <small>PROVENANCE: UNVERIFIED · RETAINED FOR SCIENTIFIC MORALE</small>
+          </aside>
         </div>
       </section>
 
