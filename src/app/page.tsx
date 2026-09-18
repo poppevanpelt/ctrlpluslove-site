@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { EarthriseMoment } from "./earthrise-moment";
+import { coreRoomPersonas } from "./room-personas-data";
 import styles from "./home-2026.module.css";
 
 const recentInstruments = [
@@ -54,6 +55,25 @@ const recentInstruments = [
     readout: ["FRAME", "COLLIDE", "DECIDE"],
   },
 ] as const;
+
+const homepagePersonas = coreRoomPersonas.slice(0, 4);
+
+const personaGenealogies: Record<
+  string,
+  { status: string; sources?: Array<{ name: string; share: number }> }
+> = {
+  "maya-elise-harper": { status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN" },
+  "simon-cross": { status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN" },
+  "nick-deckman": {
+    status: "DESCENDS FROM",
+    sources: [
+      { name: "SIMON NEEFJES", share: 60 },
+      { name: "ERIK KELLERHUIS", share: 30 },
+      { name: "MAXIME HARTMAN", share: 10 },
+    ],
+  },
+  "lexi-arden": { status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN" },
+};
 
 const fieldNotes = [
   {
@@ -374,6 +394,70 @@ export default function Home() {
               <span>DECISION IN A BOX · 5 CARDS / 1 DECISION</span>
             </article>
           </div>
+        </div>
+      </section>
+
+      <section className={styles.personas} aria-labelledby="personas-title">
+        <div className={styles.sectionLabel}>
+          <span>SYNTHETIC PERSONAS</span>
+          <Link href="/room/">ENTER THE ROOM ↗</Link>
+        </div>
+        <div className={styles.personaIntro}>
+          <h2 id="personas-title">THE ROOM<br />IS NOT EMPTY.</h2>
+          <p>Built perspectives with jobs to do, not decorative avatars.</p>
+        </div>
+        <div className={styles.personaGrid}>
+          {homepagePersonas.map((persona, index) => {
+            const genealogy = personaGenealogies[persona.id] ?? {
+              status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN",
+            };
+
+            return (
+              <article className={styles.personaCard} key={persona.id}>
+                <div className={styles.personaSpecimenTopline}>
+                  <span>SPECIMEN {String(index + 1).padStart(2, "0")}</span>
+                  <span>SYNTHETIC / ACTIVE</span>
+                </div>
+                <div className={styles.personaPortrait}>
+                  {persona.portrait ? (
+                    <Image
+                      src={persona.portrait}
+                      alt={persona.name}
+                      fill
+                      sizes="(max-width: 620px) 46vw, 24vw"
+                      style={{ objectPosition: persona.portraitPosition ?? "50% 40%" }}
+                    />
+                  ) : null}
+                  <span className={styles.personaSpecimenId}>ID · {persona.id.toUpperCase()}</span>
+                </div>
+                <div className={styles.personaIdentity}>
+                  <h3>{persona.name}</h3>
+                  <strong>{persona.role}</strong>
+                  <p>{persona.line}</p>
+                </div>
+                <div className={styles.personaGenealogy}>
+                  <span className={styles.genealogyLabel}>GENEALOGY / {genealogy.status}</span>
+                  {genealogy.sources ? (
+                    <div className={styles.genealogySources}>
+                      {genealogy.sources.map((source) => (
+                        <div className={styles.genealogySource} key={source.name}>
+                          <div>
+                            <span>{source.name}</span>
+                            <strong>{source.share}%</strong>
+                          </div>
+                          <i aria-hidden="true">
+                            <b style={{ width: `${source.share}%` }} />
+                          </i>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className={styles.genealogyOpen}>NO CLAIM ENTERED. KEEP THE LINE OPEN.</p>
+                  )}
+                </div>
+              </article>
+            );
+          })}
         </div>
       </section>
 
