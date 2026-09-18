@@ -64,7 +64,7 @@ export function RoomRunnerClient() {
   const [selectedParticipants, setSelectedParticipants] = useState<Participant[]>(
     () =>
       participantPool.filter((participant) =>
-        ["mats-utberg", "umberto-bartolini", "jorge-virgos"].includes(participant.id),
+        ["shun-iwai", "umberto-bartolini", "jorge-virgos"].includes(participant.id),
       ),
   );
   const [customName, setCustomName] = useState("");
