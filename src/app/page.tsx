@@ -168,11 +168,14 @@ export default function Home() {
         </div>
 
         <div className={styles.heroBody}>
-          <p className={styles.kicker}>SUNNYVALE ANNEX / APPLIED INTELLIGENCE</p>
+          <p className={styles.kicker}>SUNNYVALE ANNEX / PROPOSITIONAL FACILITY</p>
           <h1 id="home-title">WE BUILD<br />INSTRUMENTS<br />FOR HUMAN<br />JUDGMENT.</h1>
           <p className={styles.heroLead}>
             AI can generate more answers than we will ever need.<br />
             The interesting problem is knowing what deserves to be believed.
+            <span className={styles.heroPlain}>
+              We use AI, human opposition and working instruments to pressure-test important decisions before they become expensive.
+            </span>
           </p>
         </div>
 
@@ -303,7 +306,7 @@ export default function Home() {
             <Link href="/brand-survival/">VIEW THE READING ↗</Link>
           </div>
 
-          <div className={styles.curve} aria-label="Illustrative Brand Survival reading">
+          <div className={styles.curve} aria-label="Illustrative Brand Survival reading, not observed data">
             <div className={styles.curveContext}>
               <strong>HOW MUCH CAN YOU REMOVE BEFORE PEOPLE STOP RECOGNISING THE BRAND?</strong>
               <span>BRAND survives subtraction. WALLPAPER disappears with it.</span>
@@ -316,8 +319,45 @@ export default function Home() {
               <span className={styles.curveMarkTwo}>WALLPAPER</span>
             </div>
             <div className={styles.curveAxisX}>MORE REMOVED →</div>
-            <p className={styles.curveNote}>Observed data only. No reference curve.</p>
+            <p className={styles.curveNote}>Illustrative reading. No reference curve.</p>
           </div>
+        </div>
+      </section>
+
+      <section className={styles.clientWork} aria-labelledby="client-work-title">
+        <div className={styles.sectionLabel}>
+          <span>FIELD APPLICATIONS</span>
+          <span>REAL CLIENT SYSTEMS / 002</span>
+        </div>
+        <div className={styles.clientWorkIntro}>
+          <h2 id="client-work-title">THE INSTRUMENTS<br />HAVE LEFT<br />THE LAB.</h2>
+          <p>Two live examples of the same habit: find the thing underneath the brief, then build something that can keep learning.</p>
+        </div>
+        <div className={styles.clientGrid}>
+          {clientSystems.map((client) => (
+            <article className={styles.clientCase} key={client.client}>
+              <div className={styles.clientMeta}>
+                <strong>{client.client}</strong>
+                <span>{client.category}</span>
+              </div>
+              <div className={`${styles.clientDiagram} ${styles[client.diagram]}`} aria-hidden="true">
+                {client.diagram === "comfora" ? (
+                  <>
+                    <span>CHAIR</span><i>→</i><span>COMFORT</span><i>→</i><strong>LIFE</strong>
+                  </>
+                ) : (
+                  <>
+                    <span>STORE SIGNALS</span><span>CREATOR SENSING</span><span>EXPERIMENT</span><strong>MEMORY</strong>
+                  </>
+                )}
+              </div>
+              <div className={styles.clientBody}>
+                <p className={styles.clientSystem}>{client.system}</p>
+                <h3>{client.title}</h3>
+                <p>{client.description}</p>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
 
@@ -454,43 +494,6 @@ export default function Home() {
               <span>{note.stamp}</span>
               <h3>{note.title}</h3>
               <p>{note.copy}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className={styles.clientWork} aria-labelledby="client-work-title">
-        <div className={styles.sectionLabel}>
-          <span>FIELD APPLICATIONS</span>
-          <span>REAL CLIENT SYSTEMS / 002</span>
-        </div>
-        <div className={styles.clientWorkIntro}>
-          <h2 id="client-work-title">THE INSTRUMENTS<br />HAVE LEFT<br />THE LAB.</h2>
-          <p>Two live examples of the same habit: find the thing underneath the brief, then build something that can keep learning.</p>
-        </div>
-        <div className={styles.clientGrid}>
-          {clientSystems.map((client) => (
-            <article className={styles.clientCase} key={client.client}>
-              <div className={styles.clientMeta}>
-                <strong>{client.client}</strong>
-                <span>{client.category}</span>
-              </div>
-              <div className={`${styles.clientDiagram} ${styles[client.diagram]}`} aria-hidden="true">
-                {client.diagram === "comfora" ? (
-                  <>
-                    <span>CHAIR</span><i>→</i><span>COMFORT</span><i>→</i><strong>LIFE</strong>
-                  </>
-                ) : (
-                  <>
-                    <span>STORE SIGNALS</span><span>CREATOR SENSING</span><span>EXPERIMENT</span><strong>MEMORY</strong>
-                  </>
-                )}
-              </div>
-              <div className={styles.clientBody}>
-                <p className={styles.clientSystem}>{client.system}</p>
-                <h3>{client.title}</h3>
-                <p>{client.description}</p>
-              </div>
             </article>
           ))}
         </div>
@@ -702,7 +705,7 @@ export default function Home() {
         <p className={styles.kicker}>OPEN DOOR</p>
         <h2 id="exit-title">BRING US SOMETHING<br />THAT REFUSES TO<br />BECOME CLEAR.</h2>
         <p>A decision. A belief. A brand. A room. A problem everyone thinks they understand.</p>
-        <Link href="/factory/">ENTER THE FACTORY ↗</Link>
+        <a href="mailto:poppevanpelt@gmail.com?subject=A%20decision%20that%20refuses%20to%20become%20clear">BRING US THE DECISION ↗</a>
         <div className={styles.exitFooter}>
           <span>ctrl+love · Haarlem · 2026</span>
           <span>Observe. Understand. Judge. Remain human.</span>

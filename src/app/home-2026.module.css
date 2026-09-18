@@ -2361,3 +2361,27 @@
     margin-top: 2rem;
   }
 }
+
+
+/* WEBSITE 002.8 / OUTSIDER HANDRAILS */
+.heroPlain {
+  display: block;
+  max-width: 44rem;
+  margin-top: 1.15rem;
+  padding-left: 1rem;
+  border-left: 2px solid #ffe9a9;
+  color: #fff;
+  font-size: clamp(.9rem, 1.05vw, 1.02rem);
+  font-weight: 760;
+  letter-spacing: .005em;
+  line-height: 1.42;
+}
+
+@media (max-width: 620px) {
+  .heroPlain {
+    max-width: 31rem;
+    margin-top: .95rem;
+    font-size: .9rem;
+    line-height: 1.38;
+  }
+}
