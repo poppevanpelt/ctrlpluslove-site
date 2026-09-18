@@ -147,7 +147,7 @@ const pressNotes = [
   },
 ] as const;
 
-// NETLIFY PRODUCTION NUDGE 2026-09-18 15:12 CEST
+// NETLIFY PRODUCTION NUDGE 2026-09-18 POST-MERGE
 export default function Home() {
   return (
     <main className={styles.page} id="main-content">
