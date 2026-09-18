@@ -20,7 +20,7 @@ const steelBallStory = [
   "Different cultures. Different industries. Different ways of seeing.",
   "Their role isn't to agree with us.",
   "It's to ask the uncomfortable question, notice the overlooked detail, challenge the easy consensus, and find the steel ball before reality throws it.",
-  "Because if someone in Stockholm, Berlin, Valencia, Tokyo or Seoul spots a weakness before launch, we'd much rather hear it in our room than watch millions discover it online.",
+  "Because if someone in Valencia, Tokyo or Seoul spots a weakness before launch, we'd much rather hear it in our room than watch millions discover it online.",
   "That's what a global network should be for.",
   "Not to amplify certainty. To improve it.",
   "Reality always wins.",
