@@ -10,6 +10,7 @@ const recentInstruments = [
     state: "READING 001",
     line: "How much can we take away before it stops being you?",
     href: "/brand-survival/",
+    readout: ["REMOVE", "RECOGNISE", "SURVIVE"],
   },
   {
     no: "023",
@@ -17,6 +18,7 @@ const recentInstruments = [
     state: "PROTOTYPE",
     line: "A question either produces evidence or earns its death.",
     href: "/chase/",
+    readout: ["QUESTION", "EVIDENCE", "STOP"],
   },
   {
     no: "022",
@@ -24,6 +26,7 @@ const recentInstruments = [
     state: "ONGOING",
     line: "Map how a decision travels, not only where it ends.",
     href: "/maria/",
+    readout: ["TERRAIN", "TRAJECTORY", "MOVE"],
   },
   {
     no: "020",
@@ -31,6 +34,7 @@ const recentInstruments = [
     state: "PROTOTYPE",
     line: "Cut the fat. Keep the organ.",
     href: "/purge/",
+    readout: ["CUT", "TEST", "KEEP"],
   },
   {
     no: "004",
@@ -38,6 +42,7 @@ const recentInstruments = [
     state: "PROTOTYPE",
     line: "A forgotten decision must win its argument again.",
     href: "/decision-memory/",
+    readout: ["ASSUMPTION", "OPPOSITION", "MEMORY"],
   },
   {
     no: "001",
@@ -45,6 +50,7 @@ const recentInstruments = [
     state: "WORKING",
     line: "Collide assumptions before people collide.",
     href: "/decision-collider/",
+    readout: ["FRAME", "COLLIDE", "DECIDE"],
   },
 ] as const;
 
@@ -227,31 +233,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={styles.factory} aria-labelledby="factory-title">
-        <div className={styles.sectionLabel}>
-          <span>THE FACTORY</span>
-          <Link href="/instruments/">ALL 024 INSTRUMENTS ↗</Link>
-        </div>
-        <div className={styles.factoryIntro}>
-          <h2 id="factory-title">RECENTLY<br />BUILT.</h2>
-          <p>Working instruments, prototypes, field tests and useful failures.</p>
-        </div>
-
-        <div className={styles.instrumentGrid}>
-          {recentInstruments.map((instrument) => (
-            <Link href={instrument.href} className={styles.instrument} key={instrument.no}>
-              <div className={styles.instrumentMeta}>
-                <span>{instrument.no}</span>
-                <span>{instrument.state}</span>
-              </div>
-              <h3>{instrument.name}</h3>
-              <p>{instrument.line}</p>
-              <span className={styles.instrumentOpen}>OPEN ↗</span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
       <section className={styles.institute} aria-labelledby="institute-title">
         <Image
           className={styles.controlRoomImage}
@@ -299,6 +280,36 @@ export default function Home() {
               <h3>{note.title}</h3>
               <p>{note.copy}</p>
             </article>
+          ))}
+        </div>
+      </section>
+
+      <section className={styles.factory} aria-labelledby="factory-title">
+        <div className={styles.sectionLabel}>
+          <span>THE FACTORY / WORKING DOORS</span>
+          <Link href="/instruments/">ALL 024 INSTRUMENTS ↗</Link>
+        </div>
+        <div className={styles.factoryIntro}>
+          <h2 id="factory-title">RECENTLY<br />BUILT.</h2>
+          <p>Not case-study wallpaper. Six instruments you can open, inspect and run.</p>
+        </div>
+
+        <div className={styles.instrumentGrid}>
+          {recentInstruments.map((instrument) => (
+            <Link href={instrument.href} className={styles.instrument} key={instrument.no}>
+              <div className={styles.instrumentMeta}>
+                <span>{instrument.no}</span>
+                <span>{instrument.state}</span>
+              </div>
+              <div className={styles.instrumentReadout} aria-hidden="true">
+                {instrument.readout.map((step, index) => (
+                  <span key={step}><i>{String(index + 1).padStart(2, "0")}</i>{step}</span>
+                ))}
+              </div>
+              <h3>{instrument.name}</h3>
+              <p>{instrument.line}</p>
+              <span className={styles.instrumentOpen}>RUN INSTRUMENT ↗</span>
+            </Link>
           ))}
         </div>
       </section>
