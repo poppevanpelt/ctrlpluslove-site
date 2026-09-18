@@ -256,7 +256,7 @@ export default function Home() {
             </div>
           </article>
 
-          <article className={styles.node}>
+          <article className={`${styles.node} ${styles.founderNode}`}>
             <Image
               className={styles.nodeImage}
               src="https://upload.wikimedia.org/wikipedia/commons/9/99/PanoBunker.jpg"
@@ -266,21 +266,21 @@ export default function Home() {
             />
             <div className={styles.nodeVeil} aria-hidden="true" />
             <div className={styles.nodeTopline}>
-              <span>ACTIVE FOUNDER SIGNAL</span>
-              <span>BUNKER / PENDING</span>
+              <span>FOUNDER / LIVE</span>
+              <span>DUNES / BASE</span>
             </div>
-            <div className={styles.nodeOperator}>
+            <div className={`${styles.nodeOperator} ${styles.founderOperator}`}>
               <Image
                 src="/ambassadors/portraits/001-poppe-van-pelt-portrait-live-20260715.png"
                 alt="Poppe van Pelt"
-                width={88}
-                height={88}
+                width={112}
+                height={112}
               />
               <span>POPPE VAN PELT<br />FOUNDER / APPLIED AI DECISION SYSTEMS</span>
             </div>
             <div className={styles.nodeCopy}>
               <p>BLOEMENDAAL · NL / DUNE POSITION</p>
-              <h3>CTRL+LOVE<br />BLOEMENDAAL</h3>
+              <h3>CTRL+LOVE<br /><span className={styles.nodePlaceName}>BLOEMENDAAL</span></h3>
               <span>OPERATING FROM THE DUNES. FUTURE BUNKER PENDING.</span>
             </div>
           </article>
