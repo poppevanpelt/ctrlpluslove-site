@@ -268,3 +268,34 @@
 @media (prefers-reduced-motion: reduce) {
   .halo, .core, .streak { animation: none; opacity: .94; }
 }
+
+
+/* EARTHRISE / KEEP THE EARTH VISIBLE */
+.copy {
+  max-width: min(47rem, 56vw);
+  padding-top: clamp(2.25rem, 5vw, 4rem);
+}
+
+.copy p {
+  font-size: clamp(2rem, 4.4vw, 4.6rem);
+  line-height: .95;
+  text-shadow: 0 2px 20px rgb(0 0 0 / 70%);
+}
+
+.imageVeil {
+  background:
+    linear-gradient(90deg, rgb(0 0 0 / 48%) 0%, rgb(0 0 0 / 22%) 38%, transparent 62%),
+    linear-gradient(180deg, rgb(0 0 0 / 26%) 0%, transparent 34%, transparent 70%, rgb(0 0 0 / 42%) 100%);
+}
+
+@media (max-width: 900px) {
+  .copy {
+    max-width: 72vw;
+  }
+}
+
+@media (max-width: 760px) {
+  .copy {
+    max-width: 88vw;
+  }
+}
