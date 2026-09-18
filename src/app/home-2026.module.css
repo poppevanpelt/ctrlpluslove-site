@@ -1868,3 +1868,146 @@
     line-height: 1.28;
   }
 }
+
+
+/* WEBSITE 002.4 / SURGICAL READABILITY + INTERACTION PASS */
+.page h1,
+.page h2,
+.page h3 {
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+
+.page a {
+  position: relative;
+  z-index: 12;
+  pointer-events: auto;
+}
+
+.nodeVeil,
+.heroVeil,
+.controlRoomVeil,
+.fieldVeil,
+.humansVeil,
+.exit::after {
+  pointer-events: none;
+}
+
+/* Human nodes: let the actual places read before the typography. */
+.nodeVeil {
+  background:
+    linear-gradient(180deg, rgb(2 7 15 / 12%) 0%, rgb(2 7 15 / 18%) 48%, rgb(2 7 15 / 68%) 100%),
+    linear-gradient(90deg, rgb(2 7 15 / 20%), transparent 72%);
+}
+
+.nodeImage {
+  filter: saturate(.88) contrast(1.03) brightness(1.08);
+}
+
+.nodeCopy h3 {
+  color: #fff;
+  font-size: clamp(3rem, 5vw, 5.7rem);
+  line-height: .86;
+  letter-spacing: -.06em;
+  overflow-wrap: normal;
+  word-break: keep-all;
+  hyphens: none;
+}
+
+.nodeCopy > p,
+.nodeCopy > span,
+.nodeCopy > a {
+  text-shadow: 0 2px 16px rgb(0 0 0 / 58%);
+}
+
+/* Reading: stop WALLPAPER breaking, and give the x-axis label room. */
+.readingCopy h2 {
+  font-size: clamp(3.8rem, 7vw, 7rem);
+  line-height: .88;
+  overflow-wrap: normal;
+  word-break: keep-all;
+  hyphens: none;
+}
+
+.curveAxisX {
+  position: absolute;
+  z-index: 3;
+  right: auto;
+  left: 1rem;
+  top: 6.35rem;
+  bottom: auto;
+  padding: .25rem .45rem;
+  background: rgb(247 245 237 / 88%);
+  line-height: 1.2;
+}
+
+/* Give two-column editorial sections enough width before splitting them. */
+@media (max-width: 1180px) {
+  .shoppeGrid,
+  .humansGrid,
+  .readingGrid,
+  .institute {
+    grid-template-columns: 1fr;
+  }
+
+  .shoppeCopy,
+  .humanCopy,
+  .instituteCopy {
+    max-width: 42rem;
+  }
+
+  .shoppeCopy h2,
+  .humans h2,
+  .readingCopy h2,
+  .institute h2 {
+    max-width: 10ch;
+    font-size: clamp(3.5rem, 8.5vw, 6.2rem);
+  }
+
+  .readingGrid {
+    gap: 4rem;
+  }
+
+  .curve {
+    margin-left: 2.3rem;
+  }
+}
+
+@media (max-width: 760px) {
+  .nodeCopy h3 {
+    font-size: clamp(2.8rem, 12vw, 4.2rem);
+  }
+
+  .curveAxisX {
+    top: 7rem;
+    left: .8rem;
+  }
+
+  .readingCopy h2,
+  .shoppeCopy h2,
+  .humans h2,
+  .institute h2,
+  .factory h2,
+  .clientWorkIntro h2,
+  .personaIntro h2 {
+    max-width: 100%;
+    font-size: clamp(2.7rem, 11vw, 4rem);
+    line-height: .92;
+  }
+
+  .exit > a,
+  .sectionLabel a,
+  .instituteLinks a,
+  .humanLinks a {
+    min-height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: .55rem .2rem;
+  }
+}
+
+.exit::after {
+  pointer-events: none;
+}
