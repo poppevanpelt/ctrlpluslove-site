@@ -8,7 +8,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { routeMetadata, SITE_URL } from "./seo";
 import { CtrlLayerProvider } from "./ctrl-layer";
 import { ProjectNavigation } from "./project-navigation";
-import { SteelBallCursor } from "./steel-ball-cursor";
 import { SystemShock } from "./system-shock";
 
 export const metadata: Metadata = {
@@ -96,7 +95,6 @@ posthog.init('phc_nXPhwXLd8X7Tt9qXDwtAYJAUFYiTsBCfNzjQqEwLvFbK',{api_host:'https
         <CtrlLayerProvider>
           <ProjectNavigation />
           {children}
-          <SteelBallCursor />
           <SystemShock />
           <Analytics />
           <SpeedInsights />
