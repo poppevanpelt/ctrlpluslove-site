@@ -15159,3 +15159,33 @@ h3 {
   word-break: normal !important;
   hyphens: none !important;
 }
+
+
+/* WEBSITE 002.10 / STEEL BALL: OFF DUTY */
+.steel-ball-cursor,
+.steel-ball-stage-origin,
+.steel-ball-stage-ball,
+.steel-ball-tilt-ball,
+.homepage-steel-ball-object {
+  display: none !important;
+}
+
+html,
+body,
+a,
+button,
+[role="button"],
+summary,
+.persona-card,
+.product-card,
+.ambassador-face,
+.theme-toggle {
+  cursor: auto !important;
+}
+
+a,
+button,
+[role="button"],
+summary {
+  cursor: pointer !important;
+}

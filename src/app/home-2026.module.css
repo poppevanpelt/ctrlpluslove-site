@@ -2429,3 +2429,9 @@
     height: 4.9rem;
   }
 }
+
+
+/* WEBSITE 002.10 / REMOVE DECORATIVE STEEL BALLS */
+.calibration {
+  display: none !important;
+}
