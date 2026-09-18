@@ -320,8 +320,8 @@ export default function Home() {
           <Link href="/instruments/">ALL 024 INSTRUMENTS ↗</Link>
         </div>
         <div className={styles.factoryIntro}>
-          <h2 id="factory-title">WE BUILT<br />THE<br /><em>INSTRUMENTS.</em></h2>
-          <p>Not case-study wallpaper. Six working pieces of decision machinery you can open, inspect and run.</p>
+          <h2 id="factory-title">RECENTLY<br />BUILT.</h2>
+          <p>Not case-study wallpaper. Six instruments you can open, inspect and run.</p>
         </div>
 
         <div className={styles.instrumentGrid}>
