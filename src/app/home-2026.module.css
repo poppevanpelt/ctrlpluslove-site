@@ -1234,3 +1234,150 @@
     margin-bottom: 2.8rem;
   }
 }
+
+
+/* WEBSITE 002.2 / RESTORE THE WEIRD GENEALOGY SYSTEM */
+.personaCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  background: #f5efe3;
+}
+
+.personaSpecimenTopline {
+  display: flex;
+  justify-content: space-between;
+  gap: .75rem;
+  padding: .55rem .65rem;
+  border-bottom: 1px solid var(--deep-sky);
+  color: var(--deep-sky);
+  font-size: .52rem;
+  font-weight: 850;
+  letter-spacing: .12em;
+}
+
+.personaPortrait {
+  aspect-ratio: 4 / 4.7;
+  border-bottom: 1px solid var(--deep-sky);
+  background:
+    linear-gradient(135deg, rgb(8 120 209 / 8%), transparent 55%),
+    #d9d2c3;
+}
+
+.personaPortrait img {
+  filter: saturate(.82) contrast(1.05);
+}
+
+.personaSpecimenId {
+  position: absolute;
+  left: .55rem;
+  bottom: .5rem;
+  z-index: 1;
+  margin: 0;
+  padding: .3rem .4rem;
+  background: rgb(247 241 223 / 86%);
+  color: #151515;
+  font-size: .48rem;
+  font-weight: 850;
+  letter-spacing: .09em;
+  backdrop-filter: blur(4px);
+}
+
+.personaIdentity {
+  padding: .8rem .7rem .9rem;
+  border-bottom: 1px solid var(--deep-sky);
+  background: #fffdf8;
+}
+
+.personaIdentity h3 {
+  margin-top: 0;
+}
+
+.personaIdentity p {
+  min-height: 2.6em;
+  margin-bottom: 0;
+}
+
+.personaGenealogy {
+  margin-top: auto;
+  padding: .7rem;
+  background:
+    linear-gradient(rgb(7 80 146 / 7%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(7 80 146 / 7%) 1px, transparent 1px),
+    #efe8da;
+  background-size: .8rem .8rem;
+}
+
+.genealogyLabel {
+  display: block;
+  margin-bottom: .65rem;
+  color: var(--signal);
+  font-size: .5rem;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.genealogySources {
+  display: grid;
+  gap: .58rem;
+}
+
+.genealogySource > div {
+  display: flex;
+  justify-content: space-between;
+  gap: .75rem;
+  margin-bottom: .18rem;
+  color: #181818;
+  font-size: .55rem;
+  font-weight: 850;
+  letter-spacing: .075em;
+}
+
+.genealogySource > div strong {
+  color: var(--signal);
+}
+
+.genealogySource i {
+  display: block;
+  height: .36rem;
+  overflow: hidden;
+  border: 1px solid var(--deep-sky);
+  background: rgb(255 255 255 / 66%);
+}
+
+.genealogySource i b {
+  display: block;
+  height: 100%;
+  background: var(--deep-sky);
+}
+
+.genealogySource:nth-child(2) i b {
+  background: var(--signal);
+}
+
+.genealogySource:nth-child(3) i b {
+  background: var(--sun);
+}
+
+.genealogyOpen {
+  margin: 0;
+  color: rgb(21 21 21 / 58%);
+  font-size: .58rem;
+  font-weight: 760;
+  letter-spacing: .06em;
+}
+
+@media (max-width: 620px) {
+  .personaSpecimenTopline {
+    font-size: .44rem;
+  }
+
+  .personaIdentity p {
+    min-height: 0;
+  }
+
+  .personaGenealogy {
+    min-height: 7.5rem;
+  }
+}
