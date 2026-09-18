@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { EarthriseMoment } from "./earthrise-moment";
+import { allRoomPersonas } from "./room-personas-data";
 import styles from "./home-2026.module.css";
 
 const recentInstruments = [
@@ -55,50 +56,33 @@ const recentInstruments = [
   },
 ] as const;
 
-const homepagePersonas = [
-  {
-    id: "marco-westenwind",
-    name: "Marco Westenwind",
-    role: "Mechanism First",
-    line: "Interesting idea. But what problem does it structurally solve?",
-    provenance: "DUTCH PLANNER / STRUCTURE / DRY SKEPTICISM",
-  },
-  {
-    id: "fridge-snapshot-consultant",
-    name: "Fridge Snapshot Consultant",
-    role: "Domestic Anthropologist",
-    line: "Reads ordinary household evidence before anyone turns it into a segment.",
-    provenance: "EVERYDAY LIFE / DOMESTIC EVIDENCE / SMALL CLUES",
-  },
-  {
-    id: "london-cabbie",
-    name: "London Cabbie",
-    role: "Urban Sociologist",
-    line: "Knows what people actually do once the strategy leaves the building.",
-    provenance: "STREET SYSTEM / HUMAN FRICTION / LIVED REALITY",
-  },
-  {
-    id: "helpful-ant",
-    name: "Helpful Ant",
-    role: "Micro-System Logic",
-    line: "Finds the tiny dependency the grand plan forgot.",
-    provenance: "SMALL SYSTEMS / OPERATIONAL DETAIL / PERSISTENCE",
-  },
-  {
-    id: "einsteins-cool-bro",
-    name: "Einstein’s Cool Bro",
-    role: "Sideways Logic",
-    line: "Makes the respectable answer slightly uncomfortable.",
-    provenance: "PROVOCATION / SIDEWAYS LOGIC / NO LAB COAT",
-  },
-  {
-    id: "rumi-odd",
-    name: "Rumi Odd",
-    role: "Intuitive Contrarian",
-    line: "Notices the answer that feels wrong before the spreadsheet can explain why.",
-    provenance: "INTUITION / CONTRARIAN SIGNAL / PATTERN BREAK",
-  },
+const homepagePersonaIds = [
+  "nick-deckman",
+  "johan-cruyff",
+  "the-customer",
+  "wade-ellison",
 ] as const;
+
+const homepagePersonas = homepagePersonaIds
+  .map((id) => allRoomPersonas.find((persona) => persona.id === id))
+  .filter((persona): persona is NonNullable<typeof persona> => Boolean(persona));
+
+const personaGenealogies: Record<
+  string,
+  { status: string; sources?: Array<{ name: string; share: number }> }
+> = {
+  "nick-deckman": {
+    status: "DESCENDS FROM",
+    sources: [
+      { name: "SIMON NEEFJES", share: 60 },
+      { name: "ERIK KELLERHUIS", share: 30 },
+      { name: "MAXIME HARTMAN", share: 10 },
+    ],
+  },
+  "johan-cruyff": { status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN" },
+  "the-customer": { status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN" },
+  "wade-ellison": { status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN" },
+};
 
 const clientSystems = [
   {
@@ -591,6 +575,10 @@ export default function Home() {
         </div>
         <div className={styles.personaGrid}>
           {homepagePersonas.map((persona, index) => {
+            const genealogy = personaGenealogies[persona.id] ?? {
+              status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN",
+            };
+
             return (
               <article className={styles.personaCard} key={persona.id}>
                 <div className={styles.personaSpecimenTopline}>
@@ -608,8 +596,24 @@ export default function Home() {
                   <p>{persona.line}</p>
                 </div>
                 <div className={styles.personaGenealogy}>
-                  <span className={styles.genealogyLabel}>PROVENANCE / COMPOUNDED, NOT BOUGHT</span>
-                  <p className={styles.genealogyOpen}>{persona.provenance}</p>
+                  <span className={styles.genealogyLabel}>GENEALOGY / {genealogy.status}</span>
+                  {genealogy.sources ? (
+                    <div className={styles.genealogySources}>
+                      {genealogy.sources.map((source) => (
+                        <div className={styles.genealogySource} key={source.name}>
+                          <div>
+                            <span>{source.name}</span>
+                            <strong>{source.share}%</strong>
+                          </div>
+                          <i aria-hidden="true">
+                            <b style={{ width: `${source.share}%` }} />
+                          </i>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className={styles.genealogyOpen}>NO CLAIM ENTERED. KEEP THE LINE OPEN.</p>
+                  )}
                 </div>
               </article>
             );
