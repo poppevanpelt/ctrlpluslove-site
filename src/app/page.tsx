@@ -209,10 +209,17 @@ export default function Home() {
         </div>
         <div className={styles.nodesIntro}>
           <h2 id="nodes-title">THE NETWORK<br />HAS AN ADDRESS.<br /><em>SORT OF.</em></h2>
-          <p>
-            Tokyo and Bloemendaal are real positions in the ctrl+love network.
-            The people are real. The buildings are architectural propositions.
-          </p>
+          <div className={styles.provenanceCopy}>
+            <p>
+              A global network of highly skilled creatives, originally selected by Apple.
+              Poppe spent eight years working with them, roughly three months a year in the same rooms.
+            </p>
+            <strong>ORGANIC RELATIONSHIPS. NOT BOUGHT BY THE KILO FROM META.</strong>
+            <p className={styles.provenanceNote}>
+              Tokyo and Bloemendaal are real positions in the ctrl+love network.
+              The people are real. The buildings are architectural propositions.
+            </p>
+          </div>
         </div>
 
         <div className={styles.nodeGrid}>
@@ -475,7 +482,16 @@ export default function Home() {
         </div>
         <div className={styles.personaIntro}>
           <h2 id="personas-title">THE ROOM<br />IS NOT EMPTY.</h2>
-          <p>Built perspectives with jobs to do, not decorative avatars.</p>
+          <div className={styles.provenanceCopy}>
+            <p>
+              65+ perspectives, compounded from 30 years of personal attendance and observation.
+              Built from people, rooms, patterns, arguments and oddities actually encountered.
+            </p>
+            <strong>NOT INVENTED FROM DEMOGRAPHIC TEMPLATES.</strong>
+            <p className={styles.provenanceNote}>
+              Built perspectives with jobs to do, not decorative avatars.
+            </p>
+          </div>
         </div>
         <div className={styles.personaGrid}>
           {homepagePersonas.map((persona, index) => {
