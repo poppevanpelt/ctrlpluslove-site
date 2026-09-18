@@ -57,12 +57,14 @@ const recentInstruments = [
 ] as const;
 
 const homepagePersonaIds = [
-  "nick-deckman",
-  "johan-cruyff",
-  "the-customer",
-  "wade-ellison",
   "maya-elise-harper",
   "simon-cross",
+  "nick-deckman",
+  "lexi-arden",
+  "akiko-hayashi",
+  "adrian-mbeki",
+  "johan-cruyff",
+  "the-customer",
 ] as const;
 
 const homepagePersonas = homepagePersonaIds
