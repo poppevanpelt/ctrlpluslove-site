@@ -30,14 +30,14 @@ const organizationJsonLd = {
   name: "ctrl+love",
   url: "https://www.ctrlpluslove.com/",
   description:
-    "ctrl+love is an applied AI decision systems practice founded by Poppe van Pelt. It builds and field-tests instruments for human judgment, exposing weak evidence, hidden assumptions, missing voices and decision risk.",
+    "ctrl+love builds and field-tests AI-assisted instruments for human judgment, pressure-testing evidence, assumptions, opposition and decision risk before important choices become expensive.",
   founder: {
     "@type": "Person",
     name: "Poppe van Pelt",
     jobTitle: "Applied AI Decision Systems Engineer",
     url: "https://www.ctrlpluslove.com/",
   },
-  slogan: "Shortcut to reality.",
+  slogan: "Instruments for human judgment.",
   knowsAbout: [
     "Organizational decision-making",
     "Applied artificial intelligence",
@@ -57,7 +57,7 @@ const websiteJsonLd = {
   name: "ctrl+love",
   url: "https://www.ctrlpluslove.com/",
   description:
-    "Applied AI decision systems and instruments for human judgment by ctrl+love, founded by Poppe van Pelt.",
+    "AI-assisted instruments for human judgment by ctrl+love, founded by Poppe van Pelt.",
   publisher: {
     "@type": "Organization",
     name: "ctrl+love",

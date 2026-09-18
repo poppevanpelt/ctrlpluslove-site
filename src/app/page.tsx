@@ -57,14 +57,14 @@ const recentInstruments = [
 ] as const;
 
 const homepagePersonaIds = [
+  "wade-ellison",
+  "dr-lila-voss",
+  "nick-deckman",
+  "johan-cruyff",
+  "dr-mara-veld",
+  "the-customer",
   "maya-elise-harper",
   "simon-cross",
-  "nick-deckman",
-  "lexi-arden",
-  "akiko-hayashi",
-  "adrian-mbeki",
-  "johan-cruyff",
-  "the-customer",
 ] as const;
 
 const homepagePersonas = homepagePersonaIds
@@ -223,7 +223,7 @@ export default function Home() {
             <span className={styles.metaFootnote}>@meta</span>
             <p className={styles.provenanceNote}>
               These are people Poppe actually worked beside, not an audience segment or a contact list.
-              Tokyo and Bloemendaal are real positions in the ctrl+love network. The buildings are architectural propositions.
+              Tokyo and IJmuiden are real positions in the ctrl+love network. The buildings shown are architectural propositions.
             </p>
           </div>
         </div>
@@ -261,15 +261,15 @@ export default function Home() {
           <article className={`${styles.node} ${styles.founderNode}`}>
             <Image
               className={styles.nodeImage}
-              src="https://images.unsplash.com/photo-1769886250520-ce0f9abbcc9d?auto=format&fit=crop&fm=jpg&q=84&w=2200"
-              alt="A modern house nested into Dutch coastal dunes, used as an architectural proposition for the Bloemendaal node"
+              src="https://upload.wikimedia.org/wikipedia/commons/7/78/Watertoren_IJmuiden_%282024%29.jpg"
+              alt="The historic IJmuiden water tower, imagined as the ctrl+love observatory node"
               fill
               sizes="(max-width: 800px) 100vw, 50vw"
             />
             <div className={styles.nodeVeil} aria-hidden="true" />
             <div className={styles.nodeTopline}>
               <span>FOUNDER / LIVE</span>
-              <span>DUNE LAB / PROPOSITION</span>
+              <span>WATER TOWER / OBSERVATORY PROPOSITION</span>
             </div>
             <div className={`${styles.nodeOperator} ${styles.founderOperator}`}>
               <Image
@@ -281,14 +281,22 @@ export default function Home() {
               <span>POPPE VAN PELT<br />FOUNDER / APPLIED AI DECISION SYSTEMS</span>
             </div>
             <div className={styles.nodeCopy}>
-              <p>BLOEMENDAAL · NL / DUNE POSITION</p>
-              <h3>CTRL+LOVE<br /><span className={styles.nodePlaceName}>BLOEMENDAAL</span></h3>
-              <span>OPERATING FROM THE DUNES. RENOVATION SUBSIDY APPLICATION PENDING.</span>
+              <p>IJMUIDEN · NL / WATER TOWER POSITION</p>
+              <h3>CTRL+LOVE<br /><span className={styles.nodePlaceName}>IJMUIDEN</span></h3>
+              <span>PORT BELOW. TELESCOPE ABOVE. RENOVATION SUBSIDY APPLICATION PENDING.</span>
             </div>
           </article>
         </div>
         <p className={styles.nodeFootnote}>
           HUMAN NODES ARE OPERATIONAL. BUILDINGS SHOWN ARE VISUAL PROPOSITIONS, NOT PROPERTY CLAIMS.
+          {" · "}
+          <a
+            href="https://commons.wikimedia.org/wiki/File:Watertoren_IJmuiden_(2024).jpg"
+            target="_blank"
+            rel="noreferrer"
+          >
+            IJMUIDEN TOWER PHOTO: SNEEUWVLAKTE / CC BY-SA 4.0 ↗
+          </a>
         </p>
       </section>
 
