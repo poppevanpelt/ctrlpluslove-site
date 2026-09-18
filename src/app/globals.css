@@ -15149,3 +15149,13 @@ h3 {
     transform: none;
   }
 }
+
+
+/* DISPLAY TYPE SAFETY: words may wrap, never fracture. */
+h1,
+h2,
+h3 {
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  hyphens: none !important;
+}
