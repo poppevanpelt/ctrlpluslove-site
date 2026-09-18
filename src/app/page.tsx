@@ -56,7 +56,15 @@ const recentInstruments = [
   },
 ] as const;
 
-const homepagePersonaIds = ["nick-deckman", "brigitte-brussels", "wade-ellison", "johan-cruyff"] as const;
+const homepagePersonaIds = [
+  "nick-deckman",
+  "akiko-hayashi",
+  "adrian-mbeki",
+  "vera-elise-hartmann",
+  "maya-elise-harper",
+  "simon-cross",
+  "the-customer",
+] as const;
 
 const homepagePersonas = homepagePersonaIds
   .map((id) => allRoomPersonas.find((persona) => persona.id === id))
