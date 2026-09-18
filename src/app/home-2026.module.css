@@ -2011,3 +2011,118 @@
 .exit::after {
   pointer-events: none;
 }
+
+
+/* WEBSITE 002.5 / CANONICAL PERSONA ARCHIVE */
+.personas {
+  background: #11100f;
+  color: #eee9df;
+  border-bottom-color: #312d29;
+}
+
+.personas .sectionLabel {
+  color: #ef6427;
+  border-color: #3d3732;
+}
+
+.personaIntro h2 {
+  color: #f2ede4;
+}
+
+.personaIntro p {
+  color: #aaa298;
+}
+
+.personaGrid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-color: #4a423b;
+  gap: 0;
+  background: #11100f;
+}
+
+.personaCard {
+  border-color: #4a423b;
+  background: #151310;
+  color: #eee9df;
+}
+
+.personaSpecimenTopline {
+  border-color: #4a423b;
+  color: #ef6427;
+  background: #151310;
+}
+
+.personaPortrait {
+  aspect-ratio: 4 / 5;
+  border-color: #4a423b;
+  background: #0d0c0b;
+}
+
+.personaPortrait img {
+  filter: saturate(.72) contrast(1.07) sepia(.08);
+}
+
+.personaSpecimenId {
+  background: rgb(17 16 15 / 78%);
+  color: #d9d1c6;
+  border: 1px solid #574d44;
+  backdrop-filter: blur(5px);
+}
+
+.personaIdentity {
+  background: #11100f;
+}
+
+.personaIdentity h3 {
+  color: #f2ede4;
+}
+
+.personaIdentity strong,
+.genealogyLabel {
+  color: #d3a23c;
+}
+
+.personaIdentity p,
+.genealogyOpen {
+  color: #aaa298;
+}
+
+.personaGenealogy {
+  background:
+    linear-gradient(rgb(239 100 39 / 5%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(239 100 39 / 5%) 1px, transparent 1px),
+    #12110f;
+  background-size: .8rem .8rem;
+  border-top-color: #4a423b;
+}
+
+.genealogySource > div {
+  color: #d8d0c5;
+}
+
+.genealogySource i {
+  border-color: #6a5b4c;
+  background: #1c1916;
+}
+
+.genealogySource i b,
+.genealogySource:nth-child(2) i b,
+.genealogySource:nth-child(3) i b {
+  background: #ef6427;
+}
+
+@media (max-width: 900px) {
+  .personaGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .personaGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .personaPortrait {
+    aspect-ratio: 4 / 5.1;
+  }
+}
