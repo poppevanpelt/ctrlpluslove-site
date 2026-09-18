@@ -1149,9 +1149,32 @@
 }
 
 .field {
+  overflow: hidden;
+  isolation: isolate;
+  background: #8dcdf3;
+}
+
+.fieldImage {
+  z-index: -3;
+  object-fit: cover;
+  object-position: 58% 56%;
+  filter: saturate(1.02) contrast(1.02);
+}
+
+.fieldVeil {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
   background:
-    radial-gradient(circle at 83% 16%, rgb(255 255 255 / 88%) 0 2.5rem, transparent 2.6rem),
-    linear-gradient(180deg, #a9dcff 0%, #e6f5ff 47%, #fff6d2 47.2%, #f7d16c 100%);
+    linear-gradient(90deg, rgb(232 248 255 / 94%) 0%, rgb(232 248 255 / 80%) 40%, rgb(232 248 255 / 36%) 72%, rgb(232 248 255 / 14%) 100%),
+    linear-gradient(180deg, transparent 58%, rgb(247 209 108 / 74%) 100%);
+}
+
+.field .sectionLabel,
+.fieldIntro,
+.notes {
+  position: relative;
+  z-index: 1;
 }
 
 .fieldIntro h2 {
@@ -1174,7 +1197,31 @@
 }
 
 .humans {
+  overflow: hidden;
+  isolation: isolate;
   background: #eaf6ff;
+}
+
+.humansImage {
+  z-index: -3;
+  object-fit: cover;
+  object-position: 66% center;
+  filter: saturate(.92) contrast(1.03);
+}
+
+.humansVeil {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgb(234 246 255 / 98%) 0%, rgb(234 246 255 / 88%) 42%, rgb(234 246 255 / 48%) 67%, rgb(234 246 255 / 18%) 100%),
+    linear-gradient(180deg, transparent 58%, rgb(234 246 255 / 72%) 100%);
+}
+
+.humans .sectionLabel,
+.humansGrid {
+  position: relative;
+  z-index: 1;
 }
 
 .humans h2 {
@@ -1284,6 +1331,14 @@
     object-position: 56% center;
   }
 
+  .fieldImage {
+    object-position: 64% center;
+  }
+
+  .humansImage {
+    object-position: 62% center;
+  }
+
   .institute {
     min-height: 100svh;
   }
@@ -1302,8 +1357,8 @@
   .institute h2,
   .nodesIntro h2 {
     max-width: 100%;
-    font-size: clamp(3rem, 13vw, 4.5rem);
-    line-height: .88;
+    font-size: clamp(2.9rem, 12.2vw, 4.35rem);
+    line-height: .91;
     overflow-wrap: normal;
     word-break: normal;
     hyphens: none;
