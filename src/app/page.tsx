@@ -120,6 +120,83 @@ export default function Home() {
         <span>CALIFORNIA / HAARLEM</span>
       </section>
 
+      <section className={styles.nodes} aria-labelledby="nodes-title">
+        <div className={styles.sectionLabel}>
+          <span>CTRL+LOVE HUMAN NODES</span>
+          <span>REAL PEOPLE / SPECULATIVE BUILDINGS</span>
+        </div>
+        <div className={styles.nodesIntro}>
+          <h2 id="nodes-title">THE NETWORK<br />HAS AN ADDRESS.<br /><em>SORT OF.</em></h2>
+          <p>
+            Tokyo and Bloemendaal are real positions in the ctrl+love network.
+            The people are real. The buildings are architectural propositions.
+          </p>
+        </div>
+
+        <div className={styles.nodeGrid}>
+          <article className={styles.node}>
+            <Image
+              className={styles.nodeImage}
+              src="https://images.unsplash.com/photo-1532236395709-7d70320fec2d?auto=format&fit=crop&w=1800&q=84"
+              alt="Central Tokyo at night"
+              fill
+              sizes="(max-width: 800px) 100vw, 50vw"
+            />
+            <div className={styles.nodeVeil} aria-hidden="true" />
+            <div className={styles.nodeTopline}>
+              <span>ACTIVE HUMAN SIGNAL</span>
+              <span>ARCHITECTURE / SPECULATIVE</span>
+            </div>
+            <div className={styles.nodeOperator}>
+              <Image
+                src="/ambassadors/portraits/003-shun-iwai-portrait-live-20260712.jpeg"
+                alt="Shun Iwai"
+                width={88}
+                height={88}
+              />
+              <span>SHUN IWAI<br />AMBASSADOR / CULTURAL TRANSLATION</span>
+            </div>
+            <div className={styles.nodeCopy}>
+              <p>TOKYO · JP / LISTENING POST</p>
+              <h3>CTRL+LOVE<br />TOKYO</h3>
+              <Link href="/embassies/tokyo/">ENTER THE REAL HUMAN NODE ↗</Link>
+            </div>
+          </article>
+
+          <article className={styles.node}>
+            <Image
+              className={styles.nodeImage}
+              src="https://upload.wikimedia.org/wikipedia/commons/9/99/PanoBunker.jpg"
+              alt="A concrete observation bunker in Dutch dunes, used as an architectural reference"
+              fill
+              sizes="(max-width: 800px) 100vw, 50vw"
+            />
+            <div className={styles.nodeVeil} aria-hidden="true" />
+            <div className={styles.nodeTopline}>
+              <span>ACTIVE FOUNDER SIGNAL</span>
+              <span>BUNKER / PENDING</span>
+            </div>
+            <div className={styles.nodeOperator}>
+              <Image
+                src="/ambassadors/portraits/001-poppe-van-pelt-portrait-live-20260715.png"
+                alt="Poppe van Pelt"
+                width={88}
+                height={88}
+              />
+              <span>POPPE VAN PELT<br />FOUNDER / APPLIED AI DECISION SYSTEMS</span>
+            </div>
+            <div className={styles.nodeCopy}>
+              <p>BLOEMENDAAL · NL / DUNE POSITION</p>
+              <h3>CTRL+LOVE<br />BLOEMENDAAL</h3>
+              <span>OPERATING FROM THE DUNES. FUTURE BUNKER PENDING.</span>
+            </div>
+          </article>
+        </div>
+        <p className={styles.nodeFootnote}>
+          HUMAN NODES ARE OPERATIONAL. BUILDINGS SHOWN ARE VISUAL PROPOSITIONS, NOT PROPERTY CLAIMS.
+        </p>
+      </section>
+
       <section className={styles.reading} aria-labelledby="reading-title">
         <div className={styles.sectionLabel}>
           <span>CURRENT READING</span>
