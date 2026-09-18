@@ -214,13 +214,14 @@ export default function Home() {
           <div className={styles.provenanceCopy}>
             <p>
               A global network of highly skilled creatives, originally selected by Apple.
-              Poppe spent eight years working with them, roughly three months a year in the same rooms.
+              Poppe spent eight years working shoulder to shoulder with them, almost four months a year,
+              in the same rooms around the world.
             </p>
-            <strong>ORGANIC RELATIONSHIPS. NOT BOUGHT BY THE KILO FROM META.</strong>
+            <strong>EIGHT YEARS OF SHARED ROOMS. ORGANIC RELATIONSHIPS. NOT BOUGHT BY THE KILO FROM META.</strong>
             <span className={styles.metaFootnote}>@meta</span>
             <p className={styles.provenanceNote}>
-              Tokyo and Bloemendaal are real positions in the ctrl+love network.
-              The people are real. The buildings are architectural propositions.
+              These are people Poppe actually worked beside, not an audience segment or a contact list.
+              Tokyo and Bloemendaal are real positions in the ctrl+love network. The buildings are architectural propositions.
             </p>
           </div>
         </div>
@@ -566,12 +567,14 @@ export default function Home() {
           <h2 id="personas-title">THE ROOM<br />IS NOT EMPTY.</h2>
           <div className={styles.provenanceCopy}>
             <p>
-              65+ perspectives, compounded from 30 years of personal attendance and observation.
-              Built from people, rooms, patterns, arguments and oddities actually encountered.
+              65+ handwritten perspectives, built one by one from real people Poppe has met, watched,
+              argued with and worked beside across more than 30 years of meetings.
+              Each is a compound of observed behaviour, habits, contradictions, judgment and oddities actually encountered.
             </p>
-            <strong>NOT INVENTED FROM DEMOGRAPHIC TEMPLATES.</strong>
+            <strong>HANDWRITTEN FROM REAL ENCOUNTERS. NOT BOUGHT BY THE KILO FROM META.</strong>
+            <span className={styles.metaFootnote}>@meta</span>
             <p className={styles.provenanceNote}>
-              Built perspectives with jobs to do, not decorative avatars.
+              No demographic templates. No batch-generated avatars. Observed first, written second.
             </p>
           </div>
         </div>
