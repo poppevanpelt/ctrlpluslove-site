@@ -242,8 +242,6 @@
   opacity: 0.45;
 }
 
-.curveAxisX,
-
 .curveContext {
   position: absolute;
   z-index: 2;
