@@ -1,3 +1,4 @@
+import Image from "next/image";
 import styles from "./earthrise-moment.module.css";
 
 export function EarthriseMoment() {
@@ -14,25 +15,19 @@ export function EarthriseMoment() {
       </div>
 
       <div className={styles.scene} aria-hidden="true">
-        <div className={styles.stars} />
-        <div className={styles.earthWrap}>
-          <div className={styles.earth}>
-            <span className={styles.cloudOne} />
-            <span className={styles.cloudTwo} />
-            <span className={styles.cloudThree} />
-          </div>
-          <span className={styles.halo} />
-          <span className={styles.core} />
-          <span className={styles.streak} />
-          <span className={`${styles.ghost} ${styles.ghostOne}`} />
-          <span className={`${styles.ghost} ${styles.ghostTwo}`} />
-        </div>
-        <div className={styles.moon} />
+        <Image
+          className={styles.earthriseImage}
+          src="https://assets.science.nasa.gov/dynamicimage/assets/science/psd/solar/2023/09/a/AS08-14-2383_2-1.jpg?crop=faces%2Cfocalpoint&fit=clip&h=4600&w=4400"
+          alt=""
+          fill
+          sizes="100vw"
+        />
+        <div className={styles.imageVeil} />
       </div>
 
       <div className={styles.endline}>
         <strong>READY WHEN TRUE.</strong>
-        <span>ROOM · READ &nbsp; SYSTEM · ASSEMBLED &nbsp; SCALE · CORRECTED</span>
+        <span>APOLLO 8 · BILL ANDERS · NASA · 24 DECEMBER 1968</span>
       </div>
     </section>
   );

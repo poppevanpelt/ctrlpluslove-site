@@ -13,7 +13,7 @@ const securityHeaders = [
         "https://va.vercel-scripts.com https://vitals.vercel-insights.com",
       ].filter(Boolean).join(" "),
       "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob: https://i.ytimg.com https://images.unsplash.com https://upload.wikimedia.org",
+      "img-src 'self' data: blob: https://i.ytimg.com https://images.unsplash.com https://upload.wikimedia.org https://assets.science.nasa.gov",
       "font-src 'self' data:",
       "connect-src 'self' https://api.openai.com https://api.notion.com https://va.vercel-scripts.com https://vitals.vercel-insights.com https://*.vercel-insights.com",
       "media-src 'self'",
@@ -64,6 +64,10 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "upload.wikimedia.org",
+      },
+      {
+        protocol: "https",
+        hostname: "assets.science.nasa.gov",
       },
     ],
   },

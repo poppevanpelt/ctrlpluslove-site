@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { EarthriseMoment } from "./earthrise-moment";
 import styles from "./home-2026.module.css";
 
 const recentInstruments = [
@@ -314,6 +315,35 @@ export default function Home() {
         </div>
       </section>
 
+      <section className={styles.shoppe} aria-labelledby="shoppe-title">
+        <div className={styles.sectionLabel}>
+          <span>POPPE’S PROMPT SHOPPE</span>
+          <span>WORKING BENCH / PHYSICAL OBJECTS</span>
+        </div>
+        <div className={styles.shoppeGrid}>
+          <div className={styles.shoppeCopy}>
+            <p className={styles.kicker}>SAN GREGORIO / CALIFORNIA</p>
+            <h2 id="shoppe-title">BRING IN<br />YOUR OLD<br />PROMPTS.</h2>
+            <p>Put one under load. Extract what it smuggles in. Find the decision it is actually trying to make.</p>
+            <Link href="/prompt-shoppe/">OPEN THE SHOPPE ↗</Link>
+          </div>
+          <div className={styles.shoppeVisuals}>
+            <Link className={styles.shoppeFacade} href="/prompt-shoppe/">
+              <Image src="/shoppe/poppes-prompt-shoppe.webp" alt="Poppe’s Prompt Shoppe in a wooded California setting" fill sizes="(max-width: 900px) 100vw, 58vw" />
+              <span>THE SHOPPE / OPEN ↗</span>
+            </Link>
+            <article className={styles.shoppeObject}>
+              <Image src="/instruments/objects/ten-decisions-usb.webp" alt="The ctrl+love Decision Stick in its sleeve" fill sizes="(max-width: 900px) 50vw, 29vw" />
+              <span>DECISION STICK · 001/100</span>
+            </article>
+            <article className={styles.shoppeObject}>
+              <Image src="/instruments/objects/decision-in-a-box.webp" alt="Decision in a Box with five metal forms and decision cards" fill sizes="(max-width: 900px) 50vw, 29vw" />
+              <span>DECISION IN A BOX · 5 CARDS / 1 DECISION</span>
+            </article>
+          </div>
+        </div>
+      </section>
+
       <section className={styles.humans} aria-labelledby="humans-title">
         <div className={styles.sectionLabel}>
           <span>WHO IS OPERATING THE MACHINERY</span>
@@ -321,7 +351,7 @@ export default function Home() {
         </div>
         <div className={styles.humansGrid}>
           <div>
-            <h2 id="humans-title">25 YEARS<br />ADVERTISING.<br />8 YEARS APPLE.<br /><em>THEN THIS.</em></h2>
+            <h2 id="humans-title">THREE DECADES<br />OF ADVERTISING.<br />8 YEARS APPLE.<br /><em>THEN THIS.</em></h2>
           </div>
           <div className={styles.humanCopy}>
             <p>
@@ -340,6 +370,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <EarthriseMoment />
 
       <section className={styles.exit} aria-labelledby="exit-title">
         <p className={styles.kicker}>OPEN DOOR</p>

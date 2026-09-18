@@ -1,29 +1,13 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
+import ShoppeBench from "./shoppe-bench";
 import styles from "./prompt-shoppe.module.css";
 
 export const metadata: Metadata = {
   title: "Poppe’s Prompt Shoppe | ctrl+love",
   description: "Bring in your old prompts. Put them on the dyno.",
 };
-
-const objects = [
-  {
-    no: "OBJ—01",
-    name: "THE PROMPT DYNO",
-    line: "Puts a prompt under working load and reads what holds.",
-  },
-  {
-    no: "OBJ—02",
-    name: "THE ASSUMPTION EXTRACTOR",
-    line: "Presses out the assumptions a prompt smuggles in.",
-  },
-  {
-    no: "OBJ—03",
-    name: "THE INTENT COMPASS",
-    line: "Finds the true intent and holds the heading.",
-  },
-] as const;
 
 export default function PromptShoppePage() {
   return (
@@ -58,19 +42,30 @@ export default function PromptShoppePage() {
         </div>
       </section>
 
-      <section className={styles.objects} aria-label="Prompt Shoppe instruments">
-        {objects.map((object) => (
-          <article key={object.no}>
-            <div className={styles.objectStage}>
-              <span className={styles.objectDial} />
-              <span className={styles.objectLever} />
-              <span className={styles.objectPlate}>{object.no}</span>
-            </div>
-            <p className={styles.kicker}>{object.no}</p>
-            <h2>{object.name}</h2>
-            <p>{object.line}</p>
-          </article>
-        ))}
+      <ShoppeBench />
+
+      <section className={styles.objectShelf} aria-labelledby="object-shelf-title">
+        <div className={styles.objectShelfHead}>
+          <p className={styles.kicker}>PHYSICAL OBJECTS / SMALL BATCH</p>
+          <h2 id="object-shelf-title">DECISIONS<br />YOU CAN HOLD.</h2>
+          <p>No soda. No shirts. Things with a job.</p>
+        </div>
+        <article className={styles.realObject}>
+          <div className={styles.realObjectImage}>
+            <Image src="/instruments/objects/ten-decisions-usb.webp" alt="The ctrl+love Decision Stick in its numbered sleeve" fill sizes="(max-width: 760px) 100vw, 50vw" />
+          </div>
+          <span>OBJECT 001 / EDITION 001–100</span>
+          <h3>DECISION STICK</h3>
+          <p>Ten decisions. Pick carefully.</p>
+        </article>
+        <article className={styles.realObject}>
+          <div className={styles.realObjectImage}>
+            <Image src="/instruments/objects/decision-in-a-box.webp" alt="Decision in a Box with five metal forms and decision cards" fill sizes="(max-width: 760px) 100vw, 50vw" />
+          </div>
+          <span>OBJECT 002 / FIVE CARDS</span>
+          <h3>DECISION IN A BOX</h3>
+          <p>Four unresolved. One decision. Once the ball lands, everybody owns it.</p>
+        </article>
       </section>
 
       <footer className={styles.footer}>

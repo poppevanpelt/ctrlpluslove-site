@@ -17,6 +17,7 @@
 .hero,
 .reading,
 .factory,
+.shoppe,
 .institute,
 .field,
 .humans,
@@ -78,6 +79,7 @@
 .hero h1,
 .reading h2,
 .factory h2,
+.shoppe h2,
 .institute h2,
 .field h2,
 .humans h2,
@@ -159,6 +161,7 @@
 
 .readingCopy h2,
 .factory h2,
+.shoppe h2,
 .field h2,
 .humans h2,
 .exit h2 {
@@ -167,6 +170,7 @@
 
 .readingCopy p:not(.kicker),
 .factoryIntro p,
+.shoppeCopy > p:not(.kicker),
 .instituteCopy p,
 .note p,
 .humanCopy p,
@@ -471,6 +475,7 @@
   .readingGrid,
   .institute,
   .humansGrid,
+  .shoppeGrid,
   .factoryIntro,
   .fieldIntro {
     grid-template-columns: 1fr;
@@ -490,6 +495,7 @@
   .hero,
   .reading,
   .factory,
+  .shoppe,
   .institute,
   .field,
   .humans,
@@ -515,6 +521,7 @@
 
   .readingCopy h2,
   .factory h2,
+  .shoppe h2,
   .field h2,
   .humans h2,
   .exit h2,
@@ -904,6 +911,98 @@
   color: var(--signal);
 }
 
+.shoppe {
+  background: #f3ead8;
+  color: #181714;
+}
+
+.shoppe .sectionLabel {
+  color: #6c2f1f;
+  border-color: #181714;
+}
+
+.shoppeGrid {
+  display: grid;
+  grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+  gap: clamp(2rem, 6vw, 7rem);
+  align-items: end;
+  padding-top: clamp(3rem, 6vw, 6rem);
+}
+
+.shoppeCopy h2 {
+  max-width: 7ch;
+  color: #6c2f1f;
+}
+
+.shoppeCopy > p:not(.kicker) {
+  max-width: 31rem;
+  margin: 2rem 0;
+}
+
+.shoppeCopy > a {
+  display: inline-block;
+  padding: .9rem 1.1rem;
+  border: 1px solid #181714;
+  background: #181714;
+  color: #f3ead8;
+  font-size: .72rem;
+  font-weight: 820;
+  letter-spacing: .1em;
+  text-decoration: none;
+}
+
+.shoppeVisuals {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  padding: 1px;
+  background: #181714;
+  box-shadow: .75rem .75rem 0 #181714;
+}
+
+.shoppeFacade,
+.shoppeObject {
+  position: relative;
+  min-height: 17rem;
+  overflow: hidden;
+  background: #181714;
+}
+
+.shoppeFacade {
+  grid-column: 1 / -1;
+  min-height: 31rem;
+  color: white;
+}
+
+.shoppeVisuals img {
+  object-fit: cover;
+  transition: transform 300ms ease;
+}
+
+.shoppeFacade:hover img {
+  transform: scale(1.015);
+}
+
+.shoppeFacade span,
+.shoppeObject span {
+  position: absolute;
+  z-index: 1;
+  right: .75rem;
+  bottom: .75rem;
+  left: .75rem;
+  width: fit-content;
+  padding: .45rem .55rem;
+  background: #181714;
+  color: white;
+  font-size: .56rem;
+  font-weight: 820;
+  letter-spacing: .1em;
+}
+
+.shoppeObject:first-of-type img {
+  object-position: center;
+}
+
 .institute {
   min-height: min(92rem, 100svh);
   align-items: end;
@@ -1098,6 +1197,7 @@
 
   .readingCopy h2,
   .factory h2,
+  .shoppe h2,
   .field h2,
   .humans h2,
   .exit h2,
@@ -1126,5 +1226,17 @@
 
   .instrument {
     min-height: 23rem;
+  }
+
+  .shoppeVisuals {
+    box-shadow: .45rem .45rem 0 #181714;
+  }
+
+  .shoppeFacade {
+    min-height: 68vw;
+  }
+
+  .shoppeObject {
+    min-height: 46vw;
   }
 }
