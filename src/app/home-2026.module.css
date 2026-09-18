@@ -2385,3 +2385,47 @@
     line-height: 1.38;
   }
 }
+
+
+/* WEBSITE 002.9 / HUMAN NODE CLEANUP */
+.nodePlaceName {
+  display: inline-block;
+  white-space: nowrap;
+  font-size: .84em;
+  letter-spacing: -.06em;
+}
+
+.founderOperator {
+  gap: 1rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  backdrop-filter: none;
+  font-family: inherit;
+  font-size: .62rem;
+  font-weight: 760;
+  letter-spacing: .08em;
+  line-height: 1.45;
+  text-shadow: 0 2px 18px rgb(0 0 0 / 72%);
+}
+
+.founderOperator img {
+  width: 5.75rem;
+  height: 5.75rem;
+  border-radius: 999px;
+  object-fit: cover;
+  object-position: 50% 20%;
+  filter: none;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 48%);
+}
+
+@media (max-width: 620px) {
+  .nodePlaceName {
+    font-size: .78em;
+  }
+
+  .founderOperator img {
+    width: 4.9rem;
+    height: 4.9rem;
+  }
+}

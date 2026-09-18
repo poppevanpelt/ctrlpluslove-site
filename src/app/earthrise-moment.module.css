@@ -299,3 +299,28 @@
     max-width: 88vw;
   }
 }
+
+
+/* EARTHRISE / RESERVE THE PLANET */
+@media (max-width: 760px) {
+  .copy {
+    width: 55vw;
+    max-width: none;
+    margin-left: 43vw;
+    padding: 1.75rem 1rem 0 0;
+  }
+
+  .copy p {
+    font-size: clamp(1.55rem, 7vw, 2.7rem);
+    line-height: .92;
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+  }
+
+  .imageVeil {
+    background:
+      linear-gradient(270deg, rgb(0 0 0 / 54%) 0%, rgb(0 0 0 / 24%) 38%, transparent 62%),
+      linear-gradient(180deg, rgb(0 0 0 / 24%) 0%, transparent 34%, transparent 70%, rgb(0 0 0 / 42%) 100%);
+  }
+}
