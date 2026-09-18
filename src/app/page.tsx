@@ -289,6 +289,14 @@ export default function Home() {
         </div>
         <p className={styles.nodeFootnote}>
           HUMAN NODES ARE OPERATIONAL. BUILDINGS SHOWN ARE VISUAL PROPOSITIONS, NOT PROPERTY CLAIMS.
+          {" · "}
+          <a
+            href="https://commons.wikimedia.org/wiki/File:Watertoren_IJmuiden_(2024).jpg"
+            target="_blank"
+            rel="noreferrer"
+          >
+            IJMUIDEN TOWER PHOTO: SNEEUWVLAKTE / CC BY-SA 4.0 ↗
+          </a>
         </p>
       </section>
 
