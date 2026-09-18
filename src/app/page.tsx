@@ -73,6 +73,27 @@ const fieldNotes = [
   },
 ] as const;
 
+const pressNotes = [
+  {
+    outlet: "FRANK.NEWS",
+    date: "08 SEP 2026",
+    title: "Poppe van Pelt: ‘Smaak wordt alleen maar belangrijker’",
+    href: "https://www.frank.news/poppe-van-pelt-smaak-wordt-alleen-maar-belangrijker/",
+  },
+  {
+    outlet: "FONK",
+    date: "25 AUG 2026",
+    title: "Poppe van Pelt lanceert ‘per ongeluk’ nieuw bedrijf Ctrl+Live",
+    href: "https://fonkmagazine.com/artikelen/tech/poppe-van-pelt-lanceert-per-ongeluk-nieuw-bedrijf-ctrl-live-77582.html",
+  },
+  {
+    outlet: "BRIGHT",
+    date: "24 AUG 2026",
+    title: "Strenge AI als ultiem hulpmiddel voor betere (en leukere?) reclame",
+    href: "https://www.bright.nl/nieuws/2126819/deze-ai-zegt-als-je-reclame-idee-gewoon-slecht-is.html",
+  },
+] as const;
+
 export default function Home() {
   return (
     <main className={styles.page} id="main-content">
@@ -368,6 +389,39 @@ export default function Home() {
               <Link href="/room/">THE ROOM ↗</Link>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className={styles.press} aria-labelledby="press-title">
+        <div className={styles.sectionLabel}>
+          <span>OUTSIDE OBSERVATION</span>
+          <span>PRESS / AUG—SEP 2026</span>
+        </div>
+        <div className={styles.pressIntro}>
+          <h2 id="press-title">OTHER PEOPLE<br />LOOKED AT IT.<br /><em>THEY WROTE.</em></h2>
+          <p>
+            Three independent readings of the experiment: the thinking behind it,
+            the machinery inside it, and the strange new rooms growing out of it.
+          </p>
+        </div>
+        <div className={styles.pressGrid}>
+          {pressNotes.map((item, index) => (
+            <a
+              className={styles.pressItem}
+              href={item.href}
+              target="_blank"
+              rel="noreferrer"
+              key={item.outlet}
+            >
+              <span className={styles.pressNumber}>{String(index + 1).padStart(2, "0")}</span>
+              <div className={styles.pressMeta}>
+                <strong>{item.outlet}</strong>
+                <span>{item.date}</span>
+              </div>
+              <h3>{item.title}</h3>
+              <span className={styles.pressOpen}>READ ORIGINAL ↗</span>
+            </a>
+          ))}
         </div>
       </section>
 

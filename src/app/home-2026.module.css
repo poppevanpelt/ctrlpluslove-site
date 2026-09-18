@@ -21,6 +21,7 @@
 .institute,
 .field,
 .humans,
+.press,
 .exit {
   position: relative;
   padding: clamp(5.5rem, 9vw, 9rem) clamp(1.35rem, 4vw, 4.5rem);
@@ -83,6 +84,7 @@
 .institute h2,
 .field h2,
 .humans h2,
+.press h2,
 .exit h2 {
   margin: 0;
   font-weight: 820;
@@ -164,6 +166,7 @@
 .shoppe h2,
 .field h2,
 .humans h2,
+.press h2,
 .exit h2 {
   font-size: clamp(4rem, 9vw, 8.8rem);
 }
@@ -430,6 +433,94 @@
   max-width: 38rem;
 }
 
+.press {
+  background: #f4f0e8;
+}
+
+.pressIntro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(16rem, .65fr);
+  gap: clamp(2rem, 6vw, 7rem);
+  align-items: end;
+  padding: clamp(3rem, 6vw, 6rem) 0 clamp(3.5rem, 7vw, 7rem);
+}
+
+.press h2 {
+  max-width: 10ch;
+  font-size: clamp(4rem, 8.5vw, 8.5rem);
+}
+
+.press h2 em {
+  color: var(--signal);
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: -.055em;
+}
+
+.pressIntro > p {
+  max-width: 32rem;
+  margin: 0;
+  font-size: clamp(1.1rem, 1.6vw, 1.45rem);
+  line-height: 1.45;
+}
+
+.pressGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--rule);
+  border-left: 1px solid var(--rule);
+}
+
+.pressItem {
+  display: flex;
+  min-height: 28rem;
+  flex-direction: column;
+  padding: 1.35rem;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  text-decoration: none;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.pressItem:hover,
+.pressItem:focus-visible {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.pressNumber,
+.pressMeta,
+.pressOpen {
+  font-size: .64rem;
+  font-weight: 800;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+
+.pressMeta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 5rem;
+  padding-top: .8rem;
+  border-top: 1px solid currentColor;
+}
+
+.pressItem h3 {
+  margin: 1.4rem 0 3rem;
+  font-size: clamp(1.75rem, 2.7vw, 3rem);
+  line-height: .98;
+  letter-spacing: -.045em;
+  text-wrap: balance;
+}
+
+.pressOpen {
+  margin-top: auto;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .25em;
+}
+
 .exit {
   min-height: 85svh;
   display: flex;
@@ -475,6 +566,7 @@
   .readingGrid,
   .institute,
   .humansGrid,
+  .pressIntro,
   .shoppeGrid,
   .factoryIntro,
   .fieldIntro {
@@ -482,7 +574,8 @@
   }
 
   .instrumentGrid,
-  .notes {
+  .notes,
+  .pressGrid {
     grid-template-columns: 1fr 1fr;
   }
 
@@ -499,6 +592,7 @@
   .institute,
   .field,
   .humans,
+  .press,
   .exit {
     padding-left: 1rem;
     padding-right: 1rem;
@@ -524,6 +618,7 @@
   .shoppe h2,
   .field h2,
   .humans h2,
+  .press h2,
   .exit h2,
   .institute h2 {
     font-size: clamp(3.6rem, 17vw, 6.2rem);
@@ -534,12 +629,14 @@
   }
 
   .instrumentGrid,
-  .notes {
+  .notes,
+  .pressGrid {
     grid-template-columns: 1fr;
   }
 
   .instrument,
-  .note {
+  .note,
+  .pressItem {
     min-height: 16rem;
   }
 
@@ -1200,6 +1297,7 @@
   .shoppe h2,
   .field h2,
   .humans h2,
+  .press h2,
   .exit h2,
   .institute h2,
   .nodesIntro h2 {
