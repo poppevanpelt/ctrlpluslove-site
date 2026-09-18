@@ -76,9 +76,9 @@ export function createPageMetadata({
 export const publicRoutes: PublicRoute[] = [
   {
     path: "/",
-    title: "ctrl+love — Instruments for human judgment",
+    title: "ctrl+love — Applied AI instruments for human judgment",
     description:
-      "ctrl+love is a small experimental institution for human judgment. We build and field-test instruments that expose weak evidence, hidden assumptions, missing voices and the things decisions smooth over.",
+      "ctrl+love is an applied AI decision systems practice founded by Poppe van Pelt. We build and field-test instruments for human judgment that expose weak evidence, hidden assumptions, missing voices and decision risk.",
     changeFrequency: "weekly",
     priority: 1,
   },
