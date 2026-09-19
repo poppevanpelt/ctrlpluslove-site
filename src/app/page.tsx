@@ -615,7 +615,7 @@ export default function Home() {
         <div className={styles.shoppeGrid}>
           <div className={styles.shoppeCopy}>
             <p className={styles.kicker}>SAN GREGORIO / CALIFORNIA</p>
-            <h2 id="shoppe-title">BRING IN<br />YOUR OLD<br />PROMPTS.</h2>
+            <h2 id="shoppe-title">BRING IN<br />YOUR OLD<br />PROMPTS</h2>
             <p>Put one under load. Extract what it smuggles in. Find the decision it is actually trying to make.</p>
             <Link href="/prompt-shoppe/">OPEN THE SHOPPE ↗</Link>
           </div>
