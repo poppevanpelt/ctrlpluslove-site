@@ -777,6 +777,14 @@ export default function Home() {
         </div>
       </section>
 
+      <SoundtrackCue
+        index="02"
+        title="MOVING TO THE SUN"
+        artist="HUGEL"
+        href="https://www.youtube.com/results?search_query=HUGEL+Moving+to+the+Sun"
+        note="Placed exactly where the horizon earns it."
+      />
+
       <EarthriseMoment />
 
       <section className={styles.exit} aria-labelledby="exit-title">
