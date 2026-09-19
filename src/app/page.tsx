@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { EarthriseMoment } from "./earthrise-moment";
+import { SoundtrackCue } from "./soundtrack-cue";
 import { allRoomPersonas } from "./room-personas-data";
 import styles from "./home-2026.module.css";
 
@@ -205,6 +206,14 @@ export default function Home() {
         <span>HUMAN OVERRIDE · ARMED</span>
         <span>CALIFORNIA / HAARLEM</span>
       </section>
+
+      <SoundtrackCue
+        index="01"
+        title="CHEMICAL"
+        artist="BECK"
+        href="https://www.youtube.com/results?search_query=Beck+Chemical+official"
+        note="For the stretch where the machine starts to feel suspiciously human."
+      />
 
       <section className={styles.nodes} aria-labelledby="nodes-title">
         <div className={styles.sectionLabel}>
