@@ -2505,3 +2505,303 @@
     font-size: clamp(3.8rem, 18vw, 6rem);
   }
 }
+
+
+/* WEBSITE 002.12 / GENERIC LLM VS CTRL+LOVE */
+.llmContrast {
+  position: relative;
+  padding: clamp(5rem, 8vw, 8rem) clamp(1.35rem, 4vw, 4.5rem);
+  border-bottom: 1px solid var(--rule);
+  background: #fffdf8;
+  color: #151515;
+}
+
+.llmContrast .sectionLabel {
+  color: var(--deep-sky);
+  border-color: color-mix(in srgb, var(--deep-sky) 34%, var(--rule));
+}
+
+.llmContrastIntro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(18rem, .75fr);
+  gap: clamp(2rem, 6vw, 7rem);
+  align-items: end;
+  padding: clamp(3rem, 6vw, 6rem) 0;
+}
+
+.llmContrastIntro h2 {
+  margin: 0;
+  max-width: 10ch;
+  color: var(--deep-sky);
+  font-size: clamp(4rem, 8vw, 8rem);
+  font-weight: 820;
+  letter-spacing: -.068em;
+  line-height: .84;
+}
+
+.llmContrastIntro h2 em {
+  color: var(--signal);
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: -.055em;
+}
+
+.llmContrastIntro > p {
+  max-width: 33rem;
+  margin: 0;
+  font-size: clamp(1.15rem, 1.75vw, 1.55rem);
+  line-height: 1.42;
+}
+
+.llmCompare {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid #151515;
+  border-left: 1px solid #151515;
+}
+
+.llmGeneric,
+.llmCtrl {
+  min-height: 31rem;
+  border-right: 1px solid #151515;
+  border-bottom: 1px solid #151515;
+}
+
+.llmGeneric {
+  background: #efeee9;
+  color: rgb(21 21 21 / 62%);
+}
+
+.llmCtrl {
+  position: relative;
+  background: #fff;
+}
+
+.llmCtrl::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: .38rem;
+  background: var(--signal);
+  content: "";
+}
+
+.llmColumnLabel {
+  display: block;
+  padding: 1rem 1.1rem;
+  border-bottom: 1px solid currentColor;
+  color: inherit;
+  font-size: .62rem;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.llmCtrl .llmColumnLabel {
+  color: var(--signal);
+}
+
+.llmCompare ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.llmCompare li {
+  display: grid;
+  grid-template-columns: 3.2rem 1fr;
+  gap: 1rem;
+  align-items: baseline;
+  min-height: 5.75rem;
+  padding: 1.15rem 1.1rem;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 24%, transparent);
+}
+
+.llmCompare li:last-child {
+  border-bottom: 0;
+}
+
+.llmCompare li span {
+  font-size: .55rem;
+  font-weight: 850;
+  letter-spacing: .09em;
+  opacity: .55;
+}
+
+.llmCompare li strong {
+  font-size: clamp(1.35rem, 2.25vw, 2.45rem);
+  font-weight: 760;
+  letter-spacing: -.042em;
+  line-height: 1;
+}
+
+.llmCtrl li strong {
+  color: #151515;
+}
+
+.llmPressure {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2rem;
+  align-items: end;
+  padding: clamp(2rem, 4vw, 3.5rem) 0;
+  border-bottom: 1px solid #151515;
+}
+
+.llmPressure > p {
+  max-width: 48rem;
+  margin: 0;
+  font-size: clamp(1.05rem, 1.45vw, 1.3rem);
+  line-height: 1.5;
+}
+
+.llmSurvived {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  white-space: nowrap;
+  color: var(--signal);
+  font-size: .58rem;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.llmBall {
+  position: relative;
+  width: 5rem;
+  height: 5rem;
+}
+
+.llmBall::before,
+.llmBall::after {
+  position: absolute;
+  z-index: 2;
+  width: 2.2rem;
+  height: 1px;
+  background: rgb(21 21 21 / 68%);
+  content: "";
+  pointer-events: none;
+}
+
+.llmBall::before {
+  top: 1.65rem;
+  left: .7rem;
+  transform: rotate(-18deg);
+}
+
+.llmBall::after {
+  right: .55rem;
+  bottom: 1.45rem;
+  transform: rotate(21deg);
+}
+
+.llmBall img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: grayscale(1) contrast(1.16) brightness(.94);
+}
+
+.llmFinal {
+  display: grid;
+  gap: .35rem;
+  margin: clamp(3rem, 6vw, 6rem) 0 0;
+  text-transform: uppercase;
+}
+
+.llmFinal span {
+  font-size: clamp(1rem, 1.7vw, 1.4rem);
+  font-weight: 780;
+  letter-spacing: .02em;
+}
+
+.llmFinal strong {
+  max-width: 18ch;
+  color: var(--deep-sky);
+  font-size: clamp(2.7rem, 6.5vw, 6.4rem);
+  font-weight: 850;
+  letter-spacing: -.064em;
+  line-height: .9;
+}
+
+@media (max-width: 900px) {
+  .llmContrastIntro,
+  .llmCompare {
+    grid-template-columns: 1fr;
+  }
+
+  .llmContrastIntro {
+    gap: 2rem;
+  }
+
+  .llmGeneric,
+  .llmCtrl {
+    min-height: 0;
+  }
+
+  .llmPressure {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .llmSurvived {
+    justify-self: start;
+  }
+}
+
+@media (max-width: 620px) {
+  .llmContrast {
+    padding: 4.25rem 1rem 4.5rem;
+  }
+
+  .llmContrast .sectionLabel span:last-child {
+    display: none;
+  }
+
+  .llmContrastIntro {
+    padding: 2.5rem 0 3rem;
+  }
+
+  .llmContrastIntro h2 {
+    max-width: 100%;
+    font-size: clamp(2.8rem, 11vw, 4rem);
+    line-height: .91;
+  }
+
+  .llmContrastIntro > p {
+    font-size: 1.08rem;
+  }
+
+  .llmCompare li {
+    min-height: 0;
+    grid-template-columns: 2.2rem 1fr;
+    gap: .55rem;
+    padding: 1rem .85rem;
+  }
+
+  .llmCompare li strong {
+    font-size: clamp(1.18rem, 5.8vw, 1.65rem);
+    line-height: 1.05;
+  }
+
+  .llmPressure {
+    gap: 1.25rem;
+    padding: 2rem 0;
+  }
+
+  .llmBall {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .llmFinal {
+    margin-top: 3rem;
+  }
+
+  .llmFinal strong {
+    max-width: 100%;
+    font-size: clamp(2.4rem, 11vw, 3.75rem);
+    line-height: .92;
+  }
+}
