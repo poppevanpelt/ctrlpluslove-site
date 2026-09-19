@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-export const SITE_URL = "https://www.ctrlpluslove.com";
+export const SITE_URL = "https://ctrlpluslove.com";
 
 export type PublicRoute = {
   path: string;

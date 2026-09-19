@@ -14,7 +14,7 @@ const organicAiJsonLd = {
   inDefinedTermSet: {
     "@type": "DefinedTermSet",
     name: "ctrl+love decision language",
-    url: "https://www.ctrlpluslove.com/organic-ai/",
+    url: "https://ctrlpluslove.com/organic-ai/",
   },
 };
 

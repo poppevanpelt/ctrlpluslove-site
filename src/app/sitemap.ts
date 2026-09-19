@@ -8,7 +8,7 @@ import { embassies } from "@/content/embassies";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date("2026-09-15");
-  const homeLastModified = new Date("2026-09-18");
+  const homeLastModified = new Date("2026-09-19");
   const swatLastModified = new Date("2026-09-15");
 
   return [
