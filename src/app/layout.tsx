@@ -28,14 +28,14 @@ const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "ctrl+love",
-  url: "https://www.ctrlpluslove.com/",
+  url: `${SITE_URL}/`,
   description:
     "ctrl+love builds and field-tests AI-assisted instruments for human judgment, pressure-testing evidence, assumptions, opposition and decision risk before important choices become expensive.",
   founder: {
     "@type": "Person",
     name: "Poppe van Pelt",
     jobTitle: "Applied AI Decision Systems Engineer",
-    url: "https://www.ctrlpluslove.com/",
+    url: `${SITE_URL}/`,
   },
   slogan: "Instruments for human judgment.",
   knowsAbout: [
@@ -55,7 +55,7 @@ const websiteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: "ctrl+love",
-  url: "https://www.ctrlpluslove.com/",
+  url: `${SITE_URL}/`,
   description:
     "AI-assisted instruments for human judgment by ctrl+love, founded by Poppe van Pelt.",
   publisher: {
