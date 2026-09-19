@@ -169,7 +169,7 @@ export function MeetingExperience() {
           <p className={styles.eyebrow}>A PERFECTLY ORDINARY MEETING</p>
           <h1 id="normal-title">EVERYTHING<br />LOOKS NORMAL.</h1>
           <p className={styles.lead}>
-            Sixty-two minutes. Nine people. Forty-seven slides.
+            Sixty-six minutes. Nine people. Forty-seven slides.
             <br />
             Nothing goes wrong.
           </p>
@@ -267,6 +267,11 @@ export function MeetingExperience() {
           <p>THE ROOM IS EMPTY.</p>
           <h2 id="verdict-title">NOTHING<br />WENT WRONG.</h2>
           <strong>THAT WAS THE PROBLEM.</strong>
+          <div className={styles.scoreboard} aria-label="First run outcome">
+            <span><strong>66</strong> minutes</span>
+            <span><strong>0</strong> decisions</span>
+            <span><strong>1</strong> more meeting</span>
+          </div>
           <p className={styles.verdictBody}>
             Most bad decisions do not look bad while they are happening.
             <br />
@@ -282,6 +287,11 @@ export function MeetingExperience() {
           <p>THE ROOM IS EMPTY.</p>
           <h2 id="repaired-title">DECISION<br />MADE.</h2>
           <strong>SIX MINUTES EARLY.</strong>
+          <div className={styles.scoreboard} aria-label="Second run outcome">
+            <span><strong>56</strong> minutes</span>
+            <span><strong>1</strong> decision</span>
+            <span><strong>0</strong> follow-up meetings</span>
+          </div>
           <p className={styles.verdictBody}>
             ctrl+love does not make meetings more interesting.
             <br />
