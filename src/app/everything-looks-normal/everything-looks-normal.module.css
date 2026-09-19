@@ -90,6 +90,13 @@
   gap: 1rem;
 }
 
+.autoRunState {
+  color: var(--repair) !important;
+  font-size: 0.6rem;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+}
+
 .introClock {
   position: absolute;
   top: clamp(6rem, 12vw, 9rem);
@@ -967,5 +974,33 @@
   .experienceHeader .soundToggle i {
     width: 0.62rem;
     height: 0.62rem;
+  }
+}
+
+
+.repair .readout,
+.repair .roomEvidence > div,
+.repair .screen,
+.repair .clock {
+  animation: repair-snap 240ms ease both;
+}
+
+@keyframes repair-snap {
+  from {
+    opacity: 0.72;
+    transform: translateY(0.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .repair .readout,
+  .repair .roomEvidence > div,
+  .repair .screen,
+  .repair .clock {
+    animation: none;
   }
 }
