@@ -1051,3 +1051,100 @@
     animation: none;
   }
 }
+
+
+/* Ambient life: the meeting continues whether or not the visitor touches it. */
+.ordinary .screen {
+  animation: screen-breathe 5.8s ease-in-out infinite;
+}
+
+.ordinary .clock {
+  animation: clock-live 2.2s steps(2, end) infinite;
+}
+
+.ordinary .seat:nth-child(1) {
+  animation: seat-shift-a 7.4s ease-in-out infinite;
+}
+
+.ordinary .seat:nth-child(4) {
+  animation: seat-shift-b 9.1s ease-in-out infinite;
+}
+
+.ordinary .seat:nth-child(6) {
+  animation: seat-shift-c 8.2s ease-in-out infinite;
+}
+
+.ordinary .roomEvidence > div {
+  animation: evidence-arrives 420ms ease both;
+}
+
+.ordinary .readout {
+  animation: readout-arrives 360ms ease both;
+}
+
+@keyframes screen-breathe {
+  0%, 100% {
+    filter: brightness(0.98);
+  }
+  50% {
+    filter: brightness(1.035);
+  }
+}
+
+@keyframes clock-live {
+  0%, 48% {
+    opacity: 0.72;
+  }
+  52%, 100% {
+    opacity: 1;
+  }
+}
+
+@keyframes seat-shift-a {
+  0%, 100% { transform: translate(0, 0); }
+  42% { transform: translate(0.12rem, -0.08rem); }
+  67% { transform: translate(-0.08rem, 0.05rem); }
+}
+
+@keyframes seat-shift-b {
+  0%, 100% { transform: translate(0, 0); }
+  36% { transform: translate(-0.1rem, 0.06rem); }
+  73% { transform: translate(0.08rem, -0.06rem); }
+}
+
+@keyframes seat-shift-c {
+  0%, 100% { transform: translate(0, 0); }
+  51% { transform: translate(0.07rem, 0.1rem); }
+}
+
+@keyframes evidence-arrives {
+  from {
+    opacity: 0;
+    translate: 0 0.35rem;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes readout-arrives {
+  from {
+    opacity: 0.72;
+    translate: 0 0.22rem;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ordinary .screen,
+  .ordinary .clock,
+  .ordinary .seat,
+  .ordinary .roomEvidence > div,
+  .ordinary .readout {
+    animation: none !important;
+  }
+}
