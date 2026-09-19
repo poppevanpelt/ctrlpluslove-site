@@ -207,6 +207,50 @@ export function MeetingExperience() {
                 <strong>{isRepair ? "DECISION IN PROGRESS" : "STRATEGIC ALIGNMENT"}</strong>
               </div>
               <div className={styles.clock} aria-live="polite">{time}</div>
+
+              <div className={styles.roomEvidence} aria-hidden="true">
+                <div className={styles.inviteCard}>
+                  <span>CALENDAR</span>
+                  <strong>Q4 STRATEGIC ALIGNMENT</strong>
+                  <small>09:00–10:00 · 9 accepted</small>
+                  <em>{isRepair ? "DECISION: GO / NO-GO ON B" : "No agenda attached"}</em>
+                </div>
+
+                <div className={styles.missingPlacard}>
+                  <span>{isRepair ? "SEAT ADDED" : "NOT INVITED"}</span>
+                  <strong>{isRepair ? "THE PERSON WITH THE EVIDENCE" : "?"}</strong>
+                </div>
+
+                <div className={styles.deckCounter}>
+                  <span>POWERPOINT</span>
+                  <strong>{isRepair ? "1" : "47"}</strong>
+                  <small>{isRepair ? "question" : "slides"}</small>
+                </div>
+
+                <div className={styles.seniorBubble}>
+                  <span>09:14</span>
+                  <strong>{isRepair ? "WRITE FIRST." : "I PERSONALLY THINK B."}</strong>
+                </div>
+
+                <div className={styles.tabSeventeen}>
+                  <span>TAB 17</span>
+                  <strong>{isRepair ? "OPEN" : "B DOESN'T WORK"}</strong>
+                  <small>{isRepair ? "entered into discussion" : "last viewed 09:21"}</small>
+                </div>
+
+                <div className={styles.alignmentMeter}>
+                  <span>ALIGNMENT</span>
+                  <strong>{isRepair ? "8 + 1 objection" : "8 / 9"}</strong>
+                  <small>{isRepair ? "objection recorded" : "marked green"}</small>
+                </div>
+
+                <div className={styles.calendarSearch}>
+                  <span>{isRepair ? "DECISION LOGGED" : "FIND A TIME"}</span>
+                  <strong>{isRepair ? "B / TEST FIRST" : "NEXT WEEK?"}</strong>
+                  <small>{isRepair ? "Owner: named · next move: reversible" : "Tue 14:00 · Wed impossible · Thu Lars away"}</small>
+                </div>
+              </div>
+
               <div className={styles.table} aria-hidden="true">
                 {Array.from({ length: 8 }).map((_, index) => (
                   <span
