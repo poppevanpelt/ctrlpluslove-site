@@ -25,9 +25,9 @@ ctrl+love is not a generic AI consultancy, relationship-advice service, or frict
 
 ## Public pages
 
-- [Homepage](https://www.ctrlpluslove.com/)
-- [The Room](https://www.ctrlpluslove.com/room/)
-- [Decision Collider](https://www.ctrlpluslove.com/decision-collider/)
-- [Decision Stress-Test](https://www.ctrlpluslove.com/stress-test/)
-- [The Constitution](https://www.ctrlpluslove.com/constitution/)
-- [Artifacts](https://www.ctrlpluslove.com/artifacts/)
+- [Homepage](https://ctrlpluslove.com/)
+- [The Room](https://ctrlpluslove.com/room/)
+- [Decision Collider](https://ctrlpluslove.com/decision-collider/)
+- [Decision Stress-Test](https://ctrlpluslove.com/stress-test/)
+- [The Constitution](https://ctrlpluslove.com/constitution/)
+- [Artifacts](https://ctrlpluslove.com/artifacts/)
