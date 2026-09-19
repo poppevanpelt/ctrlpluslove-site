@@ -529,44 +529,46 @@ export function MeetingExperience() {
         </section>
       )}
 
-      <section className={styles.evidence} aria-labelledby="evidence-title">
-        <div className={styles.evidenceHeading}>
-          <span>WHY THIS IS NOT JUST MEETING COMEDY</span>
-          <h2 id="evidence-title">THE ROOM HAS RECEIPTS.</h2>
-        </div>
+      <section className={styles.evidence} aria-label="Evidence and provenance">
+        <details className={styles.receipts}>
+          <summary>
+            <span>SHOW RECEIPTS</span>
+            <strong>THE ROOM HAS EVIDENCE.</strong>
+          </summary>
 
-        <div className={styles.evidenceGrid}>
-          <article>
-            <span>01 / SHARED INFORMATION</span>
-            <p>
-              Research on hidden-profile decisions finds that groups disproportionately discuss information
-              everybody already shares while unique information struggles to enter the conversation.
-            </p>
-            <a href="https://pubmed.ncbi.nlm.nih.gov/21896790/" target="_blank" rel="noreferrer">
-              META-ANALYSIS ↗
-            </a>
-          </article>
-          <article>
-            <span>02 / EARLY PREFERENCES</span>
-            <p>
-              Knowing other people&apos;s preferences before discussion can reduce attention to incoming
-              information and harm decision quality.
-            </p>
-            <a href="https://pubmed.ncbi.nlm.nih.gov/20438225/" target="_blank" rel="noreferrer">
-              STUDY ↗
-            </a>
-          </article>
-          <article>
-            <span>03 / DISSENT</span>
-            <p>
-              In hidden-profile experiments, dissent improved solution rates by producing more intensive
-              and less biased discussion, even when the dissenter did not initially hold the correct answer.
-            </p>
-            <a href="https://pubmed.ncbi.nlm.nih.gov/17144766/" target="_blank" rel="noreferrer">
-              STUDY ↗
-            </a>
-          </article>
-        </div>
+          <div className={styles.evidenceGrid}>
+            <article>
+              <span>01 / SHARED INFORMATION</span>
+              <p>
+                Groups disproportionately discuss information everybody already shares while unique information
+                struggles to enter the conversation.
+              </p>
+              <a href="https://pubmed.ncbi.nlm.nih.gov/21896790/" target="_blank" rel="noreferrer">
+                META-ANALYSIS ↗
+              </a>
+            </article>
+            <article>
+              <span>02 / EARLY PREFERENCES</span>
+              <p>
+                Knowing other people&apos;s preferences before discussion can reduce attention to incoming
+                information and harm decision quality.
+              </p>
+              <a href="https://pubmed.ncbi.nlm.nih.gov/20438225/" target="_blank" rel="noreferrer">
+                STUDY ↗
+              </a>
+            </article>
+            <article>
+              <span>03 / DISSENT</span>
+              <p>
+                Dissent improved solution rates through more intensive and less biased discussion, even when
+                the dissenter did not initially hold the correct answer.
+              </p>
+              <a href="https://pubmed.ncbi.nlm.nih.gov/17144766/" target="_blank" rel="noreferrer">
+                STUDY ↗
+              </a>
+            </article>
+          </div>
+        </details>
 
         <div className={styles.credit}>
           <p>
@@ -574,7 +576,7 @@ export function MeetingExperience() {
             <a href="https://ordinaryabundance.com/" target="_blank" rel="noreferrer">
               Ordinary Abundance ↗
             </a>
-            : making the familiar visible again. This is an independent ctrl+love experiment about the
+            : making the familiar visible again. An independent ctrl+love experiment about the
             decision habits work has taught us not to notice.
           </p>
           <Link href="/">CTRL+LOVE / SHORTCUT TO REALITY →</Link>
