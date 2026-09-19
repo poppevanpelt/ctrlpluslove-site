@@ -199,6 +199,7 @@ export function MeetingExperience() {
   const [soundOn, setSoundOn] = useState(false);
   const [autoRun, setAutoRun] = useState(false);
   const audioRef = useRef<RoomAudio | null>(null);
+  const meetingRef = useRef<HTMLElement | null>(null);
 
   const scene = scenes[active];
   const isRepair = mode === "repair";
@@ -268,7 +269,25 @@ export function MeetingExperience() {
   }, [active, isRepair, scene.roomClass, soundOn]);
 
   useEffect(() => {
-    if (!isRepair || !autoRun) return;
+    const meeting = meetingRef.current;
+    if (!meeting || isRepair || active !== 0) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && entry.intersectionRatio > 0.52) {
+          setAutoRun(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: [0.52, 0.7] },
+    );
+
+    observer.observe(meeting);
+    return () => observer.disconnect();
+  }, [active, isRepair]);
+
+  useEffect(() => {
+    if (!autoRun) return;
     if (active >= scenes.length - 1) {
       setAutoRun(false);
       return;
@@ -276,7 +295,7 @@ export function MeetingExperience() {
 
     const timeout = window.setTimeout(() => {
       setActive((current) => Math.min(current + 1, scenes.length - 1));
-    }, 1550);
+    }, isRepair ? 1550 : 3200);
 
     return () => window.clearTimeout(timeout);
   }, [active, autoRun, isRepair]);
@@ -349,6 +368,7 @@ export function MeetingExperience() {
       </section>
 
       <section
+        ref={meetingRef}
         className={styles.experience + " " + (isRepair ? styles.repair : styles.ordinary)}
         id="meeting"
         aria-labelledby="meeting-title"
@@ -361,9 +381,9 @@ export function MeetingExperience() {
             </strong>
           </div>
           <div className={styles.headerTools}>
-            {isRepair ? (
-              <span className={styles.autoRunState}>{autoRun ? "AUTO RUN" : "MANUAL"}</span>
-            ) : null}
+            <span className={styles.autoRunState}>
+              {autoRun ? (isRepair ? "FAST RUN" : "MEETING LIVE") : "MANUAL"}
+            </span>
             <span>{String(active + 1).padStart(2, "0")} / {String(scenes.length).padStart(2, "0")}</span>
             <button
               className={styles.soundToggle}
@@ -488,7 +508,7 @@ export function MeetingExperience() {
       </section>
 
       {!isRepair ? (
-        <section className={styles.verdict} aria-labelledby="verdict-title">
+        <section className={styles.verdict} id="first-verdict" aria-labelledby="verdict-title">
           <span>10:04</span>
           <p>THE ROOM IS EMPTY.</p>
           <h2 id="verdict-title">NOTHING<br />WENT WRONG.</h2>
