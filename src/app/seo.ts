@@ -226,6 +226,14 @@ export const publicRoutes: PublicRoute[] = [
     priority: 0.45,
   },
   {
+    path: "/everything-looks-normal/",
+    title: "Everything Looks Normal — ctrl+love",
+    description:
+      "A perfectly ordinary meeting, replayed to reveal the hidden habits that distort decisions and the ctrl+love instruments designed to interrupt them.",
+    changeFrequency: "monthly",
+    priority: 0.82,
+  },
+  {
     path: "/decision-collider/",
     title: "Decision Collider — ctrl+love",
     description:
