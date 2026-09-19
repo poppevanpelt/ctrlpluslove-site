@@ -46,7 +46,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     line: "Spots what others miss.",
     contribution:
       "Reads the cultural risk, memory and meaning surrounding the decision.",
-    portrait: "/room/personas/lexi-arden.jpg",
+    portrait: "/room/personas/lexi-arden-20260919.svg",
     portraitPosition: "50% 40%",
   },
   {
@@ -66,7 +66,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     line: "Tests what survives outside the room.",
     contribution:
       "Pushes the idea against operational pressure, customer behavior and messy reality.",
-    portrait: "/room/personas/adrian-mbeki.jpg",
+    portrait: "/room/personas/adrian-mbeki-20260919.svg",
     portraitPosition: "50% 38%",
   },
   {
