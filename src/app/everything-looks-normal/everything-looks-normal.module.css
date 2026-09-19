@@ -40,7 +40,7 @@
 
 .topline {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: 1fr auto auto auto;
   align-self: start;
   gap: 1rem;
   border-bottom: 1px solid var(--rule);
@@ -50,6 +50,44 @@
 .topline a {
   font-weight: 900;
   text-decoration: none;
+}
+
+
+.soundToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.64rem;
+  font-weight: 780;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.soundToggle i {
+  width: 0.48rem;
+  height: 0.48rem;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.soundToggle[aria-pressed="true"] {
+  color: var(--ink);
+}
+
+.soundToggle[aria-pressed="true"] i {
+  background: currentColor;
+}
+
+.headerTools {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .introClock {
@@ -821,8 +859,9 @@
 .credit > a { text-decoration: none; }
 
 @media (max-width: 900px) {
-  .topline { grid-template-columns: 1fr auto; }
-  .topline span:last-child { display: none; }
+  .topline { grid-template-columns: 1fr auto auto; }
+  .topline .soundToggle { justify-self: end; }
+  .topline span:nth-child(3) { display: none; }
   .experienceGrid { grid-template-columns: 1fr; min-height: auto; }
   .roomWrap { min-height: 28rem; }
   .readout {
@@ -899,4 +938,34 @@
 @media (prefers-reduced-motion: reduce) {
   .experience,
   .seat { transition: none; }
+}
+
+
+@media (max-width: 680px) {
+  .topline {
+    grid-template-columns: 1fr auto;
+  }
+
+  .topline > span:nth-of-type(1),
+  .topline > span:nth-of-type(2) {
+    display: none;
+  }
+
+  .topline .soundToggle {
+    justify-self: end;
+  }
+
+  .headerTools {
+    gap: 0.6rem;
+  }
+
+  .experienceHeader .soundToggle {
+    font-size: 0;
+    letter-spacing: 0;
+  }
+
+  .experienceHeader .soundToggle i {
+    width: 0.62rem;
+    height: 0.62rem;
+  }
 }
