@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import styles from "./everything-looks-normal.module.css";
 
@@ -130,9 +130,74 @@ const scenes = [
   },
 ] as const;
 
+type RoomAudio = {
+  context: AudioContext;
+  hum: OscillatorNode;
+  humGain: GainNode;
+};
+
+function playTone(
+  context: AudioContext,
+  frequency: number,
+  delay = 0,
+  duration = 0.08,
+  level = 0.018,
+) {
+  const oscillator = context.createOscillator();
+  const gain = context.createGain();
+  const start = context.currentTime + delay;
+  const end = start + duration;
+
+  oscillator.type = "sine";
+  oscillator.frequency.setValueAtTime(frequency, start);
+  gain.gain.setValueAtTime(0.0001, start);
+  gain.gain.exponentialRampToValueAtTime(level, start + 0.012);
+  gain.gain.exponentialRampToValueAtTime(0.0001, end);
+
+  oscillator.connect(gain);
+  gain.connect(context.destination);
+  oscillator.start(start);
+  oscillator.stop(end + 0.02);
+}
+
+function playRoomNoise(
+  context: AudioContext,
+  delay = 0,
+  duration = 0.28,
+  level = 0.012,
+  cutoff = 900,
+) {
+  const length = Math.max(1, Math.floor(context.sampleRate * duration));
+  const buffer = context.createBuffer(1, length, context.sampleRate);
+  const data = buffer.getChannelData(0);
+
+  for (let index = 0; index < length; index += 1) {
+    const envelope = 1 - index / length;
+    data[index] = (Math.random() * 2 - 1) * envelope;
+  }
+
+  const source = context.createBufferSource();
+  const filter = context.createBiquadFilter();
+  const gain = context.createGain();
+  const start = context.currentTime + delay;
+
+  filter.type = "lowpass";
+  filter.frequency.value = cutoff;
+  gain.gain.setValueAtTime(level, start);
+  gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+
+  source.buffer = buffer;
+  source.connect(filter);
+  filter.connect(gain);
+  gain.connect(context.destination);
+  source.start(start);
+}
+
 export function MeetingExperience() {
   const [mode, setMode] = useState<Mode>("ordinary");
   const [active, setActive] = useState(0);
+  const [soundOn, setSoundOn] = useState(false);
+  const audioRef = useRef<RoomAudio | null>(null);
 
   const scene = scenes[active];
   const isRepair = mode === "repair";
@@ -140,6 +205,79 @@ export function MeetingExperience() {
   const title = isRepair ? scene.afterTitle : scene.beforeTitle;
   const copy = isRepair ? scene.afterCopy : scene.beforeCopy;
   const signal = isRepair ? scene.afterSignal : scene.beforeSignal;
+
+  async function ensureAudio() {
+    if (audioRef.current) {
+      if (audioRef.current.context.state === "suspended") {
+        await audioRef.current.context.resume();
+      }
+      return audioRef.current;
+    }
+
+    const context = new AudioContext();
+    const hum = context.createOscillator();
+    const humGain = context.createGain();
+
+    hum.type = "sine";
+    hum.frequency.value = 50;
+    humGain.gain.value = 0.0001;
+    hum.connect(humGain);
+    humGain.connect(context.destination);
+    hum.start();
+
+    audioRef.current = { context, hum, humGain };
+    return audioRef.current;
+  }
+
+  async function toggleSound() {
+    const audio = await ensureAudio();
+    const next = !soundOn;
+    const now = audio.context.currentTime;
+
+    audio.humGain.gain.cancelScheduledValues(now);
+    audio.humGain.gain.setValueAtTime(Math.max(audio.humGain.gain.value, 0.0001), now);
+    audio.humGain.gain.exponentialRampToValueAtTime(next ? 0.0032 : 0.0001, now + 0.22);
+
+    if (next) {
+      playTone(audio.context, 659, 0.02, 0.055, 0.012);
+    }
+
+    setSoundOn(next);
+  }
+
+  useEffect(() => {
+    if (!soundOn || !audioRef.current) return;
+
+    const { context } = audioRef.current;
+
+    if (!isRepair && scene.roomClass === "laptop") {
+      playRoomNoise(context, 0, 0.09, 0.006, 1600);
+      playTone(context, 180, 0.025, 0.04, 0.006);
+    }
+
+    if (!isRepair && scene.roomClass === "calendar") {
+      playTone(context, 880, 0, 0.07, 0.016);
+      playTone(context, 1174, 0.11, 0.08, 0.014);
+    }
+
+    if (isRepair && scene.roomClass === "calendar") {
+      playRoomNoise(context, 0, 0.42, 0.01, 650);
+      playRoomNoise(context, 0.18, 0.34, 0.008, 520);
+    }
+  }, [active, isRepair, scene.roomClass, soundOn]);
+
+  useEffect(() => {
+    return () => {
+      const audio = audioRef.current;
+      if (!audio) return;
+      try {
+        audio.hum.stop();
+      } catch {
+        // It may already be stopped by the browser.
+      }
+      void audio.context.close();
+    };
+  }, []);
 
   function advance() {
     setActive((current) => Math.min(current + 1, scenes.length - 1));
@@ -162,6 +300,15 @@ export function MeetingExperience() {
           <Link href="/">ctrl+love</Link>
           <span>FIELD OBJECT 025</span>
           <span>COMPOSITE MEETING / ILLUSTRATIVE</span>
+          <button
+            className={styles.soundToggle}
+            type="button"
+            onClick={toggleSound}
+            aria-pressed={soundOn}
+          >
+            <i aria-hidden="true" />
+            ROOM SOUND {soundOn ? "ON" : "OFF"}
+          </button>
         </div>
 
         <div className={styles.introClock}>08:58</div>
@@ -195,7 +342,18 @@ export function MeetingExperience() {
               {isRepair ? "THE SAME ROOM. DIFFERENT RULES." : "NOTHING APPEARS TO BE WRONG."}
             </strong>
           </div>
-          <span>{String(active + 1).padStart(2, "0")} / {String(scenes.length).padStart(2, "0")}</span>
+          <div className={styles.headerTools}>
+            <span>{String(active + 1).padStart(2, "0")} / {String(scenes.length).padStart(2, "0")}</span>
+            <button
+              className={styles.soundToggle}
+              type="button"
+              onClick={toggleSound}
+              aria-pressed={soundOn}
+            >
+              <i aria-hidden="true" />
+              SOUND {soundOn ? "ON" : "OFF"}
+            </button>
+          </div>
         </div>
 
         <div className={styles.experienceGrid}>
