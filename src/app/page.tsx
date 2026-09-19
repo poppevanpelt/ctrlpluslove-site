@@ -150,7 +150,7 @@ const pressNotes = [
   },
 ] as const;
 
-// NETLIFY PRODUCTION NUDGE 2026-09-19 PERSONA REFRESH
+// NETLIFY PRODUCTION NUDGE 2026-09-19 PERSONA REFRESH 2
 export default function Home() {
   return (
     <main className={styles.page} id="main-content">
