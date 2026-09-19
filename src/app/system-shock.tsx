@@ -21,7 +21,11 @@ export function SystemShock() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [open]);
 
-  if (pathname?.startsWith("/poppe")) {
+  if (
+    pathname?.startsWith("/poppe") ||
+    pathname === "/everything-looks-normal" ||
+    pathname === "/everything-looks-normal/"
+  ) {
     return null;
   }
 
