@@ -185,9 +185,36 @@ export const supportingRoomPersonas: RoomPersona[] = [
 ];
 
 export const roomPersonas = coreRoomPersonas;
-export const homepageRoomPersonas = coreRoomPersonas;
-
 export const allRoomPersonas = [...coreRoomPersonas, ...supportingRoomPersonas];
+
+export const homepagePersonaIds = [
+  "lexi-arden",
+  "wade-ellison",
+  "nick-deckman",
+  "vera-elise-hartmann",
+  "akiko-hayashi",
+  "adrian-mbeki",
+  "maya-elise-harper",
+  "dr-lila-voss",
+  "simon-cross",
+  "the-customer",
+] as const;
+
+export const HOMEPAGE_PORTRAIT_REVISION = "20260919-canonical-01";
+
+const homepagePersonaIdSet = new Set<string>(homepagePersonaIds);
+
+export const homepageRoomPersonas = homepagePersonaIds
+  .map((id) => allRoomPersonas.find((persona) => persona.id === id))
+  .filter((persona): persona is RoomPersona => Boolean(persona));
+
+export function getRoomPersonaPortraitSrc(persona: RoomPersona) {
+  if (!persona.portrait) return undefined;
+  if (!homepagePersonaIdSet.has(persona.id)) return persona.portrait;
+
+  const separator = persona.portrait.includes("?") ? "&" : "?";
+  return `${persona.portrait}${separator}v=${HOMEPAGE_PORTRAIT_REVISION}`;
+}
 
 export function getRoomPersona(id: string) {
   return allRoomPersonas.find((persona) => persona.id === id);
