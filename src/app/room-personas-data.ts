@@ -151,6 +151,8 @@ export const supportingRoomPersonas: RoomPersona[] = [
     line: "What is this decision really sitting on?",
     contribution:
       "Looks past the argument to the system beneath it: incentives, history, dependencies and accumulated debt.",
+    portrait: "/room/personas/dr-mara-veld.webp",
+    portraitPosition: "50% 42%",
   },
   {
     id: "dr-lila-voss",
@@ -159,6 +161,8 @@ export const supportingRoomPersonas: RoomPersona[] = [
     line: "What ritual is being performed instead of a decision?",
     contribution:
       "Reads hierarchy, deference and ritual agreement as visible operating evidence.",
+    portrait: "/room/personas/dr-lila-voss.webp",
+    portraitPosition: "50% 42%",
   },
   {
     id: "wade-ellison",

@@ -666,9 +666,21 @@ export default function Home() {
                   <span>SPECIMEN {String(index + 1).padStart(2, "0")}</span>
                   <span>SYNTHETIC / ACTIVE</span>
                 </div>
-                <div className={`${styles.personaPortrait} ${styles.personaPortraitFallback}`}>
-                  <span className={styles.personaFallbackIndex}>{String(index + 1).padStart(2, "0")}</span>
-                  <strong>{persona.name}</strong>
+                <div className={`${styles.personaPortrait} ${persona.portrait ? "" : styles.personaPortraitFallback}`}>
+                  {persona.portrait ? (
+                    <Image
+                      src={persona.portrait}
+                      alt={`${persona.name}, ctrl+love synthetic persona`}
+                      fill
+                      sizes="(max-width: 620px) 50vw, (max-width: 900px) 50vw, 25vw"
+                      style={{ objectPosition: persona.portraitPosition ?? "50% 40%" }}
+                    />
+                  ) : (
+                    <>
+                      <span className={styles.personaFallbackIndex}>{String(index + 1).padStart(2, "0")}</span>
+                      <strong>{persona.name}</strong>
+                    </>
+                  )}
                   <span className={styles.personaSpecimenId}>ID · {persona.id.toUpperCase()}</span>
                 </div>
                 <div className={styles.personaIdentity}>
