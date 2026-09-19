@@ -784,6 +784,53 @@
 
 .repairedVerdict > strong { color: #7fb091; }
 
+
+.receipts {
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--rule);
+}
+
+.receipts summary {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 1rem 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+.receipts summary::-webkit-details-marker {
+  display: none;
+}
+
+.receipts summary span {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.receipts summary strong {
+  justify-self: end;
+  font-size: clamp(1rem, 1.8vw, 1.35rem);
+  letter-spacing: -0.02em;
+}
+
+.receipts summary::after {
+  content: "+";
+  grid-column: 2;
+  justify-self: end;
+  margin-top: -0.2rem;
+  color: var(--muted);
+  font-size: 1.1rem;
+}
+
+.receipts[open] summary::after {
+  content: "−";
+}
+
 .evidence {
   padding: clamp(4rem, 8vw, 8rem) clamp(1rem, 3vw, 2rem);
   background: var(--paper);
