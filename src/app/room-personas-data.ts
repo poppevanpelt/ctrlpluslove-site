@@ -17,7 +17,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     contribution:
       "Reframes the decision around the human need underneath the stated brief.",
     portrait: "/room/personas/maya-elise-harper.webp",
-    portraitPosition: "50% 36%",
+    portraitPosition: "50% 43%",
   },
   {
     id: "simon-cross",
@@ -27,7 +27,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     contribution:
       "Applies constructive skepticism before the market does it less politely.",
     portrait: "/room/personas/simon-cross.webp",
-    portraitPosition: "50% 35%",
+    portraitPosition: "50% 42%",
   },
   {
     id: "nick-deckman",
