@@ -403,6 +403,72 @@ export default function Home() {
         </div>
       </section>
 
+
+      <section className={styles.llmContrast} aria-labelledby="llm-contrast-title">
+        <div className={styles.sectionLabel}>
+          <span>GENERIC LLM / CTRL+LOVE</span>
+          <span>SAME INTELLIGENCE / DIFFERENT MACHINE</span>
+        </div>
+
+        <div className={styles.llmContrastIntro}>
+          <div>
+            <p className={styles.kicker}>NOT ANOTHER LLM</p>
+            <h2 id="llm-contrast-title">SAME<br />INTELLIGENCE.<br /><em>DIFFERENT MACHINE.</em></h2>
+          </div>
+          <p>
+            A generic LLM is designed to give you a useful answer.
+            ctrl+love is designed to make that answer survive.
+          </p>
+        </div>
+
+        <div className={styles.llmCompare}>
+          <article className={styles.llmGeneric}>
+            <span className={styles.llmColumnLabel}>GENERIC LLM</span>
+            <ol>
+              <li><span>01</span><strong>Helpful completion</strong></li>
+              <li><span>02</span><strong>One accommodating voice</strong></li>
+              <li><span>03</span><strong>Answers the question you asked</strong></li>
+              <li><span>04</span><strong>Reduces friction</strong></li>
+              <li><span>05</span><strong>Optimises the answer</strong></li>
+            </ol>
+          </article>
+
+          <article className={styles.llmCtrl}>
+            <span className={styles.llmColumnLabel}>CTRL+LOVE</span>
+            <ol>
+              <li><span>01</span><strong>Productive resistance</strong></li>
+              <li><span>02</span><strong>65+ opposing perspectives</strong></li>
+              <li><span>03</span><strong>Questions the question itself</strong></li>
+              <li><span>04</span><strong>Introduces friction deliberately</strong></li>
+              <li><span>05</span><strong>Pressure-tests the decision</strong></li>
+            </ol>
+          </article>
+        </div>
+
+        <div className={styles.llmPressure}>
+          <p>
+            Assumptions are exposed. Alternatives are forced into the room.
+            Weak ideas are allowed to die. Sometimes stopping is the best output.
+          </p>
+          <div className={styles.llmSurvived}>
+            <div className={styles.llmBall}>
+              <Image
+                src="/museum/steel-ball-packshot-cutout.png"
+                alt="Polished steel calibration ball"
+                width={104}
+                height={104}
+              />
+            </div>
+            <span>IT SURVIVED.</span>
+          </div>
+        </div>
+
+        <p className={styles.llmFinal}>
+          <span>AN LLM GIVES YOU AN ANSWER.</span>
+          <strong>CTRL+LOVE GIVES THE ANSWER SOMETHING TO SURVIVE.</strong>
+        </p>
+      </section>
+
       <section className={styles.science} aria-labelledby="science-title">
         <div className={styles.sectionLabel}>
           <span>SCIENTIFIC PROVENANCE</span>
