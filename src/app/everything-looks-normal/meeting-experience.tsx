@@ -14,8 +14,8 @@ const scenes = [
     object: "THE CALENDAR INVITE",
     beforeTitle: "Q4 STRATEGIC ALIGNMENT",
     beforeCopy:
-      "Nine people. Sixty minutes. No decision owner. No decision question. Nobody knows what must be true at 10:00 that was not true at 09:00.",
-    beforeSignal: "The meeting already exists, so its purpose is treated as proven.",
+      "Nine people. Sixty minutes. No decision owner. No decision question.",
+    beforeSignal: "The meeting exists. Its purpose is therefore treated as proven.",
     afterTitle: "MEETING FILTER",
     afterCopy:
       "The invite is forced to answer one question before it is accepted: what decision must leave the room?",
@@ -29,13 +29,13 @@ const scenes = [
     object: "THE EIGHT CHAIRS",
     beforeTitle: "EVERY EXPECTED PERSON IS HERE",
     beforeCopy:
-      "Except the person closest to the problem. One chair remains empty. Nobody asks whose information is missing.",
-    beforeSignal: "The missing information often lives with the missing person.",
-    afterTitle: "DECISION OWNER",
+      "Except the person closest to the problem. One chair remains empty.",
+    beforeSignal: "The missing information is sitting outside.",
+    afterTitle: "MISSING SEAT",
     afterCopy:
-      "One person is named to own the decision. Everyone else now knows why they are in the room.",
-    afterSignal: "Attendance stops being a substitute for authority.",
-    instrument: "DECISION OWNER",
+      "Before discussion starts, the room asks one thing: who knows something we do not?",
+    afterSignal: "The missing person enters before the frame hardens.",
+    instrument: "MISSING SEAT",
     roomClass: "chairs",
   },
   {
@@ -44,13 +44,13 @@ const scenes = [
     object: "SLIDE 1 OF 47",
     beforeTitle: "THE DECK BEGINS",
     beforeCopy:
-      "The first twelve minutes reproduce information everybody already has. The unique information stays on laptops, in notebooks and in people's heads.",
-    beforeSignal: "Shared information feels safer, so it gets airtime.",
-    afterTitle: "BLIND TRIAL",
+      "Twelve minutes reproduce what everybody already knows. The unique information waits.",
+    beforeSignal: "Shared information sounds like progress.",
+    afterTitle: "SIGNAL DISTORTION",
     afterCopy:
-      "Everyone records an independent read before the most senior voice can shape the room.",
-    afterSignal: "Useful disagreement is preserved before consensus starts.",
-    instrument: "BLIND TRIAL",
+      "Shared information is compressed. Unique information goes first.",
+    afterSignal: "The room hears what only one person knows.",
+    instrument: "SIGNAL DISTORTION",
     roomClass: "deck",
   },
   {
@@ -59,13 +59,13 @@ const scenes = [
     object: "\"I PERSONALLY THINK B.\"",
     beforeTitle: "THE SENIOR VOICE SPEAKS",
     beforeCopy:
-      "Nothing visible changes. But the room now knows where safety is. The next contributions quietly bend toward B.",
-    beforeSignal: "Preference arrives before evidence has finished arriving.",
-    afterTitle: "MISSING SEAT",
+      "Nothing visible changes. The next contributions quietly bend toward B.",
+    beforeSignal: "Preference arrived before the evidence finished arriving.",
+    afterTitle: "BLIND TRIAL",
     afterCopy:
-      "The room asks who has evidence but no chair. The person closest to the problem joins before the frame hardens.",
-    afterSignal: "Absence becomes a design flaw, not a social fact.",
-    instrument: "MISSING SEAT",
+      "Everybody writes before anybody declares a preference.",
+    afterSignal: "Agreement can no longer arrive first.",
+    instrument: "BLIND TRIAL",
     roomClass: "senior",
   },
   {
@@ -74,12 +74,12 @@ const scenes = [
     object: "THE LAPTOP",
     beforeTitle: "TAB 17 STAYS CLOSED",
     beforeCopy:
-      "Someone knows B does not work. The evidence is open on their laptop. They decide the moment has passed.",
-    beforeSignal: "A fact can be present in the room and still fail to enter the decision.",
+      "Someone knows B does not work. The evidence is open. They say nothing.",
+    beforeSignal: "The fact is in the room. The decision never receives it.",
     afterTitle: "OPPOSITION SEAT",
     afterCopy:
-      "One person is explicitly asked to make the strongest case against the emerging preference.",
-    afterSignal: "Disagreement becomes a role, not a personality defect.",
+      "One person is asked to make the strongest case against B.",
+    afterSignal: "Disagreement becomes a job, not a social risk.",
     instrument: "OPPOSITION SEAT",
     roomClass: "laptop",
   },
@@ -89,11 +89,11 @@ const scenes = [
     object: "THE POST-ITS",
     beforeTitle: "\"LET'S OPEN IT UP\"",
     beforeCopy:
-      "Thirty-five ideas appear after the preferred direction is already obvious. Somehow they arrange themselves into B.",
-    beforeSignal: "Divergence is performed after convergence has already happened.",
+      "Thirty-five ideas appear after B is already obvious. Somehow they become B.",
+    beforeSignal: "Divergence is performed after convergence.",
     afterTitle: "DO-NOTHING CONTROL",
     afterCopy:
-      "The preferred option is forced to beat the control case: what happens if we do nothing?",
+      "B must beat one awkward alternative: do nothing.",
     afterSignal: "Action has to earn its existence.",
     instrument: "DO-NOTHING CONTROL",
     roomClass: "postits",
@@ -104,12 +104,12 @@ const scenes = [
     object: "\"ARE WE ALIGNED?\"",
     beforeTitle: "EIGHT HEADS NOD",
     beforeCopy:
-      "One does not. Nobody notices. Agreement is measured. Understanding is not.",
+      "One does not. Nobody notices.",
     beforeSignal: "Silence is counted as consent.",
     afterTitle: "KILL QUESTION",
     afterCopy:
-      "Before the decision closes, one question is allowed to kill it: what would have to be true for this to be a bad decision?",
-    afterSignal: "Confidence is asked to survive one last collision.",
+      "One question gets permission to kill B: what would have to be true for this to be a bad decision?",
+    afterSignal: "Confidence gets one last collision.",
     instrument: "KILL QUESTION",
     roomClass: "aligned",
   },
@@ -119,11 +119,11 @@ const scenes = [
     object: "THE CALENDAR",
     beforeTitle: "\"MAYBE WE SHOULD GET ANOTHER HOUR IN\"",
     beforeCopy:
-      "The decision has not happened. Everyone instinctively starts searching for the next meeting.",
+      "No decision. Everyone starts searching for the next meeting.",
     beforeSignal: "Continuation feels easier than conclusion.",
     afterTitle: "DECISION",
     afterCopy:
-      "The owner states the decision, the evidence that survived, the opposition that mattered and the next reversible move.",
+      "Decision. Evidence. Opposition. Next reversible move.",
     afterSignal: "The room leaves six minutes early.",
     instrument: "DECISION",
     roomClass: "calendar",
@@ -197,6 +197,7 @@ export function MeetingExperience() {
   const [mode, setMode] = useState<Mode>("ordinary");
   const [active, setActive] = useState(0);
   const [soundOn, setSoundOn] = useState(false);
+  const [autoRun, setAutoRun] = useState(false);
   const audioRef = useRef<RoomAudio | null>(null);
 
   const scene = scenes[active];
@@ -267,6 +268,20 @@ export function MeetingExperience() {
   }, [active, isRepair, scene.roomClass, soundOn]);
 
   useEffect(() => {
+    if (!isRepair || !autoRun) return;
+    if (active >= scenes.length - 1) {
+      setAutoRun(false);
+      return;
+    }
+
+    const timeout = window.setTimeout(() => {
+      setActive((current) => Math.min(current + 1, scenes.length - 1));
+    }, 1550);
+
+    return () => window.clearTimeout(timeout);
+  }, [active, autoRun, isRepair]);
+
+  useEffect(() => {
     return () => {
       const audio = audioRef.current;
       if (!audio) return;
@@ -280,16 +295,19 @@ export function MeetingExperience() {
   }, []);
 
   function advance() {
+    setAutoRun(false);
     setActive((current) => Math.min(current + 1, scenes.length - 1));
   }
 
   function rewind() {
+    setAutoRun(false);
     setActive((current) => Math.max(current - 1, 0));
   }
 
   function runAgain() {
     setMode("repair");
     setActive(0);
+    setAutoRun(true);
     document.getElementById("meeting")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
@@ -343,6 +361,9 @@ export function MeetingExperience() {
             </strong>
           </div>
           <div className={styles.headerTools}>
+            {isRepair ? (
+              <span className={styles.autoRunState}>{autoRun ? "AUTO RUN" : "MANUAL"}</span>
+            ) : null}
             <span>{String(active + 1).padStart(2, "0")} / {String(scenes.length).padStart(2, "0")}</span>
             <button
               className={styles.soundToggle}
@@ -446,7 +467,10 @@ export function MeetingExperience() {
             <button
               className={index === active ? styles.timelineActive : ""}
               key={item.beforeTime}
-              onClick={() => setActive(index)}
+              onClick={() => {
+                setAutoRun(false);
+                setActive(index);
+              }}
               type="button"
               aria-label={"Go to " + (isRepair ? item.afterTime : item.beforeTime) + ": " + item.object}
             >
