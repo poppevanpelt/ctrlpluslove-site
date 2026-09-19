@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { EarthriseMoment } from "./earthrise-moment";
-import { allRoomPersonas } from "./room-personas-data";
+import { getRoomPersonaPortraitSrc, homepageRoomPersonas } from "./room-personas-data";
 import styles from "./home-2026.module.css";
 
 const recentInstruments = [
@@ -55,23 +55,6 @@ const recentInstruments = [
     readout: ["FRAME", "COLLIDE", "DECIDE"],
   },
 ] as const;
-
-const homepagePersonaIds = [
-  "lexi-arden",
-  "wade-ellison",
-  "nick-deckman",
-  "vera-elise-hartmann",
-  "akiko-hayashi",
-  "adrian-mbeki",
-  "maya-elise-harper",
-  "dr-lila-voss",
-  "simon-cross",
-  "the-customer",
-] as const;
-
-const homepagePersonas = homepagePersonaIds
-  .map((id) => allRoomPersonas.find((persona) => persona.id === id))
-  .filter((persona): persona is NonNullable<typeof persona> => Boolean(persona));
 
 const personaGenealogies: Record<
   string,
@@ -657,7 +640,7 @@ export default function Home() {
           </div>
         </div>
         <div className={styles.personaGrid}>
-          {homepagePersonas.map((persona, index) => {
+          {homepageRoomPersonas.map((persona, index) => {
             const genealogy = personaGenealogies[persona.id] ?? {
               status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN",
             };
@@ -671,8 +654,9 @@ export default function Home() {
                 <div className={`${styles.personaPortrait} ${persona.portrait ? "" : styles.personaPortraitFallback}`}>
                   {persona.portrait ? (
                     <Image
-                      src={persona.portrait}
+                      src={getRoomPersonaPortraitSrc(persona)!}
                       alt={`${persona.name}, ctrl+love synthetic persona`}
+                      unoptimized
                       fill
                       sizes="(max-width: 620px) 50vw, (max-width: 900px) 50vw, 25vw"
                       style={{ objectPosition: persona.portraitPosition ?? "50% 40%" }}
