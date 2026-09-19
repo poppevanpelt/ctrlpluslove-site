@@ -74,7 +74,7 @@ export default function ResumePage() {
             <span>Haarlem, Netherlands</span>
             <a href="mailto:hello@ctrlpluslove.com">hello@ctrlpluslove.com</a>
             <a href="https://www.linkedin.com/in/poppevanpelt/">linkedin.com/in/poppevanpelt</a>
-            <a href="https://www.ctrlpluslove.com/poppe/">ctrlpluslove.com/poppe</a>
+            <a href="https://ctrlpluslove.com/poppe/">ctrlpluslove.com/poppe</a>
           </div>
         </header>
 
