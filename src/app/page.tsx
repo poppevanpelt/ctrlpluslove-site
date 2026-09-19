@@ -7,6 +7,14 @@ import styles from "./home-2026.module.css";
 
 const recentInstruments = [
   {
+    no: "025",
+    name: "EVERYTHING LOOKS NORMAL",
+    state: "FIELD OBJECT",
+    line: "Most bad decisions do not look bad. They look ordinary.",
+    href: "/everything-looks-normal/",
+    readout: ["ENTER", "NOTICE", "RUN AGAIN"],
+  },
+  {
     no: "024",
     name: "BRAND SURVIVAL",
     state: "READING 001",
@@ -39,14 +47,6 @@ const recentInstruments = [
     readout: ["CUT", "TEST", "KEEP"],
   },
   {
-    no: "004",
-    name: "DECISION MEMORY",
-    state: "PROTOTYPE",
-    line: "A forgotten decision must win its argument again.",
-    href: "/decision-memory/",
-    readout: ["ASSUMPTION", "OPPOSITION", "MEMORY"],
-  },
-  {
     no: "001",
     name: "DECISION COLLIDER",
     state: "WORKING",
@@ -57,14 +57,14 @@ const recentInstruments = [
 ] as const;
 
 const homepagePersonaIds = [
-  "wade-ellison",
-  "dr-lila-voss",
   "nick-deckman",
-  "johan-cruyff",
-  "dr-mara-veld",
-  "the-customer",
+  "dr-lila-voss",
+  "lexi-arden",
+  "adrian-mbeki",
+  "akiko-hayashi",
   "maya-elise-harper",
   "simon-cross",
+  "the-customer",
 ] as const;
 
 const homepagePersonas = homepagePersonaIds
@@ -131,19 +131,19 @@ const pressNotes = [
   {
     outlet: "FRANK.NEWS",
     date: "08 SEP 2026",
-    title: "Poppe van Pelt: ‘Smaak wordt alleen maar belangrijker’",
+    title: "Poppe van Pelt: ‘Taste is only becoming more important’",
     href: "https://www.frank.news/poppe-van-pelt-smaak-wordt-alleen-maar-belangrijker/",
   },
   {
     outlet: "FONK",
     date: "25 AUG 2026",
-    title: "Poppe van Pelt lanceert ‘per ongeluk’ nieuw bedrijf Ctrl+Live",
+    title: "Poppe van Pelt launches new company Ctrl+Live ‘by accident’",
     href: "https://fonkmagazine.com/artikelen/tech/poppe-van-pelt-lanceert-per-ongeluk-nieuw-bedrijf-ctrl-live-77582.html",
   },
   {
     outlet: "BRIGHT",
     date: "24 AUG 2026",
-    title: "Strenge AI als ultiem hulpmiddel voor betere (en leukere?) reclame",
+    title: "Strict AI as the ultimate tool for better (and more enjoyable?) advertising",
     href: "https://www.bright.nl/nieuws/2126819/deze-ai-zegt-als-je-reclame-idee-gewoon-slecht-is.html",
   },
 ] as const;
@@ -182,7 +182,7 @@ export default function Home() {
 
         <div className={styles.heroStatus}>
           <span>FACTORY STATUS</span>
-          <strong>024 instruments</strong>
+          <strong>025 instruments</strong>
           <span>ALL SYSTEMS CURIOUS</span>
           <Link href="/instruments/">ENTER INSTRUMENT ROOM ↗</Link>
         </div>
@@ -578,7 +578,7 @@ export default function Home() {
       <section className={styles.factory} aria-labelledby="factory-title">
         <div className={styles.sectionLabel}>
           <span>THE FACTORY / WORKING DOORS</span>
-          <Link href="/instruments/">ALL 024 INSTRUMENTS ↗</Link>
+          <Link href="/instruments/">ALL 025 INSTRUMENTS ↗</Link>
         </div>
         <div className={styles.factoryIntro}>
           <h2 id="factory-title">RECENTLY<br />BUILT.</h2>

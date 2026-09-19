@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: "A physical room of ctrl+love instruments, protocols, field tests and decision artifacts.",
 };
 
-type State = "WORKING" | "PROTOTYPE" | "FIELD TEST" | "ARCHIVE" | "IN DEVELOPMENT";
+type State = "WORKING" | "PROTOTYPE" | "FIELD TEST" | "FIELD OBJECT" | "ARCHIVE" | "IN DEVELOPMENT";
 type Instrument = {
   no: string;
   name: string;
@@ -46,12 +46,14 @@ const instruments: readonly Instrument[] = [
   { no: "022", name: "TRAJECTORY / ATLAS / MARIA", state: "IN DEVELOPMENT", family: "ARTIFACT", line: "Map how a decision travels, not only where it ends.", why: "A developing system for human coordination terrain, protocol primitives and decision trajectories.", href: "/maria/", action: "ENTER EXCAVATION 001" },
   { no: "023", name: "CTRL+CHASE", state: "PROTOTYPE", family: "MOVE", line: "A question either produces evidence or earns its death.", why: "Keeps unresolved signals moving until they become evidence, a next move, or a justified stop.", href: "/chase/", action: "START CHASE" },
   { no: "024", name: "BRAND SURVIVAL", state: "PROTOTYPE", family: "TEST", line: "How much can we take away before it stops being you?", why: "Built to make distinctiveness visible as a survival curve instead of collapsing it into a score.", href: "/brand-survival/", action: "RUN BATCH 001" },
+  { no: "025", name: "EVERYTHING LOOKS NORMAL", state: "FIELD OBJECT", family: "SEE", line: "Most bad decisions do not look bad. They look ordinary.", why: "A perfectly ordinary meeting replayed to expose the habits that hide decision damage in plain sight.", href: "/everything-looks-normal/", action: "ENTER MEETING" },
 ];
 
 const stateClass: Record<State, string> = {
   WORKING: styles.stateWorking,
   PROTOTYPE: styles.statePrototype,
   "FIELD TEST": styles.stateField,
+  "FIELD OBJECT": styles.stateField,
   ARCHIVE: styles.stateArchive,
   "IN DEVELOPMENT": styles.stateDevelopment,
 };

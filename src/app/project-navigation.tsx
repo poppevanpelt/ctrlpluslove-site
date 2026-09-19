@@ -23,6 +23,8 @@ export function ProjectNavigation() {
     pathname === "/" ||
     pathname === "/decision-collider" ||
     pathname === "/decision-collider/" ||
+    pathname === "/everything-looks-normal" ||
+    pathname === "/everything-looks-normal/" ||
     pathname === "/swat" ||
     pathname === "/swat/" ||
     pathname.startsWith("/swat/") ||
