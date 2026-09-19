@@ -133,24 +133,24 @@ const pressNotes = [
   {
     outlet: "FRANK.NEWS",
     date: "08 SEP 2026",
-    title: "Poppe van Pelt: ‘Smaak wordt alleen maar belangrijker’",
+    title: "Poppe van Pelt: ‘Taste is only becoming more important’",
     href: "https://www.frank.news/poppe-van-pelt-smaak-wordt-alleen-maar-belangrijker/",
   },
   {
     outlet: "FONK",
     date: "25 AUG 2026",
-    title: "Poppe van Pelt lanceert ‘per ongeluk’ nieuw bedrijf Ctrl+Live",
+    title: "Poppe van Pelt ‘accidentally’ launches new company Ctrl+Live",
     href: "https://fonkmagazine.com/artikelen/tech/poppe-van-pelt-lanceert-per-ongeluk-nieuw-bedrijf-ctrl-live-77582.html",
   },
   {
     outlet: "BRIGHT",
     date: "24 AUG 2026",
-    title: "Strenge AI als ultiem hulpmiddel voor betere (en leukere?) reclame",
+    title: "Strict AI as the ultimate tool for better (and more fun?) advertising",
     href: "https://www.bright.nl/nieuws/2126819/deze-ai-zegt-als-je-reclame-idee-gewoon-slecht-is.html",
   },
 ] as const;
 
-// NETLIFY PRODUCTION NUDGE 2026-09-19 PERSONA REFRESH 2
+// NETLIFY PRODUCTION NUDGE 2026-09-19 PERSONA + PRESS REFRESH 3
 export default function Home() {
   return (
     <main className={styles.page} id="main-content">
