@@ -42,7 +42,7 @@ export default function TwoGoClient() {
         <div className={styles.heroShade} />
         <div className={styles.heroCopy}>
           <p>APPLIED AI. TAKEAWAY SIZE.</p>
-          <h1>What can I get you, guys?</h1>
+          <h1>What can we get you, guys?</h1>
           <p className={styles.lead}><strong>A few days of us. A useful little machine that stays.</strong><br/>One real problem in. One purpose-built system out.</p>
           <a href="#order" className={styles.cta}>ORDER 2GO →</a>
         </div>
