@@ -56,7 +56,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     line: "Looks beyond the next decision.",
     contribution:
       "Keeps the room honest about second-order effects, unintended consequences and future regret.",
-    portrait: "/room/personas/akiko-hayashi-20260920.jpg",
+    portrait: "/room/personas/akiko-hayashi.webp",
     portraitPosition: "50% 40%",
   },
   {
@@ -141,7 +141,7 @@ export const supportingRoomPersonas: RoomPersona[] = [
     line: "Recognizes patterns that have appeared before.",
     contribution:
       "Reminds the Room what history is trying to teach.",
-    portrait: "/room/personas/vera-elise-hartmann.webp",
+    portrait: "/room/personas/vera-elise-hartmann.jpg",
     portraitPosition: "50% 39%",
   },
   {
@@ -171,7 +171,7 @@ export const supportingRoomPersonas: RoomPersona[] = [
     line: "Detects the questions nobody has fully asked yet.",
     contribution:
       "Surfaces emotional signals and unfinished thinking before they disappear.",
-    portrait: "/room/personas/wade-ellison-20260920.svg",
+    portrait: "/room/personas/wade-ellison.jpg",
     portraitPosition: "50% 39%",
   },
   {
@@ -200,7 +200,7 @@ export const homepagePersonaIds = [
   "the-customer",
 ] as const;
 
-export const HOMEPAGE_PORTRAIT_REVISION = "20260920-stable-webp-01";
+export const HOMEPAGE_PORTRAIT_REVISION = "20260920-known-good-identities-01";
 
 const homepagePersonaIdSet = new Set<string>(homepagePersonaIds);
 
