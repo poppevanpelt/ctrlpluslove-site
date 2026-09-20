@@ -50,7 +50,6 @@ export default function TwoGoClient() {
       </section>
 
       <section className={styles.world}>
-        <figure><img src="/2go-assets/handoff.webp" alt="ctrl+2go order handoff at the pickup window" /><figcaption>GOOD STUFF ON THE WAY.</figcaption></figure>
         <figure><img src="/2go-assets/speaker.webp" alt="ctrl+2go order speaker in the rain" /><figcaption>TALK TO US.</figcaption></figure>
         <figure><img src="/2go-assets/extras.webp" alt="ctrl+2go extra solutions" /><figcaption>CLEAR. DOUBT. NOPE. MAYBE. YES.</figcaption></figure>
         <figure><img src="/2go-assets/hero.webp" alt="ctrl+2go drive-through" /><figcaption>CONSULTANTS LEFT ON PREMISES — 0.</figcaption></figure>
