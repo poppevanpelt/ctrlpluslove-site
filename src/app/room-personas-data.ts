@@ -16,7 +16,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     line: "Finds what people are buying beneath the brief.",
     contribution:
       "Reframes the decision around the human need underneath the stated brief.",
-    portrait: "/room/personas/maya-elise-harper-20260920.jpg",
+    portrait: "/room/personas/maya-elise-harper.webp",
     portraitPosition: "50% 43%",
   },
   {
@@ -141,7 +141,7 @@ export const supportingRoomPersonas: RoomPersona[] = [
     line: "Recognizes patterns that have appeared before.",
     contribution:
       "Reminds the Room what history is trying to teach.",
-    portrait: "/room/personas/vera-elise-hartmann-20260920.jpg",
+    portrait: "/room/personas/vera-elise-hartmann.webp",
     portraitPosition: "50% 39%",
   },
   {
@@ -200,7 +200,7 @@ export const homepagePersonaIds = [
   "the-customer",
 ] as const;
 
-export const HOMEPAGE_PORTRAIT_REVISION = "20260920-breathing-room-04";
+export const HOMEPAGE_PORTRAIT_REVISION = "20260920-stable-webp-01";
 
 const homepagePersonaIdSet = new Set<string>(homepagePersonaIds);
 
