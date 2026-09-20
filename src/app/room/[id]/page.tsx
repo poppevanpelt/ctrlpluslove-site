@@ -8,6 +8,7 @@ import {
   allRoomPersonas,
   getRoomPersona,
   getRoomPersonaNeighbors,
+  getRoomPersonaPortraitSrc,
 } from "../../room-personas-data";
 import { absoluteUrl } from "../../seo";
 import { ThemeToggle } from "../../theme-toggle";
@@ -114,8 +115,9 @@ export default async function SyntheticPersonaPage({
               >
                 {persona.portrait ? (
                   <Image
-                    src={persona.portrait}
+                    src={getRoomPersonaPortraitSrc(persona) ?? persona.portrait}
                     alt=""
+                    unoptimized
                     fill
                     sizes="(max-width: 900px) 86vw, 34vw"
                     priority
