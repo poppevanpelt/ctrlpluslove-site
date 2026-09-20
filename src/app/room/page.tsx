@@ -4,13 +4,20 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 
 import {
-  roomPersonas,
+  getRoomPersonaPortraitSrc,
+  homepagePersonaIds,
+  homepageRoomPersonas,
   supportingRoomPersonas,
 } from "../room-personas-data";
 import { routeMetadata } from "../seo";
 import { ThemeToggle } from "../theme-toggle";
 
 export const metadata: Metadata = routeMetadata("/room/");
+
+const homepagePersonaIdSet = new Set<string>(homepagePersonaIds);
+const additionalRoomPersonas = supportingRoomPersonas.filter(
+  (persona) => !homepagePersonaIdSet.has(persona.id),
+);
 
 export default function RoomPage() {
   return (
@@ -38,7 +45,7 @@ export default function RoomPage() {
           </div>
 
           <div className="room-persona-list">
-            {roomPersonas.map((persona, index) => (
+            {homepageRoomPersonas.map((persona, index) => (
               <article className="room-persona-profile" key={persona.id}>
                 <p className="room-persona-number">
                   {String(index + 1).padStart(2, "0")}
@@ -53,8 +60,9 @@ export default function RoomPage() {
                     } as CSSProperties}
                   >
                     <Image
-                      src={persona.portrait}
+                      src={getRoomPersonaPortraitSrc(persona) ?? persona.portrait}
                       alt=""
+                      unoptimized
                       fill
                       sizes="(max-width: 680px) 24vw, 7rem"
                     />
@@ -91,7 +99,7 @@ export default function RoomPage() {
             </div>
 
             <div className="supporting-persona-list">
-              {supportingRoomPersonas.map((persona) => (
+              {additionalRoomPersonas.map((persona) => (
                 <article className="supporting-persona" key={persona.id}>
                   {persona.portrait ? (
                     <Link
@@ -103,8 +111,9 @@ export default function RoomPage() {
                       } as CSSProperties}
                     >
                       <Image
-                        src={persona.portrait}
+                        src={getRoomPersonaPortraitSrc(persona) ?? persona.portrait}
                         alt=""
+                        unoptimized
                         fill
                         sizes="(max-width: 680px) 20vw, 5rem"
                       />
