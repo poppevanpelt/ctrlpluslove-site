@@ -200,7 +200,7 @@ export const homepagePersonaIds = [
   "the-customer",
 ] as const;
 
-export const HOMEPAGE_PORTRAIT_REVISION = "20260920-breathing-room-01";
+export const HOMEPAGE_PORTRAIT_REVISION = "20260920-breathing-room-02";
 
 const homepagePersonaIdSet = new Set<string>(homepagePersonaIds);
 
