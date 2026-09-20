@@ -89,6 +89,13 @@ export default function RootLayout({
 posthog.init('phc_nXPhwXLd8X7Tt9qXDwtAYJAUFYiTsBCfNzjQqEwLvFbK',{api_host:'https://eu.i.posthog.com',defaults:'2026-05-30',person_profiles:'identified_only'});`}
         </Script>
         <Script src="/cabinet-drawers.js" strategy="afterInteractive" />
+        <Script id="retire-legacy-service-worker" strategy="afterInteractive">
+          {`if ("serviceWorker" in navigator) {
+            navigator.serviceWorker
+              .register("/sw.js?v=20260920-retire-2", { updateViaCache: "none" })
+              .catch(function () {});
+          }`}
+        </Script>
       </head>
       <body>
         <a className="skip-link" href="#main-content">
