@@ -16,7 +16,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     line: "Finds what people are buying beneath the brief.",
     contribution:
       "Reframes the decision around the human need underneath the stated brief.",
-    portrait: "/room/personas/maya-elise-harper-20260920.svg",
+    portrait: "/room/personas/maya-elise-harper-20260920.jpg",
     portraitPosition: "50% 43%",
   },
   {
@@ -36,7 +36,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     line: "Sees the cost of being wrong.",
     contribution:
       "Tests whether the recommendation can survive budget, timing and commercial reality.",
-    portrait: "/room/personas/nick-deckman-20260920.svg",
+    portrait: "/room/personas/nick-deckman-20260920.jpg",
     portraitPosition: "50% 39%",
   },
   {
@@ -46,7 +46,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     line: "Spots what others miss.",
     contribution:
       "Reads the cultural risk, memory and meaning surrounding the decision.",
-    portrait: "/room/personas/lexi-arden-20260920.svg",
+    portrait: "/room/personas/lexi-arden-20260920.jpg",
     portraitPosition: "50% 40%",
   },
   {
@@ -56,7 +56,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     line: "Looks beyond the next decision.",
     contribution:
       "Keeps the room honest about second-order effects, unintended consequences and future regret.",
-    portrait: "/room/personas/akiko-hayashi-20260920.svg",
+    portrait: "/room/personas/akiko-hayashi-20260920.jpg",
     portraitPosition: "50% 40%",
   },
   {
@@ -66,7 +66,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     line: "Tests what survives outside the room.",
     contribution:
       "Pushes the idea against operational pressure, customer behavior and messy reality.",
-    portrait: "/room/personas/adrian-mbeki-20260920.svg",
+    portrait: "/room/personas/adrian-mbeki-20260920.jpg",
     portraitPosition: "50% 38%",
   },
   {
@@ -141,7 +141,7 @@ export const supportingRoomPersonas: RoomPersona[] = [
     line: "Recognizes patterns that have appeared before.",
     contribution:
       "Reminds the Room what history is trying to teach.",
-    portrait: "/room/personas/vera-elise-hartmann-20260920.svg",
+    portrait: "/room/personas/vera-elise-hartmann-20260920.jpg",
     portraitPosition: "50% 39%",
   },
   {
@@ -161,7 +161,7 @@ export const supportingRoomPersonas: RoomPersona[] = [
     line: "What ritual is being performed instead of a decision?",
     contribution:
       "Reads hierarchy, deference and ritual agreement as visible operating evidence.",
-    portrait: "/room/personas/dr-lila-voss-20260920.svg",
+    portrait: "/room/personas/dr-lila-voss-20260920.jpg",
     portraitPosition: "50% 42%",
   },
   {
@@ -171,7 +171,7 @@ export const supportingRoomPersonas: RoomPersona[] = [
     line: "Detects the questions nobody has fully asked yet.",
     contribution:
       "Surfaces emotional signals and unfinished thinking before they disappear.",
-    portrait: "/room/personas/wade-ellison-20260920.svg",
+    portrait: "/room/personas/wade-ellison-20260920.jpg",
     portraitPosition: "50% 39%",
   },
   {
@@ -200,7 +200,7 @@ export const homepagePersonaIds = [
   "the-customer",
 ] as const;
 
-export const HOMEPAGE_PORTRAIT_REVISION = "20260920-breathing-room-05";
+export const HOMEPAGE_PORTRAIT_REVISION = "20260920-breathing-room-06";
 
 const homepagePersonaIdSet = new Set<string>(homepagePersonaIds);
 
