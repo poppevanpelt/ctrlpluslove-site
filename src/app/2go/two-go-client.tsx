@@ -79,7 +79,7 @@ export default function TwoGoClient() {
       <section className={styles.order} id="order">
         <div className={styles.orderIntro}>
           <p>ORDER STATION 01</p>
-          <h2>What’s holding you up?</h2>
+          <h2>What’s holding you up late at night?</h2>
           <p>Describe it badly. The real version is more useful than the polished one.</p>
         </div>
         <div className={styles.orderForm}>
