@@ -493,7 +493,7 @@
   .reportHero { grid-template-columns: 1fr; }
   .hero { min-height: auto; }
   .heroCopy { min-height: 34rem; }
-  .hero h1 { font-size: clamp(4.4rem, 24vw, 8rem); }
+  .hero h1 { font-size: clamp(3.35rem, 15vw, 5rem); }
   .latencyObject,
   .reportStamp {
     min-height: 24rem;
