@@ -543,7 +543,7 @@
   .topbar { grid-template-columns: 1fr auto; }
   .serial { display: none; }
   .heroCopy { min-height: 36rem; }
-  .hero h1 { font-size: clamp(4.5rem, 23vw, 7rem); }
+  .hero h1 { font-size: clamp(3.35rem, 15vw, 5rem); }
   .latencyWrap { min-height: 24rem; padding: 1.2rem; }
   .latencyPlate strong { font-size: clamp(4.8rem, 22vw, 7.2rem); }
   .tags { grid-template-columns: 1fr 1fr; }

@@ -393,7 +393,11 @@
 @media (max-width: 680px) {
   .topbar { grid-template-columns: 1fr auto; }
   .serial { display: none; }
-  .arrival h1 { font-size: clamp(4rem, 21vw, 6.6rem); }
+  .arrival h1 {
+    font-size: clamp(3.1rem, 13vw, 4.7rem);
+    line-height: .82;
+    letter-spacing: -.055em;
+  }
   .doorway { min-height: 27rem; }
   .window { inset: 5.8rem 1rem 4.4rem; border-width: 7px; }
   .roomPlate { top: 1.2rem; left: 1rem; width: 9rem; }
