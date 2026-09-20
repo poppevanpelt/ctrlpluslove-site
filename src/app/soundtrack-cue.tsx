@@ -7,6 +7,7 @@ type SoundtrackCueProps = {
   href: string;
   note: string;
   placement?: "earthrise" | "inline";
+  previewImage?: string;
 };
 
 export function SoundtrackCue({
@@ -16,6 +17,7 @@ export function SoundtrackCue({
   href,
   note,
   placement = "inline",
+  previewImage,
 }: SoundtrackCueProps) {
   return (
     <aside
@@ -31,6 +33,18 @@ export function SoundtrackCue({
       <a href={href} target="_blank" rel="noreferrer">
         LISTEN ↗
       </a>
+      {previewImage ? (
+        <a
+          className={styles.preview}
+          href={href}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`Play ${title} by ${artist}`}
+          style={{ backgroundImage: `url("${previewImage}")` }}
+        >
+          <span>PLAY FILM ↗</span>
+        </a>
+      ) : null}
     </aside>
   );
 }
