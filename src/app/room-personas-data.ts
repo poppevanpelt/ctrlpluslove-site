@@ -46,7 +46,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     line: "Spots what others miss.",
     contribution:
       "Reads the cultural risk, memory and meaning surrounding the decision.",
-    portrait: "/room/personas/lexi-arden-20260920.jpg",
+    portrait: "/room/personas/lexi-arden-20260920.svg",
     portraitPosition: "50% 40%",
   },
   {
@@ -66,7 +66,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     line: "Tests what survives outside the room.",
     contribution:
       "Pushes the idea against operational pressure, customer behavior and messy reality.",
-    portrait: "/room/personas/adrian-mbeki-20260920.jpg",
+    portrait: "/room/personas/adrian-mbeki-20260920.svg",
     portraitPosition: "50% 38%",
   },
   {
@@ -161,7 +161,7 @@ export const supportingRoomPersonas: RoomPersona[] = [
     line: "What ritual is being performed instead of a decision?",
     contribution:
       "Reads hierarchy, deference and ritual agreement as visible operating evidence.",
-    portrait: "/room/personas/dr-lila-voss-20260920.jpg",
+    portrait: "/room/personas/dr-lila-voss-20260920.svg",
     portraitPosition: "50% 42%",
   },
   {
@@ -171,7 +171,7 @@ export const supportingRoomPersonas: RoomPersona[] = [
     line: "Detects the questions nobody has fully asked yet.",
     contribution:
       "Surfaces emotional signals and unfinished thinking before they disappear.",
-    portrait: "/room/personas/wade-ellison-20260920.jpg",
+    portrait: "/room/personas/wade-ellison-20260920.svg",
     portraitPosition: "50% 39%",
   },
   {
@@ -200,7 +200,7 @@ export const homepagePersonaIds = [
   "the-customer",
 ] as const;
 
-export const HOMEPAGE_PORTRAIT_REVISION = "20260920-breathing-room-06";
+export const HOMEPAGE_PORTRAIT_REVISION = "20260920-breathing-room-04";
 
 const homepagePersonaIdSet = new Set<string>(homepagePersonaIds);
 
