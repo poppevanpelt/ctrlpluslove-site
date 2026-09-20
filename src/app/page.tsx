@@ -99,17 +99,35 @@ const fieldNotes = [
   {
     stamp: "FIELD NOTE 017",
     title: "THE TABLE WAS ALREADY NOT LEVEL.",
-    copy: "The steel ball did not need a presentation. Reality moved it first.",
+    copy: "I had planned to tilt the table. Reality got there first.",
+    story: [
+      "The plan was simple: make the table very slightly off-level, put down the steel ball, and let the object quietly make the point.",
+      "I never had to do it. The real table was already crooked. The ball started rolling on its own and went straight through a client's glass of water.",
+      "The demonstration had happened before I could stage it.",
+    ],
+    lesson: "We were going to rig reality. Reality was already rigged.",
   },
   {
     stamp: "FIELD NOTE 014",
     title: "A QUESTION THAT REFUSED TO BECOME A SCORE.",
     copy: "Brand Survival became a curve because subtraction told us more than ranking did.",
+    story: [
+      "The instrument kept trying to become a score. A neat number for how strong a brand was.",
+      "But when we stripped away familiar cues one by one, recognition did not disappear all at once. Some things survived longer than others. The interesting evidence was the shape of the collapse.",
+      "So the score moved backstage. The curve became the thing worth looking at.",
+    ],
+    lesson: "The number told us how much. The curve told us where it broke.",
   },
   {
     stamp: "FIELD NOTE 011",
-    title: "THE ROOM CHANGED BEFORE THE MINUTES DID.",
-    copy: "Challenge, ownership and rupture move long before a meeting summary notices.",
+    title: "CTRL+NO WAS INVENTED AT THE FRONT DOOR.",
+    copy: "A slightly suspicious Tikkie request produced an instrument on the spot.",
+    story: [
+      "A man at the front door had just done a tiny job and then asked me to pay him with a Tikkie. Something about it felt wrong. Not dramatically wrong. Just wrong enough.",
+      "What I wanted in that moment was not another search, another opinion or ten minutes of suspicious scrolling. I wanted a very small machine that could answer one question: should I do this?",
+      "So, more or less on the doorstep, ctrl+no appeared.",
+    ],
+    lesson: "The visitor left. The instrument stayed.",
   },
 ] as const;
 
@@ -560,11 +578,20 @@ export default function Home() {
         </div>
         <div className={styles.notes}>
           {fieldNotes.map((note) => (
-            <article className={styles.note} key={note.stamp}>
-              <span>{note.stamp}</span>
-              <h3>{note.title}</h3>
-              <p>{note.copy}</p>
-            </article>
+            <details className={styles.note} key={note.stamp}>
+              <summary className={styles.noteSummary}>
+                <span>{note.stamp}</span>
+                <h3>{note.title}</h3>
+                <p>{note.copy}</p>
+                <b className={styles.noteOpen}>OPEN NOTE +</b>
+              </summary>
+              <div className={styles.noteStory}>
+                {note.story.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+                <strong>{note.lesson}</strong>
+              </div>
+            </details>
           ))}
         </div>
       </section>
