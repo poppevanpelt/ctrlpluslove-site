@@ -200,7 +200,7 @@ export const homepagePersonaIds = [
   "the-customer",
 ] as const;
 
-export const HOMEPAGE_PORTRAIT_REVISION = "20260920-canonical-02";
+export const HOMEPAGE_PORTRAIT_REVISION = "20260920-canonical-03";
 
 const homepagePersonaIdSet = new Set<string>(homepagePersonaIds);
 
