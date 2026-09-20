@@ -10,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date("2026-09-15");
   const homeLastModified = new Date("2026-09-19");
   const swatLastModified = new Date("2026-09-15");
+  const twoGoLastModified = new Date("2026-09-20");
 
   return [
     ...publicRoutes.map((route) => ({
@@ -18,6 +19,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: route.changeFrequency ?? "monthly",
       priority: route.priority ?? 0.5,
     })),
+    {
+      url: absoluteUrl("/2go/"),
+      lastModified: twoGoLastModified,
+      changeFrequency: "weekly" as const,
+      priority: 0.88,
+    },
     {
       url: absoluteUrl("/out-house/"),
       lastModified,
