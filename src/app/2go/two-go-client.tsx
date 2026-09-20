@@ -38,7 +38,7 @@ export default function TwoGoClient() {
       </header>
 
       <section className={styles.hero}>
-        <img src="/2go-assets/hero.webp" alt="ctrl+2go drive-through at night in the rain" className={styles.heroImage} />
+        <picture><source media="(max-width: 900px)" srcSet="/2go-assets/handoff.webp" /><img src="/2go-assets/hero.webp" alt="ctrl+2go drive-through at night in the rain" className={styles.heroImage} /></picture>
         <div className={styles.heroShade} />
         <div className={styles.heroCopy}>
           <p>APPLIED AI. TAKEAWAY SIZE.</p>
