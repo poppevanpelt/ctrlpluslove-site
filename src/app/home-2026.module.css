@@ -431,12 +431,24 @@
 
 .note {
   min-height: 22rem;
-  padding: 1.4rem;
   border-right: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
 }
 
-.note > span {
+.noteSummary {
+  min-height: 22rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1.4rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.noteSummary::-webkit-details-marker {
+  display: none;
+}
+
+.noteSummary > span {
   font-size: 0.64rem;
   font-weight: 800;
   letter-spacing: 0.11em;
@@ -447,6 +459,47 @@
   font-size: clamp(1.65rem, 2.7vw, 2.9rem);
   line-height: 0.93;
   letter-spacing: -0.05em;
+}
+
+.noteSummary > p {
+  margin: 0;
+}
+
+.noteOpen {
+  margin-top: auto;
+  padding-top: 2rem;
+  font-size: .58rem;
+  font-weight: 850;
+  letter-spacing: .1em;
+}
+
+.note[open] .noteOpen {
+  visibility: hidden;
+}
+
+.note[open] .noteOpen::after {
+  visibility: visible;
+  content: "CLOSE NOTE −";
+}
+
+.noteStory {
+  padding: 0 1.4rem 1.5rem;
+  border-top: 1px solid var(--rule);
+}
+
+.noteStory p {
+  margin: 1.15rem 0 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.noteStory strong {
+  display: block;
+  margin-top: 1.6rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  font-size: 1rem;
+  line-height: 1.4;
 }
 
 .humansGrid {
