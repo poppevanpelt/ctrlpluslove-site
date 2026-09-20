@@ -42,22 +42,18 @@ export default function TwoGoClient() {
         <div className={styles.heroShade} />
         <div className={styles.heroCopy}>
           <p>APPLIED AI. TAKEAWAY SIZE.</p>
-          <h1>A few days of us.<br/><em>A useful little machine that stays.</em></h1>
-          <p className={styles.lead}>One real problem in. One purpose-built system out.</p>
+          <h1>What can I get you, guys?</h1>
+          <p className={styles.lead}><strong>A few days of us. A useful little machine that stays.</strong><br/>One real problem in. One purpose-built system out.</p>
           <a href="#order" className={styles.cta}>ORDER 2GO →</a>
         </div>
         <span className={styles.smallFood}>SMALL FOOD<br/>BIG DAYS</span>
       </section>
 
-      <section className={styles.statement}>
-        <p>Most problems don’t need another transformation programme.</p>
-        <h2>Sometimes one thing just needs fixing.</h2>
-      </section>
-
-      <section className={styles.menu} id="menu">
-        <article><span>01</span><h2>DECIDE<br/>2GO</h2><p>One stubborn decision turned into a working decision instrument.</p><b>THE DECISION SYSTEM STAYS.</b></article>
-        <article><span>02</span><h2>WATCH<br/>2GO</h2><p>One behaviour worth watching. Where people disappear. Where money leaks out.</p><b>THE MONITOR STAYS.</b></article>
-        <article><span>03</span><h2>TEST<br/>2GO</h2><p>One thing you are about to spend real money on, hurt early.</p><b>THE TEST RIG STAYS.</b></article>
+      <section className={styles.world}>
+        <figure><img src="/2go-assets/handoff.webp" alt="ctrl+2go order handoff at the pickup window" /><figcaption>GOOD STUFF ON THE WAY.</figcaption></figure>
+        <figure><img src="/2go-assets/speaker.webp" alt="ctrl+2go order speaker in the rain" /><figcaption>TALK TO US.</figcaption></figure>
+        <figure><img src="/2go-assets/extras.webp" alt="ctrl+2go extra solutions" /><figcaption>CLEAR. DOUBT. NOPE. MAYBE. YES.</figcaption></figure>
+        <figure><img src="/2go-assets/hero.webp" alt="ctrl+2go drive-through" /><figcaption>CONSULTANTS LEFT ON PREMISES — 0.</figcaption></figure>
       </section>
 
       <section className={styles.extraGrid}>
@@ -69,11 +65,15 @@ export default function TwoGoClient() {
         <img src="/2go-assets/extras.webp" alt="ctrl+2go extra solutions on a wet stainless counter" />
       </section>
 
-      <section className={styles.world}>
-        <figure><img src="/2go-assets/handoff.webp" alt="ctrl+2go order handoff at the pickup window" /><figcaption>GOOD STUFF ON THE WAY.</figcaption></figure>
-        <figure><img src="/2go-assets/speaker.webp" alt="ctrl+2go order speaker in the rain" /><figcaption>TALK TO US.</figcaption></figure>
-        <figure><img src="/2go-assets/extras.webp" alt="ctrl+2go extra solutions" /><figcaption>CLEAR. DOUBT. NOPE. MAYBE. YES.</figcaption></figure>
-        <figure><img src="/2go-assets/hero.webp" alt="ctrl+2go drive-through" /><figcaption>CONSULTANTS LEFT ON PREMISES — 0.</figcaption></figure>
+      <section className={styles.menu} id="menu">
+        <article><span>01</span><h2>DECIDE<br/>2GO</h2><p>One stubborn decision turned into a working decision instrument.</p><b>THE DECISION SYSTEM STAYS.</b></article>
+        <article><span>02</span><h2>WATCH<br/>2GO</h2><p>One behaviour worth watching. Where people disappear. Where money leaks out.</p><b>THE MONITOR STAYS.</b></article>
+        <article><span>03</span><h2>TEST<br/>2GO</h2><p>One thing you are about to spend real money on, hurt early.</p><b>THE TEST RIG STAYS.</b></article>
+      </section>
+
+      <section className={styles.statement}>
+        <p>Most problems don’t need another transformation programme.</p>
+        <h2>Sometimes one thing just needs fixing.</h2>
       </section>
 
       <section className={styles.order} id="order">
