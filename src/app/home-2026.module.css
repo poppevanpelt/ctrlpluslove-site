@@ -4390,3 +4390,29 @@
     padding-bottom: 1.15rem;
   }
 }
+
+
+/* SUKI MOBILE OVERFLOW FIX */
+.clientCase {
+  overflow: hidden;
+}
+
+.suki > * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 620px) {
+  .suki {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .suki span,
+  .suki strong {
+    min-height: 8rem;
+  }
+
+  .suki strong {
+    border-top: 1px solid var(--ink);
+  }
+}
