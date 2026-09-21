@@ -322,9 +322,9 @@ export default function Home() {
                 </div>
               </dl>
 
-              <Link className={styles.productAction} href={product.href}>
+              <a className={styles.productAction} href={product.href}>
                 {product.action}
-              </Link>
+              </a>
             </article>
           ))}
         </div>
