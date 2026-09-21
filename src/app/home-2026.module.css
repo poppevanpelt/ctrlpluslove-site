@@ -2966,3 +2966,150 @@
     font-size: .88rem;
   }
 }
+
+
+/* WEBSITE 002.14 / READABLE MEANS READABLE
+   Functional copy is not texture. Remove the microtype layer site-wide. */
+
+/* Primary labels, navigation and actions: readable at a glance. */
+.heroTopline,
+.sectionLabel,
+.heroStatus,
+.instrumentMeta,
+.exitFooter,
+.kicker,
+.missionStrip,
+.instrumentOpen,
+.noteSummary > span,
+.noteOpen,
+.pressNumber,
+.pressMeta,
+.pressOpen,
+.exit > a,
+.nodeTopline,
+.nodeCopy > p,
+.nodeCopy > span,
+.nodeCopy > a,
+.shoppeCopy > a,
+.clientMeta,
+.llmColumnLabel,
+.llmSurvived,
+.scienceSource > span,
+.originSpecimen > span,
+.provenanceCopy strong {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+/* Dense metadata may be quieter, but must still be legible. */
+.curveMarkOne,
+.curveMarkTwo,
+.curveAxisX,
+.curveAxisY,
+.curveNote,
+.instrumentReadout span,
+.nodeOperator,
+.founderOperator,
+.nodeFootnote,
+.shoppeFacade span,
+.shoppeObject span,
+.personaSpecimenTopline,
+.personaSpecimenId,
+.personaIdentity strong,
+.genealogyLabel,
+.genealogySource > div,
+.genealogyOpen,
+.clientDiagram,
+.clientSystem,
+.metaFootnote,
+.scienceSource small,
+.originSpecimen small,
+.llmCompare li span {
+  font-size: .9rem;
+  line-height: 1.4;
+}
+
+/* Editorial support copy gets a real reading size. */
+.provenanceCopy p,
+.provenanceNote,
+.curveContext span,
+.transmission {
+  font-size: clamp(1.05rem, 1.25vw, 1.2rem) !important;
+  line-height: 1.5 !important;
+}
+
+.curveContext strong {
+  font-size: clamp(1.15rem, 1.45vw, 1.4rem);
+  line-height: 1.25;
+}
+
+.scienceSource p,
+.originSpecimen p {
+  font-size: clamp(1.15rem, 1.4vw, 1.35rem);
+  line-height: 1.5;
+}
+
+.instituteLinks,
+.humanLinks {
+  gap: 1.35rem;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+/* Mobile is not permission to shrink important copy back into dust. */
+@media (max-width: 620px) {
+  .heroTopline,
+  .heroStatus,
+  .sectionLabel,
+  .exitFooter,
+  .kicker,
+  .missionStrip,
+  .nodeTopline,
+  .nodeCopy > p,
+  .nodeCopy > span,
+  .nodeCopy > a,
+  .scienceSource > span,
+  .originSpecimen > span,
+  .provenanceCopy strong,
+  .llmColumnLabel,
+  .llmSurvived {
+    font-size: .95rem;
+  }
+
+  .curveMarkOne,
+  .curveMarkTwo,
+  .curveAxisX,
+  .curveAxisY,
+  .curveNote,
+  .instrumentReadout span,
+  .nodeOperator,
+  .founderOperator,
+  .nodeFootnote,
+  .personaSpecimenTopline,
+  .personaSpecimenId,
+  .genealogyLabel,
+  .genealogySource > div,
+  .genealogyOpen,
+  .metaFootnote,
+  .scienceSource small,
+  .originSpecimen small,
+  .llmCompare li span {
+    font-size: .875rem;
+  }
+
+  .curveContext strong {
+    font-size: 1.08rem;
+  }
+
+  .curveContext span,
+  .provenanceCopy p,
+  .provenanceNote,
+  .transmission {
+    font-size: 1rem !important;
+  }
+
+  .instituteLinks,
+  .humanLinks {
+    font-size: .95rem;
+  }
+}
