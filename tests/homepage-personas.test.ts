@@ -9,14 +9,14 @@ import {
 } from "../src/app/room-personas-data.ts";
 
 const expectedPortraits = [
-  ["lexi-arden", "/room/personas/lexi-arden-20260920.svg"],
-  ["wade-ellison", "/room/personas/wade-ellison-20260920.svg"],
-  ["nick-deckman", "/room/personas/nick-deckman-20260920.svg"],
-  ["vera-elise-hartmann", "/room/personas/vera-elise-hartmann-20260920.svg"],
-  ["akiko-hayashi", "/room/personas/akiko-hayashi-20260920.svg"],
-  ["adrian-mbeki", "/room/personas/adrian-mbeki-20260920.svg"],
-  ["maya-elise-harper", "/room/personas/maya-elise-harper-20260920.svg"],
-  ["dr-lila-voss", "/room/personas/dr-lila-voss-20260920.svg"],
+  ["lexi-arden", "/room/personas/lexi-arden-20260919.svg"],
+  ["wade-ellison", "/room/personas/wade-ellison.webp"],
+  ["nick-deckman", "/room/personas/nick-deckman.webp"],
+  ["vera-elise-hartmann", "/room/personas/vera-elise-hartmann.webp"],
+  ["akiko-hayashi", "/room/personas/akiko-hayashi.webp"],
+  ["adrian-mbeki", "/room/personas/adrian-mbeki-20260919.svg"],
+  ["maya-elise-harper", "/room/personas/maya-elise-harper.webp"],
+  ["dr-lila-voss", "/room/personas/dr-lila-voss.webp"],
   ["simon-cross", "/room/personas/simon-cross.webp"],
   ["the-customer", "/room/personas/the-customer.webp"],
 ] as const;
