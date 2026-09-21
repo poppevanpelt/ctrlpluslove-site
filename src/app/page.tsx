@@ -57,6 +57,49 @@ const recentInstruments = [
   },
 ] as const;
 
+const products = [
+  {
+    verb: "DECIDE.",
+    name: "DECISION STRESS-TEST",
+    label: "ONE IMPORTANT DECISION",
+    line: "Put one important decision under pressure before reality does.",
+    bring: "A decision, campaign route, product idea, positioning, launch or strategic dilemma.",
+    leave: "A clearer decision, exposed assumptions and a concrete next move.",
+    href: "/stress-test/",
+    action: "STRESS-TEST A DECISION ↗",
+  },
+  {
+    verb: "TEST.",
+    name: "SYNTHETIC AUDIENCE TEST",
+    label: "3–7 USEFUL MINDS",
+    line: "Find out what an idea runs into before you spend real money finding out.",
+    bring: "An idea, proposition, campaign, product or piece of communication.",
+    leave: "Distinct reactions, useful opposition, weak spots and a stronger version.",
+    href: "/room/",
+    action: "ENTER THE ROOM ↗",
+  },
+  {
+    verb: "BUILD.",
+    name: "CTRL+2GO",
+    label: "APPLIED AI / TAKEAWAY SIZE",
+    line: "A few days of us. A useful little machine that stays.",
+    bring: "One stubborn problem, repeated task or decision that should work better.",
+    leave: "A small specialised Applied AI system built around the job.",
+    href: "/2go/",
+    action: "BUILD ONE ↗",
+  },
+  {
+    verb: "WATCH.",
+    name: "OBSERVATORY",
+    label: "ONE SIGNAL THAT MATTERS",
+    line: "Some problems do not need another meeting. They need watching.",
+    bring: "One behaviour, market, competitor, audience or signal worth following.",
+    leave: "A live watch system that surfaces meaningful change when it happens.",
+    href: "mailto:poppevanpelt@gmail.com?subject=Build%20an%20Observatory",
+    action: "START WATCHING ↗",
+  },
+] as const;
+
 const personaGenealogies: Record<
   string,
   { status: string; sources?: Array<{ name: string; share: number }> }
@@ -235,6 +278,62 @@ export default function Home() {
         <strong>REALITY HAS CLEARED THE TOWER.</strong>
         <span>HUMAN OVERRIDE · ARMED</span>
         <span>CALIFORNIA / HAARLEM</span>
+      </section>
+
+      <section className={styles.products} aria-labelledby="products-title">
+        <div className={styles.sectionLabel}>
+          <span>WHAT YOU CAN ACTUALLY BUY</span>
+          <span>DECIDE / TEST / BUILD / WATCH</span>
+        </div>
+
+        <div className={styles.productsIntro}>
+          <h2 id="products-title">FOUR THINGS<br />WE CAN DO<br /><em>FOR YOU.</em></h2>
+          <div className={styles.productsIntroCopy}>
+            <p>
+              The instruments are how we work. These are the things you can hire us for.
+            </p>
+            <strong>BRING A REAL PROBLEM. LEAVE WITH SOMETHING USEFUL.</strong>
+          </div>
+        </div>
+
+        <div className={styles.productGrid}>
+          {products.map((product, index) => (
+            <article className={styles.productCard} key={product.name}>
+              <div className={styles.productTopline}>
+                <span>PRODUCT {String(index + 1).padStart(2, "0")}</span>
+                <span>{product.label}</span>
+              </div>
+
+              <strong className={styles.productVerb}>{product.verb}</strong>
+
+              <div className={styles.productBody}>
+                <h3>{product.name}</h3>
+                <p>{product.line}</p>
+              </div>
+
+              <dl className={styles.productExchange}>
+                <div>
+                  <dt>You bring</dt>
+                  <dd>{product.bring}</dd>
+                </div>
+                <div>
+                  <dt>You leave with</dt>
+                  <dd>{product.leave}</dd>
+                </div>
+              </dl>
+
+              <Link className={styles.productAction} href={product.href}>
+                {product.action}
+              </Link>
+            </article>
+          ))}
+        </div>
+
+        <div className={styles.productsBigger}>
+          <span>NEED SOMETHING BIGGER?</span>
+          <strong>Sometimes the problem is not the decision. It is the machinery around it.</strong>
+          <a href="mailto:poppevanpelt@gmail.com?subject=Redesign%20the%20system">REDESIGN THE SYSTEM ↗</a>
+        </div>
       </section>
 
       <SoundtrackCue
