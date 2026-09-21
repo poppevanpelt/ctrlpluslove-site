@@ -125,33 +125,6 @@ const personaGenealogies: Record<
   "wade-ellison": { status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN" },
 };
 
-const humanMaterialBooks = [
-  { author: "DANIEL KAHNEMAN", title: "Thinking, Fast and Slow", subject: "JUDGMENT / BIAS", href: "https://books.google.com/books?q=Thinking+Fast+and+Slow+Daniel+Kahneman" },
-  { author: "GARY KLEIN", title: "Sources of Power", subject: "EXPERT JUDGMENT", href: "https://books.google.com/books?q=Sources+of+Power+Gary+Klein" },
-  { author: "CHARLAN NEMETH", title: "In Defense of Troublemakers", subject: "DISSENT", href: "https://books.google.com/books?q=In+Defense+of+Troublemakers+Charlan+Nemeth" },
-  { author: "AMY EDMONDSON", title: "The Fearless Organization", subject: "PSYCHOLOGICAL SAFETY", href: "https://books.google.com/books?q=The+Fearless+Organization+Amy+Edmondson" },
-  { author: "PHILIP TETLOCK + DAN GARDNER", title: "Superforecasting", subject: "UNCERTAINTY", href: "https://books.google.com/books?q=Superforecasting+Philip+Tetlock+Dan+Gardner" },
-  { author: "VICTOR TURNER", title: "The Ritual Process", subject: "RITUAL / GROUPS", href: "https://books.google.com/books?q=The+Ritual+Process+Victor+Turner" },
-  { author: "DIMITRIS XYGALATAS", title: "Ritual", subject: "BEHAVIOUR / BELONGING", href: "https://books.google.com/books?q=Ritual+Dimitris+Xygalatas" },
-  { author: "ERVING GOFFMAN", title: "The Presentation of Self in Everyday Life", subject: "SOCIAL BEHAVIOUR", href: "https://books.google.com/books?q=The+Presentation+of+Self+in+Everyday+Life+Erving+Goffman" },
-  { author: "DONELLA MEADOWS", title: "Thinking in Systems", subject: "SYSTEMS", href: "https://books.google.com/books?q=Thinking+in+Systems+Donella+Meadows" },
-] as const;
-
-const thinPressBooks = [
-  {
-    no: "BOOK 01",
-    title: "Compression",
-    line: "An extremely thin book about how much meaning punctuation can carry.",
-    href: "/compression/",
-  },
-  {
-    no: "BOOK 02",
-    title: "Toch?",
-    line: "The same letters. Different punctuation. A completely different speaker.",
-    href: "/toch/",
-  },
-] as const;
-
 const clientSystems = [
   {
     client: "COMFORA",
@@ -170,63 +143,6 @@ const clientSystems = [
       "A matcha brand became a live sensing system: store signals, creator intelligence, small ritual experiments and memory for the next Suki.",
     system: "RITUAL INTELLIGENCE / LIVING FRANCHISE OS",
     diagram: "suki",
-  },
-] as const;
-
-const fieldNotes = [
-  {
-    stamp: "FIELD NOTE 017",
-    title: "THE TABLE WAS ALREADY NOT LEVEL.",
-    copy: "I had planned to tilt the table. Reality got there first.",
-    story: [
-      "The plan was simple: make the table very slightly off-level, put down the steel ball, and let the object quietly make the point.",
-      "I never had to do it. The real table was already crooked. The ball started rolling on its own and went straight through a client's glass of water.",
-      "The demonstration had happened before I could stage it.",
-    ],
-    lesson: "We were going to rig reality. Reality was already rigged.",
-  },
-  {
-    stamp: "FIELD NOTE 014",
-    title: "A QUESTION THAT REFUSED TO BECOME A SCORE.",
-    copy: "Brand Survival became a curve because subtraction told us more than ranking did.",
-    story: [
-      "The instrument kept trying to become a score. A neat number for how strong a brand was.",
-      "But when we stripped away familiar cues one by one, recognition did not disappear all at once. Some things survived longer than others. The interesting evidence was the shape of the collapse.",
-      "So the score moved backstage. The curve became the thing worth looking at.",
-    ],
-    lesson: "The number told us how much. The curve told us where it broke.",
-  },
-  {
-    stamp: "FIELD NOTE 011",
-    title: "CTRL+NO WAS INVENTED AT THE FRONT DOOR.",
-    copy: "A slightly suspicious Tikkie request produced an instrument on the spot.",
-    story: [
-      "A man at the front door had just done a tiny job and then asked me to pay him with a Tikkie. Something about it felt wrong. Not dramatically wrong. Just wrong enough.",
-      "What I wanted in that moment was not another search, another opinion or ten minutes of suspicious scrolling. I wanted a very small machine that could answer one question: should I do this?",
-      "So, more or less on the doorstep, ctrl+no appeared.",
-    ],
-    lesson: "The visitor left. The instrument stayed.",
-  },
-] as const;
-
-const pressNotes = [
-  {
-    outlet: "FRANK.NEWS",
-    date: "08 SEP 2026",
-    title: "Poppe van Pelt: ‘Taste is only becoming more important’",
-    href: "https://www.frank.news/poppe-van-pelt-smaak-wordt-alleen-maar-belangrijker/",
-  },
-  {
-    outlet: "FONK",
-    date: "25 AUG 2026",
-    title: "Poppe van Pelt ‘accidentally’ launches new company Ctrl+Live",
-    href: "https://fonkmagazine.com/artikelen/tech/poppe-van-pelt-lanceert-per-ongeluk-nieuw-bedrijf-ctrl-live-77582.html",
-  },
-  {
-    outlet: "BRIGHT",
-    date: "24 AUG 2026",
-    title: "Strict AI as the ultimate tool for better (and more fun?) advertising",
-    href: "https://www.bright.nl/nieuws/2126819/deze-ai-zegt-als-je-reclame-idee-gewoon-slecht-is.html",
   },
 ] as const;
 
@@ -616,7 +532,7 @@ export default function Home() {
       
 
       <SoundtrackCue
-        index="02"
+        index="01"
         title="MOVING TO THE SUN"
         artist="HUGEL"
         href="https://www.youtube.com/results?search_query=HUGEL+Moving+to+the+Sun"
