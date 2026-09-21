@@ -260,14 +260,14 @@ export default function Home() {
           <Link className={styles.pricingCard} href="/pricing/on-call-room/">
             <span>ON-CALL ROOM™ / ESSENTIAL</span>
             <h3>Your decision team. On call.</h3>
-            <strong>€5,000</strong>
+            <strong>€7,500</strong>
             <small>PER MONTH · BILLED MONTHLY</small>
             <b>OPEN PRICING ↗</b>
           </Link>
           <Link className={styles.pricingCard} href="/pricing/on-call-room/">
             <span>ON-CALL ROOM™ / FOUNDER</span>
             <h3>More leverage. Same Room.</h3>
-            <strong>€10,000</strong>
+            <strong>€12,500</strong>
             <small>PER MONTH · BILLED MONTHLY</small>
             <b>OPEN PRICING ↗</b>
           </Link>
