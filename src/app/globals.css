@@ -15189,3 +15189,61 @@ button,
 summary {
   cursor: pointer !important;
 }
+
+
+/* PRICING / ON-CALL ROOM 2026-09-22 */
+.on-call-pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+}
+
+.on-call-price-card {
+  display: grid;
+  gap: 1rem;
+  min-height: 28rem;
+  padding: clamp(1.25rem, 2.5vw, 2rem);
+  background: var(--paper);
+}
+
+.on-call-price-card h2 {
+  max-width: 15ch;
+  color: var(--ink);
+  font-size: clamp(1.7rem, 3vw, 2.7rem);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.on-call-price-card > strong {
+  margin-top: auto;
+  color: var(--ink);
+  font-size: clamp(3rem, 6vw, 5.8rem);
+  font-weight: 650;
+  letter-spacing: -0.06em;
+  line-height: .9;
+}
+
+.on-call-price-card small {
+  color: var(--muted);
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+}
+
+.on-call-price-card p {
+  max-width: 34rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+@media (max-width: 760px) {
+  .on-call-pricing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .on-call-price-card {
+    min-height: 0;
+  }
+}
