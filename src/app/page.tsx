@@ -214,8 +214,9 @@ export default function Home() {
         index="01"
         title="CHEMICAL"
         artist="BECK"
-        href="https://www.youtube.com/results?search_query=Beck+Chemical+official"
+        href="https://www.youtube.com/watch?v=c8ayjYLuE-4"
         note="For the stretch where the machine starts to feel suspiciously human."
+        previewImage="https://i.ytimg.com/vi/c8ayjYLuE-4/maxresdefault.jpg"
       />
 
       <section className={styles.nodes} aria-labelledby="nodes-title">
