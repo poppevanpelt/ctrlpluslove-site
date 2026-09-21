@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --webpack",
-    "build": "next build --webpack",
+    "build": "node scripts/restore-2go-assets.mjs && next build --webpack",
     "export": "next build --webpack",
     "preview:static": "node scripts/clean-static-output.mjs && next build --webpack && node scripts/make-static-preview.mjs",
     "preview:serve": "node scripts/serve-static-preview.mjs",
