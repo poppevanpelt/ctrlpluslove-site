@@ -16,14 +16,6 @@ const recentInstruments = [
     readout: ["REMOVE", "RECOGNISE", "SURVIVE"],
   },
   {
-    no: "023",
-    name: "CTRL+CHASE",
-    state: "PROTOTYPE",
-    line: "A question either produces evidence or earns its death.",
-    href: "/chase/",
-    readout: ["QUESTION", "EVIDENCE", "STOP"],
-  },
-  {
     no: "022",
     name: "MARIA EXCAVATION",
     state: "ONGOING",
@@ -38,14 +30,6 @@ const recentInstruments = [
     line: "Cut the fat. Keep the organ.",
     href: "/purge/",
     readout: ["CUT", "TEST", "KEEP"],
-  },
-  {
-    no: "004",
-    name: "DECISION MEMORY",
-    state: "PROTOTYPE",
-    line: "A forgotten decision must win its argument again.",
-    href: "/decision-memory/",
-    readout: ["ASSUMPTION", "OPPOSITION", "MEMORY"],
   },
   {
     no: "001",
@@ -394,7 +378,7 @@ export default function Home() {
         </div>
         <div className={styles.factoryIntro}>
           <h2 id="factory-title">RECENTLY<br />BUILT.</h2>
-          <p>Not case-study wallpaper. Six instruments you can open, inspect and run.</p>
+          <p>Not case-study wallpaper. Four instruments you can open, inspect and run.</p>
         </div>
 
         <div className={styles.recentList}>
