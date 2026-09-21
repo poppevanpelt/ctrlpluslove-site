@@ -492,3 +492,52 @@
       linear-gradient(180deg, rgb(0 0 0 / 24%) 0%, transparent 34%, transparent 70%, rgb(0 0 0 / 42%) 100%);
   }
 }
+
+
+/* EARTHRISE / ONE FLARE ONLY */
+.flareHalo,
+.flareCore {
+  display: block !important;
+}
+
+.flareStreak,
+.flareGhost {
+  display: none !important;
+}
+
+.flareHalo {
+  left: 18%;
+  top: 56%;
+  width: clamp(5.5rem, 12vw, 11rem);
+  opacity: .8;
+  filter: blur(14px);
+  animation: none;
+}
+
+.flareCore {
+  left: 18%;
+  top: 56%;
+  width: clamp(.55rem, 1vw, .95rem);
+  opacity: .96;
+  animation: none;
+  box-shadow:
+    0 0 .35rem #fff,
+    0 0 1rem #ffe9a5,
+    0 0 2.4rem rgb(255 190 96 / 62%);
+}
+
+@media (max-width: 760px) {
+  .flareHalo,
+  .flareCore {
+    left: 13%;
+    top: 57%;
+  }
+
+  .flareHalo {
+    width: 5.5rem;
+  }
+
+  .flareCore {
+    width: .62rem;
+  }
+}
