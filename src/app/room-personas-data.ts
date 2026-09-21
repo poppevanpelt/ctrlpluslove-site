@@ -16,7 +16,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     line: "Finds what people are buying beneath the brief.",
     contribution:
       "Reframes the decision around the human need underneath the stated brief.",
-    portrait: "/room/personas/maya-elise-harper.jpg",
+    portrait: "/room/personas/maya-elise-harper.webp",
     portraitPosition: "50% 43%",
   },
   {
@@ -200,7 +200,7 @@ export const homepagePersonaIds = [
   "the-customer",
 ] as const;
 
-export const HOMEPAGE_PORTRAIT_REVISION = "20260921-stable-original-assets";
+export const HOMEPAGE_PORTRAIT_REVISION = "20260921-canonical-only";
 
 const homepagePersonaIdSet = new Set<string>(homepagePersonaIds);
 
