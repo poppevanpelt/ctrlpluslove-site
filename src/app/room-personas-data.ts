@@ -36,7 +36,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     line: "Sees the cost of being wrong.",
     contribution:
       "Tests whether the recommendation can survive budget, timing and commercial reality.",
-    portrait: "/room/personas/nick-deckman.jpg",
+    portrait: "/room/personas/nick-deckman.webp",
     portraitPosition: "50% 39%",
   },
   {
@@ -56,7 +56,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     line: "Looks beyond the next decision.",
     contribution:
       "Keeps the room honest about second-order effects, unintended consequences and future regret.",
-    portrait: "/room/personas/akiko-hayashi.jpg",
+    portrait: "/room/personas/akiko-hayashi.webp",
     portraitPosition: "50% 40%",
   },
   {
@@ -66,7 +66,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     line: "Tests what survives outside the room.",
     contribution:
       "Pushes the idea against operational pressure, customer behavior and messy reality.",
-    portrait: "/room/personas/adrian-mbeki.jpg",
+    portrait: "/room/personas/adrian-mbeki.webp",
     portraitPosition: "50% 38%",
   },
   {
