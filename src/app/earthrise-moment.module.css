@@ -446,3 +446,49 @@
     opacity: .92;
   }
 }
+
+
+/* EARTHRISE / CONTROLLED REPAIR
+   Documentary image only. Remove synthetic optical layers that drifted. */
+.flareHalo,
+.flareCore,
+.flareStreak,
+.flareGhost {
+  display: none !important;
+}
+
+.section {
+  min-height: min(72vh, 760px);
+}
+
+.copy {
+  max-width: min(43rem, 54vw);
+  padding-top: clamp(2rem, 4vw, 3.25rem);
+}
+
+.copy p {
+  font-size: clamp(2rem, 4vw, 4.1rem);
+}
+
+@media (max-width: 760px) {
+  .section {
+    min-height: 70vh;
+  }
+
+  .copy {
+    width: auto;
+    max-width: 76vw;
+    margin-left: 0;
+    padding: 1.75rem 1rem 0;
+  }
+
+  .copy p {
+    font-size: clamp(1.65rem, 7vw, 2.7rem);
+  }
+
+  .imageVeil {
+    background:
+      linear-gradient(90deg, rgb(0 0 0 / 48%) 0%, rgb(0 0 0 / 18%) 48%, transparent 72%),
+      linear-gradient(180deg, rgb(0 0 0 / 24%) 0%, transparent 34%, transparent 70%, rgb(0 0 0 / 42%) 100%);
+  }
+}
