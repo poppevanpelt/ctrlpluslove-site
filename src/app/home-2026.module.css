@@ -4791,3 +4791,266 @@
     min-height: 12rem;
   }
 }
+
+
+/* WEBSITE 002.21 / RESTORE THE USEFUL STUFF
+   Library, explicit pricing, Prompt Shoppe and ten real persona portraits. */
+
+.pricingShelf,
+.reading,
+.shoppe {
+  position: relative;
+  padding: clamp(3rem, 4.5vw, 4.75rem) clamp(1.35rem, 4vw, 4.5rem);
+  border-bottom: 1px solid var(--rule);
+}
+
+.pricingShelf {
+  background: #f5f1e8;
+}
+
+.pricingShelf .sectionLabel {
+  color: var(--deep-sky);
+  border-color: color-mix(in srgb, var(--deep-sky) 34%, var(--rule));
+}
+
+.pricingIntro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, .65fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: end;
+  padding: clamp(1.8rem, 3vw, 3rem) 0;
+}
+
+.pricingIntro h2 {
+  max-width: 11ch;
+  margin: 0;
+  color: var(--deep-sky);
+  font-size: clamp(3.2rem, 6vw, 6rem);
+  font-weight: 820;
+  letter-spacing: -.065em;
+  line-height: .87;
+}
+
+.pricingIntro h2 em {
+  color: var(--signal);
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+}
+
+.pricingIntro p {
+  max-width: 28rem;
+  margin: 0;
+  font-size: clamp(1.1rem, 1.45vw, 1.35rem);
+  line-height: 1.45;
+}
+
+.pricingGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--deep-sky);
+  border-left: 1px solid var(--deep-sky);
+}
+
+.pricingCard {
+  display: flex;
+  min-height: 20rem;
+  flex-direction: column;
+  padding: 1.2rem;
+  border-right: 1px solid var(--deep-sky);
+  border-bottom: 1px solid var(--deep-sky);
+  background: #fffdf8;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.pricingCard > span {
+  color: var(--deep-sky);
+  font-size: .72rem;
+  font-weight: 850;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.pricingCard h3 {
+  max-width: 13ch;
+  margin: 1.4rem 0 auto;
+  font-size: clamp(1.65rem, 2.4vw, 2.5rem);
+  line-height: .98;
+  letter-spacing: -.04em;
+}
+
+.pricingCard > strong {
+  margin-top: 2.2rem;
+  color: #37440b;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.8rem, 4.6vw, 4.8rem);
+  font-weight: 400;
+  letter-spacing: -.05em;
+  line-height: .9;
+}
+
+.pricingCard small {
+  margin-top: .35rem;
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+}
+
+.pricingCard b {
+  margin-top: 1.4rem;
+  color: var(--signal);
+  font-size: .72rem;
+  letter-spacing: .08em;
+}
+
+.pricingCard:hover,
+.pricingCard:focus-visible {
+  background: #fff;
+  outline: 2px solid var(--signal);
+  outline-offset: -2px;
+}
+
+.reading .libraryIntro {
+  gap: clamp(1.5rem, 3vw, 3rem);
+  padding: clamp(1.8rem, 3vw, 3rem) 0;
+}
+
+.reading .libraryIntro h2 {
+  font-size: clamp(3.4rem, 6.4vw, 6.4rem);
+}
+
+.reading .libraryIntro > p {
+  font-size: clamp(1.15rem, 1.55vw, 1.45rem);
+}
+
+.reading .bookCard {
+  min-height: 11rem;
+  padding: 1.1rem;
+}
+
+.reading .bookCard h3 {
+  margin: 1.4rem 0 .6rem;
+  font-size: clamp(1.45rem, 1.9vw, 2rem);
+}
+
+.reading .bookCard p {
+  font-size: 1rem;
+}
+
+.reading .thinPressShelf {
+  margin-top: 2rem;
+}
+
+.reading .thinBook,
+.reading .currentReadingCard {
+  min-height: 14rem;
+  padding: 1.2rem;
+}
+
+.reading .thinBook h3,
+.reading .currentReadingCard h3 {
+  margin-top: 1.4rem;
+  font-size: clamp(2rem, 3.4vw, 3.5rem);
+}
+
+.shoppeGrid {
+  grid-template-columns: minmax(0, .72fr) minmax(0, 1.28fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: center;
+  padding-top: clamp(1.8rem, 3vw, 3rem);
+}
+
+.shoppeCopy h2 {
+  font-size: clamp(3.4rem, 6vw, 6rem);
+}
+
+.shoppeFacade {
+  min-height: clamp(20rem, 30vw, 27rem);
+}
+
+.shoppeObject {
+  min-height: clamp(12rem, 16vw, 16rem);
+}
+
+.personaGrid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.personaPortrait {
+  display: block;
+  min-height: 0;
+  aspect-ratio: 4 / 4.7;
+}
+
+.personaPortrait img {
+  display: block;
+}
+
+.personaIdentity {
+  min-height: 8rem;
+}
+
+.personaIdentity h3,
+.personaIdentity > strong {
+  display: block;
+}
+
+.personaIdentity h3 {
+  font-size: clamp(1.45rem, 1.8vw, 1.9rem);
+}
+
+.personaIdentity > strong {
+  font-size: .82rem;
+}
+
+.personaIdentity p {
+  font-size: 1rem;
+}
+
+.personaGenealogy {
+  min-height: 8rem;
+}
+
+@media (max-width: 1100px) {
+  .personaGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .pricingIntro,
+  .pricingGrid,
+  .shoppeGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .pricingCard {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 620px) {
+  .pricingShelf,
+  .reading,
+  .shoppe {
+    padding: 3rem 1rem;
+  }
+
+  .personaGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .personaIdentity,
+  .personaGenealogy {
+    min-height: 0;
+  }
+
+  .shoppeVisuals {
+    grid-template-columns: 1fr;
+    box-shadow: .35rem .35rem 0 #181714;
+  }
+
+  .shoppeFacade {
+    grid-column: auto;
+  }
+}
