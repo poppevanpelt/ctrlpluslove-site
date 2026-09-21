@@ -38,7 +38,7 @@ export default function TwoGoClient() {
       </header>
 
       <section className={styles.hero}>
-        <picture><source media="(max-width: 900px)" srcSet="/2go-assets/handoff.webp?v=20260921a" /><img src="/2go-assets/hero.webp?v=20260921a" alt="ctrl+2go drive-through at night in the rain" className={styles.heroImage} /></picture>
+        <picture><source media="(max-width: 900px)" srcSet="/2go-assets/handoff.webp?v=20260921b" /><img src="/2go-assets/hero.webp?v=20260921b" alt="ctrl+2go drive-through at night in the rain" className={styles.heroImage} /></picture>
         <div className={styles.heroShade} />
         <div className={styles.heroCopy}>
           <p>APPLIED AI. TAKEAWAY SIZE.</p>
@@ -50,9 +50,9 @@ export default function TwoGoClient() {
       </section>
 
       <section className={styles.world}>
-        <figure><img src="/2go-assets/speaker.webp?v=20260921a" alt="ctrl+2go order speaker in the rain" /><figcaption>TALK TO US.</figcaption></figure>
-        <figure><img src="/2go-assets/extras.webp?v=20260921a" alt="ctrl+2go extra solutions" /><figcaption>CLEAR. DOUBT. NOPE. MAYBE. YES.</figcaption></figure>
-        <figure><img src="/2go-assets/hero.webp?v=20260921a" alt="ctrl+2go drive-through" /><figcaption>CONSULTANTS LEFT ON PREMISES — 0.</figcaption></figure>
+        <figure><img src="/2go-assets/speaker.webp?v=20260921b" alt="ctrl+2go order speaker in the rain" /><figcaption>TALK TO US.</figcaption></figure>
+        <figure><img src="/2go-assets/extras.webp?v=20260921b" alt="ctrl+2go extra solutions" /><figcaption>CLEAR. DOUBT. NOPE. MAYBE. YES.</figcaption></figure>
+        <figure><img src="/2go-assets/hero.webp?v=20260921b" alt="ctrl+2go drive-through" /><figcaption>CONSULTANTS LEFT ON PREMISES — 0.</figcaption></figure>
       </section>
 
       <section className={styles.extraGrid}>
@@ -61,7 +61,7 @@ export default function TwoGoClient() {
           <h2>Do you want extra solutions with that?</h2>
           <span>SUPERSIZE MY PROBLEM — ABSOLUTELY NOT.</span>
         </div>
-        <img src="/2go-assets/extras.webp?v=20260921a" alt="ctrl+2go extra solutions on a wet stainless counter" />
+        <img src="/2go-assets/extras.webp?v=20260921b" alt="ctrl+2go extra solutions on a wet stainless counter" />
       </section>
 
       <section className={styles.menu} id="menu">
