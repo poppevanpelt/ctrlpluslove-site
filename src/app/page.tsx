@@ -85,6 +85,34 @@ const personaGenealogies: Record<
   "wade-ellison": { status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN" },
 };
 
+
+const humanMaterialBooks = [
+  { author: "DANIEL KAHNEMAN", title: "Thinking, Fast and Slow", subject: "JUDGMENT / BIAS" },
+  { author: "GARY KLEIN", title: "Sources of Power", subject: "EXPERT JUDGMENT" },
+  { author: "CHARLAN NEMETH", title: "In Defense of Troublemakers", subject: "DISSENT" },
+  { author: "AMY EDMONDSON", title: "The Fearless Organization", subject: "PSYCHOLOGICAL SAFETY" },
+  { author: "PHILIP TETLOCK + DAN GARDNER", title: "Superforecasting", subject: "UNCERTAINTY" },
+  { author: "VICTOR TURNER", title: "The Ritual Process", subject: "RITUAL / GROUPS" },
+  { author: "DIMITRIS XYGALATAS", title: "Ritual", subject: "BEHAVIOUR / BELONGING" },
+  { author: "ERVING GOFFMAN", title: "The Presentation of Self in Everyday Life", subject: "SOCIAL BEHAVIOUR" },
+  { author: "DONELLA MEADOWS", title: "Thinking in Systems", subject: "SYSTEMS" },
+] as const;
+
+const thinPressBooks = [
+  {
+    no: "BOOK 01",
+    title: "Compression",
+    line: "An extremely thin book about how much meaning punctuation can carry.",
+    href: "/compression/",
+  },
+  {
+    no: "BOOK 02",
+    title: "Toch?",
+    line: "The same letters. Different punctuation. A completely different speaker.",
+    href: "/toch/",
+  },
+] as const;
+
 const clientSystems = [
   {
     client: "COMFORA",
@@ -226,6 +254,41 @@ export default function Home() {
         </div>
       </section>
 
+
+      <section className={styles.pricingShelf} aria-labelledby="pricing-title">
+        <div className={styles.sectionLabel}>
+          <span>PRICING / ROOMS</span>
+          <Link href="/pricing/">FULL PRICING ↗</Link>
+        </div>
+        <div className={styles.pricingIntro}>
+          <h2 id="pricing-title">WHAT DOES<br />THE PRESSURE<br /><em>COST?</em></h2>
+          <p>Readable here. Full documents one click away.</p>
+        </div>
+        <div className={styles.pricingGrid}>
+          <Link className={styles.pricingCard} href="/pricing/decision-stress-test/">
+            <span>ONE IMPORTANT DECISION</span>
+            <h3>Decision Stress-Test™</h3>
+            <strong>€4,500</strong>
+            <small>EX VAT · ONE DECISION</small>
+            <b>OPEN PRICING ↗</b>
+          </Link>
+          <Link className={styles.pricingCard} href="/pricing/on-call-room/">
+            <span>ON-CALL ROOM™ / ESSENTIAL</span>
+            <h3>Your decision team. On call.</h3>
+            <strong>€5,000</strong>
+            <small>PER MONTH · BILLED MONTHLY</small>
+            <b>OPEN PRICING ↗</b>
+          </Link>
+          <Link className={styles.pricingCard} href="/pricing/on-call-room/">
+            <span>ON-CALL ROOM™ / FOUNDER</span>
+            <h3>More leverage. Same Room.</h3>
+            <strong>€10,000</strong>
+            <small>PER MONTH · BILLED MONTHLY</small>
+            <b>OPEN PRICING ↗</b>
+          </Link>
+        </div>
+      </section>
+
       <section className={styles.llmContrast} aria-labelledby="llm-contrast-title">
         <div className={styles.sectionLabel}>
           <span>GENERIC LLM / CTRL+LOVE</span>
@@ -296,6 +359,65 @@ export default function Home() {
       
 
       
+
+
+      <section className={styles.reading} aria-labelledby="reading-title">
+        <div className={styles.sectionLabel}>
+          <span>THE LIBRARY</span>
+          <span>HUMAN MATERIAL / OUR OWN THIN PRESS</span>
+        </div>
+
+        <div className={styles.libraryIntro}>
+          <div>
+            <p className={styles.kicker}>A VERY THIN LIBRARY</p>
+            <h2 id="reading-title">READ<br /><em>PEOPLE.</em></h2>
+          </div>
+          <p>
+            Judgment, dissent, groups, bias, risk, ritual, systems and human behaviour.
+            The books behind the instruments, plus two very small books of our own.
+          </p>
+        </div>
+
+        <div className={styles.libraryShelf}>
+          <div className={styles.libraryShelfHead}>
+            <span>SHELF 01</span>
+            <strong>HUMAN MATERIAL</strong>
+            <span>09 BOOKS / PERMANENTLY UNFINISHED</span>
+          </div>
+          <div className={styles.bookGrid}>
+            {humanMaterialBooks.map((book, index) => (
+              <article className={styles.bookCard} key={book.title}>
+                <span>{String(index + 1).padStart(2, "0")} · {book.subject}</span>
+                <h3>{book.title}</h3>
+                <p>{book.author}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div className={`${styles.libraryShelf} ${styles.thinPressShelf}`}>
+          <div className={styles.libraryShelfHead}>
+            <span>SHELF 02</span>
+            <strong>FROM OUR OWN THIN PRESS</strong>
+            <span>TWO BOOKS / VERY FEW WORDS</span>
+          </div>
+          <div className={styles.thinBookGrid}>
+            {thinPressBooks.map((book) => (
+              <Link className={styles.thinBook} href={book.href} key={book.title}>
+                <span>{book.no}</span>
+                <h3>{book.title}</h3>
+                <p>{book.line}</p>
+              </Link>
+            ))}
+            <Link className={styles.currentReadingCard} href="/brand-survival/">
+              <span>CURRENT EXPERIMENT / 001</span>
+              <h3>Brand / Wallpaper</h3>
+              <p>What survives when familiar brand cues are removed?</p>
+              <strong>OPEN READING ↗</strong>
+            </Link>
+          </div>
+        </div>
+      </section>
 
       <section className={styles.clientWork} aria-labelledby="client-work-title">
         <div className={styles.sectionLabel}>
@@ -369,6 +491,36 @@ export default function Home() {
 
       
 
+
+      <section className={styles.shoppe} aria-labelledby="shoppe-title">
+        <div className={styles.sectionLabel}>
+          <span>POPPE’S PROMPT SHOPPE</span>
+          <span>WORKING BENCH / PHYSICAL OBJECTS</span>
+        </div>
+        <div className={styles.shoppeGrid}>
+          <div className={styles.shoppeCopy}>
+            <p className={styles.kicker}>SAN GREGORIO / CALIFORNIA</p>
+            <h2 id="shoppe-title">BRING IN<br />YOUR OLD<br />PROMPTS.</h2>
+            <p>Put one under load. Extract what it smuggles in. Find the decision it is actually trying to make.</p>
+            <Link href="/prompt-shoppe/">OPEN THE SHOPPE ↗</Link>
+          </div>
+          <div className={styles.shoppeVisuals}>
+            <Link className={styles.shoppeFacade} href="/prompt-shoppe/">
+              <Image src="/shoppe/poppes-prompt-shoppe.webp" alt="Poppe’s Prompt Shoppe in a wooded California setting" fill sizes="(max-width: 900px) 100vw, 58vw" />
+              <span>THE SHOPPE / OPEN ↗</span>
+            </Link>
+            <article className={styles.shoppeObject}>
+              <Image src="/instruments/objects/ten-decisions-usb.webp" alt="The ctrl+love Decision Stick in its sleeve" fill sizes="(max-width: 900px) 50vw, 29vw" />
+              <span>DECISION STICK · 001/100</span>
+            </article>
+            <article className={styles.shoppeObject}>
+              <Image src="/instruments/objects/decision-in-a-box.webp" alt="Decision in a Box with five metal forms and decision cards" fill sizes="(max-width: 900px) 50vw, 29vw" />
+              <span>DECISION IN A BOX · 5 CARDS / 1 DECISION</span>
+            </article>
+          </div>
+        </div>
+      </section>
+
       <section className={styles.personas} aria-labelledby="personas-title">
         <div className={styles.sectionLabel}>
           <span>SYNTHETIC PERSONAS</span>
@@ -390,7 +542,7 @@ export default function Home() {
           </div>
         </div>
         <div className={styles.personaGrid}>
-          {homepageRoomPersonas.slice(0, 8).map((persona, index) => {
+          {homepageRoomPersonas.map((persona, index) => {
             const genealogy = personaGenealogies[persona.id] ?? {
               status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN",
             };
@@ -401,18 +553,24 @@ export default function Home() {
                   <span>SPECIMEN {String(index + 1).padStart(2, "0")}</span>
                   <span>SYNTHETIC / ACTIVE</span>
                 </div>
-
-                <div className={styles.personaSlate}>
-                  <span className={styles.personaSlateIndex}>{String(index + 1).padStart(2, "0")}</span>
-                  <span className={styles.personaSlateRole}>{persona.role}</span>
-                  <strong>{persona.name}</strong>
-                  <span className={styles.personaSlateId}>ID · {persona.id.toUpperCase()}</span>
+                <div className={styles.personaPortrait}>
+                  {persona.portrait ? (
+                    <Image
+                      src={persona.portrait}
+                      alt={`${persona.name}, ctrl+love synthetic persona`}
+                      unoptimized
+                      fill
+                      sizes="(max-width: 620px) 100vw, (max-width: 980px) 50vw, 25vw"
+                      style={{ objectPosition: persona.portraitPosition ?? "50% 40%" }}
+                    />
+                  ) : null}
+                  <span className={styles.personaSpecimenId}>ID · {persona.id.toUpperCase()}</span>
                 </div>
-
                 <div className={styles.personaIdentity}>
+                  <h3>{persona.name}</h3>
+                  <strong>{persona.role}</strong>
                   <p>{persona.line}</p>
                 </div>
-
                 <div className={styles.personaGenealogy}>
                   <span className={styles.genealogyLabel}>GENEALOGY / {genealogy.status}</span>
                   {genealogy.sources ? (
@@ -423,9 +581,7 @@ export default function Home() {
                             <span>{source.name}</span>
                             <strong>{source.share}%</strong>
                           </div>
-                          <i aria-hidden="true">
-                            <b style={{ width: `${source.share}%` }} />
-                          </i>
+                          <i aria-hidden="true"><b style={{ width: `${source.share}%` }} /></i>
                         </div>
                       ))}
                     </div>
