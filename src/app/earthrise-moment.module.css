@@ -324,3 +324,125 @@
       linear-gradient(180deg, rgb(0 0 0 / 24%) 0%, transparent 34%, transparent 70%, rgb(0 0 0 / 42%) 100%);
   }
 }
+
+
+/* EARTHRISE / OPTICAL FLARE RESTORED */
+.flareHalo,
+.flareCore,
+.flareStreak,
+.flareGhost {
+  position: absolute;
+  z-index: 7;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.flareHalo {
+  left: 19%;
+  top: 55%;
+  width: clamp(7rem, 15vw, 14rem);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgb(255 255 247 / 98%) 0 4%,
+    rgb(255 247 208 / 82%) 10%,
+    rgb(255 214 139 / 48%) 25%,
+    rgb(255 176 90 / 20%) 44%,
+    transparent 72%);
+  filter: blur(12px);
+  animation: flareContact 3.4s cubic-bezier(.2,.72,.2,1) both;
+}
+
+.flareCore {
+  left: 19%;
+  top: 55%;
+  width: clamp(.75rem, 1.45vw, 1.35rem);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #fffef5;
+  box-shadow:
+    0 0 .45rem #fff,
+    0 0 1.25rem #ffe9a5,
+    0 0 3.4rem rgb(255 190 96 / 76%);
+  animation: flareContact 3.4s cubic-bezier(.2,.72,.2,1) both;
+}
+
+.flareStreak {
+  left: 19%;
+  top: 55%;
+  width: clamp(30rem, 68vw, 74rem);
+  height: 3px;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgb(255 213 153 / 9%) 31%,
+    rgb(255 239 197 / 48%) 44%,
+    #fffce8 50%,
+    rgb(255 239 197 / 48%) 56%,
+    rgb(255 213 153 / 9%) 69%,
+    transparent 100%);
+  box-shadow: 0 0 12px rgb(255 225 169 / 38%);
+  filter: blur(.7px);
+  animation: flareContact 3.4s cubic-bezier(.2,.72,.2,1) both;
+}
+
+.flareGhost {
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(218 237 255 / 34%), transparent 72%);
+}
+
+.flareGhostOne {
+  left: 52%;
+  top: 63%;
+  width: clamp(1.6rem, 3vw, 3rem);
+  aspect-ratio: 1;
+}
+
+.flareGhostTwo {
+  left: 68%;
+  top: 70%;
+  width: clamp(2.4rem, 4.8vw, 4.8rem);
+  aspect-ratio: 1;
+  opacity: .48;
+}
+
+@keyframes flareContact {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(.5); }
+  28% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); }
+  50% { opacity: .86; transform: translate(-50%, -50%) scale(.98); }
+  100% { opacity: .92; transform: translate(-50%, -50%) scale(1.01); }
+}
+
+@media (max-width: 760px) {
+  .flareHalo,
+  .flareCore,
+  .flareStreak {
+    left: 15%;
+    top: 56%;
+  }
+
+  .flareStreak {
+    width: 88vw;
+  }
+
+  .flareGhostOne {
+    left: 54%;
+    top: 66%;
+  }
+
+  .flareGhostTwo {
+    left: 72%;
+    top: 72%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flareHalo,
+  .flareCore,
+  .flareStreak {
+    animation: none;
+    opacity: .92;
+  }
+}
