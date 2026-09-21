@@ -3113,3 +3113,153 @@
     font-size: .95rem;
   }
 }
+
+
+/* WEBSITE 002.15 / BIGGER IN CONTEXT
+   The page is a large canvas. Supporting type should behave like language, not annotation. */
+
+/* Reading gets more presence, not just larger micro-labels. */
+.reading {
+  padding-top: clamp(6.5rem, 10vw, 10rem);
+  padding-bottom: clamp(6.5rem, 10vw, 10rem);
+}
+
+.readingGrid {
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+  gap: clamp(4rem, 7vw, 8rem);
+}
+
+.readingCopy > p:not(.kicker) {
+  max-width: 38rem;
+  font-size: clamp(1.45rem, 2vw, 1.9rem);
+  line-height: 1.42;
+}
+
+.readingCopy a {
+  font-size: 1.05rem;
+}
+
+.curve {
+  min-height: clamp(30rem, 46vw, 42rem);
+}
+
+.curveContext strong {
+  font-size: clamp(1.45rem, 1.8vw, 1.8rem);
+  line-height: 1.18;
+}
+
+.curveContext span {
+  font-size: clamp(1.2rem, 1.45vw, 1.4rem) !important;
+}
+
+.curveAxisX,
+.curveAxisY,
+.curveNote,
+.curveMarkOne,
+.curveMarkTwo {
+  font-size: 1rem;
+}
+
+/* Human network / ambassadors: this is proof, not a footnote. */
+.nodesIntro p {
+  max-width: 42rem;
+  font-size: clamp(1.5rem, 2vw, 1.9rem);
+  line-height: 1.42;
+}
+
+.nodes .provenanceCopy {
+  max-width: 42rem;
+  gap: 1.1rem;
+}
+
+.nodes .provenanceCopy strong {
+  max-width: 40rem;
+  font-size: clamp(1.05rem, 1.25vw, 1.2rem);
+  line-height: 1.35;
+}
+
+.nodes .provenanceNote {
+  font-size: clamp(1.15rem, 1.35vw, 1.3rem) !important;
+  line-height: 1.5 !important;
+}
+
+.metaFootnote {
+  font-size: .95rem;
+}
+
+.nodeOperator,
+.founderOperator {
+  font-size: .95rem;
+  line-height: 1.45;
+}
+
+.nodeTopline,
+.nodeCopy > p,
+.nodeCopy > span,
+.nodeCopy > a,
+.nodeFootnote {
+  font-size: .95rem;
+}
+
+/* Persona support copy can breathe too. */
+.personas .provenanceCopy p {
+  font-size: clamp(1.25rem, 1.55vw, 1.5rem);
+  line-height: 1.48;
+}
+
+.personas .provenanceCopy strong {
+  font-size: 1rem;
+}
+
+.personaIdentity p {
+  font-size: 1.05rem;
+  line-height: 1.42;
+}
+
+@media (max-width: 1180px) {
+  .readingGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .reading {
+    padding-top: 4.75rem;
+    padding-bottom: 5rem;
+  }
+
+  .readingCopy > p:not(.kicker) {
+    font-size: 1.25rem;
+  }
+
+  .curve {
+    min-height: 24rem;
+  }
+
+  .curveContext strong {
+    font-size: 1.18rem;
+  }
+
+  .curveContext span {
+    font-size: 1.05rem !important;
+  }
+
+  .nodesIntro p {
+    font-size: 1.25rem;
+  }
+
+  .nodes .provenanceCopy strong,
+  .nodes .provenanceNote {
+    font-size: 1rem !important;
+  }
+
+  .nodeOperator,
+  .founderOperator,
+  .nodeTopline,
+  .nodeCopy > p,
+  .nodeCopy > span,
+  .nodeCopy > a,
+  .nodeFootnote {
+    font-size: .9rem;
+  }
+}
