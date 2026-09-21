@@ -10,10 +10,10 @@ import {
 
 const expectedPortraits = [
   ["lexi-arden", "/room/personas/lexi-arden-20260919.svg"],
-  ["wade-ellison", "/room/personas/wade-ellison.webp"],
-  ["nick-deckman", "/room/personas/nick-deckman.webp"],
-  ["vera-elise-hartmann", "/room/personas/vera-elise-hartmann.webp"],
-  ["akiko-hayashi", "/room/personas/akiko-hayashi.webp"],
+  ["wade-ellison", "/room/personas/wade-ellison.jpg"],
+  ["nick-deckman", "/room/personas/nick-deckman.jpg"],
+  ["vera-elise-hartmann", "/room/personas/vera-elise-hartmann.jpg"],
+  ["akiko-hayashi", "/room/personas/akiko-hayashi.jpg"],
   ["adrian-mbeki", "/room/personas/adrian-mbeki-20260919.svg"],
   ["maya-elise-harper", "/room/personas/maya-elise-harper.webp"],
   ["dr-lila-voss", "/room/personas/dr-lila-voss.webp"],
