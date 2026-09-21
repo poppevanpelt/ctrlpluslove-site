@@ -179,7 +179,7 @@ const pressNotes = [
   },
 ] as const;
 
-// NETLIFY PRODUCTION NUDGE 2026-09-20 CANONICAL PERSONA ASSETS
+// NETLIFY PRODUCTION NUDGE 2026-09-21 PERSONA POLISH
 export default function Home() {
   return (
     <main className={styles.page} id="main-content">
