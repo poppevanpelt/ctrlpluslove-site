@@ -3263,3 +3263,304 @@
     font-size: .9rem;
   }
 }
+
+
+/* WEBSITE 002.16 / LESS MACHINERY, MORE READING */
+
+/* Reading: make the section unmistakable and let the graph behave like a graph. */
+.readingIntro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(20rem, .85fr);
+  gap: clamp(2.5rem, 6vw, 7rem);
+  align-items: end;
+  padding: clamp(3rem, 6vw, 6rem) 0 clamp(3.5rem, 6vw, 5.5rem);
+}
+
+.readingIntro h2 {
+  margin: 0;
+  color: var(--deep-sky);
+  font-size: clamp(4.5rem, 8.2vw, 8.5rem);
+  font-weight: 820;
+  letter-spacing: -.065em;
+  line-height: .86;
+}
+
+.readingIntro h2 em {
+  color: var(--signal);
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+}
+
+.readingIntro > p {
+  max-width: 36rem;
+  margin: 0;
+  font-size: clamp(1.6rem, 2.15vw, 2.05rem);
+  line-height: 1.4;
+}
+
+.readingGrid {
+  grid-template-columns: minmax(18rem, .65fr) minmax(0, 1.35fr);
+  align-items: stretch;
+}
+
+.readingCopy {
+  align-self: center;
+}
+
+.readingCopy h3 {
+  max-width: 12ch;
+  margin: 0 0 1.4rem;
+  color: var(--deep-sky);
+  font-size: clamp(2.4rem, 4.2vw, 4.5rem);
+  line-height: .95;
+  letter-spacing: -.05em;
+}
+
+.readingCopy > p:not(.kicker) {
+  max-width: 33rem;
+  margin: 0 0 2rem;
+  font-size: clamp(1.5rem, 1.9vw, 1.85rem);
+  line-height: 1.45;
+}
+
+.readingCopy a {
+  font-size: 1.15rem;
+}
+
+.curve {
+  min-height: clamp(32rem, 48vw, 44rem);
+  padding-top: 7.75rem;
+  overflow: visible;
+}
+
+.curvePlot,
+.curveBrand,
+.curveWallpaper {
+  display: none;
+}
+
+.curveSvg {
+  position: absolute;
+  inset: 7.5rem 1.5rem 1.75rem 1.5rem;
+  width: calc(100% - 3rem);
+  height: calc(100% - 9.25rem);
+  overflow: visible;
+}
+
+.curveSvgBrand,
+.curveSvgWallpaper {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+  stroke-width: 3;
+}
+
+.curveSvgBrand {
+  stroke: var(--signal);
+}
+
+.curveSvgWallpaper {
+  stroke: var(--deep-sky);
+  opacity: .34;
+}
+
+.curveMarkOne,
+.curveMarkTwo {
+  right: 2rem;
+  z-index: 3;
+  font-size: 1.05rem;
+}
+
+.curveMarkOne {
+  top: 42%;
+}
+
+.curveMarkTwo {
+  top: 76%;
+}
+
+.curveContext {
+  top: 1.25rem;
+  left: 1.5rem;
+  width: min(44rem, calc(100% - 3rem));
+}
+
+.curveContext strong {
+  font-size: clamp(1.55rem, 2vw, 2rem);
+}
+
+.curveContext span {
+  font-size: clamp(1.25rem, 1.55vw, 1.5rem) !important;
+}
+
+.curveAxisX {
+  top: 8.9rem;
+  left: 1.5rem;
+  font-size: 1.05rem;
+}
+
+.curveAxisY,
+.curveNote {
+  font-size: 1rem;
+}
+
+/* Recently built: remove pseudo-instrument diagnostics from the homepage.
+   One idea, one line, one way in. */
+.instrumentGrid {
+  display: none;
+}
+
+.recentList {
+  border-top: 1px solid var(--deep-sky);
+}
+
+.recentItem {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: center;
+  min-height: 10rem;
+  padding: 1.6rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--deep-sky) 55%, var(--rule));
+  text-decoration: none;
+}
+
+.recentItem h3 {
+  margin: 0 0 .55rem;
+  color: var(--deep-sky);
+  font-size: clamp(2rem, 3vw, 3.4rem);
+  line-height: .95;
+  letter-spacing: -.045em;
+}
+
+.recentItem p {
+  max-width: 42rem;
+  margin: 0;
+  font-size: clamp(1.25rem, 1.55vw, 1.5rem);
+  line-height: 1.42;
+}
+
+.recentItem > span,
+.recentItem > strong {
+  font-size: .95rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+}
+
+.recentItem > span {
+  color: color-mix(in srgb, var(--ink) 55%, transparent);
+}
+
+.recentItem > strong {
+  color: var(--signal);
+}
+
+/* General support-copy floor: larger again where the screenshots still feel timid. */
+.nodes .provenanceCopy p,
+.personas .provenanceCopy p,
+.scienceIntro > p,
+.llmContrastIntro > p,
+.pressIntro > p,
+.factoryIntro p,
+.humanCopy p,
+.instituteCopy p {
+  font-size: clamp(1.45rem, 1.85vw, 1.8rem);
+  line-height: 1.46;
+}
+
+.nodes .provenanceCopy strong,
+.personas .provenanceCopy strong {
+  font-size: 1.1rem;
+}
+
+@media (max-width: 900px) {
+  .readingIntro,
+  .readingGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .recentItem {
+    grid-template-columns: 1fr auto;
+  }
+
+  .recentItem > span {
+    grid-column: 1;
+  }
+
+  .recentItem > strong {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+}
+
+@media (max-width: 620px) {
+  .readingIntro {
+    gap: 1.75rem;
+    padding: 2.75rem 0 3.5rem;
+  }
+
+  .readingIntro h2 {
+    font-size: clamp(3.4rem, 15vw, 5rem);
+  }
+
+  .readingIntro > p,
+  .readingCopy > p:not(.kicker) {
+    font-size: 1.2rem;
+  }
+
+  .readingCopy h3 {
+    font-size: 2.3rem;
+  }
+
+  .curve {
+    min-height: 27rem;
+    padding-top: 8.5rem;
+  }
+
+  .curveContext strong {
+    font-size: 1.2rem;
+  }
+
+  .curveContext span {
+    font-size: 1.05rem !important;
+  }
+
+  .curveAxisX,
+  .curveAxisY,
+  .curveNote,
+  .curveMarkOne,
+  .curveMarkTwo {
+    font-size: .9rem;
+  }
+
+  .recentItem {
+    min-height: 0;
+    grid-template-columns: 1fr;
+    gap: .8rem;
+    padding: 1.5rem 0;
+  }
+
+  .recentItem > strong,
+  .recentItem > span {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .recentItem h3 {
+    font-size: 2rem;
+  }
+
+  .recentItem p {
+    font-size: 1.1rem;
+  }
+
+  .nodes .provenanceCopy p,
+  .personas .provenanceCopy p,
+  .scienceIntro > p,
+  .llmContrastIntro > p,
+  .pressIntro > p,
+  .factoryIntro p,
+  .humanCopy p,
+  .instituteCopy p {
+    font-size: 1.15rem;
+  }
+}
