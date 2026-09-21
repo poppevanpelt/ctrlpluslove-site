@@ -114,6 +114,16 @@ posthog.init('phc_nXPhwXLd8X7Tt9qXDwtAYJAUFYiTsBCfNzjQqEwLvFbK',{api_host:'https
           <SystemShock />
           <Analytics />
           <SpeedInsights />
+          <Script
+            src="https://www.googletagmanager.com/gtag/js?id=G-G26V01VJ5C"
+            strategy="afterInteractive"
+          />
+          <Script id="ga4" strategy="afterInteractive">
+            {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-G26V01VJ5C');`}
+          </Script>
         </CtrlLayerProvider>
       </body>
     </html>
