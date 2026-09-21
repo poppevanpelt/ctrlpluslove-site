@@ -87,30 +87,15 @@ const personaGenealogies: Record<
 
 
 const humanMaterialBooks = [
-  { author: "DANIEL KAHNEMAN", title: "Thinking, Fast and Slow", subject: "JUDGMENT / BIAS" },
-  { author: "GARY KLEIN", title: "Sources of Power", subject: "EXPERT JUDGMENT" },
-  { author: "CHARLAN NEMETH", title: "In Defense of Troublemakers", subject: "DISSENT" },
-  { author: "AMY EDMONDSON", title: "The Fearless Organization", subject: "PSYCHOLOGICAL SAFETY" },
-  { author: "PHILIP TETLOCK + DAN GARDNER", title: "Superforecasting", subject: "UNCERTAINTY" },
-  { author: "VICTOR TURNER", title: "The Ritual Process", subject: "RITUAL / GROUPS" },
-  { author: "DIMITRIS XYGALATAS", title: "Ritual", subject: "BEHAVIOUR / BELONGING" },
-  { author: "ERVING GOFFMAN", title: "The Presentation of Self in Everyday Life", subject: "SOCIAL BEHAVIOUR" },
-  { author: "DONELLA MEADOWS", title: "Thinking in Systems", subject: "SYSTEMS" },
-] as const;
-
-const thinPressBooks = [
-  {
-    no: "BOOK 01",
-    title: "Compression",
-    line: "An extremely thin book about how much meaning punctuation can carry.",
-    href: "/compression/",
-  },
-  {
-    no: "BOOK 02",
-    title: "Toch?",
-    line: "The same letters. Different punctuation. A completely different speaker.",
-    href: "/toch/",
-  },
+  { author: "DANIEL KAHNEMAN", title: "Thinking, Fast and Slow", subject: "JUDGMENT / BIAS", href: "https://books.google.com/books?q=Thinking+Fast+and+Slow+Daniel+Kahneman" },
+  { author: "GARY KLEIN", title: "Sources of Power", subject: "EXPERT JUDGMENT", href: "https://books.google.com/books?q=Sources+of+Power+Gary+Klein" },
+  { author: "CHARLAN NEMETH", title: "In Defense of Troublemakers", subject: "DISSENT", href: "https://books.google.com/books?q=In+Defense+of+Troublemakers+Charlan+Nemeth" },
+  { author: "AMY EDMONDSON", title: "The Fearless Organization", subject: "PSYCHOLOGICAL SAFETY", href: "https://books.google.com/books?q=The+Fearless+Organization+Amy+Edmondson" },
+  { author: "PHILIP TETLOCK + DAN GARDNER", title: "Superforecasting", subject: "UNCERTAINTY", href: "https://books.google.com/books?q=Superforecasting+Philip+Tetlock+Dan+Gardner" },
+  { author: "VICTOR TURNER", title: "The Ritual Process", subject: "RITUAL / GROUPS", href: "https://books.google.com/books?q=The+Ritual+Process+Victor+Turner" },
+  { author: "DIMITRIS XYGALATAS", title: "Ritual", subject: "BEHAVIOUR / BELONGING", href: "https://books.google.com/books?q=Ritual+Dimitris+Xygalatas" },
+  { author: "ERVING GOFFMAN", title: "The Presentation of Self in Everyday Life", subject: "SOCIAL BEHAVIOUR", href: "https://books.google.com/books?q=The+Presentation+of+Self+in+Everyday+Life+Erving+Goffman" },
+  { author: "DONELLA MEADOWS", title: "Thinking in Systems", subject: "SYSTEMS", href: "https://books.google.com/books?q=Thinking+in+Systems+Donella+Meadows" },
 ] as const;
 
 const clientSystems = [
@@ -364,7 +349,7 @@ export default function Home() {
       <section className={styles.reading} aria-labelledby="reading-title">
         <div className={styles.sectionLabel}>
           <span>THE LIBRARY</span>
-          <span>HUMAN MATERIAL / OUR OWN THIN PRESS</span>
+          <span>HUMAN MATERIAL / CURRENT READING</span>
         </div>
 
         <div className={styles.libraryIntro}>
@@ -374,7 +359,7 @@ export default function Home() {
           </div>
           <p>
             Judgment, dissent, groups, bias, risk, ritual, systems and human behaviour.
-            The books behind the instruments, plus two very small books of our own.
+            The books behind the instruments.
           </p>
         </div>
 
@@ -386,11 +371,11 @@ export default function Home() {
           </div>
           <div className={styles.bookGrid}>
             {humanMaterialBooks.map((book, index) => (
-              <article className={styles.bookCard} key={book.title}>
+              <a className={styles.bookCard} key={book.title} href={book.href} target="_blank" rel="noreferrer">
                 <span>{String(index + 1).padStart(2, "0")} · {book.subject}</span>
-                <h3>{book.title}</h3>
+                <h3>{book.title} ↗</h3>
                 <p>{book.author}</p>
-              </article>
+              </a>
             ))}
           </div>
         </div>
@@ -398,17 +383,10 @@ export default function Home() {
         <div className={`${styles.libraryShelf} ${styles.thinPressShelf}`}>
           <div className={styles.libraryShelfHead}>
             <span>SHELF 02</span>
-            <strong>FROM OUR OWN THIN PRESS</strong>
-            <span>TWO BOOKS / VERY FEW WORDS</span>
+            <strong>CURRENT READING</strong>
+            <span>ONE LIVE EXPERIMENT</span>
           </div>
           <div className={styles.thinBookGrid}>
-            {thinPressBooks.map((book) => (
-              <Link className={styles.thinBook} href={book.href} key={book.title}>
-                <span>{book.no}</span>
-                <h3>{book.title}</h3>
-                <p>{book.line}</p>
-              </Link>
-            ))}
             <Link className={styles.currentReadingCard} href="/brand-survival/">
               <span>CURRENT EXPERIMENT / 001</span>
               <h3>Brand / Wallpaper</h3>
