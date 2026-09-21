@@ -5054,3 +5054,13 @@
     grid-column: auto;
   }
 }
+
+
+/* WEBSITE 002.22 / LIBRARY CLEANUP */
+.reading .thinBookGrid {
+  grid-template-columns: 1fr;
+}
+
+.reading .currentReadingCard {
+  max-width: none;
+}
