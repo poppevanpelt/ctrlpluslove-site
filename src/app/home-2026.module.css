@@ -3922,3 +3922,75 @@
     margin-top: 1.4rem;
   }
 }
+
+
+/* WEBSITE 002.19 / PERSONA LEGIBILITY + CLICKABLE LIBRARY */
+.bookCard,
+.thinBook {
+  color: inherit;
+  text-decoration: none;
+}
+
+.bookCard h3,
+.thinBook h3 {
+  text-decoration: underline;
+  text-decoration-thickness: .07em;
+  text-underline-offset: .18em;
+}
+
+.bookCard:hover h3,
+.thinBook:hover h3 {
+  color: var(--signal);
+}
+
+.personaIdentity h3 {
+  font-size: clamp(1.7rem, 2vw, 2.15rem);
+  line-height: 1;
+}
+
+.personaIdentity > strong {
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.personaIdentity p {
+  font-size: 1.15rem;
+  line-height: 1.42;
+}
+
+.personaSpecimenTopline,
+.personaSpecimenId,
+.genealogyLabel,
+.genealogySource > div,
+.genealogyOpen {
+  font-size: .98rem;
+  line-height: 1.35;
+}
+
+.personaGenealogy {
+  min-height: 9.5rem;
+}
+
+.personaGenealogy > p {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 620px) {
+  .personaIdentity h3 {
+    font-size: 1.45rem;
+  }
+
+  .personaIdentity p {
+    font-size: 1rem;
+  }
+
+  .personaSpecimenTopline,
+  .personaSpecimenId,
+  .genealogyLabel,
+  .genealogySource > div,
+  .genealogyOpen,
+  .personaGenealogy > p {
+    font-size: .88rem;
+  }
+}
