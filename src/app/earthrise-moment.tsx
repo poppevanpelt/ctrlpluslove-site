@@ -23,6 +23,11 @@ export function EarthriseMoment() {
           sizes="100vw"
         />
         <div className={styles.imageVeil} />
+        <span className={styles.flareHalo} />
+        <span className={styles.flareCore} />
+        <span className={styles.flareStreak} />
+        <span className={`${styles.flareGhost} ${styles.flareGhostOne}`} />
+        <span className={`${styles.flareGhost} ${styles.flareGhostTwo}`} />
       </div>
 
       <div className={styles.endline}>
