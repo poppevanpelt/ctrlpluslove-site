@@ -354,236 +354,6 @@ export default function Home() {
         </div>
       </section>
 
-      <SoundtrackCue
-        index="01"
-        title="CHEMICAL"
-        artist="BECK"
-        href="https://www.youtube.com/results?search_query=Beck+Chemical+official"
-        note="For the stretch where the machine starts to feel suspiciously human."
-      />
-
-      <section className={styles.nodes} aria-labelledby="nodes-title">
-        <div className={styles.sectionLabel}>
-          <span>CTRL+LOVE HUMAN NODES</span>
-          <span>REAL PEOPLE / SPECULATIVE BUILDINGS</span>
-        </div>
-        <div className={styles.nodesIntro}>
-          <h2 id="nodes-title">THE NETWORK<br />HAS AN ADDRESS.<br /><em>SORT OF.</em></h2>
-          <div className={styles.provenanceCopy}>
-            <p>
-              A global network of highly skilled creatives, originally selected by Apple.
-              Poppe spent eight years working shoulder to shoulder with them, almost four months a year,
-              in the same rooms around the world.
-            </p>
-            <strong>EIGHT YEARS OF SHARED ROOMS. ORGANIC RELATIONSHIPS. NOT BOUGHT BY THE KILO FROM META.</strong>
-            <span className={styles.metaFootnote}>@meta</span>
-            <p className={styles.provenanceNote}>
-              These are people Poppe actually worked beside, not an audience segment or a contact list.
-              Tokyo and IJmuiden are real positions in the ctrl+love network. The buildings shown are architectural propositions.
-            </p>
-          </div>
-        </div>
-
-        <div className={styles.nodeGrid}>
-          <article className={styles.node}>
-            <Image
-              className={styles.nodeImage}
-              src="https://images.unsplash.com/photo-1532236395709-7d70320fec2d?auto=format&fit=crop&w=1800&q=84"
-              alt="Central Tokyo at night"
-              fill
-              sizes="(max-width: 800px) 100vw, 50vw"
-            />
-            <div className={styles.nodeVeil} aria-hidden="true" />
-            <div className={styles.nodeTopline}>
-              <span>ACTIVE HUMAN SIGNAL</span>
-              <span>ARCHITECTURE / SPECULATIVE</span>
-            </div>
-            <div className={styles.nodeOperator}>
-              <Image
-                src="/ambassadors/portraits/003-shun-iwai-portrait-live-20260712.jpeg"
-                alt="Shun Iwai"
-                width={88}
-                height={88}
-              />
-              <span>SHUN IWAI<br />AMBASSADOR / CULTURAL TRANSLATION</span>
-            </div>
-            <div className={styles.nodeCopy}>
-              <p>TOKYO · JP / LISTENING POST</p>
-              <h3>CTRL+LOVE<br />TOKYO</h3>
-              <Link href="/embassies/tokyo/">ENTER THE REAL HUMAN NODE ↗</Link>
-            </div>
-          </article>
-
-          <article className={`${styles.node} ${styles.founderNode}`}>
-            <Image
-              className={styles.nodeImage}
-              src="https://upload.wikimedia.org/wikipedia/commons/7/78/Watertoren_IJmuiden_%282024%29.jpg"
-              alt="The historic IJmuiden water tower, imagined as the ctrl+love observatory node"
-              fill
-              sizes="(max-width: 800px) 100vw, 50vw"
-            />
-            <div className={styles.nodeVeil} aria-hidden="true" />
-            <div className={styles.nodeTopline}>
-              <span>FOUNDER / LIVE</span>
-              <span>WATER TOWER / OBSERVATORY PROPOSITION</span>
-            </div>
-            <div className={`${styles.nodeOperator} ${styles.founderOperator}`}>
-              <Image
-                src="/ambassadors/portraits/001-poppe-van-pelt-portrait-live-20260715.png"
-                alt="Poppe van Pelt"
-                width={112}
-                height={112}
-              />
-              <span>POPPE VAN PELT<br />FOUNDER / APPLIED AI DECISION SYSTEMS</span>
-            </div>
-            <div className={styles.nodeCopy}>
-              <p>IJMUIDEN · NL / WATER TOWER POSITION</p>
-              <h3>CTRL+LOVE<br /><span className={styles.nodePlaceName}>IJMUIDEN</span></h3>
-              <span>PORT BELOW. TELESCOPE ABOVE. RENOVATION SUBSIDY APPLICATION PENDING.</span>
-            </div>
-          </article>
-        </div>
-        <p className={styles.nodeFootnote}>
-          HUMAN NODES ARE OPERATIONAL. BUILDINGS SHOWN ARE VISUAL PROPOSITIONS, NOT PROPERTY CLAIMS.
-          {" · "}
-          <a
-            href="https://commons.wikimedia.org/wiki/File:Watertoren_IJmuiden_(2024).jpg"
-            target="_blank"
-            rel="noreferrer"
-          >
-            IJMUIDEN TOWER PHOTO: SNEEUWVLAKTE / CC BY-SA 4.0 ↗
-          </a>
-        </p>
-      </section>
-
-      <section className={styles.reading} aria-labelledby="reading-title">
-        <div className={styles.sectionLabel}>
-          <span>THE LIBRARY</span>
-          <span>HUMAN MATERIAL / OUR OWN THIN PRESS</span>
-        </div>
-
-        <div className={styles.libraryIntro}>
-          <div>
-            <p className={styles.kicker}>A VERY THIN LIBRARY</p>
-            <h2 id="reading-title">READ<br /><em>PEOPLE.</em></h2>
-          </div>
-          <p>
-            Judgment, dissent, groups, bias, risk, ritual, systems and human behaviour.
-            The books behind the instruments, plus two very small books of our own.
-          </p>
-        </div>
-
-        <div className={styles.libraryShelf}>
-          <div className={styles.libraryShelfHead}>
-            <span>SHELF 01</span>
-            <strong>HUMAN MATERIAL</strong>
-            <span>09 BOOKS / PERMANENTLY UNFINISHED</span>
-          </div>
-          <div className={styles.bookGrid}>
-            {humanMaterialBooks.map((book, index) => (
-              <a className={styles.bookCard} key={book.title} href={book.href} target="_blank" rel="noreferrer">
-                <span>{String(index + 1).padStart(2, "0")} · {book.subject}</span>
-                <h3>{book.title} ↗</h3>
-                <p>{book.author}</p>
-              </a>
-            ))}
-          </div>
-        </div>
-
-        <div className={`${styles.libraryShelf} ${styles.thinPressShelf}`}>
-          <div className={styles.libraryShelfHead}>
-            <span>SHELF 02</span>
-            <strong>FROM OUR OWN THIN PRESS</strong>
-            <span>TWO BOOKS / VERY FEW WORDS</span>
-          </div>
-          <div className={styles.thinBookGrid}>
-            {thinPressBooks.map((book) => (
-              <Link className={styles.thinBook} key={book.title} href={book.href}>
-                <span>{book.no}</span>
-                <h3>{book.title} ↗</h3>
-                <p>{book.line}</p>
-              </Link>
-            ))}
-            <Link className={styles.currentReadingCard} href="/brand-survival/">
-              <span>CURRENT EXPERIMENT / 001</span>
-              <h3>Brand / Wallpaper</h3>
-              <p>What survives when familiar brand cues are removed?</p>
-              <strong>OPEN READING ↗</strong>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className={styles.clientWork} aria-labelledby="client-work-title">
-        <div className={styles.sectionLabel}>
-          <span>FIELD APPLICATIONS</span>
-          <span>REAL CLIENT SYSTEMS / 002</span>
-        </div>
-        <div className={styles.clientWorkIntro}>
-          <h2 id="client-work-title">THE INSTRUMENTS<br />HAVE LEFT<br />THE LAB.</h2>
-          <p>Two live examples of the same habit: find the thing underneath the brief, then build something that can keep learning.</p>
-        </div>
-        <div className={styles.clientGrid}>
-          {clientSystems.map((client) => (
-            <article className={styles.clientCase} key={client.client}>
-              <div className={styles.clientMeta}>
-                <strong>{client.client}</strong>
-                <span>{client.category}</span>
-              </div>
-              <div className={`${styles.clientDiagram} ${styles[client.diagram]}`} aria-hidden="true">
-                {client.diagram === "comfora" ? (
-                  <>
-                    <span>CHAIR</span><i>→</i><span>COMFORT</span><i>→</i><strong>LIFE</strong>
-                  </>
-                ) : (
-                  <>
-                    <span>STORE SIGNALS</span><span>CREATOR SENSING</span><span>EXPERIMENT</span><strong>MEMORY</strong>
-                  </>
-                )}
-              </div>
-              <div className={styles.clientBody}>
-                <p className={styles.clientSystem}>{client.system}</p>
-                <h3>{client.title}</h3>
-                <p>{client.description}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className={styles.institute} aria-labelledby="institute-title">
-        <Image
-          className={styles.controlRoomImage}
-          src="/home/judgment-control-room.webp"
-          alt="An optimistic analog control room where people examine a polished steel sphere"
-          fill
-          sizes="100vw"
-        />
-        <div className={styles.controlRoomVeil} aria-hidden="true" />
-        <div className={styles.instituteStatement}>
-          <p className={styles.kicker}>THE LARGER QUESTION</p>
-          <h2 id="institute-title">INTELLIGENCE<br />IS GETTING<br />CHEAPER.<br /><em>JUDGMENT ISN&apos;T.</em></h2>
-        </div>
-
-        <div className={styles.instituteCopy}>
-          <p>
-            ctrl+love studies what still happens between information and action:
-            belief, hesitation, conflict, culture, memory, power, instinct and opposition.
-          </p>
-          <p>
-            The work sits somewhere between a lab, a creative practice and a small
-            institution that keeps building things to test what it thinks it knows.
-          </p>
-          <p className={styles.transmission}>TRANSMISSION: THE FUTURE REMAINS A HUMAN DECISION.</p>
-          <div className={styles.instituteLinks}>
-            <Link href="/constitution/">INSTITUTE FOR DECISION RESEARCH ↗</Link>
-            <Link href="/maria/">MARIA EXCAVATION ↗</Link>
-            <Link href="/organic-ai/">ORGANIC AI ↗</Link>
-          </div>
-        </div>
-      </section>
-
-
       <section className={styles.llmContrast} aria-labelledby="llm-contrast-title">
         <div className={styles.sectionLabel}>
           <span>GENERIC LLM / CTRL+LOVE</span>
@@ -649,120 +419,57 @@ export default function Home() {
         </p>
       </section>
 
-      <section className={styles.science} aria-labelledby="science-title">
+      
+
+      
+
+      
+
+      <section className={styles.clientWork} aria-labelledby="client-work-title">
         <div className={styles.sectionLabel}>
-          <span>SCIENTIFIC PROVENANCE</span>
-          <span>EVIDENCE BELOW / MYTH BESIDE IT</span>
+          <span>FIELD APPLICATIONS</span>
+          <span>REAL CLIENT SYSTEMS / 002</span>
         </div>
-
-        <div className={styles.scienceIntro}>
-          <div>
-            <p className={styles.kicker}>THE SERIOUS LAYER</p>
-            <h2 id="science-title">WE DIDN&apos;T<br />MAKE ALL OF<br />THIS UP.</h2>
-          </div>
-          <p>
-            The instruments borrow from established work on judgment under uncertainty,
-            dissent, psychological safety and naturalistic decision-making. Sources stay
-            visible so a useful idea never has to pretend it arrived by magic.
-          </p>
+        <div className={styles.clientWorkIntro}>
+          <h2 id="client-work-title">THE INSTRUMENTS<br />HAVE LEFT<br />THE LAB.</h2>
+          <p>Two live examples of the same habit: find the thing underneath the brief, then build something that can keep learning.</p>
         </div>
-
-        <div className={styles.scienceGrid}>
-          <a
-            className={styles.scienceSource}
-            href="https://doi.org/10.1126/science.185.4157.1124"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <span>01 / JUDGMENT UNDER UNCERTAINTY</span>
-            <strong>TVERSKY + KAHNEMAN · 1974</strong>
-            <p>Heuristics, uncertainty, anchoring and the predictable ways judgment can drift.</p>
-            <small>SCIENCE · PRIMARY SOURCE ↗</small>
-          </a>
-
-          <a
-            className={styles.scienceSource}
-            href="https://doi.org/10.1111/j.1559-1816.1987.tb00339.x"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <span>02 / DISSENT</span>
-            <strong>CHARLAN NEMETH · 1987</strong>
-            <p>Minority disagreement can widen the search space instead of merely slowing agreement.</p>
-            <small>JOURNAL OF APPLIED SOCIAL PSYCHOLOGY ↗</small>
-          </a>
-
-          <a
-            className={styles.scienceSource}
-            href="https://doi.org/10.2307/2666999"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <span>03 / PSYCHOLOGICAL SAFETY</span>
-            <strong>AMY EDMONDSON · 1999</strong>
-            <p>Teams learn differently when interpersonal risk can be taken without social punishment.</p>
-            <small>ADMINISTRATIVE SCIENCE QUARTERLY ↗</small>
-          </a>
-
-          <a
-            className={styles.scienceSource}
-            href="https://mitpress.mit.edu/9780262260862/sources-of-power/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <span>04 / NATURALISTIC DECISION-MAKING</span>
-            <strong>GARY KLEIN · 1998</strong>
-            <p>Experienced judgment is shaped in real conditions: time pressure, stakes, pattern recognition and action.</p>
-            <small>MIT PRESS · SOURCES OF POWER ↗</small>
-          </a>
-
-          <aside className={styles.originSpecimen}>
-            <span>ORIGIN SPECIMEN 000 / APOCRYPHAL / NOT EVIDENCE</span>
-            <strong>PROF. DR. H. VON SCHMAALHAUZEN</strong>
-            <p>
-              Allegedly had the original eureka moment while passing Harvard on a bicycle,
-              after noticing that a room can agree perfectly and still be wrong.
-            </p>
-            <small>PROVENANCE: UNVERIFIED · RETAINED FOR SCIENTIFIC MORALE</small>
-          </aside>
-        </div>
-      </section>
-
-      <section className={styles.field} aria-labelledby="field-title">
-        <Image
-          className={styles.fieldImage}
-          src="/home/sunnyvale-campus.webp"
-          alt=""
-          fill
-          sizes="100vw"
-        />
-        <div className={styles.fieldVeil} aria-hidden="true" />
-        <div className={styles.sectionLabel}>
-          <span>FIELD NOTES</span>
-          <span>REALITY, BEFORE THE FRAMEWORK</span>
-        </div>
-        <div className={styles.fieldIntro}>
-          <h2 id="field-title">THE SMALL<br />THINGS ARE<br />USUALLY THE<br />EVIDENCE.</h2>
-        </div>
-        <div className={styles.notes}>
-          {fieldNotes.map((note) => (
-            <details className={styles.note} key={note.stamp}>
-              <summary className={styles.noteSummary}>
-                <span>{note.stamp}</span>
-                <h3>{note.title}</h3>
-                <p>{note.copy}</p>
-                <b className={styles.noteOpen}>OPEN NOTE +</b>
-              </summary>
-              <div className={styles.noteStory}>
-                {note.story.map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
-                ))}
-                <strong>{note.lesson}</strong>
+        <div className={styles.clientGrid}>
+          {clientSystems.map((client) => (
+            <article className={styles.clientCase} key={client.client}>
+              <div className={styles.clientMeta}>
+                <strong>{client.client}</strong>
+                <span>{client.category}</span>
               </div>
-            </details>
+              <div className={`${styles.clientDiagram} ${styles[client.diagram]}`} aria-hidden="true">
+                {client.diagram === "comfora" ? (
+                  <>
+                    <span>CHAIR</span><i>→</i><span>COMFORT</span><i>→</i><strong>LIFE</strong>
+                  </>
+                ) : (
+                  <>
+                    <span>STORE SIGNALS</span><span>CREATOR SENSING</span><span>EXPERIMENT</span><strong>MEMORY</strong>
+                  </>
+                )}
+              </div>
+              <div className={styles.clientBody}>
+                <p className={styles.clientSystem}>{client.system}</p>
+                <h3>{client.title}</h3>
+                <p>{client.description}</p>
+              </div>
+            </article>
           ))}
         </div>
       </section>
+
+      
+
+
+      
+
+      
+
+      
 
       <section className={styles.factory} aria-labelledby="factory-title">
         <div className={styles.sectionLabel}>
@@ -788,34 +495,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={styles.shoppe} aria-labelledby="shoppe-title">
-        <div className={styles.sectionLabel}>
-          <span>POPPE’S PROMPT SHOPPE</span>
-          <span>WORKING BENCH / PHYSICAL OBJECTS</span>
-        </div>
-        <div className={styles.shoppeGrid}>
-          <div className={styles.shoppeCopy}>
-            <p className={styles.kicker}>SAN GREGORIO / CALIFORNIA</p>
-            <h2 id="shoppe-title">BRING IN<br />YOUR OLD<br />PROMPTS</h2>
-            <p>Put one under load. Extract what it smuggles in. Find the decision it is actually trying to make.</p>
-            <Link href="/prompt-shoppe/">OPEN THE SHOPPE ↗</Link>
-          </div>
-          <div className={styles.shoppeVisuals}>
-            <Link className={styles.shoppeFacade} href="/prompt-shoppe/">
-              <Image src="/shoppe/poppes-prompt-shoppe.webp" alt="Poppe’s Prompt Shoppe in a wooded California setting" fill sizes="(max-width: 900px) 100vw, 58vw" />
-              <span>THE SHOPPE / OPEN ↗</span>
-            </Link>
-            <article className={styles.shoppeObject}>
-              <Image src="/instruments/objects/ten-decisions-usb.webp" alt="The ctrl+love Decision Stick in its sleeve" fill sizes="(max-width: 900px) 50vw, 29vw" />
-              <span>DECISION STICK · 001/100</span>
-            </article>
-            <article className={styles.shoppeObject}>
-              <Image src="/instruments/objects/decision-in-a-box.webp" alt="Decision in a Box with five metal forms and decision cards" fill sizes="(max-width: 900px) 50vw, 29vw" />
-              <span>DECISION IN A BOX · 5 CARDS / 1 DECISION</span>
-            </article>
-          </div>
-        </div>
-      </section>
+      
 
       <section className={styles.personas} aria-labelledby="personas-title">
         <div className={styles.sectionLabel}>
@@ -838,7 +518,7 @@ export default function Home() {
           </div>
         </div>
         <div className={styles.personaGrid}>
-          {homepageRoomPersonas.map((persona, index) => {
+          {homepageRoomPersonas.slice(0, 4).map((persona, index) => {
             const genealogy = personaGenealogies[persona.id] ?? {
               status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN",
             };
@@ -933,38 +613,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={styles.press} aria-labelledby="press-title">
-        <div className={styles.sectionLabel}>
-          <span>OUTSIDE OBSERVATION</span>
-          <span>PRESS / AUG—SEP 2026</span>
-        </div>
-        <div className={styles.pressIntro}>
-          <h2 id="press-title">OTHER PEOPLE<br />LOOKED AT IT.<br /><em>THEY WROTE.</em></h2>
-          <p>
-            Three independent readings of the experiment: the thinking behind it,
-            the machinery inside it, and the strange new rooms growing out of it.
-          </p>
-        </div>
-        <div className={styles.pressGrid}>
-          {pressNotes.map((item, index) => (
-            <a
-              className={styles.pressItem}
-              href={item.href}
-              target="_blank"
-              rel="noreferrer"
-              key={item.outlet}
-            >
-              <span className={styles.pressNumber}>{String(index + 1).padStart(2, "0")}</span>
-              <div className={styles.pressMeta}>
-                <strong>{item.outlet}</strong>
-                <span>{item.date}</span>
-              </div>
-              <h3>{item.title}</h3>
-              <span className={styles.pressOpen}>READ ORIGINAL ↗</span>
-            </a>
-          ))}
-        </div>
-      </section>
+      
 
       <SoundtrackCue
         index="02"
