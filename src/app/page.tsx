@@ -74,6 +74,31 @@ const personaGenealogies: Record<
   "wade-ellison": { status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN" },
 };
 
+const humanMaterialBooks = [
+  { author: "DANIEL KAHNEMAN", title: "Thinking, Fast and Slow", subject: "JUDGMENT / BIAS" },
+  { author: "GARY KLEIN", title: "Sources of Power", subject: "EXPERT JUDGMENT" },
+  { author: "CHARLAN NEMETH", title: "In Defense of Troublemakers", subject: "DISSENT" },
+  { author: "AMY EDMONDSON", title: "The Fearless Organization", subject: "PSYCHOLOGICAL SAFETY" },
+  { author: "PHILIP TETLOCK + DAN GARDNER", title: "Superforecasting", subject: "UNCERTAINTY" },
+  { author: "VICTOR TURNER", title: "The Ritual Process", subject: "RITUAL / GROUPS" },
+  { author: "DIMITRIS XYGALATAS", title: "Ritual", subject: "BEHAVIOUR / BELONGING" },
+  { author: "ERVING GOFFMAN", title: "The Presentation of Self in Everyday Life", subject: "SOCIAL BEHAVIOUR" },
+  { author: "DONELLA MEADOWS", title: "Thinking in Systems", subject: "SYSTEMS" },
+] as const;
+
+const thinPressBooks = [
+  {
+    no: "BOOK 01",
+    title: "Compression",
+    line: "An extremely thin book about how much meaning punctuation can carry.",
+  },
+  {
+    no: "BOOK 02",
+    title: "Toch?",
+    line: "The same letters. Different punctuation. A completely different speaker.",
+  },
+] as const;
+
 const clientSystems = [
   {
     client: "COMFORA",
@@ -314,22 +339,58 @@ export default function Home() {
 
       <section className={styles.reading} aria-labelledby="reading-title">
         <div className={styles.sectionLabel}>
-          <span>CURRENT READING</span>
-          <span>001 · BRAND SURVIVAL</span>
+          <span>THE LIBRARY</span>
+          <span>HUMAN MATERIAL / OUR OWN THIN PRESS</span>
         </div>
 
-        <div className={styles.readingFeature}>
+        <div className={styles.libraryIntro}>
           <div>
-            <p className={styles.kicker}>READING 001</p>
-            <h2 id="reading-title">BRAND<br /><em>/ WALLPAPER</em></h2>
+            <p className={styles.kicker}>A VERY THIN LIBRARY</p>
+            <h2 id="reading-title">READ<br /><em>PEOPLE.</em></h2>
           </div>
-          <div className={styles.readingFeatureCopy}>
-            <h3>What survives when you remove the logo, language and familiar tricks?</h3>
-            <p>
-              Strip away the familiar cues and see what still feels unmistakably like the brand.
-              The curve belongs inside the instrument. The homepage only needs the question.
-            </p>
-            <Link href="/brand-survival/">READ 001 ↗</Link>
+          <p>
+            Judgment, dissent, groups, bias, risk, ritual, systems and human behaviour.
+            The books behind the instruments, plus two very small books of our own.
+          </p>
+        </div>
+
+        <div className={styles.libraryShelf}>
+          <div className={styles.libraryShelfHead}>
+            <span>SHELF 01</span>
+            <strong>HUMAN MATERIAL</strong>
+            <span>09 BOOKS / PERMANENTLY UNFINISHED</span>
+          </div>
+          <div className={styles.bookGrid}>
+            {humanMaterialBooks.map((book, index) => (
+              <article className={styles.bookCard} key={book.title}>
+                <span>{String(index + 1).padStart(2, "0")} · {book.subject}</span>
+                <h3>{book.title}</h3>
+                <p>{book.author}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div className={`${styles.libraryShelf} ${styles.thinPressShelf}`}>
+          <div className={styles.libraryShelfHead}>
+            <span>SHELF 02</span>
+            <strong>FROM OUR OWN THIN PRESS</strong>
+            <span>TWO BOOKS / VERY FEW WORDS</span>
+          </div>
+          <div className={styles.thinBookGrid}>
+            {thinPressBooks.map((book) => (
+              <article className={styles.thinBook} key={book.title}>
+                <span>{book.no}</span>
+                <h3>{book.title}</h3>
+                <p>{book.line}</p>
+              </article>
+            ))}
+            <Link className={styles.currentReadingCard} href="/brand-survival/">
+              <span>CURRENT EXPERIMENT / 001</span>
+              <h3>Brand / Wallpaper</h3>
+              <p>What survives when familiar brand cues are removed?</p>
+              <strong>OPEN READING ↗</strong>
+            </Link>
           </div>
         </div>
       </section>
