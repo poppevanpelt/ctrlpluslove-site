@@ -66,7 +66,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     line: "Tests what survives outside the room.",
     contribution:
       "Pushes the idea against operational pressure, customer behavior and messy reality.",
-    portrait: "/room/personas/adrian-mbeki.webp",
+    portrait: "/room/personas/adrian-mbeki-20260919.svg",
     portraitPosition: "50% 38%",
   },
   {
