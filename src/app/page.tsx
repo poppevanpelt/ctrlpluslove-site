@@ -314,18 +314,25 @@ export default function Home() {
 
       <section className={styles.reading} aria-labelledby="reading-title">
         <div className={styles.sectionLabel}>
-          <span>CURRENT READING</span>
-          <span>INSTRUMENT 024</span>
+          <span>READING 001</span>
+          <span>INSTRUMENT 024 · BRAND SURVIVAL</span>
+        </div>
+
+        <div className={styles.readingIntro}>
+          <h2 id="reading-title">CURRENT<br /><em>READING.</em></h2>
+          <p>
+            BRAND / WALLPAPER. What survives when you remove the logo, language and familiar tricks?
+          </p>
         </div>
 
         <div className={styles.readingGrid}>
           <div className={styles.readingCopy}>
-            <p className={styles.kicker}>READING 001</p>
-            <h2 id="reading-title">BRAND<br />/ WALLPAPER</h2>
+            <p className={styles.kicker}>BRAND / WALLPAPER</p>
+            <h3>Recognition under subtraction.</h3>
             <p>
-              What survives when you remove the logo, language and familiar tricks?
+              Strip away the familiar cues and watch what still feels unmistakably like the brand.
             </p>
-            <Link href="/brand-survival/">VIEW THE READING ↗</Link>
+            <Link href="/brand-survival/">OPEN READING ↗</Link>
           </div>
 
           <div className={styles.curve} aria-label="Illustrative Brand Survival reading, not observed data">
@@ -334,13 +341,13 @@ export default function Home() {
               <span>BRAND survives subtraction. WALLPAPER disappears with it.</span>
             </div>
             <div className={styles.curveAxisY}>RECOGNITION</div>
-            <div className={styles.curvePlot}>
-              <span className={styles.curveBrand} />
-              <span className={styles.curveWallpaper} />
-              <span className={styles.curveMarkOne}>BRAND</span>
-              <span className={styles.curveMarkTwo}>WALLPAPER</span>
-            </div>
             <div className={styles.curveAxisX}>MORE REMOVED →</div>
+            <svg className={styles.curveSvg} viewBox="0 0 1000 560" preserveAspectRatio="none" aria-hidden="true">
+              <path className={styles.curveSvgBrand} d="M40 350 C210 175 500 145 735 220 C875 265 940 340 960 430" />
+              <path className={styles.curveSvgWallpaper} d="M40 465 C205 360 420 360 585 420 C690 458 765 505 815 555" />
+            </svg>
+            <span className={styles.curveMarkOne}>BRAND</span>
+            <span className={styles.curveMarkTwo}>WALLPAPER</span>
             <p className={styles.curveNote}>Illustrative reading. No reference curve.</p>
           </div>
         </div>
@@ -606,21 +613,15 @@ export default function Home() {
           <p>Not case-study wallpaper. Six instruments you can open, inspect and run.</p>
         </div>
 
-        <div className={styles.instrumentGrid}>
+        <div className={styles.recentList}>
           {recentInstruments.map((instrument) => (
-            <Link href={instrument.href} className={styles.instrument} key={instrument.no}>
-              <div className={styles.instrumentMeta}>
-                <span>{instrument.no}</span>
-                <span>{instrument.state}</span>
+            <Link href={instrument.href} className={styles.recentItem} key={instrument.no}>
+              <div>
+                <h3>{instrument.name}</h3>
+                <p>{instrument.line}</p>
               </div>
-              <div className={styles.instrumentReadout} aria-hidden="true">
-                {instrument.readout.map((step, index) => (
-                  <span key={step}><i>{String(index + 1).padStart(2, "0")}</i>{step}</span>
-                ))}
-              </div>
-              <h3>{instrument.name}</h3>
-              <p>{instrument.line}</p>
-              <span className={styles.instrumentOpen}>RUN INSTRUMENT ↗</span>
+              <span>{instrument.state}</span>
+              <strong>OPEN ↗</strong>
             </Link>
           ))}
         </div>
