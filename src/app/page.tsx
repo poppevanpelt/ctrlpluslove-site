@@ -3,42 +3,22 @@ import Link from "next/link";
 
 import { EarthriseMoment } from "./earthrise-moment";
 import { SoundtrackCue } from "./soundtrack-cue";
-import { getRoomPersonaPortraitSrc, homepageRoomPersonas } from "./room-personas-data";
+import { homepageRoomPersonas } from "./room-personas-data";
 import styles from "./home-2026.module.css";
 
 const recentInstruments = [
-  {
-    no: "024",
-    name: "BRAND SURVIVAL",
-    state: "READING 001",
-    line: "How much can we take away before it stops being you?",
-    href: "/brand-survival/",
-    readout: ["REMOVE", "RECOGNISE", "SURVIVE"],
-  },
-  {
-    no: "022",
-    name: "MARIA EXCAVATION",
-    state: "ONGOING",
-    line: "Map how a decision travels, not only where it ends.",
-    href: "/maria/",
-    readout: ["TERRAIN", "TRAJECTORY", "MOVE"],
-  },
-  {
-    no: "020",
-    name: "PURGE",
-    state: "PROTOTYPE",
-    line: "Cut the fat. Keep the organ.",
-    href: "/purge/",
-    readout: ["CUT", "TEST", "KEEP"],
-  },
-  {
-    no: "001",
-    name: "DECISION COLLIDER",
-    state: "WORKING",
-    line: "Collide assumptions before people collide.",
-    href: "/decision-collider/",
-    readout: ["FRAME", "COLLIDE", "DECIDE"],
-  },
+  { no: "001", name: "DECISION COLLIDER", state: "WORKING", line: "Collide assumptions before people collide.", href: "/decision-collider/" },
+  { no: "002", name: "MEETING FILTER", state: "WORKING", line: "Decide whether the meeting should exist.", href: "/meeting-filter/" },
+  { no: "003", name: "LIVING TICKER", state: "PROTOTYPE", line: "Minutes record words. The ticker records movement.", href: "/instruments/" },
+  { no: "005", name: "CTRL+SWAT", state: "FIELD TEST", line: "Detect. Judge. Build. Dispatch before the moment disappears.", href: "/swat/" },
+  { no: "007", name: "SIGNAL FIRE", state: "PROTOTYPE", line: "Weak signals before they become obvious opportunities.", href: "/instruments/" },
+  { no: "008", name: "POLICY PRISM", state: "PROTOTYPE", line: "What happens after the policy meets behaviour?", href: "/instruments/" },
+  { no: "013", name: "DO-NOTHING CONTROL", state: "WORKING", line: "Change has to beat reality left alone.", href: "/instruments/" },
+  { no: "014", name: "OPPOSITION SEAT", state: "WORKING", line: "Pay someone to disagree.", href: "/instruments/" },
+  { no: "016", name: "EVIDENCE TAGGER", state: "PROTOTYPE", line: "Observed is not the same as assumed.", href: "/instruments/" },
+  { no: "020", name: "PURGE", state: "PROTOTYPE", line: "Cut the fat. Keep the organ.", href: "/purge/" },
+  { no: "022", name: "MARIA EXCAVATION", state: "IN DEVELOPMENT", line: "Map how a decision travels, not only where it ends.", href: "/maria/" },
+  { no: "024", name: "BRAND SURVIVAL", state: "PROTOTYPE", line: "How much can we take away before it stops being you?", href: "/brand-survival/" },
 ] as const;
 
 const products = [
@@ -47,9 +27,7 @@ const products = [
     name: "DECISION STRESS-TEST",
     label: "ONE IMPORTANT DECISION",
     line: "Put one important decision under pressure before reality does.",
-    image: "/pricing/decision-stress-test.webp",
-    imageFit: "contain",
-    imageAlt: "A physical ctrl+love decision-testing instrument",
+    commercial: "FROM €4,500 · ONE DECISION",
     bring: "A decision, campaign route, product idea, positioning, launch or strategic dilemma.",
     leave: "A clearer decision, exposed assumptions and a concrete next move.",
     href: "/stress-test/",
@@ -60,9 +38,7 @@ const products = [
     name: "SYNTHETIC AUDIENCE TEST",
     label: "3–7 USEFUL MINDS",
     line: "Find out what an idea runs into before you spend real money finding out.",
-    image: "/pricing/on-call-room.webp",
-    imageFit: "contain",
-    imageAlt: "The ctrl+love Room represented as a physical testing instrument",
+    commercial: "SCOPED TO THE TEST",
     bring: "An idea, proposition, campaign, product or piece of communication.",
     leave: "Distinct reactions, useful opposition, weak spots and a stronger version.",
     href: "/room/",
@@ -73,9 +49,7 @@ const products = [
     name: "CTRL+2GO",
     label: "APPLIED AI / TAKEAWAY SIZE",
     line: "A few days of us. A useful little machine that stays.",
-    image: "/2go-assets/hero.webp",
-    imageFit: "cover",
-    imageAlt: "A compact ctrl+2go applied AI machine",
+    commercial: "A FEW DAYS · THE SYSTEM STAYS",
     bring: "One stubborn problem, repeated task or decision that should work better.",
     leave: "A small specialised Applied AI system built around the job.",
     href: "/2go/",
@@ -86,9 +60,7 @@ const products = [
     name: "OBSERVATORY",
     label: "ONE SIGNAL THAT MATTERS",
     line: "Some problems do not need another meeting. They need watching.",
-    image: "/home/judgment-control-room.webp",
-    imageFit: "cover",
-    imageAlt: "A ctrl+love monitoring control room",
+    commercial: "ONGOING WATCH",
     bring: "One behaviour, market, competitor, audience or signal worth following.",
     leave: "A live watch system that surfaces meaningful change when it happens.",
     href: "mailto:poppevanpelt@gmail.com?subject=Build%20an%20Observatory",
@@ -210,24 +182,21 @@ export default function Home() {
 
         <div className={styles.productGrid}>
           {products.map((product, index) => (
-            <article className={styles.productCard} key={product.name}>
+            <a
+              className={styles.productCard}
+              key={product.name}
+              href={product.href}
+              aria-label={`${product.name}: ${product.action}`}
+            >
               <div className={styles.productTopline}>
                 <span>PRODUCT {String(index + 1).padStart(2, "0")}</span>
                 <span>{product.label}</span>
               </div>
 
-              <div className={styles.productVisual}>
-                <Image
-                  className={styles.productImage}
-                  src={product.image}
-                  alt={product.imageAlt}
-                  fill
-                  sizes="(max-width: 820px) 100vw, 50vw"
-                  style={{ objectFit: product.imageFit }}
-                />
+              <div className={styles.productOffer}>
+                <strong className={styles.productVerb}>{product.verb}</strong>
+                <span className={styles.productCommercial}>{product.commercial}</span>
               </div>
-
-              <strong className={styles.productVerb}>{product.verb}</strong>
 
               <div className={styles.productBody}>
                 <h3>{product.name}</h3>
@@ -245,10 +214,8 @@ export default function Home() {
                 </div>
               </dl>
 
-              <a className={styles.productAction} href={product.href}>
-                {product.action}
-              </a>
-            </article>
+              <span className={styles.productAction}>{product.action}</span>
+            </a>
           ))}
         </div>
 
@@ -383,7 +350,7 @@ export default function Home() {
         </div>
         <div className={styles.factoryIntro}>
           <h2 id="factory-title">RECENTLY<br />BUILT.</h2>
-          <p>Not case-study wallpaper. Four instruments you can open, inspect and run.</p>
+          <p>Twelve current instruments. Open the public doors, inspect the rest in the Room.</p>
         </div>
 
         <div className={styles.recentList}>
@@ -423,7 +390,7 @@ export default function Home() {
           </div>
         </div>
         <div className={styles.personaGrid}>
-          {homepageRoomPersonas.slice(0, 4).map((persona, index) => {
+          {homepageRoomPersonas.slice(0, 8).map((persona, index) => {
             const genealogy = personaGenealogies[persona.id] ?? {
               status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN",
             };
@@ -434,29 +401,18 @@ export default function Home() {
                   <span>SPECIMEN {String(index + 1).padStart(2, "0")}</span>
                   <span>SYNTHETIC / ACTIVE</span>
                 </div>
-                <div className={`${styles.personaPortrait} ${persona.portrait ? "" : styles.personaPortraitFallback}`}>
-                  {persona.portrait ? (
-                    <Image
-                      src={getRoomPersonaPortraitSrc(persona)!}
-                      alt={`${persona.name}, ctrl+love synthetic persona`}
-                      unoptimized
-                      fill
-                      sizes="(max-width: 620px) 50vw, (max-width: 900px) 50vw, 25vw"
-                      style={{ objectPosition: persona.portraitPosition ?? "50% 40%" }}
-                    />
-                  ) : (
-                    <>
-                      <span className={styles.personaFallbackIndex}>{String(index + 1).padStart(2, "0")}</span>
-                      <strong>{persona.name}</strong>
-                    </>
-                  )}
-                  <span className={styles.personaSpecimenId}>ID · {persona.id.toUpperCase()}</span>
+
+                <div className={styles.personaSlate}>
+                  <span className={styles.personaSlateIndex}>{String(index + 1).padStart(2, "0")}</span>
+                  <span className={styles.personaSlateRole}>{persona.role}</span>
+                  <strong>{persona.name}</strong>
+                  <span className={styles.personaSlateId}>ID · {persona.id.toUpperCase()}</span>
                 </div>
+
                 <div className={styles.personaIdentity}>
-                  <h3>{persona.name}</h3>
-                  <strong>{persona.role}</strong>
                   <p>{persona.line}</p>
                 </div>
+
                 <div className={styles.personaGenealogy}>
                   <span className={styles.genealogyLabel}>GENEALOGY / {genealogy.status}</span>
                   {genealogy.sources ? (
