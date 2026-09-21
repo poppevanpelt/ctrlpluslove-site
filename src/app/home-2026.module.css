@@ -2858,3 +2858,111 @@
     line-height: .92;
   }
 }
+
+
+/* WEBSITE 002.13 / 55+ LEGIBILITY PASS
+   Keep the big headlines. Make the supporting layer readable beside them. */
+.heroTopline,
+.sectionLabel,
+.heroStatus,
+.instrumentMeta,
+.exitFooter {
+  font-size: .78rem;
+}
+
+.heroPlain {
+  max-width: 48rem;
+  font-size: clamp(1.05rem, 1.25vw, 1.22rem);
+  line-height: 1.48;
+}
+
+.readingCopy p:not(.kicker),
+.factoryIntro p,
+.shoppeCopy > p:not(.kicker),
+.instituteCopy p,
+.note p,
+.humanCopy p,
+.exit > p:not(.kicker) {
+  font-size: clamp(1.2rem, 1.7vw, 1.55rem);
+  line-height: 1.5;
+}
+
+.readingCopy > p:not(.kicker) {
+  max-width: 34rem;
+}
+
+.curveContext strong {
+  font-size: clamp(.95rem, 1.25vw, 1.15rem);
+  line-height: 1.25;
+}
+
+.curveContext span {
+  font-size: .92rem;
+  line-height: 1.45;
+}
+
+.curveAxisY,
+.curveNote,
+.llmSurvived,
+.scienceSource > span,
+.originSpecimen > span,
+.scienceSource small,
+.originSpecimen small {
+  font-size: .72rem;
+}
+
+.llmPressure > p {
+  max-width: 56rem;
+  font-size: clamp(1.2rem, 1.65vw, 1.55rem);
+  line-height: 1.5;
+}
+
+.instituteLinks,
+.humanLinks {
+  gap: 1.25rem;
+  font-size: .9rem;
+  line-height: 1.4;
+}
+
+.transmission {
+  font-size: .88rem !important;
+  line-height: 1.45;
+}
+
+.scienceSource p,
+.originSpecimen p {
+  font-size: clamp(1.05rem, 1.25vw, 1.2rem);
+  line-height: 1.5;
+}
+
+.missionStrip {
+  font-size: .78rem;
+}
+
+@media (max-width: 620px) {
+  .heroTopline,
+  .heroStatus,
+  .sectionLabel,
+  .exitFooter {
+    font-size: .7rem;
+  }
+
+  .heroPlain {
+    font-size: 1.05rem;
+    line-height: 1.45;
+  }
+
+  .curveContext strong {
+    font-size: .9rem;
+  }
+
+  .curveContext span {
+    font-size: .86rem;
+  }
+
+  .instituteLinks,
+  .humanLinks {
+    gap: 1rem;
+    font-size: .88rem;
+  }
+}
