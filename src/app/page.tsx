@@ -68,7 +68,7 @@ const products = [
   },
 ] as const;
 
-const personaGenealogies:const personaGenealogies: Record<
+const personaGenealogies: Record<
   string,
   { status: string; sources?: Array<{ name: string; share: number }> }
 > = {
@@ -219,7 +219,7 @@ export default function Home() {
           ))}
         </div>
 
-        <div className={styles.productsBigger}>        <div className={styles.productsBigger}>
+        <div className={styles.productsBigger}>
           <span>NEED SOMETHING BIGGER?</span>
           <strong>Sometimes the problem is not the decision. It is the machinery around it.</strong>
           <a href="mailto:poppevanpelt@gmail.com?subject=Redesign%20the%20system">REDESIGN THE SYSTEM ↗</a>
@@ -438,8 +438,6 @@ export default function Home() {
           })}
         </div>
       </section>
-
-      <section className={styles.humans}      </section>
 
       <section className={styles.humans} aria-labelledby="humans-title">
         <Image
