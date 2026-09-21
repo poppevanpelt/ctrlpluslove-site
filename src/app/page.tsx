@@ -63,6 +63,8 @@ const products = [
     name: "DECISION STRESS-TEST",
     label: "ONE IMPORTANT DECISION",
     line: "Put one important decision under pressure before reality does.",
+    image: "/pricing/decision-stress-test.webp",
+    imageAlt: "A physical ctrl+love decision-testing instrument",
     bring: "A decision, campaign route, product idea, positioning, launch or strategic dilemma.",
     leave: "A clearer decision, exposed assumptions and a concrete next move.",
     href: "/stress-test/",
@@ -73,6 +75,8 @@ const products = [
     name: "SYNTHETIC AUDIENCE TEST",
     label: "3–7 USEFUL MINDS",
     line: "Find out what an idea runs into before you spend real money finding out.",
+    image: "/pricing/on-call-room.webp",
+    imageAlt: "The ctrl+love Room represented as a physical testing instrument",
     bring: "An idea, proposition, campaign, product or piece of communication.",
     leave: "Distinct reactions, useful opposition, weak spots and a stronger version.",
     href: "/room/",
@@ -83,6 +87,8 @@ const products = [
     name: "CTRL+2GO",
     label: "APPLIED AI / TAKEAWAY SIZE",
     line: "A few days of us. A useful little machine that stays.",
+    image: "/2go-assets/hero.webp",
+    imageAlt: "A compact ctrl+2go applied AI machine",
     bring: "One stubborn problem, repeated task or decision that should work better.",
     leave: "A small specialised Applied AI system built around the job.",
     href: "/2go/",
@@ -93,6 +99,8 @@ const products = [
     name: "OBSERVATORY",
     label: "ONE SIGNAL THAT MATTERS",
     line: "Some problems do not need another meeting. They need watching.",
+    image: "/instruments/03-living-ticker.webp",
+    imageAlt: "A ctrl+love monitoring instrument",
     bring: "One behaviour, market, competitor, audience or signal worth following.",
     leave: "A live watch system that surfaces meaningful change when it happens.",
     href: "mailto:poppevanpelt@gmail.com?subject=Build%20an%20Observatory",
@@ -287,7 +295,7 @@ export default function Home() {
         </div>
 
         <div className={styles.productsIntro}>
-          <h2 id="products-title">FOUR THINGS<br />WE CAN DO<br /><em>FOR YOU.</em></h2>
+          <h2 id="products-title">FOUR THINGS<br />YOU CAN<br /><em>BUY.</em></h2>
           <div className={styles.productsIntroCopy}>
             <p>
               The instruments are how we work. These are the things you can hire us for.
@@ -302,6 +310,16 @@ export default function Home() {
               <div className={styles.productTopline}>
                 <span>PRODUCT {String(index + 1).padStart(2, "0")}</span>
                 <span>{product.label}</span>
+              </div>
+
+              <div className={styles.productVisual}>
+                <Image
+                  className={styles.productImage}
+                  src={product.image}
+                  alt={product.imageAlt}
+                  fill
+                  sizes="(max-width: 820px) 100vw, 50vw"
+                />
               </div>
 
               <strong className={styles.productVerb}>{product.verb}</strong>
