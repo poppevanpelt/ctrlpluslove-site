@@ -5341,3 +5341,54 @@
     min-height: 12rem;
   }
 }
+
+
+/* 2026-09-22 / VISIBLE FEATURED INSTRUMENT FIX */
+.featuredInstrumentCard:nth-child(1) .featuredInstrumentVisual {
+  background-image: url("/instruments/02-decision-collider.webp");
+}
+.featuredInstrumentCard:nth-child(2) .featuredInstrumentVisual {
+  background-image: url("/instruments/03-living-ticker.webp");
+}
+.featuredInstrumentCard:nth-child(3) .featuredInstrumentVisual {
+  background-image: url("/poppe/machine-studies/machine-01.webp");
+}
+.featuredInstrumentCard:nth-child(4) .featuredInstrumentVisual {
+  background-image: url("/poppe/machine-studies/machine-02.webp");
+}
+.featuredInstrumentCard:nth-child(5) .featuredInstrumentVisual {
+  background-image: url("/poppe/machine-studies/machine-03.webp");
+}
+.featuredInstrumentCard:nth-child(6) .featuredInstrumentVisual {
+  background-image: url("/poppe/machine-studies/machine-04.webp");
+}
+.featuredInstrumentVisual {
+  background-size: cover;
+  background-position: center !important;
+}
+
+/* IT SURVIVED / REAL METAL, INTENTIONAL GLITCH */
+.llmBall::before,
+.llmBall::after {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  content: "";
+  pointer-events: none;
+  background: url("/museum/steel-ball-packshot-cutout.png") center / contain no-repeat;
+  opacity: .92;
+}
+.llmBall::before {
+  clip-path: inset(31% 4% 54% 3%);
+  transform: translateX(-4px);
+}
+.llmBall::after {
+  clip-path: inset(58% 2% 24% 5%);
+  transform: translateX(3px);
+  opacity: .72;
+}
+.llmBall img {
+  filter: contrast(1.03) saturate(.82) brightness(.99) drop-shadow(0 .35rem .55rem rgb(0 0 0 / 18%));
+}
