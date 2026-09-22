@@ -4,6 +4,8 @@ import Link from "next/link";
 import { EarthriseMoment } from "./earthrise-moment";
 import { SoundtrackCue } from "./soundtrack-cue";
 import { homepageRoomPersonas } from "./room-personas-data";
+import { AmbassadorGrid } from "./ambassador-grid";
+import { confirmedAmbassadors } from "./ambassadors-data";
 import styles from "./home-2026.module.css";
 
 const recentInstruments = [
@@ -339,109 +341,12 @@ export default function Home() {
         </p>
       </section>
 
-      
-
-      
-
-      
 
 
-      <section className={styles.reading} aria-labelledby="reading-title">
-        <div className={styles.sectionLabel}>
-          <span>THE LIBRARY</span>
-          <span>HUMAN MATERIAL / CURRENT READING</span>
-        </div>
-
-        <div className={styles.libraryIntro}>
-          <div>
-            <p className={styles.kicker}>A VERY THIN LIBRARY</p>
-            <h2 id="reading-title">READ<br /><em>PEOPLE.</em></h2>
-          </div>
-          <p>
-            Judgment, dissent, groups, bias, risk, ritual, systems and human behaviour.
-            The books behind the instruments.
-          </p>
-        </div>
-
-        <div className={styles.libraryShelf}>
-          <div className={styles.libraryShelfHead}>
-            <span>SHELF 01</span>
-            <strong>HUMAN MATERIAL</strong>
-            <span>09 BOOKS / PERMANENTLY UNFINISHED</span>
-          </div>
-          <div className={styles.bookGrid}>
-            {humanMaterialBooks.map((book, index) => (
-              <a className={styles.bookCard} key={book.title} href={book.href} target="_blank" rel="noreferrer">
-                <span>{String(index + 1).padStart(2, "0")} · {book.subject}</span>
-                <h3>{book.title} ↗</h3>
-                <p>{book.author}</p>
-              </a>
-            ))}
-          </div>
-        </div>
-
-        <div className={`${styles.libraryShelf} ${styles.thinPressShelf}`}>
-          <div className={styles.libraryShelfHead}>
-            <span>SHELF 02</span>
-            <strong>CURRENT READING</strong>
-            <span>ONE LIVE EXPERIMENT</span>
-          </div>
-          <div className={styles.thinBookGrid}>
-            <Link className={styles.currentReadingCard} href="/brand-survival/">
-              <span>CURRENT EXPERIMENT / 001</span>
-              <h3>Brand / Wallpaper</h3>
-              <p>What survives when familiar brand cues are removed?</p>
-              <strong>OPEN READING ↗</strong>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className={styles.clientWork} aria-labelledby="client-work-title">
-        <div className={styles.sectionLabel}>
-          <span>FIELD APPLICATIONS</span>
-          <span>REAL CLIENT SYSTEMS / 002</span>
-        </div>
-        <div className={styles.clientWorkIntro}>
-          <h2 id="client-work-title">THE INSTRUMENTS<br />HAVE LEFT<br />THE LAB.</h2>
-          <p>Two live examples of the same habit: find the thing underneath the brief, then build something that can keep learning.</p>
-        </div>
-        <div className={styles.clientGrid}>
-          {clientSystems.map((client) => (
-            <article className={styles.clientCase} key={client.client}>
-              <div className={styles.clientMeta}>
-                <strong>{client.client}</strong>
-                <span>{client.category}</span>
-              </div>
-              <div className={`${styles.clientDiagram} ${styles[client.diagram]}`} aria-hidden="true">
-                {client.diagram === "comfora" ? (
-                  <>
-                    <span>CHAIR</span><i>→</i><span>COMFORT</span><i>→</i><strong>LIFE</strong>
-                  </>
-                ) : (
-                  <>
-                    <span>STORE SIGNALS</span><span>CREATOR SENSING</span><span>EXPERIMENT</span><strong>MEMORY</strong>
-                  </>
-                )}
-              </div>
-              <div className={styles.clientBody}>
-                <p className={styles.clientSystem}>{client.system}</p>
-                <h3>{client.title}</h3>
-                <p>{client.description}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      
 
 
-      
 
-      
 
-      
 
       <section className={styles.factory} aria-labelledby="factory-title">
         <div className={styles.sectionLabel}>
@@ -467,37 +372,8 @@ export default function Home() {
         </div>
       </section>
 
-      
 
 
-      <section className={styles.shoppe} aria-labelledby="shoppe-title">
-        <div className={styles.sectionLabel}>
-          <span>POPPE’S PROMPT SHOPPE</span>
-          <span>WORKING BENCH / PHYSICAL OBJECTS</span>
-        </div>
-        <div className={styles.shoppeGrid}>
-          <div className={styles.shoppeCopy}>
-            <p className={styles.kicker}>SAN GREGORIO / CALIFORNIA</p>
-            <h2 id="shoppe-title">BRING IN<br />YOUR OLD<br />PROMPTS.</h2>
-            <p>Put one under load. Extract what it smuggles in. Find the decision it is actually trying to make.</p>
-            <Link href="/prompt-shoppe/">OPEN THE SHOPPE ↗</Link>
-          </div>
-          <div className={styles.shoppeVisuals}>
-            <Link className={styles.shoppeFacade} href="/prompt-shoppe/">
-              <Image src="/shoppe/poppes-prompt-shoppe.webp" alt="Poppe’s Prompt Shoppe in a wooded California setting" fill sizes="(max-width: 900px) 100vw, 58vw" />
-              <span>THE SHOPPE / OPEN ↗</span>
-            </Link>
-            <article className={styles.shoppeObject}>
-              <Image src="/instruments/objects/ten-decisions-usb.webp" alt="The ctrl+love Decision Stick in its sleeve" fill sizes="(max-width: 900px) 50vw, 29vw" />
-              <span>DECISION STICK · 001/100</span>
-            </article>
-            <article className={styles.shoppeObject}>
-              <Image src="/instruments/objects/decision-in-a-box.webp" alt="Decision in a Box with five metal forms and decision cards" fill sizes="(max-width: 900px) 50vw, 29vw" />
-              <span>DECISION IN A BOX · 5 CARDS / 1 DECISION</span>
-            </article>
-          </div>
-        </div>
-      </section>
 
       <section className={styles.personas} aria-labelledby="personas-title">
         <div className={styles.sectionLabel}>
@@ -606,9 +482,146 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <div className={styles.humanNetwork}>
+          <div className={styles.humanNetworkIntro}>
+            <span>FOUNDER + AMBASSADORS</span>
+            <p>
+              Apple-selected creative leaders, built through eight years of working shoulder to shoulder.
+              Organic relationships. Not bought by the kilo.
+            </p>
+            <Link href="/ambassadors/">MEET THE FULL NETWORK ↗</Link>
+          </div>
+          <AmbassadorGrid ambassadors={confirmedAmbassadors} compact />
+        </div>
       </section>
 
-      
+
+
+      <section className={styles.clientWork} aria-labelledby="client-work-title">
+        <div className={styles.sectionLabel}>
+          <span>FIELD APPLICATIONS</span>
+          <span>REAL CLIENT SYSTEMS / 002</span>
+        </div>
+        <div className={styles.clientWorkIntro}>
+          <h2 id="client-work-title">THE INSTRUMENTS<br />HAVE LEFT<br />THE LAB.</h2>
+          <p>Two live examples of the same habit: find the thing underneath the brief, then build something that can keep learning.</p>
+        </div>
+        <div className={styles.clientGrid}>
+          {clientSystems.map((client) => (
+            <article className={styles.clientCase} key={client.client}>
+              <div className={styles.clientMeta}>
+                <strong>{client.client}</strong>
+                <span>{client.category}</span>
+              </div>
+              <div className={`${styles.clientDiagram} ${styles[client.diagram]}`} aria-hidden="true">
+                {client.diagram === "comfora" ? (
+                  <>
+                    <span>CHAIR</span><i>→</i><span>COMFORT</span><i>→</i><strong>LIFE</strong>
+                  </>
+                ) : (
+                  <>
+                    <span>STORE SIGNALS</span><span>CREATOR SENSING</span><span>EXPERIMENT</span><strong>MEMORY</strong>
+                  </>
+                )}
+              </div>
+              <div className={styles.clientBody}>
+                <p className={styles.clientSystem}>{client.system}</p>
+                <h3>{client.title}</h3>
+                <p>{client.description}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+
+
+
+
+
+
+
+
+
+      <section className={styles.shoppe} aria-labelledby="shoppe-title">
+        <div className={styles.sectionLabel}>
+          <span>POPPE’S PROMPT SHOPPE</span>
+          <span>WORKING BENCH / PHYSICAL OBJECTS</span>
+        </div>
+        <div className={styles.shoppeGrid}>
+          <div className={styles.shoppeCopy}>
+            <p className={styles.kicker}>SAN GREGORIO / CALIFORNIA</p>
+            <h2 id="shoppe-title">BRING IN<br />YOUR OLD<br />PROMPTS.</h2>
+            <p>Put one under load. Extract what it smuggles in. Find the decision it is actually trying to make.</p>
+            <Link href="/prompt-shoppe/">OPEN THE SHOPPE ↗</Link>
+          </div>
+          <div className={styles.shoppeVisuals}>
+            <Link className={styles.shoppeFacade} href="/prompt-shoppe/">
+              <Image src="/shoppe/poppes-prompt-shoppe.webp" alt="Poppe’s Prompt Shoppe in a wooded California setting" fill sizes="(max-width: 900px) 100vw, 58vw" />
+              <span>THE SHOPPE / OPEN ↗</span>
+            </Link>
+            <article className={styles.shoppeObject}>
+              <Image src="/instruments/objects/ten-decisions-usb.webp" alt="The ctrl+love Decision Stick in its sleeve" fill sizes="(max-width: 900px) 50vw, 29vw" />
+              <span>DECISION STICK · 001/100</span>
+            </article>
+            <article className={styles.shoppeObject}>
+              <Image src="/instruments/objects/decision-in-a-box.webp" alt="Decision in a Box with five metal forms and decision cards" fill sizes="(max-width: 900px) 50vw, 29vw" />
+              <span>DECISION IN A BOX · 5 CARDS / 1 DECISION</span>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.reading} aria-labelledby="reading-title">
+        <div className={styles.sectionLabel}>
+          <span>THE LIBRARY</span>
+          <span>HUMAN MATERIAL / CURRENT READING</span>
+        </div>
+
+        <div className={styles.libraryIntro}>
+          <div>
+            <p className={styles.kicker}>A VERY THIN LIBRARY</p>
+            <h2 id="reading-title">READ<br /><em>PEOPLE.</em></h2>
+          </div>
+          <p>
+            Judgment, dissent, groups, bias, risk, ritual, systems and human behaviour.
+            The books behind the instruments.
+          </p>
+        </div>
+
+        <div className={styles.libraryShelf}>
+          <div className={styles.libraryShelfHead}>
+            <span>SHELF 01</span>
+            <strong>HUMAN MATERIAL</strong>
+            <span>09 BOOKS / PERMANENTLY UNFINISHED</span>
+          </div>
+          <div className={styles.bookGrid}>
+            {humanMaterialBooks.map((book, index) => (
+              <a className={styles.bookCard} key={book.title} href={book.href} target="_blank" rel="noreferrer">
+                <span>{String(index + 1).padStart(2, "0")} · {book.subject}</span>
+                <h3>{book.title} ↗</h3>
+                <p>{book.author}</p>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <div className={`${styles.libraryShelf} ${styles.thinPressShelf}`}>
+          <div className={styles.libraryShelfHead}>
+            <span>SHELF 02</span>
+            <strong>CURRENT READING</strong>
+            <span>ONE LIVE EXPERIMENT</span>
+          </div>
+          <div className={styles.thinBookGrid}>
+            <Link className={styles.currentReadingCard} href="/brand-survival/">
+              <span>CURRENT EXPERIMENT / 001</span>
+              <h3>Brand / Wallpaper</h3>
+              <p>What survives when familiar brand cues are removed?</p>
+              <strong>OPEN READING ↗</strong>
+            </Link>
+          </div>
+        </div>
+      </section>
 
       <SoundtrackCue
         index="01"

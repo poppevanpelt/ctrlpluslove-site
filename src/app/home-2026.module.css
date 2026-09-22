@@ -1297,9 +1297,57 @@
 }
 
 .humans .sectionLabel,
-.humansGrid {
+.humansGrid,
+.humanNetwork {
   position: relative;
   z-index: 1;
+}
+
+.humanNetwork {
+  display: grid;
+  grid-template-columns: minmax(15rem, .55fr) minmax(0, 1.45fr);
+  gap: clamp(2rem, 5vw, 6rem);
+  margin-top: clamp(3.5rem, 7vw, 7rem);
+  border-top: 1px solid rgb(5 50 91 / 24%);
+  padding-top: clamp(2rem, 4vw, 3.5rem);
+}
+
+.humanNetworkIntro {
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+}
+
+.humanNetworkIntro > span {
+  color: var(--signal);
+  font-family: var(--font-mono);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+}
+
+.humanNetworkIntro p {
+  max-width: 31rem;
+  margin: 0;
+  color: var(--deep-sky);
+  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+  line-height: 1.35;
+}
+
+.humanNetworkIntro a {
+  width: fit-content;
+  color: var(--deep-sky);
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-decoration: none;
+}
+
+@media (max-width: 900px) {
+  .humanNetwork {
+    grid-template-columns: 1fr;
+  }
 }
 
 .humans h2 {
