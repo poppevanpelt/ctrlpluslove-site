@@ -8,19 +8,63 @@ import { AmbassadorGrid } from "./ambassador-grid";
 import { confirmedAmbassadors } from "./ambassadors-data";
 import styles from "./home-2026.module.css";
 
-const recentInstruments = [
-  { no: "001", name: "DECISION COLLIDER", state: "WORKING", line: "Collide assumptions before people collide.", href: "/decision-collider/" },
-  { no: "002", name: "MEETING FILTER", state: "WORKING", line: "Decide whether the meeting should exist.", href: "/meeting-filter/" },
-  { no: "003", name: "LIVING TICKER", state: "PROTOTYPE", line: "Minutes record words. The ticker records movement.", href: "/instruments/" },
-  { no: "005", name: "CTRL+SWAT", state: "FIELD TEST", line: "Detect. Judge. Build. Dispatch before the moment disappears.", href: "/swat/" },
-  { no: "007", name: "SIGNAL FIRE", state: "PROTOTYPE", line: "Weak signals before they become obvious opportunities.", href: "/instruments/" },
-  { no: "008", name: "POLICY PRISM", state: "PROTOTYPE", line: "What happens after the policy meets behaviour?", href: "/instruments/" },
-  { no: "013", name: "DO-NOTHING CONTROL", state: "WORKING", line: "Change has to beat reality left alone.", href: "/instruments/" },
-  { no: "014", name: "OPPOSITION SEAT", state: "WORKING", line: "Pay someone to disagree.", href: "/instruments/" },
-  { no: "016", name: "EVIDENCE TAGGER", state: "PROTOTYPE", line: "Observed is not the same as assumed.", href: "/instruments/" },
-  { no: "020", name: "PURGE", state: "PROTOTYPE", line: "Cut the fat. Keep the organ.", href: "/purge/" },
-  { no: "022", name: "MARIA EXCAVATION", state: "IN DEVELOPMENT", line: "Map how a decision travels, not only where it ends.", href: "/maria/" },
-  { no: "024", name: "BRAND SURVIVAL", state: "PROTOTYPE", line: "How much can we take away before it stops being you?", href: "/brand-survival/" },
+const featuredInstruments = [
+  {
+    no: "001",
+    name: "DECISION COLLIDER",
+    state: "WORKING",
+    line: "Collide assumptions before people collide.",
+    detail: "Puts incompatible assumptions on the same surface before agreement hardens around different versions of the problem.",
+    use: "USE WHEN · THE ROOM AGREES SUSPICIOUSLY FAST",
+    position: "0% 0%",
+    href: "/decision-collider/",
+    action: "RUN INSTRUMENT ↗",
+  },
+  {
+    no: "003",
+    name: "LIVING TICKER",
+    state: "PROTOTYPE",
+    line: "Minutes record words. The ticker records movement.",
+    detail: "Tracks challenge, reframing, ownership and rupture while a room is changing, not after everybody has forgotten the interesting bit.",
+    use: "USE WHEN · THE MOVEMENT MATTERS MORE THAN THE MINUTES",
+    position: "50% 0%",
+  },
+  {
+    no: "014",
+    name: "OPPOSITION SEAT",
+    state: "WORKING",
+    line: "Pay someone to disagree.",
+    detail: "Makes dissent structural. Opposition stops depending on who happens to feel brave enough to ruin the nice meeting.",
+    use: "USE WHEN · CONSENSUS IS ARRIVING TOO CHEAPLY",
+    position: "100% 0%",
+  },
+  {
+    no: "013",
+    name: "DO-NOTHING CONTROL",
+    state: "WORKING",
+    line: "Change has to beat reality left alone.",
+    detail: "Runs the proposed move against a deliberate control: what happens if we do absolutely nothing?",
+    use: "USE WHEN · ACTIVITY IS MASQUERADING AS PROGRESS",
+    position: "0% 100%",
+  },
+  {
+    no: "016",
+    name: "EVIDENCE TAGGER",
+    state: "PROTOTYPE",
+    line: "Observed is not the same as assumed.",
+    detail: "Tags confidence at the source: Observed, Inferred, Assumed, Tested or Proven. Same sentence. Very different weight.",
+    use: "USE WHEN · CERTAINTY HAS LOST ITS RECEIPT",
+    position: "50% 100%",
+  },
+  {
+    no: "021",
+    name: "MISS ARCHIVE",
+    state: "ARCHIVE",
+    line: "Keep the wrong calls. Extract the lesson.",
+    detail: "Stores misses, reversals and failed predictions because a laboratory that only displays wins cannot actually learn.",
+    use: "USE WHEN · THE ORGANISATION KEEPS FORGETTING HOW IT WAS WRONG",
+    position: "100% 100%",
+  },
 ] as const;
 
 const products = [
@@ -348,31 +392,48 @@ export default function Home() {
 
 
 
-      <section className={styles.factory} aria-labelledby="factory-title">
+      <section className={`${styles.factory} ${styles.featuredInstruments}`} aria-labelledby="factory-title">
         <div className={styles.sectionLabel}>
-          <span>THE FACTORY / WORKING DOORS</span>
+          <span>FEATURED INSTRUMENTS / 006</span>
           <Link href="/instruments/">ALL 024 INSTRUMENTS ↗</Link>
         </div>
+
         <div className={styles.factoryIntro}>
-          <h2 id="factory-title">RECENTLY<br />BUILT.</h2>
-          <p>Twelve current instruments. Open the public doors, inspect the rest in the Room.</p>
+          <h2 id="factory-title">SIX WAYS<br />TO MAKE REALITY<br /><em>HARDER TO AVOID.</em></h2>
+          <p>These are working instruments, not illustrations. Tap one. It opens just far enough to tell you what it actually does.</p>
         </div>
 
-        <div className={styles.recentList}>
-          {recentInstruments.map((instrument) => (
-            <Link href={instrument.href} className={styles.recentItem} key={instrument.no}>
-              <div>
-                <h3>{instrument.name}</h3>
-                <p>{instrument.line}</p>
+        <div className={styles.featuredInstrumentGrid}>
+          {featuredInstruments.map((instrument) => (
+            <details className={styles.featuredInstrumentCard} key={instrument.no}>
+              <summary>
+                <div className={styles.featuredInstrumentMeta}>
+                  <span>{instrument.no}</span>
+                  <strong>{instrument.state}</strong>
+                </div>
+                <div
+                  className={styles.featuredInstrumentVisual}
+                  style={{ backgroundPosition: instrument.position }}
+                  aria-hidden="true"
+                />
+                <div className={styles.featuredInstrumentCopy}>
+                  <h3>{instrument.name}</h3>
+                  <p>{instrument.line}</p>
+                  <span>PULL TO INSPECT</span>
+                </div>
+              </summary>
+
+              <div className={styles.featuredInstrumentDrawer}>
+                <p>{instrument.detail}</p>
+                <strong>{instrument.use}</strong>
+                {"href" in instrument && instrument.href ? (
+                  <Link href={instrument.href}>{instrument.action}</Link>
+                ) : null}
               </div>
-              <span>{instrument.state}</span>
-              <strong>OPEN ↗</strong>
-            </Link>
+            </details>
           ))}
         </div>
       </section>
-
-
 
 
       <section className={styles.personas} aria-labelledby="personas-title">
