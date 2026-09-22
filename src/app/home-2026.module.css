@@ -5112,3 +5112,232 @@
 .reading .currentReadingCard {
   max-width: none;
 }
+
+
+/* HOMEPAGE FEATURED INSTRUMENTS / 2026-09-22 */
+.featuredInstruments {
+  background: #f1ece2;
+}
+
+.featuredInstruments .factoryIntro {
+  align-items: end;
+  padding-bottom: clamp(2.2rem, 4vw, 4rem);
+}
+
+.featuredInstruments .factoryIntro h2 {
+  max-width: 13ch;
+}
+
+.featuredInstruments .factoryIntro h2 em {
+  color: var(--signal);
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+}
+
+.featuredInstrumentGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid rgb(5 50 91 / 45%);
+  border-left: 1px solid rgb(5 50 91 / 45%);
+}
+
+.featuredInstrumentCard {
+  min-width: 0;
+  border-right: 1px solid rgb(5 50 91 / 45%);
+  border-bottom: 1px solid rgb(5 50 91 / 45%);
+  background: #f7f2e8;
+}
+
+.featuredInstrumentCard summary {
+  display: block;
+  list-style: none;
+  cursor: pointer;
+}
+
+.featuredInstrumentCard summary::-webkit-details-marker {
+  display: none;
+}
+
+.featuredInstrumentMeta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .85rem 1rem;
+  border-bottom: 1px solid rgb(5 50 91 / 24%);
+  font-family: var(--font-mono);
+  font-size: .64rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+}
+
+.featuredInstrumentMeta > span {
+  color: var(--signal);
+}
+
+.featuredInstrumentMeta > strong {
+  color: #55724b;
+  font-weight: 800;
+}
+
+.featuredInstrumentVisual {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-image: url("/instruments/home-featured.webp");
+  background-repeat: no-repeat;
+  background-size: 300% 200%;
+  background-color: #ddd5c8;
+  border-bottom: 1px solid rgb(5 50 91 / 28%);
+}
+
+.featuredInstrumentCopy {
+  min-height: 11.5rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1.15rem 1rem 1rem;
+}
+
+.featuredInstrumentCopy h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.55rem, 2vw, 2.15rem);
+  line-height: .96;
+  letter-spacing: -.045em;
+}
+
+.featuredInstrumentCopy p {
+  margin: .7rem 0 1.5rem;
+  color: #625e58;
+  font-size: .98rem;
+  line-height: 1.4;
+}
+
+.featuredInstrumentCopy > span {
+  margin-top: auto;
+  padding-top: .8rem;
+  border-top: 1px solid rgb(5 50 91 / 18%);
+  color: #77716a;
+  font-family: var(--font-mono);
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+}
+
+.featuredInstrumentDrawer {
+  display: grid;
+  gap: .85rem;
+  padding: 1rem;
+  border-top: 1px solid rgb(5 50 91 / 38%);
+  background: #151714;
+  color: #f3eee4;
+}
+
+.featuredInstrumentDrawer p {
+  max-width: 33rem;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.48;
+}
+
+.featuredInstrumentDrawer > strong {
+  color: #d9a124;
+  font-family: var(--font-mono);
+  font-size: .63rem;
+  letter-spacing: .1em;
+  line-height: 1.35;
+}
+
+.featuredInstrumentDrawer a {
+  width: fit-content;
+  color: #f3eee4;
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-decoration: none;
+}
+
+.featuredInstrumentCard[open] .featuredInstrumentCopy > span {
+  color: var(--signal);
+}
+
+.featuredInstrumentCard:hover .featuredInstrumentVisual,
+.featuredInstrumentCard:focus-within .featuredInstrumentVisual {
+  filter: contrast(1.03) saturate(1.03);
+}
+
+@media (max-width: 980px) {
+  .featuredInstrumentGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .featuredInstrumentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .featuredInstrumentCopy {
+    min-height: 9.5rem;
+  }
+}
+
+/* PRICING / QUIETER THAN A MARKET STALL */
+.pricingIntro {
+  padding-top: clamp(1.3rem, 2vw, 2rem);
+  padding-bottom: clamp(1.3rem, 2vw, 2rem);
+}
+
+.pricingIntro h2 {
+  font-size: clamp(2.5rem, 4.4vw, 4.35rem);
+  line-height: .9;
+}
+
+.pricingIntro p {
+  max-width: 24rem;
+  font-size: clamp(.98rem, 1.2vw, 1.16rem);
+}
+
+.pricingCard {
+  min-height: 14rem;
+  padding: 1rem 1.05rem;
+  background: #fbf8f1;
+}
+
+.pricingCard > span {
+  font-size: .63rem;
+  letter-spacing: .11em;
+}
+
+.pricingCard h3 {
+  margin: 1rem 0 auto;
+  font-size: clamp(1.35rem, 1.75vw, 1.8rem);
+  line-height: 1.03;
+}
+
+.pricingCard > strong {
+  margin-top: 1.4rem;
+  color: var(--deep-sky);
+  font-family: inherit;
+  font-size: clamp(1.65rem, 2.25vw, 2.25rem);
+  font-weight: 760;
+  letter-spacing: -.035em;
+  line-height: 1;
+}
+
+.pricingCard small {
+  margin-top: .32rem;
+  color: #6f6a62;
+  font-size: .61rem;
+  letter-spacing: .08em;
+}
+
+.pricingCard b {
+  margin-top: .95rem;
+  font-size: .64rem;
+}
+
+@media (max-width: 760px) {
+  .pricingCard {
+    min-height: 12rem;
+  }
+}
