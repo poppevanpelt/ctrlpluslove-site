@@ -66,7 +66,7 @@ export const coreRoomPersonas: RoomPersona[] = [
     line: "Tests what survives outside the room.",
     contribution:
       "Pushes the idea against operational pressure, customer behavior and messy reality.",
-    portrait: "/room/personas/adrian-mbeki.webp",
+    portrait: "/room/personas/adrian-mbeki-20260920.svg",
     portraitPosition: "50% 38%",
   },
   {
@@ -200,7 +200,7 @@ export const homepagePersonaIds = [
   "the-customer",
 ] as const;
 
-export const HOMEPAGE_PORTRAIT_REVISION = "20260921-approved-breathing-room";
+export const HOMEPAGE_PORTRAIT_REVISION = "20260922-adrian-restored";
 
 const homepagePersonaIdSet = new Set<string>(homepagePersonaIds);
 
