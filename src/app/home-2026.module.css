@@ -5345,10 +5345,10 @@
 
 /* 2026-09-22 / VISIBLE FEATURED INSTRUMENT FIX */
 .featuredInstrumentCard:nth-child(1) .featuredInstrumentVisual {
-  background-image: url("/instruments/02-decision-collider.webp");
+  background-image: url("/poppe/machine-studies/machine-05.webp");
 }
 .featuredInstrumentCard:nth-child(2) .featuredInstrumentVisual {
-  background-image: url("/instruments/03-living-ticker.webp");
+  background-image: url("/museum/ignored-fax-machine.webp");
 }
 .featuredInstrumentCard:nth-child(3) .featuredInstrumentVisual {
   background-image: url("/poppe/machine-studies/machine-01.webp");
