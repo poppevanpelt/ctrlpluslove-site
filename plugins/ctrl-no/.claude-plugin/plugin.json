@@ -1,0 +1,12 @@
+{
+  "name": "ctrl-no",
+  "version": "0.1.0",
+  "description": "A pressure-resistant decision check before you pay, sign, agree, or commit.",
+  "author": {
+    "name": "ctrl+love",
+    "url": "https://www.ctrlpluslove.com"
+  },
+  "homepage": "https://www.ctrlpluslove.com",
+  "repository": "https://github.com/poppevanpelt/ctrlpluslove-site",
+  "keywords": ["decision-making", "judgment", "pressure", "verification", "ctrl-love"]
+}
