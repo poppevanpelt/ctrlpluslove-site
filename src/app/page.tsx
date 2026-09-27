@@ -456,6 +456,10 @@ export default function Home() {
             </p>
           </div>
         </div>
+        <div className={styles.personaCallout}>
+          <p>Got a Nick being a dick in your meetings?</p>
+          <strong>Send in Lexi and Maya.</strong>
+        </div>
         <div className={styles.personaGrid}>
           {homepageRoomPersonas.map((persona, index) => {
             const genealogy = personaGenealogies[persona.id] ?? {
