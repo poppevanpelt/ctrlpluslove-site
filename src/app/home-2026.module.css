@@ -1558,6 +1558,31 @@
   line-height: 1.42;
 }
 
+.personaCallout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(14rem, .75fr);
+  gap: 2rem;
+  align-items: baseline;
+  padding: 1.15rem 1.25rem 1.25rem;
+  border: 1px solid var(--deep-sky);
+  border-bottom: 0;
+  background: var(--deep-sky);
+  color: #fffaf0;
+}
+
+.personaCallout p,
+.personaCallout strong {
+  margin: 0;
+  font-size: clamp(1.65rem, 2.8vw, 3.2rem);
+  font-weight: 820;
+  letter-spacing: -.05em;
+  line-height: .96;
+}
+
+.personaCallout strong {
+  color: var(--sun);
+}
+
 .personaGrid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
