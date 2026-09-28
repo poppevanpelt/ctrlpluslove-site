@@ -1,6 +1,7 @@
 "use client";
 
 // Netlify rebuild marker: Savannah web activation
+// Netlify rebuild marker: Savannah env refresh
 
 import Script from "next/script";
 import { createElement } from "react";
