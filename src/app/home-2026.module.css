@@ -5417,3 +5417,22 @@
 .llmBall img {
   filter: contrast(1.03) saturate(.82) brightness(.99) drop-shadow(0 .35rem .55rem rgb(0 0 0 / 18%));
 }
+
+
+/* Mobile repair: the persona callout now contains four copy blocks. */
+@media (max-width: 700px) {
+  .personaCallout {
+    grid-template-columns: 1fr;
+    gap: .85rem;
+    align-items: start;
+    padding: 1rem 1.1rem 1.25rem;
+  }
+
+  .personaCallout p,
+  .personaCallout strong {
+    font-size: clamp(2rem, 10vw, 3rem);
+    line-height: .92;
+    word-break: normal;
+    overflow-wrap: normal;
+  }
+}
