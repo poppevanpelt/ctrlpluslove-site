@@ -457,8 +457,10 @@ export default function Home() {
           </div>
         </div>
         <div className={styles.personaCallout}>
-          <p>Got a Nick being a dick in your meetings?</p>
-          <strong>Send in Lexi and Maya.</strong>
+          <p>Too many Nicks being Dicks in your meetings?</p>
+          <p>Too many Lexis turning everything into content?</p>
+          <p>Too many Mayas turning the meeting into group therapy?</p>
+          <strong>You’ve got 65+ professionals on your team. Congratulations.</strong>
         </div>
         <div className={styles.personaGrid}>
           {homepageRoomPersonas.map((persona, index) => {
