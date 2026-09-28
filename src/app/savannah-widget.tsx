@@ -25,6 +25,7 @@ export function SavannahWidget() {
         theme: "dark",
         position: "bottom-right",
         size: "compact",
+        "main-label": "Talk to Savannah",
         "start-button-text": "Talk to Savannah",
         "end-button-text": "End call",
         "empty-voice-message": "Savannah is listening.",
