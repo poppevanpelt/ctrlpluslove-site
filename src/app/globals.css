@@ -15247,3 +15247,10 @@ summary {
     min-height: 0;
   }
 }
+
+
+/* Keep the live Savannah voice control above site chrome. */
+vapi-widget {
+  position: relative;
+  z-index: 2147483000;
+}
