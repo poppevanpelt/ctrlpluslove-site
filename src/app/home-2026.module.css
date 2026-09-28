@@ -1560,27 +1560,52 @@
 
 .personaCallout {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(14rem, .75fr);
-  gap: 2rem;
-  align-items: baseline;
-  padding: 1.15rem 1.25rem 1.25rem;
+  gap: clamp(4rem, 8vw, 7.5rem);
+  overflow: hidden;
+  padding: clamp(3rem, 6vw, 6rem) clamp(1.25rem, 3.5vw, 3rem) clamp(2.5rem, 5vw, 4rem);
   border: 1px solid var(--deep-sky);
   border-bottom: 0;
   background: var(--deep-sky);
   color: #fffaf0;
 }
 
+.personaCalloutRow {
+  display: grid;
+  grid-template-columns: minmax(0, .92fr) minmax(0, 1.18fr);
+  gap: clamp(1.4rem, 4vw, 4rem);
+  align-items: start;
+}
+
 .personaCallout p,
 .personaCallout strong {
+  display: block;
+  min-width: 0;
   margin: 0;
-  font-size: clamp(1.65rem, 2.8vw, 3.2rem);
+  font-size: clamp(2.8rem, 5.3vw, 5.8rem);
   font-weight: 820;
-  letter-spacing: -.05em;
-  line-height: .96;
+  letter-spacing: -.06em;
+  line-height: .92;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
 }
 
 .personaCallout strong {
   color: var(--sun);
+}
+
+.personaCalloutPill {
+  justify-self: center;
+  margin-top: clamp(.5rem, 1.5vw, 1.5rem);
+  padding: .78rem 1.25rem .85rem;
+  border-radius: 999px;
+  background: #fff8eb;
+  color: #111;
+  font-size: clamp(1.35rem, 2.1vw, 2.15rem);
+  font-weight: 820;
+  letter-spacing: -.045em;
+  line-height: 1;
+  text-decoration: none;
 }
 
 .personaGrid {
@@ -5419,20 +5444,27 @@
 }
 
 
-/* Mobile repair: the persona callout now contains four copy blocks. */
+/* Mobile: preserve the two-column irritation / payoff poster. */
 @media (max-width: 700px) {
   .personaCallout {
-    grid-template-columns: 1fr;
-    gap: .85rem;
-    align-items: start;
-    padding: 1rem 1.1rem 1.25rem;
+    gap: clamp(4.5rem, 16vw, 6.5rem);
+    padding: 3.4rem 1rem 2.2rem;
+  }
+
+  .personaCalloutRow {
+    grid-template-columns: minmax(0, .92fr) minmax(0, 1.18fr);
+    gap: clamp(1rem, 4vw, 1.5rem);
   }
 
   .personaCallout p,
   .personaCallout strong {
-    font-size: clamp(2rem, 10vw, 3rem);
-    line-height: .92;
-    word-break: normal;
-    overflow-wrap: normal;
+    font-size: clamp(2.15rem, 9.4vw, 3.45rem);
+    line-height: .91;
+    letter-spacing: -.055em;
+  }
+
+  .personaCalloutPill {
+    margin-top: .4rem;
+    font-size: clamp(1.35rem, 5.7vw, 1.8rem);
   }
 }
