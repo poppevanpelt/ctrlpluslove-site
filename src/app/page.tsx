@@ -457,10 +457,17 @@ export default function Home() {
           </div>
         </div>
         <div className={styles.personaCallout}>
-          <p>Too many Nicks being Dicks in your meetings?</p>
-          <p>Too many Lexis turning everything into content?</p>
-          <p>Too many Mayas turning the meeting into group therapy?</p>
-          <strong>You’ve got 65+ professionals on your team. Congratulations.</strong>
+          <div className={styles.personaCalloutRow}>
+            <p>Too many Nicks being Dicks in your meetings?</p>
+            <strong>You’ve got 65+ professionals on your team. Congratulations.</strong>
+          </div>
+          <div className={styles.personaCalloutRow}>
+            <p>Too many Mayas turning the meeting into group therapy?</p>
+            <strong>You’ve got 65+ professionals on your team. Congratulations.</strong>
+          </div>
+          <Link className={styles.personaCalloutPill} href="/">
+            ctrlpluslove.com
+          </Link>
         </div>
         <div className={styles.personaGrid}>
           {homepageRoomPersonas.map((persona, index) => {
