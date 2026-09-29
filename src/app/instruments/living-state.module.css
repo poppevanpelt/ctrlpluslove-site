@@ -1,5 +1,6 @@
 .panel {
   position: absolute;
+  z-index: 3;
   inset: auto 0.8rem 0.8rem 0.8rem;
   display: grid;
   grid-template-columns: auto 1fr auto;
