@@ -19,34 +19,41 @@ type Instrument = {
   href?: string;
   action?: string;
   family: "SEE" | "TEST" | "DECIDE" | "MOVE" | "ARTIFACT";
+  spriteIndex?: number;
 };
 
 const instruments: readonly Instrument[] = [
-  { no: "001", name: "DECISION COLLIDER", state: "WORKING", family: "DECIDE", line: "Collide assumptions before people collide.", why: "Built because agreement can hide incompatible definitions of the same decision.", href: "/decision-collider/", action: "RUN INSTRUMENT" },
-  { no: "002", name: "MEETING FILTER", state: "WORKING", family: "SEE", line: "Decide whether the meeting should exist.", why: "Built after too many rooms were booked before anyone asked what the room was for.", href: "/meeting-filter/", action: "RUN FILTER" },
-  { no: "003", name: "LIVING TICKER", state: "PROTOTYPE", family: "SEE", line: "Minutes record words. The ticker records movement.", why: "Tracks challenge, reframing, ownership and rupture while a room is changing." },
-  { no: "004", name: "DECISION MEMORY", state: "PROTOTYPE", family: "ARTIFACT", line: "A forgotten decision must win its argument again.", why: "Preserves the evidence, assumptions and reversals that created a decision.", href: "/decision-memory/", action: "OPEN MEMORY" },
+  { no: "001", name: "DECISION COLLIDER", spriteIndex: 1, state: "WORKING", family: "DECIDE", line: "Collide assumptions before people collide.", why: "Built because agreement can hide incompatible definitions of the same decision.", href: "/decision-collider/", action: "RUN INSTRUMENT" },
+  { no: "002", name: "MEETING FILTER", spriteIndex: 7, state: "WORKING", family: "SEE", line: "Decide whether the meeting should exist.", why: "Built after too many rooms were booked before anyone asked what the room was for.", href: "/meeting-filter/", action: "RUN FILTER" },
+  { no: "003", name: "LIVING TICKER", spriteIndex: 2, state: "PROTOTYPE", family: "SEE", line: "Minutes record words. The ticker records movement.", why: "Tracks challenge, reframing, ownership and rupture while a room is changing." },
+  { no: "004", name: "DECISION MEMORY", spriteIndex: 6, state: "PROTOTYPE", family: "ARTIFACT", line: "A forgotten decision must win its argument again.", why: "Preserves the evidence, assumptions and reversals that created a decision.", href: "/decision-memory/", action: "OPEN MEMORY" },
   { no: "005", name: "CTRL+SWAT", state: "FIELD TEST", family: "MOVE", line: "Detect. Judge. Build. Dispatch before the moment disappears.", why: "A rapid-response instrument for situations where strategic latency is the problem.", href: "/swat/", action: "ENTER SWAT" },
   { no: "006", name: "CTRL+FIZZ", state: "PROTOTYPE", family: "ARTIFACT", line: "Carbonated judgment for meetings that have gone flat.", why: "A physical reminder that perspective sometimes changes faster when the object changes.", href: "/fizz/", action: "OPEN BOTTLE" },
   { no: "007", name: "SIGNAL FIRE", state: "PROTOTYPE", family: "SEE", line: "Weak signals before they become obvious opportunities.", why: "Maps pressure, incumbent weakness and decision gaps before the market names them." },
   { no: "008", name: "POLICY PRISM", state: "PROTOTYPE", family: "TEST", line: "What happens after the policy meets behaviour?", why: "Separates stated intent from second-order effects and likely human response." },
-  { no: "009", name: "PROMPT SHOPPE", state: "WORKING", family: "MOVE", line: "A prompt without a decision is decoration.", why: "Tunes instructions by finding the real judgment hidden inside them.", href: "/prompt-shoppe/", action: "OPEN SHOPPE" },
+  { no: "009", name: "PROMPT SHOPPE", spriteIndex: 9, state: "WORKING", family: "MOVE", line: "A prompt without a decision is decoration.", why: "Tunes instructions by finding the real judgment hidden inside them.", href: "/prompt-shoppe/", action: "OPEN SHOPPE" },
   { no: "010", name: "FRICTION FINDER", state: "PROTOTYPE", family: "SEE", line: "Find the pothole before blaming the driver.", why: "Separates recurring system friction from the people forced to work around it." },
   { no: "011", name: "HUMAN TEST", state: "FIELD TEST", family: "TEST", line: "Can you still detect lived detail?", why: "A small forensic test for the qualities human writing loses when it becomes generic." },
   { no: "012", name: "MOMENTUM BUILDER", state: "FIELD TEST", family: "MOVE", line: "Make the next useful move smaller than the hesitation.", why: "Built to turn interpretation into an immediate concrete action." },
-  { no: "013", name: "DO-NOTHING CONTROL", state: "WORKING", family: "TEST", line: "Change has to beat reality left alone.", why: "Stops action from being treated as automatically wiser than deliberate inaction." },
-  { no: "014", name: "OPPOSITION SEAT", state: "WORKING", family: "TEST", line: "Pay someone to disagree.", why: "Makes dissent structural instead of depending on bravery in the room." },
+  { no: "013", name: "DO-NOTHING CONTROL", spriteIndex: 13, state: "WORKING", family: "TEST", line: "Change has to beat reality left alone.", why: "Stops action from being treated as automatically wiser than deliberate inaction." },
+  { no: "014", name: "OPPOSITION SEAT", spriteIndex: 12, state: "WORKING", family: "TEST", line: "Pay someone to disagree.", why: "Makes dissent structural instead of depending on bravery in the room." },
   { no: "015", name: "BLIND TRIAL", state: "WORKING", family: "TEST", line: "Remove the label before judging the thing.", why: "Separates the work from status, authorship and expectation." },
-  { no: "016", name: "EVIDENCE TAGGER", state: "PROTOTYPE", family: "SEE", line: "Observed is not the same as assumed.", why: "Makes the source of confidence visible: Observed / Inferred / Assumed / Tested / Proven." },
+  { no: "016", name: "EVIDENCE TAGGER", spriteIndex: 15, state: "PROTOTYPE", family: "SEE", line: "Observed is not the same as assumed.", why: "Makes the source of confidence visible: Observed / Inferred / Assumed / Tested / Proven." },
   { no: "017", name: "MISSING SEAT", state: "PROTOTYPE", family: "SEE", line: "Who lives with the decision but is absent from it?", why: "Surfaces constituencies who inherit the consequences without shaping the choice." },
   { no: "018", name: "CONFLICT CAMERA", state: "IN DEVELOPMENT", family: "SEE", line: "Point it at the disagreement, not the people.", why: "An experimental interface for making competing forces visible in ordinary situations." },
-  { no: "019", name: "DECISION IN A BOX", state: "PROTOTYPE", family: "ARTIFACT", line: "Five options enter. One imperfect object leaves.", why: "Turns an abstract decision into something that can be handled, compared and committed to." },
+  { no: "019", name: "DECISION IN A BOX", spriteIndex: 8, state: "PROTOTYPE", family: "ARTIFACT", line: "Five options enter. One imperfect object leaves.", why: "Turns an abstract decision into something that can be handled, compared and committed to." },
   { no: "020", name: "PURGE", state: "PROTOTYPE", family: "MOVE", line: "Cut the fat. Keep the organ.", why: "A subtraction instrument for seeing exactly what can be removed without damaging the thing that matters.", href: "/purge/", action: "START PURGE" },
-  { no: "021", name: "MISS ARCHIVE", state: "ARCHIVE", family: "ARTIFACT", line: "Keep the wrong calls. Extract the lesson.", why: "Stores misses because a laboratory that only displays wins cannot learn." },
+  { no: "021", name: "MISS ARCHIVE", spriteIndex: 14, state: "ARCHIVE", family: "ARTIFACT", line: "Keep the wrong calls. Extract the lesson.", why: "Stores misses because a laboratory that only displays wins cannot learn." },
   { no: "022", name: "TRAJECTORY / ATLAS / MARIA", state: "IN DEVELOPMENT", family: "ARTIFACT", line: "Map how a decision travels, not only where it ends.", why: "A developing system for human coordination terrain, protocol primitives and decision trajectories.", href: "/maria/", action: "ENTER EXCAVATION 001" },
   { no: "023", name: "CTRL+CHASE", state: "PROTOTYPE", family: "MOVE", line: "A question either produces evidence or earns its death.", why: "Keeps unresolved signals moving until they become evidence, a next move, or a justified stop.", href: "/chase/", action: "START CHASE" },
   { no: "024", name: "BRAND SURVIVAL", state: "PROTOTYPE", family: "TEST", line: "How much can we take away before it stops being you?", why: "Built to make distinctiveness visible as a survival curve instead of collapsing it into a score.", href: "/brand-survival/", action: "RUN BATCH 001" },
 ];
+
+function spritePosition(index: number) {
+  const column = index % 4;
+  const row = Math.floor(index / 4);
+  return `${(column / 3) * 100}% ${(row / 3) * 100}%`;
+}
 
 const stateClass: Record<State, string> = {
   WORKING: styles.stateWorking,
@@ -102,7 +109,14 @@ export default function InstrumentRoomPage() {
                   <span className={styles.number}>{instrument.no}</span>
                   <span className={`${styles.state} ${stateClass[instrument.state]}`}>{instrument.state}</span>
                 </div>
-                <div className={styles.device} data-family={instrument.family}>
+                <div className={`${styles.device}${instrument.spriteIndex !== undefined ? ` ${styles.hasRender}` : ""}`} data-family={instrument.family}>
+                  {instrument.spriteIndex !== undefined ? (
+                    <span
+                      className={styles.renderWindow}
+                      style={{ backgroundPosition: spritePosition(instrument.spriteIndex) }}
+                      aria-hidden="true"
+                    />
+                  ) : null}
                   <span className={styles.deviceScreen}>{instrument.family}</span>
                   <span className={styles.dial} />
                   <span className={styles.switch} />
@@ -127,12 +141,29 @@ export default function InstrumentRoomPage() {
         <div className={styles.artifactBench}>
           {instruments.filter((item) => item.family === "ARTIFACT" && item.name !== "MISS ARCHIVE").map((instrument) => (
             <details className={styles.artifact} key={instrument.no}>
-              <summary><span>{instrument.no} · {instrument.state}</span><strong>{instrument.name}</strong><p>{instrument.line}</p></summary>
+              <summary>
+                <span>{instrument.no} · {instrument.state}</span>
+                {instrument.spriteIndex !== undefined ? (
+                  <span
+                    className={styles.artifactRender}
+                    style={{ backgroundPosition: spritePosition(instrument.spriteIndex) }}
+                    aria-hidden="true"
+                  />
+                ) : null}
+                <strong>{instrument.name}</strong>
+                <p>{instrument.line}</p>
+              </summary>
               <div><p>{instrument.why}</p>{instrument.href ? <Link href={instrument.href}>{instrument.action ?? "OPEN"} ↗</Link> : <span>SPECIMEN HELD IN LAB</span>}</div>
             </details>
           ))}
           <details className={styles.missArchive}>
-            <summary><span>021 · ARCHIVE CABINET</span><strong>MISS ARCHIVE</strong><p>Wrong calls kept on purpose.</p><i aria-hidden="true" /></summary>
+            <summary>
+              <span>021 · ARCHIVE CABINET</span>
+              <span className={styles.artifactRender} style={{ backgroundPosition: spritePosition(14) }} aria-hidden="true" />
+              <strong>MISS ARCHIVE</strong>
+              <p>Wrong calls kept on purpose.</p>
+              <i aria-hidden="true" />
+            </summary>
             <div><p>A laboratory that only displays wins cannot learn. Failed predictions, missed signals and conclusions we later changed belong here.</p><span>ARCHIVE / INTERNAL EVIDENCE</span></div>
           </details>
         </div>
