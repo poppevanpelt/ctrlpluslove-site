@@ -20,6 +20,7 @@ export function SavannahWidget() {
       />
 
       <div
+        className="savannah-presence"
         aria-hidden="true"
         style={{
           position: "fixed",
@@ -92,6 +93,11 @@ export function SavannahWidget() {
         "start-button-text": "Talk to Savannah",
         "end-button-text": "End call",
         "empty-voice-message": "Savannah is listening.",
+        "base-color": "#151515",
+        "accent-color": "#f5f1e7",
+        "button-base-color": "#151515",
+        "button-accent-color": "#f5f1e7",
+        radius: "small",
       })}
     </>
   );
