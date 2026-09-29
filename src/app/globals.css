@@ -15282,7 +15282,16 @@ vapi-widget {
 
 /* Savannah should be visible, not sit on top of the decision. */
 .savannah-presence {
-  max-width: min(320px, calc(100vw - 36px));
+  max-width: 170px;
+  flex-direction: column;
+  align-items: flex-end !important;
+  gap: 6px !important;
+  transform: scale(.88);
+  transform-origin: bottom right;
+}
+
+.savannah-presence > div:last-child {
+  max-width: 150px !important;
 }
 
 @media (max-width: 760px) {
@@ -15290,7 +15299,7 @@ vapi-widget {
     right: 10px !important;
     bottom: 78px !important;
     gap: 7px !important;
-    transform: scale(.86);
+    transform: scale(.82);
     transform-origin: bottom right;
   }
 
