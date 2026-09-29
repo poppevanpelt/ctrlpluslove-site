@@ -1,5 +1,7 @@
 "use client";
 
+// Netlify rebuild marker: visible Savannah retry
+
 import Script from "next/script";
 import { createElement } from "react";
 
