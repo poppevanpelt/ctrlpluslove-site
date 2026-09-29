@@ -29,7 +29,9 @@ export function ProjectNavigation() {
     pathname === "/five-guys-signal" ||
     pathname === "/five-guys-signal/" ||
     pathname === "/fizz" ||
-    pathname === "/fizz/"
+    pathname === "/fizz/" ||
+    pathname === "/laatjenietnaaien" ||
+    pathname === "/laatjenietnaaien/"
   ) {
     return null;
   }
