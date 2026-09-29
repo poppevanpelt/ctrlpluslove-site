@@ -113,7 +113,12 @@ export default function InstrumentRoomPage() {
                   {instrument.spriteIndex !== undefined ? (
                     <span
                       className={styles.renderWindow}
-                      style={{ backgroundPosition: spritePosition(instrument.spriteIndex) }}
+                      style={{
+                        backgroundImage: 'url("/instruments/cabinet-sprite.webp")',
+                        backgroundPosition: spritePosition(instrument.spriteIndex),
+                        backgroundSize: "400% 400%",
+                        zIndex: 0,
+                      }}
                       aria-hidden="true"
                     />
                   ) : null}
@@ -159,7 +164,11 @@ export default function InstrumentRoomPage() {
           <details className={styles.missArchive}>
             <summary>
               <span>021 · ARCHIVE CABINET</span>
-              <span className={styles.artifactRender} style={{ backgroundPosition: spritePosition(14) }} aria-hidden="true" />
+              <span className={styles.artifactRender} style={{
+                backgroundImage: 'url("/instruments/cabinet-sprite.webp")',
+                backgroundPosition: spritePosition(14),
+                backgroundSize: "400% 400%",
+              }} aria-hidden="true" />
               <strong>MISS ARCHIVE</strong>
               <p>Wrong calls kept on purpose.</p>
               <i aria-hidden="true" />
