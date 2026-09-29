@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 import { routeMetadata } from "../../seo";
@@ -21,6 +22,18 @@ export default function OnCallRoomPricingPage() {
               Recurring pressure. Real-time clarity. The Room stays close enough to use when the decision arrives.
             </p>
           </div>
+
+          <figure className="on-call-room-render">
+            <Image
+              src="/pricing/on-call-room.webp"
+              alt="On-Call Room pricing document"
+              width={1536}
+              height={1024}
+              priority
+              sizes="(max-width: 900px) 100vw, 72vw"
+            />
+            <figcaption>On-Call Room™ · working pricing document</figcaption>
+          </figure>
 
           <div className="on-call-pricing-grid">
             <article className="on-call-price-card">
