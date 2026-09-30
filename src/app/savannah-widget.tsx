@@ -59,9 +59,12 @@ export function SavannahWidget() {
     setErrorText("");
 
     try {
-      await vapi.start(SAVANNAH_ASSISTANT_ID, {
-        customerJoinTimeoutSeconds: 45,
-      });
+      await vapi.start(
+        SAVANNAH_ASSISTANT_ID,
+        {
+          customerJoinTimeoutSeconds: 45,
+        } as any,
+      );
     } catch (error) {
       console.error("Savannah call start failed", error);
       setCallState("error");
