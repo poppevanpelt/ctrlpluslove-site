@@ -11,7 +11,7 @@ export function SavannahWidget() {
 
     const script = document.createElement("script");
     script.type = "module";
-    script.src = "/savannah-runtime.js?v=b0321e1";
+    script.src = "/savannah-runtime.js?v=b0321e2";
     script.dataset.savannahRuntime = "true";
     script.onerror = () => {
       const button = document.getElementById(
