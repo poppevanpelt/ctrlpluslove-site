@@ -16,6 +16,7 @@
   "dependencies": {
     "@vercel/analytics": "latest",
     "@vercel/speed-insights": "^2.0.0",
+    "@vapi-ai/web": "latest",
     "next": "16.2.10",
     "react": "19.2.4",
     "react-dom": "19.2.4"
