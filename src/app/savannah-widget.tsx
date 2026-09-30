@@ -6,7 +6,7 @@ const SAVANNAH_ASSISTANT_ID = "417b8810-5b53-4330-9bc4-6437aba1e401";
 const VAPI_PUBLIC_KEY = "f79f986e-3b43-4dde-b712-5527ec872a1c";
 const SAVANNAH_AVATAR = "/savannah-avatar.jpg?v=0060d14c";
 
-type CallState = "idle" | "connecting" | "live" | "error";
+type CallState = "idle" | "requesting-mic" | "connecting" | "live" | "error";
 
 type VapiInstance = {
   start: (assistantId: string, overrides?: Record<string, unknown>) => Promise<unknown>;
@@ -97,9 +97,22 @@ export function SavannahWidget() {
     };
   }, []);
 
+  const requestMicrophone = async () => {
+    if (!navigator.mediaDevices?.getUserMedia) {
+      throw new Error("MIC_UNSUPPORTED");
+    }
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      stream.getTracks().forEach((track) => track.stop());
+    } catch {
+      throw new Error("MIC_DENIED");
+    }
+  };
+
   const toggleCall = async () => {
     const vapi = vapiRef.current;
-    if (!vapi || !sdkReady || callState === "connecting") return;
+    if (!vapi || !sdkReady || callState === "connecting" || callState === "requesting-mic") return;
 
     if (callState === "live") {
       vapi.stop();
@@ -107,24 +120,37 @@ export function SavannahWidget() {
     }
 
     setErrorText("");
-    setCallState("connecting");
 
     try {
+      setCallState("requesting-mic");
+      await requestMicrophone();
+
+      setCallState("connecting");
       await vapi.start(SAVANNAH_ASSISTANT_ID, {
         customerJoinTimeoutSeconds: 45,
       });
     } catch (error) {
       console.error("Savannah call start failed", error);
       setCallState("error");
-      setErrorText("The line dropped. Try me again.");
+
+      const message = error instanceof Error ? error.message : "";
+      if (message === "MIC_DENIED") {
+        setErrorText("I need the microphone. Allow it for ctrlpluslove.com, then try again.");
+      } else if (message === "MIC_UNSUPPORTED") {
+        setErrorText("This browser isn't giving me a microphone.");
+      } else {
+        setErrorText("The line dropped. Try me again.");
+      }
     }
   };
 
   const buttonLabel =
     !sdkReady
       ? "Loading Savannah…"
-      : callState === "connecting"
-        ? "Opening the line…"
+      : callState === "requesting-mic"
+        ? "Allow microphone…"
+        : callState === "connecting"
+          ? "Opening the line…"
         : callState === "live"
           ? "End call"
           : callState === "error"
@@ -134,15 +160,17 @@ export function SavannahWidget() {
   const presenceLine =
     !sdkReady
       ? "One second."
-      : callState === "connecting"
-        ? "One second."
+      : callState === "requesting-mic"
+        ? "I need your microphone first."
+        : callState === "connecting"
+          ? "One second."
         : callState === "live"
           ? "I'm listening."
           : callState === "error"
             ? errorText
             : "Morning. What are we trying to decide?";
 
-  const busy = callState === "connecting" || !sdkReady;
+  const busy = callState === "connecting" || callState === "requesting-mic" || !sdkReady;
 
   return (
     <aside
