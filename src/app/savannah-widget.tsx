@@ -5,10 +5,6 @@ import { createElement, useEffect, useState } from "react";
 
 const SAVANNAH_ASSISTANT_ID = "417b8810-5b53-4330-9bc4-6437aba1e401";
 const VAPI_PUBLIC_KEY = "f79f986e-3b43-4dde-b712-5527ec872a1c";
-const ASSISTANT_OVERRIDES = JSON.stringify({
-  customerJoinTimeoutSeconds: 45,
-});
-
 type WidgetState = "loading" | "ready" | "live" | "error";
 
 export function SavannahWidget() {
@@ -143,7 +139,6 @@ export function SavannahWidget() {
       {createElement("vapi-widget", {
         "public-key": VAPI_PUBLIC_KEY,
         "assistant-id": SAVANNAH_ASSISTANT_ID,
-        "assistant-overrides": ASSISTANT_OVERRIDES,
         mode: "voice",
         theme: "dark",
         position: "bottom-right",
