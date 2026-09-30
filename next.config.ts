@@ -22,7 +22,7 @@ const securityHeaders = [
       "base-uri 'self'",
       "form-action 'self'",
       isDevelopment ? "" : "frame-ancestors 'none'",
-      "worker-src 'self' blob:",
+      "worker-src 'self' blob: https://*.daily.co",
       "manifest-src 'self'",
       isDevelopment ? "" : "upgrade-insecure-requests",
     ].join("; "),
