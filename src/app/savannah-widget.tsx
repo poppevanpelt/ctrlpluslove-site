@@ -5,7 +5,7 @@
 import Script from "next/script";
 import { createElement } from "react";
 
-const SAVANNAH_ASSISTANT_ID = "c0ba4276-4ffc-4e6f-b795-c4d8f8dfa8b4";
+const SAVANNAH_ASSISTANT_ID = "417b8810-5b53-4330-9bc4-6437aba1e401";
 const VAPI_PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY;
 const SAVANNAH_AVATAR = "/savannah-avatar.jpg";
 
