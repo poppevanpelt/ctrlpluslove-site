@@ -46,7 +46,6 @@ if (!window.__savannahRuntimeLoaded) {
       let micTrack = null;
       let live = false;
       let starting = false;
-      let localAudioSeen = false;
 
       const cleanup = () => {
         stopStream(micStream);
@@ -61,7 +60,6 @@ if (!window.__savannahRuntimeLoaded) {
         if (starting || live) return;
 
         starting = true;
-        localAudioSeen = false;
         setUi("Opening microphone…", "Safari should show the orange microphone indicator.", true);
 
         try {
@@ -95,8 +93,8 @@ if (!window.__savannahRuntimeLoaded) {
             { audioSource: micTrack, startAudioOff: false },
           );
 
-          vapi.on("local-volume-level", (volume) => {
-            if (volume > 0.001) localAudioSeen = true;
+          vapi.on("local-volume-level", () => {
+            // Useful for diagnostics, but never use this observer as a proxy for call health.
           });
 
           vapi.on("call-start", () => {
@@ -106,13 +104,8 @@ if (!window.__savannahRuntimeLoaded) {
           });
 
           vapi.on("call-end", () => {
-            const heard = localAudioSeen;
             cleanup();
-            if (heard) {
-              setUi("Talk to Savannah", "Morning. What are we trying to decide?", false);
-            } else {
-              fail("Your microphone opened, but Savannah received no sound. Try again.");
-            }
+            setUi("Talk to Savannah", "Morning. What are we trying to decide?", false);
           });
 
           vapi.on("call-start-failed", (event) => {
@@ -123,6 +116,20 @@ if (!window.__savannahRuntimeLoaded) {
 
           vapi.on("error", (error) => {
             console.error("Savannah Vapi error", error);
+
+            const type = error && typeof error === "object" ? error.type : "";
+            const stage = error && typeof error === "object" ? error.stage : "";
+            const nonFatal =
+              type === "audio-observer-setup-error" ||
+              type === "audio-processing-setup-error" ||
+              stage === "audio-observer-setup" ||
+              stage === "audio-processing-setup";
+
+            // Vapi explicitly treats these setup errors as non-critical. Mobile Safari
+            // can emit them even when the Daily call itself is alive, so do not tear
+            // Savannah down merely because an audio-level/processing observer failed.
+            if (nonFatal) return;
+
             cleanup();
             fail("The audio line dropped. Try me again.");
           });
