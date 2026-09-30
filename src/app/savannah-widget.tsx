@@ -1,121 +1,88 @@
 "use client";
 
-import Script from "next/script";
-import { createElement, useEffect, useState } from "react";
-
-const SAVANNAH_ASSISTANT_ID = "417b8810-5b53-4330-9bc4-6437aba1e401";
-const VAPI_PUBLIC_KEY = "f79f986e-3b43-4dde-b712-5527ec872a1c";
-type WidgetState = "loading" | "ready" | "live" | "error";
+import { useEffect } from "react";
 
 export function SavannahWidget() {
-  const [state, setState] = useState<WidgetState>("loading");
-
   useEffect(() => {
-    const handleStart = () => setState("live");
-    const handleEnd = () => setState("ready");
-    const handleError = () => setState("error");
+    const existing = document.querySelector<HTMLScriptElement>(
+      'script[data-savannah-runtime="true"]',
+    );
+    if (existing) return;
 
-    const attach = () => {
-      const widget = document.querySelector("vapi-widget");
-      if (!widget) return false;
-
-      widget.addEventListener("call-start", handleStart);
-      widget.addEventListener("call-end", handleEnd);
-      widget.addEventListener("error", handleError);
-      setState("ready");
-      return true;
+    const script = document.createElement("script");
+    script.type = "module";
+    script.src = "/savannah-runtime.js?v=b0321e0";
+    script.dataset.savannahRuntime = "true";
+    script.onerror = () => {
+      const button = document.getElementById(
+        "savannah-call-button",
+      ) as HTMLButtonElement | null;
+      const presence = document.getElementById("savannah-presence");
+      if (button) {
+        button.textContent = "Try Savannah again";
+        button.disabled = false;
+        button.style.opacity = "1";
+      }
+      if (presence) {
+        presence.textContent = "Savannah's audio line did not load. Try again.";
+      }
     };
 
-    if (attach()) {
-      return () => {
-        const widget = document.querySelector("vapi-widget");
-        widget?.removeEventListener("call-start", handleStart);
-        widget?.removeEventListener("call-end", handleEnd);
-        widget?.removeEventListener("error", handleError);
-      };
-    }
-
-    const timer = window.setInterval(() => {
-      if (attach()) window.clearInterval(timer);
-    }, 250);
-
-    const timeout = window.setTimeout(() => {
-      window.clearInterval(timer);
-      setState((current) => (current === "loading" ? "error" : current));
-    }, 8000);
-
-    return () => {
-      window.clearInterval(timer);
-      window.clearTimeout(timeout);
-      const widget = document.querySelector("vapi-widget");
-      widget?.removeEventListener("call-start", handleStart);
-      widget?.removeEventListener("call-end", handleEnd);
-      widget?.removeEventListener("error", handleError);
-    };
+    document.head.appendChild(script);
   }, []);
 
-  const status =
-    state === "loading"
-      ? "Opening the front door."
-      : state === "live"
-        ? "I'm listening."
-        : state === "error"
-          ? "The audio line did not open. Try again."
-          : "Morning. What are we trying to decide?";
-
   return (
-    <>
-      <Script
-        src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js"
-        strategy="afterInteractive"
-      />
-
-      <div
-        style={{
-          position: "fixed",
-          right: 18,
-          bottom: 92,
-          zIndex: 2147482999,
-          width: "min(290px, calc(100vw - 36px))",
-          padding: "12px 14px",
-          border: "1px solid rgba(21,21,21,.20)",
-          background: "rgba(245,241,231,.97)",
-          color: "#151515",
-          boxShadow: "0 12px 32px rgba(0,0,0,.10)",
-          backdropFilter: "blur(8px)",
-          WebkitBackdropFilter: "blur(8px)",
-          fontFamily: "inherit",
-          pointerEvents: "none",
-        }}
-      >
+    <aside
+      aria-label="Savannah, ctrl+love employee #4"
+      style={{
+        position: "fixed",
+        right: 18,
+        bottom: 18,
+        zIndex: 2147483001,
+        width: "min(330px, calc(100vw - 36px))",
+        border: "1px solid rgba(21,21,21,.22)",
+        background: "rgba(245,241,231,.98)",
+        color: "#151515",
+        boxShadow: "0 16px 44px rgba(0,0,0,.16)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+        fontFamily: "inherit",
+      }}
+    >
+      <div style={{ padding: "14px 16px 15px" }}>
         <div
           style={{
             display: "flex",
             alignItems: "baseline",
             justifyContent: "space-between",
-            gap: 12,
+            gap: 14,
           }}
         >
-          <div style={{ fontSize: 14, fontWeight: 700, lineHeight: 1 }}>Savannah</div>
+          <div style={{ fontSize: 15, fontWeight: 700, lineHeight: 1 }}>
+            Savannah
+          </div>
           <div
             style={{
               fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
               fontSize: 8,
               fontWeight: 700,
-              letterSpacing: ".12em",
+              letterSpacing: ".13em",
               textTransform: "uppercase",
               opacity: 0.48,
+              whiteSpace: "nowrap",
             }}
           >
             employee #4
           </div>
         </div>
+
         <div
           style={{
-            marginTop: 5,
+            marginTop: 6,
             fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
             fontSize: 9,
             fontWeight: 600,
+            lineHeight: 1.25,
             letterSpacing: ".08em",
             textTransform: "uppercase",
             opacity: 0.58,
@@ -123,36 +90,63 @@ export function SavannahWidget() {
         >
           intelligent front door
         </div>
-        <div
+
+        <p
+          id="savannah-presence"
           aria-live="polite"
           style={{
-            marginTop: 12,
-            fontSize: 13,
-            lineHeight: 1.3,
+            margin: "18px 0 0",
+            fontSize: 15,
             fontWeight: 500,
+            lineHeight: 1.3,
+            letterSpacing: "-.01em",
           }}
         >
-          {status}
-        </div>
+          One second.
+        </p>
       </div>
 
-      {createElement("vapi-widget", {
-        "public-key": VAPI_PUBLIC_KEY,
-        "assistant-id": SAVANNAH_ASSISTANT_ID,
-        mode: "voice",
-        theme: "dark",
-        position: "bottom-right",
-        size: "tiny",
-        radius: "none",
-        "main-label": "Savannah",
-        "start-button-text": "Talk to Savannah",
-        "end-button-text": "End call",
-        "empty-voice-message": "Morning. What are we trying to decide?",
-        "show-transcript": "false",
-        "button-base-color": "#151515",
-        "button-accent-color": "#F5F1E7",
-        "accent-color": "#FF5A2A",
-      })}
-    </>
+      <button
+        id="savannah-call-button"
+        type="button"
+        disabled
+        aria-label="Talk to Savannah"
+        style={{
+          display: "flex",
+          width: "100%",
+          minHeight: 50,
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 16,
+          appearance: "none",
+          border: 0,
+          borderTop: "1px solid rgba(21,21,21,.22)",
+          borderRadius: 0,
+          padding: "0 16px",
+          background: "#151515",
+          color: "#f5f1e7",
+          font: "inherit",
+          fontSize: 11,
+          fontWeight: 700,
+          letterSpacing: ".11em",
+          lineHeight: 1,
+          textTransform: "uppercase",
+          cursor: "default",
+          opacity: 0.68,
+        }}
+      >
+        <span>Loading Savannah…</span>
+        <span
+          aria-hidden="true"
+          style={{
+            width: 8,
+            height: 8,
+            flex: "0 0 auto",
+            borderRadius: "50%",
+            background: "#ff5a2a",
+          }}
+        />
+      </button>
+    </aside>
   );
 }
