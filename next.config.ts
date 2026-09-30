@@ -16,6 +16,7 @@ const securityHeaders = [
       "img-src 'self' data: blob: https://i.ytimg.com https://images.unsplash.com https://upload.wikimedia.org https://assets.science.nasa.gov",
       "font-src 'self' data:",
       "connect-src 'self' https://api.openai.com https://api.notion.com https://api.vapi.ai wss://api.vapi.ai https://*.daily.co wss://*.daily.co https://va.vercel-scripts.com https://vitals.vercel-insights.com https://*.vercel-insights.com",
+      "frame-src 'self' https://daily.co https://*.daily.co",
       "media-src 'self'",
       "object-src 'none'",
       "base-uri 'self'",
@@ -36,7 +37,7 @@ const securityHeaders = [
   },
   {
     key: "Permissions-Policy",
-    value: "camera=(), microphone=(self), geolocation=(), payment=(), usb=(), browsing-topics=(), accelerometer=(self), gyroscope=(self), magnetometer=(self)",
+    value: "camera=(), microphone=(self \"https://daily.co\" \"https://*.daily.co\"), geolocation=(), payment=(), usb=(), browsing-topics=(), accelerometer=(self), gyroscope=(self), magnetometer=(self)",
   },
   !isDevelopment
     ? {
