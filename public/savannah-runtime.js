@@ -17,137 +17,162 @@ if (!window.__savannahRuntimeLoaded) {
     if (presence) presence.textContent = line;
   };
 
-  const fail = (message = "The line dropped. Try me again.") => {
-    console.error("Savannah:", message);
-    setUi("Try Savannah again", message, false);
+  const stopStream = (stream) => {
+    try {
+      stream?.getTracks?.().forEach((track) => track.stop());
+    } catch {}
   };
 
-  try {
-    const mod = await import("https://esm.sh/@vapi-ai/web@2.7.1?bundle");
+  const fail = (message) => {
+    setUi("Try Savannah again", message || "The audio line dropped. Try me again.", false);
+  };
 
-    const candidates = [
-      mod.default,
-      mod.Vapi,
-      mod.default && mod.default.default,
-      mod.default && mod.default.Vapi,
-    ];
+  if (!button) {
+    console.error("Savannah call button not found.");
+  } else {
+    try {
+      const mod = await import("https://esm.sh/@vapi-ai/web@2.7.1?bundle");
+      const candidates = [
+        mod.default,
+        mod.Vapi,
+        mod.default && mod.default.default,
+        mod.default && mod.default.Vapi,
+      ];
+      const VapiCtor = candidates.find((candidate) => typeof candidate === "function");
+      if (!VapiCtor) throw new Error("No Vapi constructor found.");
 
-    const VapiCtor = candidates.find((candidate) => typeof candidate === "function");
+      let vapi = null;
+      let micStream = null;
+      let micTrack = null;
+      let live = false;
+      let starting = false;
+      let localAudioSeen = false;
 
-    if (!VapiCtor) {
-      throw new TypeError("No Vapi constructor found in pinned browser bundle.");
-    }
-
-    // Safari/iPhone hardening:
-    // - always include the microphone in Daily's permission prompt
-    // - explicitly start with audio on
-    const vapi = new VapiCtor(
-      PUBLIC_KEY,
-      undefined,
-      { alwaysIncludeMicInPermissionPrompt: true },
-      { audioSource: true, startAudioOff: false },
-    );
-
-    let live = false;
-    let starting = false;
-    let localAudioSeen = false;
-
-    vapi.on("call-start-progress", (event) => {
-      console.log("Savannah call progress", event);
-    });
-
-    vapi.on("local-volume-level", (volume) => {
-      if (volume > 0.001) localAudioSeen = true;
-    });
-
-    vapi.on("call-start", () => {
-      live = true;
-      starting = false;
-      setUi("End call", "I'm listening.", false);
-    });
-
-    vapi.on("call-start-failed", (event) => {
-      console.error("Savannah call start failed", event);
-      live = false;
-      starting = false;
-      fail("The audio line didn't open. Try me again.");
-    });
-
-    vapi.on("call-end", () => {
-      live = false;
-      starting = false;
-      if (!localAudioSeen) {
-        setUi("Try Savannah again", "I still didn't hear your microphone. Try me again.", false);
-      } else {
-        setUi("Talk to Savannah", "Morning. What are we trying to decide?", false);
-      }
-      localAudioSeen = false;
-    });
-
-    vapi.on("camera-error", (error) => {
-      console.error("Savannah Daily camera/mic error", error);
-    });
-
-    vapi.on("error", (error) => {
-      console.error("Savannah Vapi error", error);
-      live = false;
-      starting = false;
-      fail();
-    });
-
-    if (!button) {
-      throw new Error("Savannah call button not found.");
-    }
-
-    button.addEventListener("click", async () => {
-      if (starting) return;
-
-      if (live) {
-        try {
-          vapi.stop();
-        } catch (error) {
-          console.error("Savannah stop error", error);
-        }
-        return;
-      }
-
-      starting = true;
-      localAudioSeen = false;
-      setUi("Opening the line…", "Allow the microphone if Safari asks.", true);
-
-      try {
-        if (!navigator.mediaDevices?.getUserMedia) {
-          throw new Error("MIC_UNSUPPORTED");
-        }
-
-        // Give mobile Safari the full permitted join window. This is an
-        // assistant override; Vapi's default web-call join timeout is 15s.
-        await vapi.start(ASSISTANT_ID, {
-          customerJoinTimeoutSeconds: 60,
-        });
-      } catch (error) {
-        console.error("Savannah start error", error);
+      const cleanup = () => {
+        stopStream(micStream);
+        micStream = null;
+        micTrack = null;
+        vapi = null;
+        live = false;
         starting = false;
+      };
 
-        const message = error instanceof Error ? error.message : "";
-        if (message === "MIC_UNSUPPORTED") {
-          fail("This browser isn't giving me a microphone.");
-        } else if (
-          error &&
-          typeof error === "object" &&
-          "name" in error &&
-          error.name === "NotAllowedError"
-        ) {
-          fail("I need the microphone. Allow it for ctrlpluslove.com, then try again.");
-        } else {
-          fail();
+      const start = async () => {
+        if (starting || live) return;
+
+        starting = true;
+        localAudioSeen = false;
+        setUi("Opening microphone…", "Safari should show the orange microphone indicator.", true);
+
+        try {
+          if (!navigator.mediaDevices?.getUserMedia) {
+            throw new Error("MIC_UNSUPPORTED");
+          }
+
+          // Acquire the exact iPhone microphone track from the user's tap and
+          // keep that same track alive all the way into Daily/Vapi.
+          micStream = await navigator.mediaDevices.getUserMedia({
+            audio: {
+              echoCancellation: true,
+              noiseSuppression: true,
+              autoGainControl: true,
+            },
+            video: false,
+          });
+
+          micTrack = micStream.getAudioTracks()[0];
+          if (!micTrack || micTrack.readyState !== "live") {
+            throw new Error("NO_LIVE_MIC_TRACK");
+          }
+          micTrack.enabled = true;
+
+          setUi("Connecting…", "Microphone is live. Opening Savannah.", true);
+
+          vapi = new VapiCtor(
+            PUBLIC_KEY,
+            undefined,
+            { alwaysIncludeMicInPermissionPrompt: true },
+            { audioSource: micTrack, startAudioOff: false },
+          );
+
+          vapi.on("local-volume-level", (volume) => {
+            if (volume > 0.001) localAudioSeen = true;
+          });
+
+          vapi.on("call-start", () => {
+            live = true;
+            starting = false;
+            setUi("End call", "I'm listening.", false);
+          });
+
+          vapi.on("call-end", () => {
+            const heard = localAudioSeen;
+            cleanup();
+            if (heard) {
+              setUi("Talk to Savannah", "Morning. What are we trying to decide?", false);
+            } else {
+              fail("Your microphone opened, but Savannah received no sound. Try again.");
+            }
+          });
+
+          vapi.on("call-start-failed", (event) => {
+            console.error("Savannah call-start-failed", event);
+            cleanup();
+            fail("The call could not open. Try me again.");
+          });
+
+          vapi.on("error", (error) => {
+            console.error("Savannah Vapi error", error);
+            cleanup();
+            fail("The audio line dropped. Try me again.");
+          });
+
+          await vapi.start(ASSISTANT_ID, {
+            customerJoinTimeoutSeconds: 60,
+          });
+
+          // If Vapi returns without ever announcing call-start, keep the UI
+          // honest rather than pretending the line is live.
+          if (!live && starting) {
+            starting = false;
+            fail("The call did not finish connecting. Try me again.");
+          }
+        } catch (error) {
+          console.error("Savannah microphone/start error", error);
+          const name = error && typeof error === "object" && "name" in error ? error.name : "";
+          const message = error instanceof Error ? error.message : "";
+          cleanup();
+
+          if (name === "NotAllowedError") {
+            fail("Microphone access is blocked. Allow it for ctrlpluslove.com, then try again.");
+          } else if (message === "MIC_UNSUPPORTED") {
+            fail("This browser is not exposing a microphone.");
+          } else if (message === "NO_LIVE_MIC_TRACK") {
+            fail("Safari opened no live microphone track. Try again outside Private Browsing.");
+          } else {
+            fail("The microphone could not open. Try me again.");
+          }
         }
-      }
-    });
+      };
 
-    setUi("Talk to Savannah", "Morning. What are we trying to decide?", false);
-  } catch (error) {
-    console.error("Savannah runtime failed", error);
-    fail("Savannah's audio line didn't load. Try again.");
+      button.addEventListener("click", async () => {
+        if (live && vapi) {
+          try {
+            vapi.stop();
+          } catch (error) {
+            console.error("Savannah stop error", error);
+            cleanup();
+            setUi("Talk to Savannah", "Morning. What are we trying to decide?", false);
+          }
+          return;
+        }
+        await start();
+      });
+
+      setUi("Talk to Savannah", "Morning. What are we trying to decide?", false);
+    } catch (error) {
+      console.error("Savannah runtime failed", error);
+      fail("Savannah's audio line did not load. Try again.");
+    }
   }
 }
