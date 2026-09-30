@@ -142,7 +142,7 @@ export function SavannahWidget() {
         mode: "voice",
         theme: "dark",
         position: "bottom-right",
-        size: "compact",
+        size: "tiny",
         radius: "none",
         "main-label": "Savannah",
         "start-button-text": "Talk to Savannah",
