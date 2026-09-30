@@ -30,7 +30,7 @@ export function SavannahWidget() {
     const onError = (error: unknown) => {
       console.error("Savannah Vapi error", error);
       setCallState("error");
-      setErrorText("Savannah couldn't open the audio line. Tap to try again.");
+      setErrorText("The line dropped. Try me again.");
     };
 
     vapi.on("call-start", onCallStart);
@@ -68,83 +68,139 @@ export function SavannahWidget() {
     } catch (error) {
       console.error("Savannah call start failed", error);
       setCallState("error");
-      setErrorText("Savannah couldn't open the audio line. Tap to try again.");
+      setErrorText("The line dropped. Try me again.");
     }
   };
 
   const buttonLabel =
     callState === "connecting"
-      ? "Connecting…"
+      ? "Opening the line…"
       : callState === "live"
         ? "End call"
         : callState === "error"
-          ? "Try Savannah again"
+          ? "Try again"
           : "Talk to Savannah";
 
+  const presenceLine =
+    callState === "connecting"
+      ? "One second."
+      : callState === "live"
+        ? "I'm listening."
+        : callState === "error"
+          ? errorText
+          : "Morning. What are we trying to decide?";
+
   return (
-    <>
+    <aside
+      aria-label="Savannah, ctrl+love employee #4"
+      style={{
+        position: "fixed",
+        right: 18,
+        bottom: 18,
+        zIndex: 2147483001,
+        width: "min(360px, calc(100vw - 36px))",
+        border: "1px solid rgba(21,21,21,.22)",
+        background: "rgba(245,241,231,.97)",
+        color: "#151515",
+        boxShadow: "0 16px 44px rgba(0,0,0,.14)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+        fontFamily: "inherit",
+      }}
+    >
       <div
         style={{
-          position: "fixed",
-          right: 18,
-          bottom: 84,
-          zIndex: 2147482999,
-          display: "flex",
-          alignItems: "center",
-          gap: 10,
-          fontFamily: "inherit",
+          display: "grid",
+          gridTemplateColumns: "88px 1fr",
+          minHeight: 112,
         }}
       >
         <div
           style={{
-            width: 76,
-            height: 76,
-            borderRadius: "50%",
             overflow: "hidden",
-            border: "1px solid rgba(20,20,20,.18)",
-            background: "#f5f1e7",
-            boxShadow: "0 8px 28px rgba(0,0,0,.12)",
-            flex: "0 0 auto",
+            borderRight: "1px solid rgba(21,21,21,.18)",
+            background: "#e9e4d8",
           }}
         >
           <img
             src={SAVANNAH_AVATAR}
             alt="Savannah"
-            width={76}
-            height={76}
-            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+            width={176}
+            height={224}
+            style={{
+              width: "100%",
+              height: "100%",
+              minHeight: 112,
+              objectFit: "cover",
+              display: "block",
+            }}
           />
         </div>
 
         <div
           style={{
-            maxWidth: 220,
-            padding: "9px 11px 10px",
-            border: "1px solid rgba(20,20,20,.16)",
-            background: "rgba(245,241,231,.96)",
-            color: "#151515",
-            boxShadow: "0 8px 28px rgba(0,0,0,.08)",
-            backdropFilter: "blur(8px)",
+            display: "flex",
+            minWidth: 0,
+            flexDirection: "column",
+            justifyContent: "space-between",
+            padding: "13px 14px 12px",
           }}
         >
-          <div style={{ fontSize: 13, fontWeight: 700, lineHeight: 1.1 }}>Savannah</div>
-          <div
+          <div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "baseline",
+                justifyContent: "space-between",
+                gap: 12,
+              }}
+            >
+              <div style={{ fontSize: 15, fontWeight: 700, lineHeight: 1 }}>
+                Savannah
+              </div>
+              <div
+                style={{
+                  fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
+                  fontSize: 8,
+                  fontWeight: 700,
+                  letterSpacing: ".13em",
+                  textTransform: "uppercase",
+                  opacity: 0.48,
+                  whiteSpace: "nowrap",
+                }}
+              >
+                employee #4
+              </div>
+            </div>
+
+            <div
+              style={{
+                marginTop: 6,
+                fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
+                fontSize: 9,
+                fontWeight: 600,
+                lineHeight: 1.25,
+                letterSpacing: ".08em",
+                textTransform: "uppercase",
+                opacity: 0.58,
+              }}
+            >
+              intelligent front door
+            </div>
+          </div>
+
+          <p
+            aria-live="polite"
             style={{
-              marginTop: 4,
-              fontSize: 10,
-              lineHeight: 1.25,
-              letterSpacing: ".04em",
-              textTransform: "uppercase",
-              opacity: 0.66,
+              margin: "14px 0 0",
+              fontSize: 14,
+              fontWeight: 500,
+              lineHeight: 1.28,
+              letterSpacing: "-.01em",
             }}
           >
-            employee #4 · intelligent front door
-          </div>
-          {errorText ? (
-            <div style={{ marginTop: 6, fontSize: 10, lineHeight: 1.3, opacity: 0.72 }}>
-              {errorText}
-            </div>
-          ) : null}
+            {presenceLine}
+          </p>
         </div>
       </div>
 
@@ -154,27 +210,40 @@ export function SavannahWidget() {
         disabled={callState === "connecting"}
         aria-label={buttonLabel}
         style={{
-          position: "fixed",
-          right: 18,
-          bottom: 18,
-          zIndex: 2147483001,
+          display: "flex",
+          width: "100%",
+          minHeight: 46,
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 16,
           appearance: "none",
           border: 0,
-          borderRadius: 999,
-          padding: "13px 18px",
+          borderTop: "1px solid rgba(21,21,21,.22)",
+          borderRadius: 0,
+          padding: "0 14px",
           background: callState === "live" ? "#f5f1e7" : "#151515",
-          color: callState === "live" ? "#151515" : "#fff",
+          color: callState === "live" ? "#151515" : "#f5f1e7",
           font: "inherit",
-          fontSize: 14,
+          fontSize: 11,
           fontWeight: 700,
+          letterSpacing: ".11em",
           lineHeight: 1,
+          textTransform: "uppercase",
           cursor: callState === "connecting" ? "default" : "pointer",
-          opacity: callState === "connecting" ? 0.72 : 1,
-          boxShadow: "0 8px 28px rgba(0,0,0,.18)",
+          opacity: callState === "connecting" ? 0.68 : 1,
         }}
       >
-        {buttonLabel}
+        <span>{buttonLabel}</span>
+        <span
+          aria-hidden="true"
+          style={{
+            width: 7,
+            height: 7,
+            flex: "0 0 auto",
+            background: callState === "live" ? "#ff5a2a" : "#ff5a2a",
+          }}
+        />
       </button>
-    </>
+    </aside>
   );
 }
