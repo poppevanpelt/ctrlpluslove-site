@@ -463,7 +463,10 @@ export default function Home() {
           </div>
           <div className={styles.personaCalloutRow}>
             <p>Too many Mayas turning the meeting into group therapy?</p>
-            <strong>You’ve got 65+ professionals on your team. Congratulations.</strong>
+            <strong>
+              Tough luck, Maya.<br />
+              65+ professionals on your team. Feelings noted. Decision please.
+            </strong>
           </div>
           <Link className={styles.personaCalloutPill} href="/">
             ctrlpluslove.com
