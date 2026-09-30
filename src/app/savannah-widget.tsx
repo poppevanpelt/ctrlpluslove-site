@@ -1,67 +1,105 @@
 "use client";
 
-import Vapi from "@vapi-ai/web";
 import { useEffect, useRef, useState } from "react";
 
 const SAVANNAH_ASSISTANT_ID = "417b8810-5b53-4330-9bc4-6437aba1e401";
 const VAPI_PUBLIC_KEY = "f79f986e-3b43-4dde-b712-5527ec872a1c";
 const SAVANNAH_AVATAR = "/savannah-avatar.jpg?v=0060d14c";
 
-type CallState = "idle" | "requesting-mic" | "connecting" | "live" | "error";
+type CallState = "idle" | "connecting" | "live" | "error";
+
+type VapiInstance = {
+  start: (assistantId: string, overrides?: Record<string, unknown>) => Promise<unknown>;
+  stop: () => void;
+  on: (event: string, handler: (...args: any[]) => void) => void;
+  removeAllListeners: () => void;
+};
+
+type SavannahWindow = Window & {
+  __SavannahVapiCtor?: new (publicKey: string) => VapiInstance;
+};
 
 export function SavannahWidget() {
-  const vapiRef = useRef<Vapi | null>(null);
+  const vapiRef = useRef<VapiInstance | null>(null);
   const [callState, setCallState] = useState<CallState>("idle");
   const [errorText, setErrorText] = useState("");
+  const [sdkReady, setSdkReady] = useState(false);
 
   useEffect(() => {
-    const vapi = new Vapi(VAPI_PUBLIC_KEY);
-    vapiRef.current = vapi;
+    let active = true;
 
-    const onCallStart = () => {
-      setCallState("live");
-      setErrorText("");
+    const attachVapi = () => {
+      if (!active || vapiRef.current) return;
+
+      const VapiCtor = (window as SavannahWindow).__SavannahVapiCtor;
+      if (!VapiCtor) return;
+
+      const vapi = new VapiCtor(VAPI_PUBLIC_KEY);
+      vapiRef.current = vapi;
+      setSdkReady(true);
+
+      vapi.on("call-start", () => {
+        setCallState("live");
+        setErrorText("");
+      });
+
+      vapi.on("call-end", () => {
+        setCallState("idle");
+      });
+
+      vapi.on("error", (error: unknown) => {
+        console.error("Savannah Vapi error", error);
+        setCallState("error");
+        setErrorText("The line dropped. Try me again.");
+      });
     };
 
-    const onCallEnd = () => {
-      setCallState("idle");
-    };
-
-    const onError = (error: unknown) => {
-      console.error("Savannah Vapi error", error);
+    const onReady = () => attachVapi();
+    const onLoaderError = (event: Event) => {
+      console.error("Savannah Vapi loader error", event);
+      if (!active) return;
       setCallState("error");
-      setErrorText("The line dropped. Try me again.");
+      setErrorText("Savannah's audio line didn't load. Try again.");
     };
 
-    vapi.on("call-start", onCallStart);
-    vapi.on("call-end", onCallEnd);
-    vapi.on("error", onError);
+    window.addEventListener("savannah-vapi-ready", onReady);
+    window.addEventListener("savannah-vapi-error", onLoaderError);
+
+    attachVapi();
+
+    if (!(window as SavannahWindow).__SavannahVapiCtor) {
+      const existing = document.querySelector<HTMLScriptElement>(
+        'script[data-savannah-vapi-loader="true"]',
+      );
+
+      if (!existing) {
+        const script = document.createElement("script");
+        script.type = "module";
+        script.src = "/savannah-vapi-loader.js";
+        script.dataset.savannahVapiLoader = "true";
+        script.onerror = onLoaderError;
+        document.head.appendChild(script);
+      }
+    }
 
     return () => {
-      try {
-        vapi.stop();
-      } catch {}
-      vapi.removeAllListeners();
-      vapiRef.current = null;
+      active = false;
+      window.removeEventListener("savannah-vapi-ready", onReady);
+      window.removeEventListener("savannah-vapi-error", onLoaderError);
+
+      if (vapiRef.current) {
+        try {
+          vapiRef.current.stop();
+        } catch {}
+        vapiRef.current.removeAllListeners();
+        vapiRef.current = null;
+      }
     };
   }, []);
 
-  const requestMicrophone = async () => {
-    if (!navigator.mediaDevices?.getUserMedia) {
-      throw new Error("MIC_UNSUPPORTED");
-    }
-
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      stream.getTracks().forEach((track) => track.stop());
-    } catch {
-      throw new Error("MIC_DENIED");
-    }
-  };
-
   const toggleCall = async () => {
     const vapi = vapiRef.current;
-    if (!vapi || callState === "connecting" || callState === "requesting-mic") return;
+    if (!vapi || !sdkReady || callState === "connecting") return;
 
     if (callState === "live") {
       vapi.stop();
@@ -69,36 +107,22 @@ export function SavannahWidget() {
     }
 
     setErrorText("");
+    setCallState("connecting");
 
     try {
-      setCallState("requesting-mic");
-      await requestMicrophone();
-
-      setCallState("connecting");
-      await vapi.start(
-        SAVANNAH_ASSISTANT_ID,
-        {
-          customerJoinTimeoutSeconds: 45,
-        } as any,
-      );
+      await vapi.start(SAVANNAH_ASSISTANT_ID, {
+        customerJoinTimeoutSeconds: 45,
+      });
     } catch (error) {
       console.error("Savannah call start failed", error);
       setCallState("error");
-
-      const message = error instanceof Error ? error.message : "";
-      if (message === "MIC_DENIED") {
-        setErrorText("I need the microphone. Allow it for ctrlpluslove.com, then try again.");
-      } else if (message === "MIC_UNSUPPORTED") {
-        setErrorText("This browser isn't giving me a microphone.");
-      } else {
-        setErrorText("The line dropped. Try me again.");
-      }
+      setErrorText("The line dropped. Try me again.");
     }
   };
 
   const buttonLabel =
-    callState === "requesting-mic"
-      ? "Allow microphone…"
+    !sdkReady
+      ? "Loading Savannah…"
       : callState === "connecting"
         ? "Opening the line…"
         : callState === "live"
@@ -108,8 +132,8 @@ export function SavannahWidget() {
             : "Talk to Savannah";
 
   const presenceLine =
-    callState === "requesting-mic"
-      ? "I need your microphone first."
+    !sdkReady
+      ? "One second."
       : callState === "connecting"
         ? "One second."
         : callState === "live"
@@ -118,7 +142,7 @@ export function SavannahWidget() {
             ? errorText
             : "Morning. What are we trying to decide?";
 
-  const busy = callState === "connecting" || callState === "requesting-mic";
+  const busy = callState === "connecting" || !sdkReady;
 
   return (
     <aside
