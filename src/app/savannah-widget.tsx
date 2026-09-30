@@ -1,58 +1,92 @@
 "use client";
 
-import Script from "next/script";
-import { useRef } from "react";
+import Vapi from "@vapi-ai/web";
+import { useEffect, useRef, useState } from "react";
 
 const SAVANNAH_ASSISTANT_ID = "417b8810-5b53-4330-9bc4-6437aba1e401";
 const VAPI_PUBLIC_KEY = "f79f986e-3b43-4dde-b712-5527ec872a1c";
 const SAVANNAH_AVATAR = "/savannah-avatar.jpg";
 
-type VapiSdkWindow = Window & {
-  vapiSDK?: {
-    run: (options: {
-      apiKey: string;
-      assistant: string;
-      config?: Record<string, unknown>;
-    }) => unknown;
-  };
-};
+type CallState = "idle" | "connecting" | "live" | "error";
 
 export function SavannahWidget() {
-  const initialized = useRef(false);
+  const vapiRef = useRef<Vapi | null>(null);
+  const [callState, setCallState] = useState<CallState>("idle");
+  const [errorText, setErrorText] = useState("");
 
-  const initSavannah = () => {
-    if (initialized.current) return;
+  useEffect(() => {
+    const vapi = new Vapi(VAPI_PUBLIC_KEY);
+    vapiRef.current = vapi;
 
-    const sdk = (window as VapiSdkWindow).vapiSDK;
-    if (!sdk) return;
+    const onCallStart = () => {
+      setCallState("live");
+      setErrorText("");
+    };
 
-    initialized.current = true;
-    sdk.run({
-      apiKey: VAPI_PUBLIC_KEY,
-      assistant: SAVANNAH_ASSISTANT_ID,
-      config: {},
-    });
+    const onCallEnd = () => {
+      setCallState("idle");
+    };
+
+    const onError = (error: unknown) => {
+      console.error("Savannah Vapi error", error);
+      setCallState("error");
+      setErrorText("Savannah couldn't open the audio line. Tap to try again.");
+    };
+
+    vapi.on("call-start", onCallStart);
+    vapi.on("call-end", onCallEnd);
+    vapi.on("error", onError);
+
+    return () => {
+      try {
+        vapi.stop();
+      } catch {}
+      vapi.removeAllListeners();
+      vapiRef.current = null;
+    };
+  }, []);
+
+  const toggleCall = async () => {
+    const vapi = vapiRef.current;
+    if (!vapi || callState === "connecting") return;
+
+    if (callState === "live") {
+      vapi.stop();
+      return;
+    }
+
+    setCallState("connecting");
+    setErrorText("");
+
+    try {
+      await vapi.start(SAVANNAH_ASSISTANT_ID);
+    } catch (error) {
+      console.error("Savannah call start failed", error);
+      setCallState("error");
+      setErrorText("Savannah couldn't open the audio line. Tap to try again.");
+    }
   };
+
+  const buttonLabel =
+    callState === "connecting"
+      ? "Connecting…"
+      : callState === "live"
+        ? "End call"
+        : callState === "error"
+          ? "Try Savannah again"
+          : "Talk to Savannah";
 
   return (
     <>
-      <Script
-        src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js"
-        strategy="afterInteractive"
-        onLoad={initSavannah}
-      />
-
       <div
-        aria-hidden="true"
         style={{
           position: "fixed",
           right: 18,
-          bottom: 92,
+          bottom: 84,
           zIndex: 2147482999,
           display: "flex",
           alignItems: "center",
           gap: 10,
-          pointerEvents: "none",
           fontFamily: "inherit",
         }}
       >
@@ -70,7 +104,7 @@ export function SavannahWidget() {
         >
           <img
             src={SAVANNAH_AVATAR}
-            alt=""
+            alt="Savannah"
             width={76}
             height={76}
             style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
@@ -79,7 +113,7 @@ export function SavannahWidget() {
 
         <div
           style={{
-            maxWidth: 210,
+            maxWidth: 220,
             padding: "9px 11px 10px",
             border: "1px solid rgba(20,20,20,.16)",
             background: "rgba(245,241,231,.96)",
@@ -101,8 +135,41 @@ export function SavannahWidget() {
           >
             employee #4 · intelligent front door
           </div>
+          {errorText ? (
+            <div style={{ marginTop: 6, fontSize: 10, lineHeight: 1.3, opacity: 0.72 }}>
+              {errorText}
+            </div>
+          ) : null}
         </div>
       </div>
+
+      <button
+        type="button"
+        onClick={toggleCall}
+        disabled={callState === "connecting"}
+        aria-label={buttonLabel}
+        style={{
+          position: "fixed",
+          right: 18,
+          bottom: 18,
+          zIndex: 2147483001,
+          appearance: "none",
+          border: 0,
+          borderRadius: 999,
+          padding: "13px 18px",
+          background: callState === "live" ? "#f5f1e7" : "#151515",
+          color: callState === "live" ? "#151515" : "#fff",
+          font: "inherit",
+          fontSize: 14,
+          fontWeight: 700,
+          lineHeight: 1,
+          cursor: callState === "connecting" ? "default" : "pointer",
+          opacity: callState === "connecting" ? 0.72 : 1,
+          boxShadow: "0 8px 28px rgba(0,0,0,.18)",
+        }}
+      >
+        {buttonLabel}
+      </button>
     </>
   );
 }
