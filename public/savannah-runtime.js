@@ -38,9 +38,27 @@ if (!window.__savannahRuntimeLoaded) {
       throw new TypeError("No Vapi constructor found in pinned browser bundle.");
     }
 
-    const vapi = new VapiCtor(PUBLIC_KEY);
+    // Safari/iPhone hardening:
+    // - always include the microphone in Daily's permission prompt
+    // - explicitly start with audio on
+    const vapi = new VapiCtor(
+      PUBLIC_KEY,
+      undefined,
+      { alwaysIncludeMicInPermissionPrompt: true },
+      { audioSource: true, startAudioOff: false },
+    );
+
     let live = false;
     let starting = false;
+    let localAudioSeen = false;
+
+    vapi.on("call-start-progress", (event) => {
+      console.log("Savannah call progress", event);
+    });
+
+    vapi.on("local-volume-level", (volume) => {
+      if (volume > 0.001) localAudioSeen = true;
+    });
 
     vapi.on("call-start", () => {
       live = true;
@@ -48,10 +66,26 @@ if (!window.__savannahRuntimeLoaded) {
       setUi("End call", "I'm listening.", false);
     });
 
+    vapi.on("call-start-failed", (event) => {
+      console.error("Savannah call start failed", event);
+      live = false;
+      starting = false;
+      fail("The audio line didn't open. Try me again.");
+    });
+
     vapi.on("call-end", () => {
       live = false;
       starting = false;
-      setUi("Talk to Savannah", "Morning. What are we trying to decide?", false);
+      if (!localAudioSeen) {
+        setUi("Try Savannah again", "I still didn't hear your microphone. Try me again.", false);
+      } else {
+        setUi("Talk to Savannah", "Morning. What are we trying to decide?", false);
+      }
+      localAudioSeen = false;
+    });
+
+    vapi.on("camera-error", (error) => {
+      console.error("Savannah Daily camera/mic error", error);
     });
 
     vapi.on("error", (error) => {
@@ -78,6 +112,7 @@ if (!window.__savannahRuntimeLoaded) {
       }
 
       starting = true;
+      localAudioSeen = false;
       setUi("Opening the line…", "Allow the microphone if Safari asks.", true);
 
       try {
@@ -85,12 +120,10 @@ if (!window.__savannahRuntimeLoaded) {
           throw new Error("MIC_UNSUPPORTED");
         }
 
-        // Important on iPhone Safari: let Vapi acquire and keep the microphone
-        // from this original user gesture. Do not preflight getUserMedia and
-        // immediately stop the track; that can leave the WebRTC call with no
-        // customer audio even though microphone permission was granted.
+        // Give mobile Safari the full permitted join window. This is an
+        // assistant override; Vapi's default web-call join timeout is 15s.
         await vapi.start(ASSISTANT_ID, {
-          customerJoinTimeoutSeconds: 45,
+          customerJoinTimeoutSeconds: 60,
         });
       } catch (error) {
         console.error("Savannah start error", error);
