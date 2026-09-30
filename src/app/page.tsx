@@ -1,725 +1,161 @@
-import Image from "next/image";
-import Link from "next/link";
-
-import { EarthriseMoment } from "./earthrise-moment";
-import { SoundtrackCue } from "./soundtrack-cue";
-import { homepageRoomPersonas } from "./room-personas-data";
-import { AmbassadorGrid } from "./ambassador-grid";
-import { confirmedAmbassadors } from "./ambassadors-data";
 import styles from "./home-2026.module.css";
 
-const featuredInstruments = [
-  {
-    no: "001",
-    name: "DECISION COLLIDER",
-    state: "WORKING",
-    line: "Collide assumptions before people collide.",
-    detail: "Puts incompatible assumptions on the same surface before agreement hardens around different versions of the problem.",
-    use: "USE WHEN · THE ROOM AGREES SUSPICIOUSLY FAST",
-    position: "0% 0%",
-    href: "/decision-collider/",
-    action: "RUN INSTRUMENT ↗",
-  },
-  {
-    no: "003",
-    name: "LIVING TICKER",
-    state: "PROTOTYPE",
-    line: "Minutes record words. The ticker records movement.",
-    detail: "Tracks challenge, reframing, ownership and rupture while a room is changing, not after everybody has forgotten the interesting bit.",
-    use: "USE WHEN · THE MOVEMENT MATTERS MORE THAN THE MINUTES",
-    position: "50% 0%",
-  },
-  {
-    no: "014",
-    name: "OPPOSITION SEAT",
-    state: "WORKING",
-    line: "Pay someone to disagree.",
-    detail: "Makes dissent structural. Opposition stops depending on who happens to feel brave enough to ruin the nice meeting.",
-    use: "USE WHEN · CONSENSUS IS ARRIVING TOO CHEAPLY",
-    position: "100% 0%",
-  },
-  {
-    no: "013",
-    name: "DO-NOTHING CONTROL",
-    state: "WORKING",
-    line: "Change has to beat reality left alone.",
-    detail: "Runs the proposed move against a deliberate control: what happens if we do absolutely nothing?",
-    use: "USE WHEN · ACTIVITY IS MASQUERADING AS PROGRESS",
-    position: "0% 100%",
-  },
-  {
-    no: "016",
-    name: "EVIDENCE TAGGER",
-    state: "PROTOTYPE",
-    line: "Observed is not the same as assumed.",
-    detail: "Tags confidence at the source: Observed, Inferred, Assumed, Tested or Proven. Same sentence. Very different weight.",
-    use: "USE WHEN · CERTAINTY HAS LOST ITS RECEIPT",
-    position: "50% 100%",
-  },
-  {
-    no: "021",
-    name: "MISS ARCHIVE",
-    state: "ARCHIVE",
-    line: "Keep the wrong calls. Extract the lesson.",
-    detail: "Stores misses, reversals and failed predictions because a laboratory that only displays wins cannot actually learn.",
-    use: "USE WHEN · THE ORGANISATION KEEPS FORGETTING HOW IT WAS WRONG",
-    position: "100% 100%",
-  },
-] as const;
-
 const products = [
-  {
-    verb: "DECIDE.",
-    name: "DECISION STRESS-TEST",
-    label: "ONE IMPORTANT DECISION",
-    line: "Put one important decision under pressure before reality does.",
-    commercial: "FROM €4,500 · ONE DECISION",
-    bring: "A decision, campaign route, product idea, positioning, launch or strategic dilemma.",
-    leave: "A clearer decision, exposed assumptions and a concrete next move.",
-    href: "/stress-test/",
-    action: "STRESS-TEST A DECISION ↗",
-  },
-  {
-    verb: "TEST.",
-    name: "SYNTHETIC AUDIENCE TEST",
-    label: "3–7 USEFUL MINDS",
-    line: "Find out what an idea runs into before you spend real money finding out.",
-    commercial: "SCOPED TO THE TEST",
-    bring: "An idea, proposition, campaign, product or piece of communication.",
-    leave: "Distinct reactions, useful opposition, weak spots and a stronger version.",
-    href: "/room/",
-    action: "ENTER THE ROOM ↗",
-  },
-  {
-    verb: "BUILD.",
-    name: "CTRL+2GO",
-    label: "APPLIED AI / TAKEAWAY SIZE",
-    line: "A few days of us. A useful little machine that stays.",
-    commercial: "A FEW DAYS · THE SYSTEM STAYS",
-    bring: "One stubborn problem, repeated task or decision that should work better.",
-    leave: "A small specialised Applied AI system built around the job.",
-    href: "/2go/",
-    action: "BUILD ONE ↗",
-  },
-  {
-    verb: "WATCH.",
-    name: "OBSERVATORY",
-    label: "ONE SIGNAL THAT MATTERS",
-    line: "Some problems do not need another meeting. They need watching.",
-    commercial: "ONGOING WATCH",
-    bring: "One behaviour, market, competitor, audience or signal worth following.",
-    leave: "A live watch system that surfaces meaningful change when it happens.",
-    href: "mailto:poppevanpelt@gmail.com?subject=Build%20an%20Observatory",
-    action: "START WATCHING ↗",
-  },
+  { no:"01", verb:"DECIDE.", name:"Decision Stress-Test", line:"Put one important decision under pressure before reality does.", price:"From €4,500", href:"/stress-test/" },
+  { no:"02", verb:"TEST.", name:"Synthetic Audience Test", line:"Find out what an idea runs into before you spend real money finding out.", price:"Scoped to the test", href:"/room/" },
+  { no:"03", verb:"BUILD.", name:"ctrl+2go", line:"A few days of us. A useful little machine that stays.", price:"A few days · the system stays", href:"/2go/" },
+  { no:"04", verb:"WATCH.", name:"ctrl+live", line:"Some problems do not need another meeting. They need watching.", price:"Ongoing watch", href:"mailto:poppevanpelt@gmail.com?subject=Show%20me%20ctrl%2Blive" },
 ] as const;
 
-const personaGenealogies: Record<
-  string,
-  { status: string; sources?: Array<{ name: string; share: number }> }
-> = {
-  "nick-deckman": {
-    status: "DESCENDS FROM",
-    sources: [
-      { name: "SIMON NEEFJES", share: 60 },
-      { name: "ERIK KELLERHUIS", share: 30 },
-      { name: "MAXIME HARTMAN", share: 10 },
-    ],
-  },
-  "johan-cruyff": { status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN" },
-  "the-customer": { status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN" },
-  "wade-ellison": { status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN" },
-};
-
-
-const humanMaterialBooks = [
-  { author: "DANIEL KAHNEMAN", title: "Thinking, Fast and Slow", subject: "JUDGMENT / BIAS", href: "https://books.google.com/books?q=Thinking+Fast+and+Slow+Daniel+Kahneman" },
-  { author: "GARY KLEIN", title: "Sources of Power", subject: "EXPERT JUDGMENT", href: "https://books.google.com/books?q=Sources+of+Power+Gary+Klein" },
-  { author: "CHARLAN NEMETH", title: "In Defense of Troublemakers", subject: "DISSENT", href: "https://books.google.com/books?q=In+Defense+of+Troublemakers+Charlan+Nemeth" },
-  { author: "AMY EDMONDSON", title: "The Fearless Organization", subject: "PSYCHOLOGICAL SAFETY", href: "https://books.google.com/books?q=The+Fearless+Organization+Amy+Edmondson" },
-  { author: "PHILIP TETLOCK + DAN GARDNER", title: "Superforecasting", subject: "UNCERTAINTY", href: "https://books.google.com/books?q=Superforecasting+Philip+Tetlock+Dan+Gardner" },
-  { author: "VICTOR TURNER", title: "The Ritual Process", subject: "RITUAL / GROUPS", href: "https://books.google.com/books?q=The+Ritual+Process+Victor+Turner" },
-  { author: "DIMITRIS XYGALATAS", title: "Ritual", subject: "BEHAVIOUR / BELONGING", href: "https://books.google.com/books?q=Ritual+Dimitris+Xygalatas" },
-  { author: "ERVING GOFFMAN", title: "The Presentation of Self in Everyday Life", subject: "SOCIAL BEHAVIOUR", href: "https://books.google.com/books?q=The+Presentation+of+Self+in+Everyday+Life+Erving+Goffman" },
-  { author: "DONELLA MEADOWS", title: "Thinking in Systems", subject: "SYSTEMS", href: "https://books.google.com/books?q=Thinking+in+Systems+Donella+Meadows" },
+const instruments = [
+  ["01","Opposition Seat","Put intelligent disagreement in the room before reality does it for you.","opposition"],
+  ["02","Do-Nothing Control","Compare the proposed move with the uncomfortable possibility that doing nothing is better.","nothing"],
+  ["03","Decision Collider","Force competing routes into the same frame until the real trade-off appears.","collider"],
+  ["04","Signal Distortion","Find out what changes between the signal itself and what the organisation thinks it heard.","signal"],
+  ["05","Meeting Filter","Test whether a meeting deserves to exist before anyone enters the room.","meeting"],
+  ["06","Brand Transplant","Put one brand’s operating logic inside another and see what survives.","transplant"],
 ] as const;
 
-const clientSystems = [
-  {
-    client: "COMFORA",
-    category: "MOBILITY / INDEPENDENCE",
-    title: "Nobody wanted a comfy chair. They wanted their lives back.",
-    description:
-      "A product brief reframed around freedom, dignity and the life beyond the furniture, then carried into creative and production experiments.",
-    system: "CATEGORY REFRAME / CREATIVE TESTING",
-    diagram: "comfora",
-  },
-  {
-    client: "SUKI",
-    category: "RITUAL / GROWTH",
-    title: "Don’t franchise the store. Franchise what makes people return.",
-    description:
-      "A matcha brand became a live sensing system: store signals, creator intelligence, small ritual experiments and memory for the next Suki.",
-    system: "RITUAL INTELLIGENCE / LIVING FRANCHISE OS",
-    diagram: "suki",
-  },
-] as const;
-
-// NETLIFY PRODUCTION NUDGE 2026-09-21 PERSONA POLISH
 export default function Home() {
   return (
-    <main className={styles.page} id="main-content">
-      <section className={styles.hero} aria-labelledby="home-title">
-        <Image
-          className={styles.heroImage}
-          src="/home/sunnyvale-campus.webp"
-          alt="A sunlit California research campus with palms and a steel calibration sphere"
-          fill
-          priority
-          sizes="100vw"
-        />
-        <div className={styles.heroVeil} aria-hidden="true" />
-        <div className={styles.heroTopline}>
-          <Link href="/" className={styles.brand}>ctrl+love</Link>
-          <span>INSTITUTE FOR DECISION RESEARCH</span>
-          <span>HAARLEM · NL</span>
+    <main className={styles.page}>
+      <nav className={styles.nav}>
+        <a className={styles.logo} href="#">ctrl+love</a>
+        <div className={styles.navlinks}>
+          <a href="#work">Work</a><a href="#difference">Difference</a><a href="#cases">Cases</a><a href="#instruments">Instruments</a><a href="#about">About</a>
         </div>
+      </nav>
 
-        <div className={styles.heroBody}>
-          <p className={styles.kicker}>SUNNYVALE ANNEX / PROPOSITIONAL FACILITY</p>
-          <h1 id="home-title">WE BUILD<br />INSTRUMENTS<br />FOR HUMAN<br />JUDGMENT.</h1>
-          <p className={styles.heroLead}>
-            AI can generate more answers than we will ever need.<br />
-            The interesting problem is knowing what deserves to be believed.
-            <span className={styles.heroPlain}>
-              We use AI, human opposition and working instruments to pressure-test important decisions before they become expensive.
-            </span>
-          </p>
+      <section className={styles.hero}>
+        <img className={styles.heroImage} src="/home/sunnyvale-campus.webp" alt="" />
+        <div className={styles.heroVeil} />
+        <div className={styles.heroCopyLeft}>
+          <div className={styles.eyebrow}>Applied AI for human judgment</div>
+          <h1>We build instruments for human judgment.</h1>
         </div>
-
-        <div className={styles.heroStatus}>
-          <span>FACTORY STATUS</span>
-          <strong>024 instruments</strong>
-          <span>ALL SYSTEMS CURIOUS</span>
-          <Link href="/instruments/">ENTER INSTRUMENT ROOM ↗</Link>
-        </div>
-
-        <div className={styles.calibration} aria-hidden="true">
-          <Image
-            src="/museum/steel-ball-packshot-cutout.png"
-            alt=""
-            width={156}
-            height={156}
-            priority
-          />
-          <span>CALIBRATION MASS · 40.00 MM</span>
+        <div className={styles.heroCopyRight}>
+          <p>AI can generate more answers than we will ever need.</p>
+          <strong>The interesting problem is knowing what deserves to be believed.</strong>
+          <span>72° and sunny.</span>
         </div>
       </section>
 
-      <section className={styles.missionStrip} aria-label="Mission status">
-        <span>MISSION 2026.260</span>
-        <strong>REALITY HAS CLEARED THE TOWER.</strong>
-        <span>HUMAN OVERRIDE · ARMED</span>
-        <span>CALIFORNIA / HAARLEM</span>
-      </section>
-
-      <section className={styles.products} aria-labelledby="products-title">
-        <div className={styles.sectionLabel}>
-          <span>WHAT YOU CAN ACTUALLY BUY</span>
-          <span>DECIDE / TEST / BUILD / WATCH</span>
-        </div>
-
-        <div className={styles.productsIntro}>
-          <h2 id="products-title">FOUR THINGS<br />YOU CAN<br /><em>BUY.</em></h2>
-          <div className={styles.productsIntroCopy}>
-            <p>
-              The instruments are how we work. These are the things you can hire us for.
-            </p>
-            <strong>BRING A REAL PROBLEM. LEAVE WITH SOMETHING USEFUL.</strong>
-          </div>
-        </div>
-
-        <div className={styles.productGrid}>
-          {products.map((product, index) => (
-            <a
-              className={styles.productCard}
-              key={product.name}
-              href={product.href}
-              aria-label={`${product.name}: ${product.action}`}
-            >
-              <div className={styles.productTopline}>
-                <span>PRODUCT {String(index + 1).padStart(2, "0")}</span>
-                <span>{product.label}</span>
-              </div>
-
-              <div className={styles.productOffer}>
-                <strong className={styles.productVerb}>{product.verb}</strong>
-                <span className={styles.productCommercial}>{product.commercial}</span>
-              </div>
-
-              <div className={styles.productBody}>
-                <h3>{product.name}</h3>
-                <p>{product.line}</p>
-              </div>
-
-              <dl className={styles.productExchange}>
-                <div>
-                  <dt>You bring</dt>
-                  <dd>{product.bring}</dd>
-                </div>
-                <div>
-                  <dt>You leave with</dt>
-                  <dd>{product.leave}</dd>
-                </div>
-              </dl>
-
-              <span className={styles.productAction}>{product.action}</span>
+      <section className={styles.section} id="work">
+        <div className={styles.kicker}>What you can actually buy</div>
+        <h2>Decide. Test. Build. Watch.</h2>
+        <div className={styles.products}>
+          {products.map((p) => (
+            <a className={styles.card} href={p.href} key={p.no}>
+              <span className={styles.num}>{p.no}</span>
+              <b className={styles.verb}>{p.verb}</b>
+              <strong className={styles.product}>{p.name}</strong>
+              <p>{p.line}</p>
+              <span className={styles.price}>{p.price}</span>
             </a>
           ))}
         </div>
-
-        <div className={styles.productsBigger}>
-          <span>NEED SOMETHING BIGGER?</span>
-          <strong>Sometimes the problem is not the decision. It is the machinery around it.</strong>
-          <a href="mailto:poppevanpelt@gmail.com?subject=Redesign%20the%20system">REDESIGN THE SYSTEM ↗</a>
+        <div className={styles.liveBand}>
+          <strong>ctrl+live</strong>
+          <p>Already alive online: a living observatory for signals that matter, rather than another static report.</p>
+          <span>WATCH WHAT CHANGES.</span>
         </div>
       </section>
 
-
-      <section className={styles.pricingShelf} aria-labelledby="pricing-title">
-        <div className={styles.sectionLabel}>
-          <span>PRICING / ROOMS</span>
-          <Link href="/pricing/">FULL PRICING ↗</Link>
-        </div>
-        <div className={styles.pricingIntro}>
-          <h2 id="pricing-title">WHAT DOES<br />THE PRESSURE<br /><em>COST?</em></h2>
-          <p>Readable here. Full documents one click away.</p>
-        </div>
-        <div className={styles.pricingGrid}>
-          <Link className={styles.pricingCard} href="/pricing/decision-stress-test/">
-            <span>ONE IMPORTANT DECISION</span>
-            <h3>Decision Stress-Test™</h3>
-            <strong>€4,500</strong>
-            <small>EX VAT · ONE DECISION</small>
-            <b>OPEN PRICING ↗</b>
-          </Link>
-          <Link className={styles.pricingCard} href="/pricing/on-call-room/">
-            <span>ON-CALL ROOM™ / ESSENTIAL</span>
-            <h3>Your decision team. On call.</h3>
-            <strong>€7,500</strong>
-            <small>PER MONTH · BILLED MONTHLY</small>
-            <b>OPEN PRICING ↗</b>
-          </Link>
-          <Link className={styles.pricingCard} href="/pricing/on-call-room/">
-            <span>ON-CALL ROOM™ / FOUNDER</span>
-            <h3>More leverage. Same Room.</h3>
-            <strong>€12,500</strong>
-            <small>PER MONTH · BILLED MONTHLY</small>
-            <b>OPEN PRICING ↗</b>
-          </Link>
-        </div>
-      </section>
-
-      <section className={styles.llmContrast} aria-labelledby="llm-contrast-title">
-        <div className={styles.sectionLabel}>
-          <span>GENERIC LLM / CTRL+LOVE</span>
-          <span>SAME INTELLIGENCE / DIFFERENT MACHINE</span>
-        </div>
-
-        <div className={styles.llmContrastIntro}>
-          <div>
-            <p className={styles.kicker}>NOT ANOTHER LLM</p>
-            <h2 id="llm-contrast-title">SAME<br />INTELLIGENCE.<br /><em>DIFFERENT MACHINE.</em></h2>
-          </div>
-          <p>
-            A generic LLM is designed to give you a useful answer.
-            ctrl+love is designed to make that answer survive.
-          </p>
-        </div>
-
-        <div className={styles.llmCompare}>
-          <article className={styles.llmGeneric}>
-            <span className={styles.llmColumnLabel}>GENERIC LLM</span>
-            <ol>
-              <li><span>01</span><strong>Helpful completion</strong></li>
-              <li><span>02</span><strong>One accommodating voice</strong></li>
-              <li><span>03</span><strong>Answers the question you asked</strong></li>
-              <li><span>04</span><strong>Reduces friction</strong></li>
-              <li><span>05</span><strong>Optimises the answer</strong></li>
-            </ol>
+      <section className={styles.section} id="difference">
+        <div className={styles.kicker}>ctrl+love / generic LLM</div>
+        <h2>Same intelligence. Different machine.</h2>
+        <div className={styles.compare}>
+          <article>
+            <h3>ctrl+love gives the answer something to fight with.</h3>
+            <ul><li>Multiple perspectives</li><li>Designed opposition</li><li>Evidence</li><li>Consequences and alternatives</li><li>Accumulated context</li><li>A reason to stop</li></ul>
           </article>
-
-          <article className={styles.llmCtrl}>
-            <span className={styles.llmColumnLabel}>CTRL+LOVE</span>
-            <ol>
-              <li><span>01</span><strong>Productive resistance</strong></li>
-              <li><span>02</span><strong>65+ opposing perspectives</strong></li>
-              <li><span>03</span><strong>Questions the question itself</strong></li>
-              <li><span>04</span><strong>Introduces friction deliberately</strong></li>
-              <li><span>05</span><strong>Pressure-tests the decision</strong></li>
-            </ol>
+          <article>
+            <h3>A generic LLM gives you another answer.</h3>
+            <ul><li>One perspective at a time</li><li>Helpful by default</li><li>Session-dependent context</li><li>No designed opposition</li><li>More answers</li><li>Another route is always available</li></ul>
+          </article>
+          <article className={styles.persona}>
+            <h3>No persona factory.</h3>
+            <p>When we need people in the room, we do not generate thousands of supposedly unbiased demographic placeholders.</p>
+            <p>We build a small number of synthetic people by hand — with histories, biases, memories and reasons to disagree.</p>
+            <span>FEWER PEOPLE. BETTER ARGUMENTS.</span>
           </article>
         </div>
+      </section>
 
-        <div className={styles.llmPressure}>
-          <p>
-            Assumptions are exposed. Alternatives are forced into the room.
-            Weak ideas are allowed to die. Sometimes stopping is the best output.
-          </p>
-          <div className={styles.llmSurvived}>
-            <div className={styles.llmBall}>
-              <Image
-                src="/museum/steel-ball-packshot-cutout.png"
-                alt="Polished steel calibration ball"
-                width={104}
-                height={104}
-              />
+      <section className={styles.section} id="cases">
+        <div className={styles.kicker}>Field work</div>
+        <h2>The instruments have left the lab.</h2>
+        <div className={styles.cases}>
+          <article className={styles.caseHero}>
+            <div className={styles.caseCopy}>
+              <span className={styles.num}>01 / COMFORA</span>
+              <h3>Nobody wanted a comfy chair. They wanted their lives back.</h3>
+              <p><b>That changed the brief.</b> The question was no longer “how do we sell comfort?” but “what does getting your life back look like in the wild?”</p>
+              <p>We analysed a screen recording from <b>Flip — our lorikeet parrot, Trojan horse and unlikely signal scout — and his 4K+ Instagram following.</b></p>
+              <p>One signal emerged: matcha videos were increasingly composed off-centre, leaving more room for friends, conversation and life around the drink.</p>
+              <p><b>Maya, Cultural Pattern Reader,</b> and <b>Lexi, Hospitality Strategist,</b> pushed that observation somewhere physical: what if a Comfora chair lived in hotel lobbies, so newly arrived guests could sit, have a matcha, charge their phone and recover from travelling?</p>
+              <strong className={styles.impact}>4K+ Instagram signal → interpretation → synthetic perspective → unexpected physical route.</strong>
             </div>
-            <span>IT SURVIVED.</span>
-          </div>
-        </div>
-
-        <p className={styles.llmFinal}>
-          <span>AN LLM GIVES YOU AN ANSWER.</span>
-          <strong>CTRL+LOVE GIVES THE ANSWER SOMETHING TO SURVIVE.</strong>
-        </p>
-      </section>
-
-
-
-
-
-
-
-
-      <section className={`${styles.factory} ${styles.featuredInstruments}`} aria-labelledby="factory-title">
-        <div className={styles.sectionLabel}>
-          <span>FEATURED INSTRUMENTS / 006</span>
-          <Link href="/instruments/">ALL 024 INSTRUMENTS ↗</Link>
-        </div>
-
-        <div className={styles.factoryIntro}>
-          <h2 id="factory-title">SIX WAYS<br />TO MAKE REALITY<br /><em>HARDER TO AVOID.</em></h2>
-          <p>These are working instruments, not illustrations. Tap one. It opens just far enough to tell you what it actually does.</p>
-        </div>
-
-        <div className={styles.featuredInstrumentGrid}>
-          {featuredInstruments.map((instrument) => (
-            <details className={styles.featuredInstrumentCard} key={instrument.no}>
-              <summary>
-                <div className={styles.featuredInstrumentMeta}>
-                  <span>{instrument.no}</span>
-                  <strong>{instrument.state}</strong>
-                </div>
-                <div
-                  className={styles.featuredInstrumentVisual}
-                  style={{ backgroundPosition: instrument.position }}
-                  aria-hidden="true"
-                />
-                <div className={styles.featuredInstrumentCopy}>
-                  <h3>{instrument.name}</h3>
-                  <p>{instrument.line}</p>
-                  <span>PULL TO INSPECT</span>
-                </div>
-              </summary>
-
-              <div className={styles.featuredInstrumentDrawer}>
-                <p>{instrument.detail}</p>
-                <strong>{instrument.use}</strong>
-                {"href" in instrument && instrument.href ? (
-                  <Link href={instrument.href}>{instrument.action}</Link>
-                ) : null}
-              </div>
-            </details>
-          ))}
-        </div>
-      </section>
-
-
-      <section className={styles.personas} aria-labelledby="personas-title">
-        <div className={styles.sectionLabel}>
-          <span>SYNTHETIC PERSONAS</span>
-          <Link href="/room/">ENTER THE ROOM ↗</Link>
-        </div>
-        <div className={styles.personaIntro}>
-          <h2 id="personas-title">THE ROOM<br />IS NOT EMPTY.</h2>
-          <div className={styles.provenanceCopy}>
-            <p>
-              65+ handwritten perspectives, built one by one from real people Poppe has met, watched,
-              argued with and worked beside across more than 30 years of meetings.
-              Each is a compound of observed behaviour, habits, contradictions, judgment and oddities actually encountered.
-            </p>
-            <strong>HANDWRITTEN FROM REAL ENCOUNTERS. NOT BOUGHT BY THE KILO FROM META.</strong>
-            <span className={styles.metaFootnote}>@meta</span>
-            <p className={styles.provenanceNote}>
-              No demographic templates. No batch-generated avatars. Observed first, written second.
-            </p>
-          </div>
-        </div>
-        <div className={styles.personaCallout}>
-          <div className={styles.personaCalloutRow}>
-            <p>Too many Nicks being Dicks in your meetings?</p>
-            <strong>You’ve got 65+ professionals on your team. Congratulations.</strong>
-          </div>
-          <div className={styles.personaCalloutRow}>
-            <p>Too many Mayas turning the meeting into group therapy?</p>
-            <strong>
-              Tough luck, Maya.<br />
-              65+ professionals on your team. Feelings noted. Decision please.
-            </strong>
-          </div>
-          <Link className={styles.personaCalloutPill} href="/">
-            ctrlpluslove.com
-          </Link>
-        </div>
-        <div className={styles.personaGrid}>
-          {homepageRoomPersonas.map((persona, index) => {
-            const genealogy = personaGenealogies[persona.id] ?? {
-              status: "ANCESTRY UNRESOLVED · LINE LEFT OPEN",
-            };
-
-            return (
-              <article className={styles.personaCard} key={persona.id}>
-                <div className={styles.personaSpecimenTopline}>
-                  <span>SPECIMEN {String(index + 1).padStart(2, "0")}</span>
-                  <span>SYNTHETIC / ACTIVE</span>
-                </div>
-                <div className={styles.personaPortrait}>
-                  {persona.portrait ? (
-                    <Image
-                      src={persona.portrait}
-                      alt={`${persona.name}, ctrl+love synthetic persona`}
-                      unoptimized
-                      fill
-                      sizes="(max-width: 620px) 100vw, (max-width: 980px) 50vw, 25vw"
-                      style={{ objectPosition: persona.portraitPosition ?? "50% 40%" }}
-                    />
-                  ) : null}
-                  <span className={styles.personaSpecimenId}>ID · {persona.id.toUpperCase()}</span>
-                </div>
-                <div className={styles.personaIdentity}>
-                  <h3>{persona.name}</h3>
-                  <strong>{persona.role}</strong>
-                  <p>{persona.line}</p>
-                </div>
-                <div className={styles.personaGenealogy}>
-                  <span className={styles.genealogyLabel}>GENEALOGY / {genealogy.status}</span>
-                  {genealogy.sources ? (
-                    <div className={styles.genealogySources}>
-                      {genealogy.sources.map((source) => (
-                        <div className={styles.genealogySource} key={source.name}>
-                          <div>
-                            <span>{source.name}</span>
-                            <strong>{source.share}%</strong>
-                          </div>
-                          <i aria-hidden="true"><b style={{ width: `${source.share}%` }} /></i>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className={styles.genealogyOpen}>NO CLAIM ENTERED. KEEP THE LINE OPEN.</p>
-                  )}
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      </section>
-
-      <section className={styles.humans} aria-labelledby="humans-title">
-        <Image
-          className={styles.humansImage}
-          src="/home/judgment-control-room.webp"
-          alt=""
-          fill
-          sizes="100vw"
-        />
-        <div className={styles.humansVeil} aria-hidden="true" />
-        <div className={styles.sectionLabel}>
-          <span>WHO IS OPERATING THE MACHINERY</span>
-          <span>HUMAN-LED</span>
-        </div>
-        <div className={styles.humansGrid}>
-          <div>
-            <h2 id="humans-title">THREE DECADES<br />OF ADVERTISING.<br />8 YEARS APPLE.<br /><em>THEN THIS.</em></h2>
-          </div>
-          <div className={styles.humanCopy}>
-            <p>
-              Poppe van Pelt founded ctrl+love after decades spent making things clearer,
-              sharper and more persuasive. The current obsession is different: building
-              instruments for the moments when clarity itself needs to be tested.
-            </p>
-            <p>
-              Around him: the guys, a distributed human network, synthetic minds,
-              field collaborators, and one lorikeet with an implausibly senior title.
-            </p>
-            <div className={styles.humanLinks}>
-              <Link href="/ambassadors/">AROUND THE TABLE ↗</Link>
-              <Link href="/room/">THE ROOM ↗</Link>
+            <div className={styles.flipVisual}>
+              <img src="/home/flip-signal.webp" alt="Flip, ctrl+love's lorikeet parrot" />
+              <span>FLIP / LORIKEET / TROJAN HORSE / 4K+</span>
             </div>
+          </article>
+
+          <div className={styles.casePair}>
+            <article className={styles.caseSmall}>
+              <span className={styles.num}>02 / LUTHER MUSEUM / IN DEVELOPMENT</span>
+              <h3>“Hier sta ik. Ik kan niet anders.”</h3>
+              <p>A sentence became a living installation. Then the installation became a voice.</p>
+              <p>Luther can respond to visitors in the museum, enter live discussions on social media, comment on the world around him — and even suggest where to have lunch nearby.</p>
+              <p><b>The museum no longer only tells Luther’s story. Luther starts participating in it.</b></p>
+              <strong className={styles.impact}>Sentence → live installation → social voice → museum character → travelling exhibition.</strong>
+              <div className={styles.lutherVisual}><span>LIVE / MUSEUM / SOCIAL</span></div>
+            </article>
+
+            <article className={styles.caseSmall}>
+              <span className={styles.num}>03 / FITZROY / COLLABORATION</span>
+              <h3>The steel ball left the lab.</h3>
+              <p><b>Fitzroy’s Mischa used the steel-ball language to invite ctrl+love into a collaboration.</b></p>
+              <p>The relationship was already there. <b>Then the object crossed over too.</b></p>
+              <strong className={styles.impact}>Adoption, not applause.</strong>
+              <div className={styles.fitzVisual}><img src="/museum/steel-ball-packshot-cutout.png" alt="" /><span>FITZROY / STEEL BALL</span></div>
+            </article>
           </div>
-        </div>
-        <div className={styles.humanNetwork}>
-          <div className={styles.humanNetworkIntro}>
-            <span>FOUNDER + AMBASSADORS</span>
-            <p>
-              Apple-selected creative leaders, built through eight years of working shoulder to shoulder.
-              Organic relationships. Not bought by the kilo.
-            </p>
-            <Link href="/ambassadors/">MEET THE FULL NETWORK ↗</Link>
-          </div>
-          <AmbassadorGrid ambassadors={confirmedAmbassadors} compact />
         </div>
       </section>
 
-
-
-      <section className={styles.clientWork} aria-labelledby="client-work-title">
-        <div className={styles.sectionLabel}>
-          <span>FIELD APPLICATIONS</span>
-          <span>REAL CLIENT SYSTEMS / 002</span>
-        </div>
-        <div className={styles.clientWorkIntro}>
-          <h2 id="client-work-title">THE INSTRUMENTS<br />HAVE LEFT<br />THE LAB.</h2>
-          <p>Two live examples of the same habit: find the thing underneath the brief, then build something that can keep learning.</p>
-        </div>
-        <div className={styles.clientGrid}>
-          {clientSystems.map((client) => (
-            <article className={styles.clientCase} key={client.client}>
-              <div className={styles.clientMeta}>
-                <strong>{client.client}</strong>
-                <span>{client.category}</span>
-              </div>
-              <div className={`${styles.clientDiagram} ${styles[client.diagram]}`} aria-hidden="true">
-                {client.diagram === "comfora" ? (
-                  <>
-                    <span>CHAIR</span><i>→</i><span>COMFORT</span><i>→</i><strong>LIFE</strong>
-                  </>
-                ) : (
-                  <>
-                    <span>STORE SIGNALS</span><span>CREATOR SENSING</span><span>EXPERIMENT</span><strong>MEMORY</strong>
-                  </>
-                )}
-              </div>
-              <div className={styles.clientBody}>
-                <p className={styles.clientSystem}>{client.system}</p>
-                <h3>{client.title}</h3>
-                <p>{client.description}</p>
-              </div>
+      <section className={styles.section} id="instruments">
+        <div className={styles.kicker}>A few instruments inside the machine</div>
+        <h2>Pressure, not prompts.</h2>
+        <div className={styles.instruments}>
+          {instruments.map(([no,name,line,kind]) => (
+            <article className={styles.instrument} key={no}>
+              <div className={`${styles.instrumentVisual} ${styles[kind]}`} />
+              <div className={styles.instrumentCopy}><span className={styles.num}>{no}</span><h3>{name}</h3><p>{line}</p></div>
             </article>
           ))}
         </div>
       </section>
 
-
-
-
-
-
-
-
-
-
-      <section className={styles.shoppe} aria-labelledby="shoppe-title">
-        <div className={styles.sectionLabel}>
-          <span>POPPE’S PROMPT SHOPPE</span>
-          <span>WORKING BENCH / PHYSICAL OBJECTS</span>
-        </div>
-        <div className={styles.shoppeGrid}>
-          <div className={styles.shoppeCopy}>
-            <p className={styles.kicker}>SAN GREGORIO / CALIFORNIA</p>
-            <h2 id="shoppe-title">BRING IN<br />YOUR OLD<br />PROMPTS.</h2>
-            <p>Put one under load. Extract what it smuggles in. Find the decision it is actually trying to make.</p>
-            <Link href="/prompt-shoppe/">OPEN THE SHOPPE ↗</Link>
-          </div>
-          <div className={styles.shoppeVisuals}>
-            <Link className={styles.shoppeFacade} href="/prompt-shoppe/">
-              <Image src="/shoppe/poppes-prompt-shoppe.webp" alt="Poppe’s Prompt Shoppe in a wooded California setting" fill sizes="(max-width: 900px) 100vw, 58vw" />
-              <span>THE SHOPPE / OPEN ↗</span>
-            </Link>
-            <article className={styles.shoppeObject}>
-              <Image src="/instruments/objects/ten-decisions-usb.webp" alt="The ctrl+love Decision Stick in its sleeve" fill sizes="(max-width: 900px) 50vw, 29vw" />
-              <span>DECISION STICK · 001/100</span>
-            </article>
-            <article className={styles.shoppeObject}>
-              <Image src="/instruments/objects/decision-in-a-box.webp" alt="Decision in a Box with five metal forms and decision cards" fill sizes="(max-width: 900px) 50vw, 29vw" />
-              <span>DECISION IN A BOX · 5 CARDS / 1 DECISION</span>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section className={styles.reading} aria-labelledby="reading-title">
-        <div className={styles.sectionLabel}>
-          <span>THE LIBRARY</span>
-          <span>HUMAN MATERIAL / CURRENT READING</span>
-        </div>
-
-        <div className={styles.libraryIntro}>
+      <section className={styles.section} id="about">
+        <div className={styles.about}>
+          <h2>30 years advertising.<br/>8 years Apple.<br/>ADCN Hall of Fame.<br/>Then this.</h2>
           <div>
-            <p className={styles.kicker}>A VERY THIN LIBRARY</p>
-            <h2 id="reading-title">READ<br /><em>PEOPLE.</em></h2>
-          </div>
-          <p>
-            Judgment, dissent, groups, bias, risk, ritual, systems and human behaviour.
-            The books behind the instruments.
-          </p>
-        </div>
-
-        <div className={styles.libraryShelf}>
-          <div className={styles.libraryShelfHead}>
-            <span>SHELF 01</span>
-            <strong>HUMAN MATERIAL</strong>
-            <span>09 BOOKS / PERMANENTLY UNFINISHED</span>
-          </div>
-          <div className={styles.bookGrid}>
-            {humanMaterialBooks.map((book, index) => (
-              <a className={styles.bookCard} key={book.title} href={book.href} target="_blank" rel="noreferrer">
-                <span>{String(index + 1).padStart(2, "0")} · {book.subject}</span>
-                <h3>{book.title} ↗</h3>
-                <p>{book.author}</p>
-              </a>
-            ))}
-          </div>
-        </div>
-
-        <div className={`${styles.libraryShelf} ${styles.thinPressShelf}`}>
-          <div className={styles.libraryShelfHead}>
-            <span>SHELF 02</span>
-            <strong>CURRENT READING</strong>
-            <span>ONE LIVE EXPERIMENT</span>
-          </div>
-          <div className={styles.thinBookGrid}>
-            <Link className={styles.currentReadingCard} href="/brand-survival/">
-              <span>CURRENT EXPERIMENT / 001</span>
-              <h3>Brand / Wallpaper</h3>
-              <p>What survives when familiar brand cues are removed?</p>
-              <strong>OPEN READING ↗</strong>
-            </Link>
+            <p><b>Poppe van Pelt</b><br/>Founder, ctrl+love</p>
+            <p>Built after decades of watching good ideas get improved to death in rooms full of smart people.</p>
+            <p className={styles.circle}>The wider ctrl+love circle includes people Poppe has worked shoulder to shoulder with at Apple and across advertising and design.</p>
           </div>
         </div>
       </section>
 
-      <SoundtrackCue
-        index="01"
-        title="MOVING TO THE SUN"
-        artist="HUGEL"
-        href="https://www.youtube.com/results?search_query=HUGEL+Moving+to+the+Sun"
-        note="Placed exactly where the horizon earns it."
-      />
-
-      <EarthriseMoment />
-
-      <section className={styles.exit} aria-labelledby="exit-title">
-        <p className={styles.kicker}>OPEN DOOR</p>
-        <h2 id="exit-title">BRING US SOMETHING<br />THAT REFUSES TO<br />BECOME CLEAR.</h2>
-        <p>A decision. A belief. A brand. A room. A problem everyone thinks they understand.</p>
-        <a href="mailto:poppevanpelt@gmail.com?subject=A%20decision%20that%20refuses%20to%20become%20clear">BRING US THE DECISION ↗</a>
-        <div className={styles.exitFooter}>
-          <span>ctrl+love · Haarlem · 2026</span>
-          <span>Observe. Understand. Judge. Remain human.</span>
-        </div>
+      <section className={styles.final}>
+        <div className={styles.kicker}>Enough explaining</div>
+        <h2>Bring us something that matters.</h2>
+        <a href="mailto:poppevanpelt@gmail.com?subject=I%20have%20something%20for%20ctrl%2Blove">Bring a real problem ↗</a>
       </section>
+
+      <footer className={styles.footer}><span>ctrl+love · shortcut to reality</span><span>72° and sunny.</span></footer>
     </main>
   );
 }
