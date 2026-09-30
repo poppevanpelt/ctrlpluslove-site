@@ -78,18 +78,17 @@ if (!window.__savannahRuntimeLoaded) {
       }
 
       starting = true;
-      setUi("Allow microphone…", "I need your microphone first.", true);
+      setUi("Opening the line…", "Allow the microphone if Safari asks.", true);
 
       try {
         if (!navigator.mediaDevices?.getUserMedia) {
           throw new Error("MIC_UNSUPPORTED");
         }
 
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        stream.getTracks().forEach((track) => track.stop());
-
-        setUi("Opening the line…", "One second.", true);
-
+        // Important on iPhone Safari: let Vapi acquire and keep the microphone
+        // from this original user gesture. Do not preflight getUserMedia and
+        // immediately stop the track; that can leave the WebRTC call with no
+        // customer audio even though microphone permission was granted.
         await vapi.start(ASSISTANT_ID, {
           customerJoinTimeoutSeconds: 45,
         });
