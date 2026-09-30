@@ -10,7 +10,7 @@ const securityHeaders = [
       [
         "script-src 'self' 'unsafe-inline'",
         isDevelopment ? "'unsafe-eval'" : "",
-        "https://va.vercel-scripts.com https://vitals.vercel-insights.com https://unpkg.com https://cdn.jsdelivr.net https://*.daily.co",
+        "https://va.vercel-scripts.com https://vitals.vercel-insights.com https://unpkg.com https://cdn.jsdelivr.net https://esm.sh https://*.daily.co",
       ].filter(Boolean).join(" "),
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https://i.ytimg.com https://images.unsplash.com https://upload.wikimedia.org https://assets.science.nasa.gov",
