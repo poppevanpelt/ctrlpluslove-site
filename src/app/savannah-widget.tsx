@@ -9,6 +9,17 @@ const SAVANNAH_AVATAR = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBD
 
 type State = "idle" | "requesting" | "connecting" | "live" | "error";
 
+function describeError(error: unknown) {
+  if (error instanceof Error) return error.message || error.name;
+  if (typeof error === "string") return error;
+  try {
+    const raw = JSON.stringify(error);
+    return raw && raw !== "{}" ? raw : "Unknown Vapi error";
+  } catch {
+    return "Unknown Vapi error";
+  }
+}
+
 export function SavannahWidget() {
   const vapiRef = useRef<Vapi | null>(null);
   const [state, setState] = useState<State>("idle");
@@ -29,7 +40,8 @@ export function SavannahWidget() {
     vapi.on("error", (error: unknown) => {
       console.error("Savannah Vapi error", error);
       setState("error");
-      setMessage("The line dropped. Try me again.");
+      const detail = describeError(error).slice(0, 180);
+      setMessage(`Vapi: ${detail}`);
     });
 
     return () => {
@@ -67,11 +79,12 @@ export function SavannahWidget() {
     } catch (error) {
       console.error("Savannah call start failed", error);
       setState("error");
-      const text = error instanceof Error ? error.message.toLowerCase() : "";
+      const detail = describeError(error);
+      const lower = detail.toLowerCase();
       setMessage(
-        text.includes("permission") || text.includes("denied")
+        lower.includes("permission") || lower.includes("denied")
           ? "I need the microphone. Allow it for ctrlpluslove.com, then try again."
-          : "The line dropped. Try me again.",
+          : `Start failed: ${detail.slice(0, 180)}`,
       );
     }
   };
