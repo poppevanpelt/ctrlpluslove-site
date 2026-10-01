@@ -15563,3 +15563,301 @@ vapi-widget {
     flex-direction: column;
   }
 }
+
+
+/* OBJECT GRAMMAR / DECISION STRESS-TEST 2026-10-01 */
+.stress-page {
+  --stress-width: 72rem;
+  background:
+    radial-gradient(circle at 88% 10%, color-mix(in srgb, var(--yellow) 7%, transparent), transparent 28rem),
+    linear-gradient(180deg, #faf7ef 0%, #f2ece1 100%);
+}
+
+.stress-home {
+  position: fixed;
+  z-index: 20;
+  top: 1.2rem;
+  left: 1.4rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 28%, transparent);
+  padding-bottom: .15rem;
+  font-size: .68rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.stress-hero {
+  min-height: 100svh;
+  place-items: center;
+  padding: clamp(5rem, 8vh, 7rem) clamp(1rem, 4vw, 4rem) clamp(4rem, 7vh, 6rem);
+  text-align: left;
+}
+
+.stress-hero-stage {
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(22rem, .8fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: center;
+  width: min(100%, 84rem);
+  margin: 0 auto;
+}
+
+.stress-hero-block {
+  justify-items: start;
+  width: 100%;
+  gap: clamp(.8rem, 1.6vh, 1.2rem);
+  text-align: left;
+}
+
+.stress-hero-block .section-kicker {
+  margin-bottom: .35rem;
+  color: var(--muted);
+  font-size: .68rem;
+  letter-spacing: .16em;
+}
+
+.stress-hero h1 {
+  justify-self: start;
+  max-width: 9.6ch;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(4.1rem, 7.5vw, 8rem);
+  font-weight: 400;
+  letter-spacing: -.06em;
+  line-height: .84;
+  text-wrap: balance;
+}
+
+.stress-hero h1::after {
+  display: none;
+}
+
+.stress-hero-line {
+  max-width: 12ch;
+  margin-top: .9rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.8rem, 3.1vw, 3.2rem);
+  font-weight: 400;
+  letter-spacing: -.035em;
+  line-height: 1;
+}
+
+.stress-hero-support {
+  max-width: 34rem;
+  color: color-mix(in srgb, var(--ink) 68%, var(--muted));
+  font-size: clamp(1rem, 1.3vw, 1.16rem);
+  font-weight: 540;
+  line-height: 1.48;
+}
+
+.stress-actions {
+  justify-content: flex-start;
+  margin-top: 1.2rem;
+}
+
+.stress-primary-action {
+  min-height: 3rem;
+  border-width: 1px;
+  padding: .82rem 1rem;
+  font-size: .68rem;
+  letter-spacing: .08em;
+}
+
+.stress-primary-action::before {
+  content: "ROOM / 01";
+  font-size: .52rem;
+}
+
+.stress-secondary-action {
+  color: var(--muted);
+  font-size: .68rem;
+  letter-spacing: .04em;
+}
+
+.stress-admission-sign {
+  justify-self: start;
+  margin-top: .35rem;
+  font-size: .6rem;
+}
+
+.stress-artifact-preview {
+  position: relative;
+  display: grid;
+  gap: .9rem;
+  justify-items: center;
+  perspective: 1200px;
+}
+
+.stress-artifact-preview::before,
+.stress-artifact-preview::after {
+  position: absolute;
+  z-index: 0;
+  width: min(88%, 28rem);
+  aspect-ratio: .76;
+  border: 1px solid color-mix(in srgb, var(--ink) 18%, var(--rule));
+  background: #e9e1d4;
+  content: "";
+  box-shadow: 0 1.4rem 3rem color-mix(in srgb, var(--ink) 8%, transparent);
+}
+
+.stress-artifact-preview::before {
+  top: .8rem;
+  transform: rotate(4deg) translateX(1rem);
+}
+
+.stress-artifact-preview::after {
+  top: .4rem;
+  transform: rotate(-2.3deg) translateX(-.6rem);
+}
+
+.stress-artifact-sheet {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  width: min(100%, 31rem);
+  min-height: 39rem;
+  gap: 1rem;
+  align-content: start;
+  border: 1px solid color-mix(in srgb, var(--ink) 32%, var(--rule));
+  background:
+    linear-gradient(90deg, transparent 0 10%, color-mix(in srgb, var(--ink) 5%, transparent) 10% 10.25%, transparent 10.25%),
+    #fffdf8;
+  box-shadow: 0 2rem 4.5rem color-mix(in srgb, var(--ink) 15%, transparent);
+  padding: clamp(1.3rem, 3vw, 2.2rem);
+  transform: rotate(.8deg);
+}
+
+.stress-artifact-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: .7rem;
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: .55rem;
+  font-weight: 760;
+  letter-spacing: .1em;
+}
+
+.stress-artifact-meta b {
+  color: var(--ink);
+  font-size: .75rem;
+}
+
+.stress-artifact-kicker {
+  margin: .8rem 0 0;
+  color: color-mix(in srgb, var(--team-warm) 64%, var(--ink));
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: .58rem;
+  font-weight: 820;
+  letter-spacing: .12em;
+}
+
+.stress-artifact-sheet h2 {
+  max-width: 10ch;
+  margin: 0 0 .6rem;
+  color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.1rem, 3.5vw, 3.25rem);
+  font-weight: 400;
+  letter-spacing: -.045em;
+  line-height: .94;
+}
+
+.stress-artifact-sheet ol {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--rule);
+  list-style: none;
+}
+
+.stress-artifact-sheet li {
+  display: grid;
+  grid-template-columns: 2.3rem minmax(0, 1fr);
+  gap: .8rem;
+  align-items: baseline;
+  border-bottom: 1px solid var(--rule);
+  padding: .72rem 0;
+}
+
+.stress-artifact-sheet li span {
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: .56rem;
+}
+
+.stress-artifact-sheet li strong {
+  color: var(--ink);
+  font-size: clamp(.95rem, 1.2vw, 1.08rem);
+  font-weight: 620;
+  line-height: 1.25;
+}
+
+.stress-artifact-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .38rem;
+  margin-top: auto;
+  padding-top: .8rem;
+}
+
+.stress-artifact-footer span {
+  border: 1px solid color-mix(in srgb, var(--ink) 24%, var(--rule));
+  border-radius: 999px;
+  color: var(--muted);
+  padding: .3rem .45rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: .48rem;
+  font-weight: 760;
+  letter-spacing: .05em;
+}
+
+.stress-artifact-caption {
+  position: relative;
+  z-index: 3;
+  max-width: 27rem;
+  color: var(--muted);
+  font-size: .78rem;
+  line-height: 1.4;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .stress-hero-stage {
+    grid-template-columns: 1fr;
+    width: min(100%, 42rem);
+  }
+
+  .stress-artifact-preview {
+    margin-top: 2rem;
+  }
+
+  .stress-artifact-sheet {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 680px) {
+  .stress-home {
+    position: absolute;
+  }
+
+  .stress-hero {
+    min-height: 0;
+    padding: 5.8rem 1rem 4.5rem;
+  }
+
+  .stress-hero h1 {
+    font-size: clamp(3.55rem, 17vw, 5.4rem);
+  }
+
+  .stress-artifact-sheet {
+    transform: none;
+    padding: 1.2rem;
+  }
+
+  .stress-artifact-preview::before,
+  .stress-artifact-preview::after {
+    display: none;
+  }
+}
