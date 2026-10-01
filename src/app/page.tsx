@@ -1,10 +1,9 @@
 import styles from "./home-2026.module.css";
 
-const products = [
-  { no:"01", verb:"DECIDE.", name:"Decision Stress-Test", line:"Put one important decision under pressure before reality does.", price:"From €4,500", href:"/stress-test/" },
-  { no:"02", verb:"TEST.", name:"Synthetic Audience Test", line:"Find out what an idea runs into before you spend real money finding out.", price:"Scoped to the test", href:"/room/" },
-  { no:"03", verb:"BUILD.", name:"ctrl+2go", line:"A few days of us. A useful little machine that stays.", price:"A few days · the system stays", href:"/2go/" },
-  { no:"04", verb:"WATCH.", name:"ctrl+live", line:"Some problems do not need another meeting. They need watching.", price:"Ongoing watch", href:"mailto:poppevanpelt@gmail.com?subject=Show%20me%20ctrl%2Blive" },
+const stages = [
+  { no:"01", verb:"OBSERVE.", name:"ctrl+live", line:"Watch what is actually changing before deciding what it means.", detail:"Signals, movement, patterns and anomalies — kept alive instead of frozen into another report.", price:"Ongoing watch", href:"mailto:poppevanpelt@gmail.com?subject=Show%20me%20ctrl%2Blive", kind:"observe" },
+  { no:"02", verb:"ANALYSE.", name:"Decision Stress-Test + Synthetic Audience Test", line:"Put what you think you know under pressure.", detail:"Contradiction, opposition, evidence and consequences — before reality does the expensive version.", price:"From €4,500 · tests scoped separately", href:"/stress-test/", kind:"analyse" },
+  { no:"03", verb:"ACCELERATE.", name:"ctrl+2go", line:"Turn the useful signal into movement.", detail:"A few days of us. A working prototype, instrument or little machine that stays behind.", price:"A few days · the system stays", href:"/2go/", kind:"accelerate" },
 ] as const;
 
 const instruments = [
@@ -42,22 +41,32 @@ export default function Home() {
 
       <section className={styles.section} id="work">
         <div className={styles.kicker}>What you can actually buy</div>
-        <h2>Decide. Test. Build. Watch.</h2>
-        <div className={styles.products}>
-          {products.map((p) => (
-            <a className={styles.card} href={p.href} key={p.no}>
-              <span className={styles.num}>{p.no}</span>
-              <b className={styles.verb}>{p.verb}</b>
-              <strong className={styles.product}>{p.name}</strong>
-              <p>{p.line}</p>
-              <span className={styles.price}>{p.price}</span>
+        <h2>Observe. Analyse. Accelerate.</h2>
+
+        <div className={styles.flowIntro}>
+          <div className={styles.ballStage} aria-hidden="true">
+            <div className={styles.pedestal}>
+              <img src="/museum/steel-ball-packshot-cutout.png" alt="" />
+            </div>
+          </div>
+          <div className={styles.flowCopy}>
+            <span className={styles.flowLabel}>THE LOGIC</span>
+            <p>Start with reality. Work out what it means. Then move.</p>
+            <strong>The same object. Three different jobs.</strong>
+          </div>
+        </div>
+
+        <div className={styles.stages}>
+          {stages.map((stage) => (
+            <a className={`${styles.stage} ${styles[stage.kind]}`} href={stage.href} key={stage.no}>
+              <span className={styles.num}>{stage.no} / {stage.verb.replace(".","")}</span>
+              <b className={styles.stageVerb}>{stage.verb}</b>
+              <strong className={styles.stageProduct}>{stage.name}</strong>
+              <p>{stage.line}</p>
+              <small>{stage.detail}</small>
+              <span className={styles.stagePrice}>{stage.price}</span>
             </a>
           ))}
-        </div>
-        <div className={styles.liveBand}>
-          <strong>ctrl+live</strong>
-          <p>Already alive online: a living observatory for signals that matter, rather than another static report.</p>
-          <span>WATCH WHAT CHANGES.</span>
         </div>
       </section>
 
