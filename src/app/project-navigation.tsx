@@ -39,6 +39,8 @@ export function ProjectNavigation() {
     pathname === "/radar/" ||
     pathname === "/decision-memory" ||
     pathname === "/decision-memory/" ||
+    pathname === "/inside-ctrl-love" ||
+    pathname === "/inside-ctrl-love/" ||
     pathname === "/swat" ||
     pathname === "/swat/" ||
     pathname.startsWith("/swat/") ||
