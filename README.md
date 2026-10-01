@@ -240,3 +240,5 @@ Then deploy:
 ```bash
 vercel --prod
 ```
+
+<!-- netlify deploy trigger 2026-10-01 -->
