@@ -5,7 +5,19 @@ import { routeMetadata } from "../seo";
 
 export const metadata = routeMetadata("/artifacts/");
 
-const artifacts = [
+type Artifact = {
+  code: string;
+  name: string;
+  line: string;
+  status: string;
+  price: string;
+  availability: string;
+  href?: string;
+  image?: string;
+  imageAlt?: string;
+};
+
+const artifacts: Artifact[] = [
   {
     code: "Artifact 001",
     name: "Franz's Steel Ball",
