@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { routeMetadata } from "../seo";
-import { ThemeToggle } from "../theme-toggle";
 import { StressEntry } from "./stress-entry";
 
 export const metadata: Metadata = routeMetadata("/stress-test/");
@@ -31,37 +30,64 @@ const outputs = [
 export default function StressTestPage() {
   return (
     <main className="site-shell stress-page">
-      <ThemeToggle />
-
       <Link className="stress-home" href="/">
         ctrl+love
       </Link>
 
       <section className="stress-hero">
-        <div className="stress-hero-block">
-          <p className="hero-logo hero-logo-mark" aria-label="ctrl+love">
-            ctrl+love
-          </p>
-          <h1>
-            Decision
-            <br />
-            Stress-Test<sup>™</sup>
-          </h1>
-          <p className="stress-hero-line">Bring one decision. Leave with less fog.</p>
-          <p className="stress-hero-support">
-            ctrl+love helps companies see what their ideas are doing
-            before the market, the boardroom, or the comment section does it
-            for them.
-          </p>
-          <div className="stress-actions">
-            <StressEntry />
-            <a className="stress-secondary-action" href="#inside">
-              What happens inside?
-            </a>
+        <div className="stress-hero-stage">
+          <div className="stress-hero-block">
+            <p className="section-kicker">Decision Stress-Test™</p>
+            <h1>
+              One decision.
+              <br />
+              Under pressure.
+            </h1>
+            <p className="stress-hero-line">Bring one decision. Leave with less fog.</p>
+            <p className="stress-hero-support">
+              ctrl+love helps companies see what their ideas are doing
+              before the market, the boardroom, or the comment section does it
+              for them.
+            </p>
+            <div className="stress-actions">
+              <StressEntry />
+              <a className="stress-secondary-action" href="#inside">
+                See what happens inside
+              </a>
+            </div>
+            <p className="stress-admission-sign">
+              Useful disagreement admitted by appointment.
+            </p>
           </div>
-          <p className="stress-admission-sign">
-            Useful disagreement admitted by appointment.
-          </p>
+
+          <aside className="stress-artifact-preview" aria-label="Decision Artifact preview">
+            <div className="stress-artifact-sheet">
+              <div className="stress-artifact-meta">
+                <span>CTRL+LOVE / DECISION ARTIFACT</span>
+                <b>001</b>
+              </div>
+              <p className="stress-artifact-kicker">AFTER THE ROOM</p>
+              <h2>The thing you can actually take away.</h2>
+              <ol>
+                {outputs.map((item, index) => (
+                  <li key={item}>
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                    <strong>{item}</strong>
+                  </li>
+                ))}
+              </ol>
+              <div className="stress-artifact-footer">
+                <span>OBSERVED</span>
+                <span>INFERRED</span>
+                <span>ASSUMED</span>
+                <span>TESTED</span>
+                <span>PROVEN</span>
+              </div>
+            </div>
+            <p className="stress-artifact-caption">
+              Not a dashboard. A decision artifact people can use after we leave.
+            </p>
+          </aside>
         </div>
       </section>
 
