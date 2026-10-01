@@ -112,7 +112,11 @@ export function SavannahWidget() {
     pathname === "/ai-y-fier" ||
     pathname === "/ai-y-fier/" ||
     pathname === "/prompt-shoppe" ||
-    pathname === "/prompt-shoppe/"
+    pathname === "/prompt-shoppe/" ||
+    pathname === "/radar" ||
+    pathname === "/radar/" ||
+    pathname === "/decision-memory" ||
+    pathname === "/decision-memory/"
   ) {
     return null;
   }
