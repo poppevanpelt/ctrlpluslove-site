@@ -24,7 +24,7 @@ const leftPortrait = homepageRoomPersonas.find((persona) => persona.id === "maya
 const rightPortrait = homepageRoomPersonas.find((persona) => persona.id === "simon-cross") ?? homepageRoomPersonas[2];
 
 const featurePersonas = homepageRoomPersonas.filter(
-  (persona) => ![lead?.id, leftPortrait?.id, rightPortrait?.id].includes(persona.id),
+  (persona) => persona.id !== lead.id,
 );
 
 function FeatureCard({ persona, index }: { persona: (typeof homepageRoomPersonas)[number]; index: number }) {
@@ -72,8 +72,8 @@ function Portrait({
 }
 
 export default function RoomPage() {
-  const leftFeatures = featurePersonas.slice(0, 4);
-  const rightFeatures = featurePersonas.slice(4, 8);
+  const leftFeatures = featurePersonas.slice(0, 5);
+  const rightFeatures = featurePersonas.slice(5, 9);
 
   return (
     <main className="site-shell room-page">
