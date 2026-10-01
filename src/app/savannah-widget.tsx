@@ -118,7 +118,11 @@ export function SavannahWidget() {
     pathname === "/decision-memory" ||
     pathname === "/decision-memory/" ||
     pathname === "/inside-ctrl-love" ||
-    pathname === "/inside-ctrl-love/"
+    pathname === "/inside-ctrl-love/" ||
+    pathname === "/artifacts" ||
+    pathname === "/artifacts/" ||
+    pathname === "/living-decision-review" ||
+    pathname === "/living-decision-review/"
   ) {
     return null;
   }
