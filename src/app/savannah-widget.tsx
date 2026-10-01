@@ -116,7 +116,9 @@ export function SavannahWidget() {
     pathname === "/radar" ||
     pathname === "/radar/" ||
     pathname === "/decision-memory" ||
-    pathname === "/decision-memory/"
+    pathname === "/decision-memory/" ||
+    pathname === "/inside-ctrl-love" ||
+    pathname === "/inside-ctrl-love/"
   ) {
     return null;
   }
