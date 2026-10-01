@@ -100,7 +100,16 @@ export function SavannahWidget() {
 
   const busy = state === "requesting" || state === "connecting";
 
-  if (pathname === "/room" || pathname === "/room/") {
+  if (
+    pathname === "/room" ||
+    pathname === "/room/" ||
+    pathname === "/decision-collider" ||
+    pathname === "/decision-collider/" ||
+    pathname === "/meeting-filter" ||
+    pathname === "/meeting-filter/" ||
+    pathname === "/stress-test" ||
+    pathname === "/stress-test/"
+  ) {
     return null;
   }
 
