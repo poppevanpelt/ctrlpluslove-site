@@ -15254,3 +15254,312 @@ vapi-widget {
   position: relative;
   z-index: 2147483000;
 }
+
+
+/* OBJECT GRAMMAR / MEETING FILTER 2026-10-01 */
+.meeting-filter-section.is-open {
+  position: relative;
+  display: block;
+  min-height: 100svh;
+  padding: clamp(4.2rem, 7vw, 6.5rem) 1.25rem clamp(5rem, 8vw, 7rem);
+  background:
+    radial-gradient(circle at 12% 16%, color-mix(in srgb, var(--yellow) 8%, transparent), transparent 24rem),
+    radial-gradient(circle at 88% 70%, color-mix(in srgb, var(--team-cold) 7%, transparent), transparent 28rem),
+    linear-gradient(180deg, #faf7ef 0%, #f1ebe0 100%);
+}
+
+.meeting-filter-section .meeting-filter-return {
+  position: static;
+  display: inline-flex;
+  min-height: 0;
+  margin: 0 0 2rem max(0rem, calc((100vw - 72rem) / 2));
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 38%, transparent);
+  background: transparent;
+  color: var(--muted);
+  padding: 0 0 .2rem;
+  font-size: .66rem;
+  font-weight: 820;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+
+.meeting-filter-section .meeting-filter-return:hover {
+  background: transparent;
+  color: var(--ink);
+}
+
+.meeting-filter-block {
+  width: min(100%, 72rem);
+  gap: clamp(2.2rem, 5vw, 4.2rem);
+}
+
+.meeting-filter-heading {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  gap: .7rem;
+  border-bottom: 0;
+  padding-bottom: 0;
+  text-align: center;
+}
+
+.meeting-filter-heading .section-kicker {
+  grid-row: auto;
+  color: var(--muted);
+  font-size: .68rem;
+  letter-spacing: .16em;
+}
+
+.meeting-filter-heading h2 {
+  max-width: 14ch;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(3.3rem, 7vw, 7rem);
+  font-weight: 400;
+  letter-spacing: -.055em;
+  line-height: .88;
+  text-wrap: balance;
+}
+
+.meeting-filter-heading p:not(.section-kicker) {
+  max-width: 36rem;
+  color: color-mix(in srgb, var(--ink) 64%, var(--muted));
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  font-weight: 540;
+  line-height: 1.45;
+}
+
+.meeting-filter-questions {
+  counter-reset: filter-question;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  width: min(100%, 54rem);
+  margin: 0 auto;
+  padding: clamp(2.4rem, 5vw, 4rem) clamp(1.2rem, 4vw, 3.5rem) clamp(1.5rem, 3vw, 2.4rem);
+  border: 1px solid color-mix(in srgb, var(--ink) 28%, var(--rule));
+  background:
+    linear-gradient(90deg, transparent 0 8%, color-mix(in srgb, var(--ink) 6%, transparent) 8% 8.2%, transparent 8.2%),
+    #fffdf8;
+  box-shadow: 0 2.1rem 4rem color-mix(in srgb, var(--ink) 13%, transparent);
+  transform: rotate(-.28deg);
+  list-style: none;
+}
+
+.meeting-filter-questions::before {
+  position: absolute;
+  top: .9rem;
+  left: 1.1rem;
+  content: "ROOM FILTER / 002 / THREE QUESTIONS BEFORE THE INVITE";
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: .54rem;
+  font-weight: 760;
+  letter-spacing: .1em;
+}
+
+.meeting-filter-questions::after {
+  position: absolute;
+  right: 1rem;
+  bottom: .8rem;
+  content: "IF TWO ANSWERS FEEL POLITICAL, STOP.";
+  color: color-mix(in srgb, var(--red) 66%, var(--ink));
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: .5rem;
+  font-weight: 760;
+  letter-spacing: .08em;
+}
+
+.meeting-filter-questions li {
+  counter-increment: filter-question;
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(.9rem, 2vw, 1.8rem);
+  min-height: 0;
+  border-top: 1px solid color-mix(in srgb, var(--ink) 24%, var(--rule));
+  background: transparent;
+  color: var(--ink);
+  padding: clamp(1.25rem, 2.5vw, 1.9rem) 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.45rem, 2.6vw, 2.4rem);
+  font-weight: 400;
+  line-height: 1.06;
+}
+
+.meeting-filter-questions li:first-child {
+  border-top-color: var(--ink);
+}
+
+.meeting-filter-questions li::before {
+  align-self: center;
+  width: auto;
+  height: auto;
+  margin: 0;
+  background: none;
+  color: var(--muted);
+  content: "0" counter(filter-question);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: .64rem;
+  font-weight: 760;
+  letter-spacing: .08em;
+}
+
+.meeting-filter-choice {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: .35rem;
+}
+
+.meeting-filter-choice button {
+  min-width: 3.65rem;
+  min-height: 2.3rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 42%, transparent);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  padding: .55rem .7rem;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: .62rem;
+  font-weight: 820;
+  letter-spacing: .08em;
+}
+
+.meeting-filter-choice button:hover {
+  transform: none;
+  background: color-mix(in srgb, var(--ink) 5%, transparent);
+}
+
+.meeting-filter-choice button[data-selected="true"] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.meeting-filter-result {
+  display: grid;
+  width: min(100%, 54rem);
+  margin: 0 auto;
+  gap: .85rem;
+}
+
+.meeting-filter-support {
+  max-width: 36rem;
+  color: var(--muted);
+  font-size: .98rem;
+  line-height: 1.45;
+}
+
+.meeting-filter-status {
+  align-items: baseline;
+  border-top: 1px solid var(--ink);
+  padding-top: .75rem;
+}
+
+.meeting-filter-status span {
+  color: var(--ink);
+  font-size: .7rem;
+  letter-spacing: .08em;
+}
+
+.meeting-filter-status button {
+  min-height: 0;
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 35%, transparent);
+  background: transparent;
+  color: var(--muted);
+  padding: 0 0 .15rem;
+  font-size: .62rem;
+  font-weight: 760;
+}
+
+.meeting-filter-outcomes {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: min(100%, 54rem);
+  margin: 0 auto;
+  gap: 1px;
+  background: color-mix(in srgb, var(--ink) 18%, var(--rule));
+  border: 1px solid color-mix(in srgb, var(--ink) 18%, var(--rule));
+}
+
+.meeting-filter-card {
+  min-height: 0;
+  gap: .45rem;
+  border: 0;
+  border-top: 0;
+  background: #f7f2e9;
+  padding: 1rem;
+  opacity: .32;
+  transform: none;
+  box-shadow: none;
+}
+
+.meeting-filter-card[data-active="true"] {
+  border: 0;
+  box-shadow: inset 0 3px 0 var(--room-accent);
+  opacity: 1;
+  transform: none;
+  background: #fffaf2;
+}
+
+.meeting-filter-card p {
+  font-size: .58rem;
+  letter-spacing: .1em;
+}
+
+.meeting-filter-card h3 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.25rem, 2vw, 1.7rem);
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+.meeting-filter-card span {
+  color: var(--muted);
+  font-size: .86rem;
+  line-height: 1.38;
+}
+
+.meeting-filter-close {
+  width: min(100%, 54rem);
+  margin: 0 auto;
+  align-items: baseline;
+  padding-top: 1rem;
+}
+
+.meeting-filter-close p {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.15rem, 1.8vw, 1.5rem);
+  font-weight: 400;
+}
+
+@media (max-width: 680px) {
+  .meeting-filter-section.is-open {
+    padding: 3.5rem .85rem 5rem;
+  }
+
+  .meeting-filter-questions {
+    transform: none;
+    padding: 2.7rem 1rem 1.6rem;
+  }
+
+  .meeting-filter-questions li {
+    grid-template-columns: 2rem minmax(0, 1fr);
+    gap: .7rem;
+  }
+
+  .meeting-filter-choice {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .meeting-filter-outcomes {
+    grid-template-columns: 1fr;
+  }
+
+  .meeting-filter-close {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
