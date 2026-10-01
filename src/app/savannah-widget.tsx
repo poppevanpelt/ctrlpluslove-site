@@ -122,7 +122,9 @@ export function SavannahWidget() {
     pathname === "/artifacts" ||
     pathname === "/artifacts/" ||
     pathname === "/living-decision-review" ||
-    pathname === "/living-decision-review/"
+    pathname === "/living-decision-review/" ||
+    pathname === "/ambassadors" ||
+    pathname === "/ambassadors/"
   ) {
     return null;
   }
