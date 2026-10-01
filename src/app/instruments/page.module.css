@@ -204,7 +204,7 @@
   padding-bottom: 0.85rem;
   border-bottom: 1px solid #181714;
 }
-.wallLabel small { color: #756e65; font-size: 0.62rem; }
+.wallLabel small { color: #5c554d; font-size: 0.62rem; }
 
 .specimenWall {
   display: grid;
@@ -223,7 +223,7 @@
 }
 .specimen summary {
   position: relative;
-  min-height: 29rem;
+  min-height: 25rem;
   padding: 1rem;
   cursor: pointer;
   list-style: none;
@@ -234,7 +234,7 @@
 .missArchive summary::-webkit-details-marker { display: none; }
 .specimenTop { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .number { color: #d65d35; }
-.state { padding: 0.28rem 0.4rem; border: 1px solid currentColor; background: rgb(255 255 255 / 35%); }
+.state { padding: 0.24rem 0.36rem; border: 1px solid currentColor; background: rgb(255 255 255 / 28%); font-size: 0.56rem; font-weight: 760; letter-spacing: 0.11em; }
 .stateWorking { color: #50763d; }
 .statePrototype { color: #a16f16; }
 .stateField { color: #c25131; }
@@ -242,8 +242,8 @@
 .stateDevelopment { color: #786879; }
 .device {
   position: relative;
-  height: 12.8rem;
-  margin: 2rem 0 1.4rem;
+  height: 10.8rem;
+  margin: 1.55rem 0 1.25rem;
   border: 1px solid #302e29;
   border-radius: 0.25rem;
   background:
@@ -292,8 +292,8 @@
 .switch { position: absolute; left: 1.3rem; bottom: 1.4rem; width: 3rem; height: 1.05rem; border: 1px solid #292824; background: #e4ded3; box-shadow: inset 0 -4px 0 #9e988f; }
 .slot { position: absolute; right: 1.25rem; bottom: 1.65rem; width: 43%; height: 0.55rem; background: #3b3934; box-shadow: 0 2px 0 #f2eee4; }
 .specimen h2 { margin: 0; font-size: clamp(1.45rem, 2vw, 2.1rem); letter-spacing: -0.045em; line-height: 0.95; }
-.specimen summary > p { min-height: 3.4rem; margin: 0.75rem 0 2.4rem; color: #5c554d; line-height: 1.35; }
-.pull { position: absolute; bottom: 1rem; left: 1rem; right: 1rem; padding-top: 0.7rem; border-top: 1px solid rgb(24 23 20 / 45%); color: #6f685f; }
+.specimen summary > p { min-height: 2.8rem; margin: 0.65rem 0 2rem; color: #3f3a34; line-height: 1.38; }
+.pull { position: absolute; bottom: 1rem; left: 1rem; right: 1rem; padding-top: 0.7rem; border-top: 1px solid rgb(24 23 20 / 35%); color: #514b44; font-size: 0.58rem; letter-spacing: 0.11em; }
 .drawer {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -305,7 +305,7 @@
   box-shadow: inset 0 12px 18px rgb(24 23 20 / 8%);
 }
 .drawer div > span { font-size: 0.62rem; font-weight: 850; letter-spacing: 0.13em; }
-.drawer p { margin: 0.4rem 0 0; max-width: 35rem; color: #4e4942; line-height: 1.42; }
+.drawer p { margin: 0.4rem 0 0; max-width: 35rem; color: #3f3a34; line-height: 1.42; }
 .drawer a,
 .noDoor { color: inherit; font-size: 0.66rem; font-weight: 850; letter-spacing: 0.12em; text-decoration: none; white-space: nowrap; }
 .noDoor { color: #888178; }
@@ -374,7 +374,7 @@
   padding: 2.4rem clamp(1rem, 4vw, 4.5rem) 3rem;
 }
 .footer p { margin: 0; font-size: clamp(1.25rem, 2vw, 1.8rem); font-weight: 700; letter-spacing: -0.03em; }
-.footer a { color: inherit; font-size: 0.7rem; font-weight: 850; letter-spacing: 0.11em; text-decoration: none; }
+.footer div { display: flex; gap: 1.2rem; flex-wrap: wrap; }.footer a { color: inherit; font-size: 0.7rem; font-weight: 850; letter-spacing: 0.11em; text-decoration: none; }
 
 @media (hover: hover) {
   .specimen summary:hover .device { transform: translateY(-3px); box-shadow: inset 0 0 0 4px #c4beb4, 0 12px 18px rgb(24 23 20 / 16%); }
@@ -407,7 +407,7 @@
   .roomStatus { grid-template-columns: 1fr; gap: 0.4rem; }
   .wallLabel { flex-direction: column; gap: 0.35rem; }
   .specimenWall, .artifactBench { grid-template-columns: 1fr; }
-  .specimen summary { min-height: 27rem; }
+  .specimen summary { min-height: 23rem; }
   .drawer { grid-template-columns: 1fr; }
   .protocolRail { grid-template-columns: 1fr 1fr; }
   .footer { flex-direction: column; align-items: flex-start; }
