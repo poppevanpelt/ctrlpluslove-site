@@ -61,7 +61,7 @@ export default function InstrumentRoomPage() {
     <main className={styles.page}>
       <header className={styles.topbar}>
         <Link href="/" className={styles.brand}>ctrl+love</Link>
-        <span className={styles.serial}>INSTRUMENT DIVISION · SUNNYVALE · ROOM 001</span>
+        <span className={styles.serial}>INSTRUMENT DIVISION · SUNNYVALE</span>
         <Link href="/factory/" className={styles.exec}>FACTORY: OPEN →</Link>
       </header>
 
@@ -143,7 +143,7 @@ export default function InstrumentRoomPage() {
         <strong>OPPOSITION SEAT</strong><b>DO-NOTHING CONTROL</b><strong>BLIND TRIAL</strong><b>EVIDENCE TAGS</b><strong>KILL QUESTION</strong>
       </section>
 
-      <footer className={styles.footer}><p>Observe. Understand. Judge. Remain human.</p><Link href="/factory/">ENTER FACTORY ↗</Link></footer>
+      <footer className={styles.footer}><p>Observe. Understand. Judge. Remain human.</p><div><Link href="/">BACK HOME ↖</Link><Link href="/factory/">ENTER FACTORY ↗</Link></div></footer>
     </main>
   );
 }
