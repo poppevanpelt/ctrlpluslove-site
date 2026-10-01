@@ -21,6 +21,8 @@ export function ProjectNavigation() {
 
   if (
     pathname === "/" ||
+    pathname === "/instruments" ||
+    pathname === "/instruments/" ||
     pathname === "/decision-collider" ||
     pathname === "/decision-collider/" ||
     pathname === "/swat" ||
