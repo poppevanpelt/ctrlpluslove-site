@@ -27,6 +27,10 @@ export function ProjectNavigation() {
     pathname === "/room/" ||
     pathname === "/decision-collider" ||
     pathname === "/decision-collider/" ||
+    pathname === "/meeting-filter" ||
+    pathname === "/meeting-filter/" ||
+    pathname === "/stress-test" ||
+    pathname === "/stress-test/" ||
     pathname === "/swat" ||
     pathname === "/swat/" ||
     pathname.startsWith("/swat/") ||
