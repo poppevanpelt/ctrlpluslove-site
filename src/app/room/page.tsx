@@ -10,7 +10,7 @@ import {
   supportingRoomPersonas,
 } from "../room-personas-data";
 import { routeMetadata } from "../seo";
-import { ThemeToggle } from "../theme-toggle";
+import showcase from "./room-showcase.module.css";
 
 export const metadata: Metadata = routeMetadata("/room/");
 
@@ -19,28 +19,120 @@ const additionalRoomPersonas = supportingRoomPersonas.filter(
   (persona) => !homepagePersonaIdSet.has(persona.id),
 );
 
+const lead = homepageRoomPersonas.find((persona) => persona.id === "lexi-arden") ?? homepageRoomPersonas[0];
+const leftPortrait = homepageRoomPersonas.find((persona) => persona.id === "maya-elise-harper") ?? homepageRoomPersonas[1];
+const rightPortrait = homepageRoomPersonas.find((persona) => persona.id === "simon-cross") ?? homepageRoomPersonas[2];
+
+const featurePersonas = homepageRoomPersonas.filter(
+  (persona) => ![lead?.id, leftPortrait?.id, rightPortrait?.id].includes(persona.id),
+);
+
+function FeatureCard({ persona, index }: { persona: (typeof homepageRoomPersonas)[number]; index: number }) {
+  return (
+    <Link className={showcase.featureCard} href={`/room/${persona.id}/`}>
+      <span className={showcase.featureIcon}>{String(index + 1).padStart(2, "0")}</span>
+      <span className={showcase.featureCopy}>
+        <strong>{persona.role}</strong>
+        <span>{persona.name}</span>
+        <small>{persona.line}</small>
+      </span>
+    </Link>
+  );
+}
+
+function Portrait({
+  persona,
+  className,
+  label,
+}: {
+  persona: (typeof homepageRoomPersonas)[number];
+  className: string;
+  label: string;
+}) {
+  return (
+    <Link
+      className={`${showcase.portrait} ${className}`}
+      href={`/room/${persona.id}/`}
+      style={{ "--portrait-position": persona.portraitPosition } as CSSProperties}
+    >
+      <Image
+        src={getRoomPersonaPortraitSrc(persona) ?? persona.portrait ?? ""}
+        alt={persona.name}
+        fill
+        unoptimized
+        sizes="(max-width: 980px) 70vw, 32vw"
+        style={{ objectPosition: persona.portraitPosition }}
+      />
+      <span className={showcase.portraitLabel}>
+        <b>{persona.name}</b>
+        <span>{label}</span>
+      </span>
+    </Link>
+  );
+}
+
 export default function RoomPage() {
+  const leftFeatures = featurePersonas.slice(0, 4);
+  const rightFeatures = featurePersonas.slice(4, 8);
+
   return (
     <main className="site-shell room-page">
-      <ThemeToggle />
+      <nav className={showcase.nav}>
+        <Link className={showcase.brand} href="/">ctrl+love</Link>
+        <span className={showcase.navCenter}>The Room · human judgment before certainty</span>
+        <Link className={showcase.navAction} href="/decision-collider/">Run a decision →</Link>
+      </nav>
+
+      <section className={showcase.showcase} aria-labelledby="meet-the-room">
+        <div className={showcase.heading}>
+          <p className={showcase.kicker}>Synthetic perspectives / real disagreement</p>
+          <h1 id="meet-the-room">Meet the Room</h1>
+          <strong>Not one AI pretending to be certain.</strong>
+          <span>
+            A deliberately small group of distinct perspectives — with memories,
+            biases and reasons to disagree before your decision hardens.
+          </span>
+        </div>
+
+        <div className={showcase.stage}>
+          <div className={showcase.featureColumn}>
+            {leftFeatures.map((persona, index) => (
+              <FeatureCard persona={persona} index={index} key={persona.id} />
+            ))}
+          </div>
+
+          <div className={showcase.portraitStage} aria-label="A few people in the Room">
+            <Portrait persona={leftPortrait} className={showcase.portraitLeft} label={leftPortrait.role} />
+            <Portrait persona={rightPortrait} className={showcase.portraitRight} label={rightPortrait.role} />
+            <Portrait persona={lead} className={showcase.portraitMain} label={lead.role} />
+          </div>
+
+          <div className={showcase.featureColumn}>
+            {rightFeatures.map((persona, index) => (
+              <FeatureCard persona={persona} index={index + leftFeatures.length} key={persona.id} />
+            ))}
+          </div>
+        </div>
+
+        <div className={showcase.signalBar} aria-label="Room system">
+          <span><b>10 core lenses</b>Small enough to know them.</span>
+          <span><b>Designed opposition</b>Agreement is not the default.</span>
+          <span><b>Evidence first</b>Observed ≠ assumed.</span>
+          <span><b>One decision</b>Then the Room changes.</span>
+        </div>
+      </section>
 
       <section className="content-section room-directory-section">
         <div className="content-block room-directory-block">
-          <div className="page-backlinks">
-            <Link className="back-home-link" href="/">
-              ← Home
-            </Link>
-          </div>
-
-          <div className="section-heading quiet-heading">
+          <div className={showcase.directoryIntro}>
             <div>
-              <p className="section-kicker">The Room</p>
-              <h1>The perspectives invited before a decision hardens.</h1>
+              <p className="section-kicker">The full room</p>
+              <h2>The perspectives invited before a decision hardens.</h2>
             </div>
             <p>
-              The Room is not one voice pretending to be certainty. It is a set
-              of distinct lenses that pressure the decision from different
-              angles.
+              Nobody attends by default. The decision determines who enters,
+              what they are there to challenge, and when their perspective has
+              done enough.
             </p>
           </div>
 
@@ -92,8 +184,7 @@ export default function RoomPage() {
               <div>
                 <p className="section-kicker">Supporting perspectives</p>
                 <h2 id="supporting-room-title">
-                  These participants enter only when their perspective is
-                  relevant.
+                  They enter only when the decision earns them.
                 </h2>
               </div>
             </div>
@@ -133,7 +224,7 @@ export default function RoomPage() {
           <section className="room-closing" aria-labelledby="room-closing-title">
             <p className="section-kicker">Then the decision enters</p>
             <h2 id="room-closing-title">
-              Every decision gets the perspectives it actually needs.
+              The Room is useful only if somebody eventually has to decide.
             </h2>
             <Link className="text-link" href="/decision-collider/">
               Open the Decision Collider →
