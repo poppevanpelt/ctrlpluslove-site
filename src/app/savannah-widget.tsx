@@ -108,7 +108,11 @@ export function SavannahWidget() {
     pathname === "/meeting-filter" ||
     pathname === "/meeting-filter/" ||
     pathname === "/stress-test" ||
-    pathname === "/stress-test/"
+    pathname === "/stress-test/" ||
+    pathname === "/ai-y-fier" ||
+    pathname === "/ai-y-fier/" ||
+    pathname === "/prompt-shoppe" ||
+    pathname === "/prompt-shoppe/"
   ) {
     return null;
   }
