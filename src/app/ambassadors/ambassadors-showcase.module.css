@@ -1,3 +1,23 @@
+.topbar{
+  position:sticky;
+  z-index:30;
+  top:0;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  min-height:62px;
+  gap:1rem;
+  padding:.75rem clamp(1rem,3vw,3rem);
+  border-bottom:1px solid rgba(24,23,20,.16);
+  background:rgba(249,246,239,.93);
+  backdrop-filter:blur(14px);
+}
+.topbar a{color:#181714;text-decoration:none}
+.topbar a:first-child{font-size:1.45rem;font-weight:850;letter-spacing:-.055em}
+.topbar span{color:#6a6259;font-size:.62rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.topbar a:last-child{justify-self:end;border-bottom:1px solid rgba(24,23,20,.3);font-size:.62rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
+@media(max-width:700px){.topbar{grid-template-columns:1fr auto}.topbar span{display:none}}
+
 .showcase{
   position:relative;
   overflow:hidden;
