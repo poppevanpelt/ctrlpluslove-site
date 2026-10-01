@@ -1,6 +1,7 @@
 "use client";
 
 import Vapi from "@vapi-ai/web";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 const PUBLIC_KEY = "f79f986e-3b43-4dde-b712-5527ec872a1c";
@@ -21,6 +22,7 @@ function describeError(error: unknown) {
 }
 
 export function SavannahWidget() {
+  const pathname = usePathname();
   const vapiRef = useRef<Vapi | null>(null);
   const [state, setState] = useState<State>("idle");
   const [message, setMessage] = useState("Morning. What are we trying to decide?");
@@ -97,6 +99,10 @@ export function SavannahWidget() {
     : "Talk to Savannah";
 
   const busy = state === "requesting" || state === "connecting";
+
+  if (pathname === "/room" || pathname === "/room/") {
+    return null;
+  }
 
   return (
     <aside
