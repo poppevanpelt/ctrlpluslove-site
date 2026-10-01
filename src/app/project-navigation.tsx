@@ -31,6 +31,10 @@ export function ProjectNavigation() {
     pathname === "/meeting-filter/" ||
     pathname === "/stress-test" ||
     pathname === "/stress-test/" ||
+    pathname === "/ai-y-fier" ||
+    pathname === "/ai-y-fier/" ||
+    pathname === "/prompt-shoppe" ||
+    pathname === "/prompt-shoppe/" ||
     pathname === "/swat" ||
     pathname === "/swat/" ||
     pathname.startsWith("/swat/") ||
