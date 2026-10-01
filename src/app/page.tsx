@@ -138,7 +138,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={styles.section} id="about">
+      <section className={`${styles.section} ${styles.aboutSection}`} id="about">
         <div className={styles.about}>
           <h2>30 years advertising.<br/>8 years Apple.<br/>ADCN Hall of Fame.<br/>Then this.</h2>
           <div>
