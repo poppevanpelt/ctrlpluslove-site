@@ -45,6 +45,8 @@ export function ProjectNavigation() {
     pathname === "/artifacts/" ||
     pathname === "/living-decision-review" ||
     pathname === "/living-decision-review/" ||
+    pathname === "/ambassadors" ||
+    pathname === "/ambassadors/" ||
     pathname === "/swat" ||
     pathname === "/swat/" ||
     pathname.startsWith("/swat/") ||
