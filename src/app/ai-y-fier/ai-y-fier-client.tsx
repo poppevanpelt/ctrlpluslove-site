@@ -453,30 +453,16 @@ export default function AiYFierClient() {
   return (
     <main className={styles.page}>
       <header className={styles.topbar}>
-        <Link className={styles.siteLink} href="/">
-          ctrl+love
-        </Link>
-        <a className={styles.brand} href="#product" aria-label="AI-y-fier home">
-          <span className={styles.brandMark}>A</span>
-          <span>AI-y-fier</span>
-        </a>
-        <nav className={styles.navActions} aria-label="Company links">
-          <a href="#product">Product</a>
-          <a href="#metrics">Metrics</a>
-          <a href="#waitlist">Enterprise</a>
-        </nav>
+        <Link className={styles.siteLink} href="/">ctrl+love</Link>
+        <a className={styles.brand} href="#product" aria-label="AI-y-fier home">AI-y-fier / machine 001</a>
         <button className={styles.demoButton} type="button" onClick={runDemo} data-aiy-demo>
-          Book a demo
+          Feed it a sentence →
         </button>
       </header>
 
-      <Link className={styles.homeRibbon} href="/">
-        Part of ctrl+love. Return to the main site →
-      </Link>
-
       <section className={styles.hero} id="product">
         <div className={styles.heroCopy}>
-          <p className={styles.eyebrow}>Narrative infrastructure for modern teams</p>
+          <p className={styles.eyebrow}>Narrative inflation machine / prototype 001</p>
           <h1 className={styles.heroTitle}>
             <span>Empty thoughts in.</span>
             <span>Thought leadership out.</span>
@@ -486,35 +472,40 @@ export default function AiYFierClient() {
             sounds expensive, future-proof and strategically aligned while preserving
             approximately the same amount of meaning.
           </p>
-          <div className={styles.trustRow}>
-            <span>Backed by vibes</span>
-            <span>Confidence layer enabled</span>
-            <span>SOC 2 adjacent</span>
-            <span>Randomly Gartner-shaped</span>
+        </div>
+
+        <div className={styles.machineStage}>
+          <div className={styles.machineNotes}>
+            <article><b>01</b><strong>Meaning</strong><span>Approximately unchanged.</span></article>
+            <article><b>02</b><strong>Length</strong><span>Needlessly increased.</span></article>
+          </div>
+
+          <figure className={styles.machineObject}>
+            <Image
+              className={styles.heroVisual}
+              src="/ai-y-fier-hero-inflation-engine.webp"
+              alt="A sentence entering a dark machine and exiting as a much larger hollow language bubble"
+              width={1280}
+              height={720}
+              priority
+            />
+            <figcaption>
+              <span>AI-Y-FIER / CONFIDENCE INFLATION ENGINE</span>
+              <b>NO NEW INFORMATION REQUIRED</b>
+            </figcaption>
+          </figure>
+
+          <div className={styles.machineNotes}>
+            <article><b>03</b><strong>Confidence</strong><span>Artificially elevated.</span></article>
+            <article><b>04</b><strong>Approval</strong><span>Four executives nodding.</span></article>
           </div>
         </div>
 
-        <section className={styles.terminalPanel} aria-label="Live funding signal">
-          <Image
-            className={styles.heroVisual}
-            src="/ai-y-fier-hero-inflation-engine.webp"
-            alt="A sentence entering a dark machine and exiting as a much larger hollow language bubble"
-            width={1280}
-            height={720}
-            priority
-          />
-          <div className={styles.terminalHeader}>
-            <span />
-            <span />
-            <span />
-          </div>
-          <p className={styles.terminalKicker}>LIVE MODEL OUTPUT</p>
-          <p className={styles.terminalLine}>{liveModelOutput}</p>
-          <div className={styles.fundingMeter} aria-hidden="true">
-            <span />
-          </div>
-          <p className={styles.terminalFootnote}>Confidence allocated across every clause.</p>
-        </section>
+        <div className={styles.machineReadout}>
+          <span>LIVE OUTPUT</span>
+          <p>{liveModelOutput}</p>
+          <small>Confidence allocated across every clause.</small>
+        </div>
       </section>
 
       <section className={styles.workspace} aria-label="AI-y-fier generator">
