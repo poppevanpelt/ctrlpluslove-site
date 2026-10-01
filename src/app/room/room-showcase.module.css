@@ -361,8 +361,8 @@
   }
 
   .portraitMain {
-    inset-right: 5%;
-    inset-left: 5%;
+    right: 5%;
+    left: 5%;
   }
 
   .portraitLeft {
