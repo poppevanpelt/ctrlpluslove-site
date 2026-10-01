@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { getPublicRadarSignals, PublicRadarSignal } from "@/lib/radar/notion";
 import { routeMetadata } from "../seo";
-import { ThemeToggle } from "../theme-toggle";
+import { ObjectStage } from "../object-stage";
 import { RadarForm } from "./radar-form";
 import "./radar.css";
 
@@ -69,40 +69,53 @@ export default async function RadarPage() {
 
   return (
     <main className="site-shell radar-page">
-      <ThemeToggle />
       <Link className="radar-home-link" href="/" aria-label="Back to ctrl+love homepage">
         ctrl+love
       </Link>
 
-      <section className="radar-hero">
-        <div className="radar-hero-copy">
-          <p className="radar-kicker">ctrl+love Radar</p>
-          <h1>Notice it before it becomes obvious.</h1>
-          <p className="radar-intro">
+      <ObjectStage
+        kicker="ctrl+love Radar / sensing instrument 001"
+        title="Notice it before it becomes obvious."
+        intro={
+          <p>
             Radar collects weak signals, contradictions and cultural shifts before
             they harden into strategy. The useful ones become Decision Questions.
           </p>
-          <div className="radar-actions">
-            <a href="#submit-signal">Send a signal</a>
-            <Link href="/instruments/">See the instruments</Link>
-            <Link href="/inside-ctrl-love/">Inside ctrl+love</Link>
+        }
+        annotations={[
+          { index: "01", title: "Observation", body: "Something changed before the dashboard noticed." },
+          { index: "02", title: "Contradiction", body: "Reality refuses to match the official story." },
+          { index: "03", title: "Pattern", body: "The same odd thing keeps appearing elsewhere." },
+          { index: "04", title: "Open question", body: "The signal becomes worth asking properly." },
+        ]}
+        actions={
+          <>
+            <a className="radar-stage-action" href="#submit-signal">Send a signal →</a>
+            <Link className="radar-stage-link" href="/instruments/">See instruments</Link>
+          </>
+        }
+        object={
+          <div className="radar-console" aria-label="Physical radar sensing instrument">
+            <div className="radar-console-topline">
+              <span>SIGNAL INTAKE</span>
+              <strong>HUMAN FIRST</strong>
+            </div>
+            <div className="radar-sweep" />
+            <div className="radar-center-mark">?</div>
+            <div className="radar-console-grid">
+              <span>OBSERVE</span>
+              <span>REVIEW</span>
+              <span>QUESTION</span>
+              <span>MOVE</span>
+            </div>
           </div>
-        </div>
-
-        <div className="radar-console" aria-label="Radar signal status">
-          <div className="radar-console-topline">
-            <span>Signal intake</span>
-            <strong>Human first</strong>
-          </div>
-          <div className="radar-sweep" />
-          <div className="radar-console-grid">
-            <span>Observation</span>
-            <span>Contradiction</span>
-            <span>Pattern</span>
-            <span>Open Question</span>
-          </div>
-        </div>
-      </section>
+        }
+        readout={{
+          label: "LIVE SENSING",
+          text: "Weak signals enter as observations. Nothing becomes strategy on contact.",
+          note: "Review before belief",
+        }}
+      />
 
       <section className="radar-flow" aria-label="How radar signals move">
         {pathSteps.map((step, index) => (
