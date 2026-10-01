@@ -35,6 +35,10 @@ export function ProjectNavigation() {
     pathname === "/ai-y-fier/" ||
     pathname === "/prompt-shoppe" ||
     pathname === "/prompt-shoppe/" ||
+    pathname === "/radar" ||
+    pathname === "/radar/" ||
+    pathname === "/decision-memory" ||
+    pathname === "/decision-memory/" ||
     pathname === "/swat" ||
     pathname === "/swat/" ||
     pathname.startsWith("/swat/") ||
