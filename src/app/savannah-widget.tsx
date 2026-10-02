@@ -34,12 +34,18 @@ export function SavannahWidget() {
     vapiRef.current = vapi;
 
     vapi.on("call-start", () => {
+      // Safari can ignore an early unmute while Daily is still opening.
+      // Force the mic live again once Vapi confirms the call has started.
+      try { vapi.setMuted(false); } catch {}
       setState("live");
       setMessage("I'm listening.");
       try {
         vapi.send({
           type: "add-message",
-          message: { role: "system", content: SAVANNAH_BRIEFING },
+          message: {
+            role: "system",
+            content: `${SAVANNAH_BRIEFING}\nVoice delivery: stay warm, relaxed and unhurried. Leave a little air between thoughts. Never sound eager, rushed or salesy.`,
+          },
         } as any);
       } catch {}
     });
@@ -72,7 +78,15 @@ export function SavannahWidget() {
     try {
       setState("connecting");
       setMessage("Opening the line.");
-      vapi.start(ASSISTANT_ID);
+      // Keep start non-blocking for iPhone Safari, but restore Savannah's
+      // explicit Southern V2 voice instead of falling back to assistant defaults.
+      vapi.start(
+        ASSISTANT_ID,
+        {
+          firstMessage: "Hi. Savannah at control love. What's up?",
+          voice: { provider: "vapi", voiceId: "Savannah", version: 2 },
+        } as any,
+      );
       try { vapi.setMuted(false); } catch {}
     } catch (error) {
       console.error("Savannah call start failed", error);
