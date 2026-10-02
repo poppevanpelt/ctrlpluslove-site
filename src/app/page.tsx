@@ -133,7 +133,7 @@ export default function Home() {
               <p>The relationship was already there. <b>Then the object crossed over too.</b></p>
               <strong className={styles.impact}>Adoption, not applause.</strong>
               <div className={styles.fitzVisual}>
-                <video className={styles.fitzVideo} autoPlay loop muted playsInline poster="/museum/steel-ball-packshot.png">
+                <video className={styles.fitzVideo} autoPlay loop muted playsInline preload="auto">
                   <source src="/home/fitzroy-steel-ball.mp4" type="video/mp4" />
                 </video>
                 <span>FITZROY / STEEL BALL</span>
