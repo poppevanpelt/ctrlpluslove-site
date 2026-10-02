@@ -35,6 +35,12 @@ export function SavannahWidget() {
     vapi.on("call-start", () => {
       setState("live");
       setMessage("I'm listening.");
+      try {
+        vapi.send({
+          type: "add-message",
+          message: { role: "system", content: SAVANNAH_BRIEFING },
+        } as any);
+      } catch {}
     });
     vapi.on("call-end", () => {
       setState("idle");
@@ -65,20 +71,8 @@ export function SavannahWidget() {
     try {
       setState("connecting");
       setMessage("Opening the line.");
-      await vapi.start(
-        ASSISTANT_ID,
-        {
-          firstMessage: "Hi, Savannah at control love. What's up?",
-          voice: { provider: "vapi", voiceId: "Savannah", version: 2 },
-        } as any,
-      );
+      vapi.start(ASSISTANT_ID);
       try { vapi.setMuted(false); } catch {}
-      vapi.send({
-        type: "add-message",
-        message: { role: "system", content: SAVANNAH_BRIEFING },
-      } as any);
-      setState("live");
-      setMessage("I'm listening.");
     } catch (error) {
       console.error("Savannah call start failed", error);
       setState("error");
