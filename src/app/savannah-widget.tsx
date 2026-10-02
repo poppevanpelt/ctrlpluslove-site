@@ -26,8 +26,57 @@ function describeError(error: unknown) {
 export function SavannahWidget() {
   const pathname = usePathname();
   const vapiRef = useRef<Vapi | null>(null);
+  const steelTimerRef = useRef<number | null>(null);
+  const steelAudioRef = useRef<AudioContext | null>(null);
+  const steelAliveRef = useRef(false);
   const [state, setState] = useState<State>("idle");
   const [message, setMessage] = useState("Morning. What are we trying to decide?");
+
+  const stopSteel = () => {
+    steelAliveRef.current = false;
+    if (steelTimerRef.current !== null) {
+      window.clearTimeout(steelTimerRef.current);
+      steelTimerRef.current = null;
+    }
+  };
+
+  const tapSteel = () => {
+    const ctx = steelAudioRef.current;
+    if (!ctx || ctx.state !== "running" || !steelAliveRef.current) return;
+    const now = ctx.currentTime;
+    [0, 0.07, 0.18].forEach((offset, index) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(2250 + index * 610, now + offset);
+      gain.gain.setValueAtTime(0.0001, now + offset);
+      gain.gain.exponentialRampToValueAtTime(0.012 / (index + 1), now + offset + 0.006);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + offset + 0.18);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now + offset);
+      osc.stop(now + offset + 0.2);
+    });
+  };
+
+  const scheduleSteel = () => {
+    if (!steelAliveRef.current) return;
+    const delay = 18000 + Math.random() * 27000;
+    steelTimerRef.current = window.setTimeout(() => {
+      tapSteel();
+      scheduleSteel();
+    }, delay);
+  };
+
+  const startSteel = async () => {
+    steelAliveRef.current = true;
+    if (!steelAudioRef.current) {
+      const AudioContextCtor = window.AudioContext || (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+      if (AudioContextCtor) steelAudioRef.current = new AudioContextCtor();
+    }
+    try { await steelAudioRef.current?.resume(); } catch {}
+    scheduleSteel();
+  };
 
   useEffect(() => {
     const vapi = new Vapi(PUBLIC_KEY, undefined, { avoidEval: true, alwaysIncludeMicInPermissionPrompt: true }, { startAudioOff: false });
@@ -50,16 +99,21 @@ export function SavannahWidget() {
       } catch {}
     });
     vapi.on("call-end", () => {
+      stopSteel();
       setState("idle");
       setMessage("Morning. What are we trying to decide?");
     });
     vapi.on("error", (error: unknown) => {
+      stopSteel();
       console.error("Savannah Vapi error", error);
       setState("error");
       setMessage("The audio line did not open. Try me again.");
     });
 
     return () => {
+      stopSteel();
+      try { steelAudioRef.current?.close(); } catch {}
+      steelAudioRef.current = null;
       try { vapi.stop(); } catch {}
       vapi.removeAllListeners();
       vapiRef.current = null;
@@ -78,6 +132,7 @@ export function SavannahWidget() {
     try {
       setState("connecting");
       setMessage("Opening the line.");
+      void startSteel();
       // Keep start non-blocking for iPhone Safari, but restore Savannah's
       // explicit Southern V2 voice instead of falling back to assistant defaults.
       vapi.start(
@@ -85,6 +140,7 @@ export function SavannahWidget() {
         {
           firstMessage: "Hi. Savannah at control love. What's up?",
           voice: { provider: "vapi", voiceId: "Savannah", version: 2 },
+          backgroundSound: "office",
         } as any,
       );
       try { vapi.setMuted(false); } catch {}
