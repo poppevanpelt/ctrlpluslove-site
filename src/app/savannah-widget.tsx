@@ -64,7 +64,10 @@ export function SavannahWidget() {
     try {
       setState("connecting");
       setMessage("Opening the line.");
-      await vapi.start(ASSISTANT_ID);
+      await vapi.start(
+        ASSISTANT_ID,
+        { firstMessage: "Hi, Savannah at control love. What's up?" } as any,
+      );
       try { vapi.setMuted(false); } catch {}
       setState("live");
       setMessage("I'm listening.");
