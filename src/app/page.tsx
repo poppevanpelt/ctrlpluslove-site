@@ -107,7 +107,7 @@ export default function Home() {
               <strong className={styles.impact}>4K+ Instagram signal → interpretation → synthetic perspective → unexpected physical route.</strong>
             </div>
             <div className={styles.flipVisual}>
-              <img src="/home/flip-signal.webp" alt="Flip, ctrl+love's lorikeet parrot" />
+              <img src="/ambassadors/portraits/010-flip-portrait-live-20260712.jpeg" alt="Flip, ctrl+love's lorikeet parrot" />
               <span>FLIP / LORIKEET / TROJAN HORSE / 4K+</span>
             </div>
           </article>
