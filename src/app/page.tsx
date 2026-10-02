@@ -99,7 +99,7 @@ export default function Home() {
           <article className={styles.caseHero}>
             <div className={styles.caseCopy}>
               <span className={styles.num}>01 / COMFORA</span>
-              <h3>Nobody wanted a comfy chair. They wanted their lives back.</h3>
+              <h3>Nobody wanted a comfy chair. People just wanted their lives back.</h3>
               <p><b>That changed the brief.</b> The question was no longer “how do we sell comfort?” but “what does getting your life back look like in the wild?”</p>
               <p>We analysed a screen recording from <b>Flip — our lorikeet parrot, Trojan horse and unlikely signal scout — and his 4K+ Instagram following.</b></p>
               <p>One signal emerged: matcha videos were increasingly composed off-centre, leaving more room for friends, conversation and life around the drink.</p>
