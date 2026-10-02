@@ -24,6 +24,7 @@ function stringify(value: unknown) {
 export default function SavannahTestPage() {
   const vapiRef = useRef<Vapi | null>(null);
   const [status, setStatus] = useState("idle");
+  const [micLevel, setMicLevel] = useState(0);
   const [logs, setLogs] = useState<LogLine[]>([
     { at: stamp(), label: "READY", detail: "Tap START TEST." },
   ]);
@@ -36,12 +37,17 @@ export default function SavannahTestPage() {
   };
 
   useEffect(() => {
-    const vapi = new Vapi(PUBLIC_KEY, undefined, { avoidEval: true });
+    const vapi = new Vapi(PUBLIC_KEY, undefined, { avoidEval: true, alwaysIncludeMicInPermissionPrompt: true }, { startAudioOff: false });
     vapiRef.current = vapi;
 
     vapi.on("call-start", () => {
       setStatus("live");
-      add("CALL START");
+      try { vapi.setMuted(false); } catch {}
+      add("CALL START", { muted: vapi.isMuted() });
+    });
+
+    vapi.on("local-volume-level", (level: number) => {
+      setMicLevel(level);
     });
 
     vapi.on("call-end", () => {
@@ -86,7 +92,11 @@ export default function SavannahTestPage() {
     setStatus("starting");
     try {
       await vapi.start(ASSISTANT_ID);
-      add("START PROMISE RESOLVED");
+      const mutedBefore = vapi.isMuted();
+      add("START PROMISE RESOLVED", { mutedBefore });
+      try { vapi.setMuted(false); } catch (error) { add("UNMUTE ERROR", error); }
+      setStatus("live");
+      add("MIC FORCED ON", { mutedAfter: vapi.isMuted() });
     } catch (error) {
       setStatus("failed");
       add("START REJECTED", error);
@@ -128,7 +138,7 @@ export default function SavannahTestPage() {
         </div>
 
         <div style={{ borderTop: "1px solid #151515", borderBottom: "1px solid #151515", padding: "14px 0", marginBottom: 18, fontSize: 12, letterSpacing: ".12em", fontWeight: 700 }}>
-          STATE / {status.toUpperCase()}
+          STATE / {status.toUpperCase()} &nbsp; · &nbsp; MIC LEVEL / {micLevel.toFixed(4)}
         </div>
 
         <div style={{ background: "#111", color: "#f5f1e7", padding: 16, minHeight: 360, fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace", fontSize: 12, lineHeight: 1.5, overflowWrap: "anywhere" }}>
