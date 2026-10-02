@@ -181,6 +181,7 @@ export function SavannahWidget() {
       </div>
 
       <button
+        id="savannah-toggle"
         type="button"
         onClick={toggle}
         disabled={busy}

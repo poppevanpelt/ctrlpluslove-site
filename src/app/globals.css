@@ -16025,3 +16025,81 @@ vapi-widget {
     min-height: 70vw;
   }
 }
+
+
+.savannah-home-placement {
+  width: min(1580px, 100%);
+  margin: 0 auto;
+  padding: 18px clamp(20px,3.6vw,58px);
+  display: grid;
+  grid-template-columns: 92px minmax(0,1fr) auto;
+  align-items: center;
+  gap: 18px;
+  border-bottom: 1px solid #11110f;
+  background: #11110f;
+  color: #fcf8f0;
+}
+.savannah-home-placement img {
+  width: 92px;
+  height: 92px;
+  object-fit: cover;
+  display: block;
+  border: 1px solid rgba(255,255,255,.24);
+}
+.savannah-home-placement__copy {
+  min-width: 0;
+}
+.savannah-home-placement__copy span {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .13em;
+}
+.savannah-home-placement__copy strong {
+  display: block;
+  font-size: clamp(26px,3vw,46px);
+  line-height: .95;
+  letter-spacing: -.045em;
+}
+.savannah-home-placement__copy p {
+  margin: 9px 0 0;
+  max-width: 720px;
+  font-size: 14px;
+  line-height: 1.35;
+  color: rgba(252,248,240,.76);
+}
+.savannah-home-placement button {
+  appearance: none;
+  border: 1px solid rgba(252,248,240,.72);
+  background: transparent;
+  color: #fcf8f0;
+  padding: 14px 16px;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.savannah-home-placement button:hover,
+.savannah-home-placement button:focus-visible {
+  background: #fcf8f0;
+  color: #11110f;
+  outline: none;
+}
+@media (max-width: 700px) {
+  .savannah-home-placement {
+    grid-template-columns: 72px 1fr;
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+  .savannah-home-placement img {
+    width: 72px;
+    height: 72px;
+  }
+  .savannah-home-placement button {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+}
