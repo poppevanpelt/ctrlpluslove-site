@@ -220,6 +220,10 @@ export function SavannahWidget() {
           <img
             src={SAVANNAH_AVATAR}
             alt="Savannah"
+            onError={(event) => {
+              const img = event.currentTarget;
+              if (!img.src.includes("/home/savannah.jpg")) img.src = "/home/savannah.jpg?v=20261002-fallback";
+            }}
             width={176}
             height={224}
             style={{ width: "100%", height: "100%", minHeight: 112, objectFit: "cover", display: "block" }}
