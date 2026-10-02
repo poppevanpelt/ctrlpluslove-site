@@ -2,6 +2,7 @@
 
 import Vapi from "@vapi-ai/web";
 import { useEffect, useRef, useState } from "react";
+import { SAVANNAH_BRIEFING } from "../savannah-briefing";
 
 const ASSISTANT_ID = "417b8810-5b53-4330-9bc4-6437aba1e401";
 const PUBLIC_KEY = "f79f986e-3b43-4dde-b712-5527ec872a1c";
@@ -101,6 +102,11 @@ export default function SavannahTestPage() {
       const mutedBefore = vapi.isMuted();
       add("START PROMISE RESOLVED", { mutedBefore });
       try { vapi.setMuted(false); } catch (error) { add("UNMUTE ERROR", error); }
+      vapi.send({
+        type: "add-message",
+        message: { role: "system", content: SAVANNAH_BRIEFING },
+      } as any);
+      add("BRIEFING INJECTED");
       setStatus("live");
       add("MIC FORCED ON", { mutedAfter: vapi.isMuted() });
     } catch (error) {
