@@ -88,6 +88,8 @@ export function SavannahWidget() {
   const busy = state === "requesting" || state === "connecting";
 
   if (
+    pathname === "/savannah-test" ||
+    pathname === "/savannah-test/" ||
     pathname === "/room" ||
     pathname === "/room/" ||
     pathname === "/decision-collider" ||
