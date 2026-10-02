@@ -179,6 +179,7 @@ export function SavannahWidget() {
         id="savannah-toggle"
         type="button"
         onClick={toggle}
+        onPointerUp={(event) => event.currentTarget.blur()}
         disabled={busy}
         aria-label={label}
         style={{
