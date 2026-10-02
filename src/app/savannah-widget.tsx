@@ -28,7 +28,7 @@ export function SavannahWidget() {
   const [message, setMessage] = useState("Morning. What are we trying to decide?");
 
   useEffect(() => {
-    const vapi = new Vapi(PUBLIC_KEY, undefined, { avoidEval: true });
+    const vapi = new Vapi(PUBLIC_KEY, undefined, { avoidEval: true, alwaysIncludeMicInPermissionPrompt: true }, { startAudioOff: false });
     vapiRef.current = vapi;
 
     vapi.on("call-start", () => {
@@ -65,6 +65,9 @@ export function SavannahWidget() {
       setState("connecting");
       setMessage("Opening the line.");
       await vapi.start(ASSISTANT_ID);
+      try { vapi.setMuted(false); } catch {}
+      setState("live");
+      setMessage("I'm listening.");
     } catch (error) {
       console.error("Savannah call start failed", error);
       setState("error");
