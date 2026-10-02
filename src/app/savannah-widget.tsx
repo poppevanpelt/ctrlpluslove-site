@@ -3,6 +3,7 @@
 import Vapi from "@vapi-ai/web";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { SAVANNAH_BRIEFING } from "./savannah-briefing";
 
 const PUBLIC_KEY = "f79f986e-3b43-4dde-b712-5527ec872a1c";
 const ASSISTANT_ID = "417b8810-5b53-4330-9bc4-6437aba1e401";
@@ -72,6 +73,10 @@ export function SavannahWidget() {
         } as any,
       );
       try { vapi.setMuted(false); } catch {}
+      vapi.send({
+        type: "add-message",
+        message: { role: "system", content: SAVANNAH_BRIEFING },
+      } as any);
       setState("live");
       setMessage("I'm listening.");
     } catch (error) {
