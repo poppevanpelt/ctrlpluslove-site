@@ -115,7 +115,7 @@ export default function Home() {
           <div className={styles.casePair}>
             <article className={styles.caseSmall}>
               <span className={styles.num}>02 / LUTHER MUSEUM / IN DEVELOPMENT</span>
-              <h3>“Hier sta ik. Ik kan niet anders.”</h3>
+              <h3>“Hier sta ik.<br/>Ik kan niet anders.”</h3>
               <p>A sentence became a living installation. Then the installation became a voice.</p>
               <p>Luther can respond to visitors in the museum, enter live discussions on social media, comment on the world around him — and even suggest where to have lunch nearby.</p>
               <p><b>The museum no longer only tells Luther’s story. Luther starts participating in it.</b></p>
