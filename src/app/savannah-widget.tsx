@@ -29,6 +29,7 @@ export function SavannahWidget() {
   const steelTimerRef = useRef<number | null>(null);
   const steelAudioRef = useRef<AudioContext | null>(null);
   const steelAliveRef = useRef(false);
+  const micWakeTimersRef = useRef<number[]>([]);
   const [state, setState] = useState<State>("idle");
   const [compact, setCompact] = useState(false);
   const [message, setMessage] = useState("Morning. What are we trying to decide?");
@@ -69,6 +70,20 @@ export function SavannahWidget() {
     }, delay);
   };
 
+  const clearMicWakeTimers = () => {
+    micWakeTimersRef.current.forEach((timer) => window.clearTimeout(timer));
+    micWakeTimersRef.current = [];
+  };
+
+  const forceMicOpen = (vapi: Vapi) => {
+    clearMicWakeTimers();
+    const unmute = () => { try { vapi.setMuted(false); } catch {} };
+    unmute();
+    [350, 900, 1800].forEach((delay) => {
+      micWakeTimersRef.current.push(window.setTimeout(unmute, delay));
+    });
+  };
+
   const startSteel = async () => {
     steelAliveRef.current = true;
     if (!steelAudioRef.current) {
@@ -85,9 +100,9 @@ export function SavannahWidget() {
     vapiRef.current = vapi;
 
     vapi.on("call-start", () => {
-      // Safari can ignore an early unmute while Daily is still opening.
-      // Force the mic live again once Vapi confirms the call has started.
-      try { vapi.setMuted(false); } catch {}
+      // Safari/Daily can briefly re-mute while the call object settles.
+      // Wake the mic more than once so Savannah keeps listening after her intro.
+      forceMicOpen(vapi);
       setState("live");
       setMessage("I'm listening.");
       try {
@@ -100,12 +115,20 @@ export function SavannahWidget() {
         } as any);
       } catch {}
     });
+    vapi.on("speech-start", () => {
+      setMessage("I'm listening.");
+    });
+    vapi.on("speech-end", () => {
+      setMessage("Got it.");
+    });
     vapi.on("call-end", () => {
+      clearMicWakeTimers();
       stopSteel();
       setState("idle");
       setMessage("Morning. What are we trying to decide?");
     });
     vapi.on("error", (error: unknown) => {
+      clearMicWakeTimers();
       stopSteel();
       console.error("Savannah Vapi error", error);
       setState("error");
@@ -113,6 +136,7 @@ export function SavannahWidget() {
     });
 
     return () => {
+      clearMicWakeTimers();
       stopSteel();
       try { steelAudioRef.current?.close(); } catch {}
       steelAudioRef.current = null;
@@ -137,15 +161,29 @@ export function SavannahWidget() {
       void startSteel();
       // Keep start non-blocking for iPhone Safari, but restore Savannah's
       // explicit Southern V2 voice instead of falling back to assistant defaults.
-      vapi.start(
+      void vapi.start(
         ASSISTANT_ID,
         {
           firstMessage: "Hi. Savannah at control love. What's up?",
           voice: { provider: "vapi", voiceId: "Savannah", version: 2 },
           backgroundSound: "office",
         } as any,
-      );
-      try { vapi.setMuted(false); } catch {}
+      ).then(() => {
+        forceMicOpen(vapi);
+      }).catch((error: unknown) => {
+        clearMicWakeTimers();
+        stopSteel();
+        console.error("Savannah call start failed", error);
+        setState("error");
+        const detail = describeError(error);
+        const lower = detail.toLowerCase();
+        setMessage(
+          lower.includes("permission") || lower.includes("denied") || lower.includes("notallowed")
+            ? "I need the microphone. Allow it for this site, then try again."
+            : "The audio line did not open. Try me again.",
+        );
+      });
+      forceMicOpen(vapi);
     } catch (error) {
       console.error("Savannah call start failed", error);
       setState("error");
