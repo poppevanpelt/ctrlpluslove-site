@@ -7,7 +7,7 @@ import { SAVANNAH_BRIEFING } from "./savannah-briefing";
 
 const PUBLIC_KEY = "f79f986e-3b43-4dde-b712-5527ec872a1c";
 const ASSISTANT_ID = "417b8810-5b53-4330-9bc4-6437aba1e401";
-const SAVANNAH_AVATAR = "/home/savannah.jpg";
+const SAVANNAH_AVATAR = "/savannah-avatar.jpg";
 
 type State = "idle" | "requesting" | "connecting" | "live" | "error";
 
@@ -138,9 +138,9 @@ export function SavannahWidget() {
       style={{
         position: "fixed",
         right: 18,
-        bottom: 18,
+        bottom: 64,
         zIndex: 2147483001,
-        width: "min(360px, calc(100vw - 36px))",
+        width: "min(360px, calc(100vw - 28px))",
         border: "1px solid rgba(21,21,21,.22)",
         background: "rgba(245,241,231,.98)",
         color: "#151515",
