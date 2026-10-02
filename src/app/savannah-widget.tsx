@@ -66,7 +66,10 @@ export function SavannahWidget() {
       setMessage("Opening the line.");
       await vapi.start(
         ASSISTANT_ID,
-        { firstMessage: "Hi, Savannah at control love. What's up?" } as any,
+        {
+          firstMessage: "Hi, Savannah at control love. What's up?",
+          voice: { provider: "vapi", voiceId: "Savannah", version: 2 },
+        } as any,
       );
       try { vapi.setMuted(false); } catch {}
       setState("live");
