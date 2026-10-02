@@ -21,6 +21,8 @@ export function ProjectNavigation() {
 
   if (
     pathname === "/" ||
+    pathname === "/savannah-test" ||
+    pathname === "/savannah-test/" ||
     pathname === "/instruments" ||
     pathname === "/instruments/" ||
     pathname === "/room" ||
