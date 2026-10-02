@@ -1,140 +1,145 @@
 "use client";
 
-import Script from "next/script";
-import { createElement, useState } from "react";
+import Vapi from "@vapi-ai/web";
+import { useEffect, useRef, useState } from "react";
 
 const ASSISTANT_ID = "417b8810-5b53-4330-9bc4-6437aba1e401";
 const PUBLIC_KEY = "f79f986e-3b43-4dde-b712-5527ec872a1c";
-const ASSISTANT_OVERRIDES = JSON.stringify({ customerJoinTimeoutSeconds: 45 });
 
-type TestState = "idle" | "running" | "pass" | "fail";
+type LogLine = { at: string; label: string; detail?: string };
+
+function stamp() {
+  return new Date().toLocaleTimeString([], { hour12: false });
+}
+
+function stringify(value: unknown) {
+  try {
+    if (typeof value === "string") return value;
+    return JSON.stringify(value);
+  } catch {
+    return String(value);
+  }
+}
 
 export default function SavannahTestPage() {
-  const [micState, setMicState] = useState<TestState>("idle");
-  const [micDetail, setMicDetail] = useState("Not tested");
+  const vapiRef = useRef<Vapi | null>(null);
+  const [status, setStatus] = useState("idle");
+  const [logs, setLogs] = useState<LogLine[]>([
+    { at: stamp(), label: "READY", detail: "Tap START TEST." },
+  ]);
 
-  const testMicrophone = async () => {
-    setMicState("running");
-    setMicDetail("Requesting microphone permission…");
+  const add = (label: string, detail?: unknown) => {
+    setLogs((prev) => [
+      ...prev.slice(-24),
+      { at: stamp(), label, detail: detail === undefined ? undefined : stringify(detail).slice(0, 500) },
+    ]);
+  };
 
-    try {
-      if (!navigator.mediaDevices?.getUserMedia) {
-        throw new Error("getUserMedia is unavailable in this browser");
+  useEffect(() => {
+    const vapi = new Vapi(PUBLIC_KEY, undefined, { avoidEval: true });
+    vapiRef.current = vapi;
+
+    vapi.on("call-start", () => {
+      setStatus("live");
+      add("CALL START");
+    });
+
+    vapi.on("call-end", () => {
+      setStatus("ended");
+      add("CALL END");
+    });
+
+    vapi.on("message", (message: unknown) => {
+      const m = message as { type?: string; status?: string; endedReason?: string; transcript?: string };
+      if (m?.type === "status-update") {
+        add("STATUS UPDATE", { status: m.status, endedReason: m.endedReason });
+      } else if (m?.type === "transcript") {
+        add("TRANSCRIPT", m.transcript);
+      } else {
+        add("MESSAGE", message);
       }
+    });
 
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const tracks = stream.getAudioTracks();
-      const label = tracks[0]?.label || "Microphone available";
+    vapi.on("error", (error: unknown) => {
+      setStatus("error");
+      add("ERROR", error);
+    });
 
-      setMicState("pass");
-      setMicDetail(`PASS — ${tracks.length} audio track(s). ${label}`);
+    const anyVapi = vapi as unknown as { on: (event: string, cb: (payload: unknown) => void) => void };
+    anyVapi.on("call-start-progress", (event: unknown) => add("START PROGRESS", event));
+    anyVapi.on("call-start-failed", (event: unknown) => {
+      setStatus("failed");
+      add("START FAILED", event);
+    });
 
-      window.setTimeout(() => {
-        stream.getTracks().forEach((track) => track.stop());
-      }, 1500);
+    return () => {
+      try { vapi.stop(); } catch {}
+      vapi.removeAllListeners();
+      vapiRef.current = null;
+    };
+  }, []);
+
+  const start = async () => {
+    const vapi = vapiRef.current;
+    if (!vapi) return;
+    setLogs([{ at: stamp(), label: "START REQUESTED" }]);
+    setStatus("starting");
+    try {
+      await vapi.start(ASSISTANT_ID);
+      add("START PROMISE RESOLVED");
     } catch (error) {
-      const e = error as Error & { name?: string };
-      setMicState("fail");
-      setMicDetail(`FAIL — ${e?.name || "Error"}: ${e?.message || String(error)}`);
+      setStatus("failed");
+      add("START REJECTED", error);
     }
   };
 
-  const badge =
-    micState === "pass"
-      ? "PASS"
-      : micState === "fail"
-        ? "FAIL"
-        : micState === "running"
-          ? "RUNNING"
-          : "NOT TESTED";
+  const stop = () => {
+    try {
+      vapiRef.current?.stop();
+      add("STOP REQUESTED");
+    } catch (error) {
+      add("STOP ERROR", error);
+    }
+  };
 
   return (
-    <>
-      <Script
-        src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js"
-        strategy="afterInteractive"
-      />
-
-      <main
-        style={{
-          minHeight: "100vh",
-          background: "#f5f1e7",
-          color: "#151515",
-          padding: "32px 20px 120px",
-          fontFamily: "Arial, Helvetica, sans-serif",
-        }}
-      >
-        <div style={{ maxWidth: 720, margin: "0 auto" }}>
-          <div
-            style={{
-              fontSize: 12,
-              letterSpacing: ".14em",
-              fontWeight: 700,
-              textTransform: "uppercase",
-              marginBottom: 18,
-            }}
-          >
-            ctrl+love / Savannah diagnostic
-          </div>
-
-          <h1 style={{ fontSize: "clamp(34px, 8vw, 68px)", lineHeight: 0.95, margin: "0 0 18px" }}>
-            FIND THE<br />BROKEN LAYER.
-          </h1>
-
-          <p style={{ maxWidth: 560, fontSize: 17, lineHeight: 1.4, marginBottom: 34 }}>
-            First test the iPhone microphone. Then use the Savannah voice widget below.
-          </p>
-
-          <section style={{ borderTop: "1px solid #151515", padding: "20px 0 28px" }}>
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".12em", marginBottom: 8 }}>
-              01 / MICROPHONE
-            </div>
-            <div style={{ fontSize: 12, opacity: 0.55, marginBottom: 16 }}>{badge}</div>
-
-            <button
-              onClick={testMicrophone}
-              style={{
-                border: 0,
-                background: "#151515",
-                color: "#f5f1e7",
-                padding: "14px 18px",
-                fontWeight: 700,
-                fontSize: 15,
-              }}
-            >
-              TEST MICROPHONE
-            </button>
-
-            <div style={{ marginTop: 16, fontSize: 14, lineHeight: 1.4, wordBreak: "break-word" }}>
-              {micDetail}
-            </div>
-          </section>
-
-          <section style={{ borderTop: "1px solid #151515", padding: "20px 0 28px" }}>
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".12em", marginBottom: 8 }}>
-              02 / VAPI TRANSPORT
-            </div>
-            <p style={{ margin: 0, fontSize: 14, lineHeight: 1.45, maxWidth: 520 }}>
-              If microphone is PASS, tap the Savannah widget. If that still hangs on Connecting, the fault is in the Vapi/WebRTC join rather than Safari microphone access.
-            </p>
-          </section>
+    <main style={{ minHeight: "100vh", background: "#f5f1e7", color: "#151515", padding: "28px 18px 80px", fontFamily: "Arial, Helvetica, sans-serif" }}>
+      <div style={{ maxWidth: 760, margin: "0 auto" }}>
+        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: ".16em", marginBottom: 18 }}>
+          CTRL+LOVE / SAVANNAH TRANSPORT DIAGNOSTIC
         </div>
-      </main>
 
-      {createElement("vapi-widget", {
-        "public-key": PUBLIC_KEY,
-        "assistant-id": ASSISTANT_ID,
-        "assistant-overrides": ASSISTANT_OVERRIDES,
-        mode: "voice",
-        theme: "dark",
-        position: "bottom-right",
-        size: "compact",
-        "main-label": "Savannah test",
-        "start-button-text": "Test Vapi",
-        "end-button-text": "End call",
-        "empty-voice-message": "Tap the microphone to start.",
-        "show-transcript": "true",
-      })}
-    </>
+        <h1 style={{ fontSize: "clamp(38px, 10vw, 72px)", lineHeight: .92, margin: "0 0 18px", letterSpacing: "-.045em" }}>
+          FIND THE<br />DROP.
+        </h1>
+
+        <p style={{ maxWidth: 580, fontSize: 16, lineHeight: 1.45, margin: "0 0 24px" }}>
+          This page uses the same pinned Vapi web SDK as Savannah, but nothing else.
+          It records each connection stage and the reason a call ends.
+        </p>
+
+        <div style={{ display: "flex", gap: 10, marginBottom: 22 }}>
+          <button onClick={start} disabled={status === "starting" || status === "live"} style={{ border: 0, padding: "14px 18px", background: "#151515", color: "#f5f1e7", fontWeight: 700, fontSize: 14 }}>
+            START TEST
+          </button>
+          <button onClick={stop} style={{ border: "1px solid #151515", padding: "14px 18px", background: "transparent", color: "#151515", fontWeight: 700, fontSize: 14 }}>
+            STOP
+          </button>
+        </div>
+
+        <div style={{ borderTop: "1px solid #151515", borderBottom: "1px solid #151515", padding: "14px 0", marginBottom: 18, fontSize: 12, letterSpacing: ".12em", fontWeight: 700 }}>
+          STATE / {status.toUpperCase()}
+        </div>
+
+        <div style={{ background: "#111", color: "#f5f1e7", padding: 16, minHeight: 360, fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace", fontSize: 12, lineHeight: 1.5, overflowWrap: "anywhere" }}>
+          {logs.map((log, i) => (
+            <div key={i} style={{ padding: "9px 0", borderBottom: "1px solid rgba(255,255,255,.12)" }}>
+              <div style={{ opacity: .55, marginBottom: 4 }}>{log.at} / {log.label}</div>
+              {log.detail ? <div>{log.detail}</div> : null}
+            </div>
+          ))}
+        </div>
+      </div>
+    </main>
   );
 }
