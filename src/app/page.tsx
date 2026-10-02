@@ -47,7 +47,7 @@ export default function Home() {
         <div className={styles.flowIntro}>
           <div className={styles.ballStage} aria-hidden="true">
             <div className={styles.pedestal}>
-              <img src="/museum/steel-ball-packshot-cutout.png" alt="" />
+              <img src="/museum/steel-ball-packshot.png" alt="" />
             </div>
           </div>
           <div className={styles.flowCopy}>
@@ -120,7 +120,10 @@ export default function Home() {
               <p>Luther can respond to visitors in the museum, enter live discussions on social media, comment on the world around him — and even suggest where to have lunch nearby.</p>
               <p><b>The museum no longer only tells Luther’s story. Luther starts participating in it.</b></p>
               <strong className={styles.impact}>Sentence → live installation → social voice → museum character → travelling exhibition.</strong>
-              <div className={styles.lutherVisual}><span>LIVE / MUSEUM / SOCIAL</span></div>
+              <div className={styles.lutherVisual}>
+                <img src="/home/luther-installation.webp" alt="Luther Museum installation concept" />
+                <span>LIVE / MUSEUM / SOCIAL</span>
+              </div>
             </article>
 
             <article className={styles.caseSmall}>
@@ -129,7 +132,12 @@ export default function Home() {
               <p><b>Fitzroy’s Mischa used the steel-ball language to invite ctrl+love into a collaboration.</b></p>
               <p>The relationship was already there. <b>Then the object crossed over too.</b></p>
               <strong className={styles.impact}>Adoption, not applause.</strong>
-              <div className={styles.fitzVisual}><img src="/museum/steel-ball-packshot-cutout.png" alt="" /><span>FITZROY / STEEL BALL</span></div>
+              <div className={styles.fitzVisual}>
+                <video className={styles.fitzVideo} autoPlay loop muted playsInline poster="/museum/steel-ball-packshot.png">
+                  <source src="/home/fitzroy-steel-ball.mp4" type="video/mp4" />
+                </video>
+                <span>FITZROY / STEEL BALL</span>
+              </div>
             </article>
           </div>
         </div>

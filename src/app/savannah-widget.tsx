@@ -7,7 +7,7 @@ import { SAVANNAH_BRIEFING } from "./savannah-briefing";
 
 const PUBLIC_KEY = "f79f986e-3b43-4dde-b712-5527ec872a1c";
 const ASSISTANT_ID = "417b8810-5b53-4330-9bc4-6437aba1e401";
-const SAVANNAH_AVATAR = "/savannah-avatar.jpg?v=20261002-3";
+const SAVANNAH_AVATAR = "/savannah-avatar.jpg?v=20261002-4";
 // Vercel redeploy trigger: Savannah voice lifecycle fix
 
 type State = "idle" | "requesting" | "connecting" | "live" | "error";
@@ -30,6 +30,7 @@ export function SavannahWidget() {
   const steelAudioRef = useRef<AudioContext | null>(null);
   const steelAliveRef = useRef(false);
   const [state, setState] = useState<State>("idle");
+  const [compact, setCompact] = useState(false);
   const [message, setMessage] = useState("Morning. What are we trying to decide?");
 
   const stopSteel = () => {
@@ -79,6 +80,7 @@ export function SavannahWidget() {
   };
 
   useEffect(() => {
+    setCompact(window.matchMedia("(max-width: 650px)").matches);
     const vapi = new Vapi(PUBLIC_KEY, undefined, { avoidEval: true, alwaysIncludeMicInPermissionPrompt: true }, { startAudioOff: false });
     vapiRef.current = vapi;
 
@@ -197,6 +199,35 @@ export function SavannahWidget() {
     return null;
   }
 
+  if (compact && state !== "live") {
+    return (
+      <button
+        type="button"
+        onClick={() => setCompact(false)}
+        aria-label="Open Savannah"
+        style={{
+          position: "fixed",
+          right: 14,
+          bottom: 24,
+          zIndex: 2147483001,
+          minHeight: 44,
+          border: "1px solid rgba(21,21,21,.22)",
+          padding: "0 14px",
+          background: "#151515",
+          color: "#f5f1e7",
+          font: "inherit",
+          fontSize: 10,
+          fontWeight: 800,
+          letterSpacing: ".11em",
+          textTransform: "uppercase",
+          boxShadow: "0 12px 30px rgba(0,0,0,.14)",
+        }}
+      >
+        Talk to Savannah
+      </button>
+    );
+  }
+
   return (
     <aside
       aria-label="Savannah, ctrl+love employee #4"
@@ -216,7 +247,7 @@ export function SavannahWidget() {
       }}
     >
       <div style={{ display: "grid", gridTemplateColumns: "88px 1fr", minHeight: 112 }}>
-        <div style={{ overflow: "hidden", borderRight: "1px solid rgba(21,21,21,.18)", background: "#e9e4d8" }}>
+        <div style={{ overflow: "hidden", borderRight: "1px solid rgba(21,21,21,.18)", background: '#e9e4d8 url("/home/savannah.jpg?v=20261002-4") center/cover no-repeat' }}>
           <img
             src={SAVANNAH_AVATAR}
             alt="Savannah"
@@ -234,8 +265,18 @@ export function SavannahWidget() {
           <div>
             <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12 }}>
               <div style={{ fontSize: 15, fontWeight: 700, lineHeight: 1 }}>Savannah</div>
-              <div style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace", fontSize: 8, fontWeight: 700, letterSpacing: ".13em", textTransform: "uppercase", opacity: 0.48, whiteSpace: "nowrap" }}>
-                employee #4
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace", fontSize: 8, fontWeight: 700, letterSpacing: ".13em", textTransform: "uppercase", opacity: 0.48, whiteSpace: "nowrap" }}>
+                  employee #4
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setCompact(true)}
+                  aria-label="Minimize Savannah"
+                  style={{ border: 0, background: "transparent", color: "#151515", padding: 0, fontSize: 14, lineHeight: 1, cursor: "pointer", opacity: .45 }}
+                >
+                  ×
+                </button>
               </div>
             </div>
             <div style={{ marginTop: 6, fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace", fontSize: 9, fontWeight: 600, lineHeight: 1.25, letterSpacing: ".08em", textTransform: "uppercase", opacity: 0.58 }}>
