@@ -210,8 +210,74 @@ export function TedExperience({ variant }: { variant: Variant }) {
   }
 
   return (
-    <main style={{ minHeight: "100vh", background: "#f4f0e8", color: "#171717", fontFamily: "Arial, Helvetica, sans-serif" }}>
-      <header style={{ height: 82, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 clamp(22px,5vw,72px)", borderBottom: "1px solid rgba(0,0,0,.13)", background: "#fff" }}>
+    <main className="bridgefundTed" style={{ minHeight: "100vh", background: "#f4f0e8", color: "#171717", fontFamily: "Arial, Helvetica, sans-serif", overflowX: "hidden" }}>
+      <style>{`
+        @media (max-width: 720px) {
+          .bridgefundTedHeader {
+            height: 64px !important;
+            padding: 0 18px !important;
+          }
+          .bridgefundTedHeader nav {
+            display: none !important;
+          }
+          .bridgefundTedGrid {
+            display: block !important;
+            min-height: auto !important;
+          }
+          .bridgefundTedCopy {
+            padding: 28px 20px 24px !important;
+          }
+          .bridgefundTedEyebrow {
+            margin-bottom: 12px !important;
+            font-size: 9px !important;
+            line-height: 1.35 !important;
+          }
+          .bridgefundTedTitle {
+            font-size: 54px !important;
+            line-height: .88 !important;
+            letter-spacing: -.06em !important;
+            max-width: 330px !important;
+          }
+          .bridgefundTedLead {
+            margin-top: 18px !important;
+            font-size: 20px !important;
+          }
+          .bridgefundTedBody {
+            font-size: 14px !important;
+            line-height: 1.45 !important;
+          }
+          .bridgefundTedActions {
+            margin-top: 18px !important;
+          }
+          .bridgefundTedActions button {
+            min-height: 48px !important;
+            padding: 0 18px !important;
+            font-size: 13px !important;
+          }
+          .bridgefundTedVisual {
+            min-height: 0 !important;
+            height: 54vh !important;
+            max-height: 520px !important;
+          }
+          .bridgefundTedVisual img {
+            object-position: center 42% !important;
+          }
+          .bridgefundTedBadge {
+            left: 16px !important;
+            top: 16px !important;
+            padding: 8px 10px !important;
+            font-size: 9px !important;
+          }
+          .bridgefundTedSubtitle {
+            left: 16px !important;
+            right: 16px !important;
+            bottom: 18px !important;
+            padding: 14px 16px !important;
+            font-size: 20px !important;
+          }
+        }
+      `}</style>
+      <header className="bridgefundTedHeader" style={{ height: 82, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 clamp(22px,5vw,72px)", borderBottom: "1px solid rgba(0,0,0,.13)", background: "#fff" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 22, fontWeight: 900, letterSpacing: "-.04em" }}>
           <span style={{ width: 28, height: 18, display: "inline-block", borderRadius: "18px 18px 2px 2px", border: "6px solid #171717", borderBottom: 0 }} />
           BridgeFund
@@ -222,23 +288,23 @@ export function TedExperience({ variant }: { variant: Variant }) {
         </nav>
       </header>
 
-      <section style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(340px,.9fr)", minHeight: "calc(100vh - 82px)" }}>
-        <div style={{ padding: "clamp(54px,8vw,110px) clamp(26px,7vw,110px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-          <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: ".18em", textTransform: "uppercase", opacity: .5, marginBottom: 22 }}>BridgeFund × ctrl+love / live test</div>
-          <h1 style={{ margin: 0, maxWidth: 700, fontSize: "clamp(62px,9vw,132px)", lineHeight: .83, letterSpacing: "-.075em" }}>Wie houdt je tegen</h1>
-          <p style={{ margin: "28px 0 0", maxWidth: 520, fontSize: "clamp(20px,2.3vw,30px)", lineHeight: 1.13, fontWeight: 650 }}>Zakelijke financiering zonder gedoe.</p>
-          <p style={{ maxWidth: 520, fontSize: 16, lineHeight: 1.55, opacity: .62 }}>En als er tóch gedoe is, heeft Ted er meestal eerder lucht van dan het formulier.</p>
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 24 }}>
+      <section className="bridgefundTedGrid" style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(340px,.9fr)", minHeight: "calc(100vh - 82px)" }}>
+        <div className="bridgefundTedCopy" style={{ padding: "clamp(54px,8vw,110px) clamp(26px,7vw,110px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <div className="bridgefundTedEyebrow" style={{ fontSize: 11, fontWeight: 900, letterSpacing: ".18em", textTransform: "uppercase", opacity: .5, marginBottom: 22 }}>BridgeFund × ctrl+love / live test</div>
+          <h1 className="bridgefundTedTitle" style={{ margin: 0, maxWidth: 700, fontSize: "clamp(62px,9vw,132px)", lineHeight: .83, letterSpacing: "-.075em" }}>Wie houdt je tegen</h1>
+          <p className="bridgefundTedLead" style={{ margin: "28px 0 0", maxWidth: 520, fontSize: "clamp(20px,2.3vw,30px)", lineHeight: 1.13, fontWeight: 650 }}>Zakelijke financiering zonder gedoe.</p>
+          <p className="bridgefundTedBody" style={{ maxWidth: 520, fontSize: 16, lineHeight: 1.55, opacity: .62 }}>En als er tóch gedoe is, heeft Ted er meestal eerder lucht van dan het formulier.</p>
+          <div className="bridgefundTedActions" style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 24 }}>
             <button onClick={live ? stop : start} disabled={state === "connecting"} style={{ minHeight: 54, border: 0, padding: "0 24px", background: "#171717", color: "#fff", font: "inherit", fontWeight: 900, cursor: "pointer" }}>{buttonText}</button>
             <button style={{ minHeight: 54, border: "1px solid #171717", padding: "0 24px", background: "transparent", font: "inherit", fontWeight: 800 }}>Check je mogelijkheden</button>
           </div>
         </div>
 
-        <div style={{ position: "relative", minHeight: 620, overflow: "hidden", background: "#d9d0c2" }}>
+        <div className="bridgefundTedVisual" style={{ position: "relative", minHeight: 620, overflow: "hidden", background: "#d9d0c2" }}>
           <img src="/ted/ted-portrait.webp" alt="Ted, BridgeFund Chief Sniffing Officer" style={{ width: "100%", height: "100%", position: "absolute", inset: 0, objectFit: "cover", objectPosition: "center" }} />
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg,transparent 35%,rgba(0,0,0,.1) 58%,rgba(0,0,0,.52) 100%)" }} />
-          <div style={{ position: "absolute", left: 22, top: 22, padding: "9px 12px", background: "rgba(255,255,255,.9)", fontSize: 10, fontWeight: 900, letterSpacing: ".13em", textTransform: "uppercase" }}>Ted / Chief Sniffing Officer</div>
-          <div aria-live="polite" style={{ position: "absolute", left: 22, right: 22, bottom: 34, background: "rgba(0,0,0,.86)", color: "#fff", padding: "18px 20px", fontSize: "clamp(20px,2.5vw,34px)", lineHeight: 1.08, fontWeight: 650, letterSpacing: "-.025em" }}>
+          <div className="bridgefundTedBadge" style={{ position: "absolute", left: 22, top: 22, padding: "9px 12px", background: "rgba(255,255,255,.9)", fontSize: 10, fontWeight: 900, letterSpacing: ".13em", textTransform: "uppercase" }}>Ted / Chief Sniffing Officer</div>
+          <div className="bridgefundTedSubtitle" aria-live="polite" style={{ position: "absolute", left: 22, right: 22, bottom: 34, background: "rgba(0,0,0,.86)", color: "#fff", padding: "18px 20px", fontSize: "clamp(20px,2.5vw,34px)", lineHeight: 1.08, fontWeight: 650, letterSpacing: "-.025em" }}>
             [{subtitle}]
           </div>
           {heard ? <div style={{ position: "absolute", right: 24, bottom: 12, color: "#fff", fontSize: 9, letterSpacing: ".1em", textTransform: "uppercase", opacity: .62 }}>You: {heard}</div> : null}
