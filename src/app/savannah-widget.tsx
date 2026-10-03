@@ -248,7 +248,10 @@ export function SavannahWidget() {
     pathname === "/living-decision-review" ||
     pathname === "/living-decision-review/" ||
     pathname === "/ambassadors" ||
-    pathname === "/ambassadors/"
+    pathname === "/ambassadors/" ||
+    pathname === "/holy-fools" ||
+    pathname === "/holy-fools/" ||
+    pathname.startsWith("/holy-fools/")
   ) {
     return null;
   }

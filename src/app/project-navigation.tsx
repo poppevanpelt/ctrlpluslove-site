@@ -55,7 +55,10 @@ export function ProjectNavigation() {
     pathname === "/five-guys-signal" ||
     pathname === "/five-guys-signal/" ||
     pathname === "/fizz" ||
-    pathname === "/fizz/"
+    pathname === "/fizz/" ||
+    pathname === "/holy-fools" ||
+    pathname === "/holy-fools/" ||
+    pathname.startsWith("/holy-fools/")
   ) {
     return null;
   }
