@@ -23,6 +23,10 @@ export function ProjectNavigation() {
     pathname === "/" ||
     pathname === "/savannah-test" ||
     pathname === "/savannah-test/" ||
+    pathname === "/bridgefund-ted" ||
+    pathname === "/bridgefund-ted/" ||
+    pathname === "/ted-talks" ||
+    pathname === "/ted-talks/" ||
     pathname === "/instruments" ||
     pathname === "/instruments/" ||
     pathname === "/room" ||
