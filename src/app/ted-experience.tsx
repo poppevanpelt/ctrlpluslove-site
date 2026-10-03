@@ -6,13 +6,7 @@ import { TED_BRIEFING } from "./ted-briefing";
 
 const PUBLIC_KEY = "f79f986e-3b43-4dde-b712-5527ec872a1c";
 const ASSISTANT_ID = "417b8810-5b53-4330-9bc4-6437aba1e401";
-const TED_SOUND_URLS: Record<TedSound, string> = {
-  HUFF: "https://dnznrvs05pmza.cloudfront.net/audio_sfx/c67dba69-fb2a-4f58-b2f9-de8f3f2810ed/Ted___huff.mp3?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMmJhYmVlMjM0NjUzMDhkMiIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTE3NDMwN30.EnLhie-H6-RWTvMHjp-d8zxuQv4I8bVMy9MmiaC8qyI",
-  BARK: "https://dnznrvs05pmza.cloudfront.net/audio_sfx/29eccaf8-9a80-495f-a93d-b5f487fe01b8/Ted___bark.mp3?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiZDQyODhhNmJjMjE1ZTc2NyIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTE2NDI2N30.8xfFAW6ICsOhj1py5mNvQwjLBKUGwKIKXwCdeEMoAF0",
-  DOUBLE: "https://dnznrvs05pmza.cloudfront.net/audio_sfx/13612faa-9ae4-43f4-b63e-43eba1575b6c/Ted___double_bark.mp3?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiYzBiNzU3OGU3OTZkMzEwOSIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTEzODU3NH0.-XXERQgZ3zJcqTJt7DP50u9zJs9be9V9es-ViLowoBc",
-  RUMBLE: "https://dnznrvs05pmza.cloudfront.net/audio_sfx/88abbb49-67d8-4ec2-917a-37ec267c7e60/Ted___rumble.mp3?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMzZkNTNiMDgxNTg1YmRjNiIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTExNTE0NH0.8wiI6rVj-KKcYys1fYpAtiIVO1E9OgEWW1NWHliBFEA",
-  SIGH: "https://dnznrvs05pmza.cloudfront.net/audio_sfx/4350b35a-146b-4b52-922b-c949787b4ef6/Ted___sigh.mp3?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiODNkMzY0ZWUyODZlNzFhNSIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTE2MDQzMH0._8CK0lA4VCfwZ82kSb_wCvduzqthlQys2m-YtN69gpI",
-};
+const TED_BARK_URL = "https://commons.wikimedia.org/wiki/Special:Redirect/file/George_vuf_1996.ogg";
 
 type TedSound = "HUFF" | "BARK" | "DOUBLE" | "RUMBLE" | "SIGH";
 type State = "idle" | "connecting" | "live" | "error";
@@ -45,15 +39,36 @@ export function TedExperience({ variant }: { variant: Variant }) {
   );
   const [heard, setHeard] = useState("");
 
+  const playBark = (volume: number, delay = 0) => {
+    window.setTimeout(() => {
+      try {
+        const audio = new Audio(TED_BARK_URL);
+        audio.preload = "auto";
+        audio.volume = volume;
+        dogAudioRef.current = audio;
+        void audio.play().catch(() => {});
+      } catch {}
+    }, delay);
+  };
+
   const playTedSound = (sound: TedSound) => {
     try { dogAudioRef.current?.pause(); } catch {}
-    try {
-      const audio = new Audio(TED_SOUND_URLS[sound]);
-      audio.preload = "auto";
-      audio.volume = sound === "RUMBLE" ? 0.58 : sound === "SIGH" ? 0.55 : 0.82;
-      dogAudioRef.current = audio;
-      void audio.play().catch(() => {});
-    } catch {}
+
+    // Vader-proof: Ted only uses the original real dog bark at natural speed.
+    // Meaning comes from count and volume, never from pitch or playback-rate changes.
+    if (sound === "DOUBLE") {
+      playBark(0.82);
+      playBark(0.76, 330);
+      return;
+    }
+
+    const volume =
+      sound === "HUFF" ? 0.5 :
+      sound === "RUMBLE" ? 0.68 :
+      sound === "SIGH" ? 0.44 :
+      0.82;
+
+    playBark(volume);
   };
 
   const handleAssistantText = (raw: string) => {
