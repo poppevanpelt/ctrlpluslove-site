@@ -31,7 +31,7 @@ export default function SavannahIntro() {
         preload="auto"
         onEnded={enterSite}
       >
-        <source src="/home/savannah-entry.mp4" type="video/mp4" />
+        <source src="https://dnznrvs05pmza.cloudfront.net/kling-o3-pro/935466402926952540/Same_exact_Savannah__same_exact_warm_ctrl_love_office__same_wardrobe__hair__face_and_lighting__Start.mp4?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiYjAyZmFiZDBmY2Q2YTRjMyIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTE1NTc5Mn0.ZL9nGYVE-NawoO2vSi4YihdcdjiIU0JE8aIcLPPS1mc" type="video/mp4" />
       </video>
       <div className={styles.savannahIntroShade} />
       <div className={styles.savannahIntroBrand}>ctrl+love</div>
