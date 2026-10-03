@@ -6,7 +6,9 @@ import { TED_BRIEFING } from "./ted-briefing";
 
 const PUBLIC_KEY = "f79f986e-3b43-4dde-b712-5527ec872a1c";
 const ASSISTANT_ID = "417b8810-5b53-4330-9bc4-6437aba1e401";
+const TED_BARK_URL = "https://commons.wikimedia.org/wiki/Special:Redirect/file/George_vuf_1996.ogg";
 
+type TedSound = "HUFF" | "BARK" | "DOUBLE" | "RUMBLE" | "SIGH";
 type State = "idle" | "connecting" | "live" | "error";
 type Variant = "bridgefund" | "talks";
 
@@ -14,11 +16,21 @@ type VapiMessage = {
   type?: string;
   role?: string;
   transcript?: string;
+  transcriptType?: string;
   text?: string;
 };
 
+function parseTedResponse(raw: string) {
+  const match = raw.match(/^\s*\[\[TED:(HUFF|BARK|DOUBLE|RUMBLE|SIGH)\]\]\s*/i);
+  const sound = (match?.[1]?.toUpperCase() as TedSound | undefined) ?? "HUFF";
+  const subtitle = raw.replace(/^\s*\[\[TED:(HUFF|BARK|DOUBLE|RUMBLE|SIGH)\]\]\s*/i, "").trim();
+  return { sound, subtitle: subtitle || "…" };
+}
+
 export function TedExperience({ variant }: { variant: Variant }) {
   const vapiRef = useRef<Vapi | null>(null);
+  const dogAudioRef = useRef<HTMLAudioElement | null>(null);
+  const lastAssistantRawRef = useRef("");
   const [state, setState] = useState<State>("idle");
   const [subtitle, setSubtitle] = useState(
     variant === "bridgefund"
@@ -26,6 +38,40 @@ export function TedExperience({ variant }: { variant: Variant }) {
       : "Ask the dog."
   );
   const [heard, setHeard] = useState("");
+
+  const playOne = (rate: number, volume: number, delay = 0) => {
+    window.setTimeout(() => {
+      try {
+        const audio = new Audio(TED_BARK_URL);
+        audio.preload = "auto";
+        audio.playbackRate = rate;
+        audio.volume = volume;
+        dogAudioRef.current = audio;
+        void audio.play().catch(() => {});
+      } catch {}
+    }, delay);
+  };
+
+  const playTedSound = (sound: TedSound) => {
+    try { dogAudioRef.current?.pause(); } catch {}
+    if (sound === "DOUBLE") {
+      playOne(1, 0.82);
+      playOne(0.96, 0.76, 330);
+      return;
+    }
+    if (sound === "RUMBLE") return playOne(0.52, 0.52);
+    if (sound === "SIGH") return playOne(0.42, 0.34);
+    if (sound === "HUFF") return playOne(0.72, 0.48);
+    playOne(1, 0.82);
+  };
+
+  const handleAssistantText = (raw: string) => {
+    if (!raw || raw === lastAssistantRawRef.current) return;
+    lastAssistantRawRef.current = raw;
+    const parsed = parseTedResponse(raw);
+    setSubtitle(parsed.subtitle);
+    playTedSound(parsed.sound);
+  };
 
   useEffect(() => {
     const vapi = new Vapi(
@@ -60,6 +106,9 @@ export function TedExperience({ variant }: { variant: Variant }) {
     });
 
     vapi.on("call-end", () => {
+      try { dogAudioRef.current?.pause(); } catch {}
+      dogAudioRef.current = null;
+      lastAssistantRawRef.current = "";
       setState("idle");
       setHeard("");
     });
@@ -71,6 +120,8 @@ export function TedExperience({ variant }: { variant: Variant }) {
     });
 
     return () => {
+      try { dogAudioRef.current?.pause(); } catch {}
+      dogAudioRef.current = null;
       try { vapi.stop(); } catch {}
       vapi.removeAllListeners();
       vapiRef.current = null;
@@ -109,6 +160,7 @@ export function TedExperience({ variant }: { variant: Variant }) {
   };
 
   const stop = () => {
+    try { dogAudioRef.current?.pause(); } catch {}
     try { vapiRef.current?.stop(); } catch {}
   };
 
