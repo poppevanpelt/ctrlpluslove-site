@@ -11,6 +11,17 @@ const SAVANNAH_AVATAR = "/savannah-avatar.jpg?v=20261002-4";
 // Vercel redeploy trigger: Savannah voice lifecycle fix
 
 type State = "idle" | "requesting" | "connecting" | "live" | "error";
+type Mode = "voice" | "type";
+type TextState = "idle" | "connecting" | "live" | "error";
+type ConversationRole = "user" | "assistant";
+type ConversationLine = { id: number; role: ConversationRole; text: string };
+
+type TranscriptMessage = {
+  type?: string;
+  role?: string;
+  transcriptType?: string;
+  transcript?: string;
+};
 
 function describeError(error: unknown) {
   if (error instanceof Error) return error.message || error.name;
@@ -26,6 +37,11 @@ function describeError(error: unknown) {
 export function SavannahWidget() {
   const pathname = usePathname();
   const vapiRef = useRef<Vapi | null>(null);
+  const textVapiRef = useRef<Vapi | null>(null);
+  const conversationRef = useRef<Array<{ role: ConversationRole; text: string }>>([]);
+  const lineIdRef = useRef(0);
+  const chatScrollRef = useRef<HTMLDivElement | null>(null);
+  const modeRef = useRef<Mode>("voice");
   const steelTimerRef = useRef<number | null>(null);
   const steelAudioRef = useRef<AudioContext | null>(null);
   const steelAliveRef = useRef(false);
@@ -35,6 +51,38 @@ export function SavannahWidget() {
   const [mobileAutoCollapsed, setMobileAutoCollapsed] = useState(false);
   const [manualOpen, setManualOpen] = useState(false);
   const [message, setMessage] = useState("Morning. What are we trying to decide?");
+  const [mode, setMode] = useState<Mode>("voice");
+  const [textState, setTextState] = useState<TextState>("idle");
+  const [draft, setDraft] = useState("");
+  const [textPending, setTextPending] = useState(false);
+  const [chatLines, setChatLines] = useState<ConversationLine[]>([
+    { id: 0, role: "assistant", text: "Hi. Savannah at control love. What's up?" },
+  ]);
+
+  const appendConversation = (role: ConversationRole, rawText: string, surface = true) => {
+    const text = rawText.replace(/\s+/g, " ").trim();
+    if (!text) return;
+
+    const last = conversationRef.current[conversationRef.current.length - 1];
+    if (last?.role === role && last.text === text) return;
+
+    conversationRef.current = [...conversationRef.current.slice(-23), { role, text }];
+
+    if (surface) {
+      lineIdRef.current += 1;
+      const id = lineIdRef.current;
+      setChatLines((previous) => [...previous.slice(-23), { id, role, text }]);
+    }
+  };
+
+  const recentConversationContext = () => {
+    const history = conversationRef.current.slice(-16);
+    if (!history.length) return "";
+    const transcript = history
+      .map((line) => `${line.role === "assistant" ? "SAVANNAH" : "VISITOR"}: ${line.text}`)
+      .join("\n");
+    return `\nConversation carried over from the other mode. Continue naturally without repeating it:\n${transcript}`;
+  };
 
   const stopSteel = () => {
     steelAliveRef.current = false;
@@ -113,7 +161,9 @@ export function SavannahWidget() {
 
   useEffect(() => {
     const vapi = new Vapi(PUBLIC_KEY, undefined, { avoidEval: true, alwaysIncludeMicInPermissionPrompt: true }, { startAudioOff: false });
+    const textVapi = new Vapi(PUBLIC_KEY, undefined, { avoidEval: true }, { audioSource: false, startAudioOff: true });
     vapiRef.current = vapi;
+    textVapiRef.current = textVapi;
 
     vapi.on("call-start", () => {
       // Safari/Daily can briefly re-mute while the call object settles.
@@ -137,11 +187,24 @@ export function SavannahWidget() {
     vapi.on("speech-end", () => {
       setMessage("Got it.");
     });
+    vapi.on("message", (rawMessage: unknown) => {
+      const incoming = rawMessage as TranscriptMessage;
+      if (
+        incoming?.type === "transcript" &&
+        incoming.transcript &&
+        (!incoming.transcriptType || incoming.transcriptType === "final") &&
+        (incoming.role === "user" || incoming.role === "assistant")
+      ) {
+        appendConversation(incoming.role, incoming.transcript, true);
+      }
+    });
     vapi.on("call-end", () => {
       clearMicWakeTimers();
       stopSteel();
       setState("idle");
-      setMessage("Morning. What are we trying to decide?");
+      if (modeRef.current === "voice") {
+        setMessage("Morning. What are we trying to decide?");
+      }
     });
     vapi.on("error", (error: unknown) => {
       clearMicWakeTimers();
@@ -151,16 +214,162 @@ export function SavannahWidget() {
       setMessage("The audio line did not open. Try me again.");
     });
 
+    textVapi.on("call-start", () => {
+      try { textVapi.setMuted(true); } catch {}
+      try { (textVapi as unknown as { setVolume?: (volume: number) => void }).setVolume?.(0); } catch {}
+      setTextState("live");
+      setTextPending(false);
+      setMessage("Type away. I'm here.");
+      try {
+        textVapi.send({
+          type: "add-message",
+          message: {
+            role: "system",
+            content: `${SAVANNAH_BRIEFING}
+Text delivery: this visitor is typing. Reply as Savannah in short, natural written turns. Do not mention that this is a separate mode or transport. Keep the same personality, judgment and knowledge as voice Savannah.${recentConversationContext()}`,
+          },
+        } as any);
+      } catch {}
+    });
+
+    const textVapiAny = textVapi as unknown as {
+      on: (event: string, callback: (payload: any) => void) => void;
+    };
+    textVapiAny.on("audio", (player: HTMLAudioElement) => {
+      try { player.volume = 0; } catch {}
+    });
+
+    textVapi.on("message", (rawMessage: unknown) => {
+      const incoming = rawMessage as TranscriptMessage;
+      if (
+        incoming?.type === "transcript" &&
+        incoming.transcript &&
+        (!incoming.transcriptType || incoming.transcriptType === "final") &&
+        incoming.role === "assistant"
+      ) {
+        appendConversation("assistant", incoming.transcript, true);
+        setTextPending(false);
+      }
+    });
+
+    textVapi.on("call-end", () => {
+      setTextState("idle");
+      setTextPending(false);
+      if (modeRef.current === "type") {
+        setMessage("Quiet line closed. Tap Type to reopen it.");
+      }
+    });
+
+    textVapi.on("error", (error: unknown) => {
+      console.error("Savannah text Vapi error", error);
+      setTextState("error");
+      setTextPending(false);
+      if (modeRef.current === "type") {
+        setMessage("The quiet line dropped. Try me again.");
+      }
+    });
+
     return () => {
       clearMicWakeTimers();
       stopSteel();
       try { steelAudioRef.current?.close(); } catch {}
       steelAudioRef.current = null;
       try { vapi.stop(); } catch {}
+      try { textVapi.stop(); } catch {}
       vapi.removeAllListeners();
+      textVapi.removeAllListeners();
       vapiRef.current = null;
+      textVapiRef.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    const openSavannah = () => {
+      setManualOpen(true);
+      setCompact(false);
+    };
+    window.addEventListener("savannah-open", openSavannah);
+    return () => window.removeEventListener("savannah-open", openSavannah);
+  }, []);
+
+  useEffect(() => {
+    if (mode !== "type") return;
+    const frame = window.requestAnimationFrame(() => {
+      const viewport = chatScrollRef.current;
+      if (viewport) viewport.scrollTop = viewport.scrollHeight;
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [chatLines, mode, textPending]);
+
+  const startText = async () => {
+    const textVapi = textVapiRef.current;
+    if (!textVapi || textState === "connecting" || textState === "live") return;
+
+    setTextState("connecting");
+    setTextPending(false);
+    setMessage("Opening the quiet line.");
+
+    try {
+      await textVapi.start(
+        ASSISTANT_ID,
+        {
+          firstMessage: "",
+          voice: { provider: "vapi", voiceId: "Savannah", version: 2 },
+        } as any,
+      );
+    } catch (error) {
+      console.error("Savannah text start failed", error);
+      setTextState("error");
+      setMessage("The quiet line did not open. Try me again.");
+    }
+  };
+
+  const chooseMode = (nextMode: Mode) => {
+    modeRef.current = nextMode;
+    setMode(nextMode);
+    setManualOpen(true);
+    setCompact(false);
+
+    if (nextMode === "type") {
+      if (state === "live" || state === "connecting") {
+        try { vapiRef.current?.stop(); } catch {}
+      }
+      void startText();
+      return;
+    }
+
+    if (textState === "live" || textState === "connecting") {
+      try { textVapiRef.current?.stop(); } catch {}
+    }
+    setTextPending(false);
+    setMessage(
+      conversationRef.current.length
+        ? "Same conversation. Tap talk when you can."
+        : "Morning. What are we trying to decide?",
+    );
+  };
+
+  const sendText = () => {
+    const textVapi = textVapiRef.current;
+    const text = draft.trim();
+    if (!textVapi || !text || textState !== "live" || textPending) return;
+
+    appendConversation("user", text, true);
+    setDraft("");
+    setTextPending(true);
+
+    try {
+      textVapi.send({
+        type: "add-message",
+        message: { role: "user", content: text },
+        triggerResponseEnabled: true,
+      } as any);
+    } catch (error) {
+      console.error("Savannah text send failed", error);
+      setTextPending(false);
+      setMessage("That did not get through. Try it once more.");
+    }
+  };
 
   const toggle = async () => {
     const vapi = vapiRef.current;
@@ -186,6 +395,18 @@ export function SavannahWidget() {
         } as any,
       ).then(() => {
         forceMicOpen(vapi);
+        const carried = recentConversationContext();
+        if (carried) {
+          try {
+            vapi.send({
+              type: "add-message",
+              message: {
+                role: "system",
+                content: carried,
+              },
+            } as any);
+          } catch {}
+        }
       }).catch((error: unknown) => {
         clearMicWakeTimers();
         stopSteel();
@@ -260,7 +481,7 @@ export function SavannahWidget() {
     return null;
   }
 
-  if (compact && state !== "live") {
+  if (compact && state !== "live" && textState !== "live") {
     return (
       <button
         type="button"
@@ -284,7 +505,7 @@ export function SavannahWidget() {
           boxShadow: "0 12px 30px rgba(0,0,0,.14)",
         }}
       >
-        Talk to Savannah
+        Savannah · Talk / Type
       </button>
     );
   }
@@ -351,40 +572,210 @@ export function SavannahWidget() {
         </div>
       </div>
 
-      <button
-        id="savannah-toggle"
-        type="button"
-        onClick={toggle}
-        onPointerUp={(event) => event.currentTarget.blur()}
-        disabled={busy}
-        aria-label={label}
+      <div
+        role="tablist"
+        aria-label="Choose how to speak with Savannah"
         style={{
-          display: "flex",
-          width: "100%",
-          minHeight: 46,
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: 16,
-          appearance: "none",
-          border: 0,
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
           borderTop: "1px solid rgba(21,21,21,.22)",
-          borderRadius: 0,
-          padding: "0 14px",
-          background: state === "live" ? "#f5f1e7" : "#151515",
-          color: state === "live" ? "#151515" : "#f5f1e7",
-          font: "inherit",
-          fontSize: 11,
-          fontWeight: 700,
-          letterSpacing: ".11em",
-          lineHeight: 1,
-          textTransform: "uppercase",
-          cursor: busy ? "default" : "pointer",
-          opacity: busy ? 0.68 : 1,
         }}
       >
-        <span>{label}</span>
-        <span aria-hidden="true" style={{ width: 7, height: 7, flex: "0 0 auto", background: "#ff5a2a" }} />
-      </button>
+        {(["voice", "type"] as const).map((option) => {
+          const active = mode === option;
+          return (
+            <button
+              key={option}
+              type="button"
+              role="tab"
+              aria-selected={active}
+              onClick={() => chooseMode(option)}
+              style={{
+                minHeight: 40,
+                border: 0,
+                borderRight: option === "voice" ? "1px solid rgba(21,21,21,.22)" : 0,
+                background: active ? "#151515" : "#f5f1e7",
+                color: active ? "#f5f1e7" : "#151515",
+                font: "inherit",
+                fontSize: 10,
+                fontWeight: 800,
+                letterSpacing: ".11em",
+                textTransform: "uppercase",
+                cursor: "pointer",
+              }}
+            >
+              {option === "voice" ? "Talk" : "Type"}
+            </button>
+          );
+        })}
+      </div>
+
+      {mode === "voice" ? (
+        <button
+          id="savannah-toggle"
+          type="button"
+          onClick={toggle}
+          onPointerUp={(event) => event.currentTarget.blur()}
+          disabled={busy}
+          aria-label={label}
+          style={{
+            display: "flex",
+            width: "100%",
+            minHeight: 46,
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 16,
+            appearance: "none",
+            border: 0,
+            borderTop: "1px solid rgba(21,21,21,.22)",
+            borderRadius: 0,
+            padding: "0 14px",
+            background: state === "live" ? "#f5f1e7" : "#151515",
+            color: state === "live" ? "#151515" : "#f5f1e7",
+            font: "inherit",
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: ".11em",
+            lineHeight: 1,
+            textTransform: "uppercase",
+            cursor: busy ? "default" : "pointer",
+            opacity: busy ? 0.68 : 1,
+          }}
+        >
+          <span>{label}</span>
+          <span aria-hidden="true" style={{ width: 7, height: 7, flex: "0 0 auto", background: "#ff5a2a" }} />
+        </button>
+      ) : (
+        <div style={{ borderTop: "1px solid rgba(21,21,21,.22)" }}>
+          <div
+            ref={chatScrollRef}
+            aria-live="polite"
+            style={{
+              maxHeight: 260,
+              minHeight: 138,
+              overflowY: "auto",
+              padding: "4px 14px",
+              background: "rgba(255,255,255,.16)",
+            }}
+          >
+            {chatLines.map((line) => (
+              <div
+                key={line.id}
+                style={{
+                  padding: "11px 0 12px",
+                  borderBottom: "1px solid rgba(21,21,21,.12)",
+                }}
+              >
+                <div
+                  style={{
+                    marginBottom: 5,
+                    fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
+                    fontSize: 8,
+                    fontWeight: 800,
+                    letterSpacing: ".13em",
+                    textTransform: "uppercase",
+                    opacity: .45,
+                  }}
+                >
+                  {line.role === "assistant" ? "Savannah" : "You"}
+                </div>
+                <div style={{ fontSize: 14, lineHeight: 1.38, fontWeight: line.role === "assistant" ? 500 : 650 }}>
+                  {line.text}
+                </div>
+              </div>
+            ))}
+            {textPending ? (
+              <div
+                style={{
+                  padding: "11px 0 12px",
+                  fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
+                  fontSize: 9,
+                  fontWeight: 700,
+                  letterSpacing: ".08em",
+                  textTransform: "uppercase",
+                  opacity: .48,
+                }}
+              >
+                Savannah is thinking…
+              </div>
+            ) : null}
+          </div>
+
+          {textState === "error" || textState === "idle" ? (
+            <button
+              type="button"
+              onClick={() => void startText()}
+              style={{
+                width: "100%",
+                minHeight: 38,
+                border: 0,
+                borderBottom: "1px solid rgba(21,21,21,.18)",
+                background: "#f5f1e7",
+                color: "#151515",
+                font: "inherit",
+                fontSize: 9,
+                fontWeight: 800,
+                letterSpacing: ".1em",
+                textTransform: "uppercase",
+                cursor: "pointer",
+              }}
+            >
+              {textState === "error" ? "Try quiet line again" : "Open quiet line"}
+            </button>
+          ) : null}
+
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              sendText();
+            }}
+            style={{ display: "grid", gridTemplateColumns: "1fr auto" }}
+          >
+            <input
+              value={draft}
+              onChange={(event) => setDraft(event.target.value)}
+              disabled={textState !== "live"}
+              aria-label="Type to Savannah"
+              placeholder={textState === "connecting" ? "Opening the quiet line…" : "Type to Savannah…"}
+              autoComplete="off"
+              style={{
+                minWidth: 0,
+                minHeight: 48,
+                border: 0,
+                borderRadius: 0,
+                padding: "0 14px",
+                background: "#f5f1e7",
+                color: "#151515",
+                outline: "none",
+                font: "inherit",
+                fontSize: 14,
+              }}
+            />
+            <button
+              type="submit"
+              disabled={textState !== "live" || textPending || !draft.trim()}
+              style={{
+                minWidth: 72,
+                border: 0,
+                borderLeft: "1px solid rgba(245,241,231,.28)",
+                borderRadius: 0,
+                padding: "0 14px",
+                background: "#151515",
+                color: "#f5f1e7",
+                font: "inherit",
+                fontSize: 10,
+                fontWeight: 800,
+                letterSpacing: ".1em",
+                textTransform: "uppercase",
+                cursor: textState === "live" && !textPending && draft.trim() ? "pointer" : "default",
+                opacity: textState === "live" && !textPending && draft.trim() ? 1 : .52,
+              }}
+            >
+              Send
+            </button>
+          </form>
+        </div>
+      )}
     </aside>
   );
 }
