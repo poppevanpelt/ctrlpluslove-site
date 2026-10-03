@@ -476,7 +476,9 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
     pathname === "/ambassadors/" ||
     pathname === "/holy-fools" ||
     pathname === "/holy-fools/" ||
-    pathname.startsWith("/holy-fools/")
+    pathname.startsWith("/holy-fools/") ||
+    pathname === "/laatjenietnaaien" ||
+    pathname === "/laatjenietnaaien/"
   ) {
     return null;
   }

@@ -62,7 +62,9 @@ export function ProjectNavigation() {
     pathname === "/fizz/" ||
     pathname === "/holy-fools" ||
     pathname === "/holy-fools/" ||
-    pathname.startsWith("/holy-fools/")
+    pathname.startsWith("/holy-fools/") ||
+    pathname === "/laatjenietnaaien" ||
+    pathname === "/laatjenietnaaien/"
   ) {
     return null;
   }
