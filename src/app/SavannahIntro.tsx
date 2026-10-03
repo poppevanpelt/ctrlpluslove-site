@@ -1,0 +1,43 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import styles from "./home-2026.module.css";
+
+export default function SavannahIntro() {
+  const [visible, setVisible] = useState(true);
+  const [leaving, setLeaving] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) setVisible(false);
+  }, []);
+
+  const enterSite = () => {
+    setLeaving(true);
+    window.setTimeout(() => setVisible(false), 700);
+  };
+
+  if (!visible) return null;
+
+  return (
+    <section className={`${styles.savannahIntro} ${leaving ? styles.savannahLeaving : ""}`} aria-label="Enter ctrl+love">
+      <video
+        ref={videoRef}
+        className={styles.savannahIntroVideo}
+        autoPlay
+        muted
+        playsInline
+        preload="auto"
+        onEnded={enterSite}
+      >
+        <source src="/home/savannah-entry.mp4" type="video/mp4" />
+      </video>
+      <div className={styles.savannahIntroShade} />
+      <div className={styles.savannahIntroBrand}>ctrl+love</div>
+      <button className={styles.savannahEnter} onClick={enterSite} type="button">
+        Enter
+      </button>
+    </section>
+  );
+}
