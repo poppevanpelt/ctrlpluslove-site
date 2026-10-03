@@ -1,4 +1,4 @@
-import styles from "./home-2026.module.css";
+import styles from "./home-2026.module.css";\nimport { SavannahEntrance } from "./savannah-entrance";
 
 const stages = [
   { no:"01", verb:"OBSERVE.", name:"ctrl+live", line:"Watch what is actually changing before deciding what it means.", detail:"Signals, movement, patterns and anomalies — kept alive instead of frozen into another report.", price:"Ongoing watch", href:"mailto:poppevanpelt@gmail.com?subject=Show%20me%20ctrl%2Blive", kind:"observe" },
