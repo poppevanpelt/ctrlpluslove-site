@@ -225,6 +225,10 @@ export function SavannahWidget() {
   if (
     pathname === "/savannah-test" ||
     pathname === "/savannah-test/" ||
+    pathname === "/bridgefund-ted" ||
+    pathname === "/bridgefund-ted/" ||
+    pathname === "/ted-talks" ||
+    pathname === "/ted-talks/" ||
     pathname === "/room" ||
     pathname === "/room/" ||
     pathname === "/decision-collider" ||
