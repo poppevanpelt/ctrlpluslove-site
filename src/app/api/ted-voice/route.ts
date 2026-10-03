@@ -12,11 +12,11 @@ type VoiceRequest = {
 };
 
 const DURATIONS: Record<string, number> = {
-  HUFF: 0.8,
-  BARK: 0.8,
-  DOUBLE: 1.08,
-  RUMBLE: 1.2,
-  SIGH: 1.36,
+  HUFF: 0.3,
+  BARK: 0.3,
+  DOUBLE: 0.7,
+  RUMBLE: 0.55,
+  SIGH: 0.7,
 };
 
 function soundFromText(text: string) {
@@ -39,8 +39,6 @@ export async function POST(request: Request) {
     ? requestedRate
     : 24000;
 
-  // Vapi still needs correctly timed raw PCM for turn-taking.
-  // The browser performs Ted's real canine sound from a sample bank.
   const sound = soundFromText(text);
   const duration = DURATIONS[sound] ?? DURATIONS.HUFF;
   const sampleCount = Math.max(1, Math.floor(duration * sampleRate));
@@ -52,7 +50,7 @@ export async function POST(request: Request) {
       "Content-Type": "application/octet-stream",
       "Content-Length": String(silence.byteLength),
       "Cache-Control": "no-store",
-      "X-Ted-Voice": "canine-samplebank-v2",
+      "X-Ted-Voice": "real-dog-v2",
       "X-Ted-Sound": sound,
     },
   });
@@ -62,8 +60,8 @@ export function GET() {
   return Response.json({
     name: "Ted",
     status: "ready",
-    mode: "canine-samplebank-v2",
-    format: "raw PCM timing bed; browser performs the real dog sample",
+    mode: "real-dog-v2",
+    format: "silent raw PCM timing bed; browser performs Ted's real Labrador sound",
     note: "Dad Vader has left the building.",
   });
 }
