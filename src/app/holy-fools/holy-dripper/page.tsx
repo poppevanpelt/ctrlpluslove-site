@@ -1,0 +1,8 @@
+import type { Metadata } from "next";
+import styles from "../holy-fools.module.css";
+export const metadata: Metadata={title:"Holy Dripper — Holy Fools × ctrl+love"};
+export default function Page(){return <main className={styles.page} id="main-content">
+<div className={styles.top}><a href="/holy-fools">← Tool room</a><span className={styles.stamp}><i className={styles.dot}/>02 / HOLY DRIPPER</span></div>
+<section className={styles.instrumentHero}><div className={styles.eyebrow}>HOLY FOOLS / HOLY DRIPPER</div><h1>One interesting thing in. A month of useful trouble out.</h1><p>Drop in a shoot, observation, director, treatment, cultural signal or piece of work. The Dripper turns it into small things worth sharing.</p></section>
+<section className={styles.work}><div className={styles.prompt}><label htmlFor="source">The source</label><textarea id="source" placeholder="Drop the interesting thing here…" /><button className={styles.button} disabled>Make it drip — prototype wiring next</button></div><div className={styles.result}><small>WHAT COMES OUT</small><h2>One source. Many drips.</h2><ul><li>Internal provocations.</li><li>Client conversation starters.</li><li>Trade-press angles.</li><li>Newsletter material.</li><li>Social fragments.</li></ul></div></section>
+<footer className={styles.footer}><span>Better than “we should post something.”</span><a href="/holy-fools">Next instrument →</a></footer></main>}

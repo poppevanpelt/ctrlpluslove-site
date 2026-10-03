@@ -1,0 +1,8 @@
+import type { Metadata } from "next";
+import styles from "../holy-fools.module.css";
+export const metadata: Metadata={title:"Holy Shit Maker — Holy Fools × ctrl+love"};
+export default function Page(){return <main className={styles.page} id="main-content">
+<div className={styles.top}><a href="/holy-fools">← Tool room</a><span className={styles.stamp}><i className={styles.dot}/>03 / HOLY SHIT MAKER</span></div>
+<section className={styles.instrumentHero}><div className={styles.eyebrow}>HOLY FOOLS / HOLY SHIT MAKER</div><h1>Is it actually Holy Shit?</h1><p>Put a piece of work, idea, treatment or decision in front of it. It looks for the part that makes somebody stop — and tells you when there isn’t one yet.</p></section>
+<section className={styles.work}><div className={styles.prompt}><label htmlFor="thing">The thing</label><textarea id="thing" placeholder="Paste the idea, treatment, route or uncomfortable half-thought…" /><button className={styles.button} disabled>Find the Holy Shit — prototype wiring next</button></div><div className={styles.result}><small>THE TEST</small><h2>No applause included.</h2><p>What is genuinely surprising? What only looks unusual because the deck says so? What could somebody repeat tomorrow without the explanation?</p><p className={styles.acid}><b>If there is no Holy Shit yet, that is also an answer.</b></p></div></section>
+<footer className={styles.footer}><span>Useful disappointment is allowed.</span><a href="/holy-fools">Back to tool room →</a></footer></main>}

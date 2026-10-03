@@ -1,0 +1,8 @@
+import type { Metadata } from "next";
+import styles from "../holy-fools.module.css";
+export const metadata: Metadata={title:"Director Search — Holy Fools × ctrl+love"};
+export default function Page(){return <main className={styles.page} id="main-content">
+<div className={styles.top}><a href="/holy-fools">← Tool room</a><span className={styles.stamp}><i className={styles.dot}/>01 / DIRECTOR SEARCH</span></div>
+<section className={styles.instrumentHero}><div className={styles.eyebrow}>HOLY FOOLS / DIRECTOR SEARCH</div><h1>Find the person you didn’t know you were looking for.</h1><p>Paste in the job. Look past the obvious names, familiar reels and usual suspects — toward directors whose actual point of view might make the work better.</p></section>
+<section className={styles.work}><div className={styles.prompt}><label htmlFor="brief">The job</label><textarea id="brief" placeholder="Paste a brief, script, treatment or a few lines about the job…" /><button className={styles.button} disabled>Start searching — prototype wiring next</button></div><div className={styles.result}><small>WHAT THIS INSTRUMENT LOOKS FOR</small><h2>Not a directory. A reason to look somewhere else.</h2><ul><li>Point of view, not just category experience.</li><li>Unexpected adjacencies and craft.</li><li>People who may challenge the obvious treatment.</li><li>A reason each name belongs on the list.</li></ul></div></section>
+<footer className={styles.footer}><span>Global. Biased toward interesting.</span><a href="/holy-fools">Next instrument →</a></footer></main>}
