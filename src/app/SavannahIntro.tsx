@@ -23,7 +23,7 @@ export default function SavannahIntro() {
   if (!visible) return null;
 
   return (
-    <section className={`${styles.savannahIntro} ${leaving ? styles.savannahLeaving : ""}`} aria-label="Enter ctrl+love">
+    <section className={`${styles.savannahIntro} ${leaving ? styles.savannahLeaving : ""}`} aria-label="Enter ctrl+love" data-deploy="savannah-live-2">
       <video
         ref={videoRef}
         className={styles.savannahIntroVideo}
