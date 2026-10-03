@@ -32,6 +32,8 @@ export function SavannahWidget() {
   const micWakeTimersRef = useRef<number[]>([]);
   const [state, setState] = useState<State>("idle");
   const [compact, setCompact] = useState(false);
+  const [mobileAutoCollapsed, setMobileAutoCollapsed] = useState(false);
+  const [manualOpen, setManualOpen] = useState(false);
   const [message, setMessage] = useState("Morning. What are we trying to decide?");
 
   const stopSteel = () => {
@@ -95,7 +97,21 @@ export function SavannahWidget() {
   };
 
   useEffect(() => {
-    setCompact(window.matchMedia("(max-width: 650px)").matches);
+    const isMobile = window.matchMedia("(max-width: 650px)").matches;
+    if (!isMobile || mobileAutoCollapsed || manualOpen) return;
+
+    const onScroll = () => {
+      if (window.scrollY > 140) {
+        setCompact(true);
+        setMobileAutoCollapsed(true);
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [mobileAutoCollapsed, manualOpen]);
+
+  useEffect(() => {
     const vapi = new Vapi(PUBLIC_KEY, undefined, { avoidEval: true, alwaysIncludeMicInPermissionPrompt: true }, { startAudioOff: false });
     vapiRef.current = vapi;
 
@@ -241,7 +257,7 @@ export function SavannahWidget() {
     return (
       <button
         type="button"
-        onClick={() => setCompact(false)}
+        onClick={() => { setManualOpen(true); setCompact(false); }}
         aria-label="Open Savannah"
         style={{
           position: "fixed",
@@ -309,7 +325,7 @@ export function SavannahWidget() {
                 </div>
                 <button
                   type="button"
-                  onClick={() => setCompact(true)}
+                  onClick={() => { setManualOpen(false); setCompact(true); }}
                   aria-label="Minimize Savannah"
                   style={{ border: 0, background: "transparent", color: "#151515", padding: 0, fontSize: 14, lineHeight: 1, cursor: "pointer", opacity: .45 }}
                 >

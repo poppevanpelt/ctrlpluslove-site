@@ -61,6 +61,11 @@ export default function Home() {
           {stages.map((stage) => (
             <a className={`${styles.stage} ${styles[stage.kind]}`} href={stage.href} key={stage.no}>
               <span className={styles.num}>{stage.no} / {stage.verb.replace(".","")}</span>
+              <span className={styles.stageSequence} aria-hidden="true">
+                <i className={stage.no === "01" ? styles.active : ""} />
+                <i className={stage.no === "02" ? styles.active : ""} />
+                <i className={stage.no === "03" ? styles.active : ""} />
+              </span>
               <b className={styles.stageVerb}>{stage.verb}</b>
               <strong className={styles.stageProduct}>{stage.name}</strong>
               <p>{stage.line}</p>
@@ -106,9 +111,12 @@ export default function Home() {
               <p><b>Maya, Cultural Pattern Reader,</b> and <b>Lexi, Hospitality Strategist,</b> pushed that observation somewhere physical: what if a Comfora chair lived in hotel lobbies, so newly arrived guests could sit, have a matcha, charge their phone and recover from travelling?</p>
               <strong className={styles.impact}>4K+ Instagram signal → interpretation → synthetic perspective → unexpected physical route.</strong>
             </div>
-            <div className={styles.flipVisual}>
-              <img src="/ambassadors/portraits/010-flip-portrait-live-20260712.jpeg" alt="Flip, ctrl+love's lorikeet parrot" />
-              <span>FLIP / LORIKEET / TROJAN HORSE / 4K+</span>
+            <div className={styles.comforaVisual}>
+              <img className={styles.comforaBike} src="/home/comfora-bike.jpeg" alt="Woman riding a bicycle across a red steel bridge" />
+              <div className={styles.flipInsert}>
+                <img src="/ambassadors/portraits/010-flip-portrait-live-20260712.jpeg" alt="Flip, ctrl+love's lorikeet parrot" />
+                <span>FLIP / SIGNAL SCOUT / 4K+</span>
+              </div>
             </div>
           </article>
 
