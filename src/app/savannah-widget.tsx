@@ -38,7 +38,9 @@ export function SavannahWidget() {
   const pathname = usePathname();
   const vapiRef = useRef<Vapi | null>(null);
   const textVapiRef = useRef<Vapi | null>(null);
-  const conversationRef = useRef<Array<{ role: ConversationRole; text: string }>>([]);
+  const conversationRef = useRef<Array<{ role: ConversationRole; text: string }>>([
+    { role: "assistant", text: "Hi. Savannah at control love. What's up?" },
+  ]);
   const lineIdRef = useRef(0);
   const chatScrollRef = useRef<HTMLDivElement | null>(null);
   const modeRef = useRef<Mode>("voice");
@@ -216,7 +218,12 @@ export function SavannahWidget() {
 
     textVapi.on("call-start", () => {
       try { textVapi.setMuted(true); } catch {}
-      try { (textVapi as unknown as { setVolume?: (volume: number) => void }).setVolume?.(0); } catch {}
+      try {
+        textVapi.send({
+          type: "control",
+          control: "mute-assistant",
+        } as any);
+      } catch {}
       setTextState("live");
       setTextPending(false);
       setMessage("Type away. I'm here.");
@@ -230,13 +237,6 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
           },
         } as any);
       } catch {}
-    });
-
-    const textVapiAny = textVapi as unknown as {
-      on: (event: string, callback: (payload: any) => void) => void;
-    };
-    textVapiAny.on("audio", (player: HTMLAudioElement) => {
-      try { player.volume = 0; } catch {}
     });
 
     textVapi.on("message", (rawMessage: unknown) => {
