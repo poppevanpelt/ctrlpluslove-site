@@ -2,8 +2,7 @@
 
 export function SavannahPlacement() {
   const openSavannah = () => {
-    const button = document.getElementById("savannah-toggle") as HTMLButtonElement | null;
-    button?.click();
+    window.dispatchEvent(new Event("savannah-open"));
   };
 
   return (
@@ -12,9 +11,9 @@ export function SavannahPlacement() {
       <div className="savannah-home-placement__copy">
         <span>EMPLOYEE #4 / LIVE</span>
         <strong>Savannah is in.</strong>
-        <p>Ask her about ctrl+love, today's Holy Fools session, or what she thinks you're really asking.</p>
+        <p>Talk when you can. Type when you can&apos;t. Same Savannah, same conversation.</p>
       </div>
-      <button type="button" onClick={openSavannah}>Talk to Savannah ↗</button>
+      <button type="button" onClick={openSavannah}>Talk or type to Savannah ↗</button>
     </section>
   );
 }
