@@ -96,12 +96,16 @@ export function TedExperience({ variant }: { variant: Variant }) {
     vapi.on("message", (raw: unknown) => {
       const message = raw as VapiMessage;
       if (message.type === "assistant.speechStarted" && message.text) {
-        setSubtitle(message.text);
+        handleAssistantText(message.text);
         return;
       }
       if (message.type === "transcript") {
-        if (message.role === "assistant" && message.transcript) setSubtitle(message.transcript);
-        if (message.role === "user" && message.transcript) setHeard(message.transcript);
+        if (message.role === "assistant" && message.transcript && message.transcriptType !== "partial") {
+          handleAssistantText(message.transcript);
+        }
+        if (message.role === "user" && message.transcript) {
+          setHeard(message.transcript);
+        }
       }
     });
 
@@ -133,6 +137,7 @@ export function TedExperience({ variant }: { variant: Variant }) {
     if (!vapi || state === "connecting" || state === "live") return;
     setState("connecting");
     setHeard("");
+    lastAssistantRawRef.current = "";
     setSubtitle("…");
 
     try {
