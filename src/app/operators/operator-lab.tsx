@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import styles from "./operator-lab.module.css";
 
-export type OperatorMode = "plus" | "minus" | "divide" | "multiply" | "not";
+export type OperatorMode = "plus" | "minus" | "divide" | "multiply" | "not" | "absolute";
 
 type OperatorLabProps = { initialMode?: OperatorMode };
 
@@ -21,7 +21,11 @@ const modes: readonly {
   { key: "divide", symbol: "÷", name: "ctrl÷love", verb: "DIVIDE", line: "See where the attention, money and benefit actually land.", question: "Who gets the love — and who gets almost none?" },
   { key: "multiply", symbol: "×", name: "ctrl×love", verb: "MULTIPLY", line: "Amplify the thing people already demonstrably value.", question: "What deserves to become ten times bigger?" },
   { key: "not", symbol: "≠", name: "ctrl≠love", verb: "SEPARATE", line: "Separate approval from actual enthusiasm.", question: "Did they approve it — or do they want it?" },
+  { key: "absolute", symbol: "| |", name: "ctrl|love|", verb: "MAGNITUDE", line: "Ignore the polarity. Measure how much they care.", question: "Love or hate. How much do they care?" },
 ];
+
+const basicModes = modes.filter((item) => item.key !== "absolute");
+const advancedModes = modes.filter((item) => item.key === "absolute");
 
 function formatNumber(value: number) {
   if (!Number.isFinite(value)) return "0";
@@ -41,6 +45,7 @@ export default function OperatorLab({ initialMode = "plus" }: OperatorLabProps) 
   const [factor, setFactor] = useState(10);
   const [approval, setApproval] = useState(86);
   const [enthusiasm, setEnthusiasm] = useState(34);
+  const [valence, setValence] = useState(-82);
   const [copied, setCopied] = useState(false);
 
   const current = modes.find((item) => item.key === mode) ?? modes[0];
@@ -101,18 +106,41 @@ export default function OperatorLab({ initialMode = "plus" }: OperatorLabProps) 
         move: "Multiply one proven behaviour before inventing another proposition.",
       };
     }
-    const gap = approval - enthusiasm;
+    if (mode === "not") {
+      const gap = approval - enthusiasm;
+      return {
+        signal: "APPROVAL GAP " + (gap >= 0 ? "+" : "") + gap + " PTS",
+        headline: Math.abs(gap) >= 30 ? "Approved is doing suspiciously more work than loved." : "Approval and enthusiasm are close enough to deserve a harder test.",
+        prompts: [
+          "Approval: " + approval + "%. Enthusiasm: " + enthusiasm + "%.",
+          "Ask what people would fight to keep if permission disappeared tomorrow.",
+          "Measure voluntary behaviour next: return, recommend, pay, defend, repeat.",
+        ],
+        move: "Do not count assent as affection. Look for voluntary energy.",
+      };
+    }
+
+    const intensity = Math.abs(valence);
+    const direction = valence > 15 ? "LOVE" : valence < -15 ? "HATE" : "MEH";
     return {
-      signal: "APPROVAL GAP " + (gap >= 0 ? "+" : "") + gap + " PTS",
-      headline: Math.abs(gap) >= 30 ? "Approved is doing suspiciously more work than loved." : "Approval and enthusiasm are close enough to deserve a harder test.",
+      signal: "|" + valence + "| = " + intensity,
+      headline: intensity < 20
+        ? "Nothing happened. That is the problem."
+        : intensity < 50
+          ? "There is a reaction. Not enough to travel."
+          : intensity < 80
+            ? "Now there is energy in the room."
+            : "Good. Indifference has left the building.",
       prompts: [
-        "Approval: " + approval + "%. Enthusiasm: " + enthusiasm + "%.",
-        "Ask what people would fight to keep if permission disappeared tomorrow.",
-        "Measure voluntary behaviour next: return, recommend, pay, defend, repeat.",
+        "Direction: " + direction + ". Intensity: " + intensity + "/100.",
+        "Someone at -90 may be more useful than someone at +12. Both polarity and magnitude matter, but indifference kills movement.",
+        "Find the exact thing creating the emotional charge. Preserve the charge before trying to fix its direction.",
       ],
-      move: "Do not count assent as affection. Look for voluntary energy.",
+      move: intensity < 40
+        ? "Stop optimizing sentiment. Create a reason to care."
+        : "Design around the source of intensity, then decide whether the polarity needs changing.",
     };
-  }, [approval, attachmentHeat, attachments, baseline, care, enthusiasm, factor, mode, people, pool, unit]);
+  }, [approval, attachmentHeat, attachments, baseline, care, enthusiasm, factor, mode, people, pool, unit, valence]);
 
   const report = [
     current.name + " / " + current.verb,
@@ -146,7 +174,7 @@ export default function OperatorLab({ initialMode = "plus" }: OperatorLabProps) 
         <div className={styles.heroCopy}>
           <p className={styles.kicker}>PRIMARY-SCHOOL MATHEMATICS / BOARDROOM USE</p>
           <h1>LOVE<br />OPERATORS</h1>
-          <p className={styles.lead}>One thing in. Five different attacks.</p>
+          <p className={styles.lead}>One thing in. Different mathematics.</p>
           <p className={styles.sublead}>Do not brainstorm harder. Change the operator.</p>
         </div>
         <div className={styles.operatorMachine} aria-hidden="true">
@@ -158,8 +186,20 @@ export default function OperatorLab({ initialMode = "plus" }: OperatorLabProps) 
       </section>
 
       <section className={styles.console}>
-        <div className={styles.modeRail} aria-label="Choose an operator">
-          {modes.map((item) => (
+        <div className={styles.modeRail} aria-label="Choose a core operator">
+          {basicModes.map((item) => (
+            <button type="button" key={item.key} className={item.key === mode ? styles.modeActive : styles.mode} onClick={() => { setMode(item.key); setCopied(false); }} aria-pressed={item.key === mode}>
+              <span>{item.symbol}</span><strong>{item.name}</strong><small>{item.verb}</small>
+            </button>
+          ))}
+        </div>
+
+        <div className={styles.advancedRail} aria-label="Advanced mathematics">
+          <div className={styles.advancedLabel}>
+            <strong>ADVANCED MATHEMATICS</strong>
+            <span>Probably unnecessary. We built it anyway.</span>
+          </div>
+          {advancedModes.map((item) => (
             <button type="button" key={item.key} className={item.key === mode ? styles.modeActive : styles.mode} onClick={() => { setMode(item.key); setCopied(false); }} aria-pressed={item.key === mode}>
               <span>{item.symbol}</span><strong>{item.name}</strong><small>{item.verb}</small>
             </button>
@@ -221,6 +261,15 @@ export default function OperatorLab({ initialMode = "plus" }: OperatorLabProps) 
                 <p>Use the second slider brutally. Smiles in the meeting do not count.</p>
               </div>
             )}
+
+            {mode === "absolute" && (
+              <div className={styles.controlBlock}>
+                <div className={styles.controlHead}><span>Reaction</span><strong>{valence > 0 ? "+" : ""}{valence}</strong></div>
+                <input type="range" min="-100" max="100" value={valence} onChange={(event) => setValence(Number(event.target.value))} />
+                <div className={styles.valenceScale}><span>−100 HATE</span><span>0 MEH</span><span>+100 LOVE</span></div>
+                <p>The sign tells you the direction. The absolute value tells you whether anything happened at all.</p>
+              </div>
+            )}
           </section>
 
           <section className={styles.resultPanel} aria-live="polite">
@@ -234,7 +283,7 @@ export default function OperatorLab({ initialMode = "plus" }: OperatorLabProps) 
         </div>
       </section>
 
-      <section className={styles.five}>
+      <section className={styles.five} aria-label="Love operator family">
         {modes.map((item, index) => (
           <article key={item.key}>
             <span>026{String.fromCharCode(65 + index)}</span>
