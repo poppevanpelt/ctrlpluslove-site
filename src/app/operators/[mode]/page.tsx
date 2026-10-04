@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import OperatorLab, { type OperatorMode } from "../operator-lab";
 
-const validModes: OperatorMode[] = ["plus", "minus", "divide", "multiply", "not"];
+const validModes: OperatorMode[] = ["plus", "minus", "divide", "multiply", "not", "absolute"];
 
 const labels: Record<OperatorMode, string> = {
   plus: "ctrl+love",
@@ -10,6 +10,7 @@ const labels: Record<OperatorMode, string> = {
   divide: "ctrl÷love",
   multiply: "ctrl×love",
   not: "ctrl≠love",
+  absolute: "ctrl|love|",
 };
 
 export function generateStaticParams() {
