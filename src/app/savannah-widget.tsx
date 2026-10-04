@@ -448,6 +448,8 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
     pathname === "/savannah-test/" ||
     pathname === "/bridgefund-ted" ||
     pathname === "/bridgefund-ted/" ||
+    pathname === "/morning-chris" ||
+    pathname === "/morning-chris/" ||
     pathname === "/ted-talks" ||
     pathname === "/ted-talks/" ||
     pathname === "/room" ||
