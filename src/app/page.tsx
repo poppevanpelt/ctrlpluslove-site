@@ -8,12 +8,12 @@ const stages = [
 ] as const;
 
 const instruments = [
-  ["01","Opposition Seat","Put intelligent disagreement in the room before reality does it for you.","opposition"],
-  ["02","Do-Nothing Control","Compare the proposed move with the uncomfortable possibility that doing nothing is better.","nothing"],
-  ["03","Decision Collider","Force competing routes into the same frame until the real trade-off appears.","collider"],
-  ["04","Signal Distortion","Find out what changes between the signal itself and what the organisation thinks it heard.","signal"],
-  ["05","Meeting Filter","Test whether a meeting deserves to exist before anyone enters the room.","meeting"],
-  ["06","Brand Transplant","Put one brand’s operating logic inside another and see what survives.","transplant"],
+  ["01","Decision Collider","Force competing routes into the same frame until the real trade-off appears.","collider","/decision-collider/","RUN INSTRUMENT"],
+  ["02","Meeting Filter","Test whether a meeting deserves to exist before anyone enters the room.","meeting","/meeting-filter/","RUN FILTER"],
+  ["03","Decision Memory","Keep the evidence, assumptions and reversals that created a decision.","opposition","/decision-memory/","OPEN MEMORY"],
+  ["04","Prompt Shoppe","Find the real judgment hidden inside the instruction before tuning the prompt.","signal","/prompt-shoppe/","OPEN SHOPPE"],
+  ["05","PURGE","Remove what can disappear without damaging the thing that matters.","nothing","/purge/","START PURGE"],
+  ["06","Brand Survival","See how much can disappear before the brand stops being itself.","transplant","/brand-survival/","RUN INSTRUMENT"],
 ] as const;
 
 export default function Home() {
@@ -157,11 +157,16 @@ export default function Home() {
         <div className={styles.kicker}>A few instruments inside the machine</div>
         <h2>Pressure, not prompts.</h2>
         <div className={styles.instruments}>
-          {instruments.map(([no,name,line,kind]) => (
-            <article className={styles.instrument} key={no}>
+          {instruments.map(([no,name,line,kind,href,action]) => (
+            <a className={styles.instrument} href={href} key={no} aria-label={`${action}: ${name}`}>
               <div className={`${styles.instrumentVisual} ${styles[kind]}`} />
-              <div className={styles.instrumentCopy}><span className={styles.num}>{no}</span><h3>{name}</h3><p>{line}</p></div>
-            </article>
+              <div className={styles.instrumentCopy}>
+                <span className={styles.num}>{no}</span>
+                <h3>{name}</h3>
+                <p>{line}</p>
+                <strong>{action} ↗</strong>
+              </div>
+            </a>
           ))}
         </div>
       </section>
