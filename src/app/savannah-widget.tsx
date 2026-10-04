@@ -482,6 +482,8 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
     pathname === "/room/" ||
     pathname === "/decision-collider" ||
     pathname === "/decision-collider/" ||
+    pathname === "/decision-accelerator" ||
+    pathname === "/decision-accelerator/" ||
     pathname === "/meeting-filter" ||
     pathname === "/meeting-filter/" ||
     pathname === "/stress-test" ||

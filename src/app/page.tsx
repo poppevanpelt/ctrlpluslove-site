@@ -8,7 +8,7 @@ const stages = [
 ] as const;
 
 const instruments = [
-  ["01","Decision Collider","Force competing routes into the same frame until the real trade-off appears.","collider","/decision-collider/","RUN INSTRUMENT"],
+  ["01","Decision Accelerator","Puts better judgment into motion.","collider","/decision-accelerator/","RUN INSTRUMENT"],
   ["02","Meeting Filter","Test whether a meeting deserves to exist before anyone enters the room.","meeting","/meeting-filter/","RUN FILTER"],
   ["03","Decision Memory","Keep the evidence, assumptions and reversals that created a decision.","opposition","/decision-memory/","OPEN MEMORY"],
   ["04","Prompt Shoppe","Find the real judgment hidden inside the instruction before tuning the prompt.","signal","/prompt-shoppe/","OPEN SHOPPE"],
