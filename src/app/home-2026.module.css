@@ -39,12 +39,17 @@
 @media(max-width:650px){.flowIntro{min-height:auto}.ballStage{min-height:300px}.flowCopy{padding:28px 22px}.stage{padding:22px}}
 
 
-.savannahIntro{position:fixed;inset:0;z-index:100;background:#0d0d0c;overflow:hidden;opacity:1;transition:opacity .7s ease,visibility .7s ease}
+.savannahIntro{position:fixed;inset:0;z-index:100;background:#0d0d0c;overflow:hidden;opacity:1;transition:opacity .9s cubic-bezier(.2,.7,.2,1),visibility .9s ease}
 .savannahLeaving{opacity:0;visibility:hidden;pointer-events:none}
 .savannahIntroVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center}
 .savannahIntroShade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.1),transparent 35%,rgba(0,0,0,.2))}
+.savannahSpatialHeadline{position:absolute;left:clamp(26px,5vw,82px);bottom:clamp(88px,12vh,142px);z-index:2;width:min(72vw,1040px);display:flex;flex-direction:column;color:rgba(255,255,255,.95);font-size:clamp(48px,7.2vw,122px);font-weight:900;line-height:.82;letter-spacing:-.065em;text-transform:uppercase;opacity:0;transform-origin:left center;transform:perspective(1500px) rotateY(-8deg) rotateX(1deg) translate3d(0,28px,0);transition:opacity 1.15s ease,transform 1.55s cubic-bezier(.16,.76,.24,1);text-shadow:0 1px 22px rgba(0,0,0,.16);pointer-events:none}
+.savannahSpatialHeadline span{display:block}
+.savannahSpatialHeadlineVisible{opacity:.92;transform:perspective(1500px) rotateY(-3.5deg) rotateX(.35deg) translate3d(0,0,0)}
+.savannahSpatialHeadlineSettling{opacity:1;transform:perspective(1500px) rotateY(0deg) rotateX(0deg) translate3d(0,6px,0) scale(.992);transition-duration:.7s}
 .savannahIntroBrand{position:absolute;left:clamp(20px,3.6vw,58px);top:28px;color:#fff;font-size:27px;font-weight:900;letter-spacing:-1.6px;text-shadow:0 1px 12px rgba(0,0,0,.22)}
 .savannahEnter{position:absolute;right:clamp(20px,3.6vw,58px);bottom:30px;border:1px solid rgba(255,255,255,.7);background:rgba(0,0,0,.12);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;padding:12px 16px;text-transform:uppercase;letter-spacing:.12em;font-size:10px;font-weight:800;cursor:pointer}
 .savannahEnter:hover{background:rgba(255,255,255,.12)}
-@media(max-width:650px){.savannahIntroVideo{object-position:center center}.savannahIntroBrand{top:20px}.savannahEnter{bottom:22px}}
+@media(max-width:900px){.savannahSpatialHeadline{width:min(82vw,760px);font-size:clamp(44px,9vw,82px);bottom:110px}}
+@media(max-width:650px){.savannahIntroVideo{object-position:center center}.savannahIntroBrand{top:20px}.savannahEnter{bottom:22px}.savannahSpatialHeadline{left:20px;bottom:88px;width:calc(100vw - 40px);font-size:clamp(42px,13vw,64px);line-height:.84;transform:perspective(1200px) rotateY(-5deg) translate3d(0,18px,0)}.savannahSpatialHeadlineVisible{transform:perspective(1200px) rotateY(-2deg) translate3d(0,0,0)}.savannahSpatialHeadlineSettling{transform:perspective(1200px) rotateY(0deg) translate3d(0,4px,0) scale(.995)}}
 @media(prefers-reduced-motion:reduce){.savannahIntro{display:none}}
