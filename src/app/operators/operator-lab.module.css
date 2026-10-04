@@ -97,7 +97,11 @@
 .machineLabel{left:8%;bottom:7%}
 .machineReadout{right:8%;bottom:7%;border:1px solid var(--ink);padding:9px 12px;background:rgba(244,239,230,.56)}
 .console{padding:0 clamp(20px,4vw,64px) 92px}
-.modeRail{display:grid;grid-template-columns:repeat(5,1fr);border-left:1px solid var(--ink);margin:0 0 54px}
+.modeRail{display:grid;grid-template-columns:repeat(5,1fr);border-left:1px solid var(--ink);margin:0}
+.advancedRail{display:grid;grid-template-columns:minmax(300px,1fr) minmax(220px,.55fr);border-left:1px solid var(--ink);margin:0 0 54px}
+.advancedLabel{min-height:116px;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:14px;display:flex;flex-direction:column;justify-content:flex-end;gap:7px}
+.advancedLabel strong{font-size:11px;letter-spacing:.13em}
+.advancedLabel span{font-size:13px;line-height:1.25;opacity:.72}
 .mode,.modeActive{
   min-height:116px;
   appearance:none;
@@ -159,6 +163,7 @@
 }
 .numberGrid{display:grid;grid-template-columns:1fr 1fr .42fr;gap:10px}
 .numberGridTwo{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.valenceScale{display:flex;justify-content:space-between;gap:12px;margin-top:7px;font-size:9px;font-weight:900;letter-spacing:.08em}
 .subjectEcho{
   margin:34px 0 12px;
   font-size:12px;
@@ -191,9 +196,9 @@
 .nextMove span{font-size:10px;font-weight:900;letter-spacing:.12em}
 .nextMove strong{font-size:19px;line-height:1.25}
 .copy{margin-top:24px;align-self:flex-start;border:1px solid var(--ink);background:var(--ink);color:var(--paper);padding:14px 18px;font-size:10px;font-weight:900;letter-spacing:.11em;cursor:pointer}
-.five{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.five{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
 .five article{min-height:370px;padding:22px;border-right:1px solid var(--ink);display:flex;flex-direction:column}
-.five article:last-child{border-right:0}
+.five article:last-child{border-right:0;background:#171613;color:#f3ede3}
 .five article>span{font-size:10px;font-weight:900;letter-spacing:.12em}
 .five b{font-size:74px;font-weight:300;line-height:1;margin:40px 0 auto}
 .five h2{font-size:24px;letter-spacing:-.04em;margin:0 0 12px}
@@ -206,10 +211,10 @@
 .footer div{display:flex;gap:24px}
 @media(max-width:1000px){
   .hero{grid-template-columns:1fr}.heroCopy{min-height:62vh;border-right:0;border-bottom:1px solid var(--ink)}.operatorMachine{min-height:460px}
-  .modeRail{grid-template-columns:1fr}.mode,.modeActive{min-height:74px;grid-template-columns:50px 1fr auto;grid-template-rows:1fr;align-items:center;border-bottom:1px solid var(--ink)}
+  .modeRail{grid-template-columns:1fr}.advancedRail{grid-template-columns:1fr}.advancedLabel{min-height:92px}.mode,.modeActive{min-height:74px;grid-template-columns:50px 1fr auto;grid-template-rows:1fr;align-items:center;border-bottom:1px solid var(--ink)}
   .mode span,.modeActive span{grid-row:1;font-size:30px}.mode strong,.modeActive strong{align-self:center}.mode small,.modeActive small{align-self:center}
   .workbench{grid-template-columns:1fr}.inputPanel{border-right:0;border-bottom:1px solid var(--ink);min-height:0}.resultPanel{min-height:620px}
-  .five{grid-template-columns:1fr 1fr}.five article{border-bottom:1px solid var(--ink)}.five article:nth-child(2n){border-right:0}.five article:last-child{border-bottom:0}
+  .five{grid-template-columns:1fr 1fr}.five article{border-bottom:1px solid var(--ink)}.five article:nth-child(2n){border-right:0}.five article:nth-last-child(-n+2){border-bottom:0}
 }
 @media(max-width:620px){
   .nav{grid-template-columns:1fr auto}.nav span{display:none}
