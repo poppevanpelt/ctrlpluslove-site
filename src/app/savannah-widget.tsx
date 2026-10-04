@@ -43,6 +43,8 @@ export function SavannahWidget() {
   ]);
   const lineIdRef = useRef(0);
   const chatScrollRef = useRef<HTMLDivElement | null>(null);
+  const textInputRef = useRef<HTMLInputElement | null>(null);
+  const queuedTextRef = useRef<string | null>(null);
   const modeRef = useRef<Mode>("voice");
   const steelTimerRef = useRef<number | null>(null);
   const steelAudioRef = useRef<AudioContext | null>(null);
@@ -297,6 +299,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
     const frame = window.requestAnimationFrame(() => {
       const viewport = chatScrollRef.current;
       if (viewport) viewport.scrollTop = viewport.scrollHeight;
+      textInputRef.current?.focus({ preventScroll: true });
     });
     return () => window.cancelAnimationFrame(frame);
   }, [chatLines, mode, textPending]);
@@ -352,11 +355,18 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
   const sendText = () => {
     const textVapi = textVapiRef.current;
     const text = draft.trim();
-    if (!textVapi || !text || textState !== "live" || textPending) return;
+    if (!textVapi || !text || textPending) return;
 
     appendConversation("user", text, true);
     setDraft("");
     setTextPending(true);
+
+    if (textState !== "live") {
+      queuedTextRef.current = text;
+      setMessage("Opening the quiet line.");
+      void startText();
+      return;
+    }
 
     try {
       textVapi.send({
@@ -736,11 +746,11 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
             style={{ display: "grid", gridTemplateColumns: "1fr auto" }}
           >
             <input
+              ref={textInputRef}
               value={draft}
               onChange={(event) => setDraft(event.target.value)}
-              disabled={textState !== "live"}
               aria-label="Type to Savannah"
-              placeholder={textState === "connecting" ? "Opening the quiet line…" : "Type to Savannah…"}
+              placeholder={textState === "connecting" ? "Type while I open the line…" : "Type to Savannah…"}
               autoComplete="off"
               style={{
                 minWidth: 0,
@@ -757,7 +767,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
             />
             <button
               type="submit"
-              disabled={textState !== "live" || textPending || !draft.trim()}
+              disabled={textPending || !draft.trim()}
               style={{
                 minWidth: 72,
                 border: 0,
@@ -771,8 +781,8 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
                 fontWeight: 800,
                 letterSpacing: ".1em",
                 textTransform: "uppercase",
-                cursor: textState === "live" && !textPending && draft.trim() ? "pointer" : "default",
-                opacity: textState === "live" && !textPending && draft.trim() ? 1 : .52,
+                cursor: !textPending && draft.trim() ? "pointer" : "default",
+                opacity: !textPending && draft.trim() ? 1 : .52,
               }}
             >
               Send
