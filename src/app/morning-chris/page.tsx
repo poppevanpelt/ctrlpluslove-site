@@ -1,34 +1,12 @@
 "use client";
 
-import { useRef, useState } from "react";
-
-const BARK_URL = "https://commons.wikimedia.org/wiki/Special:Redirect/file/George_vuf_1996.ogg";
+import { useState } from "react";
 
 export default function MorningChrisPage() {
   const [barked, setBarked] = useState(false);
-  const [playing, setPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const wakeTed = () => {
-    if (playing) return;
-    setPlaying(true);
-
-    try {
-      audioRef.current?.pause();
-      const audio = new Audio(BARK_URL);
-      audio.preload = "auto";
-      audio.volume = 0.82;
-      audioRef.current = audio;
-      void audio.play().catch(() => {}).finally(() => {
-        window.setTimeout(() => {
-          setBarked(true);
-          setPlaying(false);
-        }, 420);
-      });
-    } catch {
-      setBarked(true);
-      setPlaying(false);
-    }
+    setBarked(true);
   };
 
   return (
@@ -115,10 +93,13 @@ export default function MorningChrisPage() {
         }
       `}</style>
 
-      <img
+      <video
         className={`morningChrisDog ${barked ? "barked" : ""}`}
-        src="/ted/ted-portrait.webp"
-        alt="Ted"
+        src="https://dnznrvs05pmza.cloudfront.net/kling-o3-pro/935611456807772242/Bring_this_exact_ctrl_love_office_still_to_life_with_extremely_restrained__photoreal_motion_and_natu.mp4?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiYjUyZGY4Y2RjOTE2ODc5NyIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTIwODkwOX0.UHD9wm9dlf3bpFjEOcTTDCJ0cdOf0FneM6dsAPuDe-Y"
+        autoPlay
+        playsInline
+        preload="auto"
+        onEnded={() => setBarked(true)}
       />
       <div className="morningChrisVeil" />
       <div className="morningChrisHint">{barked ? "Morning." : "Tap Ted."}</div>
