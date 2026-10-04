@@ -8,6 +8,8 @@ import styles from "./home-2026.module.css";
 export default function SavannahIntro() {
   const [visible, setVisible] = useState(true);
   const [leaving, setLeaving] = useState(false);
+  const [headlineVisible, setHeadlineVisible] = useState(false);
+  const [settling, setSettling] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -16,8 +18,17 @@ export default function SavannahIntro() {
   }, []);
 
   const enterSite = () => {
-    setLeaving(true);
-    window.setTimeout(() => setVisible(false), 700);
+    if (leaving) return;
+    setHeadlineVisible(true);
+    setSettling(true);
+    window.setTimeout(() => setLeaving(true), 220);
+    window.setTimeout(() => setVisible(false), 1120);
+  };
+
+  const revealHeadline = () => {
+    const video = videoRef.current;
+    if (!video?.duration) return;
+    if (video.currentTime / video.duration > 0.56) setHeadlineVisible(true);
   };
 
   if (!visible) return null;
@@ -31,12 +42,24 @@ export default function SavannahIntro() {
         muted
         playsInline
         preload="auto"
+        onTimeUpdate={revealHeadline}
         onEnded={enterSite}
         onError={enterSite}
       >
         <source src="https://dnznrvs05pmza.cloudfront.net/kling-o3-pro/935466402926952540/Same_exact_Savannah__same_exact_warm_ctrl_love_office__same_wardrobe__hair__face_and_lighting__Start.mp4?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiYjAyZmFiZDBmY2Q2YTRjMyIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTE1NTc5Mn0.ZL9nGYVE-NawoO2vSi4YihdcdjiIU0JE8aIcLPPS1mc" type="video/mp4" />
       </video>
       <div className={styles.savannahIntroShade} />
+      <div
+        className={[
+          styles.savannahSpatialHeadline,
+          headlineVisible ? styles.savannahSpatialHeadlineVisible : "",
+          settling ? styles.savannahSpatialHeadlineSettling : "",
+        ].join(" ")}
+        aria-hidden="true"
+      >
+        <span>We build instruments</span>
+        <span>for human judgment.</span>
+      </div>
       <div className={styles.savannahIntroBrand}>ctrl+love</div>
       <button className={styles.savannahEnter} onClick={enterSite} type="button">
         Enter
