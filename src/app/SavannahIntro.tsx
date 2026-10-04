@@ -12,6 +12,7 @@ export default function SavannahIntro() {
   const [ready, setReady] = useState(false);
   const [siteLayer, setSiteLayer] = useState(false);
   const [handoff, setHandoff] = useState(false);
+  const [fallback, setFallback] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const handoffStarted = useRef(false);
 
@@ -29,7 +30,7 @@ export default function SavannahIntro() {
 
     const start = () => {
       setReady(true);
-      video.play().catch(() => setVisible(false));
+      video.play().catch(() => { setFallback(true); setSiteLayer(true); window.setTimeout(() => finishHandoff(), 3200); });
     };
 
     if (video.readyState >= 2) start();
@@ -58,11 +59,13 @@ export default function SavannahIntro() {
       className={[
         styles.savannahIntro,
         ready ? styles.savannahIntroReady : "",
+        fallback ? styles.savannahIntroFallback : "",
         handoff ? styles.savannahHandoff : "",
       ].join(" ")}
       aria-label="Enter ctrl+love"
       data-deploy="savannah-live-handoff"
     >
+      <div className={styles.savannahIntroFallbackImage} aria-hidden="true" />
       <video
         ref={videoRef}
         className={styles.savannahIntroVideo}
@@ -73,7 +76,7 @@ export default function SavannahIntro() {
         onLoadedMetadata={primeVideo}
         onTimeUpdate={trackHandoff}
         onEnded={finishHandoff}
-        onError={() => setVisible(false)}
+        onError={() => { setFallback(true); setReady(true); setSiteLayer(true); window.setTimeout(() => finishHandoff(), 3200); }}
       >
         <source
           src="https://dnznrvs05pmza.cloudfront.net/kling-o3-pro/935632333061881948/Create_one_continuous_restrained_photoreal_transition_from_this_exact_approved_ctrl_love_office_stil.mp4?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMWJmZDk1NjljNDQ5YTA4OSIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTI2NDQ4OX0.AqSXIvZLlf5QDQ_JRecyUxtKQxSupPRjk1AoSV1aJI0"
@@ -82,6 +85,7 @@ export default function SavannahIntro() {
       </video>
 
       <div className={styles.savannahIntroShade} />
+      <button type="button" className={styles.savannahIntroEnter} onClick={finishHandoff}>Come in ↘</button>
 
       <div
         className={[
