@@ -170,7 +170,7 @@ export default function Home() {
         <div className={styles.about}>
           <h2>30 years advertising.<br/>8 years Apple.<br/>ADCN Hall of Fame.<br/>Then this.</h2>
           <div className={styles.aboutProfile}>
-            <img className={styles.aboutPortrait} src="/home/poppe-founder.svg" alt="Poppe van Pelt" />
+            <img className={styles.aboutPortrait} src="/ambassadors/portraits/001-poppe-van-pelt-portrait-live-20260712.jpeg" alt="Poppe van Pelt" />
             <div className={styles.aboutBio}>
               <p><b>Poppe van Pelt</b><br/>Founder, ctrl+love</p>
               <p>Built after decades of watching good ideas get improved to death in rooms full of smart people.</p>
