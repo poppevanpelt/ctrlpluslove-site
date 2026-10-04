@@ -165,7 +165,7 @@ export function SavannahWidget() {
 
   useEffect(() => {
     const vapi = new Vapi(PUBLIC_KEY, undefined, { avoidEval: true, alwaysIncludeMicInPermissionPrompt: true }, { startAudioOff: false });
-    const textVapi = new Vapi(PUBLIC_KEY, undefined, { avoidEval: true }, { audioSource: false, startAudioOff: true });
+    const textVapi = new Vapi(PUBLIC_KEY, undefined, { avoidEval: true, alwaysIncludeMicInPermissionPrompt: true }, { startAudioOff: true });
     vapiRef.current = vapi;
     textVapiRef.current = textVapi;
 
@@ -227,7 +227,6 @@ export function SavannahWidget() {
         } as any);
       } catch {}
       setTextState("live");
-      setTextPending(false);
       setMessage("Type away. I'm here.");
       try {
         textVapi.send({
@@ -239,6 +238,23 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
           },
         } as any);
       } catch {}
+
+      const queued = queuedTextRef.current;
+      if (queued) {
+        queuedTextRef.current = null;
+        try {
+          textVapi.send({
+            type: "add-message",
+            message: { role: "user", content: queued },
+            triggerResponseEnabled: true,
+          } as any);
+        } catch {
+          setTextPending(false);
+          setMessage("That did not get through. Try it once more.");
+        }
+      } else {
+        setTextPending(false);
+      }
     });
 
     textVapi.on("message", (rawMessage: unknown) => {
