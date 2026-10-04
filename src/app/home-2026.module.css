@@ -39,22 +39,19 @@
 @media(max-width:650px){.flowIntro{min-height:auto}.ballStage{min-height:300px}.flowCopy{padding:28px 22px}.stage{padding:22px}}
 
 
-.savannahIntro{position:fixed;inset:0;z-index:100;background:#0d0d0c;overflow:hidden;opacity:1;transition:opacity .9s cubic-bezier(.2,.7,.2,1),visibility .9s ease,background .8s ease}
+.savannahIntro{position:fixed;inset:0;z-index:100;background:#0d0d0c;overflow:hidden;opacity:1;transition:opacity 1.35s cubic-bezier(.2,.7,.2,1),visibility 1.35s ease}
 .savannahIntroReady{background:#0d0d0c}
-.savannahLeaving{opacity:0;visibility:hidden;pointer-events:none}
-.savannahIntroVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;opacity:0;filter:saturate(1) brightness(1);transition:opacity .95s cubic-bezier(.2,.7,.2,1),filter .95s ease}
+.savannahIntroVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;opacity:0;transition:opacity .28s ease}
 .savannahIntroReady .savannahIntroVideo{opacity:1}
-.savannahIntroShade{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,.06),transparent 38%,rgba(0,0,0,.18));opacity:1;transition:opacity .8s ease;pointer-events:none}
-.savannahSiteLayer{position:absolute;inset:0;z-index:3;color:#fff;opacity:0;transition:opacity .75s ease;pointer-events:none;text-shadow:0 1px 16px rgba(0,0,0,.34)}
+.savannahIntroShade{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,.06),transparent 38%,rgba(0,0,0,.18));pointer-events:none}
+.savannahSiteLayer{position:absolute;inset:0;z-index:3;color:#fff;opacity:0;transition:opacity .7s ease;pointer-events:none;text-shadow:0 1px 16px rgba(0,0,0,.34)}
 .savannahSiteLayerVisible{opacity:1}
 .savannahSiteNav{position:absolute;left:clamp(20px,3.6vw,58px);right:clamp(20px,3.6vw,58px);top:26px;display:flex;align-items:center;justify-content:space-between;font-size:10px;letter-spacing:.11em;text-transform:uppercase}
 .savannahSiteNav strong{font-size:27px;letter-spacing:-1.6px;text-transform:none}
 .savannahSiteNote{position:absolute;right:clamp(20px,3.6vw,58px);bottom:clamp(28px,4vw,58px);width:min(380px,calc(100vw - 40px));padding-top:12px;border-top:1px solid rgba(255,255,255,.72)}
 .savannahSiteNote small{display:block;margin-bottom:9px;font-size:9px;letter-spacing:.14em;text-transform:uppercase}
 .savannahSiteNote strong{display:block;font-size:clamp(24px,2.55vw,38px);line-height:.92;letter-spacing:-.045em;text-transform:uppercase}
-.savannahHandoff{background:transparent}
-.savannahHandoff .savannahIntroVideo{opacity:.16;filter:saturate(.78) brightness(1.18)}
-.savannahHandoff .savannahIntroShade{opacity:0}
-.savannahHandoff .savannahSiteLayer{opacity:0;transition-duration:.42s}
+.savannahHandoff{opacity:0;visibility:hidden;pointer-events:none}
+.savannahHandoff .savannahSiteLayer{opacity:0}
 @media(max-width:650px){.savannahIntroVideo{object-position:center center}.savannahSiteNav span{display:none}.savannahSiteNav strong{font-size:22px}.savannahSiteNote{left:20px;right:20px;width:auto;bottom:24px}}
 @media(prefers-reduced-motion:reduce){.savannahIntro{display:none}}
