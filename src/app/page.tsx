@@ -169,10 +169,13 @@ export default function Home() {
       <section className={`${styles.section} ${styles.aboutSection}`} id="about">
         <div className={styles.about}>
           <h2>30 years advertising.<br/>8 years Apple.<br/>ADCN Hall of Fame.<br/>Then this.</h2>
-          <div>
-            <p><b>Poppe van Pelt</b><br/>Founder, ctrl+love</p>
-            <p>Built after decades of watching good ideas get improved to death in rooms full of smart people.</p>
-            <p className={styles.circle}>The wider ctrl+love circle includes people Poppe has worked shoulder to shoulder with at Apple and across advertising and design.</p>
+          <div className={styles.aboutProfile}>
+            <img className={styles.aboutPortrait} src="/home/poppe-founder.svg" alt="Poppe van Pelt" />
+            <div className={styles.aboutBio}>
+              <p><b>Poppe van Pelt</b><br/>Founder, ctrl+love</p>
+              <p>Built after decades of watching good ideas get improved to death in rooms full of smart people.</p>
+              <p className={styles.circle}>The wider ctrl+love circle includes people Poppe has worked shoulder to shoulder with at Apple and across advertising and design.</p>
+            </div>
           </div>
         </div>
       </section>
