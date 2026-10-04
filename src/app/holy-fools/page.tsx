@@ -7,6 +7,7 @@ const tools=[
   ["01","DIRECTOR SEARCH","Find the person you didn’t know you were looking for.","/holy-fools/director-search"],
   ["02","HOLY DRIPPER","One interesting thing in. A month of useful trouble out.","/holy-fools/holy-dripper"],
   ["03","HOLY SHIT MAKER","Find the part that deserves the reaction.","/holy-fools/holy-shit-maker"],
+  ["04","HOLY SHIT! LIVE","Savannah edits the meeting while the meeting is still happening.","/holy-fools/holy-shit-live"],
 ] as const;
 
 export default function HolyFools(){return <main className={styles.page} id="main-content">
