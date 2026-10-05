@@ -3,9 +3,8 @@
 import Vapi from "@vapi-ai/web";
 import { useEffect, useRef, useState } from "react";
 import styles from "./room.module.css";
+import { SAVANNAH_ROOM_VAPI } from "./vapi-config";
 
-const PUBLIC_KEY = "d7cabfb0-5382-4566-924c-74eb0b0a4c08";
-const ASSISTANT_ID = "5f548981-f4bc-4618-a93f-e6f2bc976d70";
 const VIDEO_SRC =
   "https://dnznrvs05pmza.cloudfront.net/kling-o3-pro/935632333061881948/Create_one_continuous_restrained_photoreal_transition_from_this_exact_approved_ctrl_love_office_stil.mp4?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMWJmZDk1NjljNDQ5YTA4OSIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTI2NDQ4OX0.AqSXIvZLlf5QDQ_JRecyUxtKQxSupPRjk1AoSV1aJI0";
 
@@ -29,11 +28,7 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
   const transcriptIdRef = useRef(0);
 
   useEffect(() => {
-    const globalWidget = document.querySelector<HTMLElement>('aside[aria-label="Savannah, ctrl+love employee #4"]');
-    const previousDisplay = globalWidget?.style.display;
-    if (globalWidget) globalWidget.style.display = "none";
-
-    const vapi = new Vapi(PUBLIC_KEY);
+    const vapi = new Vapi(SAVANNAH_ROOM_VAPI.publicKey);
     vapiRef.current = vapi;
 
     vapi.on("call-start", () => {
@@ -75,7 +70,6 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
       try { vapi.stop(); } catch {}
       vapi.removeAllListeners();
       vapiRef.current = null;
-      if (globalWidget) globalWidget.style.display = previousDisplay ?? "";
     };
   }, []);
 
@@ -109,7 +103,7 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
     setState("connecting");
     setMessage("Opening the room line.");
 
-    void vapi.start(ASSISTANT_ID).catch((error: unknown) => {
+    void vapi.start(SAVANNAH_ROOM_VAPI.assistantId).catch((error: unknown) => {
       console.error("Savannah Room start failed", error);
       setState("error");
       setMessage("Vapi start failed.");
