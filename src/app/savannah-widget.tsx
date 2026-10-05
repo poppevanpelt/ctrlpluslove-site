@@ -166,6 +166,8 @@ export function SavannahWidget() {
   }, [mobileAutoCollapsed, manualOpen]);
 
   useEffect(() => {
+    if (pathname.startsWith("/savannah-room/")) return;
+
     const vapi = new Vapi(PUBLIC_KEY, undefined, { avoidEval: true, alwaysIncludeMicInPermissionPrompt: true }, { startAudioOff: false });
     const textVapi = new Vapi(PUBLIC_KEY, undefined, { avoidEval: true, alwaysIncludeMicInPermissionPrompt: true }, { startAudioOff: true });
     vapiRef.current = vapi;
@@ -481,6 +483,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
   const busy = state === "requesting" || state === "connecting";
 
   if (
+    pathname.startsWith("/savannah-room/") ||
     pathname === "/savannah-test" ||
     pathname === "/savannah-test/" ||
     pathname === "/bridgefund-ted" ||
