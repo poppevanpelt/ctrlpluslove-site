@@ -58,7 +58,6 @@
 .note p{margin:0;max-width:920px;font-size:13px;line-height:1.45;color:rgba(244,240,231,.7)}
 .footer{position:absolute;left:0;right:0;bottom:0;border-top:1px solid var(--line);border-bottom:0;grid-template-columns:1fr auto;background:rgba(9,9,8,.42);backdrop-filter:blur(12px)}
 .footer a{color:inherit;text-decoration:none}
-33%{transform:scaleY(1.018) translateY(.2px)}66%{transform:scaleY(1.006) translateY(-.15px)}100%{transform:scaleY(1.024) translateY(.1px)}}
 @media(max-width:850px){
   .topbar{grid-template-columns:1fr auto}.topbar>span:nth-child(2){display:none}
   .grid{grid-template-columns:1fr}
