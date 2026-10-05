@@ -15,6 +15,7 @@ export default function SavannahIntro() {
   const [fallback, setFallback] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const handoffStarted = useRef(false);
+  const lockStarted = useRef(false);
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -37,9 +38,21 @@ export default function SavannahIntro() {
     else video.addEventListener("canplay", start, { once: true });
   };
 
+  const clickLock = () => {
+    if (lockStarted.current) return;
+    lockStarted.current = true;
+
+    document.documentElement.classList.add("savannah-page-locking");
+    window.setTimeout(() => {
+      document.documentElement.classList.remove("savannah-page-locking");
+      document.documentElement.classList.add("savannah-page-locked");
+    }, 520);
+  };
+
   const finishHandoff = () => {
     if (handoffStarted.current) return;
     handoffStarted.current = true;
+    clickLock();
     setHandoff(true);
     window.setTimeout(() => setVisible(false), 1400);
   };
@@ -49,6 +62,7 @@ export default function SavannahIntro() {
     if (!video) return;
 
     if (video.currentTime >= UI_REVEAL_AT) setSiteLayer(true);
+    if (video.currentTime >= HANDOFF_AT - 0.18) clickLock();
     if (video.currentTime >= HANDOFF_AT) finishHandoff();
   };
 
