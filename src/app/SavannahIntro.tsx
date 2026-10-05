@@ -19,7 +19,9 @@ export default function SavannahIntro() {
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) setVisible(false);
+    if (!reduced) return;
+    const frame = window.requestAnimationFrame(() => setVisible(false));
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   const primeVideo = () => {
@@ -46,7 +48,7 @@ export default function SavannahIntro() {
     window.setTimeout(() => {
       document.documentElement.classList.remove("savannah-page-locking");
       document.documentElement.classList.add("savannah-page-locked");
-    }, 520);
+    }, 1000);
   };
 
   const finishHandoff = () => {
@@ -54,7 +56,7 @@ export default function SavannahIntro() {
     handoffStarted.current = true;
     clickLock();
     setHandoff(true);
-    window.setTimeout(() => setVisible(false), 1400);
+    window.setTimeout(() => setVisible(false), 2100);
   };
 
   const trackHandoff = () => {
