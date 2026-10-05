@@ -7,7 +7,7 @@ import styles from "./room.module.css";
 import { BRIDGEFUND_ROOM_BRIEF } from "./bridgefund-brief";
 
 const PUBLIC_KEY = "f79f986e-3b43-4dde-b712-5527ec872a1c";
-const ASSISTANT_ID = "417b8810-5b53-4330-9bc4-6437aba1e401";
+const ASSISTANT_ID = "0a6da568-b15f-4e90-9518-bf731b1a334c";
 const VIDEO_SRC =
   "https://dnznrvs05pmza.cloudfront.net/kling-o3-pro/935632333061881948/Create_one_continuous_restrained_photoreal_transition_from_this_exact_approved_ctrl_love_office_stil.mp4?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMWJmZDk1NjljNDQ5YTA4OSIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTI2NDQ4OX0.AqSXIvZLlf5QDQ_JRecyUxtKQxSupPRjk1AoSV1aJI0";
 
@@ -49,6 +49,7 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
   const [state, setState] = useState<CallState>("idle");
   const [message, setMessage] = useState("Door closed. Savannah is here when you need her.");
   const [speaking, setSpeaking] = useState(false);
+  const [diagnostic, setDiagnostic] = useState("");
   const [transcript, setTranscript] = useState<TranscriptLine[]>([]);
   const transcriptIdRef = useRef(0);
 
@@ -82,6 +83,7 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
     vapiRef.current = vapi;
 
     vapi.on("call-start", () => {
+      setDiagnostic("Vapi call-start received.");
       setState("live");
       setMessage("I'm listening.");
       try {
@@ -123,7 +125,9 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
       setMessage("Room stays here. Call ended.");
     });
     vapi.on("error", (error: unknown) => {
+      const detail = error instanceof Error ? error.message : typeof error === "string" ? error : JSON.stringify(error);
       console.error("Savannah Room Vapi error", error);
+      setDiagnostic(`Vapi error: ${detail || "unknown error"}`);
       setSpeaking(false);
       setState("error");
       setMessage("The line did not open. Try once more.");
@@ -170,6 +174,7 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
     setMessage("Opening the room line.");
 
     try {
+      setDiagnostic(`Starting assistant ${ASSISTANT_ID.slice(0, 8)}…`);
       void vapi.start(
         ASSISTANT_ID,
         {
@@ -178,9 +183,12 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
           backgroundSound: "office",
         } as any,
       ).then(() => {
+        setDiagnostic("Vapi start resolved. Waiting for call-start.");
         forceMicOpen(vapi);
       }).catch((error: unknown) => {
         clearMicWakeTimers();
+        const detail = error instanceof Error ? error.message : typeof error === "string" ? error : JSON.stringify(error);
+        setDiagnostic(`Vapi start rejected: ${detail || "unknown error"}`);
         console.error("Savannah Room start failed", error);
         setState("error");
         setMessage("The audio line did not open. Check microphone access, then try again.");
@@ -283,6 +291,11 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
                 <p key={line.id}><strong>{line.role === "assistant" ? "SAVANNAH" : "VISITOR"}</strong>{line.text}</p>
               )) : <p className={styles.transcriptEmpty}>No words captured yet.</p>}
             </div>
+          </article>
+
+          <article className={styles.diagnosticPanel}>
+            <span>LINE DIAGNOSTIC</span>
+            <p>{diagnostic || "No Vapi event yet."}</p>
           </article>
 
           <article className={styles.note}>
