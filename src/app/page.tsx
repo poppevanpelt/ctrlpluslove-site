@@ -15,11 +15,24 @@ const instruments = [
   ["04","Prompt Shoppe","Find the real judgment hidden inside the instruction before tuning the prompt.","signal","/prompt-shoppe/","OPEN SHOPPE"],
   ["05","PURGE","Remove what can disappear without damaging the thing that matters.","nothing","/purge/","START PURGE"],
   ["06","Brand Survival","See how much can disappear before the brand stops being itself.","transplant","/brand-survival/","RUN INSTRUMENT"],
+  ["07","Decision Collider","Collide assumptions before people collide.","collider","/decision-collider/","RUN COLLIDER"],
+  ["08","AI-Y-fier","See what happens when clear language gets inflated into AI jargon.","signal","/ai-y-fier/","RUN AI-Y-FIER"],
+  ["09","ctrl+SWAT","Detect. Judge. Build. Dispatch before the moment disappears.","meeting","/swat/","ENTER SWAT"],
+  ["10","ctrl+FIZZ","Carbonated judgment for meetings that have gone flat.","opposition","/fizz/","OPEN BOTTLE"],
+  ["11","ctrl+CHASE","Keep a question moving until it produces evidence or earns its death.","nothing","/chase/","START CHASE"],
+  ["12","Radar","Watch signals, pressure and movement before the market names them.","signal","/radar/","OPEN RADAR"],
 ] as const;
+
+const instrumentImages: Record<string, string> = {
+  "01": "/instruments/06-decision-surface.webp",
+  "04": "/shoppe/poppes-prompt-shoppe.webp",
+  "07": "/instruments/02-decision-collider.webp",
+  "08": "/ai-y-fier-hero-inflation-engine.webp",
+};
 
 export default function Home() {
   return (
-    <main className={styles.page}>
+    <main className={styles.page} id="main-content">
       <SavannahIntro />
       <nav className={styles.nav}>
         <a className={styles.logo} href="#">ctrl+love</a>
@@ -161,7 +174,9 @@ export default function Home() {
         <div className={styles.instruments}>
           {instruments.map(([no,name,line,kind,href,action]) => (
             <a className={styles.instrument} href={href} key={no} aria-label={`${action}: ${name}`}>
-              <div className={`${styles.instrumentVisual} ${styles[kind]}`} />
+              <div className={`${styles.instrumentVisual} ${styles[kind]}`} aria-hidden="true">
+                {instrumentImages[no] && <img src={instrumentImages[no]} alt="" loading="lazy" />}
+              </div>
               <div className={styles.instrumentCopy}>
                 <span className={styles.num}>{no}</span>
                 <h3>{name}</h3>
@@ -171,6 +186,7 @@ export default function Home() {
             </a>
           ))}
         </div>
+        <a className={styles.cabinetLink} href="/instruments/">Open the full instrument cabinet · 24 specimens</a>
       </section>
 
       <section className={`${styles.section} ${styles.aboutSection}`} id="about">
