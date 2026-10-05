@@ -39,12 +39,12 @@
 @media(max-width:650px){.flowIntro{min-height:auto}.ballStage{min-height:300px}.flowCopy{padding:28px 22px}.stage{padding:22px}}
 
 
-.savannahIntro{position:fixed;inset:0;z-index:100;background:#0d0d0c;overflow:hidden;opacity:1;transition:opacity 1.35s cubic-bezier(.2,.7,.2,1),visibility 1.35s ease}
+.savannahIntro{position:fixed;inset:0;z-index:100;background:#0d0d0c;overflow:hidden;opacity:1;transition:opacity 2s cubic-bezier(.2,.7,.2,1),visibility 2s ease}
 .savannahIntroReady{background:#0d0d0c}
-.savannahIntroVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;opacity:0;transition:opacity .28s ease}
+.savannahIntroVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;opacity:0;transition:opacity 2.75s cubic-bezier(.2,.7,.2,1)}
 .savannahIntroReady .savannahIntroVideo{opacity:1}
 .savannahIntroShade{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,.06),transparent 38%,rgba(0,0,0,.18));pointer-events:none}
-.savannahSiteLayer{position:absolute;inset:0;z-index:3;color:#fff;opacity:0;transition:opacity .7s ease;pointer-events:none;text-shadow:0 1px 16px rgba(0,0,0,.34)}
+.savannahSiteLayer{position:absolute;inset:0;z-index:3;color:#fff;opacity:0;transition:opacity 2.25s cubic-bezier(.2,.7,.2,1);pointer-events:none;text-shadow:0 1px 16px rgba(0,0,0,.34)}
 .savannahSiteLayerVisible{opacity:1}
 .savannahSiteNav{position:absolute;left:clamp(20px,3.6vw,58px);right:clamp(20px,3.6vw,58px);top:26px;display:flex;align-items:center;justify-content:space-between;font-size:10px;letter-spacing:.11em;text-transform:uppercase}
 .savannahSiteNav strong{font-size:27px;letter-spacing:-1.6px;text-transform:none}
