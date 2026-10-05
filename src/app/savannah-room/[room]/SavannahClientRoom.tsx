@@ -12,6 +12,9 @@ const VIDEO_SRC =
   "https://dnznrvs05pmza.cloudfront.net/kling-o3-pro/935632333061881948/Create_one_continuous_restrained_photoreal_transition_from_this_exact_approved_ctrl_love_office_stil.mp4?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMWJmZDk1NjljNDQ5YTA4OSIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTI2NDQ4OX0.AqSXIvZLlf5QDQ_JRecyUxtKQxSupPRjk1AoSV1aJI0";
 
 type CallState = "idle" | "connecting" | "live" | "error";
+type TranscriptRole = "user" | "assistant";
+type TranscriptLine = { id: number; role: TranscriptRole; text: string };
+type TranscriptMessage = { type?: string; role?: string; transcriptType?: string; transcript?: string; status?: string };
 
 type Props = {
   roomSlug: string;
@@ -46,6 +49,8 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
   const [state, setState] = useState<CallState>("idle");
   const [message, setMessage] = useState("Door closed. Savannah is here when you need her.");
   const [speaking, setSpeaking] = useState(false);
+  const [transcript, setTranscript] = useState<TranscriptLine[]>([]);
+  const transcriptIdRef = useRef(0);
 
   const prompt = useMemo(() => roomSystemPrompt(roomName, roomSlug), [roomName, roomSlug]);
 
@@ -90,6 +95,27 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
 
     vapi.on("speech-start", () => setSpeaking(true));
     vapi.on("speech-end", () => setSpeaking(false));
+    vapi.on("message", (rawMessage: unknown) => {
+      const incoming = rawMessage as TranscriptMessage;
+      if (incoming?.type === "speech-update" && incoming.role === "assistant") {
+        setSpeaking(incoming.status === "started");
+      }
+      if (
+        incoming?.type === "transcript" &&
+        incoming.transcript &&
+        (!incoming.transcriptType || incoming.transcriptType === "final") &&
+        (incoming.role === "user" || incoming.role === "assistant")
+      ) {
+        transcriptIdRef.current += 1;
+        const text = incoming.transcript.replace(/\s+/g, " ").trim();
+        if (!text) return;
+        setTranscript((previous) => {
+          const last = previous[previous.length - 1];
+          if (last?.role === incoming.role && last.text === text) return previous;
+          return [...previous.slice(-39), { id: transcriptIdRef.current, role: incoming.role as TranscriptRole, text }];
+        });
+      }
+    });
     vapi.on("call-end", () => {
       clearMicWakeTimers();
       setSpeaking(false);
@@ -248,6 +274,15 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
                 <dd>Sending, publishing, booking, spending or changing something requires a human yes.</dd>
               </div>
             </dl>
+          </article>
+
+          <article className={styles.transcriptPanel}>
+            <span>ROOM TRANSCRIPT / LIVE CHECK</span>
+            <div className={styles.transcriptBody} aria-live="polite">
+              {transcript.length ? transcript.map((line) => (
+                <p key={line.id}><strong>{line.role === "assistant" ? "SAVANNAH" : "VISITOR"}</strong>{line.text}</p>
+              )) : <p className={styles.transcriptEmpty}>No words captured yet.</p>}
+            </div>
           </article>
 
           <article className={styles.note}>
