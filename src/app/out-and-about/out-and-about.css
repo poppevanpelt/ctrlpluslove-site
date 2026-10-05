@@ -1,0 +1,154 @@
+.oaa-page {
+  min-height: 100vh;
+  background: #f2f0e9;
+  color: #111;
+  padding: 24px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.oaa-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  border-top: 1px solid #111;
+  padding-top: 8px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+
+.oaa-header a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.oaa-hero {
+  padding: clamp(70px, 12vw, 160px) 0 72px;
+  max-width: 1100px;
+}
+
+.oaa-hero > p:first-child {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+
+.oaa-hero h1 {
+  margin: 18px 0 28px;
+  font-size: clamp(64px, 14vw, 190px);
+  line-height: 0.79;
+  letter-spacing: -0.07em;
+  font-weight: 800;
+}
+
+.oaa-intro {
+  max-width: 660px;
+  font-size: clamp(20px, 2.7vw, 36px);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+}
+
+.oaa-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.oaa-chip,
+.oaa-copy {
+  appearance: none;
+  border: 1px solid #111;
+  background: transparent;
+  color: inherit;
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+
+.oaa-chip:hover,
+.oaa-copy:hover {
+  background: #111;
+  color: #f2f0e9;
+}
+
+.oaa-status {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 16px;
+  border-top: 1px solid #111;
+  border-bottom: 1px solid #111;
+  padding: 9px 0;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+
+.oaa-card {
+  margin-top: 24px;
+  background: #111;
+  color: #f2f0e9;
+  padding: clamp(20px, 4vw, 52px);
+  max-width: 920px;
+}
+
+.oaa-card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(242, 240, 233, 0.35);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+
+.oaa-subject {
+  margin: 34px 0 18px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+
+.oaa-card pre {
+  margin: 0;
+  white-space: pre-wrap;
+  font: inherit;
+  font-size: clamp(18px, 2.2vw, 28px);
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+
+.oaa-copy {
+  margin-top: 34px;
+  border-color: #f2f0e9;
+}
+
+.oaa-copy:hover {
+  background: #f2f0e9;
+  color: #111;
+}
+
+.oaa-loading {
+  margin: 34px 0 0;
+  font-size: 18px;
+}
+
+.oaa-footnote {
+  max-width: 680px;
+  margin: 28px 0 80px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+@media (max-width: 640px) {
+  .oaa-page {
+    padding: 16px;
+  }
+
+  .oaa-status {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+
+  .oaa-hero {
+    padding-top: 80px;
+  }
+}
