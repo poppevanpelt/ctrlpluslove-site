@@ -41,12 +41,27 @@ ${clientBrief}
 export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
   const vapiRef = useRef<Vapi | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const micWakeTimersRef = useRef<number[]>([]);
   const [entered, setEntered] = useState(false);
   const [state, setState] = useState<CallState>("idle");
   const [message, setMessage] = useState("Door closed. Savannah is here when you need her.");
   const [speaking, setSpeaking] = useState(false);
 
   const prompt = useMemo(() => roomSystemPrompt(roomName, roomSlug), [roomName, roomSlug]);
+
+  const clearMicWakeTimers = () => {
+    micWakeTimersRef.current.forEach((timer) => window.clearTimeout(timer));
+    micWakeTimersRef.current = [];
+  };
+
+  const forceMicOpen = (vapi: Vapi) => {
+    clearMicWakeTimers();
+    const unmute = () => { try { vapi.setMuted(false); } catch {} };
+    unmute();
+    [350, 900, 1800].forEach((delay) => {
+      micWakeTimersRef.current.push(window.setTimeout(unmute, delay));
+    });
+  };
 
   useEffect(() => {
     const globalWidget = document.querySelector<HTMLElement>('aside[aria-label="Savannah, ctrl+love employee #4"]');
@@ -76,6 +91,7 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
     vapi.on("speech-start", () => setSpeaking(true));
     vapi.on("speech-end", () => setSpeaking(false));
     vapi.on("call-end", () => {
+      clearMicWakeTimers();
       setSpeaking(false);
       setState("idle");
       setMessage("Room stays here. Call ended.");
@@ -88,6 +104,7 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
     });
 
     return () => {
+      clearMicWakeTimers();
       try { vapi.stop(); } catch {}
       vapi.removeAllListeners();
       vapiRef.current = null;
@@ -113,11 +130,12 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
     setMessage("Door closed. Savannah is here when you need her.");
   };
 
-  const toggleCall = async () => {
+  const toggleCall = () => {
     const vapi = vapiRef.current;
     if (!vapi || state === "connecting") return;
 
     if (state === "live") {
+      clearMicWakeTimers();
       vapi.stop();
       return;
     }
@@ -126,18 +144,27 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
     setMessage("Opening the room line.");
 
     try {
-      await vapi.start(
+      void vapi.start(
         ASSISTANT_ID,
         {
           firstMessage: `Hi. Savannah. You're in the ${roomName} room. What are we working on?`,
           voice: { provider: "vapi", voiceId: "Savannah", version: 2 },
+          backgroundSound: "office",
         } as any,
-      );
-      try { vapi.setMuted(false); } catch {}
+      ).then(() => {
+        forceMicOpen(vapi);
+      }).catch((error: unknown) => {
+        clearMicWakeTimers();
+        console.error("Savannah Room start failed", error);
+        setState("error");
+        setMessage("The audio line did not open. Check microphone access, then try again.");
+      });
+      forceMicOpen(vapi);
     } catch (error) {
+      clearMicWakeTimers();
       console.error("Savannah Room start failed", error);
       setState("error");
-      setMessage("The line did not open. Try once more.");
+      setMessage("The audio line did not open. Check microphone access, then try again.");
     }
   };
 
