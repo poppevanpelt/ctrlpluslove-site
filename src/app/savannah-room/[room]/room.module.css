@@ -78,3 +78,7 @@
 @media(prefers-reduced-motion:reduce){
   .entry,.room,.portraitBase,.mouthLayer{transition:none;animation:none!important}
 }
+
+.diagnosticPanel{grid-column:1/-1;background:rgba(13,13,12,.9);padding:14px 22px;border-top:1px solid var(--line)}
+.diagnosticPanel>span{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.diagnosticPanel p{margin:8px 0 0;font-size:12px;line-height:1.4;color:rgba(244,240,231,.74);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
