@@ -19,9 +19,7 @@ export default function SavannahIntro() {
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!reduced) return;
-    const frame = window.requestAnimationFrame(() => setVisible(false));
-    return () => window.cancelAnimationFrame(frame);
+    if (reduced) setVisible(false);
   }, []);
 
   const primeVideo = () => {
@@ -48,7 +46,7 @@ export default function SavannahIntro() {
     window.setTimeout(() => {
       document.documentElement.classList.remove("savannah-page-locking");
       document.documentElement.classList.add("savannah-page-locked");
-    }, 1000);
+    }, 520);
   };
 
   const finishHandoff = () => {
@@ -56,7 +54,10 @@ export default function SavannahIntro() {
     handoffStarted.current = true;
     clickLock();
     setHandoff(true);
-    window.setTimeout(() => setVisible(false), 2100);
+    window.setTimeout(() => {
+      setVisible(false);
+      document.documentElement.classList.remove("savannah-page-locking", "savannah-page-locked");
+    }, 2050);
   };
 
   const trackHandoff = () => {
@@ -89,13 +90,14 @@ export default function SavannahIntro() {
         muted
         playsInline
         preload="auto"
+        poster="/savannah-avatar.jpg"
         onLoadedMetadata={primeVideo}
         onTimeUpdate={trackHandoff}
         onEnded={finishHandoff}
         onError={() => { setFallback(true); setReady(true); setSiteLayer(true); window.setTimeout(() => finishHandoff(), 3200); }}
       >
         <source
-          src="https://dnznrvs05pmza.cloudfront.net/kling-o3-pro/935632333061881948/Create_one_continuous_restrained_photoreal_transition_from_this_exact_approved_ctrl_love_office_stil.mp4?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMWJmZDk1NjljNDQ5YTA4OSIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTI2NDQ4OX0.AqSXIvZLlf5QDQ_JRecyUxtKQxSupPRjk1AoSV1aJI0"
+          src="/home/savannah-entrance.mp4"
           type="video/mp4"
         />
       </video>
