@@ -4,8 +4,8 @@ import Vapi from "@vapi-ai/web";
 import { useEffect, useRef, useState } from "react";
 import styles from "./room.module.css";
 
-const PUBLIC_KEY = "f79f986e-3b43-4dde-b712-5527ec872a1c";
-const ASSISTANT_ID = "417b8810-5b53-4330-9bc4-6437aba1e401";
+const PUBLIC_KEY = "d7cabfb0-5382-4566-924c-74eb0b0a4c08";
+const ASSISTANT_ID = "5f548981-f4bc-4618-a93f-e6f2bc976d70";
 const VIDEO_SRC =
   "https://dnznrvs05pmza.cloudfront.net/kling-o3-pro/935632333061881948/Create_one_continuous_restrained_photoreal_transition_from_this_exact_approved_ctrl_love_office_stil.mp4?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMWJmZDk1NjljNDQ5YTA4OSIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTI2NDQ4OX0.AqSXIvZLlf5QDQ_JRecyUxtKQxSupPRjk1AoSV1aJI0";
 
