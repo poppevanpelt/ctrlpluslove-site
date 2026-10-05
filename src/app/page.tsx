@@ -24,9 +24,7 @@ const instruments = [
 ] as const;
 
 const instrumentImages: Record<string, string> = {
-  "01": "/instruments/06-decision-surface.webp",
   "04": "/shoppe/poppes-prompt-shoppe.webp",
-  "07": "/instruments/02-decision-collider.webp",
   "08": "/ai-y-fier-hero-inflation-engine.webp",
 };
 
@@ -186,7 +184,11 @@ export default function Home() {
             </a>
           ))}
         </div>
-        <a className={styles.cabinetLink} href="/instruments/">Open the full instrument cabinet · 24 specimens</a>
+        <a className={styles.cabinetLink} href="/instruments/">
+          <span>THE COMPLETE COLLECTION</span>
+          <strong>Open the instrument room</strong>
+          <span>24 instruments, protocols and artifacts</span>
+        </a>
       </section>
 
       <section className={`${styles.section} ${styles.aboutSection}`} id="about">
@@ -209,6 +211,15 @@ export default function Home() {
         <a href="mailto:poppevanpelt@gmail.com?subject=I%20have%20something%20for%20ctrl%2Blove">Bring a real problem ↗</a>
       </section>
 
+      <nav className={styles.explore} aria-label="Explore ctrl+love">
+        <a href="/instruments/">Instrument room</a>
+        <a href="/ai-y-fier/">AI-Y-fier</a>
+        <a href="/radar/">Radar</a>
+        <a href="/museum/">Museum</a>
+        <a href="/ambassadors/">Network</a>
+        <a href="/inside-ctrl-love/">Inside</a>
+        <a href="/pricing/">Pricing</a>
+      </nav>
       <footer className={styles.footer}><span>ctrl+love · shortcut to reality</span><span>72° and sunny.</span></footer>
     </main>
   );
