@@ -1,10 +1,8 @@
 "use client";
 
 import Vapi from "@vapi-ai/web";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { SAVANNAH_BRIEFING } from "../../savannah-briefing";
+import { useEffect, useRef, useState } from "react";
 import styles from "./room.module.css";
-import { BRIDGEFUND_ROOM_BRIEF } from "./bridgefund-brief";
 
 const PUBLIC_KEY = "f79f986e-3b43-4dde-b712-5527ec872a1c";
 const ASSISTANT_ID = "417b8810-5b53-4330-9bc4-6437aba1e401";
@@ -21,94 +19,39 @@ type Props = {
   roomName: string;
 };
 
-function roomSystemPrompt(roomName: string, roomSlug: string) {
-  const clientBrief = roomSlug.toLowerCase() === "bridgefund" ? BRIDGEFUND_ROOM_BRIEF : "";
-  return `${SAVANNAH_BRIEFING}
-
-You are now inside a Savannah Room for "${roomName}" (room id: ${roomSlug}).
-
-ROOM RULES — THESE OVERRIDE BROADER CLIENT CONTEXT:
-- Treat this conversation as room-scoped.
-- Use only information explicitly introduced in this room, public ctrl+love information, and information the visitor gives you now.
-- Do not reveal, infer, compare, hint at, or reuse private information about another ctrl+love client or project, even if broader system context contains it.
-- If asked about another client's private work, say that it belongs to another room and you cannot bring it in here.
-- Never claim you can see a file, inbox, calendar, recording, database, or previous room unless that access is actually present in this session.
-- Before any outward action (sending, publishing, spending, booking, changing calendars, contacting people, or modifying external systems), ask for an explicit human yes unless the action has already been explicitly authorized in this conversation.
-- Keep the tone quieter than the front-door Savannah: calm, concise, confident, not salesy.
-- If the visitor asks what is private here, explain the room rule accurately: Savannah is instructed to keep the conversation room-scoped; hard client authentication/data partitioning is a separate security layer and should not be overstated.
-
-${clientBrief}
-`;
-}
-
 export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
   const vapiRef = useRef<Vapi | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const micWakeTimersRef = useRef<number[]>([]);
   const [entered, setEntered] = useState(false);
   const [state, setState] = useState<CallState>("idle");
   const [message, setMessage] = useState("Door closed. Savannah is here when you need her.");
-  const [speaking, setSpeaking] = useState(false);
   const [transcript, setTranscript] = useState<TranscriptLine[]>([]);
   const transcriptIdRef = useRef(0);
-
-  const prompt = useMemo(() => roomSystemPrompt(roomName, roomSlug), [roomName, roomSlug]);
-
-  const clearMicWakeTimers = () => {
-    micWakeTimersRef.current.forEach((timer) => window.clearTimeout(timer));
-    micWakeTimersRef.current = [];
-  };
-
-  const forceMicOpen = (vapi: Vapi) => {
-    clearMicWakeTimers();
-    const unmute = () => { try { vapi.setMuted(false); } catch {} };
-    unmute();
-    [350, 900, 1800].forEach((delay) => {
-      micWakeTimersRef.current.push(window.setTimeout(unmute, delay));
-    });
-  };
 
   useEffect(() => {
     const globalWidget = document.querySelector<HTMLElement>('aside[aria-label="Savannah, ctrl+love employee #4"]');
     const previousDisplay = globalWidget?.style.display;
     if (globalWidget) globalWidget.style.display = "none";
 
-    const vapi = new Vapi(
-      PUBLIC_KEY,
-      undefined,
-      { avoidEval: true, alwaysIncludeMicInPermissionPrompt: true },
-      { startAudioOff: false },
-    );
+    const vapi = new Vapi(PUBLIC_KEY);
     vapiRef.current = vapi;
 
     vapi.on("call-start", () => {
       setState("live");
       setMessage("I'm listening.");
-      try {
-        vapi.setMuted(false);
-        vapi.send({
-          type: "add-message",
-          message: { role: "system", content: prompt },
-        } as any);
-      } catch {}
     });
 
-    vapi.on("speech-start", () => setSpeaking(true));
-    vapi.on("speech-end", () => setSpeaking(false));
     vapi.on("message", (rawMessage: unknown) => {
       const incoming = rawMessage as TranscriptMessage;
-      if (incoming?.type === "speech-update" && incoming.role === "assistant") {
-        setSpeaking(incoming.status === "started");
-      }
       if (
         incoming?.type === "transcript" &&
         incoming.transcript &&
         (!incoming.transcriptType || incoming.transcriptType === "final") &&
         (incoming.role === "user" || incoming.role === "assistant")
       ) {
-        transcriptIdRef.current += 1;
         const text = incoming.transcript.replace(/\s+/g, " ").trim();
         if (!text) return;
+        transcriptIdRef.current += 1;
         setTranscript((previous) => {
           const last = previous[previous.length - 1];
           if (last?.role === incoming.role && last.text === text) return previous;
@@ -116,27 +59,25 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
         });
       }
     });
+
     vapi.on("call-end", () => {
-      clearMicWakeTimers();
-      setSpeaking(false);
       setState("idle");
       setMessage("Room stays here. Call ended.");
     });
+
     vapi.on("error", (error: unknown) => {
       console.error("Savannah Room Vapi error", error);
-      setSpeaking(false);
       setState("error");
-      setMessage("The line did not open. Try once more.");
+      setMessage("Vapi did not open the line.");
     });
 
     return () => {
-      clearMicWakeTimers();
       try { vapi.stop(); } catch {}
       vapi.removeAllListeners();
       vapiRef.current = null;
       if (globalWidget) globalWidget.style.display = previousDisplay ?? "";
     };
-  }, [prompt]);
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -161,7 +102,6 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
     if (!vapi || state === "connecting") return;
 
     if (state === "live") {
-      clearMicWakeTimers();
       vapi.stop();
       return;
     }
@@ -169,29 +109,11 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
     setState("connecting");
     setMessage("Opening the room line.");
 
-    try {
-      void vapi.start(
-        ASSISTANT_ID,
-        {
-          firstMessage: `Hi. Savannah. You're in the ${roomName} room. What are we working on?`,
-          voice: { provider: "vapi", voiceId: "Savannah", version: 2 },
-          backgroundSound: "office",
-        } as any,
-      ).then(() => {
-        forceMicOpen(vapi);
-      }).catch((error: unknown) => {
-        clearMicWakeTimers();
-        console.error("Savannah Room start failed", error);
-        setState("error");
-        setMessage("The audio line did not open. Check microphone access, then try again.");
-      });
-      forceMicOpen(vapi);
-    } catch (error) {
-      clearMicWakeTimers();
+    void vapi.start(ASSISTANT_ID).catch((error: unknown) => {
       console.error("Savannah Room start failed", error);
       setState("error");
-      setMessage("The audio line did not open. Check microphone access, then try again.");
-    }
+      setMessage("Vapi start failed.");
+    });
   };
 
   return (
@@ -237,15 +159,15 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
             <h2>The door is closed.</h2>
           </div>
           <div className={styles.status}>
-            <span className={speaking ? styles.liveDot : styles.dot} />
-            {state === "live" ? "LIVE" : state === "connecting" ? "OPENING" : "ROOM READY"}
+            <span className={state === "live" ? styles.liveDot : styles.dot} />
+            {state === "live" ? "LIVE" : state === "connecting" ? "OPENING" : state === "error" ? "ERROR" : "ROOM READY"}
           </div>
         </div>
 
         <div className={styles.grid}>
           <article className={styles.savannahCard}>
             <div className={styles.portraitWrap}>
-              <img src="/savannah-avatar.jpg?v=20261002-4" alt="Savannah" className={speaking ? styles.speaking : ""} />
+              <img src="/savannah-avatar.jpg?v=20261002-4" alt="Savannah"  />
             </div>
             <div className={styles.savannahCopy}>
               <span>EMPLOYEE #4 / ROOM MODE</span>
