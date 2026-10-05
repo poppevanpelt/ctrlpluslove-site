@@ -55,3 +55,16 @@
 .savannahHandoff .savannahSiteLayer{opacity:0}
 @media(max-width:650px){.savannahIntroVideo{object-position:center center}.savannahSiteNav span{display:none}.savannahSiteNav strong{font-size:22px}.savannahSiteNote{left:20px;right:20px;width:auto;bottom:24px}}
 @media(prefers-reduced-motion:reduce){.savannahIntro{display:none}}
+
+.savannahExplainer{max-width:var(--max);margin:0 auto;padding:0 var(--pad);border-bottom:1px solid var(--ink)}
+.savannahExplainerInner{display:grid;grid-template-columns:.48fr 1.25fr .72fr;gap:clamp(28px,4vw,72px);align-items:start;padding:clamp(48px,6vw,88px) 0;background:linear-gradient(90deg,rgba(184,215,231,.14),transparent 42%)}
+.savannahExplainerLabel{font-size:10px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;padding-top:8px}
+.savannahExplainerCopy h2{margin:0 0 24px;font-size:clamp(52px,6.8vw,108px);line-height:.84;letter-spacing:-.065em;text-transform:uppercase}
+.savannahExplainerCopy p{max-width:720px;margin:0 0 20px;font-size:clamp(20px,2vw,30px);line-height:1.12;letter-spacing:-.025em}
+.savannahExplainerCopy strong{display:block;font-size:clamp(20px,2vw,30px);line-height:1.12}
+.savannahExplainerAction{align-self:end;border-top:1px solid var(--ink);padding-top:16px}
+.savannahExplainerAction p{margin:0 0 24px;font-size:15px;line-height:1.4}
+.savannahExplainerAction button{appearance:none;border:1px solid var(--ink);background:var(--ink);color:var(--paper);padding:16px 18px;font:inherit;font-size:11px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;cursor:pointer}
+.savannahExplainerAction button:hover{background:transparent;color:var(--ink)}
+@media(max-width:900px){.savannahExplainerInner{grid-template-columns:1fr}.savannahExplainerLabel{padding-top:0}.savannahExplainerAction{max-width:520px}}
+@media(max-width:650px){.savannahExplainerInner{padding:44px 0;gap:28px}.savannahExplainerCopy h2{font-size:clamp(48px,14vw,68px)}.savannahExplainerCopy p,.savannahExplainerCopy strong{font-size:21px}.savannahExplainerAction button{width:100%;min-height:50px}}
