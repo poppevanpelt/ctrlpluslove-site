@@ -4,6 +4,7 @@ import Vapi from "@vapi-ai/web";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { SAVANNAH_BRIEFING } from "../../savannah-briefing";
 import styles from "./room.module.css";
+import { BRIDGEFUND_ROOM_BRIEF } from "./bridgefund-brief";
 
 const PUBLIC_KEY = "f79f986e-3b43-4dde-b712-5527ec872a1c";
 const ASSISTANT_ID = "417b8810-5b53-4330-9bc4-6437aba1e401";
@@ -18,6 +19,7 @@ type Props = {
 };
 
 function roomSystemPrompt(roomName: string, roomSlug: string) {
+  const clientBrief = roomSlug.toLowerCase() === "bridgefund" ? BRIDGEFUND_ROOM_BRIEF : "";
   return `${SAVANNAH_BRIEFING}
 
 You are now inside a Savannah Room for "${roomName}" (room id: ${roomSlug}).
@@ -31,6 +33,8 @@ ROOM RULES — THESE OVERRIDE BROADER CLIENT CONTEXT:
 - Before any outward action (sending, publishing, spending, booking, changing calendars, contacting people, or modifying external systems), ask for an explicit human yes unless the action has already been explicitly authorized in this conversation.
 - Keep the tone quieter than the front-door Savannah: calm, concise, confident, not salesy.
 - If the visitor asks what is private here, explain the room rule accurately: Savannah is instructed to keep the conversation room-scoped; hard client authentication/data partitioning is a separate security layer and should not be overstated.
+
+${clientBrief}
 `;
 }
 
