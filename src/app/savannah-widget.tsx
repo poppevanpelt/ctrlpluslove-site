@@ -19,6 +19,7 @@ type ConversationLine = { id: number; role: ConversationRole; text: string };
 type TranscriptMessage = {
   type?: string;
   role?: string;
+  status?: string;
   transcriptType?: string;
   transcript?: string;
 };
@@ -59,6 +60,7 @@ export function SavannahWidget() {
   const [textState, setTextState] = useState<TextState>("idle");
   const [draft, setDraft] = useState("");
   const [textPending, setTextPending] = useState(false);
+  const [assistantSpeaking, setAssistantSpeaking] = useState(false);
   const [chatLines, setChatLines] = useState<ConversationLine[]>([
     { id: 0, role: "assistant", text: "Hi. Savannah at control love. What's up?" },
   ]);
@@ -193,6 +195,13 @@ export function SavannahWidget() {
     });
     vapi.on("message", (rawMessage: unknown) => {
       const incoming = rawMessage as TranscriptMessage;
+
+      // Vapi's speech-update includes the speaker role. Drive the portrait only
+      // from assistant audio so Savannah never "lip-syncs" to the visitor.
+      if (incoming?.type === "speech-update" && incoming.role === "assistant") {
+        setAssistantSpeaking(incoming.status === "started");
+      }
+
       if (
         incoming?.type === "transcript" &&
         incoming.transcript &&
@@ -205,6 +214,7 @@ export function SavannahWidget() {
     vapi.on("call-end", () => {
       clearMicWakeTimers();
       stopSteel();
+      setAssistantSpeaking(false);
       setState("idle");
       if (modeRef.current === "voice") {
         setMessage("Morning. What are we trying to decide?");
@@ -213,6 +223,7 @@ export function SavannahWidget() {
     vapi.on("error", (error: unknown) => {
       clearMicWakeTimers();
       stopSteel();
+      setAssistantSpeaking(false);
       console.error("Savannah Vapi error", error);
       setState("error");
       setMessage("The audio line did not open. Try me again.");
@@ -560,9 +571,41 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
         fontFamily: "inherit",
       }}
     >
+      <style>{`
+        @keyframes savannahIdle {
+          0% { transform: scale(1.01) translate3d(0, 0, 0); }
+          100% { transform: scale(1.017) translate3d(0, -0.45px, 0); }
+        }
+        @keyframes savannahSpeak {
+          0% { transform: scale(1.018) translate3d(0, 0, 0); }
+          35% { transform: scale(1.022) translate3d(0.15px, -0.35px, 0); }
+          70% { transform: scale(1.019) translate3d(-0.12px, 0.18px, 0); }
+          100% { transform: scale(1.023) translate3d(0, -0.22px, 0); }
+        }
+        @keyframes savannahLowerFace {
+          0% { transform: scaleY(0.995) translateY(0); }
+          33% { transform: scaleY(1.018) translateY(0.2px); }
+          66% { transform: scaleY(1.006) translateY(-0.15px); }
+          100% { transform: scaleY(1.024) translateY(0.1px); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .savannah-live-face,
+          .savannah-live-mouth { animation: none !important; transform: none !important; }
+        }
+      `}</style>
+
       <div style={{ display: "grid", gridTemplateColumns: "88px 1fr", minHeight: 112 }}>
-        <div style={{ overflow: "hidden", borderRight: "1px solid rgba(21,21,21,.18)", background: '#e9e4d8 url("/home/savannah.jpg?v=20261002-4") center/cover no-repeat' }}>
+        <div
+          aria-label={assistantSpeaking ? "Savannah is speaking" : "Savannah"}
+          style={{
+            position: "relative",
+            overflow: "hidden",
+            borderRight: "1px solid rgba(21,21,21,.18)",
+            background: '#e9e4d8 url("/home/savannah.jpg?v=20261002-4") center/cover no-repeat',
+          }}
+        >
           <img
+            className="savannah-live-face"
             src={SAVANNAH_AVATAR}
             alt="Savannah"
             onError={(event) => {
@@ -571,8 +614,59 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
             }}
             width={176}
             height={224}
-            style={{ width: "100%", height: "100%", minHeight: 112, objectFit: "cover", display: "block" }}
+            style={{
+              width: "100%",
+              height: "100%",
+              minHeight: 112,
+              objectFit: "cover",
+              display: "block",
+              transformOrigin: "50% 62%",
+              animation: assistantSpeaking
+                ? "savannahSpeak 260ms ease-in-out infinite alternate"
+                : "savannahIdle 5.6s ease-in-out infinite alternate",
+              willChange: "transform",
+            }}
           />
+
+          {assistantSpeaking ? (
+            <>
+              <img
+                className="savannah-live-mouth"
+                src={SAVANNAH_AVATAR}
+                alt=""
+                aria-hidden="true"
+                width={176}
+                height={224}
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  minHeight: 112,
+                  objectFit: "cover",
+                  display: "block",
+                  clipPath: "inset(47% 20% 12% 20%)",
+                  transformOrigin: "50% 64%",
+                  animation: "savannahLowerFace 120ms ease-in-out infinite alternate",
+                  willChange: "transform",
+                  pointerEvents: "none",
+                }}
+              />
+              <span
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  right: 7,
+                  bottom: 7,
+                  width: 6,
+                  height: 6,
+                  borderRadius: "50%",
+                  background: "#ff5a2a",
+                  boxShadow: "0 0 0 3px rgba(245,241,231,.55)",
+                }}
+              />
+            </>
+          ) : null}
         </div>
 
         <div style={{ display: "flex", minWidth: 0, flexDirection: "column", justifyContent: "space-between", padding: "13px 14px 12px" }}>
