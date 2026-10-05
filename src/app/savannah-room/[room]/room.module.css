@@ -58,7 +58,7 @@
 .note p{margin:0;max-width:920px;font-size:13px;line-height:1.45;color:rgba(244,240,231,.7)}
 .footer{position:absolute;left:0;right:0;bottom:0;border-top:1px solid var(--line);border-bottom:0;grid-template-columns:1fr auto;background:rgba(9,9,8,.42);backdrop-filter:blur(12px)}
 .footer a{color:inherit;text-decoration:none}
-@keyframes roomIdle{from{transform:scale(1.01) translateY(0)}to{transform:scale(1.017) translateY(-.45px)}}\n@keyframes roomSpeak{0%{transform:scale(1.018) translate3d(0,0,0)}35%{transform:scale(1.022) translate3d(.15px,-.35px,0)}70%{transform:scale(1.019) translate3d(-.12px,.18px,0)}100%{transform:scale(1.023) translate3d(0,-.22px,0)}}\n@keyframes roomMouth{0%{transform:scaleY(.995) translateY(0)}33%{transform:scaleY(1.018) translateY(.2px)}66%{transform:scaleY(1.006) translateY(-.15px)}100%{transform:scaleY(1.024) translateY(.1px)}}
+33%{transform:scaleY(1.018) translateY(.2px)}66%{transform:scaleY(1.006) translateY(-.15px)}100%{transform:scaleY(1.024) translateY(.1px)}}
 @media(max-width:850px){
   .topbar{grid-template-columns:1fr auto}.topbar>span:nth-child(2){display:none}
   .grid{grid-template-columns:1fr}
@@ -76,5 +76,5 @@
   .roomHeader h2{font-size:52px}
 }
 @media(prefers-reduced-motion:reduce){
-  .entry,.room,.portraitBase,.mouthLayer{transition:none;animation:none!important}
+  .entry,.room,.portraitWrap img{transition:none;animation:none!important}
 }
