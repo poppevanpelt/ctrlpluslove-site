@@ -68,3 +68,23 @@
 .savannahExplainerAction button:hover{background:transparent;color:var(--ink)}
 @media(max-width:900px){.savannahExplainerInner{grid-template-columns:1fr}.savannahExplainerLabel{padding-top:0}.savannahExplainerAction{max-width:520px}}
 @media(max-width:650px){.savannahExplainerInner{padding:44px 0;gap:28px}.savannahExplainerCopy h2{font-size:clamp(48px,14vw,68px)}.savannahExplainerCopy p,.savannahExplainerCopy strong{font-size:21px}.savannahExplainerAction button{width:100%;min-height:50px}}
+
+
+/* Savannah handoff: the page seats itself into place like a precise mechanical latch. */
+:global(html.savannah-page-locking) .page{
+  transform:translateY(-2px) scale(1.0015);
+  transform-origin:50% 0;
+  transition:transform .16s cubic-bezier(.2,.8,.2,1);
+}
+:global(html.savannah-page-locked) .page{
+  transform:translateY(0) scale(1);
+  transform-origin:50% 0;
+  transition:transform .11s cubic-bezier(.15,.9,.2,1);
+}
+:global(html.savannah-page-locking) .nav{
+  box-shadow:0 1px 0 rgba(17,17,15,.28),0 3px 8px rgba(17,17,15,.035);
+}
+@media(prefers-reduced-motion:reduce){
+  :global(html.savannah-page-locking) .page,
+  :global(html.savannah-page-locked) .page{transform:none;transition:none}
+}
