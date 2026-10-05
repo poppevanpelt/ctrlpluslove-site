@@ -2,6 +2,8 @@
 
 ## Before Release
 
+- Run the **PURGE gate** in `PURGE.md`: every leftover experiment, route, asset, deployment, draft, prototype, script, and integration must be classified **KEEPER / ARCHIVE / TRASH**.
+- **Not chosen = gone.** Remove TRASH before release; move ARCHIVE out of production; only KEEPERS may remain live.
 - Confirm the intended release branch and latest commit.
 - Confirm Git status is clean, or every dirty file is intentionally reviewed.
 - Review changed files and make sure no unrelated experiments are shipping.
