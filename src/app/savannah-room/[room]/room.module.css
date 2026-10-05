@@ -44,6 +44,12 @@
 .savannahCopy button{margin-top:auto;align-self:flex-start}
 .savannahCopy button:disabled{opacity:.5;cursor:default}
 .rules{padding:clamp(24px,3vw,42px)}
+.transcriptPanel{grid-column:1/-1;background:var(--panel);padding:18px 22px}
+.transcriptPanel>span{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.transcriptBody{margin-top:12px;display:grid;gap:8px;max-height:180px;overflow:auto;padding-right:6px}
+.transcriptBody p{margin:0;font-size:13px;line-height:1.45;color:rgba(244,240,231,.78)}
+.transcriptBody strong{display:inline-block;min-width:78px;font-size:9px;letter-spacing:.11em;color:var(--muted)}
+.transcriptEmpty{font-style:italic;opacity:.7}
 .rules dl{margin:0;display:grid;gap:0}
 .rules dl>div{padding:18px 0;border-top:1px solid var(--line)}
 .rules dt{font-size:9px;letter-spacing:.13em;color:var(--muted);margin-bottom:8px}
