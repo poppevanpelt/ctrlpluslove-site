@@ -2,23 +2,23 @@ import { NextRequest, NextResponse } from "next/server";
 
 type RoomKey = "luther" | "bonkers";
 
-const ROOM_ACCESS: Record<RoomKey, { cookie: string; hashes: Record<string, string> }> = {
+const ROOM_ACCESS: Record<RoomKey, { cookie: string; hashes: string[] }> = {
   luther: {
     cookie: "ctrl_room_luther",
-    hashes: {
-      "poppe-van-pelt": "a770eb7036257ae491b55a12eb7f50fc04f5e0c628129876ba231a83befa3ae8",
-      "robin-stam": "cc69958143646e9b68609d79fe224149d9716ad4eea302d1e48599060c5bcda7",
-      "sjoerd-verbrugge": "c08c953c0611a2ae6a8f331d070b7c9eae8d6c90f98adc9abe23e2a8d02d83d8",
-      "joris-van-tubergen": "2b8da4415dacf8ca1fc359e4edba77cf1fa5f21fb1d3a62be7609c3d6cb47b71",
-      "winnie-plantinga": "976475fb68d0c2344fe9926e9575257d480b8df5eb3de6ce11e1239f12826a2e",
-    },
+    hashes: [
+      "9626cd5c62a29d7b762ea10cde9c9720155e61784f16c8e2f6d104f8bb46c4a2",
+      "8ede6b9025a61ab4f32be5a2b9f79fdbabd740d03065dbb28678952350b3c1c2",
+      "f91fbf9ddffa618dfe77f92e3c7b08a24d3a77d9272fa31fc662e25bccd4b475",
+      "2a86463b9035b1da81180513ee783cb7fab3d0d76426f96563ef1f8778a65483",
+      "ea3ad65109d698e7ffa795a20b4b32c284d90aae303df5a07655add8bcc0ab0e",
+    ],
   },
   bonkers: {
     cookie: "ctrl_room_bonkers",
-    hashes: {
-      "poppe-van-pelt": "85635a067b808baac2bac16f55bd314b7e580c6a68fafbfc64105680361d3ef0",
-      "saskia-kok": "add6d2eadfdf41d1d4afe9d6295416cdab5ddf15f22dacef85411c22cb029266",
-    },
+    hashes: [
+      "f19c0c3cf0a9be1e3dab0115967f0bdf8b5b9c122b64219d2b2d29f623a91d8f",
+      "d81c0ffefa03a0d0ec7f521a58f31e2b39feb6aadab40fb298d9013b042d2894",
+    ],
   },
 };
 
@@ -39,7 +39,7 @@ async function sha256(value: string) {
 
 async function isValidToken(room: RoomKey, token: string) {
   const tokenHash = await sha256(token);
-  return Object.values(ROOM_ACCESS[room].hashes).includes(tokenHash);
+  return ROOM_ACCESS[room].hashes.includes(tokenHash);
 }
 
 export async function proxy(request: NextRequest) {
@@ -74,10 +74,11 @@ export async function proxy(request: NextRequest) {
   return NextResponse.rewrite(locked);
 }
 
-export const config = {
+export const proxyConfig = {
   matcher: [
     "/savannah-room/luther/:path*",
     "/savannah-room/bonkers/:path*",
+    "/bonkers",
     "/bonkers/:path*",
   ],
 };
