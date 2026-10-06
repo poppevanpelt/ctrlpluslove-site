@@ -4,6 +4,7 @@ import Vapi from "@vapi-ai/web";
 import { useEffect, useRef, useState } from "react";
 import styles from "./room.module.css";
 import { SAVANNAH_ROOM_VAPI } from "./vapi-config";
+import { BRIDGEFUND_ROOM_BRIEF } from "./bridgefund-brief";
 
 const VIDEO_SRC =
   "https://dnznrvs05pmza.cloudfront.net/kling-o3-pro/935632333061881948/Create_one_continuous_restrained_photoreal_transition_from_this_exact_approved_ctrl_love_office_stil.mp4?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMWJmZDk1NjljNDQ5YTA4OSIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTI2NDQ4OX0.AqSXIvZLlf5QDQ_JRecyUxtKQxSupPRjk1AoSV1aJI0";
@@ -32,6 +33,9 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
     vapiRef.current = vapi;
 
     vapi.on("call-start", () => {
+      if (roomSlug.toLowerCase() === "bridgefund") {
+        vapi.send({ type: "add-message", message: { role: "system", content: BRIDGEFUND_ROOM_BRIEF } });
+      }
       setState("live");
       setMessage("I'm listening.");
     });
@@ -71,7 +75,7 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
       vapi.removeAllListeners();
       vapiRef.current = null;
     };
-  }, []);
+  }, [roomSlug]);
 
   useEffect(() => {
     const video = videoRef.current;
