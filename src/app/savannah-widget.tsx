@@ -423,13 +423,14 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       setState("connecting");
       setMessage("Opening the line.");
       void startSteel();
-      // Keep start non-blocking for iPhone Safari, but restore Savannah's
-      // explicit Southern V2 voice instead of falling back to assistant defaults.
+      // Keep start non-blocking for iPhone Safari.
+      // Do not override Savannah's voice here: the Vapi assistant is the canonical
+      // source for her voice configuration, and overriding it in-browser can leave
+      // the web call connected but silent when the dashboard voice changes.
       void vapi.start(
         ASSISTANT_ID,
         {
           firstMessage: "Hi. Savannah at control love. What's up?",
-          voice: { provider: "vapi", voiceId: "Savannah", version: 2 },
           backgroundSound: "office",
         } as any,
       ).then(() => {
