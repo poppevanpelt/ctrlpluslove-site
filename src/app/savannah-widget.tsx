@@ -4,6 +4,7 @@ import Vapi from "@vapi-ai/web";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { SAVANNAH_BRIEFING } from "./savannah-briefing";
+import { capabilityContext, capabilityOverrides, parseNotes, parseProposal, MEMORY_KEY, DECISIONS_KEY, type SavedNote, type Proposal } from "@/lib/savannah/capabilities";
 
 const PUBLIC_KEY = "f79f986e-3b43-4dde-b712-5527ec872a1c";
 const ASSISTANT_ID = "417b8810-5b53-4330-9bc4-6437aba1e401";
@@ -36,6 +37,12 @@ function describeError(error: unknown) {
 }
 
 export function SavannahWidget() {
+  const notesRef = useRef<SavedNote[]>([]);
+  const handledToolsRef = useRef(new Set<string>());
+  const proposalVapiRef = useRef<Vapi | null>(null);
+  const [proposal, setProposal] = useState<Proposal | null>(null);
+  const [noteCount, setNoteCount] = useState(0);
+  const [savedCard, setSavedCard] = useState<string | null>(null);
   const pathname = usePathname();
   const vapiRef = useRef<Vapi | null>(null);
   const textVapiRef = useRef<Vapi | null>(null);
@@ -64,6 +71,60 @@ export function SavannahWidget() {
   const [chatLines, setChatLines] = useState<ConversationLine[]>([
     { id: 0, role: "assistant", text: "Hi. Savannah at control love. What's up?" },
   ]);
+
+  const handleCapability = (client: Vapi, raw: unknown) => {
+    const incoming = raw as { type?: string; toolCallList?: Array<{ id?: string; function?: { name?: string; arguments?: unknown } }> };
+    if (incoming.type !== "tool-calls" || !Array.isArray(incoming.toolCallList)) return;
+    for (const call of incoming.toolCallList) {
+      if (!call.id || handledToolsRef.current.has(call.id)) continue;
+      const candidate = parseProposal(call.function?.name || "", call.function?.arguments);
+      if (!candidate) continue;
+      handledToolsRef.current.add(call.id);
+      proposalVapiRef.current = client;
+      setProposal(candidate);
+      setCompact(false);
+      setManualOpen(true);
+      setMessage("Check the card below before saving.");
+    }
+  };
+
+  const confirmProposal = () => {
+    if (!proposal) return;
+    try {
+      if (proposal.kind === "note") {
+        const current = parseNotes(window.localStorage.getItem(MEMORY_KEY));
+        const notes = [...current.filter(n => n.text !== proposal.note), { id: crypto.randomUUID(), text: proposal.note, savedAt: new Date().toISOString() }].slice(-20);
+        window.localStorage.setItem(MEMORY_KEY, JSON.stringify(notes));
+        notesRef.current = notes;
+        setNoteCount(notes.length);
+      } else {
+        let cards: unknown = [];
+        try { cards = JSON.parse(window.localStorage.getItem(DECISIONS_KEY) || "[]"); } catch {}
+        window.localStorage.setItem(DECISIONS_KEY, JSON.stringify([...(Array.isArray(cards) ? cards.slice(-19) : []), { ...proposal.card, savedAt: new Date().toISOString() }]));
+        setSavedCard(JSON.stringify(proposal.card, null, 2));
+      }
+      try { proposalVapiRef.current?.send({ type: "add-message", message: { role: "system", content: `The visitor clicked Save. ${proposal.kind === "note" ? "The explicit note is saved" : "The agreed decision card is saved"} in this browser only. Nothing was emailed, booked or assigned. ${capabilityContext(notesRef.current)}` } } as Parameters<Vapi["send"]>[0]); } catch {}
+      setMessage("Saved in this browser.");
+      setProposal(null);
+    } catch { setMessage("Could not save here. The card is still available."); }
+  };
+
+  const downloadCard = () => {
+    if (!savedCard) return;
+    const url = URL.createObjectURL(new Blob([savedCard], { type: "application/json" }));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "savannah-decision.json";
+    link.click();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+
+  useEffect(() => {
+    try {
+      notesRef.current = parseNotes(window.localStorage.getItem(MEMORY_KEY));
+      setNoteCount(notesRef.current.length);
+    } catch {}
+  }, []);
 
   const appendConversation = (role: ConversationRole, rawText: string, surface = true) => {
     const text = rawText.replace(/\s+/g, " ").trim();
@@ -184,9 +245,9 @@ export function SavannahWidget() {
           type: "add-message",
           message: {
             role: "system",
-            content: `${SAVANNAH_BRIEFING}\nVoice delivery: stay warm, relaxed and unhurried. Leave a little air between thoughts. Never sound eager, rushed or salesy.`,
+            content: `${SAVANNAH_BRIEFING}\n${capabilityContext(notesRef.current)}\nVoice delivery: stay warm, relaxed and unhurried. Leave a little air between thoughts. Never sound eager, rushed or salesy.`,
           },
-        } as any);
+        } as Parameters<Vapi["send"]>[0]);
       } catch {}
     });
     vapi.on("speech-start", () => {
@@ -196,6 +257,7 @@ export function SavannahWidget() {
       setMessage("Got it.");
     });
     vapi.on("message", (rawMessage: unknown) => {
+      handleCapability(vapi, rawMessage);
       const incoming = rawMessage as TranscriptMessage;
 
       // Vapi's speech-update includes the speaker role. Drive the portrait only
@@ -237,7 +299,7 @@ export function SavannahWidget() {
         textVapi.send({
           type: "control",
           control: "mute-assistant",
-        } as any);
+        } as Parameters<Vapi["send"]>[0]);
       } catch {}
       setTextState("live");
       setMessage("Type away. I'm here.");
@@ -246,10 +308,10 @@ export function SavannahWidget() {
           type: "add-message",
           message: {
             role: "system",
-            content: `${SAVANNAH_BRIEFING}
+            content: `${SAVANNAH_BRIEFING}\n${capabilityContext(notesRef.current)}
 Text delivery: this visitor is typing. Reply as Savannah in short, natural written turns. Do not mention that this is a separate mode or transport. Keep the same personality, judgment and knowledge as voice Savannah.${recentConversationContext()}`,
           },
-        } as any);
+        } as Parameters<Vapi["send"]>[0]);
       } catch {}
 
       const queued = queuedTextRef.current;
@@ -260,7 +322,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
             type: "add-message",
             message: { role: "user", content: queued },
             triggerResponseEnabled: true,
-          } as any);
+          } as Parameters<Vapi["send"]>[0]);
         } catch {
           setTextPending(false);
           setMessage("That did not get through. Try it once more.");
@@ -271,6 +333,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
     });
 
     textVapi.on("message", (rawMessage: unknown) => {
+      handleCapability(textVapi, rawMessage);
       const incoming = rawMessage as TranscriptMessage;
       if (
         incoming?.type === "transcript" &&
@@ -345,9 +408,10 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       await textVapi.start(
         ASSISTANT_ID,
         {
+          ...capabilityOverrides(window.location.origin, `${SAVANNAH_BRIEFING}\n${capabilityContext(notesRef.current)}`),
           firstMessage: "",
           voice: { provider: "vapi", voiceId: "Savannah", version: 2 },
-        } as any,
+        } as unknown as Parameters<Vapi["start"]>[1],
       );
     } catch (error) {
       console.error("Savannah text start failed", error);
@@ -402,7 +466,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
         type: "add-message",
         message: { role: "user", content: text },
         triggerResponseEnabled: true,
-      } as any);
+      } as Parameters<Vapi["send"]>[0]);
     } catch (error) {
       console.error("Savannah text send failed", error);
       setTextPending(false);
@@ -430,9 +494,10 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       void vapi.start(
         ASSISTANT_ID,
         {
+          ...capabilityOverrides(window.location.origin, `${SAVANNAH_BRIEFING}\n${capabilityContext(notesRef.current)}`),
           firstMessage: "Hi. Savannah at control love. What's up?",
           backgroundSound: "office",
-        } as any,
+        } as unknown as Parameters<Vapi["start"]>[1],
       ).then(() => {
         forceMicOpen(vapi);
         const carried = recentConversationContext();
@@ -444,7 +509,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
                 role: "system",
                 content: carried,
               },
-            } as any);
+            } as Parameters<Vapi["send"]>[0]);
           } catch {}
         }
       }).catch((error: unknown) => {
@@ -701,6 +766,26 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
           </p>
         </div>
       </div>
+
+      <div style={{ padding: "8px 14px", borderTop: "1px solid rgba(21,21,21,.18)", fontSize: 11, lineHeight: 1.4 }}>
+        {noteCount} saved notes · this browser only
+        {noteCount > 0 ? <button type="button" onClick={() => {
+          try {
+            window.localStorage.removeItem(MEMORY_KEY);
+            notesRef.current = [];
+            setNoteCount(0);
+            setMessage("Saved notes cleared. Start a new call for a clean context.");
+          } catch { setMessage("Could not clear notes in this browser."); }
+        }} style={{ marginLeft: 10 }}>Clear notes</button> : null}
+        {savedCard ? <button type="button" onClick={downloadCard} style={{ marginLeft: 10 }}>Download decision</button> : null}
+      </div>
+      {proposal ? <div style={{ padding: "12px 14px", borderTop: "1px solid rgba(21,21,21,.18)", maxHeight: 220, overflowY: "auto", fontSize: 12, lineHeight: 1.4 }}>
+        <strong>{proposal.kind === "note" ? "Remember this?" : "Agreed decision?"}</strong>
+        {proposal.kind === "note" ? <p>{proposal.note}</p> : <dl>{Object.entries(proposal.card).map(([key, value]) => <div key={key}><dt style={{ fontWeight: 700 }}>{key === "stopRule" ? "Continue / change / stop" : key}</dt><dd style={{ margin: "0 0 7px" }}>{value}</dd></div>)}</dl>}
+        <p>Save only non-sensitive information. Stored in this browser; nothing is sent or booked.</p>
+        <button type="button" onClick={confirmProposal}>Save in this browser</button>{" "}
+        <button type="button" onClick={() => { setProposal(null); setMessage("Not saved."); try { proposalVapiRef.current?.send({ type: "add-message", message: { role: "system", content: "The visitor dismissed the proposal. Nothing was saved." } } as Parameters<Vapi["send"]>[0]); } catch {} }}>Dismiss</button>
+      </div> : null}
 
       <div
         role="tablist"
