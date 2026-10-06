@@ -1,2 +1,0 @@
-Production trigger for Savannah-first landing handoff.
-Requested 2026-10-05 07:40 Europe/Amsterdam.
