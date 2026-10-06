@@ -1,5 +1,5 @@
-const PUBLIC_KEY = "f79f986e-3b43-4dde-b712-5527ec872a1c";
-const ASSISTANT_ID = "417b8810-5b53-4330-9bc4-6437aba1e401";
+const PUBLIC_KEY = "12382a58-9f0f-41fe-ba94-257368be07cb";
+const ASSISTANT_ID = "4289b114-3dca-4052-9684-13c3435bd0a4";
 
 if (!window.__savannahRuntimeLoaded) {
   window.__savannahRuntimeLoaded = true;
