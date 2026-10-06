@@ -23,7 +23,7 @@
 .entry h1,.roomHeader h2{margin:0;text-transform:uppercase;font-weight:900;letter-spacing:-.065em;line-height:.86}
 .entry h1{font-size:clamp(74px,12vw,190px)}
 .intro{max-width:620px;font-size:clamp(22px,2.2vw,34px);line-height:1.08;letter-spacing:-.03em}
-.enterButton,.savannahCopy button{border:1px solid var(--ink);background:var(--ink);color:#111;padding:14px 18px;font:inherit;font-size:11px;font-weight:900;letter-spacing:.11em;text-transform:uppercase;cursor:pointer}
+.enterButton,.savannahCopy>button,.roomControls button,.typeSend{border:1px solid var(--ink);background:var(--ink);color:#111;padding:14px 18px;font:inherit;font-size:11px;font-weight:900;letter-spacing:.11em;text-transform:uppercase;cursor:pointer}
 .room{position:absolute;inset:72px 0 0;z-index:4;padding:clamp(24px,4vw,58px);opacity:0;transform:translateY(18px);pointer-events:none;transition:opacity 1s ease .18s,transform 1.1s cubic-bezier(.2,.7,.2,1) .18s}
 .roomVisible{opacity:1;transform:none;pointer-events:auto}
 .roomHeader{display:flex;justify-content:space-between;align-items:flex-end;gap:28px;padding-bottom:26px;border-bottom:1px solid var(--line)}
@@ -41,8 +41,8 @@
 .savannahCopy span,.rules>span,.note>span{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .savannahCopy h3,.rules h3{margin:14px 0 18px;font-size:clamp(36px,4vw,62px);line-height:.94;letter-spacing:-.055em;text-transform:uppercase}
 .savannahCopy p{font-size:clamp(20px,2vw,30px);line-height:1.08;letter-spacing:-.025em;margin:0 0 28px}
-.savannahCopy button{margin-top:auto;align-self:flex-start}
-.savannahCopy button:disabled{opacity:.5;cursor:default}
+.savannahCopy>button{margin-top:auto;align-self:flex-start}
+.savannahCopy>button:disabled,.roomControls button:disabled,.typeSend:disabled{opacity:.5;cursor:default}
 .rules{padding:clamp(24px,3vw,42px)}
 .transcriptPanel{grid-column:1/-1;background:var(--panel);padding:18px 22px}
 .transcriptPanel>span{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
@@ -77,3 +77,11 @@
 @media(prefers-reduced-motion:reduce){
   .entry,.room,.portraitWrap img{transition:none;animation:none!important}
 }
+
+.roomControls{display:flex;gap:8px;margin-top:auto}
+.roomControls button{margin:0;align-self:auto}
+.typeForm{display:grid;grid-template-columns:1fr auto;margin-top:10px;border:1px solid var(--line);background:rgba(9,9,8,.42)}
+.typeInput{min-width:0;border:0;background:transparent;color:var(--ink);padding:13px 14px;font:inherit;font-size:14px;outline:none}
+.typeInput::placeholder{color:rgba(244,240,231,.42)}
+.typeSend{margin:0!important;border:0!important;border-left:1px solid var(--line)!important;background:rgba(244,240,231,.92)!important;color:#111!important;align-self:stretch!important}
+@media(max-width:560px){.roomControls{display:grid;grid-template-columns:1fr 1fr}.roomControls button{width:100%}}
