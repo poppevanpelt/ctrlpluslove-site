@@ -3,15 +3,17 @@
 import Vapi from "@vapi-ai/web";
 import { useEffect, useRef, useState } from "react";
 import styles from "./room.module.css";
+import osStyles from "./savannah-os.module.css";
 import { SAVANNAH_ROOM_VAPI } from "./vapi-config";
 import { roomBrief } from "./room-briefs";
 import { BONKERS_TOOLS } from "../../bonkers/tools";
+import { actionLabel, buildActionPrompt, buildMemoryPrompt, deriveRoomMemory, detectSilentNudge, memoryStorageKey, parseStoredRoomMemory, type ActionKind, type RoomMemory } from "./savannah-os";
 
 const VIDEO_SRC = "https://ctrl-love-media.floot.app/_cdn/static/savannah-intro.mp4";
 
 type CallState = "idle" | "connecting" | "live" | "error";
 type TranscriptRole = "user" | "assistant";
-type TranscriptLine = { id: number; role: TranscriptRole; text: string };
+type TranscriptLine = { id: number; role: TranscriptRole; text: string; at: number };
 type TranscriptMessage = { type?: string; role?: string; transcriptType?: string; transcript?: string; status?: string };
 
 type Props = {
@@ -30,6 +32,42 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
   const [transcript, setTranscript] = useState<TranscriptLine[]>([]);
   const [draft, setDraft] = useState("");
   const transcriptIdRef = useRef(0);
+  const memoryRef = useRef<RoomMemory>(deriveRoomMemory(roomSlug, []));
+  const sessionStartIndexRef = useRef(0);
+  const pendingActionRef = useRef<ActionKind | null>(null);
+  const actionCaptureTimerRef = useRef<number | null>(null);
+  const [memoryHydrated, setMemoryHydrated] = useState(false);
+  const [silentMode, setSilentMode] = useState(true);
+  const [actionPending, setActionPending] = useState(false);
+  const [lastActionKind, setLastActionKind] = useState<ActionKind | null>(null);
+  const [actionOutput, setActionOutput] = useState("");
+
+  const memory = deriveRoomMemory(roomSlug, transcript.map((line) => ({ role: line.role, text: line.text, at: line.at })));
+  const sessionMemory = deriveRoomMemory(roomSlug, transcript.slice(sessionStartIndexRef.current).map((line) => ({ role: line.role, text: line.text, at: line.at })));
+  const silentNudge = silentMode ? detectSilentNudge(sessionMemory) : null;
+
+  useEffect(() => {
+    const stored = parseStoredRoomMemory(window.localStorage.getItem(memoryStorageKey(roomSlug)), roomSlug);
+    if (stored) {
+      const restored = stored.transcript.map((line, index) => ({ id: index + 1, role: line.role, text: line.text, at: line.at }));
+      transcriptIdRef.current = restored.length;
+      sessionStartIndexRef.current = restored.length;
+      setTranscript(restored);
+      memoryRef.current = stored;
+    } else {
+      transcriptIdRef.current = 0;
+      sessionStartIndexRef.current = 0;
+      setTranscript([]);
+      memoryRef.current = deriveRoomMemory(roomSlug, []);
+    }
+    setMemoryHydrated(true);
+  }, [roomSlug]);
+
+  useEffect(() => {
+    memoryRef.current = memory;
+    if (!memoryHydrated) return;
+    try { window.localStorage.setItem(memoryStorageKey(roomSlug), JSON.stringify(memory)); } catch {}
+  }, [memoryHydrated, roomSlug, transcript]);
 
   useEffect(() => {
     const vapi = new Vapi(SAVANNAH_ROOM_VAPI.publicKey);
@@ -37,9 +75,9 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
 
     vapi.on("call-start", () => {
       const brief = roomBrief(roomSlug);
-      if (brief) {
-        vapi.send({ type: "add-message", message: { role: "system", content: brief } });
-      }
+      const continuity = buildMemoryPrompt(memoryRef.current);
+      const systemMessage = [brief, continuity].filter(Boolean).join("\n\n");
+      if (systemMessage) vapi.send({ type: "add-message", message: { role: "system", content: systemMessage } });
       const queued = queuedTextRef.current;
       if (queued) {
         vapi.send({ type: "add-message", message: { role: "user", content: queued } });
@@ -63,7 +101,13 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
         setTranscript((previous) => {
           const last = previous[previous.length - 1];
           if (last?.role === incoming.role && last.text === text) return previous;
-          return [...previous.slice(-39), { id: transcriptIdRef.current, role: incoming.role as TranscriptRole, text }];
+          const next = [...previous.slice(-119), { id: transcriptIdRef.current, role: incoming.role as TranscriptRole, text, at: Date.now() }];
+          return next;
+        });
+        if (incoming.role === "assistant" && pendingActionRef.current) {
+          setActionOutput((previous) => previous ? `${previous}\n${text}` : text);
+          if (actionCaptureTimerRef.current) window.clearTimeout(actionCaptureTimerRef.current);
+          actionCaptureTimerRef.current = window.setTimeout(() => { pendingActionRef.current = null; setActionPending(false); }, 1600);
         });
       }
     });
@@ -71,17 +115,22 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
     vapi.on("call-end", () => {
       setState("idle");
       setMessage("Room stays here. Call ended.");
+      pendingActionRef.current = null;
+      setActionPending(false);
     });
 
     vapi.on("error", (error: unknown) => {
       console.error("Savannah Room Vapi error", error);
       setState("error");
       setMessage("Vapi did not open the line.");
+      pendingActionRef.current = null;
+      setActionPending(false);
     });
 
     return () => {
       try { vapi.stop(); } catch {}
       vapi.removeAllListeners();
+      if (actionCaptureTimerRef.current) window.clearTimeout(actionCaptureTimerRef.current);
       vapiRef.current = null;
     };
   }, [roomSlug]);
@@ -110,6 +159,7 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
       id: transcriptIdRef.current,
       role: "user" as const,
       text,
+      at: Date.now(),
     }]);
   };
 
@@ -136,6 +186,57 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
       setState("error");
       setMessage("Vapi start failed.");
     });
+  };
+
+  const requestAction = (kind: ActionKind) => {
+    const vapi = vapiRef.current;
+    if (!vapi || state === "connecting" || actionPending || !memory.transcript.length) return;
+    const prompt = buildActionPrompt(kind, roomName, memory);
+    pendingActionRef.current = kind;
+    setLastActionKind(kind);
+    setActionOutput("");
+    setActionPending(true);
+    setMessage(`Drafting ${actionLabel(kind).toLowerCase()}. Nothing leaves the room.`);
+    if (state === "live") {
+      vapi.send({ type: "add-message", message: { role: "user", content: prompt } });
+    } else {
+      queuedTextRef.current = prompt;
+      setState("connecting");
+      setMessage("Opening the room line.");
+      void vapi.start(SAVANNAH_ROOM_VAPI.assistantId).catch((error: unknown) => {
+        console.error("Savannah Room action start failed", error);
+        pendingActionRef.current = null;
+        setActionPending(false);
+        setState("error");
+        setMessage("Vapi start failed.");
+      });
+    }
+  };
+
+  const approveCopy = async () => {
+    if (!actionOutput) return;
+    try {
+      await navigator.clipboard.writeText(actionOutput);
+      setMessage("Approved draft copied. Still nothing sent.");
+    } catch {
+      setMessage("Clipboard permission was blocked. The draft is still here.");
+    }
+  };
+
+  const approveEmailDraft = () => {
+    if (!actionOutput) return;
+    window.location.href = `mailto:?subject=${encodeURIComponent(`${roomName} / follow-up`)}&body=${encodeURIComponent(actionOutput)}`;
+  };
+
+  const forgetLocalMemory = () => {
+    try { window.localStorage.removeItem(memoryStorageKey(roomSlug)); } catch {}
+    setTranscript([]);
+    transcriptIdRef.current = 0;
+    sessionStartIndexRef.current = 0;
+    memoryRef.current = deriveRoomMemory(roomSlug, []);
+    setActionOutput("");
+    setLastActionKind(null);
+    setMessage("Local room memory cleared on this browser.");
   };
 
   const toggleCall = () => {
@@ -241,6 +342,45 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
             </dl>
           </article>
 
+          <article className={osStyles.memoryDesk}>
+            <div className={osStyles.panelHead}><span>ROOM MEMORY / THIS BROWSER</span><b>{memory.transcript.length ? "REMEMBERING" : "EMPTY"}</b></div>
+            <h3>She comes back knowing.</h3>
+            <p className={osStyles.panelIntro}>Conversation survives reloads on this browser. Human wording counts as evidence; Savannah's own wording does not become a decision by repetition.</p>
+            <div className={osStyles.memoryStats}>
+              <div><b>{memory.decisions.length}</b><span>Decisions</span></div>
+              <div><b>{memory.owners.length}</b><span>Owners</span></div>
+              <div><b>{memory.openQuestions.length}</b><span>Questions</span></div>
+              <div><b>{memory.nextTests.length}</b><span>Tests</span></div>
+            </div>
+            <div className={osStyles.memoryPeek}><span>LAST EXPLICIT SIGNAL</span><p>{memory.decisions.at(-1) ?? memory.openQuestions.at(-1) ?? memory.preferences.at(-1) ?? "Nothing explicit yet."}</p></div>
+            <button type="button" className={osStyles.quietButton} onClick={forgetLocalMemory} disabled={!memory.transcript.length}>Forget local memory</button>
+          </article>
+
+          <article className={osStyles.observerDesk}>
+            <div className={osStyles.panelHead}><span>SILENT OBSERVER</span><button type="button" className={osStyles.modeToggle} onClick={() => setSilentMode((value) => !value)}>{silentMode ? "ON" : "OFF"}</button></div>
+            <h3>She does not have to speak.</h3>
+            <p className={osStyles.panelIntro}>Watches the room for unowned decisions, missing tests and live opposition. Nudges stay on your screen; they are not spoken into the meeting.</p>
+            <div className={`${osStyles.nudge} ${silentNudge ? osStyles.nudgeLive : ""}`}><span>PRIVATE NUDGE / NOT SENT TO ROOM</span><p>{silentMode ? (silentNudge ?? "Watching. Nothing worth interrupting you for yet.") : "Observer is off."}</p></div>
+          </article>
+
+          <article className={osStyles.actionDesk}>
+            <div className={osStyles.panelHead}><span>ACTION DESK / APPROVAL REQUIRED</span><b>{actionPending ? "DRAFTING" : actionOutput ? "READY FOR YOU" : "IDLE"}</b></div>
+            <div className={osStyles.actionGrid}>
+              <div>
+                <h3>Conversation → object.</h3>
+                <p className={osStyles.panelIntro}>Savannah can turn the room into a follow-up, decision note or next-room primer. She prepares it. You decide whether anything leaves the room.</p>
+                <div className={osStyles.actionButtons}>
+                  {(["follow-up", "decision-note", "next-primer"] as ActionKind[]).map((kind) => <button key={kind} type="button" onClick={() => requestAction(kind)} disabled={actionPending || state === "connecting" || !memory.transcript.length}>{actionLabel(kind)}</button>)}
+                </div>
+              </div>
+              <div className={osStyles.actionOutput}>
+                <span>{lastActionKind ? `LATEST / ${actionLabel(lastActionKind).toUpperCase()}` : "LATEST DRAFT"}</span>
+                <p>{actionOutput || (actionPending ? "Savannah is drafting from the room evidence…" : "Nothing drafted yet.")}</p>
+                {actionOutput ? <div className={osStyles.approvalButtons}><button type="button" onClick={() => void approveCopy()}>Approve + copy</button>{lastActionKind === "follow-up" ? <button type="button" onClick={approveEmailDraft}>Approve + open email</button> : null}</div> : null}
+              </div>
+            </div>
+          </article>
+
           {isBonkers ? (
             <article className={styles.bonkersDesk}>
               <div className={styles.bonkersIntro}>
@@ -271,7 +411,7 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
           <article className={styles.transcriptPanel}>
             <span>ROOM TRANSCRIPT / LIVE CHECK</span>
             <div className={styles.transcriptBody} aria-live="polite">
-              {transcript.length ? transcript.map((line) => (
+              {transcript.length ? transcript.slice(-40).map((line) => (
                 <p key={line.id}><strong>{line.role === "assistant" ? "SAVANNAH" : "VISITOR"}</strong>{line.text}</p>
               )) : <p className={styles.transcriptEmpty}>No words captured yet.</p>}
             </div>
@@ -298,8 +438,7 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
             <span>IMPORTANT / SECURITY</span>
             <p>
               Personal invite access gates this room before its content loads, and the page is unlisted
-              and noindexed. Savannah also receives client-specific room instructions. This remains a
-              working prototype; enterprise storage-level partitioning is not implied.
+              and noindexed. Savannah also receives client-specific room instructions. Local continuity is stored only in this browser in this version; cross-device shared memory is not implied.
             </p>
           </article>
         </div>
