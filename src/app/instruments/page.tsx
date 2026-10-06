@@ -46,6 +46,7 @@ const instruments: readonly Instrument[] = [
   { no: "022", name: "TRAJECTORY / ATLAS / MARIA", state: "IN DEVELOPMENT", family: "ARTIFACT", line: "Map how a decision travels, not only where it ends.", why: "A developing system for human coordination terrain, protocol primitives and decision trajectories.", href: "/maria/", action: "ENTER EXCAVATION 001" },
   { no: "023", name: "CTRL+CHASE", state: "PROTOTYPE", family: "MOVE", line: "A question either produces evidence or earns its death.", why: "Keeps unresolved signals moving until they become evidence, a next move, or a justified stop.", href: "/chase/", action: "START CHASE" },
   { no: "024", name: "BRAND SURVIVAL", state: "PROTOTYPE", family: "TEST", line: "How much can we take away before it stops being you?", why: "Built to make distinctiveness visible as a survival curve instead of collapsing it into a score.", href: "/brand-survival/", action: "RUN BATCH 001" },
+  { no: "025", name: "CTRL+DOSE", state: "FIELD TEST", family: "SEE", line: "The right amount of you for this particular human.", why: "Built because useful enthusiasm can still become overload when production velocity outruns someone else’s processing velocity.", href: "/dose/", action: "RUN DOSE CHECK" },
 ];
 
 const stateClass: Record<State, string> = {
