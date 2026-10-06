@@ -20,7 +20,14 @@ export default function SavannahIntro() {
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!reduced) return;
-    const frame = window.requestAnimationFrame(() => setVisible(false));
+
+    const frame = window.requestAnimationFrame(() => {
+      videoRef.current?.pause();
+      setFallback(true);
+      setReady(true);
+      setSiteLayer(true);
+    });
+
     return () => window.cancelAnimationFrame(frame);
   }, []);
 
@@ -89,10 +96,11 @@ export default function SavannahIntro() {
         muted
         playsInline
         preload="auto"
+        poster="/home/savannah.jpg"
         onLoadedMetadata={primeVideo}
         onTimeUpdate={trackHandoff}
         onEnded={finishHandoff}
-        onError={() => { setFallback(true); setReady(true); setSiteLayer(true); window.setTimeout(() => finishHandoff(), 3200); }}
+        onError={() => { setFallback(true); setReady(true); setSiteLayer(true); }}
       >
         <source src="https://ctrl-love-media.floot.app/_cdn/static/savannah-intro.mp4" type="video/mp4" />
       </video>
