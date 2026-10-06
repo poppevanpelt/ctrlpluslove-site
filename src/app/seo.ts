@@ -212,6 +212,14 @@ export const publicRoutes: PublicRoute[] = [
     priority: 0.65,
   },
   {
+    path: "/dose/",
+    title: "CTRL+DOSE — ctrl+love",
+    description:
+      "A relationship-bandwidth instrument that turns WhatsApp behaviour into individual communication guidelines before another beautiful thing gets sent.",
+    changeFrequency: "monthly",
+    priority: 0.65,
+  },
+  {
     path: "/inside-ctrl-love/",
     title: "Inside ctrl+love — ctrl+love",
     description: "Tools, departments and artifacts from the ctrl+love engine.",
