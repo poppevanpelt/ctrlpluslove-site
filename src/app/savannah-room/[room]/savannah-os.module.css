@@ -1,0 +1,43 @@
+.memoryDesk,.observerDesk,.actionDesk{
+  background:rgba(13,13,12,.78);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  padding:clamp(24px,3vw,42px);
+}
+.actionDesk{grid-column:1/-1}
+.panelHead{display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,240,231,.58)}
+.panelHead b{font-size:8px;letter-spacing:.13em;color:#ffb08e}
+.memoryDesk h3,.observerDesk h3,.actionDesk h3{margin:14px 0 16px;font-size:clamp(30px,3.2vw,50px);line-height:.94;letter-spacing:-.05em;text-transform:uppercase}
+.panelIntro{margin:0;color:rgba(244,240,231,.72);font-size:14px;line-height:1.45;max-width:680px}
+.memoryStats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:rgba(244,240,231,.18);border:1px solid rgba(244,240,231,.18);margin-top:24px}
+.memoryStats div{display:flex;flex-direction:column;gap:5px;background:rgba(6,6,5,.54);padding:15px 14px}
+.memoryStats b{font-size:25px;line-height:1;letter-spacing:-.04em}
+.memoryStats span{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:rgba(244,240,231,.48)}
+.memoryPeek{margin-top:18px;padding-top:17px;border-top:1px solid rgba(244,240,231,.18)}
+.memoryPeek span,.nudge span,.actionOutput>span{font-size:8px;letter-spacing:.13em;text-transform:uppercase;color:rgba(244,240,231,.48)}
+.memoryPeek p{margin:9px 0 0;font-size:14px;line-height:1.4}
+.quietButton,.modeToggle,.actionButtons button,.approvalButtons button{font:inherit;cursor:pointer;text-transform:uppercase;font-size:9px;font-weight:900;letter-spacing:.1em}
+.quietButton{margin-top:18px;border:0;border-bottom:1px solid rgba(244,240,231,.42);padding:0 0 4px;background:transparent;color:rgba(244,240,231,.72)}
+.quietButton:disabled{opacity:.32;cursor:default}
+.modeToggle{border:1px solid rgba(244,240,231,.28);background:transparent;color:#f4f0e7;padding:6px 9px}
+.nudge{margin-top:24px;min-height:116px;border:1px solid rgba(244,240,231,.18);padding:18px;background:rgba(0,0,0,.18)}
+.nudgeLive{border-color:rgba(255,90,42,.6);box-shadow:inset 3px 0 0 #ff5a2a}
+.nudge p{margin:12px 0 0;font-size:clamp(19px,2vw,28px);line-height:1.08;letter-spacing:-.025em}
+.actionGrid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(24px,4vw,64px);margin-top:10px}
+.actionButtons{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.actionButtons button{border:1px solid rgba(244,240,231,.38);background:transparent;color:#f4f0e7;padding:10px 12px}
+.actionButtons button:hover:not(:disabled){background:#f4f0e7;color:#111}
+.actionButtons button:disabled{opacity:.32;cursor:default}
+.actionOutput{border-left:1px solid rgba(244,240,231,.18);padding-left:clamp(22px,3vw,42px);min-width:0}
+.actionOutput p{white-space:pre-wrap;margin:13px 0 0;font-size:14px;line-height:1.48;color:rgba(244,240,231,.82);min-height:96px}
+.approvalButtons{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.approvalButtons button{border:1px solid #f4f0e7;background:#f4f0e7;color:#111;padding:10px 12px}
+.approvalButtons button+button{background:transparent;color:#f4f0e7}
+@media(max-width:850px){
+  .actionDesk{grid-column:auto}
+  .actionGrid{grid-template-columns:1fr}
+  .actionOutput{border-left:0;border-top:1px solid rgba(244,240,231,.18);padding-left:0;padding-top:24px}
+}
+@media(max-width:560px){
+  .memoryStats{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
