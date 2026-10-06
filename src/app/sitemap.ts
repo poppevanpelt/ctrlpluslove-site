@@ -7,10 +7,10 @@ import { swatMissions } from "./swat/missions-data";
 import { embassies } from "@/content/embassies";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date("2026-09-15");
-  const homeLastModified = new Date("2026-09-19");
-  const swatLastModified = new Date("2026-09-15");
-  const twoGoLastModified = new Date("2026-09-20");
+  const lastModified = new Date("2026-10-06");
+  const homeLastModified = new Date("2026-10-06");
+  const swatLastModified = new Date("2026-10-06");
+  const twoGoLastModified = new Date("2026-10-06");
 
   return [
     ...publicRoutes.map((route) => ({
