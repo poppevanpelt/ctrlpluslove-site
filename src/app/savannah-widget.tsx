@@ -90,6 +90,20 @@ export function SavannahWidget() {
     return `\nConversation carried over from the other mode. Continue naturally without repeating it:\n${transcript}`;
   };
 
+  const bridgeFundRoomContext = () => {
+    if (typeof window === "undefined" || pathname !== "/bridgefund-savannah") return "";
+    const params = new URLSearchParams(window.location.search);
+    const supplied = (params.get("context") || "").slice(0, 6000).trim();
+    const roomBase = [
+      "You are inside the private BridgeFund Brand OS room.",
+      "Act as a participant, not a receptionist.",
+      "Help pressure-test the work, treat friction as signal, and never invent BridgeFund facts or decisions.",
+    ].join("\n");
+    return supplied
+      ? `\nBridgeFund room context:\n${roomBase}\n${supplied}`
+      : `\nBridgeFund room context:\n${roomBase}`;
+  };
+
   const stopSteel = () => {
     steelAliveRef.current = false;
     if (steelTimerRef.current !== null) {
@@ -184,7 +198,7 @@ export function SavannahWidget() {
           type: "add-message",
           message: {
             role: "system",
-            content: `${SAVANNAH_BRIEFING}\nVoice delivery: stay warm, relaxed and unhurried. Leave a little air between thoughts. Never sound eager, rushed or salesy.`,
+            content: `${SAVANNAH_BRIEFING}\nVoice delivery: stay warm, relaxed and unhurried. Leave a little air between thoughts. Never sound eager, rushed or salesy.${bridgeFundRoomContext()}`,
           },
         } as any);
       } catch {}
@@ -247,7 +261,7 @@ export function SavannahWidget() {
           message: {
             role: "system",
             content: `${SAVANNAH_BRIEFING}
-Text delivery: this visitor is typing. Reply as Savannah in short, natural written turns. Do not mention that this is a separate mode or transport. Keep the same personality, judgment and knowledge as voice Savannah.${recentConversationContext()}`,
+Text delivery: this visitor is typing. Reply as Savannah in short, natural written turns. Do not mention that this is a separate mode or transport. Keep the same personality, judgment and knowledge as voice Savannah.${recentConversationContext()}${bridgeFundRoomContext()}`,
           },
         } as any);
       } catch {}
@@ -430,7 +444,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       void vapi.start(
         ASSISTANT_ID,
         {
-          firstMessage: "Hi. Savannah at control love. What's up?",
+          firstMessage: pathname === "/bridgefund-savannah" ? "Hi. Savannah. I know which room I'm in. What's bothering you?" : "Hi. Savannah at control love. What's up?",
           backgroundSound: "office",
         } as any,
       ).then(() => {
