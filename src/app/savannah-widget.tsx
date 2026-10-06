@@ -499,8 +499,6 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
 
   if (
     pathname.startsWith("/savannah-room/") ||
-    pathname === "/savannah-test" ||
-    pathname === "/savannah-test/" ||
     pathname === "/bridgefund-ted" ||
     pathname === "/bridgefund-ted/" ||
     pathname === "/morning-chris" ||
