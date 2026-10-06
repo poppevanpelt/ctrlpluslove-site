@@ -1,7 +1,7 @@
 "use client";
 
 import Vapi from "@vapi-ai/web";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";\nimport type { FormEvent } from "react";
 import styles from "./room.module.css";
 import { SAVANNAH_ROOM_VAPI } from "./vapi-config";
 
