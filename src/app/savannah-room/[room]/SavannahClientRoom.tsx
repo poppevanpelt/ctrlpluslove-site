@@ -7,8 +7,7 @@ import { SAVANNAH_ROOM_VAPI } from "./vapi-config";
 import { roomBrief } from "./room-briefs";
 import { BONKERS_TOOLS } from "../../bonkers/tools";
 
-const VIDEO_SRC =
-  "https://dnznrvs05pmza.cloudfront.net/kling-o3-pro/935632333061881948/Create_one_continuous_restrained_photoreal_transition_from_this_exact_approved_ctrl_love_office_stil.mp4?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMWJmZDk1NjljNDQ5YTA4OSIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTI2NDQ4OX0.AqSXIvZLlf5QDQ_JRecyUxtKQxSupPRjk1AoSV1aJI0";
+const VIDEO_SRC = "https://ctrl-love-media.floot.app/_cdn/static/savannah-intro.mp4";
 
 type CallState = "idle" | "connecting" | "live" | "error";
 type TranscriptRole = "user" | "assistant";
