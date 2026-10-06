@@ -17,7 +17,7 @@ const securityHeaders = [
       "font-src 'self' data:",
       "connect-src 'self' https://api.openai.com https://api.notion.com https://api.vapi.ai wss://api.vapi.ai https://*.daily.co wss://*.daily.co https://va.vercel-scripts.com https://vitals.vercel-insights.com https://*.vercel-insights.com",
       "frame-src 'self' https://daily.co https://*.daily.co",
-      "media-src 'self' blob: data: https://dnznrvs05pmza.cloudfront.net",
+      "media-src 'self' blob: data: https://dnznrvs05pmza.cloudfront.net https://ctrl-love-media.floot.app",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",
