@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import SavannahClientRoom from "./SavannahClientRoom";
+import { roomBrief } from "./room-briefs";
 
 type PageProps = {
   params: Promise<{ room: string }>;
@@ -25,5 +26,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function SavannahRoomPage({ params }: PageProps) {
   const { room } = await params;
-  return <SavannahClientRoom roomSlug={room} roomName={roomLabel(room)} />;
+  return (
+    <SavannahClientRoom
+      roomSlug={room}
+      roomName={roomLabel(room)}
+      brief={roomBrief(room)}
+    />
+  );
 }
