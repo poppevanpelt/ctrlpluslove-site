@@ -6,7 +6,7 @@ import styles from "./resume.module.css";
 
 export const metadata: Metadata = {
   title: "Resume — Poppe van Pelt",
-  description: "Resume of Poppe van Pelt, Applied AI Decision Systems Engineer.",
+  description: "Resume of Poppe van Pelt, Applied AI Decision Systems Architect.",
 };
 
 const roles = [
@@ -68,7 +68,7 @@ export default function ResumePage() {
         <header className={styles.resumeHeader}>
           <div>
             <h1>Poppe van Pelt</h1>
-            <h2>Applied AI Decision Systems Engineer</h2>
+            <h2>Applied AI Decision Systems Architect</h2>
           </div>
           <div className={styles.resumeMeta}>
             <span>Haarlem, Netherlands</span>

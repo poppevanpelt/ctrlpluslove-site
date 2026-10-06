@@ -34,7 +34,7 @@ const organizationJsonLd = {
   founder: {
     "@type": "Person",
     name: "Poppe van Pelt",
-    jobTitle: "Applied AI Decision Systems Engineer",
+    jobTitle: "Applied AI Decision Systems Architect",
     url: `${SITE_URL}/`,
   },
   slogan: "Instruments for human judgment.",

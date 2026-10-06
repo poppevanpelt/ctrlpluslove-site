@@ -9,7 +9,7 @@ type Props = { searchParams: Promise<{ room?: string }> };
 
 export default async function PrivateRoom({ searchParams }: Props) {
   const { room } = await searchParams;
-  const label = room === "luther" ? "Luther" : room === "bonkers" ? "Bonkers" : "This";
+  const label = room === "bridgefund" ? "BridgeFund" : room === "luther" ? "Luther" : room === "bonkers" ? "Bonkers" : room === "lab" ? "Diagnostic" : "This";
 
   return (
     <main style={{

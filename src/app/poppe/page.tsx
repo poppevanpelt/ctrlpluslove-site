@@ -7,7 +7,7 @@ import styles from "./portfolio-page.module.css";
 import tweaks from "./nav-tweaks.module.css";
 
 export const metadata: Metadata = {
-  title: "Poppe van Pelt — Applied AI Decision Systems Engineer",
+  title: "Poppe van Pelt — Applied AI Decision Systems Architect",
   description:
     "Poppe van Pelt builds applied AI decision systems that make judgment observable, challengeable and better.",
 };
@@ -338,7 +338,7 @@ export default function PoppePortfolioPage() {
       </section>
 
       <footer className={styles.footer}>
-        <div><span>POPPE VAN PELT</span><strong>Applied AI Decision Systems Engineer</strong></div>
+        <div><span>POPPE VAN PELT</span><strong>Applied AI Decision Systems Architect</strong></div>
         <div className={styles.footerLinks}>
           <Link href="/poppe/resume/">Resume</Link>
           <a href="https://www.linkedin.com/in/poppevanpelt/">LinkedIn ↗</a>

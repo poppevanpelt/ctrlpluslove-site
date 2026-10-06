@@ -1,8 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 
-type RoomKey = "luther" | "bonkers";
+type RoomKey = "bridgefund" | "luther" | "bonkers" | "lab";
+
+const campaignHosts = new Set([
+  "laatjenietnaaien.nl",
+  "www.laatjenietnaaien.nl",
+  "laatjenietnaaien.ctrlpluslove.com",
+]);
 
 const ROOM_ACCESS: Record<RoomKey, { cookie: string; hashes: string[] }> = {
+  bridgefund: {
+    cookie: "ctrl_room_bridgefund",
+    hashes: [
+      "a4968c9163131e3afc445652eabd392e5c07003c8cad43763759d603c0848035",
+      "68c82b3f61af76472c96e886e89aeae7a581e114741634c85f37ebe97237a8c9",
+      "f74010a7850101fee5f2508b0d36b3dbe238713437adc111ae5365fa6b9d0341",
+    ],
+  },
   luther: {
     cookie: "ctrl_room_luther",
     hashes: [
@@ -20,12 +34,40 @@ const ROOM_ACCESS: Record<RoomKey, { cookie: string; hashes: string[] }> = {
       "d81c0ffefa03a0d0ec7f521a58f31e2b39feb6aadab40fb298d9013b042d2894",
     ],
   },
+  lab: {
+    cookie: "ctrl_room_lab",
+    hashes: [
+      "df82b570c2a126dcd8ef6b0ecd62834660673cc774db6f4058985c9e48d94f26",
+    ],
+  },
 };
 
 function roomForPath(pathname: string): RoomKey | null {
+  if (pathname.startsWith("/savannah-room/bridgefund")) return "bridgefund";
   if (pathname.startsWith("/savannah-room/luther")) return "luther";
   if (pathname.startsWith("/savannah-room/bonkers")) return "bonkers";
   if (pathname === "/bonkers" || pathname.startsWith("/bonkers/")) return "bonkers";
+
+  if (
+    pathname === "/bridgefund-ted" ||
+    pathname.startsWith("/bridgefund-ted/") ||
+    pathname === "/morning-chris" ||
+    pathname.startsWith("/morning-chris/") ||
+    pathname === "/ted-talks" ||
+    pathname.startsWith("/ted-talks/")
+  ) {
+    return "bridgefund";
+  }
+
+  if (
+    pathname === "/savannah-test" ||
+    pathname.startsWith("/savannah-test/") ||
+    pathname === "/ted-test" ||
+    pathname.startsWith("/ted-test/")
+  ) {
+    return "lab";
+  }
+
   return null;
 }
 
@@ -42,7 +84,26 @@ async function isValidToken(room: RoomKey, token: string) {
   return ROOM_ACCESS[room].hashes.includes(tokenHash);
 }
 
+function campaignRewrite(request: NextRequest) {
+  const host = (request.headers.get("host") ?? "").split(":")[0].toLowerCase();
+
+  if (
+    request.method === "GET" &&
+    campaignHosts.has(host) &&
+    request.nextUrl.pathname === "/"
+  ) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/laatjenietnaaien/";
+    return NextResponse.rewrite(url);
+  }
+
+  return null;
+}
+
 export async function proxy(request: NextRequest) {
+  const campaign = campaignRewrite(request);
+  if (campaign) return campaign;
+
   const room = roomForPath(request.nextUrl.pathname);
   if (!room) return NextResponse.next();
 
@@ -76,9 +137,16 @@ export async function proxy(request: NextRequest) {
 
 export const proxyConfig = {
   matcher: [
+    "/",
+    "/savannah-room/bridgefund/:path*",
     "/savannah-room/luther/:path*",
     "/savannah-room/bonkers/:path*",
     "/bonkers",
     "/bonkers/:path*",
+    "/bridgefund-ted/:path*",
+    "/morning-chris/:path*",
+    "/ted-talks/:path*",
+    "/savannah-test/:path*",
+    "/ted-test/:path*",
   ],
 };
