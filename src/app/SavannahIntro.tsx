@@ -38,6 +38,21 @@ export default function SavannahIntro() {
     return () => media.removeEventListener?.("change", syncMotionPreference);
   }, []);
 
+  useEffect(() => {
+    // A dead media request can otherwise leave the front door as a black void:
+    // no canplay event, no error event, and therefore no fallback.
+    const watchdog = window.setTimeout(() => {
+      const video = videoRef.current;
+      if (!video || video.readyState < 2) {
+        setFallback(true);
+        setReady(true);
+        setSiteLayer(true);
+      }
+    }, 2600);
+
+    return () => window.clearTimeout(watchdog);
+  }, []);
+
   const primeVideo = () => {
     const video = videoRef.current;
     if (!video || ready) return;
@@ -56,7 +71,9 @@ export default function SavannahIntro() {
       }
 
       setReady(true);
-      video.play().catch(() => {
+      void video.play().then(() => {
+        setFallback(false);
+      }).catch(() => {
         // Autoplay can be blocked by browser policy. Keep an intentional
         // entrance visible instead of silently skipping Savannah.
         setFallback(true);
