@@ -226,6 +226,46 @@ export const publicRoutes: PublicRoute[] = [
     priority: 0.45,
   },
   {
+    path: "/decision-accelerator/",
+    title: "Decision Accelerator — ctrl+love",
+    description:
+      "A ctrl+love system for moving important decisions forward without sacrificing judgment.",
+    changeFrequency: "monthly",
+    priority: 0.82,
+  },
+  {
+    path: "/decision-memory/",
+    title: "Decision Memory — ctrl+love",
+    description:
+      "Record why a decision was made, then reopen it when reality answers back.",
+    changeFrequency: "monthly",
+    priority: 0.78,
+  },
+  {
+    path: "/purge/",
+    title: "PURGE — ctrl+love",
+    description:
+      "A removal instrument for finding what is genuinely load-bearing.",
+    changeFrequency: "monthly",
+    priority: 0.76,
+  },
+  {
+    path: "/fizz/",
+    title: "CTRL+FIZZ — ctrl+love",
+    description:
+      "Carbonated judgment for meetings that have gone flat.",
+    changeFrequency: "monthly",
+    priority: 0.72,
+  },
+  {
+    path: "/chase/",
+    title: "CTRL+CHASE — ctrl+love",
+    description:
+      "Keep following a signal until it produces evidence, a move, or earns the right to die.",
+    changeFrequency: "monthly",
+    priority: 0.74,
+  },
+  {
     path: "/decision-collider/",
     title: "Decision Collider — ctrl+love",
     description:
