@@ -94,10 +94,7 @@ export default function SavannahIntro() {
         onEnded={finishHandoff}
         onError={() => { setFallback(true); setReady(true); setSiteLayer(true); window.setTimeout(() => finishHandoff(), 3200); }}
       >
-        <source
-          src="https://dnznrvs05pmza.cloudfront.net/kling-o3-pro/935632333061881948/Create_one_continuous_restrained_photoreal_transition_from_this_exact_approved_ctrl_love_office_stil.mp4?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMWJmZDk1NjljNDQ5YTA4OSIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTI2NDQ4OX0.AqSXIvZLlf5QDQ_JRecyUxtKQxSupPRjk1AoSV1aJI0"
-          type="video/mp4"
-        />
+        <source src="https://ctrl-love-media.floot.app/_cdn/static/savannah-intro.mp4" type="video/mp4" />
       </video>
 
       <div className={styles.savannahIntroShade} />
