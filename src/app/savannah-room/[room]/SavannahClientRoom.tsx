@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./room.module.css";
 import { SAVANNAH_ROOM_VAPI } from "./vapi-config";
 import { roomBrief } from "./room-briefs";
+import { BONKERS_TOOLS } from "../../bonkers/tools";
 
 const VIDEO_SRC =
   "https://dnznrvs05pmza.cloudfront.net/kling-o3-pro/935632333061881948/Create_one_continuous_restrained_photoreal_transition_from_this_exact_approved_ctrl_love_office_stil.mp4?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMWJmZDk1NjljNDQ5YTA4OSIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTI2NDQ4OX0.AqSXIvZLlf5QDQ_JRecyUxtKQxSupPRjk1AoSV1aJI0";
@@ -20,12 +21,15 @@ type Props = {
 };
 
 export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
+  const isBonkers = roomSlug.toLowerCase() === "bonkers";
   const vapiRef = useRef<Vapi | null>(null);
+  const queuedTextRef = useRef<string | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [entered, setEntered] = useState(false);
   const [state, setState] = useState<CallState>("idle");
-  const [message, setMessage] = useState("Door closed. Savannah is here when you need her.");
+  const [message, setMessage] = useState(isBonkers ? "I know the ten tools. Bring me the live job." : "Door closed. Savannah is here when you need her.");
   const [transcript, setTranscript] = useState<TranscriptLine[]>([]);
+  const [draft, setDraft] = useState("");
   const transcriptIdRef = useRef(0);
 
   useEffect(() => {
@@ -36,6 +40,11 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
       const brief = roomBrief(roomSlug);
       if (brief) {
         vapi.send({ type: "add-message", message: { role: "system", content: brief } });
+      }
+      const queued = queuedTextRef.current;
+      if (queued) {
+        vapi.send({ type: "add-message", message: { role: "user", content: queued } });
+        queuedTextRef.current = null;
       }
       setState("live");
       setMessage("I'm listening.");
@@ -93,7 +102,41 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
 
   const enterRoom = () => {
     setEntered(true);
-    setMessage("Door closed. Savannah is here when you need her.");
+    setMessage(isBonkers ? "I know the ten tools. Bring me the live job." : "Door closed. Savannah is here when you need her.");
+  };
+
+  const appendVisitorLine = (text: string) => {
+    transcriptIdRef.current += 1;
+    setTranscript((previous) => [...previous.slice(-39), {
+      id: transcriptIdRef.current,
+      role: "user" as const,
+      text,
+    }]);
+  };
+
+  const sendTypedMessage = () => {
+    const text = draft.replace(/\s+/g, " ").trim();
+    const vapi = vapiRef.current;
+    if (!text || !vapi || state === "connecting") return;
+
+    appendVisitorLine(text);
+    setDraft("");
+
+    if (state === "live") {
+      vapi.send({ type: "add-message", message: { role: "user", content: text } });
+      return;
+    }
+
+    queuedTextRef.current = text;
+    setState("connecting");
+    setMessage("Opening the room line.");
+
+    void vapi.start(SAVANNAH_ROOM_VAPI.assistantId).catch((error: unknown) => {
+      console.error("Savannah Room typed start failed", error);
+      queuedTextRef.current = null;
+      setState("error");
+      setMessage("Vapi start failed.");
+    });
   };
 
   const toggleCall = () => {
@@ -140,10 +183,12 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
 
       <section className={`${styles.entry} ${entered ? styles.entryGone : ""}`}>
         <div className={styles.entryCopy}>
-          <p className={styles.kicker}>One client. One room. One Savannah.</p>
+          <p className={styles.kicker}>{isBonkers ? "Bonkers × ctrl+love / secluded working room" : "One client. One room. One Savannah."}</p>
           <h1>{roomName}</h1>
           <p className={styles.intro}>
-            The front door is outside. In here, Savannah works with this room only.
+            {isBonkers
+              ? "Producer instinct, ten working instruments and Savannah in one room. Bring a live job."
+              : "The front door is outside. In here, Savannah works with this room only."}
           </p>
           <button type="button" className={styles.enterButton} onClick={enterRoom}>
             Enter room ↘
@@ -155,7 +200,7 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
         <div className={styles.roomHeader}>
           <div>
             <p className={styles.kicker}>Savannah / secluded client room</p>
-            <h2>The door is closed.</h2>
+            <h2>{isBonkers ? "The producer gets here first." : "The door is closed."}</h2>
           </div>
           <div className={styles.status}>
             <span className={state === "live" ? styles.liveDot : styles.dot} />
@@ -197,6 +242,33 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
             </dl>
           </article>
 
+          {isBonkers ? (
+            <article className={styles.bonkersDesk}>
+              <div className={styles.bonkersIntro}>
+                <span>BONKERS / FIELD KIT</span>
+                <h3>Ten tools. One live job.</h3>
+                <p>
+                  Bonkers already works like a bespoke hive. The point here is not to become broader.
+                  It is to get producer intelligence into the room early enough to change the work.
+                </p>
+                <div className={styles.bonkersPremise}>
+                  <b>FIRST USE</b>
+                  <p>Take one live job. Run the UPSTREAM TEST. Then choose the one instrument that changes what happens next.</p>
+                </div>
+                <a className={styles.fullKitLink} href="/bonkers">Open full tool room →</a>
+              </div>
+              <div className={styles.toolGrid}>
+                {BONKERS_TOOLS.map((tool) => (
+                  <a key={tool.slug} className={styles.toolLink} href={"/bonkers/" + tool.slug}>
+                    <span>{tool.index}</span>
+                    <strong>{tool.title}</strong>
+                    <small>{tool.kicker}</small>
+                  </a>
+                ))}
+              </div>
+            </article>
+          ) : null}
+
           <article className={styles.transcriptPanel}>
             <span>ROOM TRANSCRIPT / LIVE CHECK</span>
             <div className={styles.transcriptBody} aria-live="polite">
@@ -204,14 +276,31 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
                 <p key={line.id}><strong>{line.role === "assistant" ? "SAVANNAH" : "VISITOR"}</strong>{line.text}</p>
               )) : <p className={styles.transcriptEmpty}>No words captured yet.</p>}
             </div>
+            <form
+              className={styles.keyboard}
+              onSubmit={(event) => {
+                event.preventDefault();
+                sendTypedMessage();
+              }}
+            >
+              <input
+                value={draft}
+                onChange={(event) => setDraft(event.target.value)}
+                placeholder={isBonkers ? "Type the live problem to Savannah…" : "Type to Savannah…"}
+                aria-label="Type to Savannah"
+              />
+              <button type="submit" disabled={!draft.trim() || state === "connecting"}>
+                {state === "live" ? "Send" : "Send + open line"}
+              </button>
+            </form>
           </article>
 
           <article className={styles.note}>
             <span>IMPORTANT / SECURITY</span>
             <p>
-              This prototype enforces room behaviour inside Savannah&apos;s runtime instructions.
-              It is intentionally unlisted and noindexed. Hard authentication and storage-level
-              client partitioning are the next security layer — this page does not pretend otherwise.
+              Personal invite access gates this room before its content loads, and the page is unlisted
+              and noindexed. Savannah also receives client-specific room instructions. This remains a
+              working prototype; enterprise storage-level partitioning is not implied.
             </p>
           </article>
         </div>
