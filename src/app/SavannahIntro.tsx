@@ -18,10 +18,24 @@ export default function SavannahIntro() {
   const lockStarted = useRef(false);
 
   useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!reduced) return;
-    const frame = window.requestAnimationFrame(() => setVisible(false));
-    return () => window.cancelAnimationFrame(frame);
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    const syncMotionPreference = () => {
+      if (!media.matches) return;
+      const video = videoRef.current;
+      if (video) video.pause();
+
+      // Reduced Motion should never make the entrance disappear.
+      // Hold on a quiet Savannah still instead; visitors can explicitly play
+      // the opening film if they want it.
+      setFallback(true);
+      setReady(true);
+      setSiteLayer(true);
+    };
+
+    syncMotionPreference();
+    media.addEventListener?.("change", syncMotionPreference);
+    return () => media.removeEventListener?.("change", syncMotionPreference);
   }, []);
 
   const primeVideo = () => {
@@ -32,12 +46,44 @@ export default function SavannahIntro() {
     video.muted = true;
 
     const start = () => {
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduced) {
+        video.pause();
+        setFallback(true);
+        setReady(true);
+        setSiteLayer(true);
+        return;
+      }
+
       setReady(true);
-      video.play().catch(() => { setFallback(true); setSiteLayer(true); window.setTimeout(() => finishHandoff(), 3200); });
+      video.play().catch(() => {
+        // Autoplay can be blocked by browser policy. Keep an intentional
+        // entrance visible instead of silently skipping Savannah.
+        setFallback(true);
+        setSiteLayer(true);
+      });
     };
 
     if (video.readyState >= 2) start();
     else video.addEventListener("canplay", start, { once: true });
+  };
+
+  const playOpening = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    setFallback(false);
+    setSiteLayer(false);
+    setReady(true);
+    handoffStarted.current = false;
+    lockStarted.current = false;
+
+    try { video.currentTime = START_AT; } catch {}
+    video.muted = true;
+    void video.play().catch(() => {
+      setFallback(true);
+      setSiteLayer(true);
+    });
   };
 
   const clickLock = () => {
@@ -92,13 +138,18 @@ export default function SavannahIntro() {
         onLoadedMetadata={primeVideo}
         onTimeUpdate={trackHandoff}
         onEnded={finishHandoff}
-        onError={() => { setFallback(true); setReady(true); setSiteLayer(true); window.setTimeout(() => finishHandoff(), 3200); }}
+        onError={() => { setFallback(true); setReady(true); setSiteLayer(true); }}
       >
         <source src="https://ctrl-love-media.floot.app/_cdn/static/savannah-intro.mp4" type="video/mp4" />
       </video>
 
       <div className={styles.savannahIntroShade} />
-      <button type="button" className={styles.savannahIntroEnter} onClick={finishHandoff}>Come in ↘</button>
+      <div className={styles.savannahIntroControls}>
+        {fallback ? (
+          <button type="button" className={styles.savannahIntroPlay} onClick={playOpening}>Play opening ▶</button>
+        ) : null}
+        <button type="button" className={styles.savannahIntroEnter} onClick={finishHandoff}>Come in ↘</button>
+      </div>
 
       <div
         className={[
