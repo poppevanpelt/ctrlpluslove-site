@@ -8,6 +8,7 @@ import { SAVANNAH_BRIEFING } from "./savannah-briefing";
 const PUBLIC_KEY = "f79f986e-3b43-4dde-b712-5527ec872a1c";
 const ASSISTANT_ID = "417b8810-5b53-4330-9bc4-6437aba1e401";
 const SAVANNAH_AVATAR = "/savannah-avatar.jpg?v=20261002-4";
+const SAVANNAH_IDLE_VIDEO = "https://d2jqrm6oza8nb6.cloudfront.net/datasets/e0d635b5-87d7-444f-b27f-3b239f8b9490.mp4?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiNDRiZTc5YWM4YzM0MTk2YyIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTQ4NDA3Nn0.ZcKd3b2hPrefpgkepGNlMXgl0axsWaNlA-UJcW3QoU4";
 // Vercel redeploy trigger: Savannah voice lifecycle fix
 
 type State = "idle" | "requesting" | "connecting" | "live" | "error";
@@ -629,6 +630,32 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
                 ? "savannahSpeak 260ms ease-in-out infinite alternate"
                 : "savannahIdle 5.6s ease-in-out infinite alternate",
               willChange: "transform",
+            }}
+          />
+          <video
+            className="savannah-live-video"
+            src={SAVANNAH_IDLE_VIDEO}
+            poster={SAVANNAH_AVATAR}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+            onError={(event) => {
+              event.currentTarget.style.display = "none";
+            }}
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              minHeight: 112,
+              objectFit: "cover",
+              display: "block",
+              opacity: assistantSpeaking ? 0 : 1,
+              transition: "opacity 180ms ease",
+              pointerEvents: "none",
             }}
           />
 
