@@ -6,6 +6,7 @@ import styles from "./room.module.css";
 import { SAVANNAH_ROOM_VAPI } from "./vapi-config";
 import { roomBrief } from "./room-briefs";
 import { BONKERS_TOOLS } from "../../bonkers/tools";
+import { SAVANNAH_BRIEFING } from "../../savannah-briefing";
 
 const VIDEO_SRC = "https://ctrl-love-media.floot.app/_cdn/static/savannah-intro.mp4";
 
@@ -37,9 +38,12 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
 
     vapi.on("call-start", () => {
       const brief = roomBrief(roomSlug);
-      if (brief) {
-        vapi.send({ type: "add-message", message: { role: "system", content: brief } });
-      }
+      const roomSystem = [
+        SAVANNAH_BRIEFING,
+        "ROOM MODE: you are inside a secluded client working room. The room-specific brief below narrows your context; it does not replace your Savannah personality, ctrl+love knowledge or action/privacy boundaries.",
+        brief,
+      ].filter(Boolean).join("\n\n");
+      vapi.send({ type: "add-message", message: { role: "system", content: roomSystem } });
       const queued = queuedTextRef.current;
       if (queued) {
         vapi.send({ type: "add-message", message: { role: "user", content: queued } });
@@ -130,7 +134,7 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
     setState("connecting");
     setMessage("Opening the room line.");
 
-    void vapi.start(SAVANNAH_ROOM_VAPI.assistantId).catch((error: unknown) => {
+    void vapi.start(SAVANNAH_ROOM_VAPI.assistantId, { firstMessage: "" } as any).catch((error: unknown) => {
       console.error("Savannah Room typed start failed", error);
       queuedTextRef.current = null;
       setState("error");
