@@ -77,3 +77,53 @@ export function speakSavannahLocally(
     return false;
   }
 }
+
+
+export async function speakSavannahNeurally(
+  rawText: string,
+  options: { interrupt?: boolean; onStart?: () => void; onEnd?: () => void } = {},
+) {
+  if (typeof window === "undefined") return false;
+
+  const text = rawText.replace(/\s+/g, " ").trim();
+  if (!text) return false;
+
+  try {
+    if (options.interrupt !== false) {
+      stopSavannahLocalVoice();
+      const current = (window as typeof window & { __savannahAudio?: HTMLAudioElement }).__savannahAudio;
+      if (current) {
+        current.pause();
+        current.src = "";
+      }
+    }
+
+    const response = await fetch("/api/savannah-voice", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    });
+
+    if (!response.ok) throw new Error("neural voice unavailable");
+
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const audio = new Audio(url);
+    (window as typeof window & { __savannahAudio?: HTMLAudioElement }).__savannahAudio = audio;
+
+    audio.onplay = () => options.onStart?.();
+    const finish = () => {
+      options.onEnd?.();
+      URL.revokeObjectURL(url);
+      const w = window as typeof window & { __savannahAudio?: HTMLAudioElement };
+      if (w.__savannahAudio === audio) delete w.__savannahAudio;
+    };
+    audio.onended = finish;
+    audio.onerror = finish;
+
+    await audio.play();
+    return true;
+  } catch {
+    return speakSavannahLocally(text, options);
+  }
+}
