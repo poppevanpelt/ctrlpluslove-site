@@ -13,7 +13,7 @@ const securityHeaders = [
         "https://va.vercel-scripts.com https://vitals.vercel-insights.com https://unpkg.com https://cdn.jsdelivr.net https://esm.sh https://*.daily.co",
       ].filter(Boolean).join(" "),
       "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob: https://i.ytimg.com https://images.unsplash.com https://upload.wikimedia.org https://assets.science.nasa.gov",
+      "img-src 'self' data: blob: https://i.ytimg.com https://images.unsplash.com https://upload.wikimedia.org https://assets.science.nasa.gov https://ctrl-love-media.floot.app",
       "font-src 'self' data:",
       "connect-src 'self' https://api.openai.com https://api.notion.com https://api.vapi.ai wss://api.vapi.ai https://*.daily.co wss://*.daily.co https://va.vercel-scripts.com https://vitals.vercel-insights.com https://*.vercel-insights.com",
       "frame-src 'self' https://daily.co https://*.daily.co",
@@ -83,6 +83,12 @@ const nextConfig: NextConfig = {
         headers: [
           { key: "Cache-Control", value: "no-store, max-age=0, must-revalidate" },
           { key: "Service-Worker-Allowed", value: "/" },
+        ],
+      },
+      {
+        source: "/downloads/ctrl_love_constitution_governance_export.zip",
+        headers: [
+          { key: "Content-Disposition", value: "attachment; filename=\"ctrl_love_constitution_governance_export.zip\"" },
         ],
       },
     ];
