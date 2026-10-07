@@ -3,7 +3,8 @@
 import Vapi from "@vapi-ai/web";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { SAVANNAH_BRIEFING } from "./savannah-briefing";\nimport { speakSavannahLocally, stopSavannahLocalVoice } from "./savannah-local-voice";
+import { SAVANNAH_BRIEFING } from "./savannah-briefing";
+import { speakSavannahLocally, stopSavannahLocalVoice } from "./savannah-local-voice";
 import {
   SAVANNAH_HIDDEN_TAB_GRACE_MS,
   SAVANNAH_TEXT_BURST_TIMEOUT_MS,
