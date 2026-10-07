@@ -3,7 +3,7 @@
 import Vapi from "@vapi-ai/web";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { SAVANNAH_BRIEFING } from "./savannah-briefing";
+import { SAVANNAH_BRIEFING } from "./savannah-briefing";\nimport { speakSavannahLocally, stopSavannahLocalVoice } from "./savannah-local-voice";
 import {
   SAVANNAH_HIDDEN_TAB_GRACE_MS,
   SAVANNAH_TEXT_BURST_TIMEOUT_MS,
@@ -330,7 +330,8 @@ export function SavannahWidget() {
       setAssistantSpeaking(false);
       console.error("Savannah Vapi error", error);
       setState("error");
-      setMessage("The audio line did not open. Try me again.");
+      const localSpoke = speakSavannahLocally("I'm still here. The live audio line dropped. Type to me and I'll answer out loud.");
+      setMessage(localSpoke ? "Live line dropped. Type to me — I'll answer out loud." : "The audio line did not open. Try me again.");
     });
 
     textVapi.on("call-start", () => {
@@ -382,6 +383,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
         incoming.role === "assistant"
       ) {
         appendConversation("assistant", incoming.transcript, true);
+        speakSavannahLocally(incoming.transcript);
         setTextPending(false);
         clearTextBurstTimer();
         textBurstTimerRef.current = window.setTimeout(() => {
@@ -429,6 +431,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       clearVoiceLimitTimer();
       clearMicWakeTimers();
       stopSteel();
+      stopSavannahLocalVoice();
       try { steelAudioRef.current?.close(); } catch {}
       steelAudioRef.current = null;
       try { vapi.stop(); } catch {}
@@ -578,6 +581,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
         stopSteel();
         console.error("Savannah call start failed", error);
         setState("error");
+        speakSavannahLocally("I'm still here. Type to me and I'll answer out loud.");
         const detail = describeError(error);
         const lower = detail.toLowerCase();
         setMessage(
