@@ -45,7 +45,7 @@ export function stopSavannahLocalVoice() {
 
 export function speakSavannahLocally(
   rawText: string,
-  options: { interrupt?: boolean } = {},
+  options: { interrupt?: boolean; onStart?: () => void; onEnd?: () => void } = {},
 ) {
   if (!canSpeakSavannahLocally()) return false;
 
@@ -64,6 +64,9 @@ export function speakSavannahLocally(
     utterance.rate = 0.92;
     utterance.pitch = 0.96;
     utterance.volume = 1;
+    utterance.onstart = () => options.onStart?.();
+    utterance.onend = () => options.onEnd?.();
+    utterance.onerror = () => options.onEnd?.();
 
     synth.speak(utterance);
     return true;
