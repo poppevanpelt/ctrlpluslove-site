@@ -467,26 +467,9 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
   }, [chatLines, mode, textPending]);
 
   const startText = async () => {
-    const textVapi = textVapiRef.current;
-    if (!textVapi || textState === "connecting" || textState === "live") return;
-
-    setTextState("connecting");
+    setTextState("live");
     setTextPending(false);
-    setMessage("Waking Savannah.");
-
-    try {
-      await textVapi.start(
-        SAVANNAH_VAPI.assistantId,
-        {
-          firstMessage: "",
-          voice: { provider: "vapi", voiceId: "Savannah", version: 2 },
-        } as any,
-      );
-    } catch (error) {
-      console.warn("Savannah text start fallback", describeError(error));
-      setTextState("error");
-      setMessage("I lost the connection for a second. Try me again.");
-    }
+    setMessage("Type to me. I’ll answer out loud.");
   };
 
   const chooseMode = (nextMode: Mode) => {
@@ -514,32 +497,45 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
     );
   };
 
-  const sendText = () => {
-    const textVapi = textVapiRef.current;
+  const sendText = async () => {
     const text = draft.trim();
-    if (!textVapi || !text || textPending) return;
+    if (!text || textPending) return;
 
     appendConversation("user", text, true);
     setDraft("");
     setTextPending(true);
-
-    if (textState !== "live") {
-      queuedTextRef.current = text;
-      setMessage("Waking Savannah.");
-      void startText();
-      return;
-    }
+    setTextState("live");
+    setMessage("Thinking.");
 
     try {
-      textVapi.send({
-        type: "add-message",
-        message: { role: "user", content: text },
-        triggerResponseEnabled: true,
-      } as any);
+      const response = await fetch("/api/savannah", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: [...conversationRef.current.slice(-17), { role: "user", text }],
+          context: `${rememberedContext()}${bridgeFundRoomContext()}`,
+        }),
+      });
+
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok || typeof payload?.text !== "string") {
+        throw new Error(payload?.error || "Savannah brain unavailable");
+      }
+
+      const reply = payload.text.trim();
+      appendConversation("assistant", reply, true);
+      setMessage("Here.");
+      speakSavannahLocally(reply, {
+        onStart: () => setAssistantSpeaking(true),
+        onEnd: () => setAssistantSpeaking(false),
+      });
+      rememberCurrentConversation();
     } catch (error) {
-      console.warn("Savannah text send fallback", describeError(error));
+      console.warn("Savannah direct brain fallback", describeError(error));
+      setTextState("error");
+      setMessage("I lost my train of thought. Try that once more.");
+    } finally {
       setTextPending(false);
-      setMessage("That did not get through. Try it once more.");
     }
   };
 
@@ -941,33 +937,12 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
             ) : null}
           </div>
 
-          {textState === "error" || textState === "idle" ? (
-            <button
-              type="button"
-              onClick={() => void startText()}
-              style={{
-                width: "100%",
-                minHeight: 38,
-                border: 0,
-                borderBottom: "1px solid rgba(21,21,21,.18)",
-                background: "#f5f1e7",
-                color: "#151515",
-                font: "inherit",
-                fontSize: 9,
-                fontWeight: 800,
-                letterSpacing: ".1em",
-                textTransform: "uppercase",
-                cursor: "pointer",
-              }}
-            >
-              {textState === "error" ? "Reconnect Savannah" : "Wake Savannah"}
-            </button>
-          ) : null}
+
 
           <form
             onSubmit={(event) => {
               event.preventDefault();
-              sendText();
+              void sendText();
             }}
             style={{ display: "grid", gridTemplateColumns: "1fr auto" }}
           >
@@ -976,7 +951,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
               value={draft}
               onChange={(event) => setDraft(event.target.value)}
               aria-label="Type to Savannah"
-              placeholder={textState === "connecting" ? "Type while Savannah wakes up…" : "Type to Savannah…"}
+              placeholder="Type to Savannah…"
               autoComplete="off"
               style={{
                 minWidth: 0,
