@@ -1,25 +1,25 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import styles from "./home-2026.module.css";
 import { clearSavannahPageLock } from "./savannah-runtime";
 
 const START_AT = 1.35;
-const DEPTH_25_AT = 6.15;
-const DEPTH_225_AT = 6.95;
-const DEPTH_2D_AT = 7.55;
-const HANDOFF_AT = 8.15;
-const HANDOFF_REMOVE_AFTER = 1150;
+const REGISTER_AT = 6.2;
+const DAYLIGHT_AT = 6.86;
+const LOCK_AT = 7.56;
+const HANDOFF_AT = 8.14;
 
-type DepthStage = "film" | "twoFive" | "twoQuarter" | "twoD";
+type SceneStage = "film" | "register" | "daylight" | "locked";
 
 export default function SavannahIntro() {
   const [visible, setVisible] = useState(true);
   const [ready, setReady] = useState(false);
-  const [siteLayer, setSiteLayer] = useState(false);
   const [handoff, setHandoff] = useState(false);
   const [fallback, setFallback] = useState(false);
-  const [depthStage, setDepthStage] = useState<DepthStage>("film");
+  const [stage, setStage] = useState<SceneStage>("film");
+  const [headlineStyle, setHeadlineStyle] = useState<CSSProperties>();
   const videoRef = useRef<HTMLVideoElement>(null);
   const handoffStarted = useRef(false);
   const lockStarted = useRef(false);
@@ -39,15 +39,32 @@ export default function SavannahIntro() {
     clearSavannahPageLock((...classes) => document.documentElement.classList.remove(...classes));
   };
 
+  const measureHeadline = () => {
+    const target = document.querySelector<HTMLElement>('[data-savannah-handoff-headline="true"]');
+    if (!target) return;
+
+    const rect = target.getBoundingClientRect();
+    const computed = window.getComputedStyle(target);
+
+    setHeadlineStyle({
+      left: rect.left,
+      top: rect.top,
+      width: rect.width,
+      fontFamily: computed.fontFamily,
+      fontSize: computed.fontSize,
+      fontWeight: computed.fontWeight,
+      lineHeight: computed.lineHeight,
+      letterSpacing: computed.letterSpacing,
+    });
+  };
+
   const armVaultAudio = () => {
     if (typeof window === "undefined") return;
     const Context = window.AudioContext;
     if (!Context) return;
 
     if (!audioRef.current) audioRef.current = new Context();
-    if (audioRef.current.state === "suspended") {
-      void audioRef.current.resume();
-    }
+    if (audioRef.current.state === "suspended") void audioRef.current.resume();
   };
 
   const playVaultClunk = () => {
@@ -85,6 +102,13 @@ export default function SavannahIntro() {
   };
 
   useEffect(() => {
+    measureHeadline();
+    const onResize = () => measureHeadline();
+    window.addEventListener("resize", onResize, { passive: true });
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  useEffect(() => {
     const arm = () => armVaultAudio();
     window.addEventListener("pointerdown", arm, { once: true, passive: true });
     window.addEventListener("keydown", arm, { once: true });
@@ -96,20 +120,14 @@ export default function SavannahIntro() {
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-
     const syncMotionPreference = () => {
       if (!media.matches) return;
       const video = videoRef.current;
       if (video) video.pause();
-
-      // Reduced Motion should never make the entrance disappear.
-      // Hold on a quiet Savannah still instead; visitors can explicitly play
-      // the opening film if they want it.
       releasePageLock();
       setFallback(true);
       setReady(true);
-      setSiteLayer(true);
-      setDepthStage("twoD");
+      setStage("film");
     };
 
     syncMotionPreference();
@@ -118,19 +136,15 @@ export default function SavannahIntro() {
   }, []);
 
   useEffect(() => {
-    // A dead media request can otherwise leave the front door as a black void:
-    // no canplay event, no error event, and therefore no fallback.
     const watchdog = window.setTimeout(() => {
       const video = videoRef.current;
       if (!video || video.readyState < 2) {
         releasePageLock();
         setFallback(true);
         setReady(true);
-        setSiteLayer(true);
-        setDepthStage("twoD");
+        setStage("film");
       }
     }, 2600);
-
     return () => window.clearTimeout(watchdog);
   }, []);
 
@@ -150,50 +164,20 @@ export default function SavannahIntro() {
         releasePageLock();
         setFallback(true);
         setReady(true);
-        setSiteLayer(true);
-        setDepthStage("twoD");
+        setStage("film");
         return;
       }
 
       setReady(true);
-      void video.play().then(() => {
-        setFallback(false);
-      }).catch(() => {
-        // Autoplay can be blocked by browser policy. Keep an intentional
-        // entrance visible instead of silently skipping Savannah.
+      void video.play().then(() => setFallback(false)).catch(() => {
         releasePageLock();
         setFallback(true);
-        setSiteLayer(true);
-        setDepthStage("twoD");
+        setStage("film");
       });
     };
 
     if (video.readyState >= 2) start();
     else video.addEventListener("canplay", start, { once: true });
-  };
-
-  const playOpening = () => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    releasePageLock();
-    setFallback(false);
-    setSiteLayer(false);
-    setDepthStage("film");
-    setHandoff(false);
-    setReady(true);
-    handoffStarted.current = false;
-    lockStarted.current = false;
-    armVaultAudio();
-
-    try { video.currentTime = START_AT; } catch {}
-    video.muted = true;
-    void video.play().catch(() => {
-      releasePageLock();
-      setFallback(true);
-      setSiteLayer(true);
-      setDepthStage("twoD");
-    });
   };
 
   const clickLock = () => {
@@ -207,44 +191,59 @@ export default function SavannahIntro() {
       playVaultClunk();
       document.documentElement.classList.remove("savannah-page-locking");
       document.documentElement.classList.add("savannah-page-locked");
-
-      // Keep the vault-seat effect transient. Leaving a transform on the entire
-      // long homepage can turn it into one giant composited layer and clip
-      // scrolling/rendering partway down in Safari/Chromium.
-      lockReleaseTimerRef.current = window.setTimeout(() => {
-        releasePageLock();
-      }, 460);
+      lockReleaseTimerRef.current = window.setTimeout(() => releasePageLock(), 460);
     }, 560);
   };
 
-  const finishHandoff = () => {
+  const completeHandoff = (animateIntoPlace = false) => {
     if (handoffStarted.current) return;
     handoffStarted.current = true;
-    setSiteLayer(true);
-    setDepthStage("twoD");
+    setStage("locked");
     clickLock();
-    setHandoff(true);
-    window.setTimeout(() => setVisible(false), HANDOFF_REMOVE_AFTER);
+
+    const fadeDelay = animateIntoPlace ? 460 : 70;
+    window.setTimeout(() => setHandoff(true), fadeDelay);
+    window.setTimeout(() => setVisible(false), fadeDelay + 240);
+  };
+
+  const playOpening = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    releasePageLock();
+    setFallback(false);
+    setStage("film");
+    setHandoff(false);
+    setReady(true);
+    handoffStarted.current = false;
+    lockStarted.current = false;
+    armVaultAudio();
+    measureHeadline();
+
+    try { video.currentTime = START_AT; } catch {}
+    video.muted = true;
+    void video.play().catch(() => {
+      releasePageLock();
+      setFallback(true);
+      setStage("film");
+    });
   };
 
   const trackHandoff = () => {
     const video = videoRef.current;
     if (!video) return;
-
     const t = video.currentTime;
 
-    if (t >= DEPTH_25_AT) {
-      setSiteLayer(true);
-      setDepthStage((stage) => stage === "film" ? "twoFive" : stage);
-    }
-    if (t >= DEPTH_225_AT) {
-      setDepthStage((stage) => stage === "twoFive" || stage === "film" ? "twoQuarter" : stage);
-    }
-    if (t >= DEPTH_2D_AT) {
-      setDepthStage("twoD");
+    if (t >= LOCK_AT) {
+      setStage("locked");
       clickLock();
+    } else if (t >= DAYLIGHT_AT) {
+      setStage("daylight");
+    } else if (t >= REGISTER_AT) {
+      setStage("register");
     }
-    if (t >= HANDOFF_AT) finishHandoff();
+
+    if (t >= HANDOFF_AT) completeHandoff(false);
   };
 
   if (!visible) return null;
@@ -255,39 +254,45 @@ export default function SavannahIntro() {
         styles.savannahIntro,
         ready ? styles.savannahIntroReady : "",
         fallback ? styles.savannahIntroFallback : "",
-        siteLayer ? styles.savannahSiteLayerVisibleState : "",
-        depthStage === "twoFive" ? styles.savannahDepth25 : "",
-        depthStage === "twoQuarter" ? styles.savannahDepth225 : "",
-        depthStage === "twoD" ? styles.savannahDepth2d : "",
+        stage === "register" ? styles.savannahSceneRegister : "",
+        stage === "daylight" ? styles.savannahSceneDaylight : "",
+        stage === "locked" ? styles.savannahSceneLocked : "",
         handoff ? styles.savannahHandoff : "",
       ].join(" ")}
       aria-label="Enter ctrl+love"
-      data-deploy="savannah-dimensional-handoff"
-      data-depth={depthStage}
+      data-deploy="savannah-scene-match-handoff"
+      data-stage={stage}
     >
-      <div className={styles.savannahIntroFallbackImage} aria-hidden="true" />
-      <video
-        ref={videoRef}
-        className={styles.savannahIntroVideo}
-        autoPlay
-        muted
-        playsInline
-        preload="auto"
-        onLoadedMetadata={primeVideo}
-        onTimeUpdate={trackHandoff}
-        onEnded={finishHandoff}
-        onError={() => {
-          releasePageLock();
-          setFallback(true);
-          setReady(true);
-          setSiteLayer(true);
-          setDepthStage("twoD");
-        }}
-      >
-        <source src="https://ctrl-love-media.floot.app/_cdn/static/savannah-intro.mp4" type="video/mp4" />
-      </video>
+      <div className={styles.savannahFilm} aria-hidden="true">
+        <div className={styles.savannahIntroFallbackImage} />
+        <video
+          ref={videoRef}
+          className={styles.savannahIntroVideo}
+          autoPlay
+          muted
+          playsInline
+          preload="auto"
+          onLoadedMetadata={primeVideo}
+          onTimeUpdate={trackHandoff}
+          onEnded={() => completeHandoff(false)}
+          onError={() => {
+            releasePageLock();
+            setFallback(true);
+            setReady(true);
+            setStage("film");
+          }}
+        >
+          <source src="https://ctrl-love-media.floot.app/_cdn/static/savannah-intro.mp4" type="video/mp4" />
+        </video>
+        <div className={styles.savannahIntroShade} />
+      </div>
 
-      <div className={styles.savannahIntroShade} />
+      {headlineStyle ? (
+        <h1 className={styles.savannahProjectionHeadline} style={headlineStyle} aria-hidden="true">
+          We build instruments for human judgment.
+        </h1>
+      ) : null}
+
       <div className={styles.savannahIntroControls}>
         {fallback ? (
           <button type="button" className={styles.savannahIntroPlay} onClick={playOpening}>Play opening ▶</button>
@@ -296,27 +301,10 @@ export default function SavannahIntro() {
           type="button"
           className={styles.savannahIntroEnter}
           onPointerDown={armVaultAudio}
-          onClick={finishHandoff}
+          onClick={() => completeHandoff(true)}
         >
           Come in ↘
         </button>
-      </div>
-
-      <div
-        className={[
-          styles.savannahSiteLayer,
-          siteLayer ? styles.savannahSiteLayerVisible : "",
-        ].join(" ")}
-        aria-hidden="true"
-      >
-        <div className={styles.savannahSiteNav}>
-          <strong>ctrl+love</strong>
-          <span>Work&nbsp;&nbsp; Difference&nbsp;&nbsp; Cases&nbsp;&nbsp; Instruments&nbsp;&nbsp; About</span>
-        </div>
-        <div className={styles.savannahSiteNote}>
-          <small>Applied AI for human judgment</small>
-          <strong>Observe.<br />Analyse.<br />Accelerate.</strong>
-        </div>
       </div>
     </section>
   );
