@@ -7,7 +7,7 @@
 - Confirm the intended release branch and latest commit.
 - Confirm Git status is clean, or every dirty file is intentionally reviewed.
 - Review changed files and make sure no unrelated experiments are shipping.
-- Confirm required environment variable names are present in Vercel; never print secret values.
+- Confirm required environment variable names are present in the production host; never print secret values.
 - Run `npm run lint`.
 - Run `npm run typecheck`; this command runs `next typegen` before TypeScript and should pass from a clean generated state.
 - Run `npm test`.
@@ -19,15 +19,15 @@
 - Inspect security headers: CSP, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, `X-Frame-Options`, and absence of `X-Powered-By`.
 - Treat the current CSP as a hardened baseline, not strict CSP: `script-src` still allows `'unsafe-inline'` because production Next App Router HTML contains inline hydration/RSC scripts. Remove only after a maintainable nonce/hash strategy exists.
 - Review public asset changes, especially portrait, pricing, museum, Steel Ball, and document images.
-- Confirm active heavy image routes use WebP replacements and Next/Vercel image optimization is enabled. Remaining large portrait/source/legacy assets require manual approval before release.
+- Confirm active heavy image routes use appropriate optimized assets. Remaining large portrait/source/legacy assets require manual approval before release.
 - Check critical links: homepage CTAs, pricing documents, Stress Test, Room, Museum, Steel Ball, ambassadors, constitution download, and mail links.
-- No Vercel cron is currently configured for `/api/room-refresh`. Re-enable only after confirming plan support, intended cadence, endpoint authentication, duplicate-run behavior, and Notion/OpenAI cost limits.
+- Confirm the host-neutral scheduler for `/api/room-refresh` has the intended cadence, endpoint authentication, duplicate-run behavior, and Notion/OpenAI cost limits.
 - Confirm external services required by the Room engine: Notion access, OpenAI API access, deploy hook, and cron secret.
 - Theme bootstrap note: `/theme-init.js` unregisters service workers and deletes origin caches on load as a legacy cleanup measure. Keep only until stale service-worker risk is retired and `public/sw.js` is removed or otherwise resolved.
 
 ## Deployment
 
-- Deploy through the existing Vercel production flow documented in `README.md`: `vercel --prod` or the connected production Git workflow.
+- Deploy the current GitHub `main` through the active production host using the standard Next.js build/start flow documented in `README.md`.
 - Verify the production domain: `https://www.ctrlpluslove.com`.
 - Review deployment logs for build warnings, missing environment variables, image issues, and cron warnings.
 - Smoke-check key routes: `/`, `/stress-test/`, `/pricing/`, `/room/`, `/museum/`, `/steel-ball/`, `/ambassadors/`, one ambassador profile, `/sitemap.xml`, and `/robots.txt`.
@@ -50,6 +50,6 @@
 
 ## Rollback
 
-- Prefer the existing Vercel rollback flow: promote the last known-good production deployment from the Vercel dashboard or redeploy the last known-good Git commit.
+- Redeploy the last known-good Git commit through the active production host.
 - Roll back immediately if production shows broken routing, exposed secrets, failed protected endpoint behavior, missing critical assets, broken checkout/contact paths, repeated cron failures, or a material metadata/header regression.
-- After rollback, disable or pause the Vercel cron only if the issue is tied to `/api/room-refresh` or downstream Room automation.
+- After rollback, disable or pause the external scheduler only if the issue is tied to `/api/room-refresh` or downstream Room automation.
