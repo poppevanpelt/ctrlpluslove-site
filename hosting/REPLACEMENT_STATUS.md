@@ -1,15 +1,25 @@
 # Vercel-independent replacement — 7 October 2026
 
-Source: poppevanpelt/ctrlpluslove-site, commit 16905a33a958d716317d803e9a65160230dcd1fe.
+The complete website is published on the existing Instrument Cabinet Site:
+https://ctrl-love-instruments.ctrl-love-4138.chatgpt.site
 
-The complete site was copied into a separate Sites/Vinext checkout. The Cloudflare Worker production build succeeded with all existing routes, Vapi 2.6.1, media assets, API handlers and the Savannah widget. The existing Instrument Cabinet was separately restored, and a copy was prepared under /cabinet/ without changing its live publication.
+The homepage includes the visual Instrument Cabinet entrance. The complete cabinet is available at /cabinet/. The cabinet host is now public as the replacement for the public main website; private-room route protections remain in the Worker.
 
-Registration of a new replacement Site failed: the account has reached its Site Hosting usage limit. No replacement was deployed. No DNS changes were made. No existing Site was overwritten or deleted. Vercel lists no registered domains for the connected team; this does not establish which registrar manages ctrlpluslove.com.
+Published Site: appgprj_6aa819e66fc081918d6f561b38564f5b
+Saved version: 4
+Source commit: 8f84062619c1c3f19d0bed45610fc80549e1ec23
+Deployment: appgdep_6ac5d2b814488191bbb27155a6d477f4 (succeeded)
 
-Validation: 50 of 51 existing tests passed. The remaining persona portrait assertion also fails on the unchanged source, because its expected assets differ from current assets. Browser/audio interaction and production domain checks remain pending. The supervised preview started, but the available test shell could not reach it. No audible call has been verified on the replacement host.
+The Site source repository contains the complete migrated source. GitHub main separately contains the homepage Cabinet change at 94fae53e3579494f95b89b84637d8dd8201665e2. The migration retains the original application routes, API handlers and Vapi client.
 
-Server-side Notion/OpenAI credentials have not been migrated or verified. Existing API handlers retain their configuration checks; a build success does not prove those live integrations are ready.
+WordPress.com DNS was updated successfully: apex A records now target 162.159.143.30 and 172.66.3.26; www CNAME now targets custom-domains.chatgpt.site. Four host-validation TXT records were added. Mail, other TXT records and other subdomains were preserved. Previous routing: apex A 76.76.21.21; www CNAME 13513a7930c49d40.vercel-dns-017.com. Both had TTL 300. The connected WordPress domain status is transfer_completed, with registration paid through May 2028 and DNS management enabled.
 
-Next action: choose an available hosting target. One option is expanding the existing ctrl+love Instrument Cabinet Site, preserving the cabinet at /cabinet/ and mapping ctrlpluslove.com to the main website. That changes an existing Site and its audience, so it has not been done without the user's explicit choice. Alternatively enable capacity for a new Site or connect another host supporting the complete Worker/Next runtime. Do not substitute a static export that silently loses API handlers or protected-room checks.
+Custom domain certificate validation and resolver propagation remain pending at this checkpoint. This is not evidence that all visitors already use the replacement. Use Sites custom-domain status before marking the address ready.
 
-Reproduce the validated migration with scripts/prepare-sites-replacement.mjs. It requires an absolute Sites plugin root and a separate empty destination. The original production source stays unchanged. Register/persist the final project identity, migrate runtime configuration, publish and verify before changing DNS. Use the Sites hosting skill's source workflow; never commit credentials.
+Verification: Worker build passed. Headless Worker requests return 200 for the homepage and /cabinet/, with the new Cabinet entrance. Anonymous requests to /bonkers and protected Savannah rooms render Door closed. The published replacement homepage returns HTTP 200 and contains both Pressure, not prompts. and Ideas enter. Evidence leaves. Original test suite: 50/51 pass; the portrait expectation failure also occurs on unchanged original source.
+
+The original 43 MiB soundtrack WAV exceeded the Worker asset limit. The replacement uses an AAC M4A encoded at 128 kbit/s (3.7 MiB); source choices were reduced to the existing compatible M4A. Original audio remains in the original repository.
+
+Server-side Notion/OpenAI credentials have not been migrated or verified. Existing API handlers retain configuration checks. No audible Vapi call has been verified. Build and HTTP success do not establish those integrations are ready.
+
+New Site registration was rate-limited, so the existing Cabinet Site was reused. Do not retry creating another Site. Follow Sites source workflow for future updates; never commit credentials.
