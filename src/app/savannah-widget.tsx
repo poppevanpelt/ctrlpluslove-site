@@ -328,7 +328,7 @@ export function SavannahWidget() {
       clearVoiceLimitTimer();
       stopSteel();
       setAssistantSpeaking(false);
-      console.error("Savannah Vapi error", error);
+      console.warn("Savannah Vapi transport fallback", describeError(error));
       setState("error");
       const localSpoke = speakSavannahLocally("I'm still here. The live audio line dropped. Type to me and I'll answer out loud.");
       setMessage(localSpoke ? "Live line dropped. Type to me — I'll answer out loud." : "The audio line did not open. Try me again.");
@@ -405,7 +405,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
 
     textVapi.on("error", (error: unknown) => {
       clearTextBurstTimer();
-      console.error("Savannah text Vapi error", error);
+      console.warn("Savannah text transport fallback", describeError(error));
       setTextState("error");
       setTextPending(false);
       if (modeRef.current === "type") {
@@ -479,7 +479,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
         } as any,
       );
     } catch (error) {
-      console.error("Savannah text start failed", error);
+      console.warn("Savannah text start fallback", describeError(error));
       setTextState("error");
       setMessage("The quiet line did not open. Try me again.");
     }
@@ -533,7 +533,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
         triggerResponseEnabled: true,
       } as any);
     } catch (error) {
-      console.error("Savannah text send failed", error);
+      console.warn("Savannah text send fallback", describeError(error));
       setTextPending(false);
       setMessage("That did not get through. Try it once more.");
     }
@@ -579,7 +579,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       }).catch((error: unknown) => {
         clearMicWakeTimers();
         stopSteel();
-        console.error("Savannah call start failed", error);
+        console.warn("Savannah call start fallback", describeError(error));
         setState("error");
         speakSavannahLocally("I'm still here. Type to me and I'll answer out loud.");
         const detail = describeError(error);
@@ -592,7 +592,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       });
       forceMicOpen(vapi);
     } catch (error) {
-      console.error("Savannah call start failed", error);
+      console.warn("Savannah call start fallback", describeError(error));
       setState("error");
       const detail = describeError(error);
       const lower = detail.toLowerCase();
