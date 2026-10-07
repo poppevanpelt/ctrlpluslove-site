@@ -117,3 +117,133 @@
 .cabinetPreview:hover .cabinetCaption strong{text-decoration:underline;text-underline-offset:5px}
 .cabinetPreview:focus-visible{outline:3px solid var(--ink);outline-offset:5px}
 @media(max-width:650px){.cabinetCaption{align-items:flex-start;flex-direction:column;padding:20px;gap:20px}.cabinetPreview>img{aspect-ratio:3/2}.cabinetCaption p{font-size:16px}}
+
+
+/* Savannah dimensional handoff — film > 2.5D > 2.25D > 2D > vault lock. */
+.savannahIntro{
+  perspective:1600px;
+  perspective-origin:50% 48%;
+}
+.savannahIntroVideo{
+  transform:translate3d(0,0,0) scale(1);
+  transition:
+    opacity 2.75s cubic-bezier(.2,.7,.2,1),
+    transform .95s cubic-bezier(.2,.75,.2,1),
+    filter .95s ease;
+  will-change:transform,filter,opacity;
+}
+.savannahSiteLayer{
+  inset:clamp(14px,1.7vw,30px);
+  overflow:hidden;
+  color:#11110f;
+  text-shadow:none;
+  border:1px solid rgba(17,17,15,.22);
+  background:
+    linear-gradient(90deg,rgba(246,241,231,.86) 0%,rgba(246,241,231,.68) 48%,rgba(246,241,231,.32) 100%),
+    url("/home/sunnyvale-campus.webp") center/cover no-repeat;
+  transform-origin:0 50%;
+  transform-style:preserve-3d;
+  backface-visibility:hidden;
+  transform:perspective(1500px) rotateY(-10deg) rotateX(.65deg) translate3d(2.4vw,0,62px) scale(.952);
+  box-shadow:34px 8px 82px rgba(0,0,0,.34),8px 0 0 rgba(17,17,15,.08);
+  transition:
+    opacity .46s ease,
+    inset .78s cubic-bezier(.2,.78,.2,1),
+    transform .78s cubic-bezier(.2,.78,.2,1),
+    box-shadow .78s cubic-bezier(.2,.78,.2,1);
+  will-change:transform,opacity,inset;
+}
+.savannahSiteLayer::after{
+  content:"";
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  width:clamp(5px,.55vw,10px);
+  background:linear-gradient(90deg,rgba(17,17,15,.2),rgba(255,255,255,.22));
+  opacity:.72;
+  pointer-events:none;
+}
+.savannahSiteNav,
+.savannahSiteNote{z-index:2}
+.savannahSiteNote{
+  color:#11110f;
+  border-top-color:rgba(17,17,15,.58);
+  background:rgba(246,241,231,.72);
+  backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);
+  padding:14px 16px 16px;
+}
+.savannahSiteLayerVisibleState .savannahIntroShade{opacity:.48}
+.savannahDepth25 .savannahSiteLayer{
+  opacity:1;
+  inset:clamp(12px,1.45vw,26px);
+  transform:perspective(1500px) rotateY(-7.6deg) rotateX(.5deg) translate3d(1.8vw,0,48px) scale(.966);
+  box-shadow:30px 8px 72px rgba(0,0,0,.3),7px 0 0 rgba(17,17,15,.075);
+}
+.savannahDepth25 .savannahIntroVideo{
+  transform:translate3d(1.3vw,0,0) scale(1.025);
+  filter:saturate(.96) brightness(.98);
+}
+.savannahDepth225 .savannahSiteLayer{
+  opacity:1;
+  inset:clamp(6px,.72vw,13px);
+  transform:perspective(1600px) rotateY(-3.15deg) rotateX(.18deg) translate3d(.7vw,0,24px) scale(.985);
+  box-shadow:18px 5px 46px rgba(0,0,0,.22),4px 0 0 rgba(17,17,15,.055);
+}
+.savannahDepth225 .savannahIntroVideo{
+  transform:translate3d(.7vw,0,0) scale(1.017);
+  filter:saturate(.92) brightness(.96);
+}
+.savannahDepth2d .savannahSiteLayer{
+  opacity:1;
+  inset:0;
+  transform:perspective(1800px) rotateY(0deg) rotateX(0deg) translate3d(0,0,0) scale(1);
+  box-shadow:0 0 0 rgba(0,0,0,0);
+}
+.savannahDepth2d .savannahSiteLayer::after{opacity:0}
+.savannahDepth2d .savannahIntroVideo{
+  transform:translate3d(0,0,0) scale(1.008);
+  filter:saturate(.9) brightness(.95);
+}
+.savannahHandoff{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  clip-path:inset(0 0 0 0);
+  transition:opacity .82s cubic-bezier(.2,.7,.2,1),visibility .82s ease;
+}
+.savannahHandoff .savannahSiteLayer{opacity:1}
+:global(html.savannah-page-locking) .page{
+  transform:translateY(10px) scale(.9965);
+  transform-origin:50% 0;
+  transition:transform .56s cubic-bezier(.65,0,.25,1);
+}
+:global(html.savannah-page-locked) .page{
+  animation:vaultClunkSeat .34s cubic-bezier(.18,.88,.2,1) both;
+}
+@keyframes vaultClunkSeat{
+  0%{transform:translateY(10px) scale(.9965)}
+  68%{transform:translateY(-1.5px) scale(1.0008)}
+  100%{transform:translateY(0) scale(1)}
+}
+@media(max-width:650px){
+  .savannahSiteLayer{
+    transform-origin:0 52%;
+    inset:10px;
+  }
+  .savannahDepth25 .savannahSiteLayer{
+    inset:9px;
+    transform:perspective(1100px) rotateY(-6.2deg) translate3d(2.2vw,0,34px) scale(.97);
+  }
+  .savannahDepth225 .savannahSiteLayer{
+    inset:4px;
+    transform:perspective(1200px) rotateY(-2.5deg) translate3d(.8vw,0,16px) scale(.99);
+  }
+  .savannahDepth2d .savannahSiteLayer{inset:0;transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .savannahSiteLayer,
+  .savannahIntroVideo{transform:none!important;transition:none!important}
+  :global(html.savannah-page-locked) .page{animation:none!important}
+}
