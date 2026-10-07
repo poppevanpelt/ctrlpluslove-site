@@ -70,6 +70,17 @@ if (cabinet) {
     .replaceAll("plate('assets/", "plate('/cabinet/assets/");
   await writeFile(path, html);
 }
+// Worker assets and the source store cannot accept the original 43 MiB WAV.
+// Preserve the soundtrack using a browser-compatible AAC file.
+run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y',
+  '-i', 'public/audio/open-arms-drift-v2.wav', '-c:a', 'aac', '-b:a', '128k',
+  'public/audio/open-arms-drift-v2-optimized.m4a']);
+await cp(join(destination, 'public/audio/open-arms-drift-v2-optimized.m4a'), join(destination, 'public/audio/open-arms-drift-v2.m4a'));
+await rm(join(destination, 'public/audio/open-arms-drift-v2-optimized.m4a'));
+await rm(join(destination, 'public/audio/open-arms-drift-v2.wav'));
+const soundtrackPath = join(destination, 'src/app/background-soundtrack.tsx');
+const soundtrack = await readFile(soundtrackPath, 'utf8');
+await writeFile(soundtrackPath, soundtrack.replace(/^.*src: "\/audio\/open-arms-drift-v2\.(?:webm|mp3|wav)".*\n/gm, ''));
 run([process.execPath, 'scripts/restore-2go-assets.mjs']);
 run([process.execPath, 'scripts/run-framework.mjs', 'build']);
 console.log(JSON.stringify({ checkout: destination, status: 'built', deployed: false }));
