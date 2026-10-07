@@ -118,7 +118,10 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
         });
         if (incoming.role === "assistant" && callOriginRef.current === "typed") {
           clearBurstTimer();
-          window.setTimeout(() => { try { vapi.stop(); } catch {} }, 120);
+          burstTimerRef.current = window.setTimeout(() => {
+            try { vapi.stop(); } catch {}
+            burstTimerRef.current = null;
+          }, 1200);
         }
       }
     });
@@ -199,7 +202,7 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
     setDraft("");
 
     if (state === "live") {
-      vapi.send({ type: "add-message", message: { role: "user", content: text } });
+      vapi.send({ type: "add-message", message: { role: "user", content: text }, triggerResponseEnabled: true } as any);
       return;
     }
 
