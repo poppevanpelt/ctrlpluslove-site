@@ -10,7 +10,6 @@ import { SAVANNAH_BRIEFING } from "../../savannah-briefing";
 import { askSavannahLocal } from "../../savannah-local-client";
 import {
   SAVANNAH_HIDDEN_TAB_GRACE_MS,
-  SAVANNAH_TEXT_BURST_TIMEOUT_MS,
   SAVANNAH_VOICE_MAX_DURATION_MS,
 } from "../../savannah-runtime";
 
