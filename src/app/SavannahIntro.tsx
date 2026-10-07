@@ -24,9 +24,14 @@ export default function SavannahIntro() {
   const handoffStarted = useRef(false);
   const lockStarted = useRef(false);
   const audioRef = useRef<AudioContext | null>(null);
+  const lockSeatTimerRef = useRef<number | null>(null);
   const lockReleaseTimerRef = useRef<number | null>(null);
 
   const releasePageLock = () => {
+    if (lockSeatTimerRef.current !== null) {
+      window.clearTimeout(lockSeatTimerRef.current);
+      lockSeatTimerRef.current = null;
+    }
     if (lockReleaseTimerRef.current !== null) {
       window.clearTimeout(lockReleaseTimerRef.current);
       lockReleaseTimerRef.current = null;
@@ -142,6 +147,7 @@ export default function SavannahIntro() {
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (reduced) {
         video.pause();
+        releasePageLock();
         setFallback(true);
         setReady(true);
         setSiteLayer(true);
@@ -155,6 +161,7 @@ export default function SavannahIntro() {
       }).catch(() => {
         // Autoplay can be blocked by browser policy. Keep an intentional
         // entrance visible instead of silently skipping Savannah.
+        releasePageLock();
         setFallback(true);
         setSiteLayer(true);
         setDepthStage("twoD");
@@ -182,6 +189,7 @@ export default function SavannahIntro() {
     try { video.currentTime = START_AT; } catch {}
     video.muted = true;
     void video.play().catch(() => {
+      releasePageLock();
       setFallback(true);
       setSiteLayer(true);
       setDepthStage("twoD");
@@ -194,7 +202,8 @@ export default function SavannahIntro() {
 
     document.documentElement.classList.remove("savannah-page-locked");
     document.documentElement.classList.add("savannah-page-locking");
-    window.setTimeout(() => {
+    lockSeatTimerRef.current = window.setTimeout(() => {
+      lockSeatTimerRef.current = null;
       playVaultClunk();
       document.documentElement.classList.remove("savannah-page-locking");
       document.documentElement.classList.add("savannah-page-locked");
