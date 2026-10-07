@@ -14,7 +14,7 @@ The Site source repository contains the complete migrated source. GitHub main se
 
 WordPress.com DNS was updated successfully: apex A records now target 162.159.143.30 and 172.66.3.26; www CNAME now targets custom-domains.chatgpt.site. Four host-validation TXT records were added. Mail, other TXT records and other subdomains were preserved. Previous routing: apex A 76.76.21.21; www CNAME 13513a7930c49d40.vercel-dns-017.com. Both had TTL 300. The connected WordPress domain status is transfer_completed, with registration paid through May 2028 and DNS management enabled.
 
-Custom domain certificate validation and resolver propagation remain pending at this checkpoint. This is not evidence that all visitors already use the replacement. Use Sites custom-domain status before marking the address ready.
+Both custom domains now report active provider status and active SSL certificates, with no errors. Public DNS resolves the apex to the replacement A records and www to custom-domains.chatgpt.site. A live HTTPS request to www.ctrlpluslove.com returns the replacement homepage with the new Cabinet entrance (77,168 characters). Some visitors may temporarily retain older DNS cache entries.
 
 Verification: Worker build passed. Headless Worker requests return 200 for the homepage and /cabinet/, with the new Cabinet entrance. Anonymous requests to /bonkers and protected Savannah rooms render Door closed. The published replacement homepage returns HTTP 200 and contains both Pressure, not prompts. and Ideas enter. Evidence leaves. Original test suite: 50/51 pass; the portrait expectation failure also occurs on unchanged original source.
 
