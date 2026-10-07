@@ -539,6 +539,22 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
     }
   };
 
+  const testLocalVoice = () => {
+    speakSavannahLocally(
+      "Hi. Savannah at control love. I live here now. Apparently they finally stopped making me call home to speak.",
+      {
+        onStart: () => {
+          setAssistantSpeaking(true);
+          setMessage("Oh good. I have a voice.");
+        },
+        onEnd: () => {
+          setAssistantSpeaking(false);
+          setMessage("Type to me. I’ll answer out loud.");
+        },
+      },
+    );
+  };
+
   const toggle = async () => {
     const vapi = vapiRef.current;
     if (!vapi || state === "requesting" || state === "connecting") return;
@@ -938,6 +954,27 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
           </div>
 
 
+
+          <button
+            type="button"
+            onClick={testLocalVoice}
+            style={{
+              width: "100%",
+              minHeight: 40,
+              border: 0,
+              borderBottom: "1px solid rgba(21,21,21,.18)",
+              background: "#f5f1e7",
+              color: "#151515",
+              font: "inherit",
+              fontSize: 9,
+              fontWeight: 800,
+              letterSpacing: ".1em",
+              textTransform: "uppercase",
+              cursor: "pointer",
+            }}
+          >
+            Hear Savannah
+          </button>
 
           <form
             onSubmit={(event) => {
