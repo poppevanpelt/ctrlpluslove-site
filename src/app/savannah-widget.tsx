@@ -58,7 +58,7 @@ export function SavannahWidget() {
   const chatScrollRef = useRef<HTMLDivElement | null>(null);
   const textInputRef = useRef<HTMLInputElement | null>(null);
   const queuedTextRef = useRef<string | null>(null);
-  const modeRef = useRef<Mode>("voice");
+  const modeRef = useRef<Mode>("type");
   const steelTimerRef = useRef<number | null>(null);
   const steelAudioRef = useRef<AudioContext | null>(null);
   const steelAliveRef = useRef(false);
@@ -73,8 +73,8 @@ export function SavannahWidget() {
   const [compact, setCompact] = useState(false);
   const [mobileAutoCollapsed, setMobileAutoCollapsed] = useState(false);
   const [manualOpen, setManualOpen] = useState(false);
-  const [message, setMessage] = useState("Morning. What are we trying to decide?");
-  const [mode, setMode] = useState<Mode>("voice");
+  const [message, setMessage] = useState("Type to me. I’ll answer out loud.");
+  const [mode, setMode] = useState<Mode>("type");
   const [textState, setTextState] = useState<TextState>("idle");
   const [draft, setDraft] = useState("");
   const [textPending, setTextPending] = useState(false);
@@ -384,7 +384,10 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
         incoming.role === "assistant"
       ) {
         appendConversation("assistant", incoming.transcript, true);
-        speakSavannahLocally(incoming.transcript);
+        speakSavannahLocally(incoming.transcript, {
+          onStart: () => setAssistantSpeaking(true),
+          onEnd: () => setAssistantSpeaking(false),
+        });
         setTextPending(false);
         clearTextBurstTimer();
         textBurstTimerRef.current = window.setTimeout(() => {
@@ -410,7 +413,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       setTextState("error");
       setTextPending(false);
       if (modeRef.current === "type") {
-        setMessage("The quiet line dropped. Try me again.");
+        setMessage("I lost the connection for a second. Try me again.");
       }
     });
 
@@ -469,7 +472,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
 
     setTextState("connecting");
     setTextPending(false);
-    setMessage("Opening the quiet line.");
+    setMessage("Waking Savannah.");
 
     try {
       await textVapi.start(
@@ -482,7 +485,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
     } catch (error) {
       console.warn("Savannah text start fallback", describeError(error));
       setTextState("error");
-      setMessage("The quiet line did not open. Try me again.");
+      setMessage("I lost the connection for a second. Try me again.");
     }
   };
 
@@ -496,7 +499,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       if (state === "live" || state === "connecting") {
         try { vapiRef.current?.stop(); } catch {}
       }
-      setMessage("Type away. I'll open a short line when you send.");
+      setMessage("Type away. I’ll answer out loud.");
       return;
     }
 
@@ -522,7 +525,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
 
     if (textState !== "live") {
       queuedTextRef.current = text;
-      setMessage("Opening the quiet line.");
+      setMessage("Waking Savannah.");
       void startText();
       return;
     }
@@ -681,7 +684,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
           boxShadow: "0 12px 30px rgba(0,0,0,.14)",
         }}
       >
-        Savannah · Talk / Type
+        Savannah · Type / Hear
       </button>
     );
   }
@@ -832,44 +835,22 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       </div>
 
       <div
-        role="tablist"
-        aria-label="Choose how to speak with Savannah"
         style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
           borderTop: "1px solid rgba(21,21,21,.22)",
+          padding: "10px 14px",
+          background: "#151515",
+          color: "#f5f1e7",
+          fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
+          fontSize: 9,
+          fontWeight: 800,
+          letterSpacing: ".1em",
+          textTransform: "uppercase",
         }}
       >
-        {(["voice", "type"] as const).map((option) => {
-          const active = mode === option;
-          return (
-            <button
-              key={option}
-              type="button"
-              role="tab"
-              aria-selected={active}
-              onClick={() => chooseMode(option)}
-              style={{
-                minHeight: 40,
-                border: 0,
-                borderRight: option === "voice" ? "1px solid rgba(21,21,21,.22)" : 0,
-                background: active ? "#151515" : "#f5f1e7",
-                color: active ? "#f5f1e7" : "#151515",
-                font: "inherit",
-                fontSize: 10,
-                fontWeight: 800,
-                letterSpacing: ".11em",
-                textTransform: "uppercase",
-                cursor: "pointer",
-              }}
-            >
-              {option === "voice" ? "Talk" : "Type"}
-            </button>
-          );
-        })}
+        Type to Savannah · she answers out loud
       </div>
 
-      {mode === "voice" ? (
+      {false ? (
         <button
           id="savannah-toggle"
           type="button"
@@ -979,7 +960,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
                 cursor: "pointer",
               }}
             >
-              {textState === "error" ? "Try quiet line again" : "Open quiet line"}
+              {textState === "error" ? "Reconnect Savannah" : "Wake Savannah"}
             </button>
           ) : null}
 
@@ -995,7 +976,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
               value={draft}
               onChange={(event) => setDraft(event.target.value)}
               aria-label="Type to Savannah"
-              placeholder={textState === "connecting" ? "Type while I open the line…" : "Type to Savannah…"}
+              placeholder={textState === "connecting" ? "Type while Savannah wakes up…" : "Type to Savannah…"}
               autoComplete="off"
               style={{
                 minWidth: 0,
