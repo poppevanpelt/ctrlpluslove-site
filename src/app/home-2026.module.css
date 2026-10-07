@@ -52,7 +52,7 @@
 .savannahIntroPlay,.savannahIntroEnter{padding:14px 20px;border:1px solid rgba(255,255,255,.6);background:rgba(0,0,0,.3);color:#fff;font:inherit;cursor:pointer}
 .savannahIntroPlay{background:rgba(255,255,255,.1)}
 
-.savannahSiteLayer{position:absolute;inset:0;z-index:3;color:#fff;opacity:0;transition:opacity 2.25s cubic-bezier(.2,.7,.2,1);pointer-events:none;text-shadow:0 1px 16px rgba(0,0,0,.34)}
+.savannahSiteLayer{position:absolute;inset:0;z-index:3;color:#fff;opacity:0;transform-origin:0 52%;transition:opacity .32s ease,transform .62s cubic-bezier(.68,-.02,.22,1),inset .62s cubic-bezier(.68,-.02,.22,1),box-shadow .62s ease;pointer-events:none;text-shadow:0 1px 16px rgba(0,0,0,.34);will-change:transform}
 .savannahSiteLayerVisible{opacity:1}
 .savannahSiteNav{position:absolute;left:clamp(20px,3.6vw,58px);right:clamp(20px,3.6vw,58px);top:26px;display:flex;align-items:center;justify-content:space-between;font-size:10px;letter-spacing:.11em;text-transform:uppercase}
 .savannahSiteNav strong{font-size:27px;letter-spacing:-1.6px;text-transform:none}
@@ -178,8 +178,8 @@
 .savannahDepth25 .savannahSiteLayer{
   opacity:1;
   inset:clamp(12px,1.45vw,26px);
-  transform:perspective(1500px) rotateY(-7.6deg) rotateX(.5deg) translate3d(1.8vw,0,48px) scale(.966);
-  box-shadow:30px 8px 72px rgba(0,0,0,.3),7px 0 0 rgba(17,17,15,.075);
+  transform:perspective(1300px) rotateY(-18deg) translate3d(2.7vw,0,56px) scale(.955);
+  box-shadow:42px 10px 86px rgba(0,0,0,.34),10px 0 0 rgba(17,17,15,.09);
 }
 .savannahDepth25 .savannahIntroVideo{
   transform:translate3d(1.3vw,0,0) scale(1.025);
@@ -188,8 +188,8 @@
 .savannahDepth225 .savannahSiteLayer{
   opacity:1;
   inset:clamp(6px,.72vw,13px);
-  transform:perspective(1600px) rotateY(-3.15deg) rotateX(.18deg) translate3d(.7vw,0,24px) scale(.985);
-  box-shadow:18px 5px 46px rgba(0,0,0,.22),4px 0 0 rgba(17,17,15,.055);
+  transform:perspective(1400px) rotateY(-8deg) translate3d(1.25vw,0,28px) scale(.982);
+  box-shadow:28px 6px 58px rgba(0,0,0,.26),6px 0 0 rgba(17,17,15,.065);
 }
 .savannahDepth225 .savannahIntroVideo{
   transform:translate3d(.7vw,0,0) scale(1.017);
@@ -198,7 +198,7 @@
 .savannahDepth2d .savannahSiteLayer{
   opacity:1;
   inset:0;
-  transform:perspective(1800px) rotateY(0deg) rotateX(0deg) translate3d(0,0,0) scale(1);
+  transform:perspective(1400px) rotateY(0deg) translate3d(0,0,0) scale(1);
   box-shadow:0 0 0 rgba(0,0,0,0);
 }
 .savannahDepth2d .savannahSiteLayer::after{opacity:0}
@@ -211,7 +211,7 @@
   visibility:hidden;
   pointer-events:none;
   clip-path:inset(0 0 0 0);
-  transition:opacity .82s cubic-bezier(.2,.7,.2,1),visibility .82s ease;
+  transition:opacity .16s linear,visibility .16s linear;
 }
 .savannahHandoff .savannahSiteLayer{opacity:1}
 :global(html.savannah-page-locking) .page{
