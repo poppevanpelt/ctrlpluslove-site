@@ -3,14 +3,15 @@ type SpeechWindow = Window & typeof globalThis & {
 };
 
 const VOICE_HINTS = [
-  "Samantha",
+  // Prefer newer, cleaner system voices. Savannah is a person first, accent second.
   "Ava",
-  "Victoria",
-  "Karen",
-  "Google US English",
   "Microsoft Aria",
   "Microsoft Jenny",
+  "Samantha",
+  "Google US English",
+  "Victoria",
   "English United States",
+  "Karen",
 ];
 
 function pickSavannahVoice(synth: SpeechSynthesis) {
@@ -61,9 +62,11 @@ export function speakSavannahLocally(
     if (voice) utterance.voice = voice;
 
     utterance.lang = voice?.lang || "en-US";
-    utterance.rate = 0.92;
-    utterance.pitch = 0.96;
-    utterance.volume = 1;
+    // Keep this close to an ordinary human speaking voice.
+    // The previous lowered pitch made some browser voices sound hoarse.
+    utterance.rate = 0.9;
+    utterance.pitch = 1.03;
+    utterance.volume = 0.96;
     utterance.onstart = () => options.onStart?.();
     utterance.onend = () => options.onEnd?.();
     utterance.onerror = () => options.onEnd?.();
