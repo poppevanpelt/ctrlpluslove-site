@@ -4,6 +4,13 @@ import Vapi from "@vapi-ai/web";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { SAVANNAH_BRIEFING } from "./savannah-briefing";
+import {
+  deriveSavannahFieldNote,
+  fieldNotesContext,
+  loadSavannahFieldNotes,
+  saveSavannahFieldNotes,
+  type SavannahFieldNote,
+} from "./savannah-field-notes";
 
 const PUBLIC_KEY = "12382a58-9f0f-41fe-ba94-257368be07cb";
 const ASSISTANT_ID = "4289b114-3dca-4052-9684-13c3435bd0a4";
@@ -51,6 +58,8 @@ export function SavannahWidget() {
   const steelAudioRef = useRef<AudioContext | null>(null);
   const steelAliveRef = useRef(false);
   const micWakeTimersRef = useRef<number[]>([]);
+  const fieldNotesRef = useRef<SavannahFieldNote[]>([]);
+  const rememberedUserCountRef = useRef(0);
   const [state, setState] = useState<State>("idle");
   const [compact, setCompact] = useState(false);
   const [mobileAutoCollapsed, setMobileAutoCollapsed] = useState(false);
@@ -80,6 +89,25 @@ export function SavannahWidget() {
       setChatLines((previous) => [...previous.slice(-23), { id, role, text }]);
     }
   };
+
+  const rememberCurrentConversation = () => {
+    const userCount = conversationRef.current.filter((line) => line.role === "user").length;
+    if (userCount <= rememberedUserCountRef.current) return;
+
+    const note = deriveSavannahFieldNote(conversationRef.current);
+    rememberedUserCountRef.current = userCount;
+    if (!note) return;
+
+    const previous = fieldNotesRef.current;
+    const last = previous[previous.length - 1];
+    if (last?.note === note.note) return;
+
+    const next = [...previous, note].slice(-40);
+    fieldNotesRef.current = next;
+    saveSavannahFieldNotes(next);
+  };
+
+  const rememberedContext = () => fieldNotesContext(fieldNotesRef.current);
 
   const recentConversationContext = () => {
     const history = conversationRef.current.slice(-16);
@@ -165,6 +193,10 @@ export function SavannahWidget() {
   };
 
   useEffect(() => {
+    fieldNotesRef.current = loadSavannahFieldNotes();
+  }, []);
+
+  useEffect(() => {
     const isMobile = window.matchMedia("(max-width: 650px)").matches;
     if (!isMobile || mobileAutoCollapsed || manualOpen) return;
 
@@ -198,7 +230,7 @@ export function SavannahWidget() {
           type: "add-message",
           message: {
             role: "system",
-            content: `${SAVANNAH_BRIEFING}\nVoice delivery: stay warm, relaxed and unhurried. Leave a little air between thoughts. Never sound eager, rushed or salesy.${bridgeFundRoomContext()}`,
+            content: `${SAVANNAH_BRIEFING}\nVoice delivery: stay warm, relaxed and unhurried. Leave a little air between thoughts. Never sound eager, rushed or salesy.${rememberedContext()}${bridgeFundRoomContext()}`,
           },
         } as any);
       } catch {}
@@ -228,6 +260,7 @@ export function SavannahWidget() {
       }
     });
     vapi.on("call-end", () => {
+      rememberCurrentConversation();
       clearMicWakeTimers();
       stopSteel();
       setAssistantSpeaking(false);
@@ -261,7 +294,7 @@ export function SavannahWidget() {
           message: {
             role: "system",
             content: `${SAVANNAH_BRIEFING}
-Text delivery: this visitor is typing. Reply as Savannah in short, natural written turns. Do not mention that this is a separate mode or transport. Keep the same personality, judgment and knowledge as voice Savannah.${recentConversationContext()}${bridgeFundRoomContext()}`,
+Text delivery: this visitor is typing. Reply as Savannah in short, natural written turns. Do not mention that this is a separate mode or transport. Keep the same personality, judgment and knowledge as voice Savannah.${rememberedContext()}${recentConversationContext()}${bridgeFundRoomContext()}`,
           },
         } as any);
       } catch {}
@@ -298,6 +331,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
     });
 
     textVapi.on("call-end", () => {
+      rememberCurrentConversation();
       setTextState("idle");
       setTextPending(false);
       if (modeRef.current === "type") {
