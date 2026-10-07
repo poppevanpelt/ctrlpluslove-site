@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import styles from "./home-2026.module.css";
+import { clearSavannahPageLock } from "./savannah-runtime";
 
 const START_AT = 1.35;
 const DEPTH_25_AT = 6.15;
@@ -23,6 +24,20 @@ export default function SavannahIntro() {
   const handoffStarted = useRef(false);
   const lockStarted = useRef(false);
   const audioRef = useRef<AudioContext | null>(null);
+  const lockSeatTimerRef = useRef<number | null>(null);
+  const lockReleaseTimerRef = useRef<number | null>(null);
+
+  const releasePageLock = () => {
+    if (lockSeatTimerRef.current !== null) {
+      window.clearTimeout(lockSeatTimerRef.current);
+      lockSeatTimerRef.current = null;
+    }
+    if (lockReleaseTimerRef.current !== null) {
+      window.clearTimeout(lockReleaseTimerRef.current);
+      lockReleaseTimerRef.current = null;
+    }
+    clearSavannahPageLock((...classes) => document.documentElement.classList.remove(...classes));
+  };
 
   const armVaultAudio = () => {
     if (typeof window === "undefined") return;
@@ -90,6 +105,7 @@ export default function SavannahIntro() {
       // Reduced Motion should never make the entrance disappear.
       // Hold on a quiet Savannah still instead; visitors can explicitly play
       // the opening film if they want it.
+      releasePageLock();
       setFallback(true);
       setReady(true);
       setSiteLayer(true);
@@ -107,6 +123,7 @@ export default function SavannahIntro() {
     const watchdog = window.setTimeout(() => {
       const video = videoRef.current;
       if (!video || video.readyState < 2) {
+        releasePageLock();
         setFallback(true);
         setReady(true);
         setSiteLayer(true);
@@ -116,6 +133,8 @@ export default function SavannahIntro() {
 
     return () => window.clearTimeout(watchdog);
   }, []);
+
+  useEffect(() => () => releasePageLock(), []);
 
   const primeVideo = () => {
     const video = videoRef.current;
@@ -128,6 +147,7 @@ export default function SavannahIntro() {
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (reduced) {
         video.pause();
+        releasePageLock();
         setFallback(true);
         setReady(true);
         setSiteLayer(true);
@@ -141,6 +161,7 @@ export default function SavannahIntro() {
       }).catch(() => {
         // Autoplay can be blocked by browser policy. Keep an intentional
         // entrance visible instead of silently skipping Savannah.
+        releasePageLock();
         setFallback(true);
         setSiteLayer(true);
         setDepthStage("twoD");
@@ -155,7 +176,7 @@ export default function SavannahIntro() {
     const video = videoRef.current;
     if (!video) return;
 
-    document.documentElement.classList.remove("savannah-page-locking", "savannah-page-locked");
+    releasePageLock();
     setFallback(false);
     setSiteLayer(false);
     setDepthStage("film");
@@ -168,6 +189,7 @@ export default function SavannahIntro() {
     try { video.currentTime = START_AT; } catch {}
     video.muted = true;
     void video.play().catch(() => {
+      releasePageLock();
       setFallback(true);
       setSiteLayer(true);
       setDepthStage("twoD");
@@ -180,7 +202,8 @@ export default function SavannahIntro() {
 
     document.documentElement.classList.remove("savannah-page-locked");
     document.documentElement.classList.add("savannah-page-locking");
-    window.setTimeout(() => {
+    lockSeatTimerRef.current = window.setTimeout(() => {
+      lockSeatTimerRef.current = null;
       playVaultClunk();
       document.documentElement.classList.remove("savannah-page-locking");
       document.documentElement.classList.add("savannah-page-locked");
@@ -188,8 +211,8 @@ export default function SavannahIntro() {
       // Keep the vault-seat effect transient. Leaving a transform on the entire
       // long homepage can turn it into one giant composited layer and clip
       // scrolling/rendering partway down in Safari/Chromium.
-      window.setTimeout(() => {
-        document.documentElement.classList.remove("savannah-page-locked");
+      lockReleaseTimerRef.current = window.setTimeout(() => {
+        releasePageLock();
       }, 460);
     }, 560);
   };
@@ -254,6 +277,7 @@ export default function SavannahIntro() {
         onTimeUpdate={trackHandoff}
         onEnded={finishHandoff}
         onError={() => {
+          releasePageLock();
           setFallback(true);
           setReady(true);
           setSiteLayer(true);

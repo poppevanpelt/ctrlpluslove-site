@@ -7,6 +7,11 @@ import { SAVANNAH_ROOM_VAPI } from "./vapi-config";
 import { roomBrief } from "./room-briefs";
 import { BONKERS_TOOLS } from "../../bonkers/tools";
 import { SAVANNAH_BRIEFING } from "../../savannah-briefing";
+import {
+  SAVANNAH_HIDDEN_TAB_GRACE_MS,
+  SAVANNAH_TEXT_BURST_TIMEOUT_MS,
+  SAVANNAH_VOICE_MAX_DURATION_MS,
+} from "../../savannah-runtime";
 
 const VIDEO_SRC = "https://ctrl-love-media.floot.app/_cdn/static/savannah-intro.mp4";
 
@@ -31,12 +36,54 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
   const [transcript, setTranscript] = useState<TranscriptLine[]>([]);
   const [draft, setDraft] = useState("");
   const transcriptIdRef = useRef(0);
+  const callOriginRef = useRef<"voice" | "typed" | null>(null);
+  const burstTimerRef = useRef<number | null>(null);
+  const voiceTimerRef = useRef<number | null>(null);
+  const hiddenTimerRef = useRef<number | null>(null);
+  const safetyClosedRef = useRef(false);
+
+  const clearBurstTimer = () => {
+    if (burstTimerRef.current !== null) {
+      window.clearTimeout(burstTimerRef.current);
+      burstTimerRef.current = null;
+    }
+  };
+
+  const clearVoiceTimer = () => {
+    if (voiceTimerRef.current !== null) {
+      window.clearTimeout(voiceTimerRef.current);
+      voiceTimerRef.current = null;
+    }
+  };
+
+  const clearHiddenTimer = () => {
+    if (hiddenTimerRef.current !== null) {
+      window.clearTimeout(hiddenTimerRef.current);
+      hiddenTimerRef.current = null;
+    }
+  };
 
   useEffect(() => {
     const vapi = new Vapi(SAVANNAH_ROOM_VAPI.publicKey);
     vapiRef.current = vapi;
 
     vapi.on("call-start", () => {
+      if (callOriginRef.current === "typed") {
+        clearBurstTimer();
+        burstTimerRef.current = window.setTimeout(() => {
+          try { vapi.stop(); } catch {}
+          burstTimerRef.current = null;
+        }, SAVANNAH_TEXT_BURST_TIMEOUT_MS);
+      } else {
+        clearVoiceTimer();
+        safetyClosedRef.current = false;
+        voiceTimerRef.current = window.setTimeout(() => {
+          safetyClosedRef.current = true;
+          try { vapi.stop(); } catch {}
+          voiceTimerRef.current = null;
+        }, SAVANNAH_VOICE_MAX_DURATION_MS);
+      }
+
       const brief = roomBrief(roomSlug);
       const roomSystem = [
         SAVANNAH_BRIEFING,
@@ -46,7 +93,7 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
       vapi.send({ type: "add-message", message: { role: "system", content: roomSystem } });
       const queued = queuedTextRef.current;
       if (queued) {
-        vapi.send({ type: "add-message", message: { role: "user", content: queued } });
+        vapi.send({ type: "add-message", message: { role: "user", content: queued }, triggerResponseEnabled: true } as any);
         queuedTextRef.current = null;
       }
       setState("live");
@@ -69,21 +116,50 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
           if (last?.role === incoming.role && last.text === text) return previous;
           return [...previous.slice(-39), { id: transcriptIdRef.current, role: incoming.role as TranscriptRole, text }];
         });
+        if (incoming.role === "assistant" && callOriginRef.current === "typed") {
+          clearBurstTimer();
+          burstTimerRef.current = window.setTimeout(() => {
+            try { vapi.stop(); } catch {}
+            burstTimerRef.current = null;
+          }, 1200);
+        }
       }
     });
 
     vapi.on("call-end", () => {
+      clearBurstTimer();
+      clearVoiceTimer();
+      const safetyClosed = safetyClosedRef.current;
+      callOriginRef.current = null;
+      safetyClosedRef.current = false;
       setState("idle");
-      setMessage("Room stays here. Call ended.");
+      setMessage(safetyClosed ? "Line closed. Tap to talk again." : "Room stays here. Call ended.");
     });
 
     vapi.on("error", (error: unknown) => {
+      clearBurstTimer();
+      clearVoiceTimer();
+      callOriginRef.current = null;
       console.error("Savannah Room Vapi error", error);
       setState("error");
       setMessage("Vapi did not open the line.");
     });
 
+    const onVisibilityChange = () => {
+      clearHiddenTimer();
+      if (!document.hidden) return;
+      hiddenTimerRef.current = window.setTimeout(() => {
+        try { vapi.stop(); } catch {}
+        hiddenTimerRef.current = null;
+      }, SAVANNAH_HIDDEN_TAB_GRACE_MS);
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
     return () => {
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      clearHiddenTimer();
+      clearBurstTimer();
+      clearVoiceTimer();
       try { vapi.stop(); } catch {}
       vapi.removeAllListeners();
       vapiRef.current = null;
@@ -126,16 +202,18 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
     setDraft("");
 
     if (state === "live") {
-      vapi.send({ type: "add-message", message: { role: "user", content: text } });
+      vapi.send({ type: "add-message", message: { role: "user", content: text }, triggerResponseEnabled: true } as any);
       return;
     }
 
     queuedTextRef.current = text;
+    callOriginRef.current = "typed";
     setState("connecting");
     setMessage("Opening the room line.");
 
     void vapi.start(SAVANNAH_ROOM_VAPI.assistantId, { firstMessage: "" } as any).catch((error: unknown) => {
       console.error("Savannah Room typed start failed", error);
+      callOriginRef.current = null;
       queuedTextRef.current = null;
       setState("error");
       setMessage("Vapi start failed.");
@@ -151,11 +229,13 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
       return;
     }
 
+    callOriginRef.current = "voice";
     setState("connecting");
     setMessage("Opening the room line.");
 
     void vapi.start(SAVANNAH_ROOM_VAPI.assistantId).catch((error: unknown) => {
       console.error("Savannah Room start failed", error);
+      callOriginRef.current = null;
       setState("error");
       setMessage("Vapi start failed.");
     });

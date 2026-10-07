@@ -5,6 +5,12 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { SAVANNAH_BRIEFING } from "./savannah-briefing";
 import {
+  SAVANNAH_HIDDEN_TAB_GRACE_MS,
+  SAVANNAH_TEXT_BURST_TIMEOUT_MS,
+  SAVANNAH_VAPI,
+  SAVANNAH_VOICE_MAX_DURATION_MS,
+} from "./savannah-runtime";
+import {
   deriveSavannahFieldNote,
   fieldNotesContext,
   loadSavannahFieldNotes,
@@ -12,8 +18,6 @@ import {
   type SavannahFieldNote,
 } from "./savannah-field-notes";
 
-const PUBLIC_KEY = "12382a58-9f0f-41fe-ba94-257368be07cb";
-const ASSISTANT_ID = "4289b114-3dca-4052-9684-13c3435bd0a4";
 const SAVANNAH_AVATAR = "/savannah-avatar.jpg?v=20261002-4";
 // Host redeploy trigger: Savannah voice lifecycle fix - 2026-10-07
 
@@ -60,6 +64,10 @@ export function SavannahWidget() {
   const micWakeTimersRef = useRef<number[]>([]);
   const fieldNotesRef = useRef<SavannahFieldNote[]>([]);
   const rememberedUserCountRef = useRef(0);
+  const textBurstTimerRef = useRef<number | null>(null);
+  const voiceLimitTimerRef = useRef<number | null>(null);
+  const hiddenTabTimerRef = useRef<number | null>(null);
+  const voiceSafetyClosedRef = useRef(false);
   const [state, setState] = useState<State>("idle");
   const [compact, setCompact] = useState(false);
   const [mobileAutoCollapsed, setMobileAutoCollapsed] = useState(false);
@@ -168,6 +176,45 @@ export function SavannahWidget() {
     }, delay);
   };
 
+  const clearTextBurstTimer = () => {
+    if (textBurstTimerRef.current !== null) {
+      window.clearTimeout(textBurstTimerRef.current);
+      textBurstTimerRef.current = null;
+    }
+  };
+
+  const armTextBurstWatchdog = (client: Vapi) => {
+    clearTextBurstTimer();
+    textBurstTimerRef.current = window.setTimeout(() => {
+      try { client.stop(); } catch {}
+      textBurstTimerRef.current = null;
+    }, SAVANNAH_TEXT_BURST_TIMEOUT_MS);
+  };
+
+  const clearVoiceLimitTimer = () => {
+    if (voiceLimitTimerRef.current !== null) {
+      window.clearTimeout(voiceLimitTimerRef.current);
+      voiceLimitTimerRef.current = null;
+    }
+  };
+
+  const armVoiceLimit = (client: Vapi) => {
+    clearVoiceLimitTimer();
+    voiceSafetyClosedRef.current = false;
+    voiceLimitTimerRef.current = window.setTimeout(() => {
+      voiceSafetyClosedRef.current = true;
+      try { client.stop(); } catch {}
+      voiceLimitTimerRef.current = null;
+    }, SAVANNAH_VOICE_MAX_DURATION_MS);
+  };
+
+  const clearHiddenTabTimer = () => {
+    if (hiddenTabTimerRef.current !== null) {
+      window.clearTimeout(hiddenTabTimerRef.current);
+      hiddenTabTimerRef.current = null;
+    }
+  };
+
   const clearMicWakeTimers = () => {
     micWakeTimersRef.current.forEach((timer) => window.clearTimeout(timer));
     micWakeTimersRef.current = [];
@@ -214,8 +261,8 @@ export function SavannahWidget() {
   useEffect(() => {
     if (pathname.startsWith("/savannah-room/")) return;
 
-    const vapi = new Vapi(PUBLIC_KEY, undefined, { avoidEval: true, alwaysIncludeMicInPermissionPrompt: true }, { startAudioOff: false });
-    const textVapi = new Vapi(PUBLIC_KEY, undefined, { avoidEval: true, alwaysIncludeMicInPermissionPrompt: true }, { startAudioOff: true });
+    const vapi = new Vapi(SAVANNAH_VAPI.publicKey, undefined, { avoidEval: true, alwaysIncludeMicInPermissionPrompt: true }, { startAudioOff: false });
+    const textVapi = new Vapi(SAVANNAH_VAPI.publicKey, undefined, { avoidEval: true, alwaysIncludeMicInPermissionPrompt: true }, { startAudioOff: true });
     vapiRef.current = vapi;
     textVapiRef.current = textVapi;
 
@@ -223,6 +270,7 @@ export function SavannahWidget() {
       // Safari/Daily can briefly re-mute while the call object settles.
       // Wake the mic more than once so Savannah keeps listening after her intro.
       forceMicOpen(vapi);
+      armVoiceLimit(vapi);
       setState("live");
       setMessage("I'm listening.");
       try {
@@ -262,15 +310,22 @@ export function SavannahWidget() {
     vapi.on("call-end", () => {
       rememberCurrentConversation();
       clearMicWakeTimers();
+      clearVoiceLimitTimer();
       stopSteel();
       setAssistantSpeaking(false);
       setState("idle");
       if (modeRef.current === "voice") {
-        setMessage("Morning. What are we trying to decide?");
+        setMessage(
+          voiceSafetyClosedRef.current
+            ? "Line closed. Tap to talk again."
+            : "Morning. What are we trying to decide?",
+        );
       }
+      voiceSafetyClosedRef.current = false;
     });
     vapi.on("error", (error: unknown) => {
       clearMicWakeTimers();
+      clearVoiceLimitTimer();
       stopSteel();
       setAssistantSpeaking(false);
       console.error("Savannah Vapi error", error);
@@ -287,6 +342,7 @@ export function SavannahWidget() {
         } as any);
       } catch {}
       setTextState("live");
+      armTextBurstWatchdog(textVapi);
       setMessage("Type away. I'm here.");
       try {
         textVapi.send({
@@ -327,19 +383,26 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       ) {
         appendConversation("assistant", incoming.transcript, true);
         setTextPending(false);
+        clearTextBurstTimer();
+        textBurstTimerRef.current = window.setTimeout(() => {
+          try { textVapi.stop(); } catch {}
+          textBurstTimerRef.current = null;
+        }, 1200);
       }
     });
 
     textVapi.on("call-end", () => {
       rememberCurrentConversation();
+      clearTextBurstTimer();
       setTextState("idle");
       setTextPending(false);
       if (modeRef.current === "type") {
-        setMessage("Quiet line closed. Tap Type to reopen it.");
+        setMessage("Ready for the next message.");
       }
     });
 
     textVapi.on("error", (error: unknown) => {
+      clearTextBurstTimer();
       console.error("Savannah text Vapi error", error);
       setTextState("error");
       setTextPending(false);
@@ -348,7 +411,22 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       }
     });
 
+    const onVisibilityChange = () => {
+      clearHiddenTabTimer();
+      if (!document.hidden) return;
+      hiddenTabTimerRef.current = window.setTimeout(() => {
+        try { vapi.stop(); } catch {}
+        try { textVapi.stop(); } catch {}
+        hiddenTabTimerRef.current = null;
+      }, SAVANNAH_HIDDEN_TAB_GRACE_MS);
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
     return () => {
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      clearHiddenTabTimer();
+      clearTextBurstTimer();
+      clearVoiceLimitTimer();
       clearMicWakeTimers();
       stopSteel();
       try { steelAudioRef.current?.close(); } catch {}
@@ -391,7 +469,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
 
     try {
       await textVapi.start(
-        ASSISTANT_ID,
+        SAVANNAH_VAPI.assistantId,
         {
           firstMessage: "",
           voice: { provider: "vapi", voiceId: "Savannah", version: 2 },
@@ -414,7 +492,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       if (state === "live" || state === "connecting") {
         try { vapiRef.current?.stop(); } catch {}
       }
-      void startText();
+      setMessage("Type away. I'll open a short line when you send.");
       return;
     }
 
@@ -476,7 +554,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       // source for her voice configuration, and overriding it in-browser can leave
       // the web call connected but silent when the dashboard voice changes.
       void vapi.start(
-        ASSISTANT_ID,
+        SAVANNAH_VAPI.assistantId,
         {
           firstMessage: pathname === "/bridgefund-savannah" ? "Hi. Savannah. I know which room I'm in. What's bothering you?" : "Hi. Savannah at control love. What's up?",
           backgroundSound: "office",
