@@ -46,9 +46,9 @@ export default function Home() {
         <div className={styles.heroVeil} />
         <div className={styles.heroCopyLeft}>
           <div className={styles.eyebrow}>Applied AI for human judgment</div>
-          <h1>We build instruments for human judgment.</h1>
+          <h1 data-savannah-handoff-headline="true">We build instruments for human judgment.</h1>
         </div>
-        <div className={styles.heroCopyRight}>
+        <div className={styles.heroCopyRight} data-savannah-handoff-panel="true">
           <p>AI can generate more answers than we will ever need.</p>
           <strong>The interesting problem is knowing what deserves to be believed.</strong>
           <span>72° and sunny.</span>
