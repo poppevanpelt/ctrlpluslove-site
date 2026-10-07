@@ -220,7 +220,7 @@
   transition:transform .56s cubic-bezier(.65,0,.25,1);
 }
 :global(html.savannah-page-locked) .page{
-  animation:vaultClunkSeat .34s cubic-bezier(.18,.88,.2,1) both;
+  animation:vaultClunkSeat .34s cubic-bezier(.18,.88,.2,1);
 }
 @keyframes vaultClunkSeat{
   0%{transform:translateY(10px) scale(.9965)}
