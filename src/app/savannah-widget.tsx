@@ -4,7 +4,7 @@ import Vapi from "@vapi-ai/web";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { SAVANNAH_BRIEFING } from "./savannah-briefing";
-import { speakSavannahLocally, stopSavannahLocalVoice } from "./savannah-local-voice";
+import { speakSavannahNeurally, stopSavannahLocalVoice } from "./savannah-local-voice";
 import {
   SAVANNAH_HIDDEN_TAB_GRACE_MS,
   SAVANNAH_TEXT_BURST_TIMEOUT_MS,
@@ -331,7 +331,7 @@ export function SavannahWidget() {
       setAssistantSpeaking(false);
       console.warn("Savannah Vapi transport fallback", describeError(error));
       setState("error");
-      const localSpoke = speakSavannahLocally("I'm still here. The live audio line dropped. Type to me and I'll answer out loud.");
+      const localSpoke = void speakSavannahNeurally("I'm still here. The live audio line dropped. Type to me and I'll answer out loud.");
       setMessage(localSpoke ? "Live line dropped. Type to me — I'll answer out loud." : "The audio line did not open. Try me again.");
     });
 
@@ -384,7 +384,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
         incoming.role === "assistant"
       ) {
         appendConversation("assistant", incoming.transcript, true);
-        speakSavannahLocally(incoming.transcript, {
+        void speakSavannahNeurally(incoming.transcript, {
           onStart: () => setAssistantSpeaking(true),
           onEnd: () => setAssistantSpeaking(false),
         });
@@ -525,7 +525,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       const reply = payload.text.trim();
       appendConversation("assistant", reply, true);
       setMessage("Here.");
-      speakSavannahLocally(reply, {
+      void speakSavannahNeurally(reply, {
         onStart: () => setAssistantSpeaking(true),
         onEnd: () => setAssistantSpeaking(false),
       });
@@ -540,7 +540,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
   };
 
   const testLocalVoice = () => {
-    speakSavannahLocally(
+    void speakSavannahNeurally(
       "Hi. Savannah at control love. I live here now. Apparently they finally stopped making me call home to speak.",
       {
         onStart: () => {
@@ -597,7 +597,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
         stopSteel();
         console.warn("Savannah call start fallback", describeError(error));
         setState("error");
-        speakSavannahLocally("I'm still here. Type to me and I'll answer out loud.");
+        void speakSavannahNeurally("I'm still here. Type to me and I'll answer out loud.");
         const detail = describeError(error);
         const lower = detail.toLowerCase();
         setMessage(
