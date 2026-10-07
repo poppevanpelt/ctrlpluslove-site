@@ -179,7 +179,7 @@ textVapi.on("call-start",()=>{
   }
 });
 textVapi.on("message",(m)=>{
-  if(m?.type==="transcript"&&m.transcript&&(!m.transcriptType||m.transcriptType==="final")&&m.role==="assistant"){ addLine("assistant",m.transcript); clearTextBurstTimer(); setTimeout(()=>{try{textVapi.stop()}catch{}},120); }
+  if(m?.type==="transcript"&&m.transcript&&(!m.transcriptType||m.transcriptType==="final")&&m.role==="assistant"){ addLine("assistant",m.transcript); clearTextBurstTimer(); textBurstTimer=setTimeout(()=>{try{textVapi.stop()}catch{} textBurstTimer=null;},1200); }
 });
 textVapi.on("call-end",()=>{clearTextBurstTimer();setStatus("Ready. Talk or type.",false)});
 textVapi.on("error",(e)=>{clearTextBurstTimer();console.error(e);setStatus("The quiet line dropped. Try again.",false)});
