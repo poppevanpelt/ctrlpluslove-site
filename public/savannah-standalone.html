@@ -72,7 +72,6 @@ import Vapi from "https://esm.sh/@vapi-ai/web@2.6.1?bundle";
 
 const GLOBAL = { publicKey:"12382a58-9f0f-41fe-ba94-257368be07cb", assistantId:"4289b114-3dca-4052-9684-13c3435bd0a4" };
 const ROOM = GLOBAL;
-const TEXT_BURST_TIMEOUT_MS = 45_000;
 const VOICE_MAX_DURATION_MS = 5 * 60_000;
 const HIDDEN_TAB_GRACE_MS = 30_000;
 const LOCAL_URL = (new URLSearchParams(location.search).get("local") || "http://127.0.0.1:4517").replace(/\/$/, "");
@@ -111,9 +110,6 @@ const form = document.getElementById("form");
 const send = document.getElementById("send");
 
 let state = "idle";
-let pendingText = null;
-let mode = "voice";
-let textBurstTimer = null;
 let voiceTimer = null;
 let hiddenTimer = null;
 let voiceSafetyClosed = false;
@@ -126,10 +122,8 @@ function setStatus(text, live=false){
   end.disabled = state!=="live";
 }
 
-function clearTextBurstTimer(){ if(textBurstTimer!==null){ clearTimeout(textBurstTimer); textBurstTimer=null; } }
 function clearVoiceTimer(){ if(voiceTimer!==null){ clearTimeout(voiceTimer); voiceTimer=null; } }
 function clearHiddenTimer(){ if(hiddenTimer!==null){ clearTimeout(hiddenTimer); hiddenTimer=null; } }
-function armTextBurst(){ clearTextBurstTimer(); textBurstTimer=setTimeout(()=>{ try{textVapi.stop()}catch{} textBurstTimer=null; },TEXT_BURST_TIMEOUT_MS); }
 function armVoiceLimit(){ clearVoiceTimer(); voiceSafetyClosed=false; voiceTimer=setTimeout(()=>{ voiceSafetyClosed=true; try{vapi.stop()}catch{} voiceTimer=null; },VOICE_MAX_DURATION_MS); }
 
 function addLine(role,text){
@@ -157,7 +151,7 @@ function injectBrief(client, typed=false){
 
 vapi.on("call-start",()=>{
   armVoiceLimit();
-  state="live"; mode="voice"; setStatus("I'm listening.",true); injectBrief(vapi,false);
+  state="live"; setStatus("I'm listening.",true); injectBrief(vapi,false);
   try{vapi.setMuted(false)}catch{}
 });
 vapi.on("call-end",()=>{clearVoiceTimer();state="idle";portrait.classList.remove("speaking");setStatus(voiceSafetyClosed?"Line closed. Tap to talk again.":"Call ended. Ready again.",false);voiceSafetyClosed=false});
@@ -170,7 +164,6 @@ vapi.on("error",(e)=>{clearVoiceTimer();console.error(e);state="idle";portrait.c
 
 talk.addEventListener("click",async()=>{
   if(state!=="idle") return;
-  clearTextBurstTimer();
   state="connecting"; setStatus("Opening the line…",false);
   try {
     await vapi.start(cfg.assistantId,{firstMessage:isRoom?"Hi. Savannah. I know which room I'm in. What's bothering you?":"Hi. Savannah at control love. What's up?",backgroundSound:"office"});
