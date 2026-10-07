@@ -19,7 +19,7 @@ function extractText(payload: any) {
 
 export async function POST(request: Request) {
   const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) return Response.json({ error: "Savannah is not connected yet." }, { status: 503 });
+  if (!apiKey) return Response.json({ text: "I can hear you. My brain key is not connected yet, but apparently my voice is. Progress.", demo: true }, { headers: { "Cache-Control": "no-store" } });
 
   const body = (await request.json().catch(() => ({}))) as RequestBody;
   const messages = (Array.isArray(body.messages) ? body.messages : [])
