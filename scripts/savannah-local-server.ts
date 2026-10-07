@@ -7,9 +7,8 @@ const OLLAMA_BASE_URL = (process.env.OLLAMA_BASE_URL || "http://127.0.0.1:11434"
 const REQUEST_LIMIT = 256 * 1024;
 
 const preferredModels = [
-  "gpt-oss:20b",
   "qwen3:8b",
-  "gemma4",
+  "gemma3:4b",
   "llama3.2:3b",
 ];
 
@@ -27,7 +26,7 @@ function isAllowedOrigin(origin) {
 }
 
 function corsHeaders(origin) {
-  const headers = {
+  const headers: Record<string, string> = {
     "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Allow-Private-Network": "true",
