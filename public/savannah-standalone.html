@@ -186,6 +186,8 @@ textVapi.on("error",(e)=>{clearTextBurstTimer();console.error(e);setStatus("The 
 
 talk.addEventListener("click",async()=>{
   if(state!=="idle") return;
+  clearTextBurstTimer();
+  try{textVapi.stop()}catch{}
   state="connecting"; setStatus("Opening the line…",false);
   try {
     await vapi.start(cfg.assistantId,{firstMessage:isRoom?"Hi. Savannah. I know which room I'm in. What's bothering you?":"Hi. Savannah at control love. What's up?",backgroundSound:"office"});
@@ -198,6 +200,9 @@ form.addEventListener("submit",async(e)=>{
   e.preventDefault();
   const text=input.value.trim(); if(!text) return;
   input.value=""; addLine("user",text);
+  if(state==="live"){
+    try{vapi.send({type:"add-message",message:{role:"user",content:text},triggerResponseEnabled:true});return}catch{}
+  }
   pendingText=text; mode="type";
   try{await textVapi.start(cfg.assistantId,{firstMessage:""})}catch(err){console.error(err);pendingText=null;setStatus("The quiet line did not open. Try again.",false)}
 });
