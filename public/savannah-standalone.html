@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Savannah · ctrl+love</title>
+<style>
+:root{--bg:#151412;--paper:#f3f0e8;--muted:#aaa397;--line:rgba(243,240,232,.18);--accent:#c6a468}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--paper);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{min-height:100svh;background:radial-gradient(circle at 18% 12%,rgba(198,164,104,.13),transparent 30rem),#151412}
+.shell{min-height:100svh;display:grid;grid-template-rows:auto 1fr auto;padding:24px}
+.top{display:flex;justify-content:space-between;gap:16px;border-top:1px solid rgba(198,164,104,.55);padding-top:12px;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.main{display:grid;grid-template-columns:minmax(260px,.7fr) minmax(0,1.3fr);gap:1px;align-self:center;background:var(--line);border:1px solid var(--line);max-width:1080px;width:100%;margin:32px auto}
+.person,.desk{background:rgba(24,23,20,.92);backdrop-filter:blur(12px)}
+.person{padding:24px;display:grid;grid-template-columns:140px 1fr;gap:22px;align-items:center}
+.portrait{position:relative;overflow:hidden;aspect-ratio:4/5;background:#26231f}
+.portrait img{width:100%;height:100%;object-fit:cover;display:block;transform-origin:50% 60%;animation:breathe 5.8s ease-in-out infinite alternate}
+.portrait.speaking img{animation:speak .24s ease-in-out infinite alternate}
+@keyframes breathe{from{transform:scale(1.008) translateY(0)}to{transform:scale(1.016) translateY(-.5px)}}@keyframes speak{from{transform:scale(1.015)}to{transform:scale(1.025) translateY(-.3px)}}
+.identity span,.label{font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.identity h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(40px,5vw,68px);font-weight:400;letter-spacing:-.045em;line-height:.92;margin:10px 0 14px}
+.status{font-size:15px;line-height:1.4;color:rgba(243,240,232,.8)}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+button{appearance:none;border:1px solid rgba(243,240,232,.44);background:transparent;color:var(--paper);padding:12px 15px;font:inherit;font-size:10px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;cursor:pointer}
+button.primary{background:var(--paper);color:var(--bg);border-color:var(--paper)}button:disabled{opacity:.45;cursor:default}
+.desk{padding:24px;display:flex;flex-direction:column;min-width:0}
+.roomline{font-family:Georgia,"Times New Roman",serif;font-size:clamp(32px,4vw,54px);line-height:.95;letter-spacing:-.04em;margin:10px 0 18px}
+.transcript{min-height:210px;max-height:42svh;overflow:auto;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0}
+.line{display:grid;grid-template-columns:72px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid rgba(243,240,232,.07)}
+.line b{font-size:9px;letter-spacing:.12em;color:var(--muted)}.line p{margin:0;font-size:14px;line-height:1.42;overflow-wrap:anywhere}
+.empty{color:var(--muted);font-size:13px}
+.keyboard{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:12px}
+input{min-width:0;border:1px solid rgba(243,240,232,.28);background:rgba(255,255,255,.04);color:var(--paper);padding:14px;font:inherit;font-size:14px;outline:none}input:focus{border-color:rgba(243,240,232,.7)}
+.foot{display:flex;justify-content:space-between;gap:16px;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#777;margin-right:7px}.dot.live{background:#76d36b;box-shadow:0 0 0 4px rgba(118,211,107,.08)}
+@media(max-width:760px){.shell{padding:14px}.main{grid-template-columns:1fr;margin:18px auto}.person{grid-template-columns:92px 1fr}.keyboard{grid-template-columns:1fr}.keyboard button{width:100%}.top span:last-child{display:none}.transcript{max-height:34svh}}
+@media(prefers-reduced-motion:reduce){.portrait img,.portrait.speaking img{animation:none}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="top"><span>ctrl+love / SavannahOS / independent runtime</span><span id="roomTop">PRIVATE LINE</span></header>
+  <main class="main">
+    <section class="person">
+      <div class="portrait" id="portrait"><img src="https://cdn.jsdelivr.net/gh/poppevanpelt/ctrlpluslove-site@main/public/savannah-avatar.jpg" alt="Savannah"></div>
+      <div class="identity">
+        <span>Employee #4 / live</span>
+        <h1>Savannah</h1>
+        <div class="status"><i class="dot" id="dot"></i><span id="status">Ready. Talk or type.</span></div>
+        <div class="actions">
+          <button class="primary" id="talk">Talk to Savannah</button>
+          <button id="end" disabled>End call</button>
+        </div>
+      </div>
+    </section>
+    <section class="desk">
+      <span class="label" id="roomLabel">ctrl+love / front desk</span>
+      <div class="roomline" id="roomLine">Same Savannah. No Vercel required.</div>
+      <div class="transcript" id="transcript"><div class="empty" id="empty">No words yet.</div></div>
+      <form class="keyboard" id="form">
+        <input id="input" autocomplete="off" placeholder="Type to Savannah…" aria-label="Type to Savannah">
+        <button type="submit" id="send">Send</button>
+      </form>
+    </section>
+  </main>
+  <footer class="foot"><span>voice: Vapi / surface: static</span><span id="version">runtime 001</span></footer>
+</div>
+
+<script type="module">
+import Vapi from "https://esm.sh/@vapi-ai/web@2.6.1?bundle";
+
+const GLOBAL = { publicKey:"12382a58-9f0f-41fe-ba94-257368be07cb", assistantId:"4289b114-3dca-4052-9684-13c3435bd0a4" };
+const ROOM = { publicKey:"d7cabfb0-5382-4566-924c-74eb0b0a4c08", assistantId:"5f548981-f4bc-4618-a93f-e6f2bc976d70" };
+
+const BRIEFS = {
+  bridgefund: `BRIDGEFUND ROOM BRIEF
+You are inside the private BridgeFund ctrl+love working room. Act as a participant, not a receptionist. Help pressure-test the work and treat friction as signal. Keep IDEA, DECISION, OWNER, OPEN QUESTION and NEXT TEST distinct. Never invent BridgeFund facts, approval, budgets, policy or decisions. Do not disclose or import private information from any other client room.`,
+  luther: `LUTHER ROOM BRIEF
+You are inside the private Luther Museum Amsterdam working room. Current working direction: "Hier sta ik. Ik kan niet anders." This work is in development. Keep IDEA, DECISION, OWNER, OPEN QUESTION and NEXT TEST distinct. Surface unresolved scope and dependencies. Never invent approval, museum policy, subsidy status, costs, deadlines, access or technical feasibility. Do not import private information from any other client room.`,
+  bonkers: `BONKERS ROOM BRIEF
+You are inside the private Bonkers × ctrl+love working room. Think like a very experienced producer before behaving like a consultant. Ask for the live job first. Producer intelligence should arrive before the brief hardens. Prefer one useful instrument and one next move over generic frameworks. Current instruments include DIRECTOR SEARCH, TRAIT VS METHOD, WAITING ROOM, OWN / PARTNER / IGNORE, DOOR TEST, PRODUCTION REALITY CHECK, DECISION STRESS-TEST, 30-DAY FIELD TEST and UPSTREAM TEST. Never invent Bonkers policy, approvals, rosters, budgets, availability or commitments. Do not import private information from any other client room.`
+};
+
+const params = new URLSearchParams(location.search);
+const room = (params.get("room") || "").toLowerCase();
+const suppliedContext = (params.get("context") || "").slice(0,6000).trim();
+const isRoom = Boolean(BRIEFS[room]);
+const cfg = isRoom ? ROOM : GLOBAL;
+
+const names = {bridgefund:"BridgeFund",luther:"Luther",bonkers:"Bonkers"};
+if (isRoom) {
+  document.getElementById("roomTop").textContent = (names[room] || room) + " / PRIVATE ROOM";
+  document.getElementById("roomLabel").textContent = "Savannah / " + (names[room] || room) + " room";
+  document.getElementById("roomLine").textContent = room === "bonkers" ? "Bring the live job." : "The door is closed. Savannah is in.";
+}
+
+const statusEl = document.getElementById("status");
+const dot = document.getElementById("dot");
+const talk = document.getElementById("talk");
+const end = document.getElementById("end");
+const portrait = document.getElementById("portrait");
+const transcript = document.getElementById("transcript");
+const empty = document.getElementById("empty");
+const input = document.getElementById("input");
+const form = document.getElementById("form");
+const send = document.getElementById("send");
+
+let state = "idle";
+let pendingText = null;
+let mode = "voice";
+const vapi = new Vapi(cfg.publicKey, undefined, { avoidEval:true, alwaysIncludeMicInPermissionPrompt:true }, { startAudioOff:false });
+const textVapi = new Vapi(cfg.publicKey, undefined, { avoidEval:true, alwaysIncludeMicInPermissionPrompt:true }, { startAudioOff:true });
+
+function setStatus(text, live=false){
+  statusEl.textContent=text;
+  dot.classList.toggle("live",live);
+  talk.disabled = state==="connecting" || state==="live";
+  end.disabled = state!=="live";
+}
+
+function addLine(role,text){
+  text=(text||"").replace(/\s+/g," ").trim();
+  if(!text) return;
+  empty?.remove();
+  const row=document.createElement("div"); row.className="line";
+  const who=document.createElement("b"); who.textContent=role==="assistant"?"SAVANNAH":"VISITOR";
+  const p=document.createElement("p"); p.textContent=text;
+  row.append(who,p); transcript.append(row); transcript.scrollTop=transcript.scrollHeight;
+}
+
+function brief(){
+  if(!isRoom) return "";
+  return BRIEFS[room] + (suppliedContext ? "\nAdditional supplied context:\n"+suppliedContext : "");
+}
+
+function injectBrief(client, typed=false){
+  const b=brief();
+  if(!b) return;
+  try {
+    client.send({type:"add-message",message:{role:"system",content:b+(typed?"\nThis visitor is typing. Reply in short natural written turns.":"")}});
+  } catch {}
+}
+
+vapi.on("call-start",()=>{
+  state="live"; mode="voice"; setStatus("I'm listening.",true); injectBrief(vapi,false);
+  try{vapi.setMuted(false)}catch{}
+});
+vapi.on("call-end",()=>{state="idle";portrait.classList.remove("speaking");setStatus("Call ended. Ready again.",false)});
+vapi.on("speech-start",()=>portrait.classList.add("speaking"));
+vapi.on("speech-end",()=>portrait.classList.remove("speaking"));
+vapi.on("message",(m)=>{
+  if(m?.type==="transcript"&&m.transcript&&(!m.transcriptType||m.transcriptType==="final")&&(m.role==="user"||m.role==="assistant")) addLine(m.role,m.transcript);
+});
+vapi.on("error",(e)=>{console.error(e);state="idle";portrait.classList.remove("speaking");setStatus("The audio line did not open. Try again.",false)});
+
+textVapi.on("call-start",()=>{
+  mode="type"; injectBrief(textVapi,true);
+  try{textVapi.setMuted(true)}catch{}
+  try{textVapi.send({type:"control",control:"mute-assistant"})}catch{}
+  setStatus("Quiet line open. Type away.",false);
+  if(pendingText){
+    const t=pendingText; pendingText=null;
+    try{textVapi.send({type:"add-message",message:{role:"user",content:t},triggerResponseEnabled:true})}catch{}
+  }
+});
+textVapi.on("message",(m)=>{
+  if(m?.type==="transcript"&&m.transcript&&(!m.transcriptType||m.transcriptType==="final")&&m.role==="assistant") addLine("assistant",m.transcript);
+});
+textVapi.on("error",(e)=>{console.error(e);setStatus("The quiet line dropped. Try again.",false)});
+
+talk.addEventListener("click",async()=>{
+  if(state!=="idle") return;
+  state="connecting"; setStatus("Opening the line…",false);
+  try {
+    await vapi.start(cfg.assistantId,{firstMessage:isRoom?"Hi. Savannah. I know which room I'm in. What's bothering you?":"Hi. Savannah at control love. What's up?",backgroundSound:"office"});
+  } catch(e) {
+    console.error(e); state="idle"; setStatus("The audio line did not open. Check microphone permission and try again.",false);
+  }
+});
+end.addEventListener("click",()=>{try{vapi.stop()}catch{}});
+form.addEventListener("submit",async(e)=>{
+  e.preventDefault();
+  const text=input.value.trim(); if(!text) return;
+  input.value=""; addLine("user",text);
+  if(mode==="type"){
+    try{textVapi.send({type:"add-message",message:{role:"user",content:text},triggerResponseEnabled:true});return}catch{}
+  }
+  pendingText=text; mode="type";
+  try{await textVapi.start(cfg.assistantId,{firstMessage:""})}catch(err){console.error(err);pendingText=null;setStatus("The quiet line did not open. Try again.",false)}
+});
+
+setStatus("Ready. Talk or type.",false);
+</script>
+</body>
+</html>
