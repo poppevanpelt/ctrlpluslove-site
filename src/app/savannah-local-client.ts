@@ -34,7 +34,7 @@ export async function askSavannahLocal(input: {
   context?: string;
   signal?: AbortSignal;
 }): Promise<SavannahLocalReply> {
-  const response = await fetch(`${savannahLocalBaseUrl()}/chat`, {
+  const response = await fetch(savannahLocalBaseUrl(), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -63,7 +63,7 @@ export async function askSavannahLocal(input: {
 }
 
 export async function checkSavannahLocal(signal?: AbortSignal) {
-  const response = await fetch(`${savannahLocalBaseUrl()}/health`, {
+  const response = await fetch(savannahLocalBaseUrl(), {
     method: "GET",
     signal,
   });
