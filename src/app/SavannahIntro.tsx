@@ -184,6 +184,13 @@ export default function SavannahIntro() {
       playVaultClunk();
       document.documentElement.classList.remove("savannah-page-locking");
       document.documentElement.classList.add("savannah-page-locked");
+
+      // Keep the vault-seat effect transient. Leaving a transform on the entire
+      // long homepage can turn it into one giant composited layer and clip
+      // scrolling/rendering partway down in Safari/Chromium.
+      window.setTimeout(() => {
+        document.documentElement.classList.remove("savannah-page-locked");
+      }, 460);
     }, 560);
   };
 
