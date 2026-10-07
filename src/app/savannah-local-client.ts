@@ -17,7 +17,16 @@ const DEFAULT_LOCAL_URL = "http://127.0.0.1:4517";
 
 export function savannahLocalBaseUrl() {
   const configured = process.env.NEXT_PUBLIC_SAVANNAH_LOCAL_URL?.trim();
-  return (configured || DEFAULT_LOCAL_URL).replace(/\/$/, "");
+  if (configured) return configured.replace(/\/$/, "");
+
+  if (typeof window !== "undefined") {
+    const host = window.location.hostname;
+    if (host === "localhost" || host === "127.0.0.1") {
+      return "/api/savannah-local";
+    }
+  }
+
+  return DEFAULT_LOCAL_URL;
 }
 
 export async function askSavannahLocal(input: {
