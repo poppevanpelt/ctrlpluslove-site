@@ -36,26 +36,29 @@ npm run preview:static # build and create a self-contained static preview
 ## Important Notes
 
 - This repo uses Next.js `16.2.1`.
-- `.env`, `.env.local`, `.vercel`, `node_modules`, `.next`, and static preview output should not be committed.
+- `.env`, `.env.local`, host-specific state, `node_modules`, `.next`, and static preview output should not be committed.
 - No environment variables are required for the landing page.
 - The production app includes server routes for the Re-run Room automation, so `next.config.ts` does not use full static export.
 
-## Deploy on Vercel
+## Production Hosting
 
-The project can be deployed as a Next.js app on Vercel. Use your own Vercel account and link the repo:
+GitHub `main` is the source of truth. The application is deliberately host-neutral and runs as a standard Next.js Node service.
 
-```powershell
-vercel login
-vercel link
-vercel env pull
-vercel --prod
+Production requirements:
+
+```bash
+npm ci
+npm run build
+npm start
 ```
 
-The public pages are still static where possible, while Vercel runs the automation endpoints as serverless functions.
+The host must provide a public `PORT` and support a long-running Node process. No provider-specific deployment file is required. `ctrlpluslove.com` should point directly at the current production service.
+
+Media that should survive host changes lives on the ctrl+love media host rather than inside a deployment provider.
 
 ## Re-run Room Automation
 
-The Re-run Room automation lets a Notion project page request a controlled ctrl+love Engine refresh. The MVP uses Vercel Cron polling every five minutes. Notion webhooks may replace polling later, but webhook support is not required for this version.
+The Re-run Room automation lets a Notion project page request a controlled ctrl+love Engine refresh. A host-neutral scheduler can call the protected endpoint every five minutes. Notion webhooks may replace polling later, but webhook support is not required for this version.
 
 ### Required Notion Properties
 
@@ -84,7 +87,7 @@ Button actions:
 - Edit property: `Refresh Requested At` -> `Now`
 - Edit property: `Room Error` -> empty, if Notion supports clearing it
 
-The button does not call the site API directly. It only changes page properties; Vercel Cron detects the request.
+The button does not call the site API directly. It only changes page properties; the scheduler detects the request.
 
 ### Publish Website Button
 
@@ -92,13 +95,13 @@ After 30 years in advertising, Poppe has finally reached the pinnacle of his car
 
 Admittedly, a rather important one.
 
-The Publish website button sends the latest approved Notion content to the live website by triggering a fresh Vercel production build.
+The Publish website button should trigger a fresh production build from GitHub `main` through the current host.
 
 Please click it only after the content is ready to publish. One click is enough; repeated clicks create unnecessary deployments.
 
 ### Environment Variables
 
-Set these server-side variables in Vercel:
+Set these server-side variables in the production host:
 
 ```text
 NOTION_TOKEN=
@@ -130,18 +133,17 @@ Refresh requested -> Running -> Failed
 
 The runner skips pages that are already `Running`, already processed, too recent, or stale beyond `ROOM_STALE_REQUEST_HOURS` unless manually forced.
 
-### Cron
+### Scheduler
 
-`vercel.json` schedules:
+Call:
 
 ```text
 GET /api/room-refresh
-*/5 * * * *
 ```
 
-This 5-minute schedule requires a Vercel plan that supports sub-daily cron jobs. Vercel Hobby projects reject this schedule at deploy time; upgrade the project plan or deliberately change the MVP schedule before deploying.
+on the intended cadence (currently five minutes).
 
-The cron route:
+The route:
 
 - requires `Authorization: Bearer $CRON_SECRET`
 - finds data source pages where `Room Status = Refresh requested`
@@ -149,7 +151,7 @@ The cron route:
 - processes each page independently
 - returns a compact JSON summary
 
-Vercel Cron invokes the path as `GET /api/room-refresh`. In production, set `CRON_SECRET` in Vercel so the platform includes the bearer authorization header. Manual and external invocations should use `POST /api/room-refresh` with the same header.
+The same endpoint can also be invoked manually with `POST` and the same bearer secret.
 
 ### Manual Test Endpoint
 
@@ -169,7 +171,7 @@ curl -X POST https://www.ctrlpluslove.com/api/room-refresh \
 
 The canonical endpoint processes up to three requested Notion pages per invocation. For a single-page manual recovery/test, `POST /api/room/rerun` still accepts `{ "pageId": "...", "force": false }` with the same bearer secret.
 
-Set `DRY_RUN=true` in Vercel to read, classify, and generate a proposed update without writing Room output or status changes back to Notion.
+Set `DRY_RUN=true` in the production host to read, classify, and generate a proposed update without writing Room output or status changes back to Notion.
 
 ### What The Runner Reads
 
@@ -218,9 +220,8 @@ On failure it sets `Room Status` to `Failed`, writes a readable `Room Error`, an
 
 To pause the automation:
 
-1. Remove or disable the Vercel cron entry in `vercel.json`.
-2. Redeploy.
-3. Set any stuck Notion pages from `Running` to `Idle` or `Refresh requested` after checking `Room Error`.
+1. Disable the external scheduler.
+2. Set any stuck Notion pages from `Running` to `Idle` or `Refresh requested` after checking `Room Error`.
 
 To fully remove it, revert the API routes and `src/lib/room` / `src/lib/notion` additions, then redeploy.
 
@@ -235,10 +236,4 @@ npm run test
 npm run build
 ```
 
-Then deploy:
-
-```bash
-vercel --prod
-```
-
-<!-- netlify deploy trigger 2026-10-01 -->
+Then deploy from GitHub `main` through the current production host. The production runtime is `npm start` after a successful `npm run build`.
