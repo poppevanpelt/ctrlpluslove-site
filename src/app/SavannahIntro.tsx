@@ -4,8 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./home-2026.module.css";
 
 const START_AT = 1.35;
-const UI_REVEAL_AT = 6.15;
+const DEPTH_25_AT = 6.15;
+const DEPTH_225_AT = 6.95;
+const DEPTH_2D_AT = 7.55;
 const HANDOFF_AT = 8.15;
+const HANDOFF_REMOVE_AFTER = 1150;
+
+type DepthStage = "film" | "twoFive" | "twoQuarter" | "twoD";
 
 export default function SavannahIntro() {
   const [visible, setVisible] = useState(true);
@@ -13,9 +18,66 @@ export default function SavannahIntro() {
   const [siteLayer, setSiteLayer] = useState(false);
   const [handoff, setHandoff] = useState(false);
   const [fallback, setFallback] = useState(false);
+  const [depthStage, setDepthStage] = useState<DepthStage>("film");
   const videoRef = useRef<HTMLVideoElement>(null);
   const handoffStarted = useRef(false);
   const lockStarted = useRef(false);
+  const audioRef = useRef<AudioContext | null>(null);
+
+  const armVaultAudio = () => {
+    if (typeof window === "undefined") return;
+    const Context = window.AudioContext;
+    if (!Context) return;
+
+    if (!audioRef.current) audioRef.current = new Context();
+    if (audioRef.current.state === "suspended") {
+      void audioRef.current.resume();
+    }
+  };
+
+  const playVaultClunk = () => {
+    const context = audioRef.current;
+    if (!context || context.state !== "running") return;
+
+    const now = context.currentTime;
+    const master = context.createGain();
+    master.gain.setValueAtTime(0.0001, now);
+    master.gain.exponentialRampToValueAtTime(0.22, now + 0.008);
+    master.gain.exponentialRampToValueAtTime(0.0001, now + 0.34);
+    master.connect(context.destination);
+
+    const low = context.createOscillator();
+    low.type = "sine";
+    low.frequency.setValueAtTime(82, now);
+    low.frequency.exponentialRampToValueAtTime(46, now + 0.29);
+    low.connect(master);
+    low.start(now);
+    low.stop(now + 0.35);
+
+    const metalGain = context.createGain();
+    metalGain.gain.setValueAtTime(0.0001, now);
+    metalGain.gain.exponentialRampToValueAtTime(0.12, now + 0.003);
+    metalGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.095);
+    metalGain.connect(context.destination);
+
+    const metal = context.createOscillator();
+    metal.type = "triangle";
+    metal.frequency.setValueAtTime(188, now);
+    metal.frequency.exponentialRampToValueAtTime(74, now + 0.08);
+    metal.connect(metalGain);
+    metal.start(now);
+    metal.stop(now + 0.11);
+  };
+
+  useEffect(() => {
+    const arm = () => armVaultAudio();
+    window.addEventListener("pointerdown", arm, { once: true, passive: true });
+    window.addEventListener("keydown", arm, { once: true });
+    return () => {
+      window.removeEventListener("pointerdown", arm);
+      window.removeEventListener("keydown", arm);
+    };
+  }, []);
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -31,6 +93,7 @@ export default function SavannahIntro() {
       setFallback(true);
       setReady(true);
       setSiteLayer(true);
+      setDepthStage("twoD");
     };
 
     syncMotionPreference();
@@ -47,6 +110,7 @@ export default function SavannahIntro() {
         setFallback(true);
         setReady(true);
         setSiteLayer(true);
+        setDepthStage("twoD");
       }
     }, 2600);
 
@@ -67,6 +131,7 @@ export default function SavannahIntro() {
         setFallback(true);
         setReady(true);
         setSiteLayer(true);
+        setDepthStage("twoD");
         return;
       }
 
@@ -78,6 +143,7 @@ export default function SavannahIntro() {
         // entrance visible instead of silently skipping Savannah.
         setFallback(true);
         setSiteLayer(true);
+        setDepthStage("twoD");
       });
     };
 
@@ -89,17 +155,22 @@ export default function SavannahIntro() {
     const video = videoRef.current;
     if (!video) return;
 
+    document.documentElement.classList.remove("savannah-page-locking", "savannah-page-locked");
     setFallback(false);
     setSiteLayer(false);
+    setDepthStage("film");
+    setHandoff(false);
     setReady(true);
     handoffStarted.current = false;
     lockStarted.current = false;
+    armVaultAudio();
 
     try { video.currentTime = START_AT; } catch {}
     video.muted = true;
     void video.play().catch(() => {
       setFallback(true);
       setSiteLayer(true);
+      setDepthStage("twoD");
     });
   };
 
@@ -107,28 +178,43 @@ export default function SavannahIntro() {
     if (lockStarted.current) return;
     lockStarted.current = true;
 
+    document.documentElement.classList.remove("savannah-page-locked");
     document.documentElement.classList.add("savannah-page-locking");
     window.setTimeout(() => {
+      playVaultClunk();
       document.documentElement.classList.remove("savannah-page-locking");
       document.documentElement.classList.add("savannah-page-locked");
-    }, 1000);
+    }, 560);
   };
 
   const finishHandoff = () => {
     if (handoffStarted.current) return;
     handoffStarted.current = true;
+    setSiteLayer(true);
+    setDepthStage("twoD");
     clickLock();
     setHandoff(true);
-    window.setTimeout(() => setVisible(false), 2100);
+    window.setTimeout(() => setVisible(false), HANDOFF_REMOVE_AFTER);
   };
 
   const trackHandoff = () => {
     const video = videoRef.current;
     if (!video) return;
 
-    if (video.currentTime >= UI_REVEAL_AT) setSiteLayer(true);
-    if (video.currentTime >= HANDOFF_AT - 0.18) clickLock();
-    if (video.currentTime >= HANDOFF_AT) finishHandoff();
+    const t = video.currentTime;
+
+    if (t >= DEPTH_25_AT) {
+      setSiteLayer(true);
+      setDepthStage((stage) => stage === "film" ? "twoFive" : stage);
+    }
+    if (t >= DEPTH_225_AT) {
+      setDepthStage((stage) => stage === "twoFive" || stage === "film" ? "twoQuarter" : stage);
+    }
+    if (t >= DEPTH_2D_AT) {
+      setDepthStage("twoD");
+      clickLock();
+    }
+    if (t >= HANDOFF_AT) finishHandoff();
   };
 
   if (!visible) return null;
@@ -139,10 +225,15 @@ export default function SavannahIntro() {
         styles.savannahIntro,
         ready ? styles.savannahIntroReady : "",
         fallback ? styles.savannahIntroFallback : "",
+        siteLayer ? styles.savannahSiteLayerVisibleState : "",
+        depthStage === "twoFive" ? styles.savannahDepth25 : "",
+        depthStage === "twoQuarter" ? styles.savannahDepth225 : "",
+        depthStage === "twoD" ? styles.savannahDepth2d : "",
         handoff ? styles.savannahHandoff : "",
       ].join(" ")}
       aria-label="Enter ctrl+love"
-      data-deploy="savannah-live-handoff"
+      data-deploy="savannah-dimensional-handoff"
+      data-depth={depthStage}
     >
       <div className={styles.savannahIntroFallbackImage} aria-hidden="true" />
       <video
@@ -155,7 +246,12 @@ export default function SavannahIntro() {
         onLoadedMetadata={primeVideo}
         onTimeUpdate={trackHandoff}
         onEnded={finishHandoff}
-        onError={() => { setFallback(true); setReady(true); setSiteLayer(true); }}
+        onError={() => {
+          setFallback(true);
+          setReady(true);
+          setSiteLayer(true);
+          setDepthStage("twoD");
+        }}
       >
         <source src="https://ctrl-love-media.floot.app/_cdn/static/savannah-intro.mp4" type="video/mp4" />
       </video>
@@ -165,7 +261,14 @@ export default function SavannahIntro() {
         {fallback ? (
           <button type="button" className={styles.savannahIntroPlay} onClick={playOpening}>Play opening ▶</button>
         ) : null}
-        <button type="button" className={styles.savannahIntroEnter} onClick={finishHandoff}>Come in ↘</button>
+        <button
+          type="button"
+          className={styles.savannahIntroEnter}
+          onPointerDown={armVaultAudio}
+          onClick={finishHandoff}
+        >
+          Come in ↘
+        </button>
       </div>
 
       <div
