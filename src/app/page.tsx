@@ -64,7 +64,7 @@ export default function Home() {
         <div className={styles.flowIntro}>
           <div className={styles.ballStage} aria-hidden="true">
             <div className={styles.pedestal}>
-              <img src="/museum/steel-ball-packshot.png" alt="" />
+              <img src="/museum/steel-ball-packshot-cutout.png" alt="" />
             </div>
           </div>
           <div className={styles.flowCopy}>
@@ -159,7 +159,7 @@ export default function Home() {
               <strong className={styles.impact}>Adoption, not applause.</strong>
               <div className={styles.fitzVisual}>
                 <video className={styles.fitzVideo} autoPlay loop muted playsInline preload="auto">
-                  <source src="https://ctrl-love-media.floot.app/_cdn/static/29c34fe1-d0ba-4baf-b058-c39cde7852f2-fitzroy-steel-ball-clean.mp4" type="video/mp4" />
+                  <source src="https://ctrl-love-media.floot.app/_cdn/static/0e7f85c1-30dc-49f7-9237-06749c75f27d-fitzroy-steel-ball-clean-20261007.mp4" type="video/mp4" />
                 </video>
                 <span>FITZROY / STEEL BALL</span>
               </div>
