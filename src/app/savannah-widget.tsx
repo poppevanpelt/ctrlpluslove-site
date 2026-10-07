@@ -384,7 +384,10 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
         appendConversation("assistant", incoming.transcript, true);
         setTextPending(false);
         clearTextBurstTimer();
-        window.setTimeout(() => { try { textVapi.stop(); } catch {} }, 120);
+        textBurstTimerRef.current = window.setTimeout(() => {
+          try { textVapi.stop(); } catch {}
+          textBurstTimerRef.current = null;
+        }, 1200);
       }
     });
 
@@ -394,7 +397,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       setTextState("idle");
       setTextPending(false);
       if (modeRef.current === "type") {
-        setMessage("Quiet line closed. Tap Type to reopen it.");
+        setMessage("Ready for the next message.");
       }
     });
 
