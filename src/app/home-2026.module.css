@@ -247,3 +247,96 @@
   .savannahIntroVideo{transform:none!important;transition:none!important}
   :global(html.savannah-page-locked) .page{animation:none!important}
 }
+
+
+/* Savannah scene-match handoff — projection > registration > daylight > live page. */
+.savannahIntro{
+  background:#0d0d0c;
+  transition:opacity .16s linear,visibility .16s linear,background-color .12s linear;
+  clip-path:none;
+}
+.savannahFilm{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+  clip-path:inset(0 0 0 0);
+  transition:clip-path .72s cubic-bezier(.72,0,.2,1),filter .72s cubic-bezier(.2,.7,.2,1);
+  will-change:clip-path;
+}
+.savannahFilm .savannahIntroVideo{
+  z-index:0;
+  transition:opacity .45s cubic-bezier(.2,.7,.2,1),transform .72s cubic-bezier(.2,.7,.2,1),filter .72s cubic-bezier(.2,.7,.2,1);
+}
+.savannahFilm .savannahIntroFallbackImage{z-index:0}
+.savannahFilm .savannahIntroShade{z-index:1}
+.savannahProjectionHeadline{
+  position:absolute;
+  z-index:4;
+  margin:0;
+  max-width:none;
+  color:rgba(248,237,218,0);
+  text-transform:uppercase;
+  pointer-events:none;
+  transform-origin:left top;
+  transform:translate(16vw,-1.8vh) scale(.58) rotate(-1.4deg);
+  opacity:0;
+  text-shadow:0 0 10px rgba(255,238,210,.3);
+  transition:
+    transform .72s cubic-bezier(.72,0,.2,1),
+    color .42s linear,
+    opacity .2s linear,
+    text-shadow .42s linear;
+  will-change:transform,opacity;
+}
+.savannahSceneRegister .savannahProjectionHeadline{
+  opacity:.92;
+  color:rgba(248,237,218,.9);
+}
+.savannahSceneRegister .savannahIntroControls{
+  opacity:0;
+  pointer-events:none;
+}
+.savannahIntroControls{transition:opacity .18s linear}
+.savannahSceneDaylight{background:transparent}
+.savannahSceneDaylight .savannahFilm{
+  clip-path:inset(0 31% 0 0);
+  filter:saturate(.92) brightness(1.015);
+}
+.savannahSceneDaylight .savannahProjectionHeadline{
+  opacity:1;
+  color:rgba(45,41,35,.94);
+  transform:translate(7.5vw,-.8vh) scale(.79) rotate(-.35deg);
+  text-shadow:0 0 0 rgba(0,0,0,0);
+}
+.savannahSceneLocked{background:transparent}
+.savannahSceneLocked .savannahFilm{
+  clip-path:inset(0 100% 0 0);
+  filter:none;
+}
+.savannahSceneLocked .savannahProjectionHeadline{
+  opacity:1;
+  color:var(--ink);
+  transform:translate(0,0) scale(1) rotate(0);
+  text-shadow:none;
+}
+.savannahHandoff{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  clip-path:none;
+  transition:opacity .16s linear,visibility .16s linear;
+}
+@media(max-width:900px){
+  .savannahProjectionHeadline{transform:translate(10vw,-1vh) scale(.66) rotate(-1deg)}
+  .savannahSceneDaylight .savannahProjectionHeadline{transform:translate(4vw,-.4vh) scale(.84) rotate(-.25deg)}
+  .savannahSceneDaylight .savannahFilm{clip-path:inset(0 38% 0 0)}
+}
+@media(max-width:650px){
+  .savannahProjectionHeadline{transform:translate(4vw,-.5vh) scale(.76) rotate(-.6deg)}
+  .savannahSceneDaylight .savannahProjectionHeadline{transform:translate(1.5vw,0) scale(.9) rotate(0)}
+  .savannahSceneDaylight .savannahFilm{clip-path:inset(0 46% 0 0)}
+}
+@media(prefers-reduced-motion:reduce){
+  .savannahFilm,.savannahProjectionHeadline{transition:none!important;transform:none!important}
+}
