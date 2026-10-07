@@ -8,7 +8,7 @@ import { SAVANNAH_BRIEFING } from "./savannah-briefing";
 const PUBLIC_KEY = "12382a58-9f0f-41fe-ba94-257368be07cb";
 const ASSISTANT_ID = "4289b114-3dca-4052-9684-13c3435bd0a4";
 const SAVANNAH_AVATAR = "/savannah-avatar.jpg?v=20261002-4";
-// Vercel redeploy trigger: Savannah voice lifecycle fix
+// Host redeploy trigger: Savannah voice lifecycle fix - 2026-10-07
 
 type State = "idle" | "requesting" | "connecting" | "live" | "error";
 type Mode = "voice" | "type";
