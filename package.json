@@ -11,7 +11,8 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit --incremental false",
-    "test": "node --test --experimental-strip-types --experimental-specifier-resolution=node \"tests/**/*.test.ts\""
+    "test": "node --test --experimental-strip-types --experimental-specifier-resolution=node \"tests/**/*.test.ts\"",
+    "savannah:local": "node --experimental-strip-types --experimental-specifier-resolution=node scripts/savannah-local-server.ts"
   },
   "dependencies": {
     "@vercel/analytics": "latest",
