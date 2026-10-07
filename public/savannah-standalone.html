@@ -64,7 +64,7 @@ input{min-width:0;border:1px solid rgba(243,240,232,.28);background:rgba(255,255
       </form>
     </section>
   </main>
-  <footer class="foot"><span>voice: Vapi / surface: static</span><span id="version">runtime 001</span></footer>
+  <footer class="foot"><span>type: local / voice: Vapi / surface: static</span><span id="version">runtime 001</span></footer>
 </div>
 
 <script type="module">
@@ -75,6 +75,7 @@ const ROOM = GLOBAL;
 const TEXT_BURST_TIMEOUT_MS = 45_000;
 const VOICE_MAX_DURATION_MS = 5 * 60_000;
 const HIDDEN_TAB_GRACE_MS = 30_000;
+const LOCAL_URL = (new URLSearchParams(location.search).get("local") || "http://127.0.0.1:4517").replace(/\/$/, "");
 
 const BRIEFS = {
   bridgefund: `BRIDGEFUND ROOM BRIEF
@@ -117,7 +118,6 @@ let voiceTimer = null;
 let hiddenTimer = null;
 let voiceSafetyClosed = false;
 const vapi = new Vapi(cfg.publicKey, undefined, { avoidEval:true, alwaysIncludeMicInPermissionPrompt:true }, { startAudioOff:false });
-const textVapi = new Vapi(cfg.publicKey, undefined, { avoidEval:true, alwaysIncludeMicInPermissionPrompt:true }, { startAudioOff:true });
 
 function setStatus(text, live=false){
   statusEl.textContent=text;
@@ -168,26 +168,9 @@ vapi.on("message",(m)=>{
 });
 vapi.on("error",(e)=>{clearVoiceTimer();console.error(e);state="idle";portrait.classList.remove("speaking");setStatus("The audio line did not open. Try again.",false)});
 
-textVapi.on("call-start",()=>{
-  mode="type"; armTextBurst(); injectBrief(textVapi,true);
-  try{textVapi.setMuted(true)}catch{}
-  try{textVapi.send({type:"control",control:"mute-assistant"})}catch{}
-  setStatus("Quiet line open. Type away.",false);
-  if(pendingText){
-    const t=pendingText; pendingText=null;
-    try{textVapi.send({type:"add-message",message:{role:"user",content:t},triggerResponseEnabled:true})}catch{}
-  }
-});
-textVapi.on("message",(m)=>{
-  if(m?.type==="transcript"&&m.transcript&&(!m.transcriptType||m.transcriptType==="final")&&m.role==="assistant"){ addLine("assistant",m.transcript); clearTextBurstTimer(); textBurstTimer=setTimeout(()=>{try{textVapi.stop()}catch{} textBurstTimer=null;},1200); }
-});
-textVapi.on("call-end",()=>{clearTextBurstTimer();setStatus("Ready. Talk or type.",false)});
-textVapi.on("error",(e)=>{clearTextBurstTimer();console.error(e);setStatus("The quiet line dropped. Try again.",false)});
-
 talk.addEventListener("click",async()=>{
   if(state!=="idle") return;
   clearTextBurstTimer();
-  try{textVapi.stop()}catch{}
   state="connecting"; setStatus("Opening the line…",false);
   try {
     await vapi.start(cfg.assistantId,{firstMessage:isRoom?"Hi. Savannah. I know which room I'm in. What's bothering you?":"Hi. Savannah at control love. What's up?",backgroundSound:"office"});
@@ -200,17 +183,40 @@ form.addEventListener("submit",async(e)=>{
   e.preventDefault();
   const text=input.value.trim(); if(!text) return;
   input.value=""; addLine("user",text);
+
   if(state==="live"){
     try{vapi.send({type:"add-message",message:{role:"user",content:text},triggerResponseEnabled:true});return}catch{}
   }
-  pendingText=text; mode="type";
-  try{await textVapi.start(cfg.assistantId,{firstMessage:""})}catch(err){console.error(err);pendingText=null;setStatus("The quiet line did not open. Try again.",false)}
+
+  setStatus("Thinking locally.",false);
+  send.disabled=true;
+  try{
+    const rows=[...transcript.querySelectorAll(".line")].slice(-16).map((row)=>({
+      role: row.querySelector("b")?.textContent==="SAVANNAH" ? "assistant" : "user",
+      content: row.querySelector("p")?.textContent || ""
+    })).filter((item)=>item.content);
+
+    const response=await fetch(LOCAL_URL+"/chat",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({messages:rows,context:brief()})
+    });
+    const payload=await response.json().catch(()=>null);
+    if(!response.ok) throw new Error(payload?.error || "Savannah Local failed.");
+    addLine("assistant",payload?.message || "");
+    setStatus("Local. Ready.",false);
+  }catch(err){
+    console.error(err);
+    setStatus("Savannah Local is offline. Start the local runtime on Poppe's Mac.",false);
+  }finally{
+    send.disabled=false;
+  }
 });
 
 document.addEventListener("visibilitychange",()=>{
   clearHiddenTimer();
   if(!document.hidden) return;
-  hiddenTimer=setTimeout(()=>{ try{vapi.stop()}catch{} try{textVapi.stop()}catch{} hiddenTimer=null; },HIDDEN_TAB_GRACE_MS);
+  hiddenTimer=setTimeout(()=>{ try{vapi.stop()}catch{} hiddenTimer=null; },HIDDEN_TAB_GRACE_MS);
 });
 
 setStatus("Ready. Talk or type.",false);
