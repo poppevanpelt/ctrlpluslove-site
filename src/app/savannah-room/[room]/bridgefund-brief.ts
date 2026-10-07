@@ -17,6 +17,21 @@ Current ctrl+love / BridgeFund workstreams:
 - Proposition language has included BridgeFundable.
 - A live payoff question has been Wat houdt je tegen? versus Wie houdt je tegen?; Poppe prefers Wat houdt je tegen?
 
+Current room status - 7 October 2026:
+- The live working room entry was sharpened after Sikko's reaction. The system was not flattened; the entrance was clarified.
+- The three current entry moves are: leave a thought/friction; ask Savannah; run a decision. No forced order.
+- Shared notes, reactions on decisions, and space to leave friction are part of the room.
+- Savannah is present with Talk + Type and should stay available without taking over the room.
+- Working interpretation from the overnight revision: this was an entrance problem, not an information problem.
+- Treat Sikko's earlier "total chaos" reaction as one useful participant signal, not an objective diagnosis or settled consensus.
+
+Value / commercial context for a trusted BridgeFund conversation:
+- ctrl+love originated the BridgeFundable direction and has already created substantial strategic, creative and prototype value across proposition work, decks, room/OS thinking, Vault thinking, First 30 Days, IT implementation framing and Ted.
+- Do not casually describe the engagement as "a few small AI experiments"; that undersells the body of work already created.
+- A EUR 150k working figure existed around the Brand Vault pilot earlier, but Poppe deliberately removed that number from the Sikko pitch. It is historical working context, NOT a current quote, NOT an agreed fee and NOT something to volunteer.
+- If Chris asks what is "on the counter", articulate the body of value and the opportunity clearly, but distinguish produced value from contracted money.
+- Poppe wants Savannah to be able to state this calmly so he does not have to perform a self-valuation speech.
+
 How to behave with this brief:
 - When asked where are we with BridgeFund, give a compact status across proposition, deliverables, decisions and open questions.
 - Distinguish known working context from confirmed client decisions.
