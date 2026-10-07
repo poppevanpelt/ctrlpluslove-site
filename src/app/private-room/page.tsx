@@ -9,12 +9,8 @@ type Props = { searchParams: Promise<{ room?: string }> };
 
 export default async function PrivateRoom({ searchParams }: Props) {
   const { room } = await searchParams;
-  const label = room === "luther" ? "Luther" : room === "bonkers" ? "Bonkers" : "This";
-  const target = room === "luther"
-    ? "/savannah-room/luther"
-    : room === "bonkers"
-      ? "/savannah-room/bonkers"
-      : "/";
+  const label = room === "bonkers" ? "Bonkers" : "This";
+  const target = room === "bonkers" ? "/savannah-room/bonkers" : "/";
 
   return (
     <main style={{
@@ -37,7 +33,7 @@ export default async function PrivateRoom({ searchParams }: Props) {
           {label} Room is invitation only.
         </p>
 
-        {room === "luther" || room === "bonkers" ? (
+        {room === "bonkers" ? (
           <form action={target} method="get" style={{
             display: "grid",
             gridTemplateColumns: "1fr auto",
@@ -80,16 +76,6 @@ export default async function PrivateRoom({ searchParams }: Props) {
             </button>
           </form>
         ) : null}
-
-        <div style={{
-          marginTop: 18,
-          fontSize: 10,
-          letterSpacing: ".12em",
-          textTransform: "uppercase",
-          opacity: .45
-        }}>
-          Personal invite links still work too.
-        </div>
       </section>
     </main>
   );
