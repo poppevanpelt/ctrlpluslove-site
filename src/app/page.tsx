@@ -159,7 +159,7 @@ export default function Home() {
               <strong className={styles.impact}>Adoption, not applause.</strong>
               <div className={styles.fitzVisual}>
                 <video className={styles.fitzVideo} autoPlay loop muted playsInline preload="auto">
-                  <source src="/home/fitzroy-steel-ball.mp4" type="video/mp4" />
+                  <source src="https://ctrl-love-media.floot.app/_cdn/static/29c34fe1-d0ba-4baf-b058-c39cde7852f2-fitzroy-steel-ball-clean.mp4" type="video/mp4" />
                 </video>
                 <span>FITZROY / STEEL BALL</span>
               </div>
@@ -204,7 +204,7 @@ export default function Home() {
         <div className={styles.about}>
           <h2>30 years advertising.<br/>8 years Apple.<br/>ADCN Hall of Fame.<br/>Then this.</h2>
           <div className={styles.aboutProfile}>
-            <img className={styles.aboutPortrait} src="/ambassadors/portraits/001-poppe-van-pelt-portrait-live-20260715.png" alt="Poppe van Pelt" />
+            <img className={styles.aboutPortrait} src="https://ctrl-love-media.floot.app/_cdn/static/139f3c11-845e-4d7d-925c-3652e0a9a997-poppe-founder-20261007.jpeg" alt="Poppe van Pelt" />
             <div className={styles.aboutBio}>
               <p><b>Poppe van Pelt</b><br/>Founder, ctrl+love</p>
               <p>Built after decades of watching good ideas get improved to death in rooms full of smart people.</p>
