@@ -107,3 +107,13 @@
 .savannahIntroEnter{position:static}
 @media(max-width:650px){.aboutProfile{grid-template-columns:minmax(0,110px) minmax(0,1fr)}.savannahSiteNote{bottom:90px}}
 @media(prefers-reduced-motion:reduce){:global(html.savannah-page-locked) .page{animation:none}}
+
+.cabinetPreview{display:block;margin:28px 0 36px;border:1px solid var(--ink);overflow:hidden;text-decoration:none;color:inherit}
+.cabinetPreview>img{display:block;width:100%;height:auto;max-height:460px;object-fit:cover;object-position:center;aspect-ratio:3/2}
+.cabinetCaption{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;padding:26px;border-top:1px solid var(--ink)}
+.cabinetCaption h3{font-size:clamp(28px,3.5vw,42px);line-height:1.1;margin:10px 0 12px;letter-spacing:-.035em}
+.cabinetCaption p{font-size:18px;line-height:1.45;max-width:650px;margin:0}
+.cabinetCaption strong{font-size:16px;white-space:nowrap;border-bottom:1px solid currentColor;padding-bottom:4px}
+.cabinetPreview:hover .cabinetCaption strong{text-decoration:underline;text-underline-offset:5px}
+.cabinetPreview:focus-visible{outline:3px solid var(--ink);outline-offset:5px}
+@media(max-width:650px){.cabinetCaption{align-items:flex-start;flex-direction:column;padding:20px;gap:20px}.cabinetPreview>img{aspect-ratio:3/2}.cabinetCaption p{font-size:16px}}

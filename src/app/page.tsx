@@ -171,6 +171,17 @@ export default function Home() {
       <section className={styles.section} id="instruments">
         <div className={styles.kicker}>A few instruments inside the machine</div>
         <h2>Pressure, not prompts.</h2>
+        <a className={styles.cabinetPreview} href="/cabinet/" aria-label="Enter the instrument cabinet">
+          <img src="/cabinet/assets/instrument-family.webp" alt="A sunlit workshop filled with ctrl+love decision instruments" loading="lazy" width="1536" height="1024" />
+          <div className={styles.cabinetCaption}>
+            <div>
+              <span className={styles.kicker}>The instrument cabinet</span>
+              <h3>Ideas enter. Evidence leaves.</h3>
+              <p>Explore the instruments, their mechanisms and the work they leave behind.</p>
+            </div>
+            <strong>Enter the cabinet</strong>
+          </div>
+        </a>
         <div className={styles.instruments}>
           {instruments.map(([no,name,line,kind,href,action]) => (
             <a className={styles.instrument} href={href} key={no} aria-label={`${action}: ${name}`}>
@@ -186,7 +197,7 @@ export default function Home() {
             </a>
           ))}
         </div>
-        <a className={styles.cabinetLink} href="/instruments/">Open the full instrument cabinet · 24 specimens</a>
+        <a className={styles.cabinetLink} href="/instruments/">Explore the full instrument list</a>
       </section>
 
       <section className={`${styles.section} ${styles.aboutSection}`} id="about">

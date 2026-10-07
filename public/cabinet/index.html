@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Instrument Cabinet · ctrl+love</title>
+  <meta name="description" content="Working instruments for better decisions. Open the cabinet, increase the depth, inspect the evidence.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%23f02b24'/%3E%3Ccircle cx='12' cy='11' r='7' fill='%23fff' opacity='.9'/%3E%3Ccircle cx='19' cy='20' r='8' fill='%23090909'/%3E%3C/svg%3E">
+  <style>
+    :root{--black:#090909;--white:#f4f1ea;--cream:#e9e4da;--red:#d84a32;--blue:#4d7185;--green:#687b4b;--yellow:#c99e35;--grey:#77736d;--line:#c5beb2;--pad:clamp(18px,3vw,48px);font-family:Arial,Helvetica,sans-serif;color-scheme:light}
+    *{box-sizing:border-box}
+    html{background:var(--cream);scroll-behavior:smooth}
+    body{margin:0;background:var(--cream);color:var(--black);min-height:100vh}
+    button,input{font:inherit}
+    a{color:inherit}
+    .top{position:sticky;top:0;z-index:20;background:rgba(244,241,234,.93);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+    .bar{display:grid;grid-template-columns:minmax(240px,1fr) minmax(320px,520px);gap:32px;align-items:end;padding:18px var(--pad) 20px}
+    .brand{display:flex;align-items:baseline;gap:13px}
+    .brand h1{font-size:clamp(25px,3vw,46px);line-height:.9;letter-spacing:-.055em;margin:0;text-transform:uppercase}
+    .brand span{font-size:12px;font-weight:800;color:var(--red);letter-spacing:.08em}
+    .depth{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:15px}
+    .depth label,.depth output{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+    .depth output{color:var(--red);min-width:78px;text-align:right}
+    input[type=range]{width:100%;height:2px;appearance:none;background:#8c877f;outline:none}
+    input[type=range]::-webkit-slider-thumb{appearance:none;width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#fff 0 7%,#bbb 18%,#555 42%,#111 72%);border:1px solid #777;cursor:grab}
+    input[type=range]:focus-visible{outline:2px solid var(--red);outline-offset:9px}
+    .intro{padding:42px var(--pad) 28px;display:grid;grid-template-columns:1.25fr .75fr;gap:34px;align-items:end;background:var(--white)}
+    .intro p{font-size:clamp(34px,5.1vw,74px);font-weight:800;letter-spacing:-.065em;line-height:.91;text-transform:uppercase;margin:0;max-width:1020px}
+    .intro p em{font-style:normal;color:var(--red)}
+    .intro aside{font-size:16px;line-height:1.45;color:var(--grey);max-width:350px;justify-self:end}
+    .cabinet{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--line)}
+    .instrument{position:relative;min-height:300px;padding:30px var(--pad) 34px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;background:var(--white);transition:min-height .35s ease,background .2s ease}
+    .instrument:nth-of-type(4n+3),.instrument:nth-of-type(4n+4){background:var(--cream)}
+    .instrument:nth-child(even){border-right:0}
+    .instrument.featured{grid-column:1/-1;min-height:430px;background:var(--cream);color:var(--black);border-right:0}
+    .instrument:hover{background:#fff}
+    .instrument.featured:hover{background:#f7f3eb}
+    .meta{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:18px}
+    .index,.status{font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
+    .status{color:var(--red)}
+    .instrument[data-tone="blue"] .status{color:var(--blue)}
+    .instrument[data-tone="green"] .status{color:var(--green)}
+    .instrument[data-tone="yellow"] .status{color:var(--yellow)}
+    .object{position:relative;margin:0 0 30px;overflow:hidden;border:1px solid rgba(9,9,9,.2);background:#d9d2c7}
+    .object::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25);pointer-events:none}
+    .object img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;filter:saturate(.82) contrast(1.02)}
+    .featured .object img{aspect-ratio:16/8.3}
+    .object figcaption{position:absolute;left:14px;bottom:12px;padding:7px 9px;background:rgba(244,241,234,.9);font-size:10px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--black)}
+    h2{font-size:clamp(42px,5.2vw,76px);letter-spacing:-.06em;line-height:.88;text-transform:uppercase;margin:0 0 28px;max-width:1000px}
+    .finding{font-size:clamp(21px,2.4vw,35px);line-height:1.06;font-weight:700;letter-spacing:-.03em;max-width:880px;margin:0}
+    .featured .finding{font-size:clamp(30px,4.6vw,68px);text-transform:uppercase;max-width:1050px;line-height:.92}
+    .mechanism,.evidence{display:none;margin-top:38px;max-width:1050px}
+    body[data-depth="1"] .mechanism,body[data-depth="2"] .mechanism,body[data-depth="2"] .evidence{display:block;animation:appear .3s ease both}
+    body[data-depth="1"] .instrument{min-height:520px}
+    body[data-depth="2"] .instrument{min-height:700px}
+    body[data-depth="1"] .featured{min-height:650px}
+    body[data-depth="2"] .featured{min-height:800px}
+    .triplet{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+    .featured .triplet{background:var(--line);border-color:var(--line)}
+    .triplet section{background:var(--black);padding:18px;min-height:130px;color:var(--white)}
+    .featured .triplet section{background:rgba(9,9,9,.92)}
+    .triplet b,.evidence b{display:block;color:var(--red);font-size:11px;letter-spacing:.1em;margin-bottom:12px}
+    .triplet p{font-size:17px;line-height:1.28;margin:0}
+    .evidence{border-top:1px solid var(--line);padding-top:25px}
+    .featured .evidence{border-color:var(--line)}
+    .evidence b{color:var(--red)}
+    .featured .evidence b{color:var(--red)}
+    .run{display:grid;grid-template-columns:160px 1fr;gap:24px;font-size:18px;line-height:1.35}
+    .run p{margin:0}
+    .verdict{font-size:13px;font-weight:800;letter-spacing:.08em}
+    .labplate{position:relative;grid-column:1/-1;margin:0;background:var(--black);overflow:hidden;border-bottom:1px solid var(--line)}
+    .labplate img{display:block;width:100%;height:min(68vw,780px);object-fit:cover;filter:saturate(.86) contrast(1.03)}
+    .labplate figcaption{position:absolute;left:var(--pad);right:var(--pad);top:24px;display:flex;justify-content:space-between;gap:20px;color:var(--white);font-size:12px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;text-shadow:0 1px 12px rgba(0,0,0,.65)}
+    .labplate figcaption span:last-child{color:#ff5a4f}
+    .footer{padding:70px var(--pad);display:grid;grid-template-columns:1fr auto;align-items:end;gap:30px;background:var(--black);color:var(--white)}
+    .footer strong{font-size:clamp(38px,6vw,86px);letter-spacing:-.06em;line-height:.88;text-transform:uppercase;max-width:900px}
+    .footer a{font-weight:800;color:var(--red);text-decoration:none;border-bottom:2px solid var(--red);padding-bottom:3px}
+    @keyframes appear{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+    @media(max-width:780px){.bar{grid-template-columns:1fr;gap:18px}.intro{grid-template-columns:1fr;padding-top:34px}.intro aside{justify-self:start}.cabinet{grid-template-columns:1fr}.instrument,.instrument:nth-child(even){border-right:0}.triplet{grid-template-columns:1fr}.run{grid-template-columns:1fr;gap:8px}body[data-depth="1"] .instrument,body[data-depth="2"] .instrument,body[data-depth="1"] .featured,body[data-depth="2"] .featured{min-height:0}.footer{grid-template-columns:1fr}.depth{grid-template-columns:auto 1fr auto}.labplate img{height:72vw;min-height:360px}.labplate figcaption{top:16px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body data-depth="0">
+  <header class="top">
+    <div class="bar">
+      <div class="brand"><h1>Instrument Cabinet</h1><span id="count">16 instruments</span></div>
+      <div class="depth">
+        <label for="depth">Depth</label>
+        <input id="depth" type="range" min="0" max="2" value="0" step="1" aria-describedby="depthHelp">
+        <output for="depth" id="depthLabel">Signal</output>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <p>Ideas enter.<br><em>Evidence leaves.</em></p>
+      <aside id="depthHelp">One control changes the entire cabinet. Increase the depth to expose the mechanism and completed runs.</aside>
+    </section>
+    <figure class="labplate">
+      <img src="/cabinet/assets/instrument-family.webp" alt="A sunlit California prototype laboratory filled with tactile analogue decision instruments">
+      <figcaption><span>California prototype shop</span><span>Instrument family 001</span></figcaption>
+    </figure>
+    <section class="cabinet" id="cabinet" aria-live="polite"></section>
+  </main>
+
+  <footer class="footer">
+    <strong>Let us help you break something</strong>
+    <a href="https://ctrlpluslove.com">ctrlpluslove.com</a>
+  </footer>
+
+  <script>
+    const instruments = [
+      {name:'Pitch Crash Test',status:'Live run',featured:true,tone:'red',image:'pitch-crash-test.webp',alt:'Cream enamel pitch pressure chamber with glass inspection window',finding:'Prepared cupboards are not prepared communities.',input:'A pitch weeks in the making',attacks:'The jury, the compromise and the unproven claim',output:'Impact map, damage report, protected core and verdict',run:'Denk Vooruit 2.0',result:'Turn 72 hours of individual responsibility into 72 hours of local capability.',verdict:'REPAIR'},
+      {name:'Decision Collider',status:'Live instrument',tone:'blue',image:'decision-collider.webp',alt:'Circular steel decision collider with six opposing mechanical stations',finding:'A decision becomes visible when its interests collide.',input:'A consequential decision',attacks:'Agreement without examination',output:'A decision that survived six opposing seats',run:'BarLoca',result:'Signal became testing, testing became a decision, and the decision became organisational memory.',verdict:'DECIDE'},
+      {name:'Living Ticker',status:'Prototype 001',tone:'green',image:'living-ticker.webp',alt:'Reel-to-reel living ticker with five coloured signal windows',finding:'Minutes record words. The ticker records movement.',input:'Live room audio',attacks:'The illusion that speaking equals progress',output:'Challenge, reframe, build, ownership and rupture signals',run:'Private meeting rooms',result:'The room becomes observable while the decision is still moving.',verdict:'OBSERVE'},
+      {name:'Brand Transplant',status:'Tested',tone:'yellow',image:'brand-transplant.webp',alt:'Identity transfer apparatus with two cartridges and a glass chamber',finding:'What survives the transplant is probably the brand.',input:'A brand moved into an alien category',attacks:'Decorative identity and inherited assumptions',output:'What survived, disappeared and was revealed',run:'Comfora',result:'The active-life promise survived the move. Category furniture language did not.',verdict:'KEEP'},
+      {name:'Signal Distortion',status:'Live run',tone:'blue',image:'signal-distortion.webp',alt:'Analogue signal attenuator with strong input and weakened output meters',finding:'Premium quality disappeared before the campaign began.',input:'A brand claim',attacks:'Loss across search, AI and recommendation surfaces',output:'A map of where meaning weakens or vanishes',run:'Five Guys',result:'The recommendation layer retained popularity and price, but lost the proof of premium quality.',verdict:'BUILD THE PROOF OBJECT'},
+      {name:'Decision Surface',status:'Prototype 001',tone:'blue',image:'decision-surface.webp',alt:'Three-channel optical comparator with lenses and viewing screens',finding:'Every surface edits the brand before the audience sees it.',input:'One brand question',attacks:'Assumed consistency across discovery systems',output:'Side-by-side answers from search, AI search and ChatGPT',run:'Five Guys',result:'Different systems produced different brands from the same company.',verdict:'MONITOR'},
+      {name:'Decision Memory',status:'Live system',tone:'green',image:'decision-memory.webp',alt:'Mechanical archive drum carrying loops of punched decision records',finding:'A forgotten decision must win its argument again.',input:'Signals, tests and decisions',attacks:'Organisational amnesia',output:'Reusable reasoning with evidence and ownership attached',run:'BarLoca',result:'The decision remained inspectable after the meeting ended.',verdict:'REMEMBER'},
+      {name:'Meeting Filter',status:'Working prototype',tone:'yellow',image:'meeting-filter.webp',alt:'Semicircular meeting gauge with green amber and red zones',finding:'Most bad meetings fail before they begin.',input:'A proposed meeting',attacks:'Invitations without a decision, owner or consequence',output:'Green, amber or red',run:'Three-question intake',result:'A tiny filter converts calendar politeness into an explicit reason to meet.',verdict:'GREEN / AMBER / RED'},
+      {name:'Decision in a Box',status:'Physical prototype',tone:'red',image:'decision-in-a-box.webp',alt:'Open instrument case holding five different machined steel forms',finding:'Five options enter. One imperfect object leaves.',input:'Five possible decisions',attacks:'Preference disguised as reasoning',output:'A physical commitment on the table',run:'Four steel objects and one steel ball',result:'The choice becomes visible, discussable and difficult to quietly reverse.',verdict:'CHOOSE'},
+      {name:'Prompt Shoppe',status:'Working instrument',tone:'yellow',image:'prompt-shoppe.webp',alt:'Cream bench ticket printer producing a structured prompt card',finding:'A prompt without a decision is decoration.',input:'A request for AI',attacks:'Missing decision, audience and evidence',output:'A structured bench ticket',run:'Instrument cabinet intake',result:'The shop reveals the structure without pretending the prompt itself is the work.',verdict:'BUILD'},
+      {name:'USB Decision Accelerator',status:'Limited edition',tone:'red',image:'usb-decision-accelerator.webp',alt:'Orange USB decision tool in a machined aluminium case',finding:'Ten decisions. No subscription. No ceremony.',input:'One decision under pressure',attacks:'Delay disguised as due diligence',output:'A portable v0.1 pressure test',run:'Ten-decision USB',result:'The tool moves decision pressure outside the meeting room.',verdict:'ACCELERATE'},
+      {name:'Read the Room',status:'Prototype',tone:'blue',image:'read-the-room.webp',alt:'Circular table instrument with six directional sensing pods',finding:'The room has a strategy before the strategy has the room.',input:'A group trying to decide',attacks:'Invisible power, silence and false consensus',output:'A live map of participation and resistance',run:'Living Ticker signal set',result:'Challenge, ownership and rupture become inspectable behaviour.',verdict:'READ'},
+      {name:'Opposition Seat',status:'Protocol',tone:'red',image:'opposition-seat.webp',alt:'Empty orange opposition chair facing a cream conference table',finding:'Every important decision needs someone paid to disagree.',input:'A conclusion gathering momentum',attacks:'Consensus and confirmation bias',output:'The strongest credible opposing case',run:'Denk Vooruit 2.0',result:'The campaign could be framed as government shifting the burden of failing services onto citizens.',verdict:'CHALLENGE'},
+      {name:'Do-Nothing Control',status:'Protocol',tone:'green',image:'do-nothing-control.webp',alt:'Dual glass comparison chambers with active and untouched samples',finding:'Change must beat the cost of leaving reality alone.',input:'A proposed intervention',attacks:'Action bias',output:'A comparison against doing nothing',run:'Campaign and product decisions',result:'The team must prove that intervention creates more value than noise, cost or resistance.',verdict:'COMPARE'},
+      {name:'Miss Archive',status:'Protocol',tone:'red',image:'miss-archive.webp',alt:'Open red archive drawer containing portable decision instruments and evidence tags',finding:'Wrong Marcel. Correct lesson.',input:'An assumption that failed',attacks:'Quietly corrected mistakes',output:'Reusable evidence from the miss',run:'Noise outreach',result:'We assumed Marcel still worked at Noise. The mistake became the first proof that the Crash Test attacks assumptions early.',verdict:'ARCHIVE'},
+      {name:'Evidence Tags',status:'Protocol',tone:'yellow',image:'evidence-tags.webp',alt:'Mechanical evidence tag press with five embossed aluminium tags',finding:'Confidence becomes useful when its source is visible.',input:'Every meaningful claim',attacks:'Opinion presented as fact',output:'Observed, inferred, assumed, tested or proven',run:'All ctrl+love instruments',result:'The claim and the strength of its evidence travel together.',verdict:'TAG'}
+    ];
+    const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const cabinet=document.querySelector('#cabinet');
+    const card=(d,i)=>`<article class="instrument ${d.featured?'featured':''}" data-tone="${esc(d.tone)}">
+      <div class="meta"><span class="index">${String(i+1).padStart(2,'0')}</span><span class="status">${esc(d.status)}</span></div>
+      <figure class="object"><img src="/cabinet/assets/objects/${esc(d.image)}" alt="${esc(d.alt)}" loading="lazy"><figcaption>Instrument ${String(i+1).padStart(3,'0')}</figcaption></figure>
+      <h2>${esc(d.name)}</h2><p class="finding">${esc(d.finding)}</p>
+      <div class="mechanism"><div class="triplet">
+        <section><b>ENTERS</b><p>${esc(d.input)}</p></section><section><b>ATTACKS</b><p>${esc(d.attacks)}</p></section><section><b>LEAVES</b><p>${esc(d.output)}</p></section>
+      </div></div>
+      <div class="evidence"><b>LIVE RUN</b><div class="run"><span class="verdict">${esc(d.run)}<br>${esc(d.verdict)}</span><p>${esc(d.result)}</p></div></div>
+    </article>`;
+    const plate=(src,left,right,alt)=>`<figure class="labplate"><img src="${src}" alt="${alt}"><figcaption><span>${left}</span><span>${right}</span></figcaption></figure>`;
+    cabinet.innerHTML=instruments.map((d,i)=>{
+      let html=card(d,i);
+      if(i===4) html+=plate('/cabinet/assets/collision-bench.webp','Collision laboratory','Three instruments under test','A red crash chamber, steel decision collider and analogue living ticker on a sunlit workbench');
+      if(i===11) html+=plate('/cabinet/assets/miss-archive.webp','Miss Archive','Wrong Marcel. Correct lesson.','An open archive drawer, portable red accelerator, evidence tags and imperfect steel decision objects');
+      return html;
+    }).join('');
+    const slider=document.querySelector('#depth'); const label=document.querySelector('#depthLabel');
+    const labels=['Signal','Mechanism','Evidence'];
+    slider.addEventListener('input',()=>{document.body.dataset.depth=slider.value;label.value=labels[slider.value];label.textContent=labels[slider.value]});
+  </script>
+</body>
+</html>
