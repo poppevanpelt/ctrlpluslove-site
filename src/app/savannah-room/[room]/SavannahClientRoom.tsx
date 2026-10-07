@@ -7,9 +7,9 @@ import { SAVANNAH_ROOM_VAPI } from "./vapi-config";
 import { roomBrief } from "./room-briefs";
 import { BONKERS_TOOLS } from "../../bonkers/tools";
 import { SAVANNAH_BRIEFING } from "../../savannah-briefing";
+import { askSavannahLocal } from "../../savannah-local-client";
 import {
   SAVANNAH_HIDDEN_TAB_GRACE_MS,
-  SAVANNAH_TEXT_BURST_TIMEOUT_MS,
   SAVANNAH_VOICE_MAX_DURATION_MS,
 } from "../../savannah-runtime";
 
@@ -28,7 +28,6 @@ type Props = {
 export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
   const isBonkers = roomSlug.toLowerCase() === "bonkers";
   const vapiRef = useRef<Vapi | null>(null);
-  const queuedTextRef = useRef<string | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [entered, setEntered] = useState(false);
   const [state, setState] = useState<CallState>("idle");
@@ -37,17 +36,9 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
   const [draft, setDraft] = useState("");
   const transcriptIdRef = useRef(0);
   const callOriginRef = useRef<"voice" | "typed" | null>(null);
-  const burstTimerRef = useRef<number | null>(null);
   const voiceTimerRef = useRef<number | null>(null);
   const hiddenTimerRef = useRef<number | null>(null);
   const safetyClosedRef = useRef(false);
-
-  const clearBurstTimer = () => {
-    if (burstTimerRef.current !== null) {
-      window.clearTimeout(burstTimerRef.current);
-      burstTimerRef.current = null;
-    }
-  };
 
   const clearVoiceTimer = () => {
     if (voiceTimerRef.current !== null) {
@@ -68,21 +59,13 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
     vapiRef.current = vapi;
 
     vapi.on("call-start", () => {
-      if (callOriginRef.current === "typed") {
-        clearBurstTimer();
-        burstTimerRef.current = window.setTimeout(() => {
-          try { vapi.stop(); } catch {}
-          burstTimerRef.current = null;
-        }, SAVANNAH_TEXT_BURST_TIMEOUT_MS);
-      } else {
-        clearVoiceTimer();
-        safetyClosedRef.current = false;
-        voiceTimerRef.current = window.setTimeout(() => {
-          safetyClosedRef.current = true;
-          try { vapi.stop(); } catch {}
-          voiceTimerRef.current = null;
-        }, SAVANNAH_VOICE_MAX_DURATION_MS);
-      }
+      clearVoiceTimer();
+      safetyClosedRef.current = false;
+      voiceTimerRef.current = window.setTimeout(() => {
+        safetyClosedRef.current = true;
+        try { vapi.stop(); } catch {}
+        voiceTimerRef.current = null;
+      }, SAVANNAH_VOICE_MAX_DURATION_MS);
 
       const brief = roomBrief(roomSlug);
       const roomSystem = [
@@ -91,11 +74,6 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
         brief,
       ].filter(Boolean).join("\n\n");
       vapi.send({ type: "add-message", message: { role: "system", content: roomSystem } });
-      const queued = queuedTextRef.current;
-      if (queued) {
-        vapi.send({ type: "add-message", message: { role: "user", content: queued }, triggerResponseEnabled: true } as any);
-        queuedTextRef.current = null;
-      }
       setState("live");
       setMessage("I'm listening.");
     });
@@ -116,18 +94,10 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
           if (last?.role === incoming.role && last.text === text) return previous;
           return [...previous.slice(-39), { id: transcriptIdRef.current, role: incoming.role as TranscriptRole, text }];
         });
-        if (incoming.role === "assistant" && callOriginRef.current === "typed") {
-          clearBurstTimer();
-          burstTimerRef.current = window.setTimeout(() => {
-            try { vapi.stop(); } catch {}
-            burstTimerRef.current = null;
-          }, 1200);
-        }
       }
     });
 
     vapi.on("call-end", () => {
-      clearBurstTimer();
       clearVoiceTimer();
       const safetyClosed = safetyClosedRef.current;
       callOriginRef.current = null;
@@ -137,7 +107,6 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
     });
 
     vapi.on("error", (error: unknown) => {
-      clearBurstTimer();
       clearVoiceTimer();
       callOriginRef.current = null;
       console.error("Savannah Room Vapi error", error);
@@ -158,7 +127,6 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
     return () => {
       document.removeEventListener("visibilitychange", onVisibilityChange);
       clearHiddenTimer();
-      clearBurstTimer();
       clearVoiceTimer();
       try { vapi.stop(); } catch {}
       vapi.removeAllListeners();
@@ -193,31 +161,49 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
     }]);
   };
 
-  const sendTypedMessage = () => {
+  const sendTypedMessage = async () => {
     const text = draft.replace(/\s+/g, " ").trim();
-    const vapi = vapiRef.current;
-    if (!text || !vapi || state === "connecting") return;
+    if (!text || state === "connecting") return;
 
     appendVisitorLine(text);
     setDraft("");
 
-    if (state === "live") {
-      vapi.send({ type: "add-message", message: { role: "user", content: text }, triggerResponseEnabled: true } as any);
+    if (state === "live" && callOriginRef.current === "voice") {
+      vapiRef.current?.send({
+        type: "add-message",
+        message: { role: "user", content: text },
+        triggerResponseEnabled: true,
+      } as any);
       return;
     }
 
-    queuedTextRef.current = text;
-    callOriginRef.current = "typed";
     setState("connecting");
-    setMessage("Opening the room line.");
+    setMessage("Thinking locally.");
 
-    void vapi.start(SAVANNAH_ROOM_VAPI.assistantId, { firstMessage: "" } as any).catch((error: unknown) => {
-      console.error("Savannah Room typed start failed", error);
-      callOriginRef.current = null;
-      queuedTextRef.current = null;
+    const localHistory = [...transcript, { id: -1, role: "user" as const, text }]
+      .slice(-16)
+      .map((line) => ({ role: line.role, content: line.text }));
+
+    const context = [
+      SAVANNAH_BRIEFING,
+      "ROOM MODE: you are inside a secluded client working room. Stay inside this client's context.",
+      roomBrief(roomSlug),
+    ].filter(Boolean).join("\n\n");
+
+    try {
+      const reply = await askSavannahLocal({ messages: localHistory, context });
+      transcriptIdRef.current += 1;
+      setTranscript((previous) => [
+        ...previous.slice(-39),
+        { id: transcriptIdRef.current, role: "assistant" as const, text: reply.message },
+      ]);
+      setState("idle");
+      setMessage("Local. Ready.");
+    } catch (error) {
+      console.error("Savannah Local room typing failed", error);
       setState("error");
-      setMessage("Vapi start failed.");
-    });
+      setMessage("Savannah Local is offline. Start the local runtime on Poppe's Mac.");
+    }
   };
 
   const toggleCall = () => {
