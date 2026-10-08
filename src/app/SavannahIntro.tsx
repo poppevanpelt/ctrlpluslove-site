@@ -7,9 +7,9 @@ import { clearSavannahPageLock } from "./savannah-runtime";
 
 const START_AT = 1.35;
 const REGISTER_AT = 6.2;
-const DAYLIGHT_AT = 6.86;
-const LOCK_AT = 7.56;
-const HANDOFF_AT = 8.14;
+const DAYLIGHT_AT = 6.9;
+const LOCK_AT = 7.6;
+const HANDOFF_AT = 8.36;
 
 type SceneStage = "film" | "register" | "daylight" | "locked";
 
@@ -197,7 +197,7 @@ export default function SavannahIntro() {
       document.documentElement.classList.remove("savannah-page-locking");
       document.documentElement.classList.add("savannah-page-locked");
       lockReleaseTimerRef.current = window.setTimeout(() => releasePageLock(), 460);
-    }, 560);
+    }, 620);
   };
 
   const completeHandoff = (animateIntoPlace = false) => {
@@ -206,7 +206,7 @@ export default function SavannahIntro() {
     setStage("locked");
     clickLock();
 
-    const fadeDelay = animateIntoPlace ? 460 : 70;
+    const fadeDelay = animateIntoPlace ? 760 : 100;
     window.setTimeout(() => setHandoff(true), fadeDelay);
     window.setTimeout(() => {
       setVisible(false);
