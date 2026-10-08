@@ -785,6 +785,8 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
   // The secluded /savannah-room/* surfaces render their own full-room Savannah.
   // Everywhere else inherits this single canonical Savannah widget, so her voice,
   // brain and conversation behaviour do not drift between instruments or documents.
+  if (pathname === "/savannah" || pathname === "/savannah/") return null;
+
   if (pathname.startsWith("/savannah-room/")) {
     return null;
   }
