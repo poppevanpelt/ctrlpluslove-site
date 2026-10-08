@@ -22,14 +22,10 @@ function pickSavannahVoice(synth: SpeechSynthesis) {
     const match = voices.find((voice) =>
       voice.name.toLowerCase().includes(hint.toLowerCase()),
     );
-    if (match) return match;
+    if (match && /^en-US/i.test(match.lang)) return match;
   }
 
-  return (
-    voices.find((voice) => /^en-US/i.test(voice.lang)) ||
-    voices.find((voice) => /^en-/i.test(voice.lang)) ||
-    null
-  );
+  // Never guess: a generic browser fallback can sound male or locally accented.\n  return null;
 }
 
 export function canSpeakSavannahLocally() {
@@ -59,7 +55,7 @@ export function speakSavannahLocally(
 
     const utterance = new SpeechSynthesisUtterance(text);
     const voice = pickSavannahVoice(synth);
-    if (voice) utterance.voice = voice;
+    if (!voice) return false;\n    utterance.voice = voice;
 
     utterance.lang = voice?.lang || "en-US";
     // Keep this close to an ordinary human speaking voice.
