@@ -33,7 +33,7 @@ export async function POST(request: Request) {
     },
     body: JSON.stringify({
       model: "gpt-4o-mini-tts",
-      voice: "marin",
+      voice: "shimmer",
       input: text,
       instructions: SAVANNAH_VOICE_INSTRUCTIONS,
       response_format: "mp3",
@@ -51,7 +51,7 @@ export async function POST(request: Request) {
     headers: {
       "Content-Type": response.headers.get("content-type") || "audio/mpeg",
       "Cache-Control": "no-store",
-      "X-Savannah-Voice": "marin-v1",
+      "X-Savannah-Voice": "shimmer-v2",
       "X-AI-Voice": "true",
     },
   });
