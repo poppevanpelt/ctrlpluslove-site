@@ -1,0 +1,8 @@
+ctrlpluslove.com {
+  encode zstd gzip
+  reverse_proxy app:3000
+}
+
+www.ctrlpluslove.com {
+  redir https://ctrlpluslove.com{uri} permanent
+}
