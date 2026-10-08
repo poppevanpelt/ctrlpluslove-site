@@ -55,7 +55,8 @@ export function speakSavannahLocally(
 
     const utterance = new SpeechSynthesisUtterance(text);
     const voice = pickSavannahVoice(synth);
-    if (!voice) return false;\n    utterance.voice = voice;
+    if (!voice) return false;
+    utterance.voice = voice;
 
     utterance.lang = voice?.lang || "en-US";
     // Keep this close to an ordinary human speaking voice.
