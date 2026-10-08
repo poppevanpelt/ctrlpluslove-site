@@ -782,46 +782,10 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
 
   if (introActive) return null;
 
-  if (
-    pathname.startsWith("/savannah-room/") ||
-    pathname === "/bridgefund-ted" ||
-    pathname === "/bridgefund-ted/" ||
-    pathname === "/morning-chris" ||
-    pathname === "/morning-chris/" ||
-    pathname === "/ted-talks" ||
-    pathname === "/ted-talks/" ||
-    pathname === "/room" ||
-    pathname === "/room/" ||
-    pathname === "/decision-collider" ||
-    pathname === "/decision-collider/" ||
-    pathname === "/decision-accelerator" ||
-    pathname === "/decision-accelerator/" ||
-    pathname === "/meeting-filter" ||
-    pathname === "/meeting-filter/" ||
-    pathname === "/stress-test" ||
-    pathname === "/stress-test/" ||
-    pathname === "/ai-y-fier" ||
-    pathname === "/ai-y-fier/" ||
-    pathname === "/prompt-shoppe" ||
-    pathname === "/prompt-shoppe/" ||
-    pathname === "/radar" ||
-    pathname === "/radar/" ||
-    pathname === "/decision-memory" ||
-    pathname === "/decision-memory/" ||
-    pathname === "/inside-ctrl-love" ||
-    pathname === "/inside-ctrl-love/" ||
-    pathname === "/artifacts" ||
-    pathname === "/artifacts/" ||
-    pathname === "/living-decision-review" ||
-    pathname === "/living-decision-review/" ||
-    pathname === "/ambassadors" ||
-    pathname === "/ambassadors/" ||
-    pathname === "/holy-fools" ||
-    pathname === "/holy-fools/" ||
-    pathname.startsWith("/holy-fools/") ||
-    pathname === "/laatjenietnaaien" ||
-    pathname === "/laatjenietnaaien/"
-  ) {
+  // The secluded /savannah-room/* surfaces render their own full-room Savannah.
+  // Everywhere else inherits this single canonical Savannah widget, so her voice,
+  // brain and conversation behaviour do not drift between instruments or documents.
+  if (pathname.startsWith("/savannah-room/")) {
     return null;
   }
 
