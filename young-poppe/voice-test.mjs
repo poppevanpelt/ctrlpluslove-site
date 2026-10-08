@@ -28,7 +28,7 @@ for (const voice of voices) for (const { name, text } of lines) {
     body: JSON.stringify({
       model: "gpt-4o-mini-tts", voice, response_format: "mp3",
       input: text,
-      instructions: "Speak native Netherlands Dutch, a natural Dutch accent with crisp pronunciation, curious and quick, dry understated humour, warm but never sentimental. The fictional speaker is a bright approximately nine-year-old boy. Suggest youthful energy gently through rhythm; do not caricature or force a high-pitched cartoon-child voice. Keep each line spontaneous, human and short."
+      instructions: "Speak native Netherlands Dutch, a natural Dutch accent with crisp pronunciation, soft-spoken and a little dreamy, tender and thoughtful with natural pauses, understated humour, warm but never sentimental. The fictional speaker is a bright approximately nine-year-old boy. Suggest a quietly observant nine-year-old through gentle rhythm; do not caricature or force a high-pitched cartoon-child voice. Keep each line spontaneous, human and short."
     })
   });
   if (!res.ok) { console.error(`${voice}/${name} failed: HTTP ${res.status}`); continue; }
