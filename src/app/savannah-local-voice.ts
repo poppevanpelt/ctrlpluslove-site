@@ -120,7 +120,9 @@ export async function speakSavannahNeurally(
 
     await audio.play();
     return true;
-  } catch {
-    return speakSavannahLocally(text, options);
+  } catch (error) {
+    console.warn("Savannah neural audio unavailable", error);
+    options.onEnd?.();
+    return false; // Never substitute an arbitrary browser voice for Savannah.
   }
 }
