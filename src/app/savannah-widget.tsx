@@ -70,7 +70,8 @@ export function SavannahWidget() {
   const hiddenTabTimerRef = useRef<number | null>(null);
   const voiceSafetyClosedRef = useRef(false);
   const [state, setState] = useState<State>("idle");
-  const [compact, setCompact] = useState(false);
+  const [compact, setCompact] = useState(true);
+  const [introActive, setIntroActive] = useState(pathname === "/");
   const [mobileAutoCollapsed, setMobileAutoCollapsed] = useState(false);
   const [manualOpen, setManualOpen] = useState(false);
   const [message, setMessage] = useState("Type to me. I’ll answer out loud.");
@@ -243,6 +244,33 @@ export function SavannahWidget() {
   useEffect(() => {
     fieldNotesRef.current = loadSavannahFieldNotes();
   }, []);
+
+  useEffect(() => {
+    if (pathname !== "/") {
+      setIntroActive(false);
+      return;
+    }
+
+    const onIntroActive = () => {
+      setIntroActive(true);
+      setManualOpen(false);
+      setCompact(true);
+    };
+    const onIntroComplete = () => {
+      window.setTimeout(() => {
+        setIntroActive(false);
+        setManualOpen(false);
+        setCompact(true);
+      }, 420);
+    };
+
+    window.addEventListener("savannah-intro-active", onIntroActive);
+    window.addEventListener("savannah-intro-complete", onIntroComplete);
+    return () => {
+      window.removeEventListener("savannah-intro-active", onIntroActive);
+      window.removeEventListener("savannah-intro-complete", onIntroComplete);
+    };
+  }, [pathname]);
 
   useEffect(() => {
     const isMobile = window.matchMedia("(max-width: 650px)").matches;
@@ -628,6 +656,8 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
     : "Talk to Savannah";
 
   const busy = state === "requesting" || state === "connecting";
+
+  if (introActive) return null;
 
   if (
     pathname.startsWith("/savannah-room/") ||
