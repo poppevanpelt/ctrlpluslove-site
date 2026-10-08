@@ -4,7 +4,8 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { speakSavannahNeurally, stopSavannahLocalVoice } from "../savannah-local-voice";
 
 type Line = { role: "assistant" | "user"; text: string };
-const welcome: Line = { role: "assistant", text: "Hi. Savannah at control love. What's up?" };
+const GREETING = "Morning. It's Savannah. I had a thought.";
+const welcome: Line = { role: "assistant", text: GREETING };
 
 export default function SavannahPage() {
   const [lines, setLines] = useState<Line[]>([welcome]);
@@ -12,7 +13,8 @@ export default function SavannahPage() {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   const [speaking, setSpeaking] = useState(false);
-  const [voiceMessage, setVoiceMessage] = useState("TAP TO HEAR SAVANNAH");
+  const [voiceMessage, setVoiceMessage] = useState("HEAR SAVANNAH");
+  const [openingLoaded, setOpeningLoaded] = useState(false);
 
   async function speak(text: string) {
     setVoiceMessage("OPENING THE LINE…");
@@ -23,6 +25,28 @@ export default function SavannahPage() {
     if (!ok) setVoiceMessage("AUDIO UNAVAILABLE — TRY AGAIN");
   }
   useEffect(() => () => { stopSavannahLocalVoice(); }, []);
+  async function openSavannah() {
+    void speak(GREETING);
+    if (openingLoaded) return;
+    setOpeningLoaded(true);
+    try {
+      const response = await fetch("/api/savannah", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        cache: "no-store",
+        body: JSON.stringify({ messages: [{
+          role: "user",
+          text: "Give one short, concrete observation about the ctrl+love Meeting Filter instrument and what makes a meeting worth having. Use only approved working knowledge. Do not claim to have seen live activity, and do not invent updates or confidential client details. One or two sentences, in Savannah's dry and thoughtful style."
+        }] }),
+      });
+      const result = await response.json().catch(() => null);
+      if (response.ok && typeof result?.text === "string" && result.text.trim()) {
+        setLines((previous) => [...previous, { role: "assistant", text: result.text.trim() }]);
+      }
+    } catch {
+      // The greeting works even when contextual insight is unavailable.
+    }
+  }
   const bottom = useRef<HTMLDivElement>(null);
 
   useEffect(() => { bottom.current?.scrollIntoView({ block: "end" }); }, [lines, pending]);
@@ -65,7 +89,7 @@ export default function SavannahPage() {
           <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".12em", opacity: .6 }}>CTRL+LOVE / EMPLOYEE #4</div>
         </div>
       </header>
-      <button type="button" onClick={() => void speak(GREETING)} aria-label="Hear Savannah greet you" style={{ flexShrink: 0, display: "flex", alignItems: "center", gap: 12, border: 0, borderBottom: "1px solid #bcb7ae", background: "#252525", color: "#f4efe6", textAlign: "left", padding: "17px 20px", cursor: "pointer" }}><span aria-hidden="true" style={{ fontSize: 23 }}>{speaking ? "◉" : "▶"}</span><span style={{ fontSize: 11, fontWeight: 800, letterSpacing: ".13em" }}>{voiceMessage}</span></button>
+      <button type="button" onClick={() => void openSavannah()} aria-label="Hear Savannah greet you" style={{ flexShrink: 0, display: "flex", alignItems: "center", gap: 12, border: 0, borderBottom: "1px solid #bcb7ae", background: "#252525", color: "#f4efe6", textAlign: "left", padding: "17px 20px", cursor: "pointer" }}><span aria-hidden="true" style={{ fontSize: 23 }}>{speaking ? "◉" : "▶"}</span><span style={{ fontSize: 11, fontWeight: 800, letterSpacing: ".13em" }}>{voiceMessage}</span></button>
       <section aria-label="Conversation" aria-live="polite" style={{ flex: 1, minHeight: 0, overflowY: "auto", padding: "14px 18px" }}>
         {lines.map((line, index) => (
           <div key={index} style={{ padding: "14px 0", borderBottom: "1px solid #d0cbc2", overflowWrap: "anywhere" }}>
