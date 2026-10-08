@@ -713,7 +713,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
           voice: {
             provider: "openai",
             model: "gpt-4o-mini-tts",
-            voiceId: "marin",
+            voiceId: "shimmer",
             speed: 0.94,
             instructions: [
               "Savannah is a real woman, not an assistant voice.",
