@@ -102,6 +102,11 @@ export default function SavannahIntro() {
   };
 
   useEffect(() => {
+    window.dispatchEvent(new Event("savannah-intro-active"));
+    return () => window.dispatchEvent(new Event("savannah-intro-complete"));
+  }, []);
+
+  useEffect(() => {
     measureHeadline();
     const onResize = () => measureHeadline();
     window.addEventListener("resize", onResize, { passive: true });
@@ -203,7 +208,10 @@ export default function SavannahIntro() {
 
     const fadeDelay = animateIntoPlace ? 460 : 70;
     window.setTimeout(() => setHandoff(true), fadeDelay);
-    window.setTimeout(() => setVisible(false), fadeDelay + 240);
+    window.setTimeout(() => {
+      setVisible(false);
+      window.dispatchEvent(new Event("savannah-intro-complete"));
+    }, fadeDelay + 240);
   };
 
   const playOpening = () => {
