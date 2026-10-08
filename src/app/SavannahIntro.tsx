@@ -103,7 +103,9 @@ export default function SavannahIntro() {
 
   useEffect(() => {
     window.dispatchEvent(new Event("savannah-intro-active"));
-    return () => window.dispatchEvent(new Event("savannah-intro-complete"));
+    return () => {
+      window.dispatchEvent(new Event("savannah-intro-complete"));
+    };
   }, []);
 
   useEffect(() => {
