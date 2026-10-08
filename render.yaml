@@ -6,10 +6,8 @@ services:
     branch: main
     region: frankfurt
     plan: free
-    buildCommand: npm ci && npm run build
+    buildCommand: npm ci --include=dev && npm run build
     startCommand: npm start
     envVars:
-      - key: NODE_ENV
-        value: production
       - key: OPENAI_API_KEY
         sync: false
