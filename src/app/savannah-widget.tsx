@@ -564,7 +564,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          messages: [...conversationRef.current.slice(-17), { role: "user", text }],
+          messages: conversationRef.current.slice(-18),
           context: `${rememberedContext()}${bridgeFundRoomContext()}`,
         }),
       });
@@ -585,7 +585,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
     } catch (error) {
       console.warn("Savannah direct brain fallback", describeError(error));
       setTextState("error");
-      setMessage("I lost my train of thought. Try that once more.");
+      setMessage(`Chat unavailable: ${describeError(error)}`);
     } finally {
       setTextPending(false);
     }
