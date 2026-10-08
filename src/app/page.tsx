@@ -1,6 +1,7 @@
 import styles from "./home-2026.module.css";
 import SavannahIntro from "./SavannahIntro";
 import SavannahExplainer from "./SavannahExplainer";
+import SavannahExit from "./SavannahExit";
 
 const stages = [
   { no:"01", verb:"OBSERVE.", name:"ctrl+live", line:"Watch what is actually changing before deciding what it means.", detail:"Signals, movement, patterns and anomalies — kept alive instead of frozen into another report.", price:"Ongoing watch", href:"mailto:poppevanpelt@gmail.com?subject=Show%20me%20ctrl%2Blive", kind:"observe" },
@@ -220,7 +221,7 @@ export default function Home() {
         <a href="mailto:poppevanpelt@gmail.com?subject=I%20have%20something%20for%20ctrl%2Blove">Bring a real problem ↗</a>
       </section>
 
-      <footer className={styles.footer}><span>ctrl+love · shortcut to reality</span><span>72° and sunny.</span></footer>
+      <footer className={styles.footer}><span>ctrl+love · shortcut to reality</span><SavannahExit /></footer>
     </main>
   );
 }
