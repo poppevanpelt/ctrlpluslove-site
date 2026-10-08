@@ -82,13 +82,15 @@ export default function SavannahPage() {
 
   return (
     <main id="main-content" style={{ position: "fixed", inset: 0, zIndex: 2147483000, display: "flex", flexDirection: "column", background: "#f1eee6", color: "#151515", fontFamily: "Arial, Helvetica, sans-serif", overflow: "hidden" }}>
-      <header style={{ display: "flex", alignItems: "center", gap: 14, padding: "max(env(safe-area-inset-top), 18px) 18px 14px", borderBottom: "1px solid #bcb7ae", flexShrink: 0 }}>
-        <img src="/savannah-avatar.jpg" width={72} height={72} alt="Savannah" style={{ width: 72, height: 72, objectFit: "cover" }} />
-        <div>
-          <div style={{ fontSize: 28, fontWeight: 750 }}>Savannah.</div>
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".12em", opacity: .6 }}>CTRL+LOVE / EMPLOYEE #4</div>
-        </div>
+      <header style={{ flexShrink: 0, padding: "max(env(safe-area-inset-top), 12px) 18px 12px", display: "flex", justifyContent: "space-between", alignItems: "center", background: "#1b1b1b", color: "#f1eee6" }}>
+        <div style={{ fontFamily: "Georgia, serif", fontSize: 26 }}>Savannah.</div>
+        <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: ".14em", opacity: .6 }}>CTRL+LOVE / #4</div>
       </header>
+      <div style={{ position: "relative", flexShrink: 0, height: "min(42svh, 390px)", minHeight: 190, overflow: "hidden", background: "#242322" }}>
+        <img src="/savannah-avatar.jpg" alt="Savannah, waiting for you" style={{ display: "block", width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 28%", filter: "saturate(.92)" }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(transparent 63%, rgba(0,0,0,.7))", pointerEvents: "none" }} />
+        <p style={{ position: "absolute", bottom: 10, left: 20, right: 20, margin: 0, fontFamily: "Georgia, serif", fontSize: 24, fontStyle: "italic", color: "#f5f0e7" }}>Well, there you are.</p>
+      </div>
       <button type="button" onClick={() => void openSavannah()} aria-label="Hear Savannah greet you" style={{ flexShrink: 0, display: "flex", alignItems: "center", gap: 12, border: 0, borderBottom: "1px solid #bcb7ae", background: "#252525", color: "#f4efe6", textAlign: "left", padding: "17px 20px", cursor: "pointer" }}><span aria-hidden="true" style={{ fontSize: 23 }}>{speaking ? "◉" : "▶"}</span><span style={{ fontSize: 11, fontWeight: 800, letterSpacing: ".13em" }}>{voiceMessage}</span></button>
       <section aria-label="Conversation" aria-live="polite" style={{ flex: 1, minHeight: 0, overflowY: "auto", padding: "14px 18px" }}>
         {lines.map((line, index) => (
