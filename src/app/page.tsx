@@ -204,7 +204,7 @@ export default function Home() {
         <div className={styles.about}>
           <h2>30 years advertising.<br/>8 years Apple.<br/>ADCN Hall of Fame.<br/>Then this.</h2>
           <div className={styles.aboutProfile}>
-            <img className={styles.aboutPortrait} src="https://ctrl-love-media.floot.app/_cdn/static/139f3c11-845e-4d7d-925c-3652e0a9a997-poppe-founder-20261007.jpeg" alt="Poppe van Pelt" />
+            <img className={styles.aboutPortrait} src="https://raw.githubusercontent.com/poppevanpelt/ctrlpluslove-site/main/IMG_5021.jpeg" alt="Poppe van Pelt" />
             <div className={styles.aboutBio}>
               <p><b>Poppe van Pelt</b><br/>Founder, ctrl+love</p>
               <p>Built after decades of watching good ideas get improved to death in rooms full of smart people.</p>
