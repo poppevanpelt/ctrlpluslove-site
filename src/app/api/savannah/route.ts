@@ -19,7 +19,7 @@ function extractText(payload: any) {
 
 export async function POST(request: Request) {
   const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) return Response.json({ text: "I can hear you. My brain key is not connected yet, but apparently my voice is. Progress.", demo: true }, { headers: { "Cache-Control": "no-store" } });
+  if (!apiKey) return Response.json({ error: "Savannah is not connected yet. An API key is required." }, { status: 503, headers: { "Cache-Control": "no-store" } });
 
   const body = (await request.json().catch(() => ({}))) as RequestBody;
   const messages = (Array.isArray(body.messages) ? body.messages : [])
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "gpt-6-luna",
+      model: "gpt-4.1-mini",
       instructions,
       input: messages,
       max_output_tokens: 220,
