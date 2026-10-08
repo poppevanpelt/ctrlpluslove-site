@@ -36,6 +36,28 @@ type TranscriptMessage = {
   transcript?: string;
 };
 
+type BrowserSpeechRecognitionEvent = Event & {
+  results: ArrayLike<{
+    isFinal: boolean;
+    0: { transcript: string };
+  }>;
+};
+
+type BrowserSpeechRecognition = {
+  lang: string;
+  continuous: boolean;
+  interimResults: boolean;
+  start: () => void;
+  stop: () => void;
+  abort: () => void;
+  onstart: (() => void) | null;
+  onend: (() => void) | null;
+  onerror: ((event: Event & { error?: string }) => void) | null;
+  onresult: ((event: BrowserSpeechRecognitionEvent) => void) | null;
+};
+
+type BrowserSpeechRecognitionCtor = new () => BrowserSpeechRecognition;
+
 function describeError(error: unknown) {
   if (error instanceof Error) return error.message || error.name;
   if (typeof error === "string") return error;
@@ -57,6 +79,7 @@ export function SavannahWidget() {
   const lineIdRef = useRef(0);
   const chatScrollRef = useRef<HTMLDivElement | null>(null);
   const textInputRef = useRef<HTMLInputElement | null>(null);
+  const speechRecognitionRef = useRef<BrowserSpeechRecognition | null>(null);
   const queuedTextRef = useRef<string | null>(null);
   const modeRef = useRef<Mode>("type");
   const steelTimerRef = useRef<number | null>(null);
@@ -79,6 +102,7 @@ export function SavannahWidget() {
   const [textState, setTextState] = useState<TextState>("idle");
   const [draft, setDraft] = useState("");
   const [textPending, setTextPending] = useState(false);
+  const [micListening, setMicListening] = useState(false);
   const [assistantSpeaking, setAssistantSpeaking] = useState(false);
   const [chatLines, setChatLines] = useState<ConversationLine[]>([
     { id: 0, role: "assistant", text: "Hi. Savannah at control love. What's up?" },
@@ -525,8 +549,8 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
     );
   };
 
-  const sendText = async () => {
-    const text = draft.trim();
+  const submitSavannahText = async (rawText: string) => {
+    const text = rawText.trim();
     if (!text || textPending) return;
 
     appendConversation("user", text, true);
@@ -564,6 +588,87 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       setMessage("I lost my train of thought. Try that once more.");
     } finally {
       setTextPending(false);
+    }
+  };
+
+  const sendText = async () => {
+    await submitSavannahText(draft);
+  };
+
+  const stopBrowserMic = () => {
+    try { speechRecognitionRef.current?.stop(); } catch {}
+  };
+
+  const toggleBrowserMic = () => {
+    if (micListening) {
+      stopBrowserMic();
+      return;
+    }
+
+    const speechWindow = window as typeof window & {
+      SpeechRecognition?: BrowserSpeechRecognitionCtor;
+      webkitSpeechRecognition?: BrowserSpeechRecognitionCtor;
+    };
+    const Recognition = speechWindow.SpeechRecognition || speechWindow.webkitSpeechRecognition;
+
+    if (!Recognition) {
+      setMessage("This browser won't give me the microphone. Type to me here, or try Safari/Chrome with speech recognition enabled.");
+      return;
+    }
+
+    try {
+      const recognition = new Recognition();
+      speechRecognitionRef.current = recognition;
+      recognition.lang = navigator.language || "en-US";
+      recognition.continuous = false;
+      recognition.interimResults = true;
+
+      recognition.onstart = () => {
+        setMicListening(true);
+        setMessage("I'm listening.");
+      };
+
+      recognition.onresult = (event) => {
+        let finalText = "";
+        let interimText = "";
+
+        for (let i = 0; i < event.results.length; i += 1) {
+          const result = event.results[i];
+          const transcript = result?.[0]?.transcript?.trim() || "";
+          if (!transcript) continue;
+          if (result.isFinal) finalText += `${transcript} `;
+          else interimText += `${transcript} `;
+        }
+
+        const heard = (finalText || interimText).trim();
+        if (heard) setMessage(`Heard: “${heard}”`);
+
+        if (finalText.trim()) {
+          try { recognition.stop(); } catch {}
+          void submitSavannahText(finalText.trim());
+        }
+      };
+
+      recognition.onerror = (event) => {
+        setMicListening(false);
+        const error = event.error || "";
+        setMessage(
+          error === "not-allowed" || error === "service-not-allowed"
+            ? "I need microphone permission for this site."
+            : "I lost the microphone. Tap Talk and try me again.",
+        );
+      };
+
+      recognition.onend = () => {
+        setMicListening(false);
+        if (!textPending) setMessage("Talk or type. I'm here.");
+      };
+
+      recognition.start();
+    } catch (error) {
+      console.warn("Savannah browser mic failed", describeError(error));
+      setMicListening(false);
+      setMessage("I couldn't open the microphone. Tap Talk and try me again.");
     }
   };
 
@@ -907,7 +1012,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
           textTransform: "uppercase",
         }}
       >
-        Type to Savannah · she answers out loud
+        Talk or type to Savannah · she answers out loud
       </div>
 
       {false ? (
@@ -1002,6 +1107,30 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
           </div>
 
 
+
+          <button
+            type="button"
+            onClick={toggleBrowserMic}
+            disabled={textPending}
+            aria-pressed={micListening}
+            style={{
+              width: "100%",
+              minHeight: 46,
+              border: 0,
+              borderBottom: "1px solid rgba(21,21,21,.18)",
+              background: micListening ? "#151515" : "#f5f1e7",
+              color: micListening ? "#f5f1e7" : "#151515",
+              font: "inherit",
+              fontSize: 10,
+              fontWeight: 800,
+              letterSpacing: ".1em",
+              textTransform: "uppercase",
+              cursor: textPending ? "default" : "pointer",
+              opacity: textPending ? .52 : 1,
+            }}
+          >
+            {micListening ? "Listening… tap to stop" : "Talk to Savannah"}
+          </button>
 
           <button
             type="button"
