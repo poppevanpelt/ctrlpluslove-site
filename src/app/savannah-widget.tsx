@@ -826,7 +826,12 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
         right: 18,
         bottom: 64,
         zIndex: 2147483001,
-        width: "min(360px, calc(100vw - 28px))",
+        width: pathname === "/savannah" ? "calc(100vw - 24px)" : "min(360px, calc(100vw - 28px))",
+        maxWidth: pathname === "/savannah" ? 440 : "calc(100vw - 28px)",
+        boxSizing: "border-box",
+        left: pathname === "/savannah" ? 12 : "auto",
+        right: pathname === "/savannah" ? 12 : 18,
+        bottom: pathname === "/savannah" ? 16 : 64,
         border: "1px solid rgba(21,21,21,.22)",
         background: "rgba(245,241,231,.98)",
         color: "#151515",
@@ -859,7 +864,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
         }
       `}</style>
 
-      <div style={{ display: "grid", gridTemplateColumns: "88px 1fr", minHeight: 112 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "88px minmax(0, 1fr)", minHeight: 112 }}>
         <div
           aria-label={assistantSpeaking ? "Savannah is speaking" : "Savannah"}
           style={{
@@ -1122,7 +1127,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
               event.preventDefault();
               void sendText();
             }}
-            style={{ display: "grid", gridTemplateColumns: "1fr auto" }}
+            style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) auto", minWidth: 0, width: "100%" }}
           >
             <input
               ref={textInputRef}
