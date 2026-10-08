@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { speakSavannahNeurally, stopSavannahLocalVoice } from "../savannah-local-voice";
 
 type Line = { role: "assistant" | "user"; text: string };
 const welcome: Line = { role: "assistant", text: "Hi. Savannah at control love. What's up?" };
@@ -10,6 +11,18 @@ export default function SavannahPage() {
   const [draft, setDraft] = useState("");
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
+  const [speaking, setSpeaking] = useState(false);
+  const [voiceMessage, setVoiceMessage] = useState("TAP TO HEAR SAVANNAH");
+
+  async function speak(text: string) {
+    setVoiceMessage("OPENING THE LINE…");
+    const ok = await speakSavannahNeurally(text, {
+      onStart: () => { setSpeaking(true); setVoiceMessage("SAVANNAH IS SPEAKING"); },
+      onEnd: () => { setSpeaking(false); setVoiceMessage("HEAR THAT AGAIN"); },
+    });
+    if (!ok) setVoiceMessage("AUDIO UNAVAILABLE — TRY AGAIN");
+  }
+  useEffect(() => () => { stopSavannahLocalVoice(); }, []);
   const bottom = useRef<HTMLDivElement>(null);
 
   useEffect(() => { bottom.current?.scrollIntoView({ block: "end" }); }, [lines, pending]);
@@ -35,6 +48,7 @@ export default function SavannahPage() {
         throw new Error(result?.error || `Chat endpoint HTTP ${response.status}`);
       }
       setLines((previous) => [...previous, { role: "assistant", text: result.text }]);
+      void speak(result.text);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Connection failed.");
     } finally {
@@ -51,6 +65,7 @@ export default function SavannahPage() {
           <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".12em", opacity: .6 }}>CTRL+LOVE / EMPLOYEE #4</div>
         </div>
       </header>
+      <button type="button" onClick={() => void speak(GREETING)} aria-label="Hear Savannah greet you" style={{ flexShrink: 0, display: "flex", alignItems: "center", gap: 12, border: 0, borderBottom: "1px solid #bcb7ae", background: "#252525", color: "#f4efe6", textAlign: "left", padding: "17px 20px", cursor: "pointer" }}><span aria-hidden="true" style={{ fontSize: 23 }}>{speaking ? "◉" : "▶"}</span><span style={{ fontSize: 11, fontWeight: 800, letterSpacing: ".13em" }}>{voiceMessage}</span></button>
       <section aria-label="Conversation" aria-live="polite" style={{ flex: 1, minHeight: 0, overflowY: "auto", padding: "14px 18px" }}>
         {lines.map((line, index) => (
           <div key={index} style={{ padding: "14px 0", borderBottom: "1px solid #d0cbc2", overflowWrap: "anywhere" }}>
