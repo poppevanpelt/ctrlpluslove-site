@@ -23,6 +23,7 @@ export default function SavannahPage() {
   const recorder = useRef<MediaRecorder | null>(null);
   const micStream = useRef<MediaStream | null>(null);
   const micChunks = useRef<Blob[]>([]);
+  const voiceMonitor = useRef<(() => void) | null>(null);
   const [micStatus, setMicStatus] = useState("TAP TO TALK");
   const [videoReady, setVideoReady] = useState(true);
   const [arrivalReady, setArrivalReady] = useState(false);
@@ -39,10 +40,10 @@ export default function SavannahPage() {
       setAudioBusy(false);
     }
   }, [audioEnabled]);
-  useEffect(() => () => { stopSavannahLocalVoice(); recorder.current?.stop(); micStream.current?.getTracks().forEach(track => track.stop()); }, []);
+  useEffect(() => () => { stopSavannahLocalVoice(); voiceMonitor.current?.(); recorder.current?.stop(); micStream.current?.getTracks().forEach(track => track.stop()); }, []);
 
   async function tapSavannah() {
-    if (listening) { recorder.current?.stop(); return; }
+    if (listening) { voiceMonitor.current?.(); voiceMonitor.current = null; recorder.current?.stop(); return; }
     if (pending || audioBusy) return;
     if (speaking) { stopSavannahLocalVoice(); setSpeaking(false); }
     if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") {
@@ -57,6 +58,7 @@ export default function SavannahPage() {
       micChunks.current = [];
       capture.ondataavailable = event => { if (event.data.size) micChunks.current.push(event.data); };
       capture.onstop = async () => {
+        voiceMonitor.current?.(); voiceMonitor.current = null;
         stream.getTracks().forEach(track => track.stop());
         micStream.current = null;
         setListening(false);
@@ -78,9 +80,49 @@ export default function SavannahPage() {
         }
       };
       capture.start();
+      // Light voice activity detection: only auto-send after speech was heard,
+      // followed by a meaningful pause. Tapping again always sends immediately.
+      try {
+        const Context = window.AudioContext;
+        if (Context) {
+          const context = new Context();
+          const source = context.createMediaStreamSource(stream);
+          const analyser = context.createAnalyser();
+          analyser.fftSize = 1024;
+          source.connect(analyser);
+          const samples = new Float32Array(analyser.fftSize);
+          let heardSpeech = false;
+          let speechFrames = 0;
+          let silenceSince = 0;
+          const startedAt = performance.now();
+          let frame = 0;
+          const sample = () => {
+            if (capture.state !== "recording") return;
+            analyser.getFloatTimeDomainData(samples);
+            let power = 0;
+            for (let i = 0; i < samples.length; i++) power += samples[i] * samples[i];
+            const rms = Math.sqrt(power / samples.length);
+            const now = performance.now();
+            if (rms > 0.022) {
+              speechFrames++;
+              if (speechFrames >= 5) heardSpeech = true;
+              silenceSince = 0;
+            } else if (heardSpeech) {
+              if (!silenceSince) silenceSince = now;
+              if (now - silenceSince > 1500 && now - startedAt > 2200) {
+                capture.stop(); return;
+              }
+            }
+            if (now - startedAt > 25000) { capture.stop(); return; }
+            frame = window.requestAnimationFrame(sample);
+          };
+          frame = window.requestAnimationFrame(sample);
+          voiceMonitor.current = () => { window.cancelAnimationFrame(frame); source.disconnect(); void context.close(); };
+        }
+      } catch { /* Manual tap-to-send remains available. */ }
       setError("");
       setListening(true);
-      setMicStatus("LISTENING · TAP TO SEND");
+      setMicStatus("LISTENING");
     } catch {
       setError("Allow microphone access to speak with Savannah, or use the keyboard.");
       setMicStatus("MIC PERMISSION NEEDED");
@@ -197,7 +239,7 @@ export default function SavannahPage() {
         <div ref={bottom} />
       </section>}
       {false && !showTranscript && !started && <div className="savannah-quick-start"><button type="button" disabled={pending} onClick={() => void ask("What is ctrl+love, and why should I care?")}>INTRODUCE YOURSELF</button><button type="button" disabled={pending} onClick={() => void ask("Challenge my business idea. First ask me what it is.")}>CHALLENGE ME</button></div>}
-      <div className="savannah-mic-hint" aria-live="polite">{micStatus}<button type="button" onClick={() => setShowTyping(value => !value)} aria-label="Toggle keyboard">⌨</button></div>
+      <div className="savannah-mic-hint" aria-live="polite"><span className={listening ? "savannah-mic-live" : ""}>{micStatus}</span><button type="button" onClick={() => setShowTyping(value => !value)} aria-label="Toggle keyboard">⌨</button></div>
       {!showTranscript && error && <p className="savannah-error-compact" role="alert">{error}</p>}
       {showTyping && <form className="savannah-compose" onSubmit={send}>
         <label className="savannah-input-wrap">
@@ -214,6 +256,7 @@ export default function SavannahPage() {
         .savannah-brand-right { display:flex; align-items:center; gap:8px; font-size:10px; font-weight:750; letter-spacing:.12em; color:#b8b6b1; }
         .savannah-dot { width:6px; height:6px; border-radius:50%; background:#9ab59c; }
         .savannah-mic-hint { display:flex; flex-shrink:0; justify-content:center; align-items:center; gap:12px; min-height:42px; font-size:10px; letter-spacing:.15em; font-weight:750; background:#191817; color:#f5eee3; }
+        .savannah-mic-live::before { content:""; display:inline-block; width:6px; height:6px; margin-right:9px; border-radius:50%; background:#a7dfac; vertical-align:middle; }
         .savannah-mic-hint button { background:none; border:none; font-size:17px; color:#f5eee3; padding:8px; cursor:pointer; }
         .savannah-face-tap { position:absolute; inset:0; width:100%; height:100%; border:0; padding:0; background:transparent; z-index:2; cursor:pointer; touch-action:manipulation; }
         .savannah-face-tap:focus-visible { outline:3px solid #f8e3bb; outline-offset:-5px; }
