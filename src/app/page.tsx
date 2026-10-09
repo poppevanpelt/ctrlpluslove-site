@@ -83,7 +83,7 @@ export default function Home() {
       <nav className={styles.nav}>
         <a className={styles.logo} href="#">ctrl+love</a>
         <div className={styles.navlinks}>
-          <a href="#work">What we do</a><a href="#instruments">Try</a><a href="#people">People</a><a href="#cases">Proof</a><a href="/pricing/">Pricing</a>
+          <a href="#work">What we do</a><a href="#instruments">Try</a><a href="#people">People</a><a href="#cases">Proof</a><a href="/press/">Press</a><a href="/pricing/">Pricing</a>
         </div>
       </nav>
 
