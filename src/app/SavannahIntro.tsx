@@ -9,7 +9,7 @@ const START_AT = 1.35;
 const REGISTER_AT = 6.2;
 const DAYLIGHT_AT = 6.9;
 const LOCK_AT = 7.6;
-const HANDOFF_AT = 8.36;
+const HANDOFF_AT = 8.12;
 
 type SceneStage = "film" | "register" | "daylight" | "locked";
 
@@ -208,12 +208,15 @@ export default function SavannahIntro() {
     setStage("locked");
     clickLock();
 
-    const fadeDelay = animateIntoPlace ? 760 : 100;
-    window.setTimeout(() => setHandoff(true), fadeDelay);
+    const seatDelay = animateIntoPlace ? 620 : 180;
+    // Keep the projected heading on its measured DOM coordinates while seating.
+    // The final handoff is a cut, not an opacity dissolve.
+    window.setTimeout(() => setHandoff(true), seatDelay);
     window.setTimeout(() => {
       setVisible(false);
+      releasePageLock();
       window.dispatchEvent(new Event("savannah-intro-complete"));
-    }, fadeDelay + 240);
+    }, seatDelay + 50);
   };
 
   const playOpening = () => {
