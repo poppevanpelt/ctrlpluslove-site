@@ -93,6 +93,7 @@ export function SavannahWidget() {
   const rememberedUserCountRef = useRef(0);
   const textBurstTimerRef = useRef<number | null>(null);
   const voiceLimitTimerRef = useRef<number | null>(null);
+  const voiceWarningTimerRef = useRef<number | null>(null);
   const hiddenTabTimerRef = useRef<number | null>(null);
   const voiceSafetyClosedRef = useRef(false);
   const [state, setState] = useState<State>("idle");
@@ -107,6 +108,7 @@ export function SavannahWidget() {
   const [textPending, setTextPending] = useState(false);
   const [micListening, setMicListening] = useState(false);
   const [assistantSpeaking, setAssistantSpeaking] = useState(false);
+  const [callTimeNotice, setCallTimeNotice] = useState(false);
   const [chatLines, setChatLines] = useState<ConversationLine[]>([
     { id: 0, role: "assistant", text: "Hi. Savannah at control love. What's up?" },
   ]);
@@ -221,6 +223,11 @@ export function SavannahWidget() {
   };
 
   const clearVoiceLimitTimer = () => {
+    if (voiceWarningTimerRef.current !== null) {
+      window.clearTimeout(voiceWarningTimerRef.current);
+      voiceWarningTimerRef.current = null;
+    }
+    setCallTimeNotice(false);
     if (voiceLimitTimerRef.current !== null) {
       window.clearTimeout(voiceLimitTimerRef.current);
       voiceLimitTimerRef.current = null;
@@ -230,6 +237,21 @@ export function SavannahWidget() {
   const armVoiceLimit = (client: Vapi) => {
     clearVoiceLimitTimer();
     voiceSafetyClosedRef.current = false;
+    // Give a full minute of warning before the hard five-minute voice cap.
+    voiceWarningTimerRef.current = window.setTimeout(() => {
+      setCallTimeNotice(true);
+      setMessage("About a minute left on this call. We can carry on in a new one.");
+      try {
+        client.send({
+          type: "add-message",
+          message: {
+            role: "system",
+            content: "The current live call has around one minute left. On your NEXT natural speaking turn, briefly and warmly tell the visitor that the line will close soon and they can start another call. Do not interrupt them or abruptly change topic.",
+          },
+        } as any);
+      } catch {}
+      voiceWarningTimerRef.current = null;
+    }, Math.max(0, SAVANNAH_VOICE_MAX_DURATION_MS - 60_000));
     voiceLimitTimerRef.current = window.setTimeout(() => {
       voiceSafetyClosedRef.current = true;
       try { client.stop(); } catch {}
@@ -995,6 +1017,12 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
           </p>
         </div>
       </div>
+
+      {callTimeNotice && state === "live" ? (
+        <div role="status" style={{ padding: "10px 14px", background: "#e9dfcd", borderTop: "1px solid rgba(21,21,21,.2)", fontSize: 12, fontWeight: 650, lineHeight: 1.4 }}>
+          About a minute left. Start another call to continue.
+        </div>
+      ) : null}
 
       <div
         style={{
