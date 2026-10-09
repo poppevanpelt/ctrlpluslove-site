@@ -29,19 +29,25 @@ export default function SavannahPage() {
   const [videoReady, setVideoReady] = useState(true);
   const [arrivalReady, setArrivalReady] = useState(false);
   const [deskOpen, setDeskOpen] = useState(false);
+  const [deskAuthenticated,setDeskAuthenticated] = useState(false);
+  const [deskConfigured,setDeskConfigured] = useState(false);
   const [deskItems, setDeskItems] = useState<Array<{id:string;type:"note"|"conversation"|"email"|"calendar";text:string;date:string}>>([]);
   const [deskType, setDeskType] = useState<"note"|"email"|"calendar">("note");
   const [deskDraft, setDeskDraft] = useState("");
   const [deskNotice, setDeskNotice] = useState("");
   useEffect(() => {
+    void fetch("/api/savannah/auth/status",{cache:"no-store"}).then(r=>r.json()).then(s=>{setDeskAuthenticated(s.authenticated===true);setDeskConfigured(s.configured===true);if(s.authenticated===true && new URLSearchParams(window.location.search).get("desk")==="open")setDeskOpen(true);}).catch(()=>setDeskAuthenticated(false));
+  }, []);
+  useEffect(() => {
+    if(!deskAuthenticated) return;
     try {
       const stored = JSON.parse(window.localStorage.getItem("savannah-desk-local-v1") || "[]");
       if (Array.isArray(stored)) setDeskItems(stored.filter((item) => item && typeof item.text === "string").slice(0,60));
     } catch { setDeskNotice("Local notes could not be loaded."); }
-  }, []);
+  }, [deskAuthenticated]);
   const saveDesk = (type:"note"|"conversation"|"email"|"calendar",text:string) => {
     const clean = text.trim();
-    if (!clean) return;
+    if (!clean || !deskAuthenticated) return;
     const updated = [{id:String(Date.now()),type,text:clean,date:new Date().toLocaleString()},...deskItems].slice(0,60);
     try {
       window.localStorage.setItem("savannah-desk-local-v1",JSON.stringify(updated));
@@ -264,12 +270,13 @@ export default function SavannahPage() {
     <main id="main-content" className="savannah-shell">
       <header className="savannah-topbar">
         <div className="savannah-brand">Savannah<span>.</span></div>
-        <div className="savannah-brand-right"><button type="button" className="savannah-desk-trigger" onClick={() => setDeskOpen(true)}>DESK {deskItems.length ? `(${deskItems.length})` : ""}</button><span className="savannah-dot" /> CTRL+LOVE / #4</div>
+        <div className="savannah-brand-right"><button type="button" className="savannah-desk-trigger" onClick={() => {if(deskAuthenticated)setDeskOpen(true);else if(deskConfigured)window.location.assign("/api/savannah/auth/login");else setDeskNotice("Google sign-in setup pending: the private Desk is locked.");}}>DESK {deskItems.length ? `(${deskItems.length})` : ""}</button><span className="savannah-dot" /> CTRL+LOVE / #4</div>
       </header>
 
-      {deskOpen && <section className="savannah-desk" role="dialog" aria-modal="true" aria-label="Savannah's Desk">
+      {deskNotice && !deskOpen && <div role="status" className="savannah-lock-notice" onClick={()=>setDeskNotice("")}>{deskNotice}</div>}
+      {deskOpen && deskAuthenticated && <section className="savannah-desk" role="dialog" aria-modal="true" aria-label="Savannah's Desk">
         <div className="savannah-desk-top"><strong>SAVANNAH'S DESK</strong><button type="button" onClick={() => setDeskOpen(false)} aria-label="Close desk">CLOSE ×</button></div>
-        <p className="savannah-desk-disclaimer">Private to this browser on this device. Not synced, encrypted, emailed or connected to your calendar. Avoid storing confidential client details here.</p>
+        <p className="savannah-desk-disclaimer">Google account verified. Entries are still stored locally, not synced or encrypted across devices. Private to this browser on this device. Not synced, encrypted, emailed or connected to your calendar. Avoid storing confidential client details here.</p>
         <div className="savannah-desk-actions">
           <button type="button" onClick={() => saveDesk("conversation",lines.map(line=>`${line.role==="assistant"?"SAVANNAH":"YOU"}: ${line.text}`).join("\\n"))}>SAVE CURRENT CONVERSATION</button>
           <button type="button" onClick={exportDesk} disabled={!deskItems.length}>EXPORT NOTES ↓</button>
@@ -330,6 +337,7 @@ export default function SavannahPage() {
         <button type="submit" className="savannah-send" disabled={pending || !draft.trim()} aria-label="Send message">{pending ? "…" : "↑"}</button>
       </form>}
       <style jsx>{`
+        .savannah-lock-notice { position:absolute; top:74px; left:10px; right:10px; z-index:30; padding:13px; background:#26221e; color:#fff; text-align:center; font-size:12px; cursor:pointer; }
         .savannah-desk-trigger { background:transparent; border:1px solid #706b63; color:#eee8dc; font:inherit; font-size:10px; padding:8px 10px; cursor:pointer; }
         .savannah-desk { position:absolute; z-index:40; inset:0; overflow:auto; background:#f1ede4; color:#181715; padding:calc(18px + env(safe-area-inset-top)) clamp(18px,5vw,50px) 28px; font:14px/1.45 Arial,sans-serif; }
         .savannah-desk-top { display:flex; justify-content:space-between; gap:12px; align-items:center; font-size:20px; letter-spacing:-.03em; }
