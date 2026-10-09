@@ -212,7 +212,7 @@ export default function SavannahPage() {
       <div className={"savannah-portrait" + (speaking ? " is-speaking" : pending ? " is-thinking" : "")}>
         <button type="button" className="savannah-face-tap" onClick={() => void tapSavannah()} aria-label={needsPlayback ? "Hear Savannah" : listening ? "Finish recording" : "Speak to Savannah"} />
         <img src="/savannah-avatar.jpg" alt="Savannah" />
-        {videoReady && <video className="savannah-live" src="https://ctrl-love-media.floot.app/_cdn/static/savannah-intro.mp4" poster="/savannah-avatar.jpg" autoPlay muted playsInline preload="auto" aria-label="Savannah moving naturally" onLoadedMetadata={event => { try { event.currentTarget.currentTime = 1.35; } catch {} }} onTimeUpdate={event => { if (event.currentTarget.currentTime >= 5.8) event.currentTarget.currentTime = 1.35; }} onEnded={event => { event.currentTarget.currentTime = 1.35; void event.currentTarget.play().catch(() => {}); }} onError={() => setVideoReady(false)} />}
+        {/* Static portrait until muted video playback can coexist reliably with iOS voice output. */}
         <div className={"savannah-shade" + (speaking ? " is-speaking" : "")} />
         <div className={"savannah-presence" + (listening ? " is-listening" : speaking ? " is-speaking" : pending ? " is-thinking" : "")} aria-hidden="true"><span /><span /><span /></div>
         <div className={"savannah-intro" + (arrivalReady ? " is-ready" : "")} aria-hidden="true">
