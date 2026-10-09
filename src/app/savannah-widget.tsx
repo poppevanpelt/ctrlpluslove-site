@@ -619,7 +619,9 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
     try {
       const recognition = new Recognition();
       speechRecognitionRef.current = recognition;
-      recognition.lang = navigator.language || "en-US";
+      // Safari may inherit nl-NL from the visitor and transcribe English as Dutch.
+      // Savannah defaults to American English; the visitor can still type Dutch.
+      recognition.lang = "en-US";
       recognition.continuous = false;
       recognition.interimResults = true;
 
