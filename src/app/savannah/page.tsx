@@ -20,7 +20,10 @@ export default function SavannahPage() {
   const [showTranscript, setShowTranscript] = useState(false);
   const [listening, setListening] = useState(false);
   const [showTyping, setShowTyping] = useState(false);
-  const recognizer = useRef<{ start: () => void; stop: () => void } | null>(null);
+  const recorder = useRef<MediaRecorder | null>(null);
+  const micStream = useRef<MediaStream | null>(null);
+  const micChunks = useRef<Blob[]>([]);
+  const [micStatus, setMicStatus] = useState("TAP TO TALK");
   const [videoReady, setVideoReady] = useState(true);
   const [arrivalReady, setArrivalReady] = useState(false);
   const bottom = useRef<HTMLDivElement>(null);
@@ -36,26 +39,53 @@ export default function SavannahPage() {
       setAudioBusy(false);
     }
   }, [audioEnabled]);
-  useEffect(() => () => { stopSavannahLocalVoice(); recognizer.current?.stop(); }, []);
+  useEffect(() => () => { stopSavannahLocalVoice(); recorder.current?.stop(); micStream.current?.getTracks().forEach(track => track.stop()); }, []);
 
-  function tapSavannah() {
-    if (listening) { recognizer.current?.stop(); setListening(false); return; }
-    if (speaking || audioBusy) { stopSavannahLocalVoice(); setSpeaking(false); setAudioBusy(false); }
-    const browser = window as typeof window & { SpeechRecognition?: new () => any; webkitSpeechRecognition?: new () => any };
-    const Recognition = browser.SpeechRecognition || browser.webkitSpeechRecognition;
-    if (!Recognition) { setShowTyping(true); return; }
+  async function tapSavannah() {
+    if (listening) { recorder.current?.stop(); return; }
+    if (pending || audioBusy) return;
+    if (speaking) { stopSavannahLocalVoice(); setSpeaking(false); }
+    if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") {
+      setShowTyping(true); setMicStatus("MIC UNAVAILABLE"); return;
+    }
     try {
-      const recognition = new Recognition();
-      recognition.lang = "en-US";
-      recognition.interimResults = false;
-      recognition.maxAlternatives = 1;
-      recognition.onresult = (event: any) => { const heard = event.results?.[0]?.[0]?.transcript; if (typeof heard === "string" && heard.trim()) void ask(heard); };
-      recognition.onerror = () => { setListening(false); setShowTyping(true); };
-      recognition.onend = () => { setListening(false); recognizer.current = null; };
-      recognizer.current = recognition;
-      recognition.start();
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      micStream.current = stream;
+      const preferred = ["audio/mp4", "audio/webm;codecs=opus", "audio/webm"].find(type => MediaRecorder.isTypeSupported(type));
+      const capture = new MediaRecorder(stream, preferred ? { mimeType: preferred } : undefined);
+      recorder.current = capture;
+      micChunks.current = [];
+      capture.ondataavailable = event => { if (event.data.size) micChunks.current.push(event.data); };
+      capture.onstop = async () => {
+        stream.getTracks().forEach(track => track.stop());
+        micStream.current = null;
+        setListening(false);
+        setMicStatus("UNDERSTANDING…");
+        const blob = new Blob(micChunks.current, { type: capture.mimeType || "audio/mp4" });
+        if (!blob.size) { setMicStatus("TAP TO TRY AGAIN"); return; }
+        const data = new FormData();
+        data.append("audio", blob, blob.type.includes("webm") ? "savannah.webm" : "savannah.m4a");
+        try {
+          const response = await fetch("/api/savannah-transcribe", { method: "POST", body: data });
+          const result = await response.json();
+          if (!response.ok || !result?.text) throw new Error(result?.error || "Could not hear you.");
+          setMicStatus("TAP TO TALK");
+          await ask(result.text);
+        } catch (reason) {
+          setError(reason instanceof Error ? reason.message : "Microphone failed.");
+          setMicStatus("TAP TO TRY AGAIN");
+          setShowTyping(true);
+        }
+      };
+      capture.start();
+      setError("");
       setListening(true);
-    } catch { setListening(false); setShowTyping(true); }
+      setMicStatus("LISTENING · TAP TO SEND");
+    } catch {
+      setError("Allow microphone access to speak with Savannah, or use the keyboard.");
+      setMicStatus("MIC PERMISSION NEEDED");
+      setShowTyping(true);
+    }
   }
   useEffect(() => { const timer = window.setTimeout(() => setArrivalReady(true), 1450); return () => window.clearTimeout(timer); }, []);
   useEffect(() => { bottom.current?.scrollIntoView({ block: "end" }); }, [lines, pending, error]);
@@ -132,7 +162,7 @@ export default function SavannahPage() {
       </header>
 
       <div className={"savannah-portrait" + (speaking ? " is-speaking" : pending ? " is-thinking" : "")}>
-        <button type="button" className="savannah-face-tap" onClick={tapSavannah} aria-label={listening ? "Stop listening" : "Speak to Savannah"} />
+        <button type="button" className="savannah-face-tap" onClick={() => void tapSavannah()} aria-label={listening ? "Finish recording" : "Speak to Savannah"} />
         <img src="/savannah-avatar.jpg" alt="Savannah" />
         {videoReady && <video className="savannah-live" src="/savannah-idle.mp4" poster="/savannah-avatar.jpg" autoPlay muted playsInline loop preload="auto" aria-label="Savannah quietly looking toward you" onError={() => setVideoReady(false)} />}
         <div className={"savannah-shade" + (speaking ? " is-speaking" : "")} />
@@ -167,6 +197,7 @@ export default function SavannahPage() {
         <div ref={bottom} />
       </section>}
       {false && !showTranscript && !started && <div className="savannah-quick-start"><button type="button" disabled={pending} onClick={() => void ask("What is ctrl+love, and why should I care?")}>INTRODUCE YOURSELF</button><button type="button" disabled={pending} onClick={() => void ask("Challenge my business idea. First ask me what it is.")}>CHALLENGE ME</button></div>}
+      <div className="savannah-mic-hint" aria-live="polite">{micStatus}<button type="button" onClick={() => setShowTyping(value => !value)} aria-label="Toggle keyboard">⌨</button></div>
       {!showTranscript && error && <p className="savannah-error-compact" role="alert">{error}</p>}
       {showTyping && <form className="savannah-compose" onSubmit={send}>
         <label className="savannah-input-wrap">
@@ -182,6 +213,8 @@ export default function SavannahPage() {
         .savannah-brand span { color:#d7b49b; }
         .savannah-brand-right { display:flex; align-items:center; gap:8px; font-size:10px; font-weight:750; letter-spacing:.12em; color:#b8b6b1; }
         .savannah-dot { width:6px; height:6px; border-radius:50%; background:#9ab59c; }
+        .savannah-mic-hint { display:flex; flex-shrink:0; justify-content:center; align-items:center; gap:12px; min-height:42px; font-size:10px; letter-spacing:.15em; font-weight:750; background:#191817; color:#f5eee3; }
+        .savannah-mic-hint button { background:none; border:none; font-size:17px; color:#f5eee3; padding:8px; cursor:pointer; }
         .savannah-face-tap { position:absolute; inset:0; width:100%; height:100%; border:0; padding:0; background:transparent; z-index:2; cursor:pointer; touch-action:manipulation; }
         .savannah-face-tap:focus-visible { outline:3px solid #f8e3bb; outline-offset:-5px; }
         .savannah-portrait { flex:1 1 auto; min-height:0; height:auto; position:relative; background:#272421; overflow:hidden; }
