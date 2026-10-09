@@ -391,3 +391,9 @@
  .savannahSceneDaylight .savannahProjectionHeadline{transform:perspective(1000px) translate3d(1vw,0,-12px) rotateY(-.5deg) scale(.97)}
 }
 @media(prefers-reduced-motion:reduce){.savannahFilm,.savannahProjectionHeadline{transition:none!important;transform:none!important}}
+
+/* Safari: never paint the unprimed t=0 film frame above the intro.
+   The image is only revealed after seeked(1.35s), avoiding the giant-face flash. */
+.savannahFilm .savannahIntroVideo { opacity:0; }
+.savannahIntroReady:not(.savannahIntroFallback) .savannahFilm .savannahIntroVideo { opacity:1; }
+.savannahIntroFallback .savannahFilm .savannahIntroVideo { opacity:0; }
