@@ -48,7 +48,7 @@ export default function PressPage() {
       <section style={{borderTop:"1px solid #b8b2a7",paddingTop:20,marginBottom:90}}>
         <p style={{fontSize:12,letterSpacing:".16em",fontWeight:700,marginBottom:30}}>03 / PRESS MATERIALS</p>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",gap:36}}>
-          <div><img src="/ambassadors/portraits/001-poppe-van-pelt-portrait-live-20260712.jpeg" alt="Portrait of founder Poppe van Pelt" style={{width:"100%",aspectRatio:"4/5",objectFit:"cover",maxHeight:460}}/><p style={{fontSize:13,color:muted}}>Poppe van Pelt / Founder</p></div>
+          <div><img src="/home/poppe-panda-portrait.jpeg" alt="Portrait of founder Poppe van Pelt" style={{width:"100%",aspectRatio:"4/5",objectFit:"cover",maxHeight:460}}/><p style={{fontSize:13,color:muted}}>Poppe van Pelt / Founder</p></div>
           <div><h2 style={{fontSize:"clamp(32px,4vw,55px)",lineHeight:1.05,letterSpacing:"-.06em",margin:"0 0 25px"}}>The short version.</h2>
           <p style={{fontSize:17,lineHeight:1.6}}>Poppe van Pelt is the founder of ctrl+love, an independent practice building applied-AI instruments for human judgment. After three decades in advertising, including eight years at Apple, he started ctrl+love to help people challenge assumptions, test decisions and turn useful intelligence into working things.</p>
           <p style={{fontSize:15,lineHeight:1.6,color:muted}}>For publication, image licensing, fact checks, interviews or a longer biography, please contact us directly.</p>
