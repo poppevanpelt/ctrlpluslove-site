@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { speakSavannahNeurally, stopSavannahLocalVoice } from "../savannah-local-voice";
+import { resumeSavannahAudio, speakSavannahNeurally, stopSavannahLocalVoice } from "../savannah-local-voice";
 
 type Line = { role: "assistant" | "user"; text: string };
 const GREETING = "Oh. It’s you. I was just getting comfortable. What are we breaking today?";
@@ -25,6 +25,7 @@ export default function SavannahPage() {
   const micChunks = useRef<Blob[]>([]);
   const voiceMonitor = useRef<(() => void) | null>(null);
   const [micStatus, setMicStatus] = useState("TAP TO TALK");
+  const [needsPlayback, setNeedsPlayback] = useState(false);
   const [videoReady, setVideoReady] = useState(true);
   const [arrivalReady, setArrivalReady] = useState(false);
   const bottom = useRef<HTMLDivElement>(null);
@@ -43,6 +44,7 @@ export default function SavannahPage() {
   useEffect(() => () => { stopSavannahLocalVoice(); voiceMonitor.current?.(); recorder.current?.stop(); micStream.current?.getTracks().forEach(track => track.stop()); }, []);
 
   async function tapSavannah() {
+    if (needsPlayback) { const played = await resumeSavannahAudio(); if (played) { setNeedsPlayback(false); setMicStatus("TAP TO TALK"); return; } }
     if (listening) { voiceMonitor.current?.(); voiceMonitor.current = null; recorder.current?.stop(); return; }
     if (pending || audioBusy) return;
     if (speaking) { stopSavannahLocalVoice(); setSpeaking(false); }
@@ -135,14 +137,18 @@ export default function SavannahPage() {
   async function speak(text: string) {
     if (!audioEnabledRef.current) return;
     setAudioBusy(true);
+    setNeedsPlayback(false);
+    setMicStatus("SAVANNAH IS ANSWERING");
     setVoiceMessage("CONNECTING VOICE…");
     const ok = await speakSavannahNeurally(text, {
-      onStart: () => { setSpeaking(true); setAudioBusy(false); setVoiceMessage("SAVANNAH IS SPEAKING"); },
-      onEnd: () => { setSpeaking(false); setAudioBusy(false); setVoiceMessage("HEAR THAT AGAIN"); },
+      onStart: () => { setSpeaking(true); setAudioBusy(false); setVoiceMessage("SAVANNAH IS SPEAKING"); setMicStatus("SAVANNAH IS SPEAKING"); },
+      onEnd: () => { setSpeaking(false); setAudioBusy(false); setVoiceMessage("HEAR THAT AGAIN"); setMicStatus("TAP TO TALK"); },
     });
     if (!ok) {
       setSpeaking(false);
       setAudioBusy(false);
+      setNeedsPlayback(true);
+      setMicStatus("TAP TO HEAR SAVANNAH");
       setVoiceMessage("AUDIO UNAVAILABLE — RETRY");
     }
   }
@@ -204,7 +210,7 @@ export default function SavannahPage() {
       </header>
 
       <div className={"savannah-portrait" + (speaking ? " is-speaking" : pending ? " is-thinking" : "")}>
-        <button type="button" className="savannah-face-tap" onClick={() => void tapSavannah()} aria-label={listening ? "Finish recording" : "Speak to Savannah"} />
+        <button type="button" className="savannah-face-tap" onClick={() => void tapSavannah()} aria-label={needsPlayback ? "Hear Savannah" : listening ? "Finish recording" : "Speak to Savannah"} />
         <img src="/savannah-avatar.jpg" alt="Savannah" />
         {videoReady && <video className="savannah-live" src="/savannah-idle.mp4" poster="/savannah-avatar.jpg" autoPlay muted playsInline loop preload="auto" aria-label="Savannah quietly looking toward you" onError={() => setVideoReady(false)} />}
         <div className={"savannah-shade" + (speaking ? " is-speaking" : "")} />
