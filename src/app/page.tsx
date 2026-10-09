@@ -139,7 +139,7 @@ export default function Home() {
         <div className={styles.offerStrip} aria-label="Ways to work with ctrl+love">
           <a href="/pricing/decision-stress-test/"><span>01 / TEST A DECISION</span><strong>Decision Stress-Test™</strong><b>From €4,500 ↗</b></a>
           <a href="/pricing/on-call-room/"><span>02 / KEEP A ROOM CLOSE</span><strong>On-Call Room™</strong><b>From €7,500 / month ↗</b></a>
-          <a href="/pricing/"><span>03 / FIND YOUR FIT</span><strong>Rooms & pricing</strong><b>See the offers ↗</b></a>
+          <a href="/pricing/kill-or-scale/"><span>03 / MAKE THE CALL</span><strong>Kill or Scale™</strong><b>Explore the decision ↗</b></a>
         </div>
       </section>
 
@@ -278,7 +278,7 @@ export default function Home() {
               <strong className={styles.impact}>Adoption, not applause.</strong>
               <div className={styles.fitzVisual}>
                 <video className={styles.fitzVideo} autoPlay loop muted playsInline preload="auto">
-                  <source src="https://ctrl-love-media.floot.app/_cdn/static/0e7f85c1-30dc-49f7-9237-06749c75f27d-fitzroy-steel-ball-clean-20261007.mp4" type="video/mp4" />
+                  <source src="/home/fitzroy-steel-ball.mp4" type="video/mp4" />
                 </video>
                 <span>FITZROY / STEEL BALL</span>
               </div>
