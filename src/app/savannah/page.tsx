@@ -28,6 +28,36 @@ export default function SavannahPage() {
   const [needsPlayback, setNeedsPlayback] = useState(false);
   const [videoReady, setVideoReady] = useState(true);
   const [arrivalReady, setArrivalReady] = useState(false);
+  const [deskOpen, setDeskOpen] = useState(false);
+  const [deskItems, setDeskItems] = useState<Array<{id:string;type:"note"|"conversation"|"email"|"calendar";text:string;date:string}>>([]);
+  const [deskType, setDeskType] = useState<"note"|"email"|"calendar">("note");
+  const [deskDraft, setDeskDraft] = useState("");
+  const [deskNotice, setDeskNotice] = useState("");
+  useEffect(() => {
+    try {
+      const stored = JSON.parse(window.localStorage.getItem("savannah-desk-local-v1") || "[]");
+      if (Array.isArray(stored)) setDeskItems(stored.filter((item) => item && typeof item.text === "string").slice(0,60));
+    } catch { setDeskNotice("Local notes could not be loaded."); }
+  }, []);
+  const saveDesk = (type:"note"|"conversation"|"email"|"calendar",text:string) => {
+    const clean = text.trim();
+    if (!clean) return;
+    const updated = [{id:String(Date.now()),type,text:clean,date:new Date().toLocaleString()},...deskItems].slice(0,60);
+    try {
+      window.localStorage.setItem("savannah-desk-local-v1",JSON.stringify(updated));
+      setDeskItems(updated);
+      setDeskDraft("");
+      setDeskNotice("Saved on this device only.");
+    } catch { setDeskNotice("Could not save. Copy the text before leaving."); }
+  };
+  const exportDesk = () => {
+    const blob = new Blob([deskItems.map(item => `[${item.date}] ${item.type.toUpperCase()}\\n${item.text}`).join("\\n\\n")],{type:"text/plain"});
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href=url; anchor.download="savannah-desk-notes.txt"; anchor.click();
+    window.setTimeout(()=>URL.revokeObjectURL(url),1000);
+  };
+
   const bottom = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLInputElement>(null);
   const lastReply = useRef(GREETING);
@@ -234,9 +264,26 @@ export default function SavannahPage() {
     <main id="main-content" className="savannah-shell">
       <header className="savannah-topbar">
         <div className="savannah-brand">Savannah<span>.</span></div>
-        <div className="savannah-brand-right"><span className="savannah-dot" /> CTRL+LOVE / #4</div>
+        <div className="savannah-brand-right"><button type="button" className="savannah-desk-trigger" onClick={() => setDeskOpen(true)}>DESK {deskItems.length ? `(${deskItems.length})` : ""}</button><span className="savannah-dot" /> CTRL+LOVE / #4</div>
       </header>
 
+      {deskOpen && <section className="savannah-desk" role="dialog" aria-modal="true" aria-label="Savannah's Desk">
+        <div className="savannah-desk-top"><strong>SAVANNAH'S DESK</strong><button type="button" onClick={() => setDeskOpen(false)} aria-label="Close desk">CLOSE ×</button></div>
+        <p className="savannah-desk-disclaimer">Private to this browser on this device. Not synced, encrypted, emailed or connected to your calendar. Avoid storing confidential client details here.</p>
+        <div className="savannah-desk-actions">
+          <button type="button" onClick={() => saveDesk("conversation",lines.map(line=>`${line.role==="assistant"?"SAVANNAH":"YOU"}: ${line.text}`).join("\\n"))}>SAVE CURRENT CONVERSATION</button>
+          <button type="button" onClick={exportDesk} disabled={!deskItems.length}>EXPORT NOTES ↓</button>
+        </div>
+        <label className="savannah-desk-label">NEW ENTRY
+          <select value={deskType} onChange={e=>setDeskType(e.target.value as "note"|"email"|"calendar")}>
+            <option value="note">Note</option><option value="email">Email draft — not sent</option><option value="calendar">Calendar proposal — not scheduled</option>
+          </select>
+        </label>
+        <textarea rows={4} value={deskDraft} onChange={e=>setDeskDraft(e.target.value)} placeholder={deskType==="email"?"To / subject / draft message…":deskType==="calendar"?"Proposed date, time, attendees and purpose…":"What should Savannah remember?"} />
+        <button type="button" className="savannah-desk-save" disabled={!deskDraft.trim()} onClick={() => saveDesk(deskType,deskDraft)}>SAVE ON THIS DEVICE</button>
+        {deskNotice && <p role="status" className="savannah-desk-notice">{deskNotice}</p>}
+        <div className="savannah-desk-list">{deskItems.length===0?<p>No saved entries yet.</p>:deskItems.map(item=><article key={item.id}><small>{item.type.toUpperCase()} · {item.date}</small><p>{item.text}</p><button type="button" onClick={() => {const keep=deskItems.filter(entry=>entry.id!==item.id);try{localStorage.setItem("savannah-desk-local-v1",JSON.stringify(keep));setDeskItems(keep)}catch{setDeskNotice("Could not remove entry.")}}}>DELETE</button></article>)}</div>
+      </section>}
       <div className={"savannah-portrait" + (speaking ? " is-speaking" : pending ? " is-thinking" : "")}>
         <button type="button" className="savannah-face-tap" onClick={() => void tapSavannah()} aria-label={needsPlayback ? "Hear Savannah" : listening ? "Finish recording" : "Speak to Savannah"} />
         <img src="/savannah-avatar.jpg" alt="Savannah" />
@@ -283,7 +330,23 @@ export default function SavannahPage() {
         <button type="submit" className="savannah-send" disabled={pending || !draft.trim()} aria-label="Send message">{pending ? "…" : "↑"}</button>
       </form>}
       <style jsx>{`
-        .savannah-shell { position:fixed; inset:0; z-index:2147483000; display:flex; flex-direction:column; overflow:hidden; background:#eeeae1; color:#161616; font-family:Arial,Helvetica,sans-serif; }
+        .savannah-desk-trigger { background:transparent; border:1px solid #706b63; color:#eee8dc; font:inherit; font-size:10px; padding:8px 10px; cursor:pointer; }
+        .savannah-desk { position:absolute; z-index:40; inset:0; overflow:auto; background:#f1ede4; color:#181715; padding:calc(18px + env(safe-area-inset-top)) clamp(18px,5vw,50px) 28px; font:14px/1.45 Arial,sans-serif; }
+        .savannah-desk-top { display:flex; justify-content:space-between; gap:12px; align-items:center; font-size:20px; letter-spacing:-.03em; }
+        .savannah-desk-top button,.savannah-desk-actions button,.savannah-desk-save,.savannah-desk-list button { background:#191817; color:#fffaf1; border:0; padding:11px 13px; cursor:pointer; font-size:10px; letter-spacing:.07em; }
+        .savannah-desk-disclaimer { max-width:660px; padding:12px 0; border-bottom:1px solid #bcb6aa; color:#635e55; }
+        .savannah-desk-actions { display:flex; flex-wrap:wrap; gap:9px; margin:14px 0 18px; }
+        .savannah-desk-actions button:disabled { opacity:.45; cursor:default; }
+        .savannah-desk-label { display:block; font-size:11px; letter-spacing:.09em; margin-bottom:8px; }
+        .savannah-desk-label select { display:block; margin-top:7px; padding:10px; max-width:100%; }
+        .savannah-desk textarea { display:block; box-sizing:border-box; width:100%; max-width:720px; padding:12px; border:1px solid #a8a198; background:#fffdfa; color:#181715; font:15px/1.5 Arial,sans-serif; margin-bottom:10px; }
+        .savannah-desk-save:disabled { opacity:.5; }
+        .savannah-desk-notice { font-size:12px; color:#5a5349; }
+        .savannah-desk-list { max-width:720px; margin-top:20px; }
+        .savannah-desk-list article { border-top:1px solid #bcb6aa; padding:16px 0; }
+        .savannah-desk-list small { color:#777065; letter-spacing:.08em; }
+        .savannah-desk-list p { white-space:pre-wrap; overflow-wrap:anywhere; }
+                .savannah-shell { position:fixed; inset:0; z-index:2147483000; display:flex; flex-direction:column; overflow:hidden; background:#eeeae1; color:#161616; font-family:Arial,Helvetica,sans-serif; }
         .savannah-topbar { padding:max(env(safe-area-inset-top),18px) 22px 14px; display:flex; flex-shrink:0; align-items:center; justify-content:space-between; background:#171717; color:#f1eee6; }
         .savannah-brand { font:normal 34px/1 Georgia,serif; letter-spacing:-.045em; }
         .savannah-brand span { color:#d7b49b; }
