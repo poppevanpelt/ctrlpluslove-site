@@ -35,6 +35,25 @@ export default function SavannahPage() {
   const [deskType, setDeskType] = useState<"note"|"email"|"calendar">("note");
   const [deskDraft, setDeskDraft] = useState("");
   const [deskNotice, setDeskNotice] = useState("");
+  const [inboxRecipient,setInboxRecipient] = useState("Chris / BridgeFund");
+  const [inboxSignal,setInboxSignal] = useState("");
+  const [inboxWhy,setInboxWhy] = useState("");
+  const [inboxNext,setInboxNext] = useState("");
+  const [inboxSurprise,setInboxSurprise] = useState("");
+  const [inboxConsent,setInboxConsent] = useState(false);
+  const composeInbox = () => {
+    if(!deskAuthenticated || !inboxRecipient.trim() || !inboxSignal.trim() || !inboxWhy.trim() || !inboxNext.trim()) return;
+    const message = `PERSONAL INBOX · DRAFT ONLY
+Recipient: ${inboxRecipient.trim()}
+Permission to deliver: ${inboxConsent?"Recipient opt-in indicated; still requires explicit owner approval.":"NOT CONFIRMED — DO NOT DELIVER"}
+Headline: ${inboxSignal.trim()}
+Why this is for you: ${inboxWhy.trim()}
+Unexpected angle: ${inboxSurprise.trim() || "None supplied — do not invent an insight."}
+One useful next move: ${inboxNext.trim()}
+Status: UNSENT · no delivery channel connected.`;
+    saveDesk("email",message);
+  };
+
   useEffect(() => {
     void fetch("/api/savannah/auth/status",{cache:"no-store"}).then(r=>r.json()).then(s=>{setDeskAuthenticated(s.authenticated===true);setDeskConfigured(s.configured===true);if(s.authenticated===true && new URLSearchParams(window.location.search).get("desk")==="open")setDeskOpen(true);}).catch(()=>setDeskAuthenticated(false));
   }, []);
@@ -289,6 +308,18 @@ export default function SavannahPage() {
         <textarea rows={4} value={deskDraft} onChange={e=>setDeskDraft(e.target.value)} placeholder={deskType==="email"?"To / subject / draft message…":deskType==="calendar"?"Proposed date, time, attendees and purpose…":"What should Savannah remember?"} />
         <button type="button" className="savannah-desk-save" disabled={!deskDraft.trim()} onClick={() => saveDesk(deskType,deskDraft)}>SAVE ON THIS DEVICE</button>
         {deskNotice && <p role="status" className="savannah-desk-notice">{deskNotice}</p>}
+        <section className="savannah-inbox-studio" aria-label="Personal inbox notification studio">
+          <div className="savannah-inbox-heading"><span>PERSONAL INBOX</span><small>01 / SIGNAL ENGINE</small></div>
+          <p>Not a newsletter. One relevant observation, one unexpected angle, one worthwhile action. Relevance beats frequency.</p>
+          <label>PERSON / WORKING ROOM<input value={inboxRecipient} onChange={e=>setInboxRecipient(e.target.value)} placeholder="Name / client room" /></label>
+          <label>WHAT CHANGED?<input value={inboxSignal} onChange={e=>setInboxSignal(e.target.value)} placeholder="One specific, verifiable signal" /></label>
+          <label>WHY SHOULD THIS PERSON CARE?<textarea rows={2} value={inboxWhy} onChange={e=>setInboxWhy(e.target.value)} placeholder="Explain the connection to their decision or project" /></label>
+          <label>THE UNEXPECTED ANGLE (OPTIONAL)<input value={inboxSurprise} onChange={e=>setInboxSurprise(e.target.value)} placeholder="A useful twist, not clickbait" /></label>
+          <label>ONE NEXT MOVE<input value={inboxNext} onChange={e=>setInboxNext(e.target.value)} placeholder="A question, test or decision worth making" /></label>
+          <label className="savannah-inbox-consent"><input type="checkbox" checked={inboxConsent} onChange={e=>setInboxConsent(e.target.checked)} /> Recipient has agreed to receive notifications</label>
+          <button type="button" className="savannah-desk-save" disabled={!inboxSignal.trim() || !inboxWhy.trim() || !inboxNext.trim()} onClick={composeInbox}>SAVE UNSENT INBOX DRAFT</button>
+          <p className="savannah-inbox-footnote">No push, email or SMS is sent. Client-specific delivery will require identity verification, explicit subscription and approval controls.</p>
+        </section>
         <div className="savannah-desk-list">{deskItems.length===0?<p>No saved entries yet.</p>:deskItems.map(item=><article key={item.id}><small>{item.type.toUpperCase()} · {item.date}</small><p>{item.text}</p><button type="button" onClick={() => {const keep=deskItems.filter(entry=>entry.id!==item.id);try{localStorage.setItem("savannah-desk-local-v1",JSON.stringify(keep));setDeskItems(keep)}catch{setDeskNotice("Could not remove entry.")}}}>DELETE</button></article>)}</div>
       </section>}
       <div className={"savannah-portrait" + (speaking ? " is-speaking" : pending ? " is-thinking" : "")}>
@@ -338,6 +369,13 @@ export default function SavannahPage() {
       </form>}
       <style jsx>{`
         .savannah-lock-notice { position:absolute; top:74px; left:10px; right:10px; z-index:30; padding:13px; background:#26221e; color:#fff; text-align:center; font-size:12px; cursor:pointer; }
+        .savannah-inbox-studio { max-width:720px; border-top:2px solid #1a1917; margin-top:32px; padding:22px 0; }
+        .savannah-inbox-heading { display:flex; align-items:baseline; justify-content:space-between; font:24px Georgia,serif; }
+        .savannah-inbox-heading small { font:10px Arial,sans-serif; letter-spacing:.12em; color:#777; }
+        .savannah-inbox-studio label { display:block; margin:15px 0; font:10px Arial,sans-serif; letter-spacing:.08em; font-weight:700; }
+        .savannah-inbox-studio input:not([type=checkbox]), .savannah-inbox-studio textarea { display:block; box-sizing:border-box; width:100%; margin-top:6px; padding:12px; border:1px solid #aca59a; background:#fffcf6; color:#191817; font:15px Arial,sans-serif; }
+        .savannah-inbox-studio .savannah-inbox-consent { display:flex; align-items:center; gap:9px; line-height:1.35; }
+        .savannah-inbox-footnote { color:#666057; font-size:12px; }
         .savannah-desk-trigger { background:transparent; border:1px solid #706b63; color:#eee8dc; font:inherit; font-size:10px; padding:8px 10px; cursor:pointer; }
         .savannah-desk { position:absolute; z-index:40; inset:0; overflow:auto; background:#f1ede4; color:#181715; padding:calc(18px + env(safe-area-inset-top)) clamp(18px,5vw,50px) 28px; font:14px/1.45 Arial,sans-serif; }
         .savannah-desk-top { display:flex; justify-content:space-between; gap:12px; align-items:center; font-size:20px; letter-spacing:-.03em; }
