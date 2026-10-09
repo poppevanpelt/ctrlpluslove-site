@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { speakSavannahNeurally, stopSavannahLocalVoice } from "../savannah-local-voice";
 
 type Line = { role: "assistant" | "user"; text: string };
-const GREETING = "Well, there you are.";
+const GREETING = "Well, there you are. I was beginning to think you’d found a meeting worth attending.";
 const INITIAL: Line[] = [{ role: "assistant", text: GREETING }];
 
 export default function SavannahPage() {
@@ -146,8 +146,8 @@ export default function SavannahPage() {
         .savannah-brand span { color:#d7b49b; }
         .savannah-brand-right { display:flex; align-items:center; gap:8px; font-size:10px; font-weight:750; letter-spacing:.12em; color:#b8b6b1; }
         .savannah-dot { width:6px; height:6px; border-radius:50%; background:#9ab59c; }
-        .savannah-portrait { height:clamp(210px,37svh,410px); position:relative; flex-shrink:0; background:#272421; overflow:hidden; }
-        .savannah-portrait img { width:100%; height:100%; display:block; object-fit:cover; object-position:center 29%; filter:saturate(.88); }
+        .savannah-portrait { height:clamp(270px,53svh,580px); position:relative; flex-shrink:0; background:#272421; overflow:hidden; }
+        .savannah-portrait img { width:100%; height:100%; display:block; object-fit:cover; object-position:center 29%; filter:saturate(.88); animation:savannah-breathe 6.8s ease-in-out infinite; transform-origin:50% 42%; }
         .savannah-shade { position:absolute; inset:0; background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.68)); pointer-events:none; }
         .savannah-intro { position:absolute; bottom:20px; left:22px; right:22px; color:#f8f2e8; }
         .savannah-eyebrow { font-size:10px; font-weight:700; letter-spacing:.18em; opacity:.74; }
@@ -171,6 +171,7 @@ export default function SavannahPage() {
         .savannah-send { width:57px; flex-shrink:0; border:0; border-radius:4px; background:#222; color:white; font-size:27px; cursor:pointer; }
         .savannah-send:disabled { opacity:.4; }
         .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+        @keyframes savannah-breathe { 0%,100% { transform:scale(1.015) translateY(0); } 50% { transform:scale(1.032) translateY(2px); } }
         @media (max-height:690px) { .savannah-portrait { height:28svh; min-height:150px; } .savannah-intro p { font-size:25px; } .savannah-thread { padding-top:0; } }
         @media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto!important; } }
       `}</style>
