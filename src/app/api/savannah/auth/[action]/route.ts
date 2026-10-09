@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
+import { clientCookie,recipients } from "../../inbox/shared";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -26,14 +27,16 @@ function valid(request:NextRequest) {
 export async function GET(request:NextRequest, context:{params:Promise<{action:string}>}) {
   const {action}=await context.params;
   if(action==="status") return NextResponse.json({authenticated:valid(request),configured:ready()},{headers:{"Cache-Control":"no-store"}});
+  if(action==="client-logout") { const response=NextResponse.redirect(new URL("/savannah/inbox",request.url));response.cookies.set(clientCookie,"",{...cookieOptions(request),maxAge:0});return response; }
   if(action==="logout") {
     const response=NextResponse.redirect(new URL("/savannah/",request.url));
     response.cookies.set(COOKIE,"",{...cookieOptions(request),maxAge:0});
     return response;
   }
-  if(action==="login") {
+  if(action==="client-login" || action==="login") {
     if(!ready()) return NextResponse.json({error:"Google sign-in is not configured yet."},{status:503});
     const state=randomBytes(24).toString("base64url");
+    const forClient=action==="client-login";
     const redirect=origin(request)+"/api/savannah/auth/callback";
     const destination=new URL("https://accounts.google.com/o/oauth2/v2/auth");
     destination.searchParams.set("client_id",process.env.GOOGLE_CLIENT_ID!);
@@ -43,7 +46,7 @@ export async function GET(request:NextRequest, context:{params:Promise<{action:s
     destination.searchParams.set("state",state);
     destination.searchParams.set("prompt","select_account");
     const response=NextResponse.redirect(destination);
-    response.cookies.set(STATE,state,{...cookieOptions(request),maxAge:600});
+    response.cookies.set(STATE,(forClient?"client:":"owner:")+state,{...cookieOptions(request),maxAge:600});
     return response;
   }
   if(action==="callback") {
@@ -52,7 +55,8 @@ export async function GET(request:NextRequest, context:{params:Promise<{action:s
     const code=request.nextUrl.searchParams.get("code");
     const failure=NextResponse.redirect(new URL("/savannah/?desk=signin-error",request.url));
     failure.cookies.set(STATE,"",{...cookieOptions(request),maxAge:0});
-    if(!ready() || !code || !state || !expected || state!==expected) return failure;
+    if(!ready() || !code || !state || !expected || !expected.endsWith(":"+state)) return failure;
+    const forClient=expected.startsWith("client:");
     try {
       const response=await fetch("https://oauth2.googleapis.com/token",{
         method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},
@@ -65,11 +69,13 @@ export async function GET(request:NextRequest, context:{params:Promise<{action:s
       const identity=await fetch("https://www.googleapis.com/oauth2/v3/userinfo",{headers:{Authorization:"Bearer "+token.access_token},cache:"no-store"});
       if(!identity.ok) return failure;
       const profile=await identity.json();
-      if(profile.email_verified!==true || String(profile.email||"").toLowerCase()!==owner()) return failure;
-      const payload=Buffer.from(JSON.stringify({email:owner(),exp:Date.now()+TTL*1000})).toString("base64url");
-      const success=NextResponse.redirect(new URL("/savannah/?desk=open",request.url));
+      if(profile.email_verified!==true) return failure;
+      const email=String(profile.email||"").toLowerCase();
+      if(forClient ? !recipients()[email] : email!==owner()) return failure;
+      const payload=Buffer.from(JSON.stringify({email,exp:Date.now()+TTL*1000})).toString("base64url");
+      const success=NextResponse.redirect(new URL(forClient?"/savannah/inbox":"/savannah/?desk=open",request.url));
       success.cookies.set(STATE,"",{...cookieOptions(request),maxAge:0});
-      success.cookies.set(COOKIE,payload+"."+sign(payload),{...cookieOptions(request),maxAge:TTL});
+      success.cookies.set(forClient?clientCookie:COOKIE,payload+"."+sign(payload),{...cookieOptions(request),maxAge:TTL});
       return success;
     } catch { return failure; }
   }
