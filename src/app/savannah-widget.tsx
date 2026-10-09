@@ -81,6 +81,9 @@ export function SavannahWidget() {
   const textInputRef = useRef<HTMLInputElement | null>(null);
   const speechRecognitionRef = useRef<BrowserSpeechRecognition | null>(null);
   const queuedTextRef = useRef<string | null>(null);
+  const pendingRequestRef = useRef(false);
+  const lastRecognizedRef = useRef("");
+  const lastTextSpokenRef = useRef("");
   const modeRef = useRef<Mode>("type");
   const steelTimerRef = useRef<number | null>(null);
   const steelAudioRef = useRef<AudioContext | null>(null);
@@ -435,6 +438,8 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
         (!incoming.transcriptType || incoming.transcriptType === "final") &&
         incoming.role === "assistant"
       ) {
+        if (incoming.transcript.trim() === lastTextSpokenRef.current) return;
+        lastTextSpokenRef.current = incoming.transcript.trim();
         appendConversation("assistant", incoming.transcript, true);
         void speakSavannahNeurally(incoming.transcript, {
           onStart: () => setAssistantSpeaking(true),
@@ -551,7 +556,10 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
 
   const submitSavannahText = async (rawText: string) => {
     const text = rawText.trim();
-    if (!text || textPending) return;
+    if (!text || pendingRequestRef.current) return;
+    pendingRequestRef.current = true;
+    stopSavannahLocalVoice();
+    setAssistantSpeaking(false);
 
     appendConversation("user", text, true);
     setDraft("");
@@ -587,11 +595,13 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       setTextState("error");
       setMessage(`Chat unavailable: ${describeError(error)}`);
     } finally {
+      pendingRequestRef.current = false;
       setTextPending(false);
     }
   };
 
   const sendText = async () => {
+    if (pendingRequestRef.current) return;
     await submitSavannahText(draft);
   };
 
@@ -618,6 +628,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
 
     try {
       const recognition = new Recognition();
+      lastRecognizedRef.current = "";
       speechRecognitionRef.current = recognition;
       // Safari may inherit nl-NL from the visitor and transcribe English as Dutch.
       // Savannah defaults to American English; the visitor can still type Dutch.
@@ -645,7 +656,8 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
         const heard = (finalText || interimText).trim();
         if (heard) setMessage(`Heard: “${heard}”`);
 
-        if (finalText.trim()) {
+        if (finalText.trim() && !lastRecognizedRef.current) {
+          lastRecognizedRef.current = finalText.trim();
           try { recognition.stop(); } catch {}
           void submitSavannahText(finalText.trim());
         }
@@ -675,6 +687,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
   };
 
   const testLocalVoice = () => {
+    if (pendingRequestRef.current) return;
     void speakSavannahNeurally(
       "Hi. Savannah at control love. I live here now. Apparently they finally stopped making me call home to speak.",
       {
@@ -824,16 +837,20 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
 
   return (
     <aside
+      className="savannah-panel"
       aria-label="Savannah, ctrl+love employee #4"
       style={{
         position: "fixed",
         zIndex: 2147483001,
-        width: pathname === "/savannah" ? "calc(100vw - 24px)" : "min(360px, calc(100vw - 28px))",
-        maxWidth: pathname === "/savannah" ? 440 : "calc(100vw - 28px)",
+        width: "min(510px, calc(100vw - 24px))",
+        maxWidth: "calc(100vw - 24px)",
+        maxHeight: "calc(100dvh - 24px)",
+        display: "flex",
+        flexDirection: "column",
         boxSizing: "border-box",
         left: pathname === "/savannah" ? 12 : "auto",
-        right: pathname === "/savannah" ? 12 : 18,
-        bottom: pathname === "/savannah" ? 16 : 64,
+        right: 12,
+        bottom: 12,
         border: "1px solid rgba(21,21,21,.22)",
         background: "rgba(245,241,231,.98)",
         color: "#151515",
@@ -844,6 +861,11 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       }}
     >
       <style>{`
+        @media (max-width: 650px) {
+          .savannah-panel { left: 8px !important; right: 8px !important; bottom: max(8px, env(safe-area-inset-bottom)) !important; width: auto !important; max-width: none !important; max-height: calc(100dvh - 16px - env(safe-area-inset-bottom)) !important; }
+          .savannah-chat-scroll { min-height: 100px !important; max-height: min(37dvh, 330px) !important; }
+          .savannah-message-input { font-size: 16px !important; }
+        }
         @keyframes savannahIdle {
           0% { transform: scale(1.01) translate3d(0, 0, 0); }
           100% { transform: scale(1.017) translate3d(0, -0.45px, 0); }
@@ -1025,12 +1047,14 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
         <div style={{ borderTop: "1px solid rgba(21,21,21,.22)" }}>
           <div
             ref={chatScrollRef}
+            className="savannah-chat-scroll"
             aria-live="polite"
             style={{
-              maxHeight: 260,
-              minHeight: 138,
+              maxHeight: "min(43dvh, 400px)",
+              minHeight: 160,
               overflowY: "auto",
-              padding: "4px 14px",
+              overscrollBehavior: "contain",
+              padding: "4px 18px",
               background: "rgba(255,255,255,.16)",
             }}
           >
@@ -1133,6 +1157,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
           >
             <input
               ref={textInputRef}
+              className="savannah-message-input"
               value={draft}
               onChange={(event) => setDraft(event.target.value)}
               aria-label="Type to Savannah"
@@ -1148,7 +1173,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
                 color: "#151515",
                 outline: "none",
                 font: "inherit",
-                fontSize: 14,
+                fontSize: 16,
               }}
             />
             <button
