@@ -54,7 +54,7 @@ npm start
 
 The host must provide a public `PORT` and support a long-running Node process. Railway is the intended production provider, using the repository Dockerfile and automatic deployments from `main`. `vercel.json` disables automatic Vercel Git deployments while preserving existing deployments and domains. Vercel analytics only load in a Vercel build.
 
-Custom-domain migration remains incomplete as of October 9, 2026: both `ctrlpluslove.com` and `www.ctrlpluslove.com` are attached to an active ChatGPT Sites deployment. Railway reports `www` DNS pointing to `custom-domains.chatgpt.site` and its certificate is awaiting ownership validation. Preserve the existing host until the Railway domain, certificate, pages and Savannah have passed checks. See [DEPLOYMENT_STATUS.md](DEPLOYMENT_STATUS.md).
+Custom-domain migration remains incomplete as of October 9, 2026: both `ctrlpluslove.com` and `www.ctrlpluslove.com` are attached to an active ChatGPT Sites deployment. WordPress DNS shows `www` pointing to `custom-domains.chatgpt.site`, while the apex ALIAS points to a different Railway hostname. The current Railway service has no custom-domain binding. Preserve the existing host until the Railway domain, certificate, pages and Savannah have passed checks. See [DEPLOYMENT_STATUS.md](DEPLOYMENT_STATUS.md).
 
 Media that should survive host changes lives on the ctrl+love media host rather than inside a deployment provider.
 

@@ -18,7 +18,17 @@ HTTP logs include successful homepage, instruments, pricing and other page reque
 
 ChatGPT Sites project `appgprj_6aa819e66fc081918d6f561b38564f5b` (Instrument Cabinet) reports ACTIVE custom domains and SSL for both `ctrlpluslove.com` and `www.ctrlpluslove.com`. Public fetches return differing site content. Preserve this live Sites project and all existing DNS until cutover verification is complete.
 
-Railway has `www.ctrlpluslove.com` attached, but reports it unverified, certificate VALIDATING_OWNERSHIP, and current CNAME `custom-domains.chatgpt.site`. Railway requires `www` CNAME `t3zo6b9j.up.railway.app` and its displayed ownership TXT record at `_railway-verify.www`. Retrieve the current values with Railway domain-status before editing DNS. Vercel's domain-config reports external WordPress.com nameservers; authoritative DNS records must be inspected before changes.
+Initially Railway reported an unverified `www` binding with certificate VALIDATING_OWNERSHIP. A subsequent read during this session showed that binding absent; no Railway domain mutation was performed in this cleanup. Current Railway service configuration lists only its generated hostname. Reattach and retrieve fresh domain requirements before preparing a cutover; do not reuse the earlier binding's verification values.
+
+WordPress confirms the domain uses WordPress.com nameservers and this user can manage its records. The domain listing labels its status `transfer_completed` (warning), paid through May 31, 2028, with no listed action required. Its actual DNS zone shows:
+
+| Record | Current routing | Action |
+| --- | --- | --- |
+| www CNAME, TTL 300 | custom-domains.chatgpt.site. | Preserve until Railway binding/TLS and interactive verification pass. |
+| apex ALIAS, TTL 300 | kzeegy3u.up.railway.app. | Existing target is not identified in current service inventory; preserve until resolved. |
+| live and move CNAME | custom-domains.chatgpt.site. | Preserve these separate live services. |
+
+The Sites domain bindings are active, but that alone does not establish DNS routing to Sites. Public apex/www fetches differ. There is an apex `_railway-verify` TXT in the zone, but no `_railway-verify.www`; do not overwrite verification records without checking the current target service. The other Railway project, vigilant-clarity, has no services. No DNS records were changed.
 
 The apex is not attached to Railway. Add and verify it before migrating the apex, or configure a verified apex-to-www redirect at the DNS/hosting provider. Preserve MX, email TXT, live.ctrlpluslove.com, move.ctrlpluslove.com, and other services. Do not remove Sites domain bindings before Railway TLS and traffic are verified. Record rollback DNS values before the switch.
 
@@ -34,7 +44,7 @@ Five status contexts point to Vercel's account-deployment-blocked help page, ind
 | ctrlpluslove-site-public | prj_juYwPC0g3xiyVLfJAvuQ5GME9h5X | Duplicate build/check candidate, with historical READY deployment and aliases; preserve pending usage review. |
 | ctrllove-handoff | prj_HG2UjX7uV9g1pRpbdaZQuUSOHmFD | Duplicate build/check candidate; no listed domains but a historical READY deployment exists. Preserve pending dependency review. |
 
-Vercel metadata reports live=false for these projects; this does not prove zero traffic. No project, deployment, domain or account integration is deleted. `sakura-radar` and `ctrlpluslove-schema-check` are outside this cleanup. `vercel.json` now disables automatic Git deployments using the documented `git.deploymentEnabled=false`; this does not disconnect the Vercel GitHub App or erase historical checks. Verify checks on the next push; account-level blocking may be reported before repository configuration is evaluated. Dashboard disconnection may still be required per project after checking dependencies.
+Vercel metadata reports live=false for these projects; this does not prove zero traffic. No project, deployment, domain or account integration is deleted. `sakura-radar` and `ctrlpluslove-schema-check` are outside this cleanup. `vercel.json` now disables automatic Git deployments using the documented `git.deploymentEnabled=false`; this does not disconnect the Vercel GitHub App or erase historical checks. The cleanup push was checked: all five account-blocked Vercel failure contexts still appear despite the repository setting. This setting did not silence account-level status noise. Dashboard Git disconnection is still required per project after checking dependencies. The browser sign-in attempt via Google ended at a gateway connection error; a fresh Vercel settings visit still shows login, so no dashboard integration was disconnected.
 
 The old `/api/redeploy` Vercel deploy-hook bridge returns 410 and performs no outbound requests, even if stale environment variables remain. Existing Notion button/webhook configuration was not accessible or modified. Disconnect any caller of this endpoint. Railway had neither VERCEL_DEPLOY_HOOK_URL nor NOTION_REDEPLOY_SECRET configured, so the bridge was already unusable there.
 
@@ -43,7 +53,7 @@ Vercel Analytics and Speed Insights now render only when VERCEL=1, avoiding obse
 ## Remaining acceptance checks
 
 - Inspect Render service/domain/auto-deploy state before disabling it. No Render connector is available in this session; lack of render.yaml does not prove no service exists.
-- Verify new Railway build reaches SUCCESS after this cleanup, then verify current commit status.
+- Cleanup commit `298feff9000a8e94be93ad2f6b1776fb49be9eae` automatically deployed as `90bbfca7-4b60-4f7b-ba63-3b7cf07075e1`: SUCCESS at 19:59 UTC, with GitHub Railway status success. Runtime logs confirm Next.js ready on port 8080 and the volume mounted. The only startup warning observed was Node SQLite experimental status. The retired route was locally checked for HTTP 410/no outbound requests and syntax; full build was verified by Railway. Documentation follow-up is tracked separately by commit.
 - Run homepage, instrument cabinet, /readiness/, /savannah/ and room-access checks on the latest Railway build; test both slash forms where used by links.
 - Test Savannah typed response, microphone transcription, voice playback and speech motion in a real browser. The cloud-browser challenge blocks current interactive verification.
 - Configure private Desk Google OAuth/session settings securely. Railway currently lists only OPENAI_API_KEY and SAVANNAH_INBOX_DB; GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, SAVANNAH_SESSION_SECRET and SAVANNAH_OWNER_EMAIL are absent. Client inbox invitations also need SAVANNAH_INBOX_CLIENTS. Do not weaken authentication to compensate.
