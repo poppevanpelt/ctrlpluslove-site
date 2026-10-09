@@ -108,6 +108,7 @@ export function SavannahWidget() {
   const [textPending, setTextPending] = useState(false);
   const [micListening, setMicListening] = useState(false);
   const [assistantSpeaking, setAssistantSpeaking] = useState(false);
+  const [speechMotion, setSpeechMotion] = useState(0);
   const [callTimeNotice, setCallTimeNotice] = useState(false);
   const [chatLines, setChatLines] = useState<ConversationLine[]>([
     { id: 0, role: "assistant", text: "Hi. Savannah at control love. What's up?" },
@@ -289,6 +290,15 @@ export function SavannahWidget() {
     try { await steelAudioRef.current?.resume(); } catch {}
     scheduleSteel();
   };
+
+  useEffect(() => {
+    const onLevel = (event: Event) => {
+      const next = Number((event as CustomEvent<number>).detail) || 0;
+      setSpeechMotion(Math.max(0, Math.min(1, next)));
+    };
+    window.addEventListener("savannah-audio-level", onLevel);
+    return () => window.removeEventListener("savannah-audio-level", onLevel);
+  }, []);
 
   useEffect(() => {
     fieldNotesRef.current = loadSavannahFieldNotes();
@@ -902,6 +912,10 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
           70% { transform: scale(1.019) translate3d(-0.12px, 0.18px, 0); }
           100% { transform: scale(1.023) translate3d(0, -0.22px, 0); }
         }
+        @keyframes savannahBlink {
+          0%, 47%, 49%, 100% { transform: scaleY(1); }
+          48% { transform: scaleY(.93); }
+        }
         @keyframes savannahLowerFace {
           0% { transform: scaleY(0.995) translateY(0); }
           33% { transform: scaleY(1.018) translateY(0.2px); }
@@ -967,7 +981,9 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
                   display: "block",
                   clipPath: "inset(47% 20% 12% 20%)",
                   transformOrigin: "50% 64%",
-                  animation: "savannahLowerFace 120ms ease-in-out infinite alternate",
+                  animation: speechMotion > 0 ? "none" : "savannahLowerFace 280ms ease-in-out infinite alternate",
+                  transform: speechMotion > 0 ? `scaleY(${1 + speechMotion * .025}) translateY(${speechMotion * .4}px)` : undefined,
+                  transition: "transform 90ms ease-out",
                   willChange: "transform",
                   pointerEvents: "none",
                 }}
