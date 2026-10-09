@@ -13,6 +13,7 @@ export default function SavannahPage() {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   const [speaking, setSpeaking] = useState(false);
+  const [speechMotion, setSpeechMotion] = useState(0);
   const [audioBusy, setAudioBusy] = useState(false);
   const [audioEnabled, setAudioEnabled] = useState(true);
   const [voiceMessage, setVoiceMessage] = useState("TAP TO HEAR SAVANNAH");
@@ -138,6 +139,14 @@ Status: UNSENT · no delivery channel connected.`;
     } catch { /* Audio is optional, conversation is not. */ }
   }
 
+
+  useEffect(() => {
+    const onAudioLevel = (event: Event) => {
+      setSpeechMotion(Math.max(0, Math.min(1, Number((event as CustomEvent<number>).detail) || 0)));
+    };
+    window.addEventListener("savannah-audio-level", onAudioLevel);
+    return () => window.removeEventListener("savannah-audio-level", onAudioLevel);
+  }, []);
 
   useEffect(() => {
     audioEnabledRef.current = audioEnabled;
@@ -353,10 +362,21 @@ Status: UNSENT · no delivery channel connected.`;
         </section>
         <div className="savannah-desk-list">{deskItems.length===0?<p>No saved entries yet.</p>:deskItems.map(item=><article key={item.id}><small>{item.type.toUpperCase()} · {item.date}</small><p>{item.text}</p><button type="button" onClick={() => {const keep=deskItems.filter(entry=>entry.id!==item.id);try{localStorage.setItem("savannah-desk-local-v1",JSON.stringify(keep));setDeskItems(keep)}catch{setDeskNotice("Could not remove entry.")}}}>DELETE</button></article>)}</div>
       </section>}
+      <style>{`\n        .savannah-portrait > .savannah-speech-mouth {\n          position: absolute; inset: 0; width: 100%; height: 100%;\n          object-fit: cover; object-position: center;\n          clip-path: inset(47% 20% 12% 20%);\n          transform-origin: 50% 64%;\n          transition: transform 90ms ease-out;\n          pointer-events: none; z-index: 1;\n        }\n        @media (prefers-reduced-motion: reduce) {\n          .savannah-portrait > .savannah-speech-mouth { display: none; }\n        }\n      `}</style>
       <div className={"savannah-portrait" + (speaking ? " is-speaking" : pending ? " is-thinking" : "")}>
         <button type="button" className="savannah-face-tap" onClick={() => void tapSavannah()} aria-label={needsPlayback ? "Hear Savannah" : listening ? "Finish recording" : "Speak to Savannah"} />
         <img src="/savannah-avatar.jpg" alt="Savannah" />
-        {/* Static portrait until muted video playback can coexist reliably with iOS voice output. */}
+        {speaking && (
+          <img
+            src="/savannah-avatar.jpg"
+            alt=""
+            aria-hidden="true"
+            className="savannah-speech-mouth"
+            style={{
+              transform: `scaleY(${1 + speechMotion * 0.024}) translateY(${speechMotion * 0.35}px)`,
+            }}
+          />
+        )}
         <div className={"savannah-shade" + (speaking ? " is-speaking" : "")} />
         <div className={"savannah-presence" + (listening ? " is-listening" : speaking ? " is-speaking" : pending ? " is-thinking" : "")} aria-hidden="true"><span /><span /><span /></div>
         <div className={"savannah-intro" + (arrivalReady ? " is-ready" : "")} aria-hidden="true">
