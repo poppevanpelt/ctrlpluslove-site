@@ -21,6 +21,7 @@ export default function SavannahIntro() {
   const [stage, setStage] = useState<SceneStage>("film");
   const [headlineStyle, setHeadlineStyle] = useState<CSSProperties>();
   const videoRef = useRef<HTMLVideoElement>(null);
+  const seekPrimedRef = useRef(false);
   const handoffStarted = useRef(false);
   const lockStarted = useRef(false);
   const audioRef = useRef<AudioContext | null>(null);
@@ -102,9 +103,10 @@ export default function SavannahIntro() {
   };
 
   useEffect(() => {
+    document.documentElement.classList.add("savannah-intro-running");
     window.dispatchEvent(new Event("savannah-intro-active"));
     return () => {
-      window.dispatchEvent(new Event("savannah-intro-complete"));
+      document.documentElement.classList.remove("savannah-intro-running");
     };
   }, []);
 
@@ -145,46 +147,49 @@ export default function SavannahIntro() {
   useEffect(() => {
     const watchdog = window.setTimeout(() => {
       const video = videoRef.current;
-      if (!video || video.readyState < 2) {
+      if (!video || !ready) {
         releasePageLock();
         setFallback(true);
         setReady(true);
         setStage("film");
       }
-    }, 2600);
+    }, 4800);
     return () => window.clearTimeout(watchdog);
-  }, []);
+  }, [ready]);
 
   useEffect(() => () => releasePageLock(), []);
 
+  // iOS Safari may paint the video at t=0 before a metadata-time seek.
+  // Never reveal or autoplay the film until the intended first frame is decoded.
   const primeVideo = () => {
     const video = videoRef.current;
-    if (!video || ready) return;
-
-    video.currentTime = START_AT;
+    if (!video || seekPrimedRef.current) return;
+    seekPrimedRef.current = true;
+    video.pause();
     video.muted = true;
+    try {
+      video.currentTime = START_AT;
+    } catch {
+      releasePageLock();
+      setFallback(true);
+    }
+  };
 
-    const start = () => {
-      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (reduced) {
-        video.pause();
-        releasePageLock();
-        setFallback(true);
-        setReady(true);
-        setStage("film");
-        return;
-      }
-
+  const startFromPrimedFrame = () => {
+    const video = videoRef.current;
+    if (!video || handoffStarted.current || ready || video.currentTime < START_AT - 0.08) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      video.pause();
+      setFallback(true);
       setReady(true);
-      void video.play().then(() => setFallback(false)).catch(() => {
-        releasePageLock();
-        setFallback(true);
-        setStage("film");
-      });
-    };
-
-    if (video.readyState >= 2) start();
-    else video.addEventListener("canplay", start, { once: true });
+      return;
+    }
+    setReady(true);
+    void video.play().then(() => setFallback(false)).catch(() => {
+      releasePageLock();
+      setFallback(true);
+      setStage("film");
+    });
   };
 
   const clickLock = () => {
@@ -214,32 +219,10 @@ export default function SavannahIntro() {
     window.setTimeout(() => setHandoff(true), seatDelay);
     window.setTimeout(() => {
       setVisible(false);
+      document.documentElement.classList.remove("savannah-intro-running");
       releasePageLock();
       window.dispatchEvent(new Event("savannah-intro-complete"));
     }, seatDelay + 50);
-  };
-
-  const playOpening = () => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    releasePageLock();
-    setFallback(false);
-    setStage("film");
-    setHandoff(false);
-    setReady(true);
-    handoffStarted.current = false;
-    lockStarted.current = false;
-    armVaultAudio();
-    measureHeadline();
-
-    try { video.currentTime = START_AT; } catch {}
-    video.muted = true;
-    void video.play().catch(() => {
-      releasePageLock();
-      setFallback(true);
-      setStage("film");
-    });
   };
 
   const trackHandoff = () => {
@@ -281,11 +264,11 @@ export default function SavannahIntro() {
         <video
           ref={videoRef}
           className={styles.savannahIntroVideo}
-          autoPlay
           muted
           playsInline
           preload="auto"
           onLoadedMetadata={primeVideo}
+          onSeeked={startFromPrimedFrame}
           onTimeUpdate={trackHandoff}
           onEnded={() => completeHandoff(false)}
           onError={() => {
@@ -307,9 +290,6 @@ export default function SavannahIntro() {
       ) : null}
 
       <div className={styles.savannahIntroControls}>
-        {fallback ? (
-          <button type="button" className={styles.savannahIntroPlay} onClick={playOpening}>Play opening ▶</button>
-        ) : null}
         <button
           type="button"
           className={styles.savannahIntroEnter}
