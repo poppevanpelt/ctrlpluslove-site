@@ -144,18 +144,14 @@ export default function SavannahIntro() {
     return () => media.removeEventListener?.("change", syncMotionPreference);
   }, []);
 
+  // If priming or playback stalls, proceed directly to the site; never hold
+  // visitors on a full-screen fallback portrait waiting for a manual click.
   useEffect(() => {
     const watchdog = window.setTimeout(() => {
-      const video = videoRef.current;
-      if (!video || !ready) {
-        releasePageLock();
-        setFallback(true);
-        setReady(true);
-        setStage("film");
-      }
-    }, 4800);
+      if (!handoffStarted.current) completeHandoff(false);
+    }, 12000);
     return () => window.clearTimeout(watchdog);
-  }, [ready]);
+  }, []);
 
   useEffect(() => () => releasePageLock(), []);
 
@@ -170,8 +166,7 @@ export default function SavannahIntro() {
     try {
       video.currentTime = START_AT;
     } catch {
-      releasePageLock();
-      setFallback(true);
+      completeHandoff(false);
     }
   };
 
@@ -180,16 +175,11 @@ export default function SavannahIntro() {
     if (!video || handoffStarted.current || ready || video.currentTime < START_AT - 0.08) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       video.pause();
-      setFallback(true);
-      setReady(true);
+      completeHandoff(false);
       return;
     }
     setReady(true);
-    void video.play().then(() => setFallback(false)).catch(() => {
-      releasePageLock();
-      setFallback(true);
-      setStage("film");
-    });
+    void video.play().then(() => setFallback(false)).catch(() => completeHandoff(false));
   };
 
   const clickLock = () => {
@@ -271,12 +261,7 @@ export default function SavannahIntro() {
           onSeeked={startFromPrimedFrame}
           onTimeUpdate={trackHandoff}
           onEnded={() => completeHandoff(false)}
-          onError={() => {
-            releasePageLock();
-            setFallback(true);
-            setReady(true);
-            setStage("film");
-          }}
+          onError={() => completeHandoff(false)}
         >
           <source src="https://ctrl-love-media.floot.app/_cdn/static/savannah-intro.mp4" type="video/mp4" />
         </video>
