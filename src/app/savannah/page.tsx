@@ -42,6 +42,7 @@ export default function SavannahPage() {
   const [inboxSurprise,setInboxSurprise] = useState("");
   const [inboxConsent,setInboxConsent] = useState(false);
   const [inboxEvidence,setInboxEvidence] = useState("");
+  const [inboxEarned,setInboxEarned] = useState("");
   const [inboxNovelty,setInboxNovelty] = useState(false);
   const [inboxApproval,setInboxApproval] = useState(false);
   const [publishRecipient,setPublishRecipient] = useState("");
@@ -52,7 +53,7 @@ export default function SavannahPage() {
     try{
       const response=await fetch("/api/savannah/inbox",{
         method:"POST",headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({recipient:publishRecipient.trim(),headline:inboxSignal,reason:inboxWhy,surprise:inboxSurprise,next_move:inboxNext,evidence:inboxEvidence,consent:inboxConsent,novelty:inboxNovelty,approved:inboxApproval})
+        body:JSON.stringify({recipient:publishRecipient.trim(),headline:inboxSignal,reason:inboxWhy,surprise:inboxSurprise,next_move:inboxNext,evidence:inboxEvidence,earned_interruption:inboxEarned,consent:inboxConsent,novelty:inboxNovelty,approved:inboxApproval})
       });
       const result=await response.json();
       if(!response.ok)throw new Error(result.error||"Publishing failed.");
@@ -61,13 +62,13 @@ export default function SavannahPage() {
     finally{setPublishBusy(false);}
   }
 
-  const signalReady = Boolean(inboxRecipient.trim() && inboxSignal.trim() && inboxWhy.trim() && inboxNext.trim() && inboxEvidence.trim() && inboxNovelty);
+  const signalReady = Boolean(inboxRecipient.trim() && inboxSignal.trim() && inboxWhy.trim() && inboxNext.trim() && inboxEvidence.trim() && inboxEarned.trim().length>=30 && inboxNovelty);
   const inboxPreview = `${inboxRecipient.trim() || "Recipient"}, ${inboxSignal.trim() || "a new signal"}\\n\\n${inboxWhy.trim() || "Why it matters to you…"}${inboxSurprise.trim() ? `\\n\\nThe unexpected bit: ${inboxSurprise.trim()}` : ""}\\n\\nOne next move: ${inboxNext.trim() || "A decision or useful test…"}`;
 
   const composeInbox = () => {
     if(!deskAuthenticated || !signalReady) return;
     const message = `PERSONAL INBOX · DRAFT ONLY
-Recipient: ${inboxRecipient.trim()}\nEvidence or source: ${inboxEvidence.trim()}\nNovelty checked: Yes\nEditorial approval: ${inboxApproval?"APPROVED FOR FUTURE DELIVERY — still unsent":"PENDING REVIEW"}
+Recipient: ${inboxRecipient.trim()}\nEvidence or source: ${inboxEvidence.trim()}\nWhy this interruption is earned: ${inboxEarned.trim()}\nNovelty checked: Yes\nEditorial approval: ${inboxApproval?"APPROVED FOR FUTURE DELIVERY — still unsent":"PENDING REVIEW"}
 Permission to deliver: ${inboxConsent?"Recipient opt-in indicated; still requires explicit owner approval.":"NOT CONFIRMED — DO NOT DELIVER"}
 Headline: ${inboxSignal.trim()}
 Why this is for you: ${inboxWhy.trim()}
@@ -339,6 +340,7 @@ Status: UNSENT · no delivery channel connected.`;
           <label>WHY SHOULD THIS PERSON CARE?<textarea rows={2} value={inboxWhy} onChange={e=>setInboxWhy(e.target.value)} placeholder="Explain the connection to their decision or project" /></label>
           <label>THE UNEXPECTED ANGLE (OPTIONAL)<input value={inboxSurprise} onChange={e=>setInboxSurprise(e.target.value)} placeholder="A useful twist, not clickbait" /></label>
           <label>ONE NEXT MOVE<input value={inboxNext} onChange={e=>setInboxNext(e.target.value)} placeholder="A question, test or decision worth making" /></label>
+          <label>WHY INTERRUPT THEM NOW?<textarea rows={2} value={inboxEarned} onChange={e=>setInboxEarned(e.target.value)} placeholder="What makes this genuinely worth their attention today? (30+ characters)" /></label>
           <label>EVIDENCE / SOURCE<input value={inboxEvidence} onChange={e=>setInboxEvidence(e.target.value)} placeholder="Where can we verify this signal?" /></label>
           <label className="savannah-inbox-consent"><input type="checkbox" checked={inboxNovelty} onChange={e=>setInboxNovelty(e.target.checked)} /> Checked: genuinely new for this recipient, not routine noise</label>
           <div className="savannah-inbox-preview"><small>RECIPIENT PREVIEW · NOT DELIVERED</small><p>{inboxPreview}</p></div>
