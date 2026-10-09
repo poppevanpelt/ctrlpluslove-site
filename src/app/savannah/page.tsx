@@ -113,7 +113,7 @@ export default function SavannahPage() {
         {videoReady && <video className="savannah-live" src="/savannah-idle.mp4" poster="/savannah-avatar.jpg" autoPlay muted playsInline loop preload="auto" aria-label="Savannah quietly looking toward you" onError={() => setVideoReady(false)} />}
         <div className={"savannah-shade" + (speaking ? " is-speaking" : "")} />
         <div className={"savannah-presence" + (speaking ? " is-speaking" : pending ? " is-thinking" : "")} aria-hidden="true"><span /><span /><span /></div>
-        <div className={"savannah-intro" + (arrivalReady ? " is-ready" : "")}>
+        <div className={"savannah-intro" + (arrivalReady ? " is-ready" : "")} aria-hidden="true">
           <span className="savannah-eyebrow">SAVANNAH KNOWLES / CTRL+LOVE</span>
           <p>Oh. It’s you.</p>
         </div>
@@ -158,7 +158,7 @@ export default function SavannahPage() {
         .savannah-brand span { color:#d7b49b; }
         .savannah-brand-right { display:flex; align-items:center; gap:8px; font-size:10px; font-weight:750; letter-spacing:.12em; color:#b8b6b1; }
         .savannah-dot { width:6px; height:6px; border-radius:50%; background:#9ab59c; }
-        .savannah-portrait { flex:1; min-height:0; height:auto; position:relative; flex-shrink:0; background:#272421; overflow:hidden; }
+        .savannah-portrait { flex:1 1 auto; min-height:0; height:auto; position:relative; background:#272421; overflow:hidden; }
         .savannah-portrait img { width:100%; height:100%; display:block; object-fit:cover; object-position:center 29%; filter:saturate(.88); animation:savannah-breathe 6.8s ease-in-out infinite; transform-origin:50% 42%; }
         .savannah-live { position:absolute; inset:0; height:100%; width:100%; object-fit:cover; object-position:center 29%; transform:scale(1); filter:saturate(.96); transition:transform 1100ms ease,filter 550ms ease; }
         .savannah-portrait.is-speaking .savannah-live { transform:scale(1.013); filter:saturate(1.03); }
@@ -175,7 +175,7 @@ export default function SavannahPage() {
         .savannah-presence.is-thinking span { opacity:.5; }
         @keyframes savannah-voice-beat { from { height:3px; } to { height:14px; } }
         .savannah-intro { position:absolute; bottom:20px; left:22px; right:22px; color:#f8f2e8; opacity:0; transform:translateY(8px); transition:opacity 750ms ease,transform 750ms ease; pointer-events:none; }
-        .savannah-intro.is-ready { opacity:1; transform:translateY(0); }
+        .savannah-intro.is-ready { opacity:0; transform:translateY(0); }
         .savannah-eyebrow { font-size:10px; font-weight:700; letter-spacing:.18em; opacity:.74; }
         .savannah-intro p { font:italic 30px/1.2 Georgia,serif; margin:7px 0 0; }
         .savannah-controls { display:flex; flex-shrink:0; min-height:48px; background:#222; color:#f6f0e8; border-bottom:1px solid #55514b; }
@@ -207,6 +207,7 @@ export default function SavannahPage() {
         .savannah-quick-start { display:flex; gap:8px; padding:0 12px 7px; background:#eeeae1; }
         .savannah-quick-start button { flex:1; padding:10px 7px; border:1px solid #c2b9ad; background:#f7f3ec; font-size:10px; letter-spacing:.07em; cursor:pointer; }
         .savannah-error-compact { padding:8px 15px; margin:0; font-size:12px; color:#963f34; }
+        @media (max-width:767px) { .savannah-topbar { padding:calc(env(safe-area-inset-top) + 8px) 14px 9px; } .savannah-brand { font-size:24px; } .savannah-brand-right { font-size:9px; } .savannah-portrait { background:#231f1c; } .savannah-live,.savannah-portrait img { object-fit:contain; object-position:center center; } .savannah-shade { background:none!important; } .savannah-intro { display:none; } .savannah-controls { min-height:40px; } .savannah-listen { font-size:10px; } .savannah-sound { font-size:9px; padding:8px; } }
         @media (max-height:690px) { .savannah-portrait { min-height:0; } .savannah-intro p { font-size:25px; } .savannah-thread { padding-top:0; } }
         @media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto!important; } .savannah-presence span { animation:none!important; } .savannah-live { transition:none!important; transform:none!important; } }
       `}</style>
