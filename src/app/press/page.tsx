@@ -52,7 +52,15 @@ export default function PressPage() {
           <div><h2 style={{fontSize:"clamp(32px,4vw,55px)",lineHeight:1.05,letterSpacing:"-.06em",margin:"0 0 25px"}}>The short version.</h2>
           <p style={{fontSize:17,lineHeight:1.6}}>Poppe van Pelt is the founder of ctrl+love, an independent practice building applied-AI instruments for human judgment. After three decades in advertising, including eight years at Apple, he started ctrl+love to help people challenge assumptions, test decisions and turn useful intelligence into working things.</p>
           <p style={{fontSize:15,lineHeight:1.6,color:muted}}>For publication, image licensing, fact checks, interviews or a longer biography, please contact us directly.</p>
-          <a href={email} style={{display:"inline-block",marginTop:12,border:"1px solid",padding:"14px 20px",fontWeight:700,textDecoration:"none",color:ink}}>Request press materials ↗</a></div>
+          <div style={{display:"flex",flexWrap:"wrap",gap:12,marginTop:20}}><a href={email} style={{display:"inline-block",border:"1px solid",padding:"14px 20px",fontWeight:700,textDecoration:"none",color:ink}}>Request press materials ↗</a><a href="/home/poppe-panda-portrait.jpeg" target="_blank" rel="noopener noreferrer" style={{display:"inline-block",border:"1px solid #b8b2a7",padding:"14px 20px",fontWeight:700,textDecoration:"none",color:ink}}>View founder portrait ↗</a></div></div>
+        </div>
+      </section>
+      <section style={{borderTop:"1px solid #b8b2a7",paddingTop:20,marginBottom:90}} aria-label="Useful press links">
+        <p style={{fontSize:12,letterSpacing:".16em",fontWeight:700,marginBottom:24}}>04 / SEE THE WORK</p>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:16}}>
+          <a href="/instruments/" style={{display:"block",color:ink,textDecoration:"none",padding:"24px",background:"#e4dfd5"}}><strong style={{display:"block",fontSize:23,letterSpacing:"-.04em"}}>The instruments ↗</strong><span style={{display:"block",marginTop:12,color:muted,fontSize:15,lineHeight:1.5}}>Working tests, prototypes and the judgment behind them.</span></a>
+          <a href="/ambassadors/" style={{display:"block",color:ink,textDecoration:"none",padding:"24px",background:"#e4dfd5"}}><strong style={{display:"block",fontSize:23,letterSpacing:"-.04em"}}>The human network ↗</strong><span style={{display:"block",marginTop:12,color:muted,fontSize:15,lineHeight:1.5}}>Real collaborators, distinct from the synthetic perspectives.</span></a>
+          <a href="/savannah/" style={{display:"block",color:ink,textDecoration:"none",padding:"24px",background:"#e4dfd5"}}><strong style={{display:"block",fontSize:23,letterSpacing:"-.04em"}}>Meet Savannah ↗</strong><span style={{display:"block",marginTop:12,color:muted,fontSize:15,lineHeight:1.5}}>An evolving receptionist and operating-system experiment.</span></a>
         </div>
       </section>
       <footer style={{borderTop:"2px solid",paddingTop:22,display:"flex",justifyContent:"space-between",gap:20,flexWrap:"wrap"}}>
