@@ -295,7 +295,19 @@ export default function SavannahPage() {
         .savannah-face-tap { position:absolute; inset:0; width:100%; height:100%; border:0; padding:0; background:transparent; z-index:2; cursor:pointer; touch-action:manipulation; }
         .savannah-face-tap:focus-visible { outline:3px solid #f8e3bb; outline-offset:-5px; }
         .savannah-portrait { flex:1 1 auto; min-height:0; height:auto; position:relative; background:#272421; overflow:hidden; }
-        .savannah-portrait img { width:100%; height:100%; display:block; object-fit:cover; object-position:center 29%; filter:saturate(.88); animation:savannah-breathe 6.8s ease-in-out infinite; transform-origin:50% 42%; }
+        .savannah-portrait img { width:100%; height:100%; display:block; object-fit:cover; object-position:center 29%; filter:saturate(.88); animation:savannah-breathe 8.8s ease-in-out infinite; transform-origin:50% 42%; transition:filter 650ms ease; }
+        /* Presence first: a settled listener, a tiny thinking glance, then a
+           quieter face while speaking. No fake looping mouth animation. */
+        .savannah-portrait.is-thinking img { animation:savannah-consider 4.6s ease-in-out infinite; filter:saturate(.85) brightness(.98); }
+        .savannah-portrait.is-speaking img { animation:savannah-answer 7.4s ease-in-out infinite; filter:saturate(.92); }
+        @keyframes savannah-consider {
+          0%,22%,74%,100% { transform:scale(1.008) translate(0,0); }
+          38%,56% { transform:scale(1.013) translate(-.28%,.06%); }
+        }
+        @keyframes savannah-answer {
+          0%,13%,31%,51%,77%,100% { transform:scale(1.009) translateY(0); }
+          19%,41%,65% { transform:scale(1.013) translateY(-.11%); }
+        }
         .savannah-live { position:absolute; inset:0; height:100%; width:100%; object-fit:cover; object-position:center 29%; transform:scale(1); filter:saturate(.96); transition:transform 1100ms ease,filter 550ms ease; }
         .savannah-portrait.is-speaking .savannah-live { transform:scale(1.013); filter:saturate(1.03); }
         .savannah-portrait.is-thinking .savannah-live { filter:saturate(.85) brightness(.96); }
@@ -314,7 +326,7 @@ export default function SavannahPage() {
         @keyframes savannah-voice-beat { from { height:3px; } to { height:14px; } }
         .savannah-intro { position:absolute; bottom:20px; left:22px; right:22px; color:#f8f2e8; opacity:0; transform:translateY(8px); transition:opacity 750ms ease,transform 750ms ease; pointer-events:none; }
         .savannah-intro.is-ready { opacity:1; transform:translateY(0); }
-        @media (prefers-reduced-motion:reduce) { .savannah-portrait img { animation:none; } }
+        @media (prefers-reduced-motion:reduce) { .savannah-portrait img, .savannah-portrait.is-thinking img, .savannah-portrait.is-speaking img { animation:none; } }
         .savannah-eyebrow { font-size:10px; font-weight:700; letter-spacing:.18em; opacity:.74; }
         .savannah-intro p { font:italic 30px/1.2 Georgia,serif; margin:7px 0 0; }
         .savannah-controls { display:flex; flex-shrink:0; min-height:48px; background:#222; color:#f6f0e8; border-bottom:1px solid #55514b; }
