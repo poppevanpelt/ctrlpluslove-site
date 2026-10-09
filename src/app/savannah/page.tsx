@@ -17,6 +17,7 @@ export default function SavannahPage() {
   const [audioEnabled, setAudioEnabled] = useState(true);
   const [voiceMessage, setVoiceMessage] = useState("TAP TO HEAR SAVANNAH");
   const [started, setStarted] = useState(false);
+  const [showTranscript, setShowTranscript] = useState(false);
   const [videoReady, setVideoReady] = useState(true);
   const [arrivalReady, setArrivalReady] = useState(false);
   const bottom = useRef<HTMLDivElement>(null);
@@ -128,7 +129,8 @@ export default function SavannahPage() {
         </button>
       </section>
 
-      <section className="savannah-thread" aria-label="Conversation" aria-live="polite">
+      <div className="savannah-utility"><span>{pending ? "SAVANNAH IS THINKING" : speaking ? "SAVANNAH IS SPEAKING" : "SAVANNAH IS HERE"}</span><button type="button" onClick={() => setShowTranscript(current => !current)} aria-expanded={showTranscript}>{showTranscript ? "HIDE WORDS" : "SHOW WORDS"}</button></div>
+      {showTranscript && <section className="savannah-thread" aria-label="Conversation" aria-live="polite">
         {!started && <div className="savannah-first-contact"><p className="savannah-hint">She&apos;s here. Ask her something worthwhile.</p><div className="savannah-starters"><button type="button" onClick={() => void ask("What is ctrl+love, and why should I care?")} disabled={pending}>What is ctrl+love?</button><button type="button" onClick={() => void ask("Challenge a business idea with me. Start by asking for the idea.")} disabled={pending}>Challenge my idea</button><button type="button" onClick={() => void ask("What can you actually help me do right now?")} disabled={pending}>What can you do?</button></div></div>}
         {lines.map((line, index) => (
           <div className={"savannah-line " + (line.role === "user" ? "savannah-user" : "")} key={index}>
@@ -139,8 +141,9 @@ export default function SavannahPage() {
         {pending && <p className="savannah-pending">Let me think about that…</p>}
         {error && <div role="alert" className="savannah-error">{error}<button type="button" onClick={() => setError("")}>DISMISS</button></div>}
         <div ref={bottom} />
-      </section>
-
+      </section>}
+      {!showTranscript && !started && <div className="savannah-quick-start"><button type="button" disabled={pending} onClick={() => void ask("What is ctrl+love, and why should I care?")}>INTRODUCE YOURSELF</button><button type="button" disabled={pending} onClick={() => void ask("Challenge my business idea. First ask me what it is.")}>CHALLENGE ME</button></div>}
+      {!showTranscript && error && <p className="savannah-error-compact" role="alert">{error}</p>}
       <form className="savannah-compose" onSubmit={send}>
         <label className="savannah-input-wrap">
           <span className="sr-only">Message Savannah</span>
@@ -155,7 +158,7 @@ export default function SavannahPage() {
         .savannah-brand span { color:#d7b49b; }
         .savannah-brand-right { display:flex; align-items:center; gap:8px; font-size:10px; font-weight:750; letter-spacing:.12em; color:#b8b6b1; }
         .savannah-dot { width:6px; height:6px; border-radius:50%; background:#9ab59c; }
-        .savannah-portrait { height:clamp(300px,58svh,680px); position:relative; flex-shrink:0; background:#272421; overflow:hidden; }
+        .savannah-portrait { flex:1; min-height:0; height:auto; position:relative; flex-shrink:0; background:#272421; overflow:hidden; }
         .savannah-portrait img { width:100%; height:100%; display:block; object-fit:cover; object-position:center 29%; filter:saturate(.88); animation:savannah-breathe 6.8s ease-in-out infinite; transform-origin:50% 42%; }
         .savannah-live { position:absolute; inset:0; height:100%; width:100%; object-fit:cover; object-position:center 29%; transform:scale(1); filter:saturate(.96); transition:transform 1100ms ease,filter 550ms ease; }
         .savannah-portrait.is-speaking .savannah-live { transform:scale(1.013); filter:saturate(1.03); }
@@ -175,11 +178,11 @@ export default function SavannahPage() {
         .savannah-intro.is-ready { opacity:1; transform:translateY(0); }
         .savannah-eyebrow { font-size:10px; font-weight:700; letter-spacing:.18em; opacity:.74; }
         .savannah-intro p { font:italic 30px/1.2 Georgia,serif; margin:7px 0 0; }
-        .savannah-controls { display:flex; flex-shrink:0; min-height:63px; background:#222; color:#f6f0e8; border-bottom:1px solid #55514b; }
-        .savannah-listen { display:flex; align-items:center; gap:14px; flex:1; min-width:0; text-align:left; padding:12px 21px; border:0; background:none; color:inherit; font-size:11px; font-weight:800; letter-spacing:.12em; cursor:pointer; }
+        .savannah-controls { display:flex; flex-shrink:0; min-height:48px; background:#222; color:#f6f0e8; border-bottom:1px solid #55514b; }
+        .savannah-listen { display:flex; align-items:center; gap:9px; flex:1; min-width:0; text-align:left; padding:8px 16px; border:0; background:none; color:inherit; font-size:11px; font-weight:800; letter-spacing:.12em; cursor:pointer; }
         .savannah-play { font-size:23px; min-width:20px; font-weight:400; }
         .savannah-sound { padding:12px 15px; flex-shrink:0; border:0; border-left:1px solid #484640; background:#222; color:#c8c1b5; font-size:9px; font-weight:800; letter-spacing:.08em; cursor:pointer; }
-        .savannah-thread { flex:1; min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:7px 22px 16px; }
+        .savannah-thread { flex:0 1 32svh; min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:7px 22px 16px; }
         .savannah-hint { margin:18px 0 12px; font:italic 16px Georgia,serif; color:#746f68; }
         .savannah-starters { display:flex; gap:7px; flex-wrap:wrap; margin-bottom:6px; }
         .savannah-starters button { border:1px solid #aaa297; background:#f9f6ef; color:#292521; border-radius:999px; padding:10px 12px; font-size:12px; cursor:pointer; text-align:left; }
@@ -192,14 +195,19 @@ export default function SavannahPage() {
         .savannah-pending { font:italic 16px Georgia,serif; color:#807b74; }
         .savannah-error { display:flex; flex-direction:column; gap:10px; padding:14px 0; color:#963f34; font-size:14px; }
         .savannah-error button { align-self:start; padding:8px 0; border:0; background:none; color:inherit; font-size:10px; font-weight:700; letter-spacing:.1em; }
-        .savannah-compose { display:flex; gap:8px; flex-shrink:0; padding:12px 16px calc(12px + env(safe-area-inset-bottom)); border-top:1px solid #c9c2b9; background:#eeeae1; }
+        .savannah-compose { display:flex; gap:8px; flex-shrink:0; padding:7px 12px calc(8px + env(safe-area-inset-bottom)); border-top:1px solid #c9c2b9; background:#eeeae1; }
         .savannah-input-wrap { display:flex; flex:1; min-width:0; }
-        .savannah-input-wrap input { width:100%; min-width:0; border:1px solid #bcb5ab; border-radius:4px; padding:16px 14px; font-size:16px; outline-offset:2px; background:#fcfaf6; color:#171717; }
+        .savannah-input-wrap input { width:100%; min-width:0; border:1px solid #bcb5ab; border-radius:4px; padding:11px 12px; font-size:16px; outline-offset:2px; background:#fcfaf6; color:#171717; }
         .savannah-send { width:57px; flex-shrink:0; border:0; border-radius:4px; background:#222; color:white; font-size:27px; cursor:pointer; }
         .savannah-send:disabled { opacity:.4; }
         .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
         @keyframes savannah-breathe { 0%,100% { transform:scale(1.015) translateY(0); } 50% { transform:scale(1.032) translateY(2px); } }
-        @media (max-height:690px) { .savannah-portrait { height:34svh; min-height:170px; } .savannah-intro p { font-size:25px; } .savannah-thread { padding-top:0; } }
+        .savannah-utility { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-shrink:0; padding:7px 15px; background:#eeeae1; font-size:9px; letter-spacing:.12em; font-weight:700; color:#7c746a; }
+        .savannah-utility button { border:0; background:transparent; font:inherit; letter-spacing:inherit; color:#292521; cursor:pointer; padding:5px; }
+        .savannah-quick-start { display:flex; gap:8px; padding:0 12px 7px; background:#eeeae1; }
+        .savannah-quick-start button { flex:1; padding:10px 7px; border:1px solid #c2b9ad; background:#f7f3ec; font-size:10px; letter-spacing:.07em; cursor:pointer; }
+        .savannah-error-compact { padding:8px 15px; margin:0; font-size:12px; color:#963f34; }
+        @media (max-height:690px) { .savannah-portrait { min-height:0; } .savannah-intro p { font-size:25px; } .savannah-thread { padding-top:0; } }
         @media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto!important; } .savannah-presence span { animation:none!important; } .savannah-live { transition:none!important; transform:none!important; } }
       `}</style>
     </main>
