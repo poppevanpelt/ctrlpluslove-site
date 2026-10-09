@@ -119,15 +119,21 @@ export async function speakSavannahNeurally(
     const blob = await response.blob();
     if (epoch !== neuralPlaybackEpoch) return false;
     const url = URL.createObjectURL(blob);
-    const audio = new Audio(url);
-    (window as typeof window & { __savannahAudio?: HTMLAudioElement }).__savannahAudio = audio;
-
+    // Reuse the same media element for every turn. iOS can drop the
+    // playback permission when each reply creates a fresh Audio instance.
+    const w = window as typeof window & { __savannahAudio?: HTMLAudioElement };
+    const audio = w.__savannahAudio ?? new Audio();
+    w.__savannahAudio = audio;
+    audio.pause();
+    audio.onplay = null;
+    audio.onended = null;
+    audio.onerror = null;
+    audio.src = url;
+    audio.preload = "auto";
     audio.onplay = () => { blockedAudio = null; options.onStart?.(); };
     const finish = () => {
       options.onEnd?.();
       URL.revokeObjectURL(url);
-      const w = window as typeof window & { __savannahAudio?: HTMLAudioElement };
-      if (w.__savannahAudio === audio) delete w.__savannahAudio;
     };
     audio.onended = finish;
     audio.onerror = finish;
