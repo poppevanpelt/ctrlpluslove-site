@@ -27,9 +27,19 @@ export async function POST(request:NextRequest){
   if(body?.consent!==true || body?.approved!==true || body?.novelty!==true)return NextResponse.json({error:"Consent, novelty and explicit approval are required"},{status:400,headers});
   const fields=["headline","reason","next_move","evidence"] as const;
   if(fields.some(field=>typeof body?.[field]!=="string" || !body[field].trim() || body[field].length>1500))return NextResponse.json({error:"Complete verifiable signal, relevance, action and evidence"},{status:400,headers});
+  // Server-side editorial rule: earn every interruption.
+  const earned=String(body?.earned_interruption||"").trim();
+  if(earned.length<30 || earned.length>1200)
+    return NextResponse.json({error:"Explain why this deserves attention now (30–1200 characters)."},{status:400,headers});
   const id=randomUUID(),now=new Date().toISOString();let db;
   try{
     db=database();
+    const latest=db.prepare("SELECT headline,created_at FROM messages WHERE recipient=? ORDER BY created_at DESC LIMIT 1").all(recipient)[0] as {headline?:string;created_at?:string}|undefined;
+    if(latest?.created_at && Date.now()-Date.parse(latest.created_at)<48*60*60*1000)
+      return NextResponse.json({error:"Savannah already published to this person within 48 hours. Silence wins."},{status:429,headers});
+    const duplicate=db.prepare("SELECT id FROM messages WHERE recipient=? AND lower(trim(headline))=lower(trim(?)) LIMIT 1").all(recipient,body.headline.trim());
+    if(duplicate.length)
+      return NextResponse.json({error:"That signal was already published to this person."},{status:409,headers});
     db.prepare("INSERT INTO messages(id,recipient,room,headline,reason,surprise,next_move,evidence,created_at,approved_at) VALUES(?,?,?,?,?,?,?,?,?,?)").run(id,recipient,room,body.headline.trim(),body.reason.trim(),String(body.surprise||"").slice(0,1500),body.next_move.trim(),body.evidence.trim(),now,now);
     return NextResponse.json({saved:true,id,delivery:"inbox_only",emailSent:false,pushSent:false},{status:201,headers});
   }catch{return NextResponse.json({error:"Could not save to persistent inbox"},{status:503,headers});}
