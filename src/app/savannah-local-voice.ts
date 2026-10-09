@@ -3,6 +3,12 @@ type SpeechWindow = Window & typeof globalThis & {
 };
 
 let neuralPlaybackEpoch = 0;
+let blockedAudio: HTMLAudioElement | null = null;
+
+export async function resumeSavannahAudio() {
+  if (!blockedAudio) return false;
+  try { await blockedAudio.play(); blockedAudio = null; return true; } catch { return false; }
+}
 
 const VOICE_HINTS = [
   // Prefer newer, cleaner system voices. Savannah is a person first, accent second.
@@ -37,6 +43,7 @@ export function canSpeakSavannahLocally() {
 
 export function stopSavannahLocalVoice() {
   neuralPlaybackEpoch += 1;
+  blockedAudio = null;
   const current = typeof window !== "undefined" ? (window as typeof window & { __savannahAudio?: HTMLAudioElement }).__savannahAudio : undefined;
   if (current) { current.pause(); current.removeAttribute("src"); current.load(); }
   if (!canSpeakSavannahLocally()) return;
@@ -115,7 +122,7 @@ export async function speakSavannahNeurally(
     const audio = new Audio(url);
     (window as typeof window & { __savannahAudio?: HTMLAudioElement }).__savannahAudio = audio;
 
-    audio.onplay = () => options.onStart?.();
+    audio.onplay = () => { blockedAudio = null; options.onStart?.(); };
     const finish = () => {
       options.onEnd?.();
       URL.revokeObjectURL(url);
@@ -126,7 +133,14 @@ export async function speakSavannahNeurally(
     audio.onerror = finish;
 
     if (epoch !== neuralPlaybackEpoch) { URL.revokeObjectURL(url); return false; }
-    await audio.play();
+    try { await audio.play(); }
+    catch (playError) {
+      if ((playError as Error)?.name === "NotAllowedError") {
+        blockedAudio = audio;
+        return false;
+      }
+      throw playError;
+    }
     return true;
   } catch (error) {
     console.warn("Savannah neural audio unavailable", error);
