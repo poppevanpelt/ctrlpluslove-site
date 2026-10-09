@@ -32,6 +32,33 @@ export default function SavannahPage() {
   const input = useRef<HTMLInputElement>(null);
   const lastReply = useRef(GREETING);
   const audioEnabledRef = useRef(true);
+  const steelClickPlayed = useRef(false);
+  // Steel balls: a single restrained click on first interaction, never during speech.
+  function steelHello() {
+    if (steelClickPlayed.current) return;
+    steelClickPlayed.current = true;
+    try {
+      const context = new AudioContext();
+      void context.resume();
+      [0, 0.11].forEach((delay, i) => {
+        const start = context.currentTime + delay;
+        const tone = context.createOscillator();
+        const gain = context.createGain();
+        tone.type = "sine";
+        tone.frequency.setValueAtTime(i ? 1450 : 1900, start);
+        tone.frequency.exponentialRampToValueAtTime(i ? 730 : 1010, start + .09);
+        gain.gain.setValueAtTime(.0001, start);
+        gain.gain.exponentialRampToValueAtTime(.014, start + .006);
+        gain.gain.exponentialRampToValueAtTime(.0001, start + .14);
+        tone.connect(gain);
+        gain.connect(context.destination);
+        tone.start(start);
+        tone.stop(start + .15);
+      });
+      window.setTimeout(() => void context.close(), 650);
+    } catch { /* Audio is optional, conversation is not. */ }
+  }
+
 
   useEffect(() => {
     audioEnabledRef.current = audioEnabled;
@@ -44,6 +71,7 @@ export default function SavannahPage() {
   useEffect(() => () => { stopSavannahLocalVoice(); voiceMonitor.current?.(); recorder.current?.stop(); micStream.current?.getTracks().forEach(track => track.stop()); }, []);
 
   async function tapSavannah() {
+    steelHello();
     if (needsPlayback) { const played = await resumeSavannahAudio(); if (played) { setNeedsPlayback(false); setMicStatus("TAP TO TALK"); return; } }
     if (listening) { voiceMonitor.current?.(); voiceMonitor.current = null; recorder.current?.stop(); return; }
     if (pending || audioBusy) return;
@@ -285,7 +313,8 @@ export default function SavannahPage() {
         .savannah-presence.is-thinking span { opacity:.5; }
         @keyframes savannah-voice-beat { from { height:3px; } to { height:14px; } }
         .savannah-intro { position:absolute; bottom:20px; left:22px; right:22px; color:#f8f2e8; opacity:0; transform:translateY(8px); transition:opacity 750ms ease,transform 750ms ease; pointer-events:none; }
-        .savannah-intro.is-ready { opacity:0; transform:translateY(0); }
+        .savannah-intro.is-ready { opacity:1; transform:translateY(0); }
+        @media (prefers-reduced-motion:reduce) { .savannah-portrait img { animation:none; } }
         .savannah-eyebrow { font-size:10px; font-weight:700; letter-spacing:.18em; opacity:.74; }
         .savannah-intro p { font:italic 30px/1.2 Georgia,serif; margin:7px 0 0; }
         .savannah-controls { display:flex; flex-shrink:0; min-height:48px; background:#222; color:#f6f0e8; border-bottom:1px solid #55514b; }
