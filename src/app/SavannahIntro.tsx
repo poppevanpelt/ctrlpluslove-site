@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { CSSProperties } from "react";
 import styles from "./home-2026.module.css";
 import { clearSavannahPageLock } from "./savannah-runtime";
 
@@ -19,7 +18,6 @@ export default function SavannahIntro() {
   const [handoff, setHandoff] = useState(false);
   const [fallback, setFallback] = useState(false);
   const [stage, setStage] = useState<SceneStage>("film");
-  const [headlineStyle, setHeadlineStyle] = useState<CSSProperties>();
   const videoRef = useRef<HTMLVideoElement>(null);
   const seekPrimedRef = useRef(false);
   const handoffStarted = useRef(false);
@@ -38,25 +36,6 @@ export default function SavannahIntro() {
       lockReleaseTimerRef.current = null;
     }
     clearSavannahPageLock((...classes) => document.documentElement.classList.remove(...classes));
-  };
-
-  const measureHeadline = () => {
-    const target = document.querySelector<HTMLElement>('[data-savannah-handoff-headline="true"]');
-    if (!target) return;
-
-    const rect = target.getBoundingClientRect();
-    const computed = window.getComputedStyle(target);
-
-    setHeadlineStyle({
-      left: rect.left,
-      top: rect.top,
-      width: rect.width,
-      fontFamily: computed.fontFamily,
-      fontSize: computed.fontSize,
-      fontWeight: computed.fontWeight,
-      lineHeight: computed.lineHeight,
-      letterSpacing: computed.letterSpacing,
-    });
   };
 
   const armVaultAudio = () => {
@@ -108,13 +87,6 @@ export default function SavannahIntro() {
     return () => {
       document.documentElement.classList.remove("savannah-intro-running");
     };
-  }, []);
-
-  useEffect(() => {
-    measureHeadline();
-    const onResize = () => measureHeadline();
-    window.addEventListener("resize", onResize, { passive: true });
-    return () => window.removeEventListener("resize", onResize);
   }, []);
 
   useEffect(() => {
@@ -268,11 +240,6 @@ export default function SavannahIntro() {
         <div className={styles.savannahIntroShade} />
       </div>
 
-      {headlineStyle ? (
-        <h1 className={styles.savannahProjectionHeadline} style={headlineStyle} aria-hidden="true">
-          We build instruments for human judgment.
-        </h1>
-      ) : null}
 
       <div className={styles.savannahIntroControls}>
         <button
