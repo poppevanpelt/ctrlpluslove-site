@@ -24,14 +24,20 @@ const instruments = [
   ["12","Radar","Watch signals, pressure and movement before the market names them.","signal","/radar/","OPEN RADAR"],
 ] as const;
 
+const instrumentFamilies: Record<string, "observe" | "analyse" | "accelerate"> = {
+  "01":"accelerate", "02":"analyse", "03":"observe", "04":"analyse",
+  "05":"accelerate", "06":"analyse", "07":"analyse", "08":"analyse",
+  "09":"accelerate", "10":"accelerate", "11":"observe", "12":"observe",
+};
+
 const instrumentImages: Record<string, string> = {
-  "01": "/instruments/06-decision-surface.webp",
   "04": "/shoppe/poppes-prompt-shoppe.webp",
   "07": "/instruments/02-decision-collider.webp",
   "08": "/ai-y-fier-hero-inflation-engine.webp",
 };
 
 const missingInstrumentArt: Record<string, {label:string; motif:string}> = {
+  "01": { label:"DECISION / ACCELERATOR", motif:"accelerator" },
   "02": { label:"MEETING / FILTER", motif:"meeting" },
   "03": { label:"DECISION / MEMORY", motif:"memory" },
   "05": { label:"PURGE / REMOVE", motif:"purge" },
@@ -49,6 +55,7 @@ function InstrumentArtwork({ no }: { no: string }) {
     <div className={`${styles.artwork} ${styles[`art_${art.motif}`]}`}>
       <span className={styles.artworkIndex}>ctrl+love / {no}</span>
       <svg className={styles.artworkDiagram} viewBox="0 0 480 260" aria-hidden="true">
+        {no === "01" && <><circle cx="120" cy="130" r="61" fill="none" stroke="currentColor" strokeWidth="3"/><circle cx="120" cy="130" r="23" fill="#171717"/><path d="M191 130H357" stroke="currentColor" strokeWidth="10" strokeLinecap="square"/><path d="M316 86L365 130 316 174" stroke="currentColor" strokeWidth="10" fill="none"/><circle cx="411" cy="130" r="27" fill="#171717"/></>}
         {no === "02" && <><path d="M55 55H425M55 128H425M55 201H425M112 24V236M240 24V236M368 24V236" stroke="currentColor" strokeWidth="1.5" opacity=".3"/><circle cx="240" cy="128" r="67" fill="#151515"/><path d="M205 127l24 24 46-51" stroke="#f4ead8" strokeWidth="10" strokeLinecap="square" fill="none"/><path d="M63 43h96" stroke="currentColor" strokeWidth="5"/></>}
         {no === "03" && <><path d="M65 208H415" stroke="currentColor" strokeWidth="2"/><path d="M86 180L160 128 230 163 300 69 395 91" stroke="currentColor" strokeWidth="6" fill="none"/>{[[86,180],[160,128],[230,163],[300,69],[395,91]].map(([x,y],i)=><g key={i}><circle cx={x} cy={y} r={i===3?23:13} fill={i===3?"#f3efe5":"#171717"}/><circle cx={x} cy={y} r="5" fill={i===3?"#171717":"#f3efe5"}/></g>)}</>}
         {no === "05" && <><rect x="110" y="43" width="260" height="180" stroke="currentColor" strokeWidth="3" fill="none"/><path d="M140 78H340M140 116H340M140 154H340M140 192H340" stroke="currentColor" strokeWidth="7" opacity=".26"/><path d="M84 232L396 22" stroke="#171717" strokeWidth="24"/><path d="M86 232L395 22" stroke="#fbf4e8" strokeWidth="2"/></>}
@@ -70,7 +77,7 @@ export default function Home() {
       <nav className={styles.nav}>
         <a className={styles.logo} href="#">ctrl+love</a>
         <div className={styles.navlinks}>
-          <a href="#work">Work</a><a href="#difference">Difference</a><a href="#cases">Cases</a><a href="#instruments">Instruments</a><a href="#about">About</a>
+          <a href="#work">What we do</a><a href="#instruments">Try</a><a href="#cases">Proof</a><a href="/pricing/">Pricing</a><a href="#about">People</a>
         </div>
       </nav>
 
@@ -84,7 +91,6 @@ export default function Home() {
         <div className={styles.heroCopyRight} data-savannah-handoff-panel="true">
           <p>AI can generate more answers than we will ever need.</p>
           <strong>The interesting problem is knowing what deserves to be believed.</strong>
-          <span>72° and sunny.</span>
         </div>
       </section>
 
@@ -124,6 +130,43 @@ export default function Home() {
             </a>
           ))}
         </div>
+        <div className={styles.offerStrip} aria-label="Ways to work with ctrl+love">
+          <a href="/pricing/decision-stress-test/"><span>01 / TEST A DECISION</span><strong>Decision Stress-Test™</strong><b>From €4,500 ↗</b></a>
+          <a href="/pricing/on-call-room/"><span>02 / KEEP A ROOM CLOSE</span><strong>On-Call Room™</strong><b>From €7,500 / month ↗</b></a>
+          <a href="/pricing/"><span>03 / FIND YOUR FIT</span><strong>Rooms & pricing</strong><b>See the offers ↗</b></a>
+        </div>
+      </section>
+
+      <section className={styles.section} id="instruments">
+        <div className={styles.kicker}>A few instruments inside the machine</div>
+        <h2>Pressure, not prompts.</h2>
+        <a className={styles.cabinetPreview} href="/cabinet/" aria-label="Enter the instrument cabinet">
+          <img src="/cabinet/assets/instrument-family.webp" alt="A sunlit workshop filled with ctrl+love decision instruments" loading="lazy" width="1536" height="1024" />
+          <div className={styles.cabinetCaption}>
+            <div>
+              <span className={styles.kicker}>The instrument cabinet</span>
+              <h3>Ideas enter. Evidence leaves.</h3>
+              <p>Explore the instruments, their mechanisms and the work they leave behind.</p>
+            </div>
+            <strong>Enter the cabinet</strong>
+          </div>
+        </a>
+        <div className={styles.instruments}>
+          {instruments.map(([no,name,line,kind,href,action]) => (
+            <a className={styles.instrument} href={href} key={no} data-family={instrumentFamilies[no]} aria-label={`${action}: ${name}`}>
+              <div className={`${styles.instrumentVisual} ${styles[kind]}`} aria-hidden="true">
+                {instrumentImages[no] ? <img src={instrumentImages[no]} alt="" loading="lazy" /> : <InstrumentArtwork no={no} />}
+              </div>
+              <div className={styles.instrumentCopy}>
+                <span className={styles.num}>{no} / {instrumentFamilies[no]}</span>
+                <h3>{name}</h3>
+                <p>{line}</p>
+                <strong>{action} ↗</strong>
+              </div>
+            </a>
+          ))}
+        </div>
+        <a className={styles.cabinetLink} href="/instruments/">Explore the full instrument list</a>
       </section>
 
       <section className={styles.section} id="difference">
@@ -131,17 +174,16 @@ export default function Home() {
         <h2>Same intelligence. Different machine.</h2>
         <div className={styles.compare}>
           <article>
-            <h3>ctrl+love gives the answer something to fight with.</h3>
-            <ul><li>Multiple perspectives</li><li>Designed opposition</li><li>Evidence</li><li>Consequences and alternatives</li><li>Accumulated context</li><li>A reason to stop</li></ul>
+            <h3>We make the answer defend itself.</h3>
+            <ul><li>Designed opposition</li><li>Evidence, not confidence</li><li>Consequences and alternatives</li></ul>
           </article>
           <article>
-            <h3>A generic LLM gives you another answer.</h3>
-            <ul><li>One perspective at a time</li><li>Helpful by default</li><li>Session-dependent context</li><li>No designed opposition</li><li>More answers</li><li>Another route is always available</li></ul>
+            <h3>Another answer is not a decision.</h3>
+            <ul><li>Helpful by default</li><li>More possibilities</li><li>Little reason to stop</li></ul>
           </article>
           <article className={styles.persona}>
             <h3>No persona factory.</h3>
-            <p>When we need people in the room, we do not generate thousands of supposedly unbiased demographic placeholders.</p>
-            <p>We build a small number of synthetic people by hand — with histories, biases, memories and reasons to disagree.</p>
+            <p>A few carefully built synthetic people, with histories, biases and reasons to disagree. Not a thousand demographic placeholders.</p>
             <span>FEWER PEOPLE. BETTER ARGUMENTS.</span>
           </article>
         </div>
@@ -156,9 +198,7 @@ export default function Home() {
               <span className={styles.num}>01 / COMFORA</span>
               <h3>Nobody wanted a comfy chair. People just wanted their lives back.</h3>
               <p><b>That changed the brief.</b> The question was no longer “how do we sell comfort?” but “what does getting your life back look like in the wild?”</p>
-              <p>We analysed a screen recording from <b>Flip — our lorikeet parrot, Trojan horse and unlikely signal scout — and his 4K+ Instagram following.</b></p>
-              <p>One signal emerged: matcha videos were increasingly composed off-centre, leaving more room for friends, conversation and life around the drink.</p>
-              <p><b>Maya, Cultural Pattern Reader,</b> and <b>Lexi, Hospitality Strategist,</b> pushed that observation somewhere physical: what if a Comfora chair lived in hotel lobbies, so newly arrived guests could sit, have a matcha, charge their phone and recover from travelling?</p>
+              <p>A small cultural signal from Flip’s 4K+ Instagram world became an unexpected physical idea: a Comfora chair in hotel lobbies, where guests can sit, recharge and return to life.</p>
               <strong className={styles.impact}>4K+ Instagram signal → interpretation → synthetic perspective → unexpected physical route.</strong>
             </div>
             <div className={styles.comforaVisual}>
@@ -201,43 +241,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={styles.section} id="instruments">
-        <div className={styles.kicker}>A few instruments inside the machine</div>
-        <h2>Pressure, not prompts.</h2>
-        <a className={styles.cabinetPreview} href="/cabinet/" aria-label="Enter the instrument cabinet">
-          <img src="/cabinet/assets/instrument-family.webp" alt="A sunlit workshop filled with ctrl+love decision instruments" loading="lazy" width="1536" height="1024" />
-          <div className={styles.cabinetCaption}>
-            <div>
-              <span className={styles.kicker}>The instrument cabinet</span>
-              <h3>Ideas enter. Evidence leaves.</h3>
-              <p>Explore the instruments, their mechanisms and the work they leave behind.</p>
-            </div>
-            <strong>Enter the cabinet</strong>
-          </div>
-        </a>
-        <div className={styles.instruments}>
-          {instruments.map(([no,name,line,kind,href,action]) => (
-            <a className={styles.instrument} href={href} key={no} aria-label={`${action}: ${name}`}>
-              <div className={`${styles.instrumentVisual} ${styles[kind]}`} aria-hidden="true">
-                {instrumentImages[no] ? <img src={instrumentImages[no]} alt="" loading="lazy" /> : <InstrumentArtwork no={no} />}
-              </div>
-              <div className={styles.instrumentCopy}>
-                <span className={styles.num}>{no}</span>
-                <h3>{name}</h3>
-                <p>{line}</p>
-                <strong>{action} ↗</strong>
-              </div>
-            </a>
-          ))}
-        </div>
-        <a className={styles.cabinetLink} href="/instruments/">Explore the full instrument list</a>
-      </section>
-
       <section className={`${styles.section} ${styles.aboutSection}`} id="about">
         <div className={styles.about}>
           <h2>30 years advertising.<br/>8 years Apple.<br/>ADCN Hall of Fame.<br/>Then this.</h2>
           <div className={styles.aboutProfile}>
-            <img className={styles.aboutPortrait} src="https://raw.githubusercontent.com/poppevanpelt/ctrlpluslove-site/main/IMG_5021.jpeg" alt="Poppe van Pelt" />
+            <img className={styles.aboutPortrait} src="/ambassadors/portraits/001-poppe-van-pelt-portrait-live-20260712.jpeg" alt="Poppe van Pelt" />
             <div className={styles.aboutBio}>
               <p><b>Poppe van Pelt</b><br/>Founder, ctrl+love</p>
               <p>Built after decades of watching good ideas get improved to death in rooms full of smart people.</p>
@@ -250,6 +258,7 @@ export default function Home() {
       <section className={styles.final}>
         <div className={styles.kicker}>Enough explaining</div>
         <h2>Bring us something that matters.</h2>
+        <img className={styles.finalBall} src="/museum/steel-ball-packshot-cutout.png" alt="" aria-hidden="true" />
         <a href="mailto:poppevanpelt@gmail.com?subject=I%20have%20something%20for%20ctrl%2Blove">Bring a real problem ↗</a>
       </section>
 
