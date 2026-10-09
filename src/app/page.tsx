@@ -218,8 +218,8 @@ export default function Home() {
           <div className={styles.peoplePanel}>
             <div className={styles.peoplePanelHeading}>
               <span>02 / LIVED INTELLIGENCE</span>
-              <h3>Apple+. Shoulder to shoulder.</h3>
-              <p>A working circle of real humans from Apple, advertising and design. People known through making things together, not collected for a logo wall.</p>
+              <h3>A circle, not a club.</h3>
+              <p>Rooted in people who have worked shoulder to shoulder at Apple and beyond. Open to new minds, different disciplines and unexpected collaborators. Curiosity matters more than credentials.</p>
             </div>
             <div className={styles.peoplePortraits}>
               {publicWorkingCircle.map((person) => (
@@ -229,7 +229,7 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <a className={styles.peopleAction} href="/ambassadors/">Meet the working circle ↗</a>
+            <a className={styles.peopleAction} href="/ambassadors/">Meet the circle — and see how it grows ↗</a>
           </div>
         </div>
         <p className={styles.peopleClosing}>Designed perspectives to challenge the obvious. Real relationships to take the work further. Human judgment stays in charge.</p>
