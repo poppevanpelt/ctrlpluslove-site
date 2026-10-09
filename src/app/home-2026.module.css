@@ -375,3 +375,19 @@
 .art_chase{background:linear-gradient(145deg,#e6ddcd,#d0ba98)}
 .art_radar{background:linear-gradient(145deg,#c4bfb0,#e6dcc4)}
 @media(max-width:650px){.instrumentVisual:has(.artwork){height:210px}.instrument{min-height:0}.instrumentCopy{padding:20px}.instrumentCopy h3{font-size:25px}.instrumentCopy p{line-height:1.45}}
+
+/* 2026-10-09: replace the final dissolve with a registered physical cut.
+   The projected headline and live h1 occupy the identical measured rectangle. */
+.savannahIntro{perspective:1400px}
+.savannahFilm{transition:filter .22s linear,transform .46s cubic-bezier(.38,0,.18,1)!important;transform-origin:50% 50%}
+.savannahSceneDaylight .savannahFilm{opacity:1!important;filter:saturate(.95) brightness(1.04)}
+.savannahSceneLocked .savannahFilm{opacity:0!important;transition:opacity 0s step-end,filter 0s,transform .18s ease!important;transform:scale(1.006)}
+.savannahProjectionHeadline{transform:perspective(1000px) translate3d(11vw,-2vh,-120px) rotateY(-5deg) rotateZ(-1.4deg) scale(.7);transition:transform .64s cubic-bezier(.24,.74,.16,1),color .14s steps(1,end),opacity .12s linear,text-shadow .2s linear}
+.savannahSceneDaylight .savannahProjectionHeadline{transform:perspective(1000px) translate3d(2.5vw,-.3vh,-25px) rotateY(-1deg) rotateZ(-.2deg) scale(.94);color:var(--ink)}
+.savannahSceneLocked .savannahProjectionHeadline{transform:none;opacity:0;transition:transform .16s cubic-bezier(.15,.85,.2,1),opacity 0s step-end;color:var(--ink)}
+.savannahHandoff{opacity:0;transition:opacity 0s step-end,visibility 0s step-end}
+@media(max-width:650px){
+ .savannahProjectionHeadline{transform:perspective(1000px) translate3d(3vw,-.8vh,-65px) rotateY(-3deg) rotateZ(-.6deg) scale(.82)}
+ .savannahSceneDaylight .savannahProjectionHeadline{transform:perspective(1000px) translate3d(1vw,0,-12px) rotateY(-.5deg) scale(.97)}
+}
+@media(prefers-reduced-motion:reduce){.savannahFilm,.savannahProjectionHeadline{transition:none!important;transform:none!important}}
