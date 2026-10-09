@@ -130,8 +130,22 @@ export async function speakSavannahNeurally(
     audio.onerror = null;
     audio.src = url;
     audio.preload = "auto";
-    audio.onplay = () => { blockedAudio = null; options.onStart?.(); };
+    // Reuse the iPhone-safe media element. Do not route it through an AudioContext:
+    // changing the output path can silence Safari. Publish progress and a modest
+    // syllable envelope only while the actual audio is playing.
+    let faceFrame = 0;
+    const faceStart = performance.now();
+    const faceTick = () => {
+      if (audio.paused || audio.ended || epoch !== neuralPlaybackEpoch) return;
+      const t = (performance.now() - faceStart) / 1000;
+      const envelope = Math.max(0, Math.sin(t * 14) * 0.47 + Math.sin(t * 24.7) * 0.23 + 0.30);
+      window.dispatchEvent(new CustomEvent("savannah-audio-level", { detail: Math.min(0.72, envelope) }));
+      faceFrame = window.requestAnimationFrame(faceTick);
+    };
+    audio.onplay = () => { blockedAudio = null; options.onStart?.(); faceFrame = window.requestAnimationFrame(faceTick); };
     const finish = () => {
+      window.cancelAnimationFrame(faceFrame);
+      window.dispatchEvent(new CustomEvent("savannah-audio-level", { detail: 0 }));
       options.onEnd?.();
       URL.revokeObjectURL(url);
     };
