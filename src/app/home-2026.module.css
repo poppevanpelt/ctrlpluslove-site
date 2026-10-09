@@ -431,3 +431,28 @@
   .final{min-height:530px;padding-bottom:210px}
   .finalBall{width:210px;right:5%;bottom:16px}
 }
+
+
+/* Observed intelligence / lived intelligence: people, not another text block. */
+.peopleSection{padding-top:clamp(64px,7vw,112px);padding-bottom:clamp(64px,7vw,112px)}
+.peopleColumns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--ink);border:1px solid var(--ink);margin-top:38px}
+.peoplePanel{background:var(--paper);min-width:0;display:flex;flex-direction:column}
+.peoplePanel:first-child{--peopleAccent:#b8d7e7}
+.peoplePanel:last-child{--peopleAccent:#f2ca77}
+.peoplePanelHeading{padding:clamp(22px,3vw,42px);border-top:12px solid var(--peopleAccent)}
+.peoplePanelHeading>span{display:block;font-size:11px;letter-spacing:.13em;font-weight:900;margin-bottom:24px}
+.peoplePanelHeading h3{font-size:clamp(34px,4.2vw,66px);letter-spacing:-.06em;line-height:.93;margin:0 0 22px;text-transform:uppercase}
+.peoplePanelHeading p{font-size:clamp(17px,1.5vw,23px);line-height:1.2;letter-spacing:-.025em;max-width:600px;margin:0}
+.peoplePortraits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--ink);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);margin-top:auto}
+.peoplePortrait{min-width:0;background:var(--paper)}
+.peoplePortrait img{display:block;width:100%;height:auto;aspect-ratio:4/4.6;object-fit:cover;background:#d8d0c1;filter:saturate(.82)}
+.peoplePortrait>div{padding:12px;min-height:78px}
+.peoplePortrait strong,.peoplePortrait span{display:block;line-height:1.1}
+.peoplePortrait strong{font-size:clamp(12px,1.1vw,17px);letter-spacing:-.02em}
+.peoplePortrait span{font-size:11px;margin-top:6px;opacity:.7}
+.peopleAction{display:block;padding:22px 26px;font-weight:900;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.peopleAction:hover{background:var(--peopleAccent)}
+.peopleClosing{max-width:920px;margin:32px 0 0;font-size:clamp(21px,2.5vw,36px);line-height:1.1;letter-spacing:-.04em;font-weight:700}
+.circle a{text-decoration:underline;text-underline-offset:3px}
+@media(max-width:900px){.peopleColumns{grid-template-columns:1fr}.peoplePanelHeading{padding:26px}.peoplePanelHeading h3{font-size:clamp(34px,8vw,56px)}.peoplePortrait>div{min-height:66px}}
+@media(max-width:650px){.peoplePortrait>div{padding:9px}.peoplePortrait strong{font-size:12px}.peoplePortrait span{font-size:10px}.peoplePortraits{grid-template-columns:repeat(3,minmax(0,1fr))}}
