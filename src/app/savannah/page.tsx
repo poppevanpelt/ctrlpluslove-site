@@ -17,6 +17,7 @@ export default function SavannahPage() {
   const [audioEnabled, setAudioEnabled] = useState(true);
   const [voiceMessage, setVoiceMessage] = useState("TAP TO HEAR SAVANNAH");
   const [started, setStarted] = useState(false);
+  const [videoReady, setVideoReady] = useState(true);
   const bottom = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLInputElement>(null);
   const lastReply = useRef(GREETING);
@@ -102,6 +103,7 @@ export default function SavannahPage() {
 
       <div className="savannah-portrait">
         <img src="/savannah-avatar.jpg" alt="Savannah" />
+        {videoReady && <video className="savannah-live" src="/savannah-idle.mp4" poster="/savannah-avatar.jpg" autoPlay muted playsInline loop preload="auto" aria-label="Savannah quietly looking toward you" onError={() => setVideoReady(false)} />}
         <div className="savannah-shade" />
         <div className="savannah-intro">
           <span className="savannah-eyebrow">SAVANNAH OS / 1.0</span>
@@ -148,6 +150,7 @@ export default function SavannahPage() {
         .savannah-dot { width:6px; height:6px; border-radius:50%; background:#9ab59c; }
         .savannah-portrait { height:clamp(270px,53svh,580px); position:relative; flex-shrink:0; background:#272421; overflow:hidden; }
         .savannah-portrait img { width:100%; height:100%; display:block; object-fit:cover; object-position:center 29%; filter:saturate(.88); animation:savannah-breathe 6.8s ease-in-out infinite; transform-origin:50% 42%; }
+        .savannah-live { position:absolute; inset:0; height:100%; width:100%; object-fit:cover; object-position:center 29%; }
         .savannah-shade { position:absolute; inset:0; background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.68)); pointer-events:none; }
         .savannah-intro { position:absolute; bottom:20px; left:22px; right:22px; color:#f8f2e8; }
         .savannah-eyebrow { font-size:10px; font-weight:700; letter-spacing:.18em; opacity:.74; }
