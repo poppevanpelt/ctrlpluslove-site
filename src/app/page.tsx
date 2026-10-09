@@ -2,6 +2,10 @@ import styles from "./home-2026.module.css";
 import SavannahIntro from "./SavannahIntro";
 import SavannahExplainer from "./SavannahExplainer";
 import SavannahExit from "./SavannahExit";
+import { homepageRoomPersonas } from "./room-personas-data";
+import { confirmedAmbassadors } from "./ambassadors-data";
+
+const publicWorkingCircle = confirmedAmbassadors.filter(person => person.status === "ambassador" && person.id !== "flip").slice(0, 6);
 
 const stages = [
   { no:"01", verb:"OBSERVE.", name:"ctrl+live", line:"Watch what is actually changing before deciding what it means.", detail:"Signals, movement, patterns and anomalies — kept alive instead of frozen into another report.", price:"Ongoing watch", href:"mailto:poppevanpelt@gmail.com?subject=Show%20me%20ctrl%2Blive", kind:"observe" },
@@ -79,7 +83,7 @@ export default function Home() {
       <nav className={styles.nav}>
         <a className={styles.logo} href="#">ctrl+love</a>
         <div className={styles.navlinks}>
-          <a href="#work">What we do</a><a href="#instruments">Try</a><a href="#cases">Proof</a><a href="/pricing/">Pricing</a><a href="#about">People</a>
+          <a href="#work">What we do</a><a href="#instruments">Try</a><a href="#people">People</a><a href="#cases">Proof</a><a href="/pricing/">Pricing</a>
         </div>
       </nav>
 
@@ -184,11 +188,51 @@ export default function Home() {
             <ul><li>Helpful by default</li><li>More possibilities</li><li>Little reason to stop</li></ul>
           </article>
           <article className={styles.persona}>
-            <h3>No persona factory.</h3>
-            <p>A few carefully built synthetic people, with histories, biases and reasons to disagree. Not a thousand demographic placeholders.</p>
-            <span>FEWER PEOPLE. BETTER ARGUMENTS.</span>
+            <h3>Not invented in bulk.</h3>
+            <p>Personas handcrafted from observation. Each one brings a distinct point of view and a reason to disagree.</p>
+            <span>OBSERVED, THEN DESIGNED.</span>
           </article>
         </div>
+      </section>
+
+      <section className={`${styles.section} ${styles.peopleSection}`} id="people">
+        <div className={styles.kicker}>The intelligence behind the instruments</div>
+        <h2>Some are designed. Some have been there.</h2>
+        <div className={styles.peopleColumns}>
+          <div className={styles.peoplePanel}>
+            <div className={styles.peoplePanelHeading}>
+              <span>01 / OBSERVED INTELLIGENCE</span>
+              <h3>Handcrafted personas.</h3>
+              <p>Built from observation, not a demographic dropdown. Each has a particular memory, bias, instinct and something worth challenging.</p>
+            </div>
+            <div className={styles.peoplePortraits}>
+              {homepageRoomPersonas.slice(0, 6).map((person) => (
+                <div className={styles.peoplePortrait} key={person.id}>
+                  {person.portrait && <img src={person.portrait} alt={person.name} loading="lazy" style={{objectPosition: person.portraitPosition || "center"}} />}
+                  <div><strong>{person.name}</strong><span>{person.role}</span></div>
+                </div>
+              ))}
+            </div>
+            <a className={styles.peopleAction} href="/room/">Meet the perspectives ↗</a>
+          </div>
+          <div className={styles.peoplePanel}>
+            <div className={styles.peoplePanelHeading}>
+              <span>02 / LIVED INTELLIGENCE</span>
+              <h3>Apple+. Shoulder to shoulder.</h3>
+              <p>A working circle of real humans from Apple, advertising and design. People known through making things together, not collected for a logo wall.</p>
+            </div>
+            <div className={styles.peoplePortraits}>
+              {publicWorkingCircle.map((person) => (
+                <div className={styles.peoplePortrait} key={person.id}>
+                  {person.image && <img src={person.image} alt={person.name} loading="lazy" />}
+                  <div><strong>{person.name}</strong><span>{person.city}</span></div>
+                </div>
+              ))}
+            </div>
+            <a className={styles.peopleAction} href="/ambassadors/">Meet the working circle ↗</a>
+          </div>
+        </div>
+        <p className={styles.peopleClosing}>Designed perspectives to challenge the obvious. Real relationships to take the work further. Human judgment stays in charge.</p>
       </section>
 
       <section className={styles.section} id="cases">
@@ -251,7 +295,7 @@ export default function Home() {
             <div className={styles.aboutBio}>
               <p><b>Poppe van Pelt</b><br/>Founder, ctrl+love</p>
               <p>Built after decades of watching good ideas get improved to death in rooms full of smart people.</p>
-              <p className={styles.circle}>The wider ctrl+love circle includes people Poppe has worked shoulder to shoulder with at Apple and across advertising and design.</p>
+              <p className={styles.circle}>Built on observation, collaboration and the people who have been in the room. <a href="#people">Meet the working circle ↗</a></p>
             </div>
           </div>
         </div>
