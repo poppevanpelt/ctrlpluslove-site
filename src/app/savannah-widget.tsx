@@ -799,23 +799,23 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
         aria-label="Open Savannah"
         style={{
           position: "fixed",
-          right: 14,
-          bottom: 24,
+          right: 12,
+          bottom: 16,
           zIndex: 2147483001,
-          minHeight: 44,
+          minHeight: 38,
           border: "1px solid rgba(21,21,21,.22)",
-          padding: "0 14px",
+          padding: "0 12px",
           background: "#151515",
           color: "#f5f1e7",
           font: "inherit",
-          fontSize: 10,
+          fontSize: 9,
           fontWeight: 800,
-          letterSpacing: ".11em",
+          letterSpacing: ".09em",
           textTransform: "uppercase",
           boxShadow: "0 12px 30px rgba(0,0,0,.14)",
         }}
       >
-        Savannah · Type / Hear
+        Savannah · Talk / Type
       </button>
     );
   }
