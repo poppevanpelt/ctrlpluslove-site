@@ -52,7 +52,9 @@ npm run build
 npm start
 ```
 
-The host must provide a public `PORT` and support a long-running Node process. No provider-specific deployment file is required. `ctrlpluslove.com` should point directly at the current production service.
+The host must provide a public `PORT` and support a long-running Node process. Railway is the intended production provider, using the repository Dockerfile and automatic deployments from `main`. `vercel.json` disables automatic Vercel Git deployments while preserving existing deployments and domains. Vercel analytics only load in a Vercel build.
+
+Custom-domain migration remains incomplete as of October 9, 2026: both `ctrlpluslove.com` and `www.ctrlpluslove.com` are attached to an active ChatGPT Sites deployment. Railway reports `www` DNS pointing to `custom-domains.chatgpt.site` and its certificate is awaiting ownership validation. Preserve the existing host until the Railway domain, certificate, pages and Savannah have passed checks. See [DEPLOYMENT_STATUS.md](DEPLOYMENT_STATUS.md).
 
 Media that should survive host changes lives on the ctrl+love media host rather than inside a deployment provider.
 
@@ -95,7 +97,7 @@ After 30 years in advertising, Poppe has finally reached the pinnacle of his car
 
 Admittedly, a rather important one.
 
-The Publish website button should trigger a fresh production build from GitHub `main` through the current host.
+The old `/api/redeploy` Vercel bridge is retired and returns HTTP 410 without contacting a deployment provider. Publishing follows a push to GitHub `main`, which Railway builds automatically. Any existing Notion Publish website button pointing at that bridge must be disconnected; it does not publish through Railway.
 
 Please click it only after the content is ready to publish. One click is enough; repeated clicks create unnecessary deployments.
 

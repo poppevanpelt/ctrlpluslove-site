@@ -112,8 +112,8 @@ posthog.init('phc_nXPhwXLd8X7Tt9qXDwtAYJAUFYiTsBCfNzjQqEwLvFbK',{api_host:'https
           <ProjectNavigation />
           {children}
           <SavannahWidget />
-          <Analytics />
-          <SpeedInsights />
+          {process.env.VERCEL === "1" && <Analytics />}
+          {process.env.VERCEL === "1" && <SpeedInsights />}
         </CtrlLayerProvider>
       </body>
     </html>
