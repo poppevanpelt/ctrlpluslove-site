@@ -20,7 +20,7 @@ export default function SavannahPage() {
   const [started, setStarted] = useState(false);
   const [showTranscript, setShowTranscript] = useState(false);
   const [listening, setListening] = useState(false);
-  const [showTyping, setShowTyping] = useState(false);
+  const [showTyping, setShowTyping] = useState(true);
   const recorder = useRef<MediaRecorder | null>(null);
   const micStream = useRef<MediaStream | null>(null);
   const micChunks = useRef<Blob[]>([]);
@@ -362,7 +362,8 @@ Status: UNSENT · no delivery channel connected.`;
         </section>
         <div className="savannah-desk-list">{deskItems.length===0?<p>No saved entries yet.</p>:deskItems.map(item=><article key={item.id}><small>{item.type.toUpperCase()} · {item.date}</small><p>{item.text}</p><button type="button" onClick={() => {const keep=deskItems.filter(entry=>entry.id!==item.id);try{localStorage.setItem("savannah-desk-local-v1",JSON.stringify(keep));setDeskItems(keep)}catch{setDeskNotice("Could not remove entry.")}}}>DELETE</button></article>)}</div>
       </section>}
-      <style>{`\n        .savannah-portrait > .savannah-speech-mouth {\n          position: absolute; inset: 0; width: 100%; height: 100%;\n          object-fit: cover; object-position: center;\n          clip-path: inset(47% 20% 12% 20%);\n          transform-origin: 50% 64%;\n          transition: transform 90ms ease-out;\n          pointer-events: none; z-index: 1;\n        }\n        @media (prefers-reduced-motion: reduce) {\n          .savannah-portrait > .savannah-speech-mouth { display: none; }\n        }\n      `}</style>
+      <style>{`\n        .savannah-portrait > .savannah-speech-mouth {\n          animation: none !important; filter: saturate(.92); 
+          position: absolute; inset: 0; width: 100%; height: 100%;\n          object-fit: cover; object-position: center;\n          clip-path: inset(47% 20% 12% 20%);\n          transform-origin: 50% 64%;\n          transition: transform 90ms ease-out;\n          pointer-events: none; z-index: 1;\n        }\n        @media (prefers-reduced-motion: reduce) {\n          .savannah-portrait > .savannah-speech-mouth { display: none; }\n        }\n      `}</style>
       <div className={"savannah-portrait" + (speaking ? " is-speaking" : pending ? " is-thinking" : "")}>
         <button type="button" className="savannah-face-tap" onClick={() => void tapSavannah()} aria-label={needsPlayback ? "Hear Savannah" : listening ? "Finish recording" : "Speak to Savannah"} />
         <img src="/savannah-avatar.jpg" alt="Savannah" />
@@ -373,7 +374,7 @@ Status: UNSENT · no delivery channel connected.`;
             aria-hidden="true"
             className="savannah-speech-mouth"
             style={{
-              transform: `scaleY(${1 + speechMotion * 0.024}) translateY(${speechMotion * 0.35}px)`,
+              transform: `scaleY(${1 + speechMotion * 0.11}) translateY(${speechMotion * 0.8}px)`,
             }}
           />
         )}
@@ -409,7 +410,7 @@ Status: UNSENT · no delivery channel connected.`;
         <div ref={bottom} />
       </section>}
       {false && !showTranscript && !started && <div className="savannah-quick-start"><button type="button" disabled={pending} onClick={() => void ask("What is ctrl+love, and why should I care?")}>INTRODUCE YOURSELF</button><button type="button" disabled={pending} onClick={() => void ask("Challenge my business idea. First ask me what it is.")}>CHALLENGE ME</button></div>}
-      <div className="savannah-mic-hint" aria-live="polite"><span className={listening ? "savannah-mic-live" : ""}>{micStatus}</span><button type="button" onClick={() => setShowTyping(value => !value)} aria-label="Toggle keyboard">⌨</button></div>
+      <div className="savannah-mic-hint" aria-live="polite"><button type="button" className="savannah-talk-direct" onClick={() => void tapSavannah()} disabled={pending || audioBusy}>{listening ? "DONE TALKING" : needsPlayback ? "HEAR SAVANNAH" : "TALK TO SAVANNAH"}</button><span>{micStatus}</span></div>
       {!showTranscript && error && <p className="savannah-error-compact" role="alert">{error}</p>}
       {showTyping && <form className="savannah-compose" onSubmit={send}>
         <label className="savannah-input-wrap">
@@ -443,7 +444,9 @@ Status: UNSENT · no delivery channel connected.`;
         .savannah-desk-list article { border-top:1px solid #bcb6aa; padding:16px 0; }
         .savannah-desk-list small { color:#777065; letter-spacing:.08em; }
         .savannah-desk-list p { white-space:pre-wrap; overflow-wrap:anywhere; }
-                .savannah-shell { position:fixed; inset:0; z-index:2147483000; display:flex; flex-direction:column; overflow:hidden; background:#eeeae1; color:#161616; font-family:Arial,Helvetica,sans-serif; }
+                .savannah-talk-direct { display:flex; align-items:center; justify-content:center; min-height:46px; border:0; background:#191919; color:#f7f0e7; padding:0 16px; font-size:12px; font-weight:750; letter-spacing:.075em; cursor:pointer; }
+        .savannah-talk-direct:disabled { opacity:.5; }
+        .savannah-shell { position:fixed; inset:0; z-index:2147483000; display:flex; flex-direction:column; overflow:hidden; background:#eeeae1; color:#161616; font-family:Arial,Helvetica,sans-serif; }
         .savannah-topbar { padding:max(env(safe-area-inset-top),18px) 22px 14px; display:flex; flex-shrink:0; align-items:center; justify-content:space-between; background:#171717; color:#f1eee6; }
         .savannah-brand { font:normal 34px/1 Georgia,serif; letter-spacing:-.045em; }
         .savannah-brand span { color:#d7b49b; }
@@ -455,11 +458,11 @@ Status: UNSENT · no delivery channel connected.`;
         .savannah-face-tap { position:absolute; inset:0; width:100%; height:100%; border:0; padding:0; background:transparent; z-index:2; cursor:pointer; touch-action:manipulation; }
         .savannah-face-tap:focus-visible { outline:3px solid #f8e3bb; outline-offset:-5px; }
         .savannah-portrait { flex:1 1 auto; min-height:0; height:auto; position:relative; background:#272421; overflow:hidden; }
-        .savannah-portrait img { width:100%; height:100%; display:block; object-fit:cover; object-position:center 29%; filter:saturate(.88); animation:savannah-breathe 8.8s ease-in-out infinite; transform-origin:50% 42%; transition:filter 650ms ease; }
+        .savannah-portrait img:not(.savannah-speech-mouth) { width:100%; height:100%; display:block; object-fit:cover; object-position:center 29%; filter:saturate(.88); animation:savannah-breathe 8.8s ease-in-out infinite; transform-origin:50% 42%; transition:filter 650ms ease; }
         /* Presence first: a settled listener, a tiny thinking glance, then a
            quieter face while speaking. No fake looping mouth animation. */
-        .savannah-portrait.is-thinking img { animation:savannah-consider 4.6s ease-in-out infinite; filter:saturate(.85) brightness(.98); }
-        .savannah-portrait.is-speaking img { animation:savannah-answer 7.4s ease-in-out infinite; filter:saturate(.92); }
+        .savannah-portrait.is-thinking img:not(.savannah-speech-mouth) { animation:savannah-consider 4.6s ease-in-out infinite; filter:saturate(.85) brightness(.98); }
+        .savannah-portrait.is-speaking img:not(.savannah-speech-mouth) { animation:savannah-answer 7.4s ease-in-out infinite; filter:saturate(.92); }
         @keyframes savannah-consider {
           0%,22%,74%,100% { transform:scale(1.008) translate(0,0); }
           38%,56% { transform:scale(1.013) translate(-.28%,.06%); }
