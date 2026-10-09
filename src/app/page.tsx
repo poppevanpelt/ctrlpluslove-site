@@ -32,8 +32,6 @@ const instrumentFamilies: Record<string, "observe" | "analyse" | "accelerate"> =
 
 const instrumentImages: Record<string, string> = {
   "04": "/shoppe/poppes-prompt-shoppe.webp",
-  "07": "/instruments/02-decision-collider.webp",
-  "08": "/ai-y-fier-hero-inflation-engine.webp",
 };
 
 const missingInstrumentArt: Record<string, {label:string; motif:string}> = {
@@ -42,6 +40,8 @@ const missingInstrumentArt: Record<string, {label:string; motif:string}> = {
   "03": { label:"DECISION / MEMORY", motif:"memory" },
   "05": { label:"PURGE / REMOVE", motif:"purge" },
   "06": { label:"BRAND / SURVIVAL", motif:"survival" },
+  "07": { label:"DECISION / COLLIDER", motif:"collider" },
+  "08": { label:"AI-Y / FIER", motif:"inflation" },
   "09": { label:"CTRL / SWAT", motif:"swat" },
   "10": { label:"CTRL / FIZZ", motif:"fizz" },
   "11": { label:"CTRL / CHASE", motif:"chase" },
@@ -60,6 +60,8 @@ function InstrumentArtwork({ no }: { no: string }) {
         {no === "03" && <><path d="M65 208H415" stroke="currentColor" strokeWidth="2"/><path d="M86 180L160 128 230 163 300 69 395 91" stroke="currentColor" strokeWidth="6" fill="none"/>{[[86,180],[160,128],[230,163],[300,69],[395,91]].map(([x,y],i)=><g key={i}><circle cx={x} cy={y} r={i===3?23:13} fill={i===3?"#f3efe5":"#171717"}/><circle cx={x} cy={y} r="5" fill={i===3?"#171717":"#f3efe5"}/></g>)}</>}
         {no === "05" && <><rect x="110" y="43" width="260" height="180" stroke="currentColor" strokeWidth="3" fill="none"/><path d="M140 78H340M140 116H340M140 154H340M140 192H340" stroke="currentColor" strokeWidth="7" opacity=".26"/><path d="M84 232L396 22" stroke="#171717" strokeWidth="24"/><path d="M86 232L395 22" stroke="#fbf4e8" strokeWidth="2"/></>}
         {no === "06" && <><circle cx="240" cy="131" r="94" stroke="currentColor" strokeWidth="2" fill="none"/><circle cx="240" cy="131" r="64" stroke="currentColor" strokeWidth="4" fill="none"/><circle cx="240" cy="131" r="35" fill="#171717"/><path d="M240 17V245M126 131H354" stroke="currentColor" strokeWidth="1.8"/><path d="M120 56L360 204" stroke="currentColor" strokeWidth="8" opacity=".3"/></>}
+        {no === "07" && <><circle cx="135" cy="130" r="67" stroke="currentColor" strokeWidth="4" fill="none"/><circle cx="345" cy="130" r="67" stroke="currentColor" strokeWidth="4" fill="none"/><path d="M180 130H300M208 105L245 130 208 155M272 105L235 130 272 155" stroke="currentColor" strokeWidth="9" fill="none"/><circle cx="240" cy="130" r="24" fill="#171717"/><path d="M135 42V65M345 195V218" stroke="currentColor" strokeWidth="4"/></>}
+        {no === "08" && <><rect x="52" y="93" width="104" height="74" stroke="currentColor" strokeWidth="4" fill="none"/><path d="M77 118H129M77 141H111" stroke="currentColor" strokeWidth="6"/><path d="M169 130H257M227 100L258 130 227 160" stroke="currentColor" strokeWidth="8" fill="none"/><circle cx="350" cy="130" r="86" stroke="currentColor" strokeWidth="3" fill="none"/><circle cx="350" cy="130" r="55" stroke="currentColor" strokeWidth="3" fill="none"/><path d="M317 129L341 153 387 106" stroke="currentColor" strokeWidth="8" fill="none"/></>}
         {no === "09" && <><path d="M54 200H426" stroke="currentColor" strokeWidth="2"/><rect x="74" y="72" width="75" height="112" fill="#171717"/><rect x="160" y="48" width="75" height="136" fill="#171717" opacity=".72"/><rect x="246" y="95" width="75" height="89" fill="#171717" opacity=".46"/><path d="M335 169L393 65" stroke="currentColor" strokeWidth="12" strokeLinecap="square"/><path d="M367 65H396V94" stroke="currentColor" strokeWidth="9" fill="none"/></>}
         {no === "10" && <><path d="M170 214L214 51H273L314 214Z" stroke="currentColor" strokeWidth="4" fill="none"/><path d="M187 155Q242 139 297 155L314 214H170Z" fill="#171717" opacity=".8"/>{[[155,56,10],[287,44,17],[334,98,9],[234,17,8],[356,35,5],[114,118,6]].map(([x,y,r],i)=><circle key={i} cx={x} cy={y} r={r} fill="none" stroke="currentColor" strokeWidth="3"/>)}</>}
         {no === "11" && <><path d="M60 190C130 190 122 68 202 68S283 205 350 205 404 110 418 64" stroke="currentColor" strokeWidth="9" fill="none" strokeLinecap="round"/><circle cx="60" cy="190" r="18" fill="#171717"/><circle cx="418" cy="64" r="21" fill="#171717"/><path d="M375 37L419 64 390 106" stroke="#f9f3e5" strokeWidth="5" fill="none"/></>}
