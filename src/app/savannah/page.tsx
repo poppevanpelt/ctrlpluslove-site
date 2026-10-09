@@ -13,6 +13,7 @@ export default function SavannahPage() {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   const [speaking, setSpeaking] = useState(false);
+  const [presence, setPresence] = useState<"waiting" | "listening" | "thinking" | "speaking">("waiting");
   const [speechMotion, setSpeechMotion] = useState(0);
   const [audioBusy, setAudioBusy] = useState(false);
   const [audioEnabled, setAudioEnabled] = useState(true);
@@ -154,6 +155,7 @@ Status: UNSENT · no delivery channel connected.`;
       stopSavannahLocalVoice();
       setSpeaking(false);
       setAudioBusy(false);
+      setPresence("waiting");
     }
   }, [audioEnabled]);
   useEffect(() => () => { stopSavannahLocalVoice(); voiceMonitor.current?.(); recorder.current?.stop(); micStream.current?.getTracks().forEach(track => track.stop()); }, []);
@@ -161,7 +163,7 @@ Status: UNSENT · no delivery channel connected.`;
   async function tapSavannah() {
     steelHello();
     if (needsPlayback) { const played = await resumeSavannahAudio(); if (played) { setNeedsPlayback(false); setMicStatus("TAP TO TALK"); return; } }
-    if (listening) { voiceMonitor.current?.(); voiceMonitor.current = null; recorder.current?.stop(); return; }
+    if (listening) { voiceMonitor.current?.(); voiceMonitor.current = null; recorder.current?.stop(); setPresence("thinking"); return; }
     if (pending || audioBusy) return;
     if (speaking) { stopSavannahLocalVoice(); setSpeaking(false); }
     if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") {
@@ -180,6 +182,7 @@ Status: UNSENT · no delivery channel connected.`;
         stream.getTracks().forEach(track => track.stop());
         micStream.current = null;
         setListening(false);
+        setPresence("thinking");
         setMicStatus("UNDERSTANDING…");
         const blob = new Blob(micChunks.current, { type: capture.mimeType || "audio/mp4" });
         if (!blob.size) { setMicStatus("TAP TO TRY AGAIN"); return; }
@@ -240,6 +243,7 @@ Status: UNSENT · no delivery channel connected.`;
       } catch { /* Manual tap-to-send remains available. */ }
       setError("");
       setListening(true);
+      setPresence("listening");
       setMicStatus("LISTENING");
     } catch {
       setError("Allow microphone access to speak with Savannah, or use the keyboard.");
@@ -253,14 +257,16 @@ Status: UNSENT · no delivery channel connected.`;
   async function speak(text: string) {
     if (!audioEnabledRef.current) return;
     setAudioBusy(true);
+    setPresence("thinking");
     setNeedsPlayback(false);
     setMicStatus("SAVANNAH IS ANSWERING");
     setVoiceMessage("CONNECTING VOICE…");
     const ok = await speakSavannahNeurally(text, {
-      onStart: () => { setSpeaking(true); setAudioBusy(false); setVoiceMessage("SAVANNAH IS SPEAKING"); setMicStatus("SAVANNAH IS SPEAKING"); },
-      onEnd: () => { setSpeaking(false); setAudioBusy(false); setVoiceMessage("HEAR THAT AGAIN"); setMicStatus("TAP TO TALK"); },
+      onStart: () => { setPresence("speaking"); setSpeaking(true); setAudioBusy(false); setVoiceMessage("SAVANNAH IS SPEAKING"); setMicStatus("SAVANNAH IS SPEAKING"); },
+      onEnd: () => { setPresence("waiting"); setSpeaking(false); setAudioBusy(false); setVoiceMessage("HEAR THAT AGAIN"); setMicStatus("TAP TO TALK"); },
     });
     if (!ok) {
+      setPresence("waiting");
       setSpeaking(false);
       setAudioBusy(false);
       setNeedsPlayback(true);
@@ -296,6 +302,7 @@ Status: UNSENT · no delivery channel connected.`;
     setDraft("");
     setError("");
     setPending(true);
+    setPresence("thinking");
     try {
       const response = await fetch("/api/savannah", {
         method: "POST",
@@ -315,6 +322,7 @@ Status: UNSENT · no delivery channel connected.`;
       setError(cause instanceof Error ? cause.message : "Connection failed. Try again.");
     } finally {
       setPending(false);
+      if (!audioEnabledRef.current) setPresence("waiting");
     }
   }
 
@@ -363,7 +371,7 @@ Status: UNSENT · no delivery channel connected.`;
         <div className="savannah-desk-list">{deskItems.length===0?<p>No saved entries yet.</p>:deskItems.map(item=><article key={item.id}><small>{item.type.toUpperCase()} · {item.date}</small><p>{item.text}</p><button type="button" onClick={() => {const keep=deskItems.filter(entry=>entry.id!==item.id);try{localStorage.setItem("savannah-desk-local-v1",JSON.stringify(keep));setDeskItems(keep)}catch{setDeskNotice("Could not remove entry.")}}}>DELETE</button></article>)}</div>
       </section>}
       <style>{`\n        .savannah-portrait > .savannah-speech-mouth { display:none !important; }\n      `}</style>
-      <div className={"savannah-portrait" + (speaking ? " is-speaking" : pending ? " is-thinking" : "")}>
+      <div data-presence={presence} className={"savannah-portrait" + (speaking ? " is-speaking" : pending ? " is-thinking" : "")}>
         <button type="button" className="savannah-face-tap" onClick={() => void tapSavannah()} aria-label={needsPlayback ? "Hear Savannah" : listening ? "Finish recording" : "Speak to Savannah"} />
         <img src="/savannah-avatar.jpg" alt="Savannah" />
         {speaking && (
@@ -457,12 +465,12 @@ Status: UNSENT · no delivery channel connected.`;
         .savannah-face-tap { position:absolute; inset:0; width:100%; height:100%; border:0; padding:0; background:transparent; z-index:2; cursor:pointer; touch-action:manipulation; }
         .savannah-face-tap:focus-visible { outline:3px solid #f8e3bb; outline-offset:-5px; }
         .savannah-portrait { flex:1 1 auto; min-height:0; height:auto; position:relative; background:#272421; overflow:hidden; }
-        .savannah-portrait img:not(.savannah-speech-mouth) { width:100%; height:100%; display:block; object-fit:contain; object-position:center center; filter:saturate(.88); animation:savannah-breathe 8.8s ease-in-out infinite; transform-origin:50% 42%; transition:filter 650ms ease; }
+        .savannah-portrait { isolation:isolate; }\n        .savannah-portrait img:not(.savannah-speech-mouth) { width:100%; height:100%; display:block; object-fit:contain; object-position:center center; filter:saturate(.88); animation:savannah-breathe 8.8s ease-in-out infinite; transform-origin:50% 42%; transition:filter 650ms ease; }
         /* Presence first: a settled listener, a tiny thinking glance, then a
            quieter face while speaking. No fake looping mouth animation. */
         .savannah-portrait.is-thinking img:not(.savannah-speech-mouth) { animation:savannah-consider 4.6s ease-in-out infinite; filter:saturate(.85) brightness(.98); }
         .savannah-portrait.is-speaking img:not(.savannah-speech-mouth) { animation:savannah-answer 7.4s ease-in-out infinite; filter:saturate(.92); }
-        @keyframes savannah-consider {
+        /* One continuous portrait; state shifts are restrained, not image swaps. */\n        .savannah-portrait[data-presence="waiting"] img:not(.savannah-speech-mouth) { animation:savannah-breathe 9.6s ease-in-out infinite; }\n        .savannah-portrait[data-presence="listening"] img:not(.savannah-speech-mouth) { animation:savannah-attend 6.7s ease-in-out infinite; }\n        .savannah-portrait[data-presence="thinking"] img:not(.savannah-speech-mouth) { animation:savannah-consider 4.6s ease-in-out infinite; }\n        .savannah-portrait[data-presence="speaking"] img:not(.savannah-speech-mouth) { animation:savannah-answer 7.4s ease-in-out infinite; }\n        @keyframes savannah-attend { 0%,100% { transform:scale(1.01) translateY(0); } 45% { transform:scale(1.017) translateY(-.09%); } }\n        @keyframes savannah-consider {
           0%,22%,74%,100% { transform:scale(1.008) translate(0,0); }
           38%,56% { transform:scale(1.013) translate(-.28%,.06%); }
         }
