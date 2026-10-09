@@ -362,8 +362,7 @@ Status: UNSENT · no delivery channel connected.`;
         </section>
         <div className="savannah-desk-list">{deskItems.length===0?<p>No saved entries yet.</p>:deskItems.map(item=><article key={item.id}><small>{item.type.toUpperCase()} · {item.date}</small><p>{item.text}</p><button type="button" onClick={() => {const keep=deskItems.filter(entry=>entry.id!==item.id);try{localStorage.setItem("savannah-desk-local-v1",JSON.stringify(keep));setDeskItems(keep)}catch{setDeskNotice("Could not remove entry.")}}}>DELETE</button></article>)}</div>
       </section>}
-      <style>{`\n        .savannah-portrait > .savannah-speech-mouth {\n          animation: none !important; filter: saturate(.92); 
-          position: absolute; inset: 0; width: 100%; height: 100%;\n          object-fit: cover; object-position: center;\n          clip-path: inset(47% 20% 12% 20%);\n          transform-origin: 50% 64%;\n          transition: transform 90ms ease-out;\n          pointer-events: none; z-index: 1;\n        }\n        @media (prefers-reduced-motion: reduce) {\n          .savannah-portrait > .savannah-speech-mouth { display: none; }\n        }\n      `}</style>
+      <style>{`\n        .savannah-portrait > .savannah-speech-mouth { display:none !important; }\n      `}</style>
       <div className={"savannah-portrait" + (speaking ? " is-speaking" : pending ? " is-thinking" : "")}>
         <button type="button" className="savannah-face-tap" onClick={() => void tapSavannah()} aria-label={needsPlayback ? "Hear Savannah" : listening ? "Finish recording" : "Speak to Savannah"} />
         <img src="/savannah-avatar.jpg" alt="Savannah" />
@@ -458,7 +457,7 @@ Status: UNSENT · no delivery channel connected.`;
         .savannah-face-tap { position:absolute; inset:0; width:100%; height:100%; border:0; padding:0; background:transparent; z-index:2; cursor:pointer; touch-action:manipulation; }
         .savannah-face-tap:focus-visible { outline:3px solid #f8e3bb; outline-offset:-5px; }
         .savannah-portrait { flex:1 1 auto; min-height:0; height:auto; position:relative; background:#272421; overflow:hidden; }
-        .savannah-portrait img:not(.savannah-speech-mouth) { width:100%; height:100%; display:block; object-fit:cover; object-position:center 29%; filter:saturate(.88); animation:savannah-breathe 8.8s ease-in-out infinite; transform-origin:50% 42%; transition:filter 650ms ease; }
+        .savannah-portrait img:not(.savannah-speech-mouth) { width:100%; height:100%; display:block; object-fit:contain; object-position:center center; filter:saturate(.88); animation:savannah-breathe 8.8s ease-in-out infinite; transform-origin:50% 42%; transition:filter 650ms ease; }
         /* Presence first: a settled listener, a tiny thinking glance, then a
            quieter face while speaking. No fake looping mouth animation. */
         .savannah-portrait.is-thinking img:not(.savannah-speech-mouth) { animation:savannah-consider 4.6s ease-in-out infinite; filter:saturate(.85) brightness(.98); }
