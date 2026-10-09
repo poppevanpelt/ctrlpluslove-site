@@ -825,8 +825,6 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       aria-label="Savannah, ctrl+love employee #4"
       style={{
         position: "fixed",
-        right: 18,
-        bottom: 64,
         zIndex: 2147483001,
         width: pathname === "/savannah" ? "calc(100vw - 24px)" : "min(360px, calc(100vw - 28px))",
         maxWidth: pathname === "/savannah" ? 440 : "calc(100vw - 28px)",
