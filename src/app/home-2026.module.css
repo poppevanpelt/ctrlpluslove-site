@@ -397,3 +397,37 @@
 .savannahFilm .savannahIntroVideo { opacity:0; }
 .savannahIntroReady:not(.savannahIntroFallback) .savannahFilm .savannahIntroVideo { opacity:1; }
 .savannahIntroFallback .savannahFilm .savannahIntroVideo { opacity:0; }
+
+
+/* 2026-10-09: commercial journey and instrument-family colour grammar.
+   Observe / sky blue; Analyse / warm amber; Accelerate / coral.
+   The image, caption and rail all carry the same signal. */
+.offerStrip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;border:1px solid var(--ink);background:var(--ink);margin-top:26px}
+.offerStrip a{background:var(--paper);padding:25px;display:flex;flex-direction:column;gap:16px;min-height:180px;transition:background .15s}
+.offerStrip a:hover{background:#f2ca77}
+.offerStrip span{font-size:10px;font-weight:900;letter-spacing:.14em}
+.offerStrip strong{font-size:clamp(22px,2.5vw,34px);letter-spacing:-.04em;line-height:1.04}
+.offerStrip b{font-size:13px;margin-top:auto;border-top:1px solid rgba(17,17,15,.3);padding-top:13px}
+.instrument[data-family="observe"]{--family:#b8d7e7}
+.instrument[data-family="analyse"]{--family:#f2ca77}
+.instrument[data-family="accelerate"]{--family:#ef9e86}
+.instrument[data-family]{border-top:9px solid var(--family)}
+.instrument[data-family] .instrumentCopy{background:linear-gradient(180deg,var(--family),var(--paper) 40%)}
+.instrument[data-family] .artwork{background:linear-gradient(145deg,var(--family),#e9dfcd)}
+.instrument[data-family] .instrumentCopy .num{font-weight:900;letter-spacing:.12em}
+.instrument[data-family] .instrumentCopy strong{border-top:1px solid rgba(17,17,15,.3)}
+.instrumentVisual:has(.artwork){height:220px}
+.final{position:relative;isolation:isolate;min-height:450px;overflow:hidden}
+.final h2{position:relative;z-index:2;max-width:1000px}
+.final a{position:relative;z-index:2;background:var(--paper)}
+.finalBall{position:absolute;z-index:1;right:5%;bottom:3%;width:clamp(170px,24vw,350px);height:auto;object-fit:contain;pointer-events:none;filter:drop-shadow(10px 28px 16px rgba(0,0,0,.14))}
+@media(max-width:900px){.offerStrip{grid-template-columns:1fr}.offerStrip a{min-height:115px;padding:20px}.final{min-height:470px}}
+@media(max-width:650px){
+  .savannahIntroVideo{object-fit:contain!important;object-position:center!important;background:#0d0d0c}
+  .savannahIntroFallbackImage{background-size:contain!important;background-position:center center!important;background-repeat:no-repeat!important}
+  .offerStrip a{min-height:110px}
+  .instrument[data-family] .instrumentCopy{padding:22px}
+  .instrument[data-family] .instrumentCopy h3{font-size:26px}
+  .final{min-height:530px;padding-bottom:210px}
+  .finalBall{width:210px;right:5%;bottom:16px}
+}
