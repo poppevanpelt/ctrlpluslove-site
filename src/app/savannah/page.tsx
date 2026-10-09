@@ -44,6 +44,23 @@ export default function SavannahPage() {
   const [inboxEvidence,setInboxEvidence] = useState("");
   const [inboxNovelty,setInboxNovelty] = useState(false);
   const [inboxApproval,setInboxApproval] = useState(false);
+  const [publishRecipient,setPublishRecipient] = useState("");
+  const [publishBusy,setPublishBusy] = useState(false);
+  async function publishToPrivateInbox(){
+    if(!inboxApproval || !inboxConsent || !signalReady || !publishRecipient.trim() || publishBusy)return;
+    setPublishBusy(true);
+    try{
+      const response=await fetch("/api/savannah/inbox",{
+        method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({recipient:publishRecipient.trim(),headline:inboxSignal,reason:inboxWhy,surprise:inboxSurprise,next_move:inboxNext,evidence:inboxEvidence,consent:inboxConsent,novelty:inboxNovelty,approved:inboxApproval})
+      });
+      const result=await response.json();
+      if(!response.ok)throw new Error(result.error||"Publishing failed.");
+      setDeskNotice("Delivered to the authenticated private inbox only. No external notification sent.");
+    }catch(error){setDeskNotice(error instanceof Error?error.message:"Could not publish.");}
+    finally{setPublishBusy(false);}
+  }
+
   const signalReady = Boolean(inboxRecipient.trim() && inboxSignal.trim() && inboxWhy.trim() && inboxNext.trim() && inboxEvidence.trim() && inboxNovelty);
   const inboxPreview = `${inboxRecipient.trim() || "Recipient"}, ${inboxSignal.trim() || "a new signal"}\\n\\n${inboxWhy.trim() || "Why it matters to you…"}${inboxSurprise.trim() ? `\\n\\nThe unexpected bit: ${inboxSurprise.trim()}` : ""}\\n\\nOne next move: ${inboxNext.trim() || "A decision or useful test…"}`;
 
@@ -328,6 +345,8 @@ Status: UNSENT · no delivery channel connected.`;
           <label className="savannah-inbox-consent"><input type="checkbox" checked={inboxApproval} onChange={e=>setInboxApproval(e.target.checked)} /> Owner reviewed wording and approves this draft for future delivery (does not send)</label>
           <label className="savannah-inbox-consent"><input type="checkbox" checked={inboxConsent} onChange={e=>setInboxConsent(e.target.checked)} /> Recipient has agreed to receive notifications</label>
           <button type="button" className="savannah-desk-save" disabled={!signalReady} onClick={composeInbox}>SAVE UNSENT INBOX DRAFT</button>
+          <label>INVITED GOOGLE ACCOUNT<input value={publishRecipient} onChange={e=>setPublishRecipient(e.target.value)} placeholder="Verified client email (must be allowlisted)" /></label>
+          <button type="button" className="savannah-desk-save" disabled={!signalReady || !inboxConsent || !inboxApproval || !publishRecipient.trim() || publishBusy} onClick={()=>void publishToPrivateInbox()}>{publishBusy?"SAVING…":"PUBLISH TO PRIVATE INBOX ONLY"}</button>
           <p className="savannah-inbox-footnote">No push, email or SMS is sent. Client-specific delivery will require identity verification, explicit subscription and approval controls.</p>
         </section>
         <div className="savannah-desk-list">{deskItems.length===0?<p>No saved entries yet.</p>:deskItems.map(item=><article key={item.id}><small>{item.type.toUpperCase()} · {item.date}</small><p>{item.text}</p><button type="button" onClick={() => {const keep=deskItems.filter(entry=>entry.id!==item.id);try{localStorage.setItem("savannah-desk-local-v1",JSON.stringify(keep));setDeskItems(keep)}catch{setDeskNotice("Could not remove entry.")}}}>DELETE</button></article>)}</div>
