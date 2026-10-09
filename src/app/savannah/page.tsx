@@ -110,7 +110,8 @@ export default function SavannahPage() {
       <div className="savannah-portrait">
         <img src="/savannah-avatar.jpg" alt="Savannah" />
         {videoReady && <video className="savannah-live" src="/savannah-idle.mp4" poster="/savannah-avatar.jpg" autoPlay muted playsInline loop preload="auto" aria-label="Savannah quietly looking toward you" onError={() => setVideoReady(false)} />}
-        <div className="savannah-shade" />
+        <div className={"savannah-shade" + (speaking ? " is-speaking" : "")} />
+        <div className={"savannah-presence" + (speaking ? " is-speaking" : pending ? " is-thinking" : "")} aria-hidden="true"><span /><span /><span /></div>
         <div className={"savannah-intro" + (arrivalReady ? " is-ready" : "")}>
           <span className="savannah-eyebrow">SAVANNAH KNOWLES / CTRL+LOVE</span>
           <p>Oh. It’s you.</p>
@@ -157,7 +158,16 @@ export default function SavannahPage() {
         .savannah-portrait { height:clamp(300px,58svh,680px); position:relative; flex-shrink:0; background:#272421; overflow:hidden; }
         .savannah-portrait img { width:100%; height:100%; display:block; object-fit:cover; object-position:center 29%; filter:saturate(.88); animation:savannah-breathe 6.8s ease-in-out infinite; transform-origin:50% 42%; }
         .savannah-live { position:absolute; inset:0; height:100%; width:100%; object-fit:cover; object-position:center 29%; }
-        .savannah-shade { position:absolute; inset:0; background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.68)); pointer-events:none; }
+        .savannah-shade { position:absolute; inset:0; background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.68)); pointer-events:none; transition:background 380ms ease; }
+        .savannah-shade.is-speaking { background:linear-gradient(180deg,transparent 57%,rgba(0,0,0,.58)); }
+        .savannah-presence { position:absolute; right:20px; bottom:23px; display:flex; align-items:center; gap:4px; height:15px; opacity:0; transition:opacity 200ms ease; pointer-events:none; }
+        .savannah-presence.is-speaking,.savannah-presence.is-thinking { opacity:.8; }
+        .savannah-presence span { width:2px; height:4px; background:#fff7e6; border-radius:2px; }
+        .savannah-presence.is-speaking span { animation:savannah-voice-beat 820ms ease-in-out infinite alternate; }
+        .savannah-presence.is-speaking span:nth-child(2) { animation-delay:190ms; }
+        .savannah-presence.is-speaking span:nth-child(3) { animation-delay:390ms; }
+        .savannah-presence.is-thinking span { opacity:.5; }
+        @keyframes savannah-voice-beat { from { height:3px; } to { height:14px; } }
         .savannah-intro { position:absolute; bottom:20px; left:22px; right:22px; color:#f8f2e8; opacity:0; transform:translateY(8px); transition:opacity 750ms ease,transform 750ms ease; pointer-events:none; }
         .savannah-intro.is-ready { opacity:1; transform:translateY(0); }
         .savannah-eyebrow { font-size:10px; font-weight:700; letter-spacing:.18em; opacity:.74; }
@@ -187,7 +197,7 @@ export default function SavannahPage() {
         .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
         @keyframes savannah-breathe { 0%,100% { transform:scale(1.015) translateY(0); } 50% { transform:scale(1.032) translateY(2px); } }
         @media (max-height:690px) { .savannah-portrait { height:34svh; min-height:170px; } .savannah-intro p { font-size:25px; } .savannah-thread { padding-top:0; } }
-        @media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto!important; } }
+        @media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto!important; } .savannah-presence span { animation:none!important; } }
       `}</style>
     </main>
   );
