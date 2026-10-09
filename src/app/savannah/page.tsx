@@ -4,57 +4,68 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { speakSavannahNeurally, stopSavannahLocalVoice } from "../savannah-local-voice";
 
 type Line = { role: "assistant" | "user"; text: string };
-const GREETING = "Morning. It's Savannah. I had a thought.";
-const welcome: Line = { role: "assistant", text: GREETING };
+const GREETING = "Well, there you are.";
+const INITIAL: Line[] = [{ role: "assistant", text: GREETING }];
 
 export default function SavannahPage() {
-  const [lines, setLines] = useState<Line[]>([welcome]);
+  const [lines, setLines] = useState<Line[]>(INITIAL);
   const [draft, setDraft] = useState("");
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   const [speaking, setSpeaking] = useState(false);
-  const [voiceMessage, setVoiceMessage] = useState("HEAR SAVANNAH");
-  const [openingLoaded, setOpeningLoaded] = useState(false);
+  const [audioBusy, setAudioBusy] = useState(false);
+  const [audioEnabled, setAudioEnabled] = useState(true);
+  const [voiceMessage, setVoiceMessage] = useState("TAP TO HEAR SAVANNAH");
+  const [started, setStarted] = useState(false);
+  const bottom = useRef<HTMLDivElement>(null);
+  const input = useRef<HTMLInputElement>(null);
+  const lastReply = useRef(GREETING);
+  const audioEnabledRef = useRef(true);
+
+  useEffect(() => {
+    audioEnabledRef.current = audioEnabled;
+    if (!audioEnabled) {
+      stopSavannahLocalVoice();
+      setSpeaking(false);
+      setAudioBusy(false);
+    }
+  }, [audioEnabled]);
+  useEffect(() => () => stopSavannahLocalVoice(), []);
+  useEffect(() => { bottom.current?.scrollIntoView({ block: "end" }); }, [lines, pending, error]);
 
   async function speak(text: string) {
-    setVoiceMessage("OPENING THE LINE…");
+    if (!audioEnabledRef.current) return;
+    setAudioBusy(true);
+    setVoiceMessage("CONNECTING VOICE…");
     const ok = await speakSavannahNeurally(text, {
-      onStart: () => { setSpeaking(true); setVoiceMessage("SAVANNAH IS SPEAKING"); },
-      onEnd: () => { setSpeaking(false); setVoiceMessage("HEAR THAT AGAIN"); },
+      onStart: () => { setSpeaking(true); setAudioBusy(false); setVoiceMessage("SAVANNAH IS SPEAKING"); },
+      onEnd: () => { setSpeaking(false); setAudioBusy(false); setVoiceMessage("HEAR THAT AGAIN"); },
     });
-    if (!ok) setVoiceMessage("AUDIO UNAVAILABLE — TRY AGAIN");
-  }
-  useEffect(() => () => { stopSavannahLocalVoice(); }, []);
-  async function openSavannah() {
-    void speak(GREETING);
-    if (openingLoaded) return;
-    setOpeningLoaded(true);
-    try {
-      const response = await fetch("/api/savannah", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        cache: "no-store",
-        body: JSON.stringify({ messages: [{
-          role: "user",
-          text: "Give one short, concrete observation about the ctrl+love Meeting Filter instrument and what makes a meeting worth having. Use only approved working knowledge. Do not claim to have seen live activity, and do not invent updates or confidential client details. One or two sentences, in Savannah's dry and thoughtful style."
-        }] }),
-      });
-      const result = await response.json().catch(() => null);
-      if (response.ok && typeof result?.text === "string" && result.text.trim()) {
-        setLines((previous) => [...previous, { role: "assistant", text: result.text.trim() }]);
-      }
-    } catch {
-      // The greeting works even when contextual insight is unavailable.
+    if (!ok) {
+      setSpeaking(false);
+      setAudioBusy(false);
+      setVoiceMessage("AUDIO UNAVAILABLE — RETRY");
     }
   }
-  const bottom = useRef<HTMLDivElement>(null);
 
-  useEffect(() => { bottom.current?.scrollIntoView({ block: "end" }); }, [lines, pending]);
+  function replay() {
+    if (speaking || audioBusy) {
+      stopSavannahLocalVoice();
+      setSpeaking(false);
+      setAudioBusy(false);
+      setVoiceMessage("HEAR THAT AGAIN");
+    } else {
+      setAudioEnabled(true);
+      audioEnabledRef.current = true;
+      void speak(lastReply.current);
+    }
+  }
 
   async function send(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const value = draft.trim();
     if (!value || pending) return;
+    setStarted(true);
     const next: Line[] = [...lines, { role: "user", text: value }];
     setLines(next);
     setDraft("");
@@ -68,45 +79,101 @@ export default function SavannahPage() {
         body: JSON.stringify({ messages: next.slice(-18) }),
       });
       const result = await response.json().catch(() => null);
-      if (!response.ok || typeof result?.text !== "string") {
-        throw new Error(result?.error || `Chat endpoint HTTP ${response.status}`);
+      if (!response.ok || typeof result?.text !== "string" || !result.text.trim()) {
+        throw new Error(result?.error || "Savannah could not connect. Try again.");
       }
-      setLines((previous) => [...previous, { role: "assistant", text: result.text }]);
-      void speak(result.text);
+      const reply = result.text.trim();
+      lastReply.current = reply;
+      setLines((previous) => [...previous, { role: "assistant", text: reply }]);
+      if (audioEnabledRef.current) void speak(reply);
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Connection failed.");
+      setError(cause instanceof Error ? cause.message : "Connection failed. Try again.");
     } finally {
       setPending(false);
     }
   }
 
   return (
-    <main id="main-content" style={{ position: "fixed", inset: 0, zIndex: 2147483000, display: "flex", flexDirection: "column", background: "#f1eee6", color: "#151515", fontFamily: "Arial, Helvetica, sans-serif", overflow: "hidden" }}>
-      <header style={{ flexShrink: 0, padding: "max(env(safe-area-inset-top), 12px) 18px 12px", display: "flex", justifyContent: "space-between", alignItems: "center", background: "#1b1b1b", color: "#f1eee6" }}>
-        <div style={{ fontFamily: "Georgia, serif", fontSize: 26 }}>Savannah.</div>
-        <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: ".14em", opacity: .6 }}>CTRL+LOVE / #4</div>
+    <main id="main-content" className="savannah-shell">
+      <header className="savannah-topbar">
+        <div className="savannah-brand">Savannah<span>.</span></div>
+        <div className="savannah-brand-right"><span className="savannah-dot" /> CTRL+LOVE / #4</div>
       </header>
-      <div style={{ position: "relative", flexShrink: 0, height: "min(42svh, 390px)", minHeight: 190, overflow: "hidden", background: "#242322" }}>
-        <img src="/savannah-avatar.jpg" alt="Savannah, waiting for you" style={{ display: "block", width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 28%", filter: "saturate(.92)" }} />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(transparent 63%, rgba(0,0,0,.7))", pointerEvents: "none" }} />
-        <p style={{ position: "absolute", bottom: 10, left: 20, right: 20, margin: 0, fontFamily: "Georgia, serif", fontSize: 24, fontStyle: "italic", color: "#f5f0e7" }}>Well, there you are.</p>
+
+      <div className="savannah-portrait">
+        <img src="/savannah-avatar.jpg" alt="Savannah" />
+        <div className="savannah-shade" />
+        <div className="savannah-intro">
+          <span className="savannah-eyebrow">SAVANNAH OS / 1.0</span>
+          <p>Well, there you are.</p>
+        </div>
       </div>
-      <button type="button" onClick={() => void openSavannah()} aria-label="Hear Savannah greet you" style={{ flexShrink: 0, display: "flex", alignItems: "center", gap: 12, border: 0, borderBottom: "1px solid #bcb7ae", background: "#252525", color: "#f4efe6", textAlign: "left", padding: "17px 20px", cursor: "pointer" }}><span aria-hidden="true" style={{ fontSize: 23 }}>{speaking ? "◉" : "▶"}</span><span style={{ fontSize: 11, fontWeight: 800, letterSpacing: ".13em" }}>{voiceMessage}</span></button>
-      <section aria-label="Conversation" aria-live="polite" style={{ flex: 1, minHeight: 0, overflowY: "auto", padding: "14px 18px" }}>
+
+      <section className="savannah-controls" aria-label="Savannah voice controls">
+        <button className="savannah-listen" type="button" onClick={replay} aria-label={speaking ? "Stop Savannah speaking" : "Hear Savannah"}>
+          <span className="savannah-play">{speaking ? "■" : "▶"}</span>
+          <span>{voiceMessage}</span>
+        </button>
+        <button className="savannah-sound" type="button" onClick={() => setAudioEnabled((current) => !current)} aria-label={audioEnabled ? "Mute automatic voice replies" : "Enable automatic voice replies"} aria-pressed={audioEnabled}>
+          {audioEnabled ? "SOUND ON" : "SOUND OFF"}
+        </button>
+      </section>
+
+      <section className="savannah-thread" aria-label="Conversation" aria-live="polite">
+        {!started && <p className="savannah-hint">She&apos;s here. Ask her something worthwhile.</p>}
         {lines.map((line, index) => (
-          <div key={index} style={{ padding: "14px 0", borderBottom: "1px solid #d0cbc2", overflowWrap: "anywhere" }}>
-            <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: ".12em", opacity: .55, marginBottom: 7 }}>{line.role === "assistant" ? "SAVANNAH" : "YOU"}</div>
-            <div style={{ fontSize: 19, lineHeight: 1.36, fontWeight: line.role === "user" ? 700 : 400 }}>{line.text}</div>
+          <div className={"savannah-line " + (line.role === "user" ? "savannah-user" : "")} key={index}>
+            <span className="savannah-line-label">{line.role === "assistant" ? "SAVANNAH" : "YOU"}</span>
+            <p>{line.text}</p>
           </div>
         ))}
-        {pending && <p>Thinking…</p>}
-        {error && <p role="alert" style={{ fontSize: 14, color: "#9b3024" }}>Connection problem: {error}</p>}
+        {pending && <p className="savannah-pending">Give me a second…</p>}
+        {error && <div role="alert" className="savannah-error">{error}<button type="button" onClick={() => setError("")}>DISMISS</button></div>}
         <div ref={bottom} />
       </section>
-      <form onSubmit={send} style={{ display: "flex", gap: 8, padding: "12px 14px calc(12px + env(safe-area-inset-bottom))", borderTop: "1px solid #bcb7ae", flexShrink: 0 }}>
-        <input aria-label="Message Savannah" autoComplete="off" value={draft} onChange={(event) => setDraft(event.target.value)} placeholder="Type to Savannah…" style={{ fontSize: 16, minWidth: 0, width: 0, flex: 1, border: "1px solid #aba69d", padding: "13px 11px", background: "#fff", color: "#151515" }} />
-        <button type="submit" disabled={pending || !draft.trim()} style={{ flexShrink: 0, border: 0, background: "#151515", color: "#fff", padding: "0 17px", fontSize: 12, fontWeight: 800, opacity: pending || !draft.trim() ? .5 : 1 }}>SEND</button>
+
+      <form className="savannah-compose" onSubmit={send}>
+        <label className="savannah-input-wrap">
+          <span className="sr-only">Message Savannah</span>
+          <input ref={input} autoComplete="off" aria-label="Message Savannah" value={draft} onChange={(event) => setDraft(event.target.value)} placeholder="Ask Savannah anything…" />
+        </label>
+        <button type="submit" className="savannah-send" disabled={pending || !draft.trim()} aria-label="Send message">{pending ? "…" : "↑"}</button>
       </form>
+      <style jsx>{`
+        .savannah-shell { position:fixed; inset:0; z-index:2147483000; display:flex; flex-direction:column; overflow:hidden; background:#eeeae1; color:#161616; font-family:Arial,Helvetica,sans-serif; }
+        .savannah-topbar { padding:max(env(safe-area-inset-top),18px) 22px 14px; display:flex; flex-shrink:0; align-items:center; justify-content:space-between; background:#171717; color:#f1eee6; }
+        .savannah-brand { font:normal 34px/1 Georgia,serif; letter-spacing:-.045em; }
+        .savannah-brand span { color:#d7b49b; }
+        .savannah-brand-right { display:flex; align-items:center; gap:8px; font-size:10px; font-weight:750; letter-spacing:.12em; color:#b8b6b1; }
+        .savannah-dot { width:6px; height:6px; border-radius:50%; background:#9ab59c; }
+        .savannah-portrait { height:clamp(210px,37svh,410px); position:relative; flex-shrink:0; background:#272421; overflow:hidden; }
+        .savannah-portrait img { width:100%; height:100%; display:block; object-fit:cover; object-position:center 29%; filter:saturate(.88); }
+        .savannah-shade { position:absolute; inset:0; background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.68)); pointer-events:none; }
+        .savannah-intro { position:absolute; bottom:20px; left:22px; right:22px; color:#f8f2e8; }
+        .savannah-eyebrow { font-size:10px; font-weight:700; letter-spacing:.18em; opacity:.74; }
+        .savannah-intro p { font:italic 30px/1.2 Georgia,serif; margin:7px 0 0; }
+        .savannah-controls { display:flex; flex-shrink:0; min-height:63px; background:#222; color:#f6f0e8; border-bottom:1px solid #55514b; }
+        .savannah-listen { display:flex; align-items:center; gap:14px; flex:1; min-width:0; text-align:left; padding:12px 21px; border:0; background:none; color:inherit; font-size:11px; font-weight:800; letter-spacing:.12em; cursor:pointer; }
+        .savannah-play { font-size:23px; min-width:20px; font-weight:400; }
+        .savannah-sound { padding:12px 15px; flex-shrink:0; border:0; border-left:1px solid #484640; background:#222; color:#c8c1b5; font-size:9px; font-weight:800; letter-spacing:.08em; cursor:pointer; }
+        .savannah-thread { flex:1; min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:7px 22px 16px; }
+        .savannah-hint { margin:18px 0 6px; font:italic 16px Georgia,serif; color:#746f68; }
+        .savannah-line { border-bottom:1px solid #cac4bb; padding:18px 0; overflow-wrap:anywhere; }
+        .savannah-line-label { font-size:10px; font-weight:800; letter-spacing:.16em; color:#817970; }
+        .savannah-line p { font-size:19px; line-height:1.42; margin:10px 0 0; }
+        .savannah-user p { font-weight:700; }
+        .savannah-pending { font:italic 16px Georgia,serif; color:#807b74; }
+        .savannah-error { display:flex; flex-direction:column; gap:10px; padding:14px 0; color:#963f34; font-size:14px; }
+        .savannah-error button { align-self:start; padding:8px 0; border:0; background:none; color:inherit; font-size:10px; font-weight:700; letter-spacing:.1em; }
+        .savannah-compose { display:flex; gap:8px; flex-shrink:0; padding:12px 16px calc(12px + env(safe-area-inset-bottom)); border-top:1px solid #c9c2b9; background:#eeeae1; }
+        .savannah-input-wrap { display:flex; flex:1; min-width:0; }
+        .savannah-input-wrap input { width:100%; min-width:0; border:1px solid #bcb5ab; border-radius:4px; padding:16px 14px; font-size:16px; outline-offset:2px; background:#fcfaf6; color:#171717; }
+        .savannah-send { width:57px; flex-shrink:0; border:0; border-radius:4px; background:#222; color:white; font-size:27px; cursor:pointer; }
+        .savannah-send:disabled { opacity:.4; }
+        .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+        @media (max-height:690px) { .savannah-portrait { height:28svh; min-height:150px; } .savannah-intro p { font-size:25px; } .savannah-thread { padding-top:0; } }
+        @media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto!important; } }
+      `}</style>
     </main>
   );
 }
