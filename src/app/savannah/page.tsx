@@ -18,6 +18,9 @@ export default function SavannahPage() {
   const [voiceMessage, setVoiceMessage] = useState("TAP TO HEAR SAVANNAH");
   const [started, setStarted] = useState(false);
   const [showTranscript, setShowTranscript] = useState(false);
+  const [listening, setListening] = useState(false);
+  const [showTyping, setShowTyping] = useState(false);
+  const recognizer = useRef<{ start: () => void; stop: () => void } | null>(null);
   const [videoReady, setVideoReady] = useState(true);
   const [arrivalReady, setArrivalReady] = useState(false);
   const bottom = useRef<HTMLDivElement>(null);
@@ -33,7 +36,27 @@ export default function SavannahPage() {
       setAudioBusy(false);
     }
   }, [audioEnabled]);
-  useEffect(() => () => stopSavannahLocalVoice(), []);
+  useEffect(() => () => { stopSavannahLocalVoice(); recognizer.current?.stop(); }, []);
+
+  function tapSavannah() {
+    if (listening) { recognizer.current?.stop(); setListening(false); return; }
+    if (speaking || audioBusy) { stopSavannahLocalVoice(); setSpeaking(false); setAudioBusy(false); }
+    const browser = window as typeof window & { SpeechRecognition?: new () => any; webkitSpeechRecognition?: new () => any };
+    const Recognition = browser.SpeechRecognition || browser.webkitSpeechRecognition;
+    if (!Recognition) { setShowTyping(true); return; }
+    try {
+      const recognition = new Recognition();
+      recognition.lang = "en-US";
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+      recognition.onresult = (event: any) => { const heard = event.results?.[0]?.[0]?.transcript; if (typeof heard === "string" && heard.trim()) void ask(heard); };
+      recognition.onerror = () => { setListening(false); setShowTyping(true); };
+      recognition.onend = () => { setListening(false); recognizer.current = null; };
+      recognizer.current = recognition;
+      recognition.start();
+      setListening(true);
+    } catch { setListening(false); setShowTyping(true); }
+  }
   useEffect(() => { const timer = window.setTimeout(() => setArrivalReady(true), 1450); return () => window.clearTimeout(timer); }, []);
   useEffect(() => { bottom.current?.scrollIntoView({ block: "end" }); }, [lines, pending, error]);
 
@@ -109,17 +132,18 @@ export default function SavannahPage() {
       </header>
 
       <div className={"savannah-portrait" + (speaking ? " is-speaking" : pending ? " is-thinking" : "")}>
+        <button type="button" className="savannah-face-tap" onClick={tapSavannah} aria-label={listening ? "Stop listening" : "Speak to Savannah"} />
         <img src="/savannah-avatar.jpg" alt="Savannah" />
         {videoReady && <video className="savannah-live" src="/savannah-idle.mp4" poster="/savannah-avatar.jpg" autoPlay muted playsInline loop preload="auto" aria-label="Savannah quietly looking toward you" onError={() => setVideoReady(false)} />}
         <div className={"savannah-shade" + (speaking ? " is-speaking" : "")} />
-        <div className={"savannah-presence" + (speaking ? " is-speaking" : pending ? " is-thinking" : "")} aria-hidden="true"><span /><span /><span /></div>
+        <div className={"savannah-presence" + (listening ? " is-listening" : speaking ? " is-speaking" : pending ? " is-thinking" : "")} aria-hidden="true"><span /><span /><span /></div>
         <div className={"savannah-intro" + (arrivalReady ? " is-ready" : "")} aria-hidden="true">
           <span className="savannah-eyebrow">SAVANNAH KNOWLES / CTRL+LOVE</span>
           <p>Oh. It’s you.</p>
         </div>
       </div>
 
-      <section className="savannah-controls" aria-label="Savannah voice controls">
+      {false && <section className="savannah-controls" aria-label="Savannah voice controls">
         <button className="savannah-listen" type="button" onClick={replay} aria-label={speaking ? "Stop Savannah speaking" : "Hear Savannah"}>
           <span className="savannah-play">{speaking ? "■" : "▶"}</span>
           <span>{voiceMessage}</span>
@@ -127,9 +151,9 @@ export default function SavannahPage() {
         <button className="savannah-sound" type="button" onClick={() => setAudioEnabled((current) => !current)} aria-label={audioEnabled ? "Mute automatic voice replies" : "Enable automatic voice replies"} aria-pressed={audioEnabled}>
           {audioEnabled ? "SOUND ON" : "SOUND OFF"}
         </button>
-      </section>
+      </section>}
 
-      <div className="savannah-utility"><span>{pending ? "SAVANNAH IS THINKING" : speaking ? "SAVANNAH IS SPEAKING" : "SAVANNAH IS HERE"}</span><button type="button" onClick={() => setShowTranscript(current => !current)} aria-expanded={showTranscript}>{showTranscript ? "HIDE WORDS" : "SHOW WORDS"}</button></div>
+      {false && <div className="savannah-utility"><span>{pending ? "SAVANNAH IS THINKING" : speaking ? "SAVANNAH IS SPEAKING" : "SAVANNAH IS HERE"}</span><button type="button" onClick={() => setShowTranscript(current => !current)} aria-expanded={showTranscript}>{showTranscript ? "HIDE WORDS" : "SHOW WORDS"}</button></div>}
       {showTranscript && <section className="savannah-thread" aria-label="Conversation" aria-live="polite">
         {!started && <div className="savannah-first-contact"><p className="savannah-hint">She&apos;s here. Ask her something worthwhile.</p><div className="savannah-starters"><button type="button" onClick={() => void ask("What is ctrl+love, and why should I care?")} disabled={pending}>What is ctrl+love?</button><button type="button" onClick={() => void ask("Challenge a business idea with me. Start by asking for the idea.")} disabled={pending}>Challenge my idea</button><button type="button" onClick={() => void ask("What can you actually help me do right now?")} disabled={pending}>What can you do?</button></div></div>}
         {lines.map((line, index) => (
@@ -142,15 +166,15 @@ export default function SavannahPage() {
         {error && <div role="alert" className="savannah-error">{error}<button type="button" onClick={() => setError("")}>DISMISS</button></div>}
         <div ref={bottom} />
       </section>}
-      {!showTranscript && !started && <div className="savannah-quick-start"><button type="button" disabled={pending} onClick={() => void ask("What is ctrl+love, and why should I care?")}>INTRODUCE YOURSELF</button><button type="button" disabled={pending} onClick={() => void ask("Challenge my business idea. First ask me what it is.")}>CHALLENGE ME</button></div>}
+      {false && !showTranscript && !started && <div className="savannah-quick-start"><button type="button" disabled={pending} onClick={() => void ask("What is ctrl+love, and why should I care?")}>INTRODUCE YOURSELF</button><button type="button" disabled={pending} onClick={() => void ask("Challenge my business idea. First ask me what it is.")}>CHALLENGE ME</button></div>}
       {!showTranscript && error && <p className="savannah-error-compact" role="alert">{error}</p>}
-      <form className="savannah-compose" onSubmit={send}>
+      {showTyping && <form className="savannah-compose" onSubmit={send}>
         <label className="savannah-input-wrap">
           <span className="sr-only">Message Savannah</span>
           <input ref={input} autoComplete="off" aria-label="Message Savannah" value={draft} onChange={(event) => setDraft(event.target.value)} placeholder="Ask Savannah anything…" />
         </label>
         <button type="submit" className="savannah-send" disabled={pending || !draft.trim()} aria-label="Send message">{pending ? "…" : "↑"}</button>
-      </form>
+      </form>}
       <style jsx>{`
         .savannah-shell { position:fixed; inset:0; z-index:2147483000; display:flex; flex-direction:column; overflow:hidden; background:#eeeae1; color:#161616; font-family:Arial,Helvetica,sans-serif; }
         .savannah-topbar { padding:max(env(safe-area-inset-top),18px) 22px 14px; display:flex; flex-shrink:0; align-items:center; justify-content:space-between; background:#171717; color:#f1eee6; }
@@ -158,6 +182,8 @@ export default function SavannahPage() {
         .savannah-brand span { color:#d7b49b; }
         .savannah-brand-right { display:flex; align-items:center; gap:8px; font-size:10px; font-weight:750; letter-spacing:.12em; color:#b8b6b1; }
         .savannah-dot { width:6px; height:6px; border-radius:50%; background:#9ab59c; }
+        .savannah-face-tap { position:absolute; inset:0; width:100%; height:100%; border:0; padding:0; background:transparent; z-index:2; cursor:pointer; touch-action:manipulation; }
+        .savannah-face-tap:focus-visible { outline:3px solid #f8e3bb; outline-offset:-5px; }
         .savannah-portrait { flex:1 1 auto; min-height:0; height:auto; position:relative; background:#272421; overflow:hidden; }
         .savannah-portrait img { width:100%; height:100%; display:block; object-fit:cover; object-position:center 29%; filter:saturate(.88); animation:savannah-breathe 6.8s ease-in-out infinite; transform-origin:50% 42%; }
         .savannah-live { position:absolute; inset:0; height:100%; width:100%; object-fit:cover; object-position:center 29%; transform:scale(1); filter:saturate(.96); transition:transform 1100ms ease,filter 550ms ease; }
@@ -167,7 +193,9 @@ export default function SavannahPage() {
         .savannah-shade { position:absolute; inset:0; background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.68)); pointer-events:none; transition:background 380ms ease; }
         .savannah-shade.is-speaking { background:linear-gradient(180deg,transparent 57%,rgba(0,0,0,.58)); }
         .savannah-presence { position:absolute; right:20px; bottom:23px; display:flex; align-items:center; gap:4px; height:15px; opacity:0; transition:opacity 200ms ease; pointer-events:none; }
-        .savannah-presence.is-speaking,.savannah-presence.is-thinking { opacity:.8; }
+        .savannah-presence.is-speaking,.savannah-presence.is-thinking,.savannah-presence.is-listening { opacity:.8; }
+        .savannah-presence { z-index:3; }
+        .savannah-presence.is-listening span { background:#b9e9c1; height:12px; }
         .savannah-presence span { width:2px; height:4px; background:#fff7e6; border-radius:2px; }
         .savannah-presence.is-speaking span { animation:savannah-voice-beat 820ms ease-in-out infinite alternate; }
         .savannah-presence.is-speaking span:nth-child(2) { animation-delay:190ms; }
