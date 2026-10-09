@@ -41,10 +41,16 @@ export default function SavannahPage() {
   const [inboxNext,setInboxNext] = useState("");
   const [inboxSurprise,setInboxSurprise] = useState("");
   const [inboxConsent,setInboxConsent] = useState(false);
+  const [inboxEvidence,setInboxEvidence] = useState("");
+  const [inboxNovelty,setInboxNovelty] = useState(false);
+  const [inboxApproval,setInboxApproval] = useState(false);
+  const signalReady = Boolean(inboxRecipient.trim() && inboxSignal.trim() && inboxWhy.trim() && inboxNext.trim() && inboxEvidence.trim() && inboxNovelty);
+  const inboxPreview = `${inboxRecipient.trim() || "Recipient"}, ${inboxSignal.trim() || "a new signal"}\\n\\n${inboxWhy.trim() || "Why it matters to you…"}${inboxSurprise.trim() ? `\\n\\nThe unexpected bit: ${inboxSurprise.trim()}` : ""}\\n\\nOne next move: ${inboxNext.trim() || "A decision or useful test…"}`;
+
   const composeInbox = () => {
-    if(!deskAuthenticated || !inboxRecipient.trim() || !inboxSignal.trim() || !inboxWhy.trim() || !inboxNext.trim()) return;
+    if(!deskAuthenticated || !signalReady) return;
     const message = `PERSONAL INBOX · DRAFT ONLY
-Recipient: ${inboxRecipient.trim()}
+Recipient: ${inboxRecipient.trim()}\nEvidence or source: ${inboxEvidence.trim()}\nNovelty checked: Yes\nEditorial approval: ${inboxApproval?"APPROVED FOR FUTURE DELIVERY — still unsent":"PENDING REVIEW"}
 Permission to deliver: ${inboxConsent?"Recipient opt-in indicated; still requires explicit owner approval.":"NOT CONFIRMED — DO NOT DELIVER"}
 Headline: ${inboxSignal.trim()}
 Why this is for you: ${inboxWhy.trim()}
@@ -316,8 +322,12 @@ Status: UNSENT · no delivery channel connected.`;
           <label>WHY SHOULD THIS PERSON CARE?<textarea rows={2} value={inboxWhy} onChange={e=>setInboxWhy(e.target.value)} placeholder="Explain the connection to their decision or project" /></label>
           <label>THE UNEXPECTED ANGLE (OPTIONAL)<input value={inboxSurprise} onChange={e=>setInboxSurprise(e.target.value)} placeholder="A useful twist, not clickbait" /></label>
           <label>ONE NEXT MOVE<input value={inboxNext} onChange={e=>setInboxNext(e.target.value)} placeholder="A question, test or decision worth making" /></label>
+          <label>EVIDENCE / SOURCE<input value={inboxEvidence} onChange={e=>setInboxEvidence(e.target.value)} placeholder="Where can we verify this signal?" /></label>
+          <label className="savannah-inbox-consent"><input type="checkbox" checked={inboxNovelty} onChange={e=>setInboxNovelty(e.target.checked)} /> Checked: genuinely new for this recipient, not routine noise</label>
+          <div className="savannah-inbox-preview"><small>RECIPIENT PREVIEW · NOT DELIVERED</small><p>{inboxPreview}</p></div>
+          <label className="savannah-inbox-consent"><input type="checkbox" checked={inboxApproval} onChange={e=>setInboxApproval(e.target.checked)} /> Owner reviewed wording and approves this draft for future delivery (does not send)</label>
           <label className="savannah-inbox-consent"><input type="checkbox" checked={inboxConsent} onChange={e=>setInboxConsent(e.target.checked)} /> Recipient has agreed to receive notifications</label>
-          <button type="button" className="savannah-desk-save" disabled={!inboxSignal.trim() || !inboxWhy.trim() || !inboxNext.trim()} onClick={composeInbox}>SAVE UNSENT INBOX DRAFT</button>
+          <button type="button" className="savannah-desk-save" disabled={!signalReady} onClick={composeInbox}>SAVE UNSENT INBOX DRAFT</button>
           <p className="savannah-inbox-footnote">No push, email or SMS is sent. Client-specific delivery will require identity verification, explicit subscription and approval controls.</p>
         </section>
         <div className="savannah-desk-list">{deskItems.length===0?<p>No saved entries yet.</p>:deskItems.map(item=><article key={item.id}><small>{item.type.toUpperCase()} · {item.date}</small><p>{item.text}</p><button type="button" onClick={() => {const keep=deskItems.filter(entry=>entry.id!==item.id);try{localStorage.setItem("savannah-desk-local-v1",JSON.stringify(keep));setDeskItems(keep)}catch{setDeskNotice("Could not remove entry.")}}}>DELETE</button></article>)}</div>
@@ -372,7 +382,7 @@ Status: UNSENT · no delivery channel connected.`;
         .savannah-inbox-studio { max-width:720px; border-top:2px solid #1a1917; margin-top:32px; padding:22px 0; }
         .savannah-inbox-heading { display:flex; align-items:baseline; justify-content:space-between; font:24px Georgia,serif; }
         .savannah-inbox-heading small { font:10px Arial,sans-serif; letter-spacing:.12em; color:#777; }
-        .savannah-inbox-studio label { display:block; margin:15px 0; font:10px Arial,sans-serif; letter-spacing:.08em; font-weight:700; }
+        .savannah-inbox-preview { margin:17px 0; background:#1d1c1a; color:#f3eddf; padding:18px; white-space:pre-wrap; font:16px/1.45 Georgia,serif; }\n        .savannah-inbox-preview small { font:10px Arial,sans-serif; color:#bcb3a6; letter-spacing:.1em; }\n        .savannah-inbox-studio label { display:block; margin:15px 0; font:10px Arial,sans-serif; letter-spacing:.08em; font-weight:700; }
         .savannah-inbox-studio input:not([type=checkbox]), .savannah-inbox-studio textarea { display:block; box-sizing:border-box; width:100%; margin-top:6px; padding:12px; border:1px solid #aca59a; background:#fffcf6; color:#191817; font:15px Arial,sans-serif; }
         .savannah-inbox-studio .savannah-inbox-consent { display:flex; align-items:center; gap:9px; line-height:1.35; }
         .savannah-inbox-footnote { color:#666057; font-size:12px; }
