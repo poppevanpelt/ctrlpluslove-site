@@ -94,6 +94,7 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
       appendLine("assistant", reply);
       setState("speaking");
       setMessage("Here.");
+      // Audio is a separate delivery step: a text response is not proof of audible playback.
       void speakSavannahNeurally(reply, {
         onStart: () => {
           setState("speaking");
@@ -103,6 +104,11 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
           setState("idle");
           setMessage("Room ready. Talk or type.");
         },
+      }).then((played) => {
+        if (!played) {
+          setState("error");
+          setMessage("Her reply is in the transcript, but audio did not start. Tap Talk to try again.");
+        }
       });
     } catch (error) {
       console.error("Savannah room brain failed", error);
