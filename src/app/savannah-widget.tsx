@@ -291,9 +291,12 @@ export function SavannahWidget() {
       }, 420);
     };
 
-    window.addEventListener("savannah-intro-active", onIntroActive);
+    // A missed intro event must never leave employee #4 hidden indefinitely.
+    const rescue = window.setTimeout(() => setIntroActive(false), 14500);
+        window.addEventListener("savannah-intro-active", onIntroActive);
     window.addEventListener("savannah-intro-complete", onIntroComplete);
     return () => {
+      window.clearTimeout(rescue);
       window.removeEventListener("savannah-intro-active", onIntroActive);
       window.removeEventListener("savannah-intro-complete", onIntroComplete);
     };
@@ -830,6 +833,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
           boxShadow: "0 12px 30px rgba(0,0,0,.14)",
         }}
       >
+        <img src="/home/savannah.jpg" alt="" style={{width:28,height:28,objectFit:"cover",borderRadius:"50%",verticalAlign:"middle",marginRight:9}} />
         Savannah · Talk / Type
       </button>
     );
