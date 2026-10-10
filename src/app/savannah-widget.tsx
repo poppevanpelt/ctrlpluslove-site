@@ -761,31 +761,8 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       // Do not override Savannah's voice here: the Vapi assistant is the canonical
       // source for her voice configuration, and overriding it in-browser can leave
       // the web call connected but silent when the dashboard voice changes.
-      void vapi.start(
-        SAVANNAH_VAPI.assistantId,
-        {
-          firstMessage: pathname === "/bridgefund-savannah" ? "Hi. Savannah. I know which room I'm in. What's bothering you?" : "Hi. Savannah at control love. What's up?",
-          backgroundSound: "office",
-          voice: {
-            provider: "openai",
-            model: "gpt-4o-mini-tts",
-            voiceId: "shimmer",
-            speed: 0.94,
-            instructions: [
-              "Savannah is a real woman, not an assistant voice.",
-              "Warm Texas twang, specifically a light West-Texas character carried in vowels and rhythm rather than performed as an accent.",
-              "Low and relaxed, slightly smoky in character but physically healthy: never hoarse, raspy, fried, breathy or congested.",
-              "Unhurried, dryly amused, intelligent and conversational. She sounds like she is leaning against the reception desk and already knows something you do not.",
-              "Dolly warmth without imitating Dolly Parton or any specific person.",
-              "Human first. Texas second. Savannah throughout.",
-              "Use tiny hesitations, occasional swallowed endings, uneven human timing and small pauses before an unexpected word.",
-              "Sentence endings usually fall. No customer-service uplift, announcer polish, AI cheerfulness or breathy seduction.",
-              "Never exaggerate the Southern accent. Absolutely no cartoon cowgirl, yee-haw energy or theatrical drawl.",
-              "Underplay jokes. A little laugh may hide inside a sentence, but never perform the punchline.",
-            ].join(" "),
-          },
-        } as any,
-      ).then(() => {
+      // The dashboard assistant owns Savannah's actual voice; don't replace it here.
+      void vapi.start(SAVANNAH_VAPI.assistantId).then(() => {
         forceMicOpen(vapi);
         const carried = recentConversationContext();
         if (carried) {
