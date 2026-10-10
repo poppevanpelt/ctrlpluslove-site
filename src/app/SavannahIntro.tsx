@@ -181,9 +181,13 @@ export default function SavannahIntro() {
     if (handoffStarted.current) return;
     handoffStarted.current = true;
     setStage("locked");
-    clickLock();
+    // Only an actual cinematic handoff gets the vault-lock treatment.
+    // A failed, skipped or reduced-motion film must leave the site immediately usable.
+    const cinematic = ready && !fallback && videoRef.current !== null && videoRef.current.currentTime >= REGISTER_AT;
+    if (cinematic) clickLock();
+    else releasePageLock();
 
-    const seatDelay = animateIntoPlace ? 620 : 180;
+    const seatDelay = cinematic ? (animateIntoPlace ? 620 : 180) : 0;
     // Keep the projected heading on its measured DOM coordinates while seating.
     // The final handoff is a cut, not an opacity dissolve.
     window.setTimeout(() => setHandoff(true), seatDelay);
