@@ -6,11 +6,13 @@ import { clearSavannahPageLock } from "./savannah-runtime";
 
 const START_AT = 1.35;
 const REGISTER_AT = 6.2;
-const DAYLIGHT_AT = 6.9;
-const LOCK_AT = 7.6;
-const HANDOFF_AT = 8.12;
+// The film freezes at the projected line; the mechanism then uses its own clock.
+const TIC_HOLD_MS = 290;
+const TAC_SWING_MS = 880;
+const SEAT_MS = 160;
+const CLUNC_PAUSE_MS = 90;
 
-type SceneStage = "film" | "register" | "daylight" | "locked";
+type SceneStage = "film" | "register" | "daylight" | "seated" | "locked";
 
 export default function SavannahIntro() {
   const [visible, setVisible] = useState(true);
@@ -97,6 +99,23 @@ export default function SavannahIntro() {
     metal.connect(metalGain);
     metal.start(now);
     metal.stop(now + 0.11);
+  };
+
+  const playMechanicalTick = (pitch: number, volume: number) => {
+    const context = audioRef.current;
+    if (!context || context.state !== "running") return;
+    const now = context.currentTime;
+    const oscillator = context.createOscillator();
+    const gain = context.createGain();
+    oscillator.type = "triangle";
+    oscillator.frequency.setValueAtTime(pitch, now);
+    oscillator.frequency.exponentialRampToValueAtTime(pitch * 0.57, now + 0.045);
+    gain.gain.setValueAtTime(volume, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.075);
+    oscillator.connect(gain);
+    gain.connect(context.destination);
+    oscillator.start(now);
+    oscillator.stop(now + 0.08);
   };
 
   // The pivoting wall carries the actual homepage composition. Clone the
@@ -235,15 +254,28 @@ export default function SavannahIntro() {
     const t = video.currentTime + (trimmed ? START_AT : 0);
 
     if (t >= REGISTER_AT && !pivotStartedRef.current && !handoffStarted.current) {
-      // TIC: freeze the projected sentence as part of the physical wall.
+      // TIC — lock the projected words, hold the frame in silence.
       pivotStartedRef.current = true;
       video.pause();
       cancelBufferTimer();
       setStage("register");
-      // TAC: the wall rotates into the viewer, becoming square to the screen.
-      pivotTimersRef.current.push(window.setTimeout(() => setStage("daylight"), 160));
-      // CLUNC: one hard cut from the aligned wall to the actual site.
-      pivotTimersRef.current.push(window.setTimeout(() => completeHandoff(true), 960));
+      playMechanicalTick(620, 0.065);
+
+      // TAC — after a real pause, the solid wall pivots in front of Savannah.
+      pivotTimersRef.current.push(window.setTimeout(() => {
+        playMechanicalTick(360, 0.08);
+        setStage("daylight");
+      }, TIC_HOLD_MS));
+
+      // The heavy wall slows just short of square, then seats with a tiny catch.
+      pivotTimersRef.current.push(window.setTimeout(() => {
+        setStage("seated");
+      }, TIC_HOLD_MS + TAC_SWING_MS));
+
+      // CLUNC — hold the seated wall briefly, then one exact hard cut.
+      pivotTimersRef.current.push(window.setTimeout(() => {
+        completeHandoff(true);
+      }, TIC_HOLD_MS + TAC_SWING_MS + SEAT_MS + CLUNC_PAUSE_MS));
     }
   };
 
@@ -257,6 +289,7 @@ export default function SavannahIntro() {
         fallback ? styles.savannahIntroFallback : "",
         stage === "register" ? styles.savannahSceneRegister : "",
         stage === "daylight" ? styles.savannahSceneDaylight : "",
+        stage === "seated" ? styles.savannahSceneSeated : "",
         stage === "locked" ? styles.savannahSceneLocked : "",
         handoff ? styles.savannahHandoff : "",
       ].join(" ")}
