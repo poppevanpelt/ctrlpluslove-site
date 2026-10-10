@@ -21,6 +21,7 @@ export default function SavannahIntro() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const seekPrimedRef = useRef(false);
   const playbackAttemptRef = useRef(false);
+  const seekFallbackTimerRef = useRef<number | null>(null);
   const bufferTimerRef = useRef<number | null>(null);
   const handoffStarted = useRef(false);
   const lockStarted = useRef(false);
@@ -160,22 +161,28 @@ export default function SavannahIntro() {
     seekPrimedRef.current = true;
     video.pause();
     video.muted = true;
-    try {
-      video.currentTime = START_AT;
-    } catch {
-      completeHandoff(false);
-    }
+    // Safari occasionally never dispatches `seeked` for a remote MP4.
+    // Prefer the approved start frame, but play from the beginning rather than abandon the film.
+    seekFallbackTimerRef.current = window.setTimeout(() => {
+      seekFallbackTimerRef.current = null;
+      if (handoffStarted.current || playbackAttemptRef.current) return;
+      video.currentTime = 0;
+      startFromPrimedFrame(true);
+    }, 1400);
+    try { video.currentTime = START_AT; }
+    catch { video.currentTime = 0; startFromPrimedFrame(true); }
   };
 
-  const startFromPrimedFrame = () => {
+  const startFromPrimedFrame = (allowFromBeginning = false) => {
     const video = videoRef.current;
-    if (!video || handoffStarted.current || playbackAttemptRef.current || video.currentTime < START_AT - 0.08) return;
+    if (!video || handoffStarted.current || playbackAttemptRef.current || (!allowFromBeginning && video.currentTime < START_AT - 0.08)) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       video.pause();
       completeHandoff(false);
       return;
     }
     playbackAttemptRef.current = true;
+    if (seekFallbackTimerRef.current !== null) { window.clearTimeout(seekFallbackTimerRef.current); seekFallbackTimerRef.current = null; }
     // Preserve the portrait until playback really begins, not merely until play() is requested.
     void video.play().catch(() => completeHandoff(false));
   };
@@ -198,6 +205,7 @@ export default function SavannahIntro() {
   const completeHandoff = (animateIntoPlace = false) => {
     if (handoffStarted.current) return;
     handoffStarted.current = true;
+    if (seekFallbackTimerRef.current !== null) { window.clearTimeout(seekFallbackTimerRef.current); seekFallbackTimerRef.current = null; }
     cancelBufferTimer();
     setStage("locked");
     // Only an actual cinematic handoff gets the vault-lock treatment.
@@ -261,9 +269,9 @@ export default function SavannahIntro() {
           playsInline
           preload="auto"
           onLoadedMetadata={primeVideo}
-          onSeeked={startFromPrimedFrame}
-          onLoadedData={startFromPrimedFrame}
-          onCanPlay={startFromPrimedFrame}
+          onSeeked={() => startFromPrimedFrame()}
+          onLoadedData={() => startFromPrimedFrame()}
+          onCanPlay={() => startFromPrimedFrame()}
           onPlaying={() => { cancelBufferTimer(); if (!handoffStarted.current) { setReady(true); setFallback(false); } }}
           onWaiting={guardBuffering}
           onStalled={guardBuffering}
