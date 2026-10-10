@@ -21,11 +21,27 @@ export default function SavannahIntro() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const seekPrimedRef = useRef(false);
   const playbackAttemptRef = useRef(false);
+  const bufferTimerRef = useRef<number | null>(null);
   const handoffStarted = useRef(false);
   const lockStarted = useRef(false);
   const audioRef = useRef<AudioContext | null>(null);
   const lockSeatTimerRef = useRef<number | null>(null);
   const lockReleaseTimerRef = useRef<number | null>(null);
+
+  const cancelBufferTimer = () => {
+    if (bufferTimerRef.current !== null) {
+      window.clearTimeout(bufferTimerRef.current);
+      bufferTimerRef.current = null;
+    }
+  };
+  const guardBuffering = () => {
+    if (handoffStarted.current || !playbackAttemptRef.current) return;
+    cancelBufferTimer();
+    bufferTimerRef.current = window.setTimeout(() => {
+      bufferTimerRef.current = null;
+      if (!handoffStarted.current && videoRef.current?.paused === false) completeHandoff(false);
+    }, 3500);
+  };
 
   const releasePageLock = () => {
     if (lockSeatTimerRef.current !== null) {
@@ -182,6 +198,7 @@ export default function SavannahIntro() {
   const completeHandoff = (animateIntoPlace = false) => {
     if (handoffStarted.current) return;
     handoffStarted.current = true;
+    cancelBufferTimer();
     setStage("locked");
     // Only an actual cinematic handoff gets the vault-lock treatment.
     // A failed, skipped or reduced-motion film must leave the site immediately usable.
@@ -247,8 +264,10 @@ export default function SavannahIntro() {
           onSeeked={startFromPrimedFrame}
           onLoadedData={startFromPrimedFrame}
           onCanPlay={startFromPrimedFrame}
-          onPlaying={() => { if (!handoffStarted.current) { setReady(true); setFallback(false); } }}
-          onTimeUpdate={trackHandoff}
+          onPlaying={() => { cancelBufferTimer(); if (!handoffStarted.current) { setReady(true); setFallback(false); } }}
+          onWaiting={guardBuffering}
+          onStalled={guardBuffering}
+          onTimeUpdate={() => { cancelBufferTimer(); trackHandoff(); }}
           onEnded={() => completeHandoff(false)}
           onError={() => completeHandoff(false)}
         >
