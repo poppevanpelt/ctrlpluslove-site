@@ -462,7 +462,7 @@ Status: UNSENT · no delivery channel connected.`;
            quieter face while speaking. No fake looping mouth animation. */
         .savannah-portrait.is-thinking img:not(.savannah-speech-mouth) { animation:savannah-consider 4.6s ease-in-out infinite; filter:saturate(.85) brightness(.98); }
         .savannah-portrait.is-speaking img:not(.savannah-speech-mouth) { animation:savannah-answer 7.4s ease-in-out infinite; filter:saturate(.92); }
-        .savannah-portrait.is-listening img:not(.savannah-speech-mouth) { animation:savannah-attend 6.7s ease-in-out infinite; filter:saturate(.9); }\n        @keyframes savannah-attend { 0%,100% { transform:scale(1.01) translateY(0); } 45% { transform:scale(1.017) translateY(-.09%); } }\n        @keyframes savannah-consider {
+        .savannah-portrait.is-listening img:not(.savannah-speech-mouth) { animation:savannah-attend 6.7s ease-in-out infinite; filter:saturate(.9); }\n        @keyframes savannah-attend { 0%,26%,80%,100% { transform:scale(1.01) translateY(0); } 43%,55% { transform:scale(1.014) translateY(-.06%); } }\n        @keyframes savannah-consider {
           0%,22%,74%,100% { transform:scale(1.008) translate(0,0); }
           38%,56% { transform:scale(1.013) translate(-.28%,.06%); }
         }
@@ -488,7 +488,7 @@ Status: UNSENT · no delivery channel connected.`;
         @keyframes savannah-voice-beat { from { height:3px; } to { height:14px; } }
         .savannah-intro { position:absolute; bottom:20px; left:22px; right:22px; color:#f8f2e8; opacity:0; transform:translateY(8px); transition:opacity 750ms ease,transform 750ms ease; pointer-events:none; }
         .savannah-intro.is-ready { opacity:1; transform:translateY(0); }
-        @media (prefers-reduced-motion:reduce) { .savannah-portrait img, .savannah-portrait.is-thinking img, .savannah-portrait.is-speaking img { animation:none; } }
+        @media (prefers-reduced-motion:reduce) { .savannah-portrait img, .savannah-portrait.is-thinking img, .savannah-portrait.is-listening img, .savannah-portrait.is-speaking img { animation:none !important; } }
         .savannah-eyebrow { font-size:10px; font-weight:700; letter-spacing:.18em; opacity:.74; }
         .savannah-intro p { font:italic 30px/1.2 Georgia,serif; margin:7px 0 0; }
         .savannah-controls { display:flex; flex-shrink:0; min-height:48px; background:#222; color:#f6f0e8; border-bottom:1px solid #55514b; }
@@ -514,7 +514,7 @@ Status: UNSENT · no delivery channel connected.`;
         .savannah-send { width:57px; flex-shrink:0; border:0; border-radius:4px; background:#222; color:white; font-size:27px; cursor:pointer; }
         .savannah-send:disabled { opacity:.4; }
         .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
-        @keyframes savannah-breathe { 0%,100% { transform:scale(1.015) translateY(0); } 50% { transform:scale(1.032) translateY(2px); } }
+        @keyframes savannah-breathe { 0%,24%,82%,100% { transform:scale(1.012) translateY(0); } 51%,62% { transform:scale(1.019) translateY(1px); } }
         .savannah-utility { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-shrink:0; padding:7px 15px; background:#eeeae1; font-size:9px; letter-spacing:.12em; font-weight:700; color:#7c746a; }
         .savannah-utility button { border:0; background:transparent; font:inherit; letter-spacing:inherit; color:#292521; cursor:pointer; padding:5px; }
         .savannah-quick-start { display:flex; gap:8px; padding:0 12px 7px; background:#eeeae1; }
