@@ -1021,7 +1021,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
                   type="button"
                   onClick={() => { setManualOpen(false); setCompact(true); }}
                   aria-label="Minimize Savannah"
-                  style={{ border: 0, background: "transparent", color: "#151515", padding: 0, fontSize: 14, lineHeight: 1, cursor: "pointer", opacity: .45 }}
+                  style={{ border: 0, background: "transparent", color: "#151515", minWidth: 44, minHeight: 44, padding: 10, fontSize: 20, lineHeight: 1, cursor: "pointer", opacity: .65, touchAction: "manipulation" }}
                 >
                   ×
                 </button>
@@ -1162,7 +1162,8 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
             aria-pressed={micListening}
             style={{
               width: "100%",
-              minHeight: 46,
+              minHeight: 56,
+              touchAction: "manipulation",
               border: 0,
               borderBottom: "1px solid rgba(21,21,21,.18)",
               background: micListening ? "#151515" : "#f5f1e7",
@@ -1182,9 +1183,11 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
           <button
             type="button"
             onClick={testLocalVoice}
+            aria-label="Hear a sample of Savannah’s voice"
             style={{
               width: "100%",
-              minHeight: 40,
+              minHeight: 54,
+              touchAction: "manipulation",
               border: 0,
               borderBottom: "1px solid rgba(21,21,21,.18)",
               background: "#f5f1e7",
@@ -1232,7 +1235,9 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
               type="submit"
               disabled={textPending || !draft.trim()}
               style={{
-                minWidth: 72,
+                minWidth: 84,
+                minHeight: 52,
+                touchAction: "manipulation",
                 border: 0,
                 borderLeft: "1px solid rgba(245,241,231,.28)",
                 borderRadius: 0,
