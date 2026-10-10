@@ -106,15 +106,23 @@ export default function SavannahIntro() {
       const video = videoRef.current;
       if (video) video.pause();
       releasePageLock();
-      setFallback(true);
-      setReady(true);
-      setStage("film");
+      // Reduced-motion visitors enter the site immediately; never park on a still portrait.
+      completeHandoff(false);
     };
 
     syncMotionPreference();
     media.addEventListener?.("change", syncMotionPreference);
     return () => media.removeEventListener?.("change", syncMotionPreference);
   }, []);
+
+  // A slow or blocked video must not trap a visitor behind the opening film.
+  // The site underneath is the fallback; preserve it rather than displaying a static face.
+  useEffect(() => {
+    const primeWatchdog = window.setTimeout(() => {
+      if (!ready && !handoffStarted.current) completeHandoff(false);
+    }, 6500);
+    return () => window.clearTimeout(primeWatchdog);
+  }, [ready]);
 
   // If priming or playback stalls, proceed directly to the site; never hold
   // visitors on a full-screen fallback portrait waiting for a manual click.
