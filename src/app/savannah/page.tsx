@@ -359,7 +359,7 @@ Status: UNSENT · no delivery channel connected.`;
   const visualPresence = speaking ? "bridge" : listening ? "listening" : pending ? (thinkingLater ? "thinking-2" : "thinking-1") : reaction ? "reaction" : "waiting";
 
   return (
-    <main id="main-content" className="savannah-shell">
+    <main id="main-content" className="savannah-shell" data-savannah-outfit={outfit}>
       <header className="savannah-topbar">
         <div className="savannah-brand">Savannah<span>.</span></div>
         <div className="savannah-brand-right"><button type="button" className="savannah-desk-trigger" onClick={() => {if(deskAuthenticated)setDeskOpen(true);else if(deskConfigured)window.location.assign("/api/savannah/auth/login");else setDeskNotice("Google sign-in setup pending: the private Desk is locked.");}}>DESK {deskItems.length ? `(${deskItems.length})` : ""}</button><span className="savannah-dot" /> CTRL+LOVE / #4</div>
