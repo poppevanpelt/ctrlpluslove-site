@@ -363,7 +363,7 @@ Status: UNSENT · no delivery channel connected.`;
         <div className="savannah-desk-list">{deskItems.length===0?<p>No saved entries yet.</p>:deskItems.map(item=><article key={item.id}><small>{item.type.toUpperCase()} · {item.date}</small><p>{item.text}</p><button type="button" onClick={() => {const keep=deskItems.filter(entry=>entry.id!==item.id);try{localStorage.setItem("savannah-desk-local-v1",JSON.stringify(keep));setDeskItems(keep)}catch{setDeskNotice("Could not remove entry.")}}}>DELETE</button></article>)}</div>
       </section>}
       <style>{`\n        .savannah-portrait > .savannah-speech-mouth { display:none !important; }\n      `}</style>
-      <div className={"savannah-portrait" + (speaking ? " is-speaking" : pending ? " is-thinking" : "")}>
+      <div className={"savannah-portrait" + (speaking ? " is-speaking" : listening ? " is-listening" : pending ? " is-thinking" : " is-waiting")}>
         <button type="button" className="savannah-face-tap" onClick={() => void tapSavannah()} aria-label={needsPlayback ? "Hear Savannah" : listening ? "Finish recording" : "Speak to Savannah"} />
         <img src="/savannah-avatar.jpg" alt="Savannah" />
         {speaking && (
@@ -462,7 +462,7 @@ Status: UNSENT · no delivery channel connected.`;
            quieter face while speaking. No fake looping mouth animation. */
         .savannah-portrait.is-thinking img:not(.savannah-speech-mouth) { animation:savannah-consider 4.6s ease-in-out infinite; filter:saturate(.85) brightness(.98); }
         .savannah-portrait.is-speaking img:not(.savannah-speech-mouth) { animation:savannah-answer 7.4s ease-in-out infinite; filter:saturate(.92); }
-        @keyframes savannah-consider {
+        .savannah-portrait.is-listening img:not(.savannah-speech-mouth) { animation:savannah-attend 6.7s ease-in-out infinite; filter:saturate(.9); }\n        @keyframes savannah-attend { 0%,100% { transform:scale(1.01) translateY(0); } 45% { transform:scale(1.017) translateY(-.09%); } }\n        @keyframes savannah-consider {
           0%,22%,74%,100% { transform:scale(1.008) translate(0,0); }
           38%,56% { transform:scale(1.013) translate(-.28%,.06%); }
         }
