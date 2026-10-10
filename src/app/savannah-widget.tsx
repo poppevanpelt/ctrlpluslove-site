@@ -1154,30 +1154,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
               cursor: busy ? "default" : "pointer", opacity: busy ? .55 : 1,
             }}
           >{micListening ? "Listening… tap to finish" : textPending ? "Savannah is thinking…" : "Talk to Savannah"}</button>
-          <button
-            type="button"
-            onClick={toggleBrowserMic}
-            disabled={textPending}
-            aria-pressed={micListening}
-            style={{
-              width: "100%",
-              minHeight: 56,
-              touchAction: "manipulation",
-              border: 0,
-              borderBottom: "1px solid rgba(21,21,21,.18)",
-              background: micListening ? "#151515" : "#f5f1e7",
-              color: micListening ? "#f5f1e7" : "#151515",
-              font: "inherit",
-              fontSize: 10,
-              fontWeight: 800,
-              letterSpacing: ".1em",
-              textTransform: "uppercase",
-              cursor: textPending ? "default" : "pointer",
-              opacity: textPending ? .52 : 1,
-            }}
-          >
-            {micListening ? "Listening… tap to stop" : "Or speak one message"}
-          </button>}
+
 
           <button
             type="button"
