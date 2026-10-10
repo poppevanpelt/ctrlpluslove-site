@@ -321,12 +321,21 @@ Status: UNSENT · no delivery channel connected.`;
     }
   }
 
-  // A single ready waiting frame activates the portrait set; late frames
-  // load naturally. If an image fails, the original portrait remains behind it.
+  // Prepare the entire approved expression set before replacing the original.
+  // A late-loading expression otherwise flashes the background during a crossfade.
   useEffect(() => {
-    const picture = new Image();
-    picture.onload = () => setPresenceAssetsReady(true);
-    picture.src = "/savannah-presence/waiting.webp";
+    let mounted = true;
+    const frames = ["waiting", "listening", "thinking-1", "thinking-2", "bridge", "reaction"];
+    const loads = frames.map((frame) => new Promise<boolean>((resolve) => {
+      const picture = new Image();
+      picture.onload = () => resolve(true);
+      picture.onerror = () => resolve(false);
+      picture.src = `/savannah-presence/${frame}.webp`;
+    }));
+    void Promise.all(loads).then((results) => {
+      if (mounted && results.every(Boolean)) setPresenceAssetsReady(true);
+    });
+    return () => { mounted = false; };
   }, []);
   useEffect(() => {
     setThinkingLater(false);
@@ -481,7 +490,7 @@ Status: UNSENT · no delivery channel connected.`;
            quieter face while speaking. No fake looping mouth animation. */
         .savannah-portrait.is-thinking img:not(.savannah-speech-mouth) { animation:savannah-consider 4.6s ease-in-out infinite; filter:saturate(.85) brightness(.98); }
         .savannah-portrait.is-speaking img:not(.savannah-speech-mouth) { animation:savannah-answer 7.4s ease-in-out infinite; filter:saturate(.92); }
-        .savannah-portrait.is-listening img:not(.savannah-speech-mouth) { animation:savannah-attend 6.7s ease-in-out infinite; filter:saturate(.9); }\n        @keyframes savannah-attend { 0%,26%,80%,100% { transform:scale(1.01) translateY(0); } 43%,55% { transform:scale(1.014) translateY(-.06%); } }\n        /* Approved six-frame presence set; fall back to original until all assets load. */
+        .savannah-portrait.is-listening img:not(.savannah-speech-mouth) { animation:savannah-attend 6.7s ease-in-out infinite; filter:saturate(.9); }\n        @keyframes savannah-attend { 0%,26%,80%,100% { transform:scale(1.01) translateY(0); } 43%,55% { transform:scale(1.014) translateY(-.06%); } }\n        /* Reveal the approved presence set only once all frames are decoded/downloaded. */
         .savannah-portrait img.savannah-original-avatar { transition:opacity 600ms ease; }
         .savannah-portrait.has-presence-assets img.savannah-original-avatar { opacity:0; }
         .savannah-portrait img.savannah-state-frame { z-index:1; position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center center; animation:none !important; transform:none !important; opacity:0; transition:opacity 820ms ease; pointer-events:none; }
