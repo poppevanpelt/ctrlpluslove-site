@@ -474,3 +474,12 @@
 /* Never leave a black loading stage when external film is not ready. */
 .savannahFilm .savannahIntroFallbackImage{opacity:1;background-image:linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.27)),url("/savannah-avatar.jpg?v=20261002-4");background-position:center 22%;background-size:cover}
 .savannahIntroReady:not(.savannahIntroFallback) .savannahFilm .savannahIntroFallbackImage{opacity:0;transition:opacity .32s ease .12s}
+
+/* Film loading state: no giant crop and no false invitation before playback. */
+.savannahFilm .savannahIntroFallbackImage{
+  background-size:contain!important;
+  background-position:center center!important;
+  background-repeat:no-repeat!important;
+}
+.savannahIntro:not(.savannahIntroReady) .savannahIntroControls{opacity:0;pointer-events:none}
+.savannahIntro.savannahIntroReady .savannahIntroControls{opacity:1}
