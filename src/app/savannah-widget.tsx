@@ -597,8 +597,8 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
     pendingRequestRef.current = true;
     // Unlock the persistent audio element during the user gesture, before
     // the asynchronous brain and voice requests complete (iOS Safari).
-    void primeSavannahAudio();
     stopSavannahLocalVoice();
+    void primeSavannahAudio();
     setAssistantSpeaking(false);
 
     appendConversation("user", text, true);
