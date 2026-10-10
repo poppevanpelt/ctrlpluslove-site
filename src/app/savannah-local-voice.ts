@@ -5,6 +5,24 @@ type SpeechWindow = Window & typeof globalThis & {
 let neuralPlaybackEpoch = 0;
 let blockedAudio: HTMLAudioElement | null = null;
 
+// Prime the SAME persistent audio element in a direct user gesture. Safari may
+// otherwise reject play() after the network round-trip for a spoken reply.
+export function primeSavannahAudio() {
+  if (typeof window === "undefined") return;
+  const w = window as typeof window & { __savannahAudio?: HTMLAudioElement };
+  const audio = w.__savannahAudio ?? new Audio();
+  w.__savannahAudio = audio;
+  if (!audio.paused && audio.currentSrc.startsWith("blob:")) return;
+  // Tiny silent PCM WAV, used only to request the iOS audio playback grant.
+  const silentWav = "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=";
+  audio.src = silentWav;
+  audio.muted = false;
+  const attempt = audio.play();
+  if (attempt) void attempt.then(() => {
+    if (audio.src === silentWav) audio.pause();
+  }).catch(() => {});
+}
+
 export async function resumeSavannahAudio() {
   if (!blockedAudio) return false;
   try { await blockedAudio.play(); blockedAudio = null; return true; } catch { return false; }
