@@ -512,11 +512,12 @@ Status: UNSENT · no delivery channel connected.`;
         .savannah-portrait.is-listening img:not(.savannah-speech-mouth) { animation:savannah-attend 6.7s ease-in-out infinite; filter:saturate(.9); }\n        @keyframes savannah-attend { 0%,26%,80%,100% { transform:scale(1.01) translateY(0); } 43%,55% { transform:scale(1.014) translateY(-.06%); } }\n        /* Reveal the approved presence set only once all frames are decoded/downloaded. */
         .savannah-portrait img.savannah-original-avatar { transition:opacity 600ms ease; }
         .savannah-portrait.has-presence-assets img.savannah-original-avatar { opacity:0; }
-        .savannah-portrait img.savannah-state-frame { z-index:1; position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center center; animation:none !important; transform:none !important; opacity:0; transition:opacity 820ms ease; pointer-events:none; }
+        .savannah-portrait img.savannah-state-frame { z-index:1; position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center center; animation:none !important; transform:none !important; opacity:0; transition:opacity 1100ms cubic-bezier(.4,0,.2,1); backface-visibility:hidden; pointer-events:none; }
         /* Per-image normalization measured from approved WebP face bounds (810x1080). */
         .savannah-portrait img.savannah-state-frame[src$="/waiting.webp"] { transform:translate(-.7%,2.1%) scale(.924) !important; }
         .savannah-portrait img.savannah-state-frame[src$="/bridge.webp"] { transform:translate(-1.1%,1.05%) scale(.919) !important; }
         .savannah-portrait img.savannah-state-frame[src$="/reaction.webp"] { transform:translate(.2%,.15%) scale(.986) !important; }
+        /* Keep both portraits on the same compositing plane during the dissolve. */
         .savannah-portrait img.savannah-state-frame.is-active { opacity:1; z-index:2; }
         @media (prefers-reduced-motion:reduce) { .savannah-portrait img.savannah-state-frame { transition:none !important; } }
         @keyframes savannah-consider {
