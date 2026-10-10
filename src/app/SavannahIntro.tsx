@@ -23,6 +23,7 @@ export default function SavannahIntro() {
   const playbackAttemptRef = useRef(false);
   const seekFallbackTimerRef = useRef<number | null>(null);
   const bufferTimerRef = useRef<number | null>(null);
+  const frameProbeRef = useRef(false);
   const handoffStarted = useRef(false);
   const lockStarted = useRef(false);
   const audioRef = useRef<AudioContext | null>(null);
@@ -226,6 +227,30 @@ export default function SavannahIntro() {
     }, seatDelay + 50);
   };
 
+  const revealOnDecodedWideFrame = () => {
+    const video = videoRef.current;
+    if (!video || ready || handoffStarted.current || video.currentTime < START_AT - 0.08) return;
+    if (typeof video.requestVideoFrameCallback !== "function") {
+      // Older browsers: use playback position as the best available signal.
+      setReady(true);
+      return;
+    }
+    if (frameProbeRef.current) return;
+    frameProbeRef.current = true;
+    const probe = () => {
+      video.requestVideoFrameCallback((_now, frame) => {
+        if (handoffStarted.current) return;
+        if (frame.mediaTime >= START_AT - 0.08) {
+          frameProbeRef.current = false;
+          setReady(true);
+        } else {
+          probe();
+        }
+      });
+    };
+    probe();
+  };
+
   const trackHandoff = () => {
     const video = videoRef.current;
     if (!video) return;
@@ -272,7 +297,7 @@ export default function SavannahIntro() {
           onSeeked={() => startFromPrimedFrame()}
           onLoadedData={() => startFromPrimedFrame()}
           onCanPlay={() => startFromPrimedFrame()}
-          onPlaying={() => { cancelBufferTimer(); if (!handoffStarted.current && (videoRef.current?.currentTime ?? 0) >= START_AT - 0.08) { setReady(true); setFallback(false); } }}
+          onPlaying={() => { cancelBufferTimer(); setFallback(false); revealOnDecodedWideFrame(); }}
           onWaiting={guardBuffering}
           onStalled={guardBuffering}
           onTimeUpdate={() => {
@@ -280,8 +305,7 @@ export default function SavannahIntro() {
             // If Safari starts at zero, keep the unwanted close-up hidden.
             // Reveal only once the approved wide scene has been reached.
             if (!handoffStarted.current && (videoRef.current?.currentTime ?? 0) >= START_AT - 0.08) {
-              setReady(true);
-              setFallback(false);
+              revealOnDecodedWideFrame();
             }
             trackHandoff();
           }}
