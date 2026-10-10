@@ -1139,7 +1139,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
 
 
 
-          {false && <button
+          <button
             type="button"
             onClick={toggleBrowserMic}
             disabled={textPending}
