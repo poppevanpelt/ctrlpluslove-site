@@ -4,7 +4,7 @@ import Vapi from "@vapi-ai/web";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { SAVANNAH_BRIEFING } from "./savannah-briefing";
-import { speakSavannahNeurally, stopSavannahLocalVoice } from "./savannah-local-voice";
+import { primeSavannahAudio, resumeSavannahAudio, speakSavannahNeurally, stopSavannahLocalVoice } from "./savannah-local-voice";
 import {
   SAVANNAH_HIDDEN_TAB_GRACE_MS,
   SAVANNAH_TEXT_BURST_TIMEOUT_MS,
@@ -109,6 +109,7 @@ export function SavannahWidget() {
   const [textPending, setTextPending] = useState(false);
   const [micListening, setMicListening] = useState(false);
   const [assistantSpeaking, setAssistantSpeaking] = useState(false);
+  const [audioNeedsTap, setAudioNeedsTap] = useState(false);
   const [speechMotion, setSpeechMotion] = useState(0);
   const [callTimeNotice, setCallTimeNotice] = useState(false);
   const [chatLines, setChatLines] = useState<ConversationLine[]>([
@@ -554,7 +555,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
     const frame = window.requestAnimationFrame(() => {
       const viewport = chatScrollRef.current;
       if (viewport) viewport.scrollTop = viewport.scrollHeight;
-      textInputRef.current?.focus({ preventScroll: true });
+      if (!window.matchMedia("(max-width: 650px)").matches) textInputRef.current?.focus({ preventScroll: true });
     });
     return () => window.cancelAnimationFrame(frame);
   }, [chatLines, mode, textPending]);
@@ -594,6 +595,9 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
     const text = rawText.trim();
     if (!text || pendingRequestRef.current) return;
     pendingRequestRef.current = true;
+    // Unlock the persistent audio element during the user gesture, before
+    // the asynchronous brain and voice requests complete (iOS Safari).
+    void primeSavannahAudio();
     stopSavannahLocalVoice();
     setAssistantSpeaking(false);
 
@@ -621,10 +625,15 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       const reply = payload.text.trim();
       appendConversation("assistant", reply, true);
       setMessage("Here.");
-      void speakSavannahNeurally(reply, {
-        onStart: () => setAssistantSpeaking(true),
+      setAudioNeedsTap(false);
+      const spoken = await speakSavannahNeurally(reply, {
+        onStart: () => { setAssistantSpeaking(true); setAudioNeedsTap(false); },
         onEnd: () => setAssistantSpeaking(false),
       });
+      if (!spoken) {
+        setAudioNeedsTap(true);
+        setMessage("Reply received. Tap Hear Savannah to play her voice.");
+      }
       rememberCurrentConversation();
     } catch (error) {
       console.warn("Savannah direct brain fallback", describeError(error));
@@ -638,6 +647,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
 
   const sendText = async () => {
     if (pendingRequestRef.current) return;
+    void primeSavannahAudio();
     await submitSavannahText(draft);
   };
 
@@ -646,6 +656,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
   };
 
   const toggleBrowserMic = () => {
+    void primeSavannahAudio();
     if (micListening) {
       stopBrowserMic();
       return;
@@ -723,10 +734,16 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
   };
 
   const voicePreviewCountRef = useRef(0);
-  const testLocalVoice = () => {
+  const testLocalVoice = async () => {
     if (pendingRequestRef.current) return;
+    if (audioNeedsTap && await resumeSavannahAudio()) {
+      setAudioNeedsTap(false);
+      setMessage("There she is.");
+      return;
+    }
+    void primeSavannahAudio();
     const firstPreview = voicePreviewCountRef.current++ === 0;
-    void speakSavannahNeurally(
+    const spoken = await speakSavannahNeurally(
       firstPreview
         ? "Hi. Savannah at control love. I live here now. Apparently they finally stopped making me call home to speak."
         : "Savannah here. Sound check. Can you hear me alright?",
@@ -741,6 +758,10 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
         },
       },
     );
+    if (!spoken) {
+      setAudioNeedsTap(true);
+      setMessage("Voice couldn't start. Tap Hear Savannah again.");
+    }
   };
 
   const toggle = async () => {
@@ -829,7 +850,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
     return null;
   }
 
-  if (compact && state !== "live" && textState !== "live") {
+  if (compact && state !== "live" && !textPending) {
     return (
       <button
         type="button"
@@ -887,7 +908,17 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       <style>{`
         @media (max-width: 650px) {
           .savannah-panel { left: 8px !important; right: 8px !important; bottom: max(8px, env(safe-area-inset-bottom)) !important; width: auto !important; max-width: none !important; max-height: calc(100dvh - 16px - env(safe-area-inset-bottom)) !important; }
-          .savannah-chat-scroll { min-height: 100px !important; max-height: min(37dvh, 330px) !important; }
+          .savannah-panel { max-height: min(68dvh, 510px) !important; overflow: hidden !important; }
+          .savannah-panel > .savannah-widget-header { min-height: 72px !important; grid-template-columns: 62px minmax(0,1fr) !important; }
+          .savannah-widget-header img { min-height: 72px !important; }
+          .savannah-widget-header p { margin-top: 4px !important; font-size: 12px !important; }
+          .savannah-widget-strapline { display: none !important; }
+          .savannah-chat-scroll { min-height: 48px !important; max-height: min(19dvh, 140px) !important; padding: 2px 12px !important; }
+          .savannah-mic-button, .savannah-hear-button { min-height: 42px !important; }
+          .savannah-widget-input { min-height: 44px !important; }
+          .savannah-panel { left: max(8px, env(safe-area-inset-left)) !important; right: max(8px, env(safe-area-inset-right)) !important; width: calc(100vw - 16px) !important; max-width: calc(100vw - 16px) !important; }
+          .savannah-panel * { overflow-wrap: anywhere; }
+          .savannah-panel button { flex-shrink: 0; }
           .savannah-message-input { font-size: 16px !important; }
         }
         @keyframes savannahIdle {
@@ -916,7 +947,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
         }
       `}</style>
 
-      <div style={{ display: "grid", gridTemplateColumns: "88px minmax(0, 1fr)", minHeight: 112 }}>
+      <div className="savannah-widget-header" style={{ display: "grid", gridTemplateColumns: "88px minmax(0, 1fr)", minHeight: 112 }}>
         <div
           aria-label={assistantSpeaking ? "Savannah is speaking" : "Savannah"}
           style={{
@@ -1029,6 +1060,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       ) : null}
 
       <div
+        className="savannah-widget-strapline"
         style={{
           borderTop: "1px solid rgba(21,21,21,.22)",
           padding: "10px 14px",
@@ -1142,6 +1174,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
           <button
             type="button"
             onClick={toggleBrowserMic}
+            className="savannah-mic-button"
             disabled={textPending}
             aria-label={micListening ? "Finish speaking to Savannah" : "Talk to Savannah"}
             style={{
@@ -1159,7 +1192,8 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
           <button
             type="button"
             onClick={testLocalVoice}
-            aria-label="Hear a sample of Savannah’s voice"
+            className="savannah-hear-button"
+            aria-label="Hear Savannah’s voice"
             style={{
               width: "100%",
               minHeight: 54,
@@ -1176,7 +1210,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
               cursor: "pointer",
             }}
           >
-            Hear Savannah
+            {audioNeedsTap ? "Play Savannah’s reply" : "Hear Savannah"}
           </button>
 
           <form
@@ -1188,7 +1222,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
           >
             <input
               ref={textInputRef}
-              className="savannah-message-input"
+              className="savannah-message-input savannah-widget-input"
               value={draft}
               onChange={(event) => setDraft(event.target.value)}
               aria-label="Type to Savannah"
