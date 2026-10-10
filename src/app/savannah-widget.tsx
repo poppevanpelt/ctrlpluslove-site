@@ -422,8 +422,7 @@ export function SavannahWidget() {
       setAssistantSpeaking(false);
       console.warn("Savannah Vapi transport fallback", describeError(error));
       setState("error");
-      const localSpoke = void speakSavannahNeurally("I'm still here. The live audio line dropped. Type to me and I'll answer out loud.");
-      setMessage(localSpoke ? "Live line dropped. Type to me — I'll answer out loud." : "The audio line did not open. Try me again.");
+      setMessage("Live line unavailable. Use the backup microphone or type — I can still answer.");
     });
 
     textVapi.on("call-start", () => {
@@ -781,13 +780,13 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
         stopSteel();
         console.warn("Savannah call start fallback", describeError(error));
         setState("error");
-        void speakSavannahNeurally("I'm still here. Type to me and I'll answer out loud.");
+        // Do not speak over a failed audio session; retain the independent reply path.
         const detail = describeError(error);
         const lower = detail.toLowerCase();
         setMessage(
           lower.includes("permission") || lower.includes("denied") || lower.includes("notallowed")
             ? "I need the microphone. Allow it for this site, then try again."
-            : "The audio line did not open. Try me again.",
+            : "Live line unavailable. Use the backup microphone or type.",
         );
       });
       forceMicOpen(vapi);
@@ -799,7 +798,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
       setMessage(
         lower.includes("permission") || lower.includes("denied") || lower.includes("notallowed")
           ? "I need the microphone. Allow it for this site, then try again."
-          : "The audio line did not open. Try me again.",
+          : "Live line unavailable. Use the backup microphone or type.",
       );
     }
   };
@@ -814,7 +813,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
     state === "requesting" ? "Allow microphone…"
     : state === "connecting" ? "Opening the line…"
     : state === "live" ? "End call"
-    : state === "error" ? "Try again"
+    : state === "error" ? "Talk with backup microphone"
     : "Talk to Savannah";
 
   const busy = state === "requesting" || state === "connecting";
@@ -1142,7 +1141,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
 
           <button
             type="button"
-            onClick={() => { modeRef.current = "voice"; setMode("voice"); void toggle(); }}
+            onClick={() => { if (state === "error") { toggleBrowserMic(); return; } modeRef.current = "voice"; setMode("voice"); void toggle(); }}
             disabled={busy}
             aria-label={label}
             style={{
