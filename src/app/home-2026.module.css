@@ -483,3 +483,6 @@
 }
 .savannahIntro:not(.savannahIntroReady) .savannahIntroControls{opacity:0;pointer-events:none}
 .savannahIntro.savannahIntroReady .savannahIntroControls{opacity:1}
+
+/* Intro is a film, never a full-screen Savannah portrait. */
+.savannahFilm .savannahIntroFallbackImage{opacity:0!important;background-image:none!important}
