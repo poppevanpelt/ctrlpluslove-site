@@ -2,12 +2,14 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { resumeSavannahAudio, speakSavannahNeurally, stopSavannahLocalVoice } from "../savannah-local-voice";
+import { selectSavannahOutfit } from "../savannah-wardrobe";
 
 type Line = { role: "assistant" | "user"; text: string };
 const GREETING = "Oh. It’s you. I was just getting comfortable. What are we breaking today?";
 const INITIAL: Line[] = [{ role: "assistant", text: GREETING }];
 
 export default function SavannahPage() {
+  const [outfit] = useState(() => selectSavannahOutfit(new Date()));
   const [lines, setLines] = useState<Line[]>(INITIAL);
   const [draft, setDraft] = useState("");
   const [pending, setPending] = useState(false);
