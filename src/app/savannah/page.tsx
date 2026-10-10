@@ -14,6 +14,8 @@ export default function SavannahPage() {
   const [error, setError] = useState("");
   const [speaking, setSpeaking] = useState(false);
   const [presenceAssetsReady, setPresenceAssetsReady] = useState(false);
+  const [motionPlaying, setMotionPlaying] = useState(false);
+  const [motionUnavailable, setMotionUnavailable] = useState(false);
   const [thinkingLater, setThinkingLater] = useState(false);
   const [reaction, setReaction] = useState(false);
   const [speechMotion, setSpeechMotion] = useState(0);
@@ -381,11 +383,12 @@ Status: UNSENT · no delivery channel connected.`;
         <div className="savannah-desk-list">{deskItems.length===0?<p>No saved entries yet.</p>:deskItems.map(item=><article key={item.id}><small>{item.type.toUpperCase()} · {item.date}</small><p>{item.text}</p><button type="button" onClick={() => {const keep=deskItems.filter(entry=>entry.id!==item.id);try{localStorage.setItem("savannah-desk-local-v1",JSON.stringify(keep));setDeskItems(keep)}catch{setDeskNotice("Could not remove entry.")}}}>DELETE</button></article>)}</div>
       </section>}
       <style>{`\n        .savannah-portrait > .savannah-speech-mouth { display:none !important; }\n      `}</style>
-      <div className={"savannah-portrait" + (presenceAssetsReady ? " has-presence-assets" : "") + (speaking ? " is-speaking" : listening ? " is-listening" : pending ? " is-thinking" : " is-waiting")}>
+      <div className={"savannah-portrait" + (motionPlaying ? " has-motion" : "") + (speaking ? " is-speaking" : listening ? " is-listening" : pending ? " is-thinking" : " is-waiting")}>
         <button type="button" className="savannah-face-tap" onClick={() => void tapSavannah()} aria-label={needsPlayback ? "Hear Savannah" : listening ? "Finish recording" : "Speak to Savannah"} />
-        <img className="savannah-original-avatar" src="/savannah-avatar.jpg" alt="Savannah" />
-        {presenceAssetsReady && (["waiting", "listening", "thinking-1", "thinking-2", "bridge", "reaction"] as const).map(state => <img key={state} src={`/savannah-presence/${state}.webp`} className={"savannah-state-frame" + (visualPresence === state ? " is-active" : "")} alt="" aria-hidden="true" />)}
-        {!presenceAssetsReady && speaking && (
+        <img className="savannah-original-avatar" src={presenceAssetsReady ? "/savannah-presence/waiting.webp" : "/savannah-avatar.jpg"} alt="Savannah" />
+        {!motionUnavailable && <video className={"savannah-motion-film" + (motionPlaying ? " is-playing" : "")} src="/savannah-presence/savannah-motion.mp4" muted playsInline autoPlay loop preload="auto" aria-hidden="true" onPlaying={() => setMotionPlaying(true)} onError={() => { setMotionUnavailable(true); setMotionPlaying(false); }} onStalled={() => setMotionPlaying(false)} />}
+
+        {false && speaking && (
           <img
             src="/savannah-avatar.jpg"
             alt=""
@@ -483,7 +486,9 @@ Status: UNSENT · no delivery channel connected.`;
         .savannah-portrait.is-speaking img:not(.savannah-speech-mouth) { animation:savannah-answer 7.4s ease-in-out infinite; filter:saturate(.92); }
         .savannah-portrait.is-listening img:not(.savannah-speech-mouth) { animation:savannah-attend 6.7s ease-in-out infinite; filter:saturate(.9); }\n        @keyframes savannah-attend { 0%,26%,80%,100% { transform:scale(1.01) translateY(0); } 43%,55% { transform:scale(1.014) translateY(-.06%); } }\n        /* Approved six-frame presence set; fall back to original until all assets load. */
         .savannah-portrait img.savannah-original-avatar { transition:opacity 600ms ease; }
-        .savannah-portrait.has-presence-assets img.savannah-original-avatar { opacity:0; }
+        .savannah-portrait.has-motion img.savannah-original-avatar { opacity:0; }
+        .savannah-portrait .savannah-motion-film { position:absolute; inset:0; z-index:2; width:100%; height:100%; object-fit:contain; object-position:center; opacity:0; pointer-events:none; transition:opacity 350ms ease; }
+        .savannah-portrait .savannah-motion-film.is-playing { opacity:1; }
         .savannah-portrait img.savannah-state-frame { z-index:1; position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center center; animation:none !important; transform:none !important; opacity:0; transition:opacity 820ms ease; pointer-events:none; }
         /* Per-image normalization measured from approved WebP face bounds (810x1080). */
         .savannah-portrait img.savannah-state-frame[src$="/waiting.webp"] { transform:translate(-.7%,2.1%) scale(.924) !important; }
