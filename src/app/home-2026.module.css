@@ -470,3 +470,7 @@
 .instrumentQuickstart strong{font-size:clamp(25px,2.7vw,42px);line-height:.99;letter-spacing:-.05em}
 .instrumentQuickstart b{margin-top:auto;padding-top:14px;border-top:1px solid currentColor;font-size:13px}
 @media(max-width:900px){.instrumentQuickstart{grid-template-columns:1fr}.instrumentQuickstart a{min-height:160px;gap:15px}}
+
+/* Never leave a black loading stage when external film is not ready. */
+.savannahFilm .savannahIntroFallbackImage{opacity:1;background-image:linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.27)),url("/savannah-avatar.jpg?v=20261002-4");background-position:center 22%;background-size:cover}
+.savannahIntroReady:not(.savannahIntroFallback) .savannahFilm .savannahIntroFallbackImage{opacity:0;transition:opacity .32s ease .12s}
