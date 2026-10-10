@@ -205,7 +205,7 @@ export default function SavannahIntro() {
     const video = videoRef.current;
     if (!video) return;
     // Mobile asset is already trimmed past the unwanted close-up.
-    const trimmed = video.currentSrc.includes("savannah-intro-mobile-20261010.mp4");
+    const trimmed = video.currentSrc.includes("savannah-intro-mobile-v2.mp4");
     const t = video.currentTime + (trimmed ? START_AT : 0);
 
     if (t >= LOCK_AT) {
@@ -256,7 +256,7 @@ export default function SavannahIntro() {
             // If Safari starts at zero, keep the unwanted close-up hidden.
             // Reveal only once the approved wide scene has been reached.
             const video = videoRef.current;
-            const trimmed = video?.currentSrc.includes("savannah-intro-mobile-20261010.mp4");
+            const trimmed = video?.currentSrc.includes("savannah-intro-mobile-v2.mp4");
             if (!handoffStarted.current && (video?.currentTime ?? 0) >= (trimmed ? 0.08 : START_AT - 0.08)) {
               setReady(true);
             }
@@ -265,7 +265,7 @@ export default function SavannahIntro() {
           onEnded={() => completeHandoff(false)}
           onError={() => completeHandoff(false)}
         >
-          <source media="(max-width: 768px)" src="https://ctrl-love-media.floot.app/_cdn/static/savannah-intro-mobile-20261010.mp4" type="video/mp4" />
+          <source media="(max-width: 768px)" src="https://ctrl-love-media.floot.app/_cdn/static/savannah-intro-mobile-v2.mp4" type="video/mp4" />
           <source src="https://ctrl-love-media.floot.app/_cdn/static/savannah-intro.mp4" type="video/mp4" />
         </video>
         <div className={styles.savannahIntroShade} />
