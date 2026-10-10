@@ -97,6 +97,7 @@ export default function Home() {
         <div className={styles.heroCopyRight} data-savannah-handoff-panel="true">
           <p>AI can generate more answers than we will ever need.</p>
           <strong>The interesting problem is knowing what deserves to be believed.</strong>
+          <a className={styles.heroTry} href="#instruments">Try a working instrument <span aria-hidden="true">↘</span></a>
         </div>
       </section>
 
@@ -146,6 +147,12 @@ export default function Home() {
       <section className={styles.section} id="instruments">
         <div className={styles.kicker}>A few instruments inside the machine</div>
         <h2>Pressure, not prompts.</h2>
+        <p className={styles.instrumentInvite}>No presentation needed. Choose a problem and try the mechanism.</p>
+        <div className={styles.instrumentQuickstart} aria-label="Start with a working instrument">
+          <a href="/meeting-filter/" data-family="analyse"><span>01 / SAVE AN HOUR</span><strong>Should this meeting exist?</strong><b>Run Meeting Filter ↗</b></a>
+          <a href="/decision-accelerator/" data-family="accelerate"><span>02 / MAKE THE CALL</span><strong>What should we actually do?</strong><b>Run Decision Accelerator ↗</b></a>
+          <a href="/radar/" data-family="observe"><span>03 / NOTICE SOMETHING</span><strong>What are we missing?</strong><b>Open Radar ↗</b></a>
+        </div>
         <a className={styles.cabinetPreview} href="/cabinet/" aria-label="Enter the instrument cabinet">
           <img src="/cabinet/assets/instrument-family.webp" alt="A sunlit workshop filled with ctrl+love decision instruments" loading="lazy" width="1536" height="1024" />
           <div className={styles.cabinetCaption}>
