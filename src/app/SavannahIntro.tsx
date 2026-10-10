@@ -19,11 +19,7 @@ export default function SavannahIntro() {
   const [fallback, setFallback] = useState(false);
   const [stage, setStage] = useState<SceneStage>("film");
   const videoRef = useRef<HTMLVideoElement>(null);
-  const seekPrimedRef = useRef(false);
-  const playbackAttemptRef = useRef(false);
-  const seekFallbackTimerRef = useRef<number | null>(null);
   const bufferTimerRef = useRef<number | null>(null);
-  const frameProbeRef = useRef(false);
   const handoffStarted = useRef(false);
   const lockStarted = useRef(false);
   const audioRef = useRef<AudioContext | null>(null);
@@ -37,7 +33,7 @@ export default function SavannahIntro() {
     }
   };
   const guardBuffering = () => {
-    if (handoffStarted.current || !playbackAttemptRef.current) return;
+    if (handoffStarted.current || !videoRef.current || videoRef.current.paused) return;
     cancelBufferTimer();
     bufferTimerRef.current = window.setTimeout(() => {
       bufferTimerRef.current = null;
@@ -154,38 +150,17 @@ export default function SavannahIntro() {
 
   useEffect(() => () => releasePageLock(), []);
 
-  // iOS Safari may paint the video at t=0 before a metadata-time seek.
-  // Never reveal or autoplay the film until the intended first frame is decoded.
-  const primeVideo = () => {
+  // Native muted inline autoplay is more reliable on iOS than pausing and
+  // seeking before the first play(). Keep the initial close-up concealed
+  // until the video naturally reaches the approved wide frame.
+  const attemptPlayback = () => {
     const video = videoRef.current;
-    if (!video || seekPrimedRef.current) return;
-    seekPrimedRef.current = true;
-    video.pause();
+    if (!video || handoffStarted.current || !video.paused) return;
     video.muted = true;
-    // Safari occasionally never dispatches `seeked` for a remote MP4.
-    // Prefer the approved start frame, but play from the beginning rather than abandon the film.
-    seekFallbackTimerRef.current = window.setTimeout(() => {
-      seekFallbackTimerRef.current = null;
-      if (handoffStarted.current || playbackAttemptRef.current) return;
-      video.currentTime = 0;
-      startFromPrimedFrame(true);
-    }, 1400);
-    try { video.currentTime = START_AT; }
-    catch { video.currentTime = 0; startFromPrimedFrame(true); }
-  };
-
-  const startFromPrimedFrame = (allowFromBeginning = false) => {
-    const video = videoRef.current;
-    if (!video || handoffStarted.current || playbackAttemptRef.current || (!allowFromBeginning && video.currentTime < START_AT - 0.08)) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      video.pause();
-      completeHandoff(false);
-      return;
-    }
-    playbackAttemptRef.current = true;
-    if (seekFallbackTimerRef.current !== null) { window.clearTimeout(seekFallbackTimerRef.current); seekFallbackTimerRef.current = null; }
-    // Preserve the portrait until playback really begins, not merely until play() is requested.
-    void video.play().catch(() => completeHandoff(false));
+    void video.play().catch(() => {
+      // Autoplay may be disallowed in embedded browsers; the homepage stays
+      // visible and the watchdog will remove this invisible intro.
+    });
   };
 
   const clickLock = () => {
@@ -206,7 +181,6 @@ export default function SavannahIntro() {
   const completeHandoff = (animateIntoPlace = false) => {
     if (handoffStarted.current) return;
     handoffStarted.current = true;
-    if (seekFallbackTimerRef.current !== null) { window.clearTimeout(seekFallbackTimerRef.current); seekFallbackTimerRef.current = null; }
     cancelBufferTimer();
     setStage("locked");
     // Only an actual cinematic handoff gets the vault-lock treatment.
@@ -225,30 +199,6 @@ export default function SavannahIntro() {
       releasePageLock();
       window.dispatchEvent(new Event("savannah-intro-complete"));
     }, seatDelay + 50);
-  };
-
-  const revealOnDecodedWideFrame = () => {
-    const video = videoRef.current;
-    if (!video || ready || handoffStarted.current || video.currentTime < START_AT - 0.08) return;
-    if (typeof video.requestVideoFrameCallback !== "function") {
-      // Older browsers: use playback position as the best available signal.
-      setReady(true);
-      return;
-    }
-    if (frameProbeRef.current) return;
-    frameProbeRef.current = true;
-    const probe = () => {
-      video.requestVideoFrameCallback((_now, frame) => {
-        if (handoffStarted.current) return;
-        if (frame.mediaTime >= START_AT - 0.08) {
-          frameProbeRef.current = false;
-          setReady(true);
-        } else {
-          probe();
-        }
-      });
-    };
-    probe();
   };
 
   const trackHandoff = () => {
@@ -290,14 +240,13 @@ export default function SavannahIntro() {
         <video
           ref={videoRef}
           className={styles.savannahIntroVideo}
+          autoPlay
           muted
           playsInline
           preload="auto"
-          onLoadedMetadata={primeVideo}
-          onSeeked={() => startFromPrimedFrame()}
-          onLoadedData={() => startFromPrimedFrame()}
-          onCanPlay={() => startFromPrimedFrame()}
-          onPlaying={() => { cancelBufferTimer(); setFallback(false); revealOnDecodedWideFrame(); }}
+          onLoadedMetadata={attemptPlayback}
+          onCanPlay={attemptPlayback}
+          onPlaying={() => { cancelBufferTimer(); setFallback(false); }}
           onWaiting={guardBuffering}
           onStalled={guardBuffering}
           onTimeUpdate={() => {
@@ -305,7 +254,7 @@ export default function SavannahIntro() {
             // If Safari starts at zero, keep the unwanted close-up hidden.
             // Reveal only once the approved wide scene has been reached.
             if (!handoffStarted.current && (videoRef.current?.currentTime ?? 0) >= START_AT - 0.08) {
-              revealOnDecodedWideFrame();
+              setReady(true);
             }
             trackHandoff();
           }}
