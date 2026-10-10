@@ -1,6 +1,7 @@
 "use client";
 
 import Vapi from "@vapi-ai/web";
+import { SavannahPerformance } from "./SavannahPerformance";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { SAVANNAH_BRIEFING } from "./savannah-briefing";
@@ -981,6 +982,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
             }}
           />
 
+          <SavannahPerformance phase={assistantSpeaking ? "speaking" : micListening ? "listening" : textPending ? "thinking" : "waiting"} />
           {assistantSpeaking ? (
             <>
               <img

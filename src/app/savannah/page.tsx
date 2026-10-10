@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { SavannahPerformance, type SavannahPerformanceHandle } from "../SavannahPerformance";
 import { resumeSavannahAudio, speakSavannahNeurally, stopSavannahLocalVoice } from "../savannah-local-voice";
 import { selectSavannahOutfit, savannahOutfitAssetsReady, savannahPortraitPath, SAVANNAH_CANONICAL_FRAMES } from "../savannah-wardrobe";
 
 type Line = { role: "assistant" | "user"; text: string };
 const GREETING = "Oh. It’s you. I was just getting comfortable. What are we breaking today?";
+const BORIS_GREETING = "Boris. I hear you take requests. So do I.";
 const INITIAL: Line[] = [{ role: "assistant", text: GREETING }];
 
 export default function SavannahPage() {
@@ -24,6 +26,11 @@ export default function SavannahPage() {
   const [audioEnabled, setAudioEnabled] = useState(true);
   const [voiceMessage, setVoiceMessage] = useState("TAP TO HEAR SAVANNAH");
   const [started, setStarted] = useState(false);
+  const performanceRef = useRef<SavannahPerformanceHandle>(null);
+  const greeted = useRef(false);
+  const borisVisitor = useRef(false);
+  const returningVisitor = useRef(false);
+  const [greetingActive, setGreetingActive] = useState(false);
   const [showTranscript, setShowTranscript] = useState(false);
   const [listening, setListening] = useState(false);
   const [showTyping, setShowTyping] = useState(true);
@@ -120,6 +127,17 @@ Status: UNSENT · no delivery channel connected.`;
   const input = useRef<HTMLInputElement>(null);
   const lastReply = useRef(GREETING);
   const audioEnabledRef = useRef(true);
+  useEffect(() => {
+    try {
+      returningVisitor.current = localStorage.getItem("savannah-visited-v1") === "yes";
+      localStorage.setItem("savannah-visited-v1", "yes");
+    } catch { returningVisitor.current = false; }
+    borisVisitor.current = new URLSearchParams(window.location.search).get("visitor")?.toLowerCase() === "boris";
+    if (borisVisitor.current) {
+      lastReply.current = BORIS_GREETING;
+      setLines([{ role: "assistant", text: BORIS_GREETING }]);
+    }
+  }, []);
   const steelClickPlayed = useRef(false);
   // Steel balls: a single restrained click on first interaction, never during speech.
   function steelHello() {
@@ -167,6 +185,17 @@ Status: UNSENT · no delivery channel connected.`;
   useEffect(() => () => { stopSavannahLocalVoice(); voiceMonitor.current?.(); recorder.current?.stop(); micStream.current?.getTracks().forEach(track => track.stop()); }, []);
 
   async function tapSavannah() {
+    if (greetingActive) return;
+    if (!greeted.current && !started && audioEnabledRef.current) {
+      greeted.current = true;
+      if (borisVisitor.current || !returningVisitor.current) {
+        // First visits and personal hellos use her live voice.
+        await speak(borisVisitor.current ? BORIS_GREETING : GREETING, () => { if (!requestInFlight.current) void tapSavannah(); });
+        return;
+      }
+      if (await performanceRef.current?.greet() === false) return;
+      // Continue directly into the existing microphone flow after her hello.
+    }
     steelHello();
     if (needsPlayback) { const played = await resumeSavannahAudio(); if (played) { setNeedsPlayback(false); setMicStatus("TAP TO TALK"); return; } }
     if (micPhase.current === "recording") { voiceMonitor.current?.(); voiceMonitor.current = null; if (recorder.current?.state === "recording") recorder.current.stop(); return; }
@@ -265,7 +294,7 @@ Status: UNSENT · no delivery channel connected.`;
   useEffect(() => { const timer = window.setTimeout(() => setArrivalReady(true), 1450); return () => window.clearTimeout(timer); }, []);
   useEffect(() => { bottom.current?.scrollIntoView({ block: "end" }); }, [lines, pending, error]);
 
-  async function speak(text: string) {
+  async function speak(text: string, afterSpeaking?: () => void) {
     if (!audioEnabledRef.current) return;
     setAudioBusy(true);
     setNeedsPlayback(false);
@@ -273,7 +302,7 @@ Status: UNSENT · no delivery channel connected.`;
     setVoiceMessage("CONNECTING VOICE…");
     const ok = await speakSavannahNeurally(text, {
       onStart: () => { setReaction(false); setSpeaking(true); setAudioBusy(false); setVoiceMessage("SAVANNAH IS SPEAKING"); setMicStatus("SAVANNAH IS SPEAKING"); },
-      onEnd: () => { setReaction(true); window.setTimeout(() => setReaction(false), 1600); setSpeaking(false); setAudioBusy(false); setVoiceMessage("HEAR THAT AGAIN"); setMicStatus("TAP TO TALK"); },
+      onEnd: () => { setReaction(true); window.setTimeout(() => setReaction(false), 1600); setSpeaking(false); setAudioBusy(false); setVoiceMessage("HEAR THAT AGAIN"); setMicStatus("TAP TO TALK"); afterSpeaking?.(); },
     });
     if (!ok) {
       setSpeaking(false);
@@ -305,6 +334,8 @@ Status: UNSENT · no delivery channel connected.`;
   async function ask(question: string) {
     const value = question.trim();
     if (!value || requestInFlight.current || pending) return;
+    greeted.current = true;
+    performanceRef.current?.stop();
     requestInFlight.current = true;
     setStarted(true);
     const next: Line[] = [...lines, { role: "user", text: value }];
@@ -424,6 +455,7 @@ Status: UNSENT · no delivery channel connected.`;
             }}
           />
         )}
+        <SavannahPerformance ref={performanceRef} phase={speaking ? "speaking" : listening ? "listening" : pending ? "thinking" : "waiting"} onGreetingChange={setGreetingActive} />
         <div className={"savannah-shade" + (speaking ? " is-speaking" : "")} />
         <div className={"savannah-presence" + (listening ? " is-listening" : speaking ? " is-speaking" : pending ? " is-thinking" : "")} aria-hidden="true"><span /><span /><span /></div>
         <div className={"savannah-intro" + (arrivalReady ? " is-ready" : "")} aria-hidden="true">
@@ -456,7 +488,7 @@ Status: UNSENT · no delivery channel connected.`;
         <div ref={bottom} />
       </section>}
       {false && !showTranscript && !started && <div className="savannah-quick-start"><button type="button" disabled={pending} onClick={() => void ask("What is ctrl+love, and why should I care?")}>INTRODUCE YOURSELF</button><button type="button" disabled={pending} onClick={() => void ask("Challenge my business idea. First ask me what it is.")}>CHALLENGE ME</button></div>}
-      <div className="savannah-mic-hint" aria-live="polite"><button type="button" className="savannah-talk-direct" onClick={() => void tapSavannah()} disabled={pending || audioBusy}>{listening ? "DONE TALKING" : needsPlayback ? "HEAR SAVANNAH" : "TALK TO SAVANNAH"}</button><span>{micStatus}</span></div>
+      <div className="savannah-mic-hint" aria-live="polite"><button type="button" className="savannah-talk-direct" onClick={() => void tapSavannah()} disabled={pending || audioBusy}>{greetingActive ? "SAVANNAH IS SAYING HELLO" : listening ? "DONE TALKING" : needsPlayback ? "HEAR SAVANNAH" : "TALK TO SAVANNAH"}</button><span>{micStatus}</span></div>
       {!showTranscript && error && <p className="savannah-error-compact" role="alert">{error}</p>}
       {showTyping && <form className="savannah-compose" onSubmit={send}>
         <label className="savannah-input-wrap">
@@ -501,7 +533,7 @@ Status: UNSENT · no delivery channel connected.`;
         .savannah-mic-hint { display:flex; flex-shrink:0; justify-content:center; align-items:center; gap:12px; min-height:42px; font-size:10px; letter-spacing:.15em; font-weight:750; background:#191817; color:#f5eee3; }
         .savannah-mic-live::before { content:""; display:inline-block; width:6px; height:6px; margin-right:9px; border-radius:50%; background:#a7dfac; vertical-align:middle; }
         .savannah-mic-hint button { background:none; border:none; font-size:17px; color:#f5eee3; padding:8px; cursor:pointer; }
-        .savannah-face-tap { position:absolute; inset:0; width:100%; height:100%; border:0; padding:0; background:transparent; z-index:2; cursor:pointer; touch-action:manipulation; }
+        .savannah-face-tap { position:absolute; inset:0; width:100%; height:100%; border:0; padding:0; background:transparent; z-index:4; cursor:pointer; touch-action:manipulation; }
         .savannah-face-tap:focus-visible { outline:3px solid #f8e3bb; outline-offset:-5px; }
         .savannah-portrait { flex:1 1 auto; min-height:0; height:auto; position:relative; background:#272421; overflow:hidden; }
         .savannah-portrait img:not(.savannah-speech-mouth) { width:100%; height:100%; display:block; object-fit:contain; object-position:center center; filter:saturate(.88); animation:savannah-breathe 8.8s ease-in-out infinite; transform-origin:50% 42%; transition:filter 650ms ease; }
