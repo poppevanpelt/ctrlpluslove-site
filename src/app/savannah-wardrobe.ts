@@ -35,6 +35,35 @@ export function selectSavannahOutfit(date: Date, room?: string): SavannahOutfit 
 export const SAVANNAH_CANONICAL_FRAMES: SavannahExpression[] = [
   "waiting", "listening", "thinking-1", "thinking-2", "bridge", "reaction",
 ];
-export function savannahPortraitPath(_outfit: SavannahOutfit, expression: SavannahExpression): string {
-  return `/savannah-presence/${expression}.webp`;
+// The wardrobe photos are optional until each outfit has its complete
+// aligned six-expression pack. Never substitute a single still image for
+// speaking/listening frames: that would remove existing character animation.
+export const SAVANNAH_OUTFIT_DIRECTORY: Record<SavannahOutfit, string | null> = {
+  "white-sweater": null, // Existing approved and face-aligned /savannah-presence frames
+  "camel-blazer": "/savannah-wardrobe/camel-blazer",
+  denim: "/savannah-wardrobe/denim",
+  "black-satin": "/savannah-wardrobe/black-satin",
+  suede: "/savannah-wardrobe/suede",
+};
+
+export function savannahPortraitPath(outfit: SavannahOutfit, expression: SavannahExpression, ready = false): string {
+  const directory = ready ? SAVANNAH_OUTFIT_DIRECTORY[outfit] : null;
+  return directory
+    ? `${directory}/${expression}.webp`
+    : `/savannah-presence/${expression}.webp`;
+}
+
+// Only activate an alternate wardrobe after ALL its expression assets exist.
+export async function savannahOutfitAssetsReady(outfit: SavannahOutfit): Promise<boolean> {
+  const directory = SAVANNAH_OUTFIT_DIRECTORY[outfit];
+  if (!directory) return false;
+  try {
+    const checks = await Promise.all(SAVANNAH_CANONICAL_FRAMES.map(async expression => {
+      const response = await fetch(`${directory}/${expression}.webp`, { method: "HEAD" });
+      return response.ok && response.headers.get("content-type")?.startsWith("image/");
+    }));
+    return checks.every(Boolean);
+  } catch {
+    return false;
+  }
 }
