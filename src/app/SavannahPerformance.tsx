@@ -14,6 +14,9 @@ export const SavannahPerformance = forwardRef<SavannahPerformanceHandle, Props>(
   const video = useRef<HTMLVideoElement>(null);
   const presence = useRef<HTMLVideoElement>(null);
   const greeting = useRef(false);
+  const manualMotion = useRef(false);
+  const [motionBlocked, setMotionBlocked] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
   const latestPhase = useRef(phase);
   const [greetingVisible, setGreetingVisible] = useState(false);
   const [presenceReady, setPresenceReady] = useState(false);
@@ -59,6 +62,9 @@ export const SavannahPerformance = forwardRef<SavannahPerformanceHandle, Props>(
     const player = presenceFailed ? video.current : presence.current;
     if (!player || !(presenceFailed ? ready && !failed : presenceReady)) return;
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => setReducedMotion(preference.matches);
+    updatePreference();
+    preference.addEventListener("change", updatePreference);
     let cancelled = false;
     let frame = 0;
     let playing = false;
@@ -73,7 +79,7 @@ export const SavannahPerformance = forwardRef<SavannahPerformanceHandle, Props>(
     if (!greeting.current) player.currentTime = windows[0][0];
     nextMove.current = 0;
     const tick = () => {
-      if (document.hidden || preference.matches || greeting.current) {
+      if (document.hidden || (preference.matches && !manualMotion.current) || greeting.current) {
         if (!greeting.current || !presenceFailed) player.pause();
         playing = false;
         schedule();
@@ -88,20 +94,30 @@ export const SavannahPerformance = forwardRef<SavannahPerformanceHandle, Props>(
         player.currentTime = window[0];
         end.current = window[1];
         playing = true;
-        void player.play().catch(() => { if (!cancelled) { playing = false; schedule(); } });
+        void player.play().then(() => { if (!cancelled) setMotionBlocked(false); }).catch(() => { if (!cancelled) { playing = false; setMotionBlocked(true); schedule(); } });
       }
       frame = requestAnimationFrame(tick);
     };
     frame = requestAnimationFrame(tick);
-    return () => { cancelled = true; cancelAnimationFrame(frame); player.pause(); };
+    return () => { cancelled = true; cancelAnimationFrame(frame); preference.removeEventListener("change", updatePreference); player.pause(); };
   }, [ready, presenceReady, presenceFailed, failed]);
 
   useEffect(() => () => { video.current?.pause(); presence.current?.pause(); finish.current?.(false); }, []);
 
   if (failed && presenceFailed) return null;
   const style: CSSProperties = { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain", background: "#272421", zIndex: 3, pointerEvents: "none" };
+  function startMovement() {
+    manualMotion.current = true;
+    setReducedMotion(false);
+    const player = presenceFailed ? video.current : presence.current;
+    if (!player || greeting.current) return;
+    player.muted = true;
+    // Native playback starts inside the click, including Safari's user gesture.
+    void player.play().then(() => { setMotionBlocked(false); nextMove.current = 0; }).catch(() => setMotionBlocked(true));
+  }
   return <>
-    {!presenceFailed && <video ref={presence} src={PRESENCE} muted playsInline preload="auto" aria-label="Savannah" onLoadedData={() => setPresenceReady(true)} onError={() => setPresenceFailed(true)} style={{ ...style, opacity: presenceReady ? 1 : 0 }} />}
+    {!presenceFailed && <video ref={presence} src={PRESENCE} muted autoPlay playsInline preload="auto" aria-label="Savannah" onLoadedData={() => setPresenceReady(true)} onCanPlay={() => setPresenceReady(true)} onError={() => setPresenceFailed(true)} style={{ ...style, opacity: presenceReady ? 1 : 0 }} />}
     {!failed && <video ref={video} src={SOURCE} muted playsInline preload="auto" aria-label="Savannah greeting" onLoadedData={() => { if (!greeting.current && video.current) video.current.currentTime = 3.92; setReady(true); }} onEnded={() => stop(true)} onError={() => { stop(); setFailed(true); }} style={{ ...style, zIndex: 4, opacity: ready && (greetingVisible || !presenceReady || presenceFailed) ? 1 : 0, transition: "opacity 180ms ease" }} />}
+    {(motionBlocked || reducedMotion) && <button type="button" onClick={event => { event.stopPropagation(); startMovement(); }} style={{ position: "absolute", bottom: 12, left: 12, zIndex: 6, border: "1px solid #ffffff66", borderRadius: 20, padding: "8px 12px", background: "#272421cc", color: "white", cursor: "pointer", fontSize: 12 }}>Start movement</button>}
   </>;
 });
