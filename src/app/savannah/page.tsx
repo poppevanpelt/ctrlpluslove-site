@@ -13,6 +13,9 @@ export default function SavannahPage() {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   const [speaking, setSpeaking] = useState(false);
+  const [presenceAssetsReady, setPresenceAssetsReady] = useState(false);
+  const [thinkingLater, setThinkingLater] = useState(false);
+  const [reaction, setReaction] = useState(false);
   const [speechMotion, setSpeechMotion] = useState(0);
   const [audioBusy, setAudioBusy] = useState(false);
   const [audioEnabled, setAudioEnabled] = useState(true);
@@ -257,8 +260,8 @@ Status: UNSENT · no delivery channel connected.`;
     setMicStatus("SAVANNAH IS ANSWERING");
     setVoiceMessage("CONNECTING VOICE…");
     const ok = await speakSavannahNeurally(text, {
-      onStart: () => { setSpeaking(true); setAudioBusy(false); setVoiceMessage("SAVANNAH IS SPEAKING"); setMicStatus("SAVANNAH IS SPEAKING"); },
-      onEnd: () => { setSpeaking(false); setAudioBusy(false); setVoiceMessage("HEAR THAT AGAIN"); setMicStatus("TAP TO TALK"); },
+      onStart: () => { setReaction(false); setSpeaking(true); setAudioBusy(false); setVoiceMessage("SAVANNAH IS SPEAKING"); setMicStatus("SAVANNAH IS SPEAKING"); },
+      onEnd: () => { setReaction(true); window.setTimeout(() => setReaction(false), 1600); setSpeaking(false); setAudioBusy(false); setVoiceMessage("HEAR THAT AGAIN"); setMicStatus("TAP TO TALK"); },
     });
     if (!ok) {
       setSpeaking(false);
@@ -318,6 +321,27 @@ Status: UNSENT · no delivery channel connected.`;
     }
   }
 
+  // Preload the complete approved portrait set before revealing a single frame.
+  // Missing assets never break the existing, working Savannah photograph.
+  useEffect(() => {
+    let live = true;
+    const names = ["waiting", "listening", "thinking-1", "thinking-2", "bridge", "reaction"];
+    Promise.all(names.map(name => new Promise<boolean>(resolve => {
+      const picture = new Image();
+      picture.onload = () => resolve(true);
+      picture.onerror = () => resolve(false);
+      picture.src = `/savannah-presence/${name}.webp`;
+    }))).then(results => { if (live && results.every(Boolean)) setPresenceAssetsReady(true); });
+    return () => { live = false; };
+  }, []);
+  useEffect(() => {
+    setThinkingLater(false);
+    if (!pending) return;
+    const timer = window.setTimeout(() => setThinkingLater(true), 1550);
+    return () => window.clearTimeout(timer);
+  }, [pending]);
+  const visualPresence = speaking ? "bridge" : listening ? "listening" : pending ? (thinkingLater ? "thinking-2" : "thinking-1") : reaction ? "reaction" : "waiting";
+
   return (
     <main id="main-content" className="savannah-shell">
       <header className="savannah-topbar">
@@ -363,10 +387,11 @@ Status: UNSENT · no delivery channel connected.`;
         <div className="savannah-desk-list">{deskItems.length===0?<p>No saved entries yet.</p>:deskItems.map(item=><article key={item.id}><small>{item.type.toUpperCase()} · {item.date}</small><p>{item.text}</p><button type="button" onClick={() => {const keep=deskItems.filter(entry=>entry.id!==item.id);try{localStorage.setItem("savannah-desk-local-v1",JSON.stringify(keep));setDeskItems(keep)}catch{setDeskNotice("Could not remove entry.")}}}>DELETE</button></article>)}</div>
       </section>}
       <style>{`\n        .savannah-portrait > .savannah-speech-mouth { display:none !important; }\n      `}</style>
-      <div className={"savannah-portrait" + (speaking ? " is-speaking" : listening ? " is-listening" : pending ? " is-thinking" : " is-waiting")}>
+      <div className={"savannah-portrait" + (presenceAssetsReady ? " has-presence-assets" : "") + (speaking ? " is-speaking" : listening ? " is-listening" : pending ? " is-thinking" : " is-waiting")}>
         <button type="button" className="savannah-face-tap" onClick={() => void tapSavannah()} aria-label={needsPlayback ? "Hear Savannah" : listening ? "Finish recording" : "Speak to Savannah"} />
-        <img src="/savannah-avatar.jpg" alt="Savannah" />
-        {speaking && (
+        <img className="savannah-original-avatar" src="/savannah-avatar.jpg" alt="Savannah" />
+        {presenceAssetsReady && (["waiting", "listening", "thinking-1", "thinking-2", "bridge", "reaction"] as const).map(state => <img key={state} src={`/savannah-presence/${state}.webp`} className={"savannah-state-frame" + (visualPresence === state ? " is-active" : "")} alt="" aria-hidden="true" />)}
+        {!presenceAssetsReady && speaking && (
           <img
             src="/savannah-avatar.jpg"
             alt=""
@@ -462,7 +487,13 @@ Status: UNSENT · no delivery channel connected.`;
            quieter face while speaking. No fake looping mouth animation. */
         .savannah-portrait.is-thinking img:not(.savannah-speech-mouth) { animation:savannah-consider 4.6s ease-in-out infinite; filter:saturate(.85) brightness(.98); }
         .savannah-portrait.is-speaking img:not(.savannah-speech-mouth) { animation:savannah-answer 7.4s ease-in-out infinite; filter:saturate(.92); }
-        .savannah-portrait.is-listening img:not(.savannah-speech-mouth) { animation:savannah-attend 6.7s ease-in-out infinite; filter:saturate(.9); }\n        @keyframes savannah-attend { 0%,26%,80%,100% { transform:scale(1.01) translateY(0); } 43%,55% { transform:scale(1.014) translateY(-.06%); } }\n        @keyframes savannah-consider {
+        .savannah-portrait.is-listening img:not(.savannah-speech-mouth) { animation:savannah-attend 6.7s ease-in-out infinite; filter:saturate(.9); }\n        @keyframes savannah-attend { 0%,26%,80%,100% { transform:scale(1.01) translateY(0); } 43%,55% { transform:scale(1.014) translateY(-.06%); } }\n        /* Approved six-frame presence set; fall back to original until all assets load. */
+        .savannah-portrait img.savannah-original-avatar { transition:opacity 600ms ease; }
+        .savannah-portrait.has-presence-assets img.savannah-original-avatar { opacity:0; }
+        .savannah-portrait img.savannah-state-frame { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center center; animation:none !important; transform:none !important; opacity:0; transition:opacity 820ms ease; pointer-events:none; }
+        .savannah-portrait img.savannah-state-frame.is-active { opacity:1; }
+        @media (prefers-reduced-motion:reduce) { .savannah-portrait img.savannah-state-frame { transition:none !important; } }
+        @keyframes savannah-consider {
           0%,22%,74%,100% { transform:scale(1.008) translate(0,0); }
           38%,56% { transform:scale(1.013) translate(-.28%,.06%); }
         }
