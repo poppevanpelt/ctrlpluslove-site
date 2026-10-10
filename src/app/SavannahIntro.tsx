@@ -20,6 +20,7 @@ export default function SavannahIntro() {
   const [stage, setStage] = useState<SceneStage>("film");
   const videoRef = useRef<HTMLVideoElement>(null);
   const seekPrimedRef = useRef(false);
+  const playbackAttemptRef = useRef(false);
   const handoffStarted = useRef(false);
   const lockStarted = useRef(false);
   const audioRef = useRef<AudioContext | null>(null);
@@ -152,14 +153,15 @@ export default function SavannahIntro() {
 
   const startFromPrimedFrame = () => {
     const video = videoRef.current;
-    if (!video || handoffStarted.current || ready || video.currentTime < START_AT - 0.08) return;
+    if (!video || handoffStarted.current || playbackAttemptRef.current || video.currentTime < START_AT - 0.08) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       video.pause();
       completeHandoff(false);
       return;
     }
-    setReady(true);
-    void video.play().then(() => setFallback(false)).catch(() => completeHandoff(false));
+    playbackAttemptRef.current = true;
+    // Preserve the portrait until playback really begins, not merely until play() is requested.
+    void video.play().catch(() => completeHandoff(false));
   };
 
   const clickLock = () => {
@@ -245,6 +247,7 @@ export default function SavannahIntro() {
           onSeeked={startFromPrimedFrame}
           onLoadedData={startFromPrimedFrame}
           onCanPlay={startFromPrimedFrame}
+          onPlaying={() => { if (!handoffStarted.current) { setReady(true); setFallback(false); } }}
           onTimeUpdate={trackHandoff}
           onEnded={() => completeHandoff(false)}
           onError={() => completeHandoff(false)}
