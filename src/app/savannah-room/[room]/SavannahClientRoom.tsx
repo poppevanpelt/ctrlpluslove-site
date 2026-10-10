@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./room.module.css";
 import { roomBrief } from "./room-briefs";
+import { selectSavannahOutfit } from "../../savannah-wardrobe";
 import { BONKERS_TOOLS } from "../../bonkers/tools";
 import { speakSavannahNeurally, stopSavannahLocalVoice } from "../../savannah-local-voice";
 
@@ -37,6 +38,7 @@ type Props = {
 };
 
 export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
+  const [outfit] = useState(() => selectSavannahOutfit(new Date(), roomSlug));
   const isBonkers = roomSlug.toLowerCase() === "bonkers";
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const speechRecognitionRef = useRef<BrowserSpeechRecognition | null>(null);
@@ -224,7 +226,7 @@ export default function SavannahClientRoom({ roomSlug, roomName }: Props) {
   };
 
   return (
-    <main className={styles.root} id="main-content" data-room={roomSlug}>
+    <main className={styles.root} id="main-content" data-room={roomSlug} data-savannah-outfit={outfit}>
       <div className={styles.videoLayer} aria-hidden="true">
         <video
           ref={videoRef}
