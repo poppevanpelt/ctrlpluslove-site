@@ -543,7 +543,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
     const openSavannah = () => {
       setManualOpen(true);
       setCompact(false);
-      openVoiceRef.current();
+      // Open ready for the dependable speech-to-reply route; microphone requires a visitor tap.
     };
     window.addEventListener("savannah-open", openSavannah);
     return () => window.removeEventListener("savannah-open", openSavannah);
@@ -1139,11 +1139,11 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
 
 
 
-          <button
+          {false && <button
             type="button"
-            onClick={() => { if (state === "error") { toggleBrowserMic(); return; } modeRef.current = "voice"; setMode("voice"); void toggle(); }}
-            disabled={busy}
-            aria-label={label}
+            onClick={toggleBrowserMic}
+            disabled={textPending}
+            aria-label={micListening ? "Finish speaking to Savannah" : "Talk to Savannah"}
             style={{
               width: "100%", minHeight: 58, touchAction: "manipulation",
               border: 0, borderBottom: "1px solid rgba(21,21,21,.18)",
@@ -1153,7 +1153,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
               letterSpacing: ".08em", textTransform: "uppercase",
               cursor: busy ? "default" : "pointer", opacity: busy ? .55 : 1,
             }}
-          >{label}</button>
+          >{micListening ? "Listening… tap to finish" : textPending ? "Savannah is thinking…" : "Talk to Savannah"}</button>
           <button
             type="button"
             onClick={toggleBrowserMic}
@@ -1177,7 +1177,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
             }}
           >
             {micListening ? "Listening… tap to stop" : "Or speak one message"}
-          </button>
+          </button>}
 
           <button
             type="button"
