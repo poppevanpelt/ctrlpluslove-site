@@ -19,6 +19,7 @@ export default function SavannahIntro() {
   const [fallback, setFallback] = useState(false);
   const [stage, setStage] = useState<SceneStage>("film");
   const videoRef = useRef<HTMLVideoElement>(null);
+  const wallContentRef = useRef<HTMLDivElement>(null);
   const bufferTimerRef = useRef<number | null>(null);
   const handoffStarted = useRef(false);
   const lockStarted = useRef(false);
@@ -97,6 +98,25 @@ export default function SavannahIntro() {
     metal.start(now);
     metal.stop(now + 0.11);
   };
+
+  // The pivoting wall carries the actual homepage composition. Clone the
+  // rendered nav and hero so the flattened wall matches the live site on
+  // this exact viewport; no hand-tuned fake headline to jump at CLUNC.
+  useEffect(() => {
+    const host = wallContentRef.current;
+    const nav = document.querySelector(`main .${styles.nav}`);
+    const hero = document.querySelector(`main .${styles.hero}`);
+    if (!host || !nav || !hero) return;
+    const page = document.createElement("div");
+    page.className = styles.page;
+    for (const node of [nav, hero]) {
+      const clone = node.cloneNode(true) as HTMLElement;
+      clone.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
+      page.appendChild(clone);
+    }
+    host.replaceChildren(page);
+    return () => host.replaceChildren();
+  }, []);
 
   useEffect(() => {
     document.documentElement.classList.add("savannah-intro-running");
@@ -277,7 +297,12 @@ export default function SavannahIntro() {
         </video>
         <div className={styles.savannahIntroShade} />
       </div>
-
+      {/* The solid wall is IN FRONT of Savannah. It hinges over her,
+          completely occluding the film before it seats as the real site. */}
+      <div className={styles.savannahPivotWall} aria-hidden="true">
+        <div ref={wallContentRef} className={styles.savannahPivotWallContent} />
+        <div className={styles.savannahPivotWallEdge} />
+      </div>
 
       {/* The film is the entrance. No second manual "Come in" gate. */}
     </section>
