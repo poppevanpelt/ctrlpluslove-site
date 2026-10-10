@@ -486,3 +486,16 @@
 
 /* Intro is a film, never a full-screen Savannah portrait. */
 .savannahFilm .savannahIntroFallbackImage{opacity:0!important;background-image:none!important}
+
+/* Fail-open intro: never put a black loading layer in front of the actual site.
+   Keep the video mounted so mobile Safari can decode/play it, then reveal only
+   after its approved wide scene is genuinely running. */
+.savannahIntro:not(.savannahIntroReady):not(.savannahHandoff){
+  opacity:0.001!important;
+  background:transparent!important;
+  pointer-events:none!important;
+}
+.savannahIntro.savannahIntroReady:not(.savannahHandoff){
+  opacity:1!important;
+  pointer-events:auto;
+}
