@@ -321,18 +321,12 @@ Status: UNSENT · no delivery channel connected.`;
     }
   }
 
-  // Preload the complete approved portrait set before revealing a single frame.
-  // Missing assets never break the existing, working Savannah photograph.
+  // A single ready waiting frame activates the portrait set; late frames
+  // load naturally. If an image fails, the original portrait remains behind it.
   useEffect(() => {
-    let live = true;
-    const names = ["waiting", "listening", "thinking-1", "thinking-2", "bridge", "reaction"];
-    Promise.all(names.map(name => new Promise<boolean>(resolve => {
-      const picture = new Image();
-      picture.onload = () => resolve(true);
-      picture.onerror = () => resolve(false);
-      picture.src = `/savannah-presence/${name}.webp`;
-    }))).then(results => { if (live && results.every(Boolean)) setPresenceAssetsReady(true); });
-    return () => { live = false; };
+    const picture = new Image();
+    picture.onload = () => setPresenceAssetsReady(true);
+    picture.src = "/savannah-presence/waiting.webp";
   }, []);
   useEffect(() => {
     setThinkingLater(false);
@@ -490,8 +484,8 @@ Status: UNSENT · no delivery channel connected.`;
         .savannah-portrait.is-listening img:not(.savannah-speech-mouth) { animation:savannah-attend 6.7s ease-in-out infinite; filter:saturate(.9); }\n        @keyframes savannah-attend { 0%,26%,80%,100% { transform:scale(1.01) translateY(0); } 43%,55% { transform:scale(1.014) translateY(-.06%); } }\n        /* Approved six-frame presence set; fall back to original until all assets load. */
         .savannah-portrait img.savannah-original-avatar { transition:opacity 600ms ease; }
         .savannah-portrait.has-presence-assets img.savannah-original-avatar { opacity:0; }
-        .savannah-portrait img.savannah-state-frame { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center center; animation:none !important; transform:none !important; opacity:0; transition:opacity 820ms ease; pointer-events:none; }
-        .savannah-portrait img.savannah-state-frame.is-active { opacity:1; }
+        .savannah-portrait img.savannah-state-frame { z-index:1; position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center center; animation:none !important; transform:none !important; opacity:0; transition:opacity 820ms ease; pointer-events:none; }
+        .savannah-portrait img.savannah-state-frame.is-active { opacity:1; z-index:2; }
         @media (prefers-reduced-motion:reduce) { .savannah-portrait img.savannah-state-frame { transition:none !important; } }
         @keyframes savannah-consider {
           0%,22%,74%,100% { transform:scale(1.008) translate(0,0); }
