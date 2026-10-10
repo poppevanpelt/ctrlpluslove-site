@@ -243,6 +243,8 @@ export default function SavannahIntro() {
           preload="auto"
           onLoadedMetadata={primeVideo}
           onSeeked={startFromPrimedFrame}
+          onLoadedData={startFromPrimedFrame}
+          onCanPlay={startFromPrimedFrame}
           onTimeUpdate={trackHandoff}
           onEnded={() => completeHandoff(false)}
           onError={() => completeHandoff(false)}
