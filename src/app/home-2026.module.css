@@ -599,3 +599,75 @@
     transition:none!important;
   }
 }
+
+
+/* Savannah remains in the room. A solid homepage wall hinges in FRONT of
+   her, progressively occluding the film; no video dissolve whatsoever. */
+.savannahIntro .savannahPivotWall{
+  position:absolute;
+  inset:0;
+  z-index:5;
+  overflow:hidden;
+  background:#fbf7f0;
+  transform-origin:100% 50%;
+  transform:perspective(1200px) rotateY(-88deg) scaleX(.08);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  box-shadow:-28px 0 45px rgba(0,0,0,.22);
+}
+.savannahPivotWallContent{position:absolute;inset:0;overflow:hidden}
+.savannahPivotWallContent>.page{
+  min-height:100%;
+  height:100%;
+  width:100%;
+  overflow:hidden;
+}
+.savannahPivotWallContent .nav{position:relative;top:auto}
+.savannahPivotWallContent .hero{min-height:calc(100vh - 74px)}
+.savannahPivotWallEdge{
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  width:7px;
+  background:linear-gradient(90deg,#171715,#7d776e 35%,#e3d8c7 100%);
+  box-shadow:4px 0 9px rgba(0,0,0,.24);
+}
+.savannahIntro.savannahSceneRegister .savannahPivotWall{
+  opacity:1;
+  visibility:visible;
+  transform:perspective(1200px) rotateY(-78deg) scaleX(.17);
+  transition:transform .16s cubic-bezier(.4,0,.6,1)!important;
+}
+.savannahIntro.savannahSceneDaylight .savannahPivotWall,
+.savannahIntro.savannahSceneLocked .savannahPivotWall{
+  opacity:1;
+  visibility:visible;
+  transform:perspective(1200px) rotateY(0deg) scaleX(1);
+  transition:transform .78s cubic-bezier(.16,.8,.18,1)!important;
+}
+.savannahIntro.savannahSceneRegister .savannahFilm,
+.savannahIntro.savannahSceneDaylight .savannahFilm{
+  opacity:1!important;
+  transform:none!important;
+  filter:none!important;
+  transition:none!important;
+}
+.savannahIntro.savannahSceneLocked .savannahFilm{
+  opacity:1!important;
+  transform:none!important;
+  transition:none!important;
+}
+.savannahIntro.savannahSceneLocked .savannahPivotWallEdge{opacity:0}
+@media(max-width:650px){
+  .savannahIntro.savannahSceneRegister .savannahPivotWall{
+    transform:perspective(700px) rotateY(-78deg) scaleX(.17);
+  }
+  .savannahIntro.savannahSceneDaylight .savannahPivotWall,
+  .savannahIntro.savannahSceneLocked .savannahPivotWall{
+    transform:perspective(700px) rotateY(0deg) scaleX(1);
+  }
+}
