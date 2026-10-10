@@ -68,6 +68,7 @@ export const SavannahPerformance = forwardRef<SavannahPerformanceHandle, Props>(
     let cancelled = false;
     let frame = 0;
     let playing = false;
+    let pendingPlay = false;
     let cursor = 0;
     const windows = presenceFailed ? [[3.92, 4.92]] : [[0, 1.95], [1.95, 3.9], [3.9, 6]];
     const schedule = () => {
@@ -87,14 +88,14 @@ export const SavannahPerformance = forwardRef<SavannahPerformanceHandle, Props>(
         player.pause();
         playing = false;
         schedule();
-      } else if (!playing && performance.now() >= nextMove.current) {
+      } else if (!playing && !pendingPlay && performance.now() >= nextMove.current) {
         const window = windows[cursor % windows.length];
         cursor += 1;
         player.muted = true;
         player.currentTime = window[0];
         end.current = window[1];
-        playing = true;
-        void player.play().then(() => { if (!cancelled) setMotionBlocked(false); }).catch(() => { if (!cancelled) { playing = false; setMotionBlocked(true); schedule(); } });
+        pendingPlay = true;
+        void player.play().then(() => { if (!cancelled) { pendingPlay = false; playing = true; setMotionBlocked(false); } }).catch(() => { if (!cancelled) { pendingPlay = false; playing = false; setMotionBlocked(true); schedule(); } });
       }
       frame = requestAnimationFrame(tick);
     };
