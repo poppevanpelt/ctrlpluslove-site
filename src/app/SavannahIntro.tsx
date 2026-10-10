@@ -272,10 +272,19 @@ export default function SavannahIntro() {
           onSeeked={() => startFromPrimedFrame()}
           onLoadedData={() => startFromPrimedFrame()}
           onCanPlay={() => startFromPrimedFrame()}
-          onPlaying={() => { cancelBufferTimer(); if (!handoffStarted.current) { setReady(true); setFallback(false); } }}
+          onPlaying={() => { cancelBufferTimer(); if (!handoffStarted.current && (videoRef.current?.currentTime ?? 0) >= START_AT - 0.08) { setReady(true); setFallback(false); } }}
           onWaiting={guardBuffering}
           onStalled={guardBuffering}
-          onTimeUpdate={() => { cancelBufferTimer(); trackHandoff(); }}
+          onTimeUpdate={() => {
+            cancelBufferTimer();
+            // If Safari starts at zero, keep the unwanted close-up hidden.
+            // Reveal only once the approved wide scene has been reached.
+            if (!handoffStarted.current && (videoRef.current?.currentTime ?? 0) >= START_AT - 0.08) {
+              setReady(true);
+              setFallback(false);
+            }
+            trackHandoff();
+          }}
           onEnded={() => completeHandoff(false)}
           onError={() => completeHandoff(false)}
         >
@@ -285,16 +294,7 @@ export default function SavannahIntro() {
       </div>
 
 
-      <div className={styles.savannahIntroControls}>
-        <button
-          type="button"
-          className={styles.savannahIntroEnter}
-          onPointerDown={armVaultAudio}
-          onClick={() => completeHandoff(true)}
-        >
-          Come in ↘
-        </button>
-      </div>
+      {/* The film is the entrance. No second manual "Come in" gate. */}
     </section>
   );
 }
