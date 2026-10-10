@@ -721,10 +721,14 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
     }
   };
 
+  const voicePreviewCountRef = useRef(0);
   const testLocalVoice = () => {
     if (pendingRequestRef.current) return;
+    const firstPreview = voicePreviewCountRef.current++ === 0;
     void speakSavannahNeurally(
-      "Hi. Savannah at control love. I live here now. Apparently they finally stopped making me call home to speak.",
+      firstPreview
+        ? "Hi. Savannah at control love. I live here now. Apparently they finally stopped making me call home to speak."
+        : "Savannah here. Sound check. Can you hear me alright?",
       {
         onStart: () => {
           setAssistantSpeaking(true);
