@@ -24,6 +24,8 @@ export default function SavannahPage() {
   const [showTranscript, setShowTranscript] = useState(false);
   const [listening, setListening] = useState(false);
   const [showTyping, setShowTyping] = useState(true);
+  const micPhase = useRef<"idle" | "opening" | "recording" | "processing">("idle");
+  const requestInFlight = useRef(false);
   const recorder = useRef<MediaRecorder | null>(null);
   const micStream = useRef<MediaStream | null>(null);
   const micChunks = useRef<Blob[]>([]);
@@ -164,12 +166,14 @@ Status: UNSENT · no delivery channel connected.`;
   async function tapSavannah() {
     steelHello();
     if (needsPlayback) { const played = await resumeSavannahAudio(); if (played) { setNeedsPlayback(false); setMicStatus("TAP TO TALK"); return; } }
-    if (listening) { voiceMonitor.current?.(); voiceMonitor.current = null; recorder.current?.stop(); return; }
-    if (pending || audioBusy) return;
+    if (micPhase.current === "recording") { voiceMonitor.current?.(); voiceMonitor.current = null; if (recorder.current?.state === "recording") recorder.current.stop(); return; }
+    if (micPhase.current !== "idle" || requestInFlight.current || pending || audioBusy) return;
     if (speaking) { stopSavannahLocalVoice(); setSpeaking(false); }
     if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") {
       setShowTyping(true); setMicStatus("MIC UNAVAILABLE"); return;
     }
+    micPhase.current = "opening";
+    setMicStatus("OPENING MICROPHONE…");
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       micStream.current = stream;
@@ -179,13 +183,14 @@ Status: UNSENT · no delivery channel connected.`;
       micChunks.current = [];
       capture.ondataavailable = event => { if (event.data.size) micChunks.current.push(event.data); };
       capture.onstop = async () => {
+        micPhase.current = "processing";
         voiceMonitor.current?.(); voiceMonitor.current = null;
         stream.getTracks().forEach(track => track.stop());
         micStream.current = null;
         setListening(false);
         setMicStatus("UNDERSTANDING…");
         const blob = new Blob(micChunks.current, { type: capture.mimeType || "audio/mp4" });
-        if (!blob.size) { setMicStatus("TAP TO TRY AGAIN"); return; }
+        if (!blob.size) { setMicStatus("TAP TO TRY AGAIN"); micPhase.current = "idle"; return; }
         const data = new FormData();
         data.append("audio", blob, blob.type.includes("webm") ? "savannah.webm" : "savannah.m4a");
         try {
@@ -198,9 +203,12 @@ Status: UNSENT · no delivery channel connected.`;
           setError(reason instanceof Error ? reason.message : "Microphone failed.");
           setMicStatus("TAP TO TRY AGAIN");
           setShowTyping(true);
+        } finally {
+          micPhase.current = "idle";
         }
       };
       capture.start();
+      micPhase.current = "recording";
       // Light voice activity detection: only auto-send after speech was heard,
       // followed by a meaningful pause. Tapping again always sends immediately.
       try {
@@ -245,6 +253,7 @@ Status: UNSENT · no delivery channel connected.`;
       setListening(true);
       setMicStatus("LISTENING");
     } catch {
+      micPhase.current = "idle";
       setError("Allow microphone access to speak with Savannah, or use the keyboard.");
       setMicStatus("MIC PERMISSION NEEDED");
       setShowTyping(true);
@@ -292,7 +301,8 @@ Status: UNSENT · no delivery channel connected.`;
 
   async function ask(question: string) {
     const value = question.trim();
-    if (!value || pending) return;
+    if (!value || requestInFlight.current || pending) return;
+    requestInFlight.current = true;
     setStarted(true);
     const next: Line[] = [...lines, { role: "user", text: value }];
     setLines(next);
@@ -317,6 +327,7 @@ Status: UNSENT · no delivery channel connected.`;
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Connection failed. Try again.");
     } finally {
+      requestInFlight.current = false;
       setPending(false);
     }
   }
