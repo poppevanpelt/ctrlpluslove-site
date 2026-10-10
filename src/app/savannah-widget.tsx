@@ -72,6 +72,7 @@ function describeError(error: unknown) {
 export function SavannahWidget() {
   const pathname = usePathname();
   const vapiRef = useRef<Vapi | null>(null);
+  const openVoiceRef = useRef<() => void>(() => {});
   const textVapiRef = useRef<Vapi | null>(null);
   const conversationRef = useRef<Array<{ role: ConversationRole; text: string }>>([
     { role: "assistant", text: "Hi. Savannah at control love. What's up?" },
@@ -543,6 +544,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
     const openSavannah = () => {
       setManualOpen(true);
       setCompact(false);
+      openVoiceRef.current();
     };
     window.addEventListener("savannah-open", openSavannah);
     return () => window.removeEventListener("savannah-open", openSavannah);
@@ -823,6 +825,12 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
           : "The audio line did not open. Try me again.",
       );
     }
+  };
+
+  openVoiceRef.current = () => {
+    modeRef.current = "voice";
+    setMode("voice");
+    if (state !== "live" && state !== "connecting" && state !== "requesting") void toggle();
   };
 
   const label =
@@ -1157,6 +1165,21 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
 
           <button
             type="button"
+            onClick={() => { modeRef.current = "voice"; setMode("voice"); void toggle(); }}
+            disabled={busy}
+            aria-label={label}
+            style={{
+              width: "100%", minHeight: 58, touchAction: "manipulation",
+              border: 0, borderBottom: "1px solid rgba(21,21,21,.18)",
+              background: state === "live" ? "#e9dfcd" : "#151515",
+              color: state === "live" ? "#151515" : "#f5f1e7",
+              font: "inherit", fontSize: 11, fontWeight: 800,
+              letterSpacing: ".08em", textTransform: "uppercase",
+              cursor: busy ? "default" : "pointer", opacity: busy ? .55 : 1,
+            }}
+          >{label}</button>
+          <button
+            type="button"
             onClick={toggleBrowserMic}
             disabled={textPending}
             aria-pressed={micListening}
@@ -1177,7 +1200,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
               opacity: textPending ? .52 : 1,
             }}
           >
-            {micListening ? "Listening… tap to stop" : "Talk to Savannah"}
+            {micListening ? "Listening… tap to stop" : "Or speak one message"}
           </button>
 
           <button
