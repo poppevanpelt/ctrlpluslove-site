@@ -671,3 +671,52 @@
     transform:perspective(700px) rotateY(0deg) scaleX(1);
   }
 }
+
+
+/* Mechanical choreography: TIC (hold), TAC (swing), seat (catch), CLUNC (cut).
+   These beats are timed separately in SavannahIntro.tsx. */
+.savannahIntro.savannahSceneRegister .savannahPivotWall{
+  opacity:0!important;
+  visibility:hidden!important;
+  transform:perspective(1200px) rotateY(-86deg) scaleX(.12)!important;
+  transition:none!important;
+}
+.savannahIntro.savannahSceneDaylight .savannahPivotWall{
+  opacity:1!important;
+  visibility:visible!important;
+  transform:perspective(1200px) rotateY(-3.5deg) scale(.988)!important;
+  transition:transform .88s cubic-bezier(.15,.67,.3,.99)!important;
+}
+.savannahIntro.savannahSceneSeated .savannahPivotWall{
+  opacity:1!important;
+  visibility:visible!important;
+  transform:perspective(1200px) rotateY(0deg) scale(1)!important;
+  transition:transform .16s cubic-bezier(.14,.86,.18,1)!important;
+}
+.savannahIntro.savannahSceneSeated{
+  background:transparent!important;
+}
+.savannahIntro.savannahSceneSeated .savannahFilm{
+  opacity:1!important;
+  filter:none!important;
+  transform:none!important;
+  transition:none!important;
+}
+.savannahIntro.savannahSceneSeated .savannahPivotWallEdge{opacity:1}
+.savannahIntro.savannahSceneLocked .savannahPivotWall{
+  opacity:1!important;
+  visibility:visible!important;
+  transform:none!important;
+  transition:none!important;
+}
+@media(max-width:650px){
+  .savannahIntro.savannahSceneRegister .savannahPivotWall{
+    transform:perspective(700px) rotateY(-86deg) scaleX(.12)!important;
+  }
+  .savannahIntro.savannahSceneDaylight .savannahPivotWall{
+    transform:perspective(700px) rotateY(-3.5deg) scale(.988)!important;
+  }
+  .savannahIntro.savannahSceneSeated .savannahPivotWall{
+    transform:perspective(700px) rotateY(0deg) scale(1)!important;
+  }
+}
