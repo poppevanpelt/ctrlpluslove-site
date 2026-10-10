@@ -25,6 +25,8 @@ export default function SavannahIntro() {
   const audioRef = useRef<AudioContext | null>(null);
   const lockSeatTimerRef = useRef<number | null>(null);
   const lockReleaseTimerRef = useRef<number | null>(null);
+  const pivotStartedRef = useRef(false);
+  const pivotTimersRef = useRef<number[]>([]);
 
   const cancelBufferTimer = () => {
     if (bufferTimerRef.current !== null) {
@@ -148,7 +150,10 @@ export default function SavannahIntro() {
     return () => window.clearTimeout(watchdog);
   }, []);
 
-  useEffect(() => () => releasePageLock(), []);
+  useEffect(() => () => {
+    pivotTimersRef.current.forEach(id => window.clearTimeout(id));
+    releasePageLock();
+  }, []);
 
   // Native muted inline autoplay is more reliable on iOS than pausing and
   // seeking before the first play(). Keep the initial close-up concealed
@@ -169,13 +174,14 @@ export default function SavannahIntro() {
 
     document.documentElement.classList.remove("savannah-page-locked");
     document.documentElement.classList.add("savannah-page-locking");
+    // The latch fires on the exact frame the wall becomes the real site.
+    playVaultClunk();
     lockSeatTimerRef.current = window.setTimeout(() => {
       lockSeatTimerRef.current = null;
-      playVaultClunk();
       document.documentElement.classList.remove("savannah-page-locking");
       document.documentElement.classList.add("savannah-page-locked");
-      lockReleaseTimerRef.current = window.setTimeout(() => releasePageLock(), 460);
-    }, 620);
+      lockReleaseTimerRef.current = window.setTimeout(() => releasePageLock(), 220);
+    }, 100);
   };
 
   const completeHandoff = (animateIntoPlace = false) => {
@@ -185,11 +191,11 @@ export default function SavannahIntro() {
     setStage("locked");
     // Only an actual cinematic handoff gets the vault-lock treatment.
     // A failed, skipped or reduced-motion film must leave the site immediately usable.
-    const cinematic = ready && !fallback && videoRef.current !== null && videoRef.current.currentTime >= REGISTER_AT;
+    const cinematic = ready && !fallback && pivotStartedRef.current;
     if (cinematic) clickLock();
     else releasePageLock();
 
-    const seatDelay = cinematic ? (animateIntoPlace ? 620 : 180) : 0;
+    const seatDelay = 0;
     // Keep the projected heading on its measured DOM coordinates while seating.
     // The final handoff is a cut, not an opacity dissolve.
     window.setTimeout(() => setHandoff(true), seatDelay);
@@ -208,16 +214,17 @@ export default function SavannahIntro() {
     const trimmed = video.currentSrc.includes("savannah-intro-mobile-v2.mp4");
     const t = video.currentTime + (trimmed ? START_AT : 0);
 
-    if (t >= LOCK_AT) {
-      setStage("locked");
-      clickLock();
-    } else if (t >= DAYLIGHT_AT) {
-      setStage("daylight");
-    } else if (t >= REGISTER_AT) {
+    if (t >= REGISTER_AT && !pivotStartedRef.current && !handoffStarted.current) {
+      // TIC: freeze the projected sentence as part of the physical wall.
+      pivotStartedRef.current = true;
+      video.pause();
+      cancelBufferTimer();
       setStage("register");
+      // TAC: the wall rotates into the viewer, becoming square to the screen.
+      pivotTimersRef.current.push(window.setTimeout(() => setStage("daylight"), 160));
+      // CLUNC: one hard cut from the aligned wall to the actual site.
+      pivotTimersRef.current.push(window.setTimeout(() => completeHandoff(true), 960));
     }
-
-    if (t >= HANDOFF_AT) completeHandoff(false);
   };
 
   if (!visible) return null;
