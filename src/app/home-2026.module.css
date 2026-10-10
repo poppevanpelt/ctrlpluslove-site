@@ -544,3 +544,58 @@
 @media(prefers-reduced-motion:reduce) {
   .savannahIntro .savannahFilm{transition:none!important}
 }
+
+
+/* TIC / TAC / CLUNC — one physical wall, not a dissolve.
+   TIC: pause video on projected statement. TAC: rotate the entire filmed
+   surface towards the viewer. CLUNC: cut to the already-mounted homepage. */
+.savannahIntro.savannahSceneRegister,
+.savannahIntro.savannahSceneDaylight,
+.savannahIntro.savannahSceneLocked {
+  background:transparent!important;
+}
+.savannahIntro.savannahSceneRegister .savannahFilm,
+.savannahIntro.savannahSceneDaylight .savannahFilm {
+  opacity:1!important;
+  filter:none!important;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  transform-style:preserve-3d;
+  transform-origin:100% 50%;
+}
+.savannahIntro.savannahSceneRegister .savannahFilm {
+  transform:perspective(1200px) rotateY(-10deg) scale(.96)!important;
+  transition:transform .16s cubic-bezier(.15,.85,.2,1)!important;
+}
+.savannahIntro.savannahSceneDaylight .savannahFilm {
+  transform:perspective(1200px) rotateY(0deg) scale(1)!important;
+  transition:transform .78s cubic-bezier(.12,.72,.14,1)!important;
+}
+.savannahIntro.savannahSceneLocked .savannahFilm {
+  opacity:0!important;
+  transition:none!important;
+  transform:none!important;
+}
+.savannahIntro.savannahSceneRegister .savannahIntroVideo,
+.savannahIntro.savannahSceneDaylight .savannahIntroVideo {
+  opacity:1!important;
+}
+.savannahIntro.savannahSceneRegister .savannahIntroShade,
+.savannahIntro.savannahSceneDaylight .savannahIntroShade {
+  opacity:1!important;
+}
+@media(max-width:650px) {
+  .savannahIntro.savannahSceneRegister .savannahFilm {
+    transform:perspective(820px) rotateY(-8deg) scale(.95)!important;
+  }
+  .savannahIntro.savannahSceneDaylight .savannahFilm {
+    transform:perspective(820px) rotateY(0deg) scale(1)!important;
+  }
+}
+@media(prefers-reduced-motion:reduce) {
+  .savannahIntro.savannahSceneRegister .savannahFilm,
+  .savannahIntro.savannahSceneDaylight .savannahFilm {
+    transform:none!important;
+    transition:none!important;
+  }
+}
