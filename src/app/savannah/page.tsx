@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { resumeSavannahAudio, speakSavannahNeurally, stopSavannahLocalVoice } from "../savannah-local-voice";
-import { selectSavannahOutfit } from "../savannah-wardrobe";
+import { selectSavannahOutfit, savannahOutfitAssetsReady, savannahPortraitPath, SAVANNAH_CANONICAL_FRAMES } from "../savannah-wardrobe";
 
 type Line = { role: "assistant" | "user"; text: string };
 const GREETING = "Oh. It’s you. I was just getting comfortable. What are we breaking today?";
@@ -10,6 +10,7 @@ const INITIAL: Line[] = [{ role: "assistant", text: GREETING }];
 
 export default function SavannahPage() {
   const [outfit] = useState(() => selectSavannahOutfit(new Date()));
+  const [outfitAssetsReady, setOutfitAssetsReady] = useState(false);
   const [lines, setLines] = useState<Line[]>(INITIAL);
   const [draft, setDraft] = useState("");
   const [pending, setPending] = useState(false);
@@ -338,7 +339,7 @@ Status: UNSENT · no delivery channel connected.`;
   // A late-loading expression otherwise flashes the background during a crossfade.
   useEffect(() => {
     let mounted = true;
-    const frames = ["waiting", "listening", "thinking-1", "thinking-2", "bridge", "reaction"];
+    const frames = SAVANNAH_CANONICAL_FRAMES;
     const loads = frames.map((frame) => new Promise<boolean>((resolve) => {
       const picture = new Image();
       picture.onload = () => resolve(true);
@@ -350,6 +351,11 @@ Status: UNSENT · no delivery channel connected.`;
     });
     return () => { mounted = false; };
   }, []);
+  useEffect(() => {
+    let mounted = true;
+    void savannahOutfitAssetsReady(outfit).then(ready => { if (mounted) setOutfitAssetsReady(ready); });
+    return () => { mounted = false; };
+  }, [outfit]);
   useEffect(() => {
     setThinkingLater(false);
     if (!pending) return;
@@ -406,7 +412,7 @@ Status: UNSENT · no delivery channel connected.`;
       <div className={"savannah-portrait" + (presenceAssetsReady ? " has-presence-assets" : "") + (speaking ? " is-speaking" : listening ? " is-listening" : pending ? " is-thinking" : " is-waiting")}>
         <button type="button" className="savannah-face-tap" onClick={() => void tapSavannah()} aria-label={needsPlayback ? "Hear Savannah" : listening ? "Finish recording" : "Speak to Savannah"} />
         <img className="savannah-original-avatar" src="/savannah-avatar.jpg" alt="Savannah" />
-        {presenceAssetsReady && (["waiting", "listening", "thinking-1", "thinking-2", "bridge", "reaction"] as const).map(state => <img key={state} src={`/savannah-presence/${state}.webp`} className={"savannah-state-frame" + (visualPresence === state ? " is-active" : "")} alt="" aria-hidden="true" />)}
+        {presenceAssetsReady && SAVANNAH_CANONICAL_FRAMES.map(state => <img key={`${outfitAssetsReady ? outfit : "canonical"}-${state}`} src={savannahPortraitPath(outfit, state, outfitAssetsReady)} className={"savannah-state-frame" + (visualPresence === state ? " is-active" : "")} alt="" aria-hidden="true" />)}
         {!presenceAssetsReady && speaking && (
           <img
             src="/savannah-avatar.jpg"
