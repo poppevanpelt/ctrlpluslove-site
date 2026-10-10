@@ -499,3 +499,48 @@
   opacity:1!important;
   pointer-events:auto;
 }
+
+
+/* Savannah -> real homepage: a timed, visible scene handoff.
+   The real hero is already underneath the film. Fade the filmed scene away
+   during its final 1.4 seconds, not in a single frame at "locked". */
+.savannahIntro.savannahSceneRegister,
+.savannahIntro.savannahSceneDaylight,
+.savannahIntro.savannahSceneLocked {
+  background:transparent!important;
+}
+.savannahIntro.savannahIntroReady .savannahFilm {
+  transition:opacity .7s cubic-bezier(.32,.05,.24,1),filter .7s ease,transform .7s ease!important;
+}
+.savannahIntro.savannahSceneRegister .savannahFilm {
+  opacity:.52!important;
+  filter:saturate(.94) brightness(1.03);
+  transform:scale(1.006);
+}
+.savannahIntro.savannahSceneDaylight .savannahFilm {
+  opacity:.06!important;
+  filter:saturate(.98) brightness(1.05);
+  transform:scale(1.013);
+}
+.savannahIntro.savannahSceneLocked .savannahFilm {
+  opacity:0!important;
+  filter:none;
+  transform:scale(1.013);
+  transition:opacity .12s linear,filter .12s linear,transform .12s linear!important;
+}
+.savannahIntro.savannahHandoff {
+  opacity:0!important;
+  visibility:hidden;
+  pointer-events:none;
+}
+/* No late-stage body nudge: the image match is the transition, not a
+   separate animation that moves the already visible homepage. */
+:global(html.savannah-page-locking) .page,
+:global(html.savannah-page-locked) .page {
+  transform:none!important;
+  animation:none!important;
+  transition:none!important;
+}
+@media(prefers-reduced-motion:reduce) {
+  .savannahIntro .savannahFilm{transition:none!important}
+}
