@@ -1,4 +1,5 @@
-import { randomUUID } from "node:crypto";
+import { digest } from "../../../../lib/valhalla/receipt-store";
+import { database } from "../../../../lib/valhalla/database";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -16,7 +17,22 @@ export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
   if (body?.instrument !== "conviction") return Response.json({ error: "Unknown instrument." }, { status: 400, headers });
   // Do not accept amount, price ID, discount, fulfillment status or return URL from the caller.
-  const id = randomUUID();
+  if (typeof body?.orderId !== "string" || typeof body?.privateToken !== "string") {
+    return Response.json({ error: "Assessment reference required." }, { status: 400, headers });
+  }
+  const id = body.orderId;
+  if (!/^[0-9a-f-]{36}$/i.test(id) || !/^[a-f0-9]{64}$/.test(body.privateToken)) {
+    return Response.json({ error: "Invalid assessment reference." }, { status: 400, headers });
+  }
+  try {
+    const draft = await database().query(
+      "SELECT order_id FROM valhalla.receipt_drafts WHERE order_id=$1 AND access_hash=$2",
+      [id, digest(body.privateToken)]
+    );
+    if (!draft.rowCount) return Response.json({ error: "Assessment not found." }, { status: 404, headers });
+  } catch {
+    return Response.json({ error: "Assessment storage unavailable." }, { status: 503, headers });
+  }
   const params = new URLSearchParams({
     mode: "payment",
     "line_items[0][price]": price,
