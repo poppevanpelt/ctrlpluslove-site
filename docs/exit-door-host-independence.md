@@ -1,0 +1,56 @@
+# EXIT DOOR — host independence runbook
+
+Purpose: preserve ctrl+love and Savannah if any one hosting provider cannot accept deploys. This runbook records observed infrastructure on 2026-10-12. It is NOT a claim that every API, payment flow or media path has been end-to-end tested.
+
+## Verified inventory (2026-10-12)
+- Source of truth: GitHub `poppevanpelt/ctrlpluslove-site`, production branch `main`.
+- Primary Vercel project: `ctrlpluslove-site` (project `prj_kSL43I98d8bow0fcHxgeSl7dzAoj`). Recent GitHub statuses reported deployment blocks. Existing Vercel production deployment remained READY.
+- Independent Railway project: `ctrlpluslove-site` (`456f54d0-1f40-41e4-b2e3-3f4f231cea8b`), environment `production` (`fd5febc4-d8d5-47af-b49a-4ecadbdd47ab`), service `ctrlpluslove-site` (`2053a1b5-3ce9-40ef-8dba-8f271d19e2e1`).
+- Railway service tracks the same GitHub repository, branch `main`; latest deployment was SUCCESS when inspected.
+- Railway-generated hostname: `ctrlpluslove-site-production.up.railway.app`.
+- Railway custom hostname: `www.ctrlpluslove.com`; Railway reported verified ownership, valid certificate and propagated CNAME to `8oal7ju0.up.railway.app`.
+- Railway persistent volume `savannah-private-inbox` mounted at `/app/data`, 500 MB, in `sfo`. DO NOT destroy or replace it as part of a host switch.
+- Repository includes a Node 22-based Dockerfile and standard `npm run build` / `npm start` scripts. Next.js is not inherently tied to Vercel.
+- The exact traffic route for apex `ctrlpluslove.com`, all API secret configurations and full media/payment behavior remain to be verified.
+
+## No-surprise principles
+1. Keep production Savannah voice and audio playback working. Treat `/savannah/lip-sync` / Simli as a separate experiment.
+2. Never repoint apex DNS, disable Vercel, delete a service, change payment webhooks, or move volumes as part of an unreviewed deploy.
+3. Keep private keys in host secret stores. Compare **names/presence only**, never log secret values, copy .env into Git or paste credentials in reports.
+4. Use the GitHub main branch/commit SHA to compare provider deployments. Do not assume both hosts run the same commit.
+5. Don't confuse independent compute with independent services: voice, databases, persistent files, video CDN, domains, Stripe webhooks, and third-party APIs may remain dependencies.
+
+## Verify the independent route
+1. Inspect Railway deployment status, branch and SHA; check that its domain responds with the intended site (not merely HTTP 200 or a stale placeholder).
+2. Exercise basic page navigation and a non-sensitive test instrument.
+3. Confirm Savannah portrait/video loads, voice playback and microphone permissions on desktop Safari/Chrome and iPhone Safari.
+4. Check protected routes, API auth, and intentional 401/403 behavior. Avoid real customer data or paid transactions in a test.
+5. Verify media URLs, CORS/CSP and external provider redirects specifically on the Railway hostname and `www` origin.
+6. Independently validate Stripe webhook URLs/signatures, idempotency and delivery paths using sandbox/test mode before any changes to production payments.
+7. Back up and restore-test the `/app/data` content using an approved encrypted process; confirm ownership, retention, and permissions. A volume is not a backup.
+8. Compare apex `ctrlpluslove.com` DNS with `www.ctrlpluslove.com`, HTTP redirects and canonical URLs. Do not switch DNS until rollback is documented and tests pass.
+9. Confirm logs and alerting on the alternative host. Record evidence of successful tests and deployment SHAs below.
+
+## Failover procedure — manual, gated
+- Freeze changes; record Vercel and Railway deployment SHAs and current DNS/TTL.
+- Verify Railway is healthy and that all required runtime secrets and persistent dependencies are available.
+- Make and verify a backup of data before any stateful migration. Prefer continuity of the existing Railway volume to moving it.
+- Route traffic only after an explicit production go/no-go. If switching apex, update DNS at its authoritative provider, retain previous records for rollback, and check resolution/HTTPS from multiple networks.
+- Run smoke tests (homepage, navigation, Savannah voice, mic, protected API, instruments, payments in controlled mode), then observe errors and traffic.
+- Roll back DNS or traffic to the last healthy provider if any critical path fails. Preserve volumes and audit logs; never wipe data during rollback.
+
+## Evidence ledger
+| Check | Status 2026-10-12 | Evidence |
+| --- | --- | --- |
+| Railway service exists and tracks GitHub main | VERIFIED | Railway describe-environment |
+| Railway deployment success | VERIFIED (historical status) | Railway describe-environment |
+| www DNS points to Railway | VERIFIED | Railway domain-status |
+| www TLS valid | VERIFIED | Railway domain-status |
+| Apex DNS and effective traffic target | NOT TESTED | Needs DNS / HTTP verification |
+| Savannah live voice and lip sync on Railway | NOT TESTED | Requires real-device QA |
+| Secrets and payment parity | NOT TESTED | Requires private environment review |
+| Encrypted backup and restore of inbox volume | NOT TESTED | Requires backup validation |
+| Full failover + rollback drill | NOT TESTED | Do not switch traffic yet |
+
+## Next action
+Turn this inventory into a repeatable health check and test matrix, then verify the alternative endpoint in a browser. Do not claim EXIT DOOR is production-ready until every critical path is independently checked.
