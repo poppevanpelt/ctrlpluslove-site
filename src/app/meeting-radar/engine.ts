@@ -21,8 +21,8 @@ export function analyse(lines: string[]): Flag[] {
     }
   });
   // Treat only explicit competing proposals within the same short exchange as a conflict.
-  // A quotation, a changed mind by one speaker, or unrelated discussion minutes later
-  // must not trigger an interruption. This is still a deliberately narrow heuristic.
+  // A changed mind by one named speaker, or opposing statements far apart,
+  // must not trigger an interruption. Quoted speech remains a known limitation.
   const speakerOf = (s: string) => /^([^:]{1,30}):\s/.exec(s)?.[1].trim().toLowerCase();
   const building = lines.map((s, i) => /\b(?:we should|we can|let'?s|i think we should)\s+(?:start building(?: now)?|build the first version)\b/i.test(s) ? i : -1).filter(i => i >= 0);
   const blocking = lines.map((s, i) => /\b(?:cannot|can't|should not|must not) start until\b/i.test(s) ? i : -1).filter(i => i >= 0);
