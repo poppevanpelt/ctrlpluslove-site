@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { SavannahPerformance, type SavannahPerformanceHandle } from "../SavannahPerformance";
-import { resumeSavannahAudio, speakSavannahNeurally, stopSavannahLocalVoice } from "../savannah-local-voice";
+import { primeSavannahAudio, resumeSavannahAudio, speakSavannahNeurally, stopSavannahLocalVoice } from "../savannah-local-voice";
 import { selectSavannahOutfit, savannahOutfitAssetsReady, savannahPortraitPath, SAVANNAH_CANONICAL_FRAMES } from "../savannah-wardrobe";
 
 type Line = { role: "assistant" | "user"; text: string };
@@ -11,6 +11,16 @@ const BORIS_GREETING = "Boris. I hear you take requests. So do I.";
 const INITIAL: Line[] = [{ role: "assistant", text: GREETING }];
 
 export default function SavannahPage() {
+  useEffect(() => {
+    // The apex domain may reach a different runtime. Keep voice and chat on
+    // the production origin, even when that runtime cannot apply redirects.
+    if (window.location.hostname === "ctrlpluslove.com") {
+      const url = new URL(window.location.href);
+      url.hostname = "www.ctrlpluslove.com";
+      window.location.replace(url.href);
+    }
+  }, []);
+
   const [outfit] = useState(() => selectSavannahOutfit(new Date()));
   const [outfitAssetsReady, setOutfitAssetsReady] = useState(false);
   const [lines, setLines] = useState<Line[]>(INITIAL);
@@ -186,6 +196,13 @@ Status: UNSENT · no delivery channel connected.`;
 
   async function tapSavannah() {
     if (greetingActive) return;
+    if (needsPlayback) {
+      if (await resumeSavannahAudio()) { setNeedsPlayback(false); return; }
+      primeSavannahAudio();
+      await speak(lastReply.current);
+      return;
+    }
+    primeSavannahAudio();
     if (!greeted.current && !started && audioEnabledRef.current) {
       greeted.current = true;
       if (borisVisitor.current || !returningVisitor.current) {
@@ -197,7 +214,6 @@ Status: UNSENT · no delivery channel connected.`;
       // Continue directly into the existing microphone flow after her hello.
     }
     steelHello();
-    if (needsPlayback) { const played = await resumeSavannahAudio(); if (played) { setNeedsPlayback(false); setMicStatus("TAP TO TALK"); return; } }
     if (micPhase.current === "recording") { voiceMonitor.current?.(); voiceMonitor.current = null; if (recorder.current?.state === "recording") recorder.current.stop(); return; }
     if (micPhase.current !== "idle" || requestInFlight.current || pending || audioBusy) return;
     if (speaking) { stopSavannahLocalVoice(); setSpeaking(false); }
@@ -314,6 +330,7 @@ Status: UNSENT · no delivery channel connected.`;
   }
 
   function replay() {
+    primeSavannahAudio();
     if (speaking || audioBusy) {
       stopSavannahLocalVoice();
       setSpeaking(false);
@@ -328,6 +345,7 @@ Status: UNSENT · no delivery channel connected.`;
 
   async function send(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    primeSavannahAudio();
     await ask(draft);
   }
 
