@@ -32,6 +32,23 @@ const rehearsals = [
     "Alex: Thank you for bringing the notes.",
     "Sam: You're welcome.",
     "Alex: The next meeting is on Thursday."
+  ] },
+  { name: "A person changes their mind", lines: [
+    "Alex: We should start building now.",
+    "Sam: What would make that worthwhile?",
+    "Alex: Actually, we cannot start until approval is clear.",
+    "Sam: Let's test that assumption with customers."
+  ] },
+  { name: "Unrelated proposals far apart", lines: [
+    "Alex: We should start building now.",
+    "Sam: Here is the hiring update.",
+    "Chris: Here is the production update.",
+    "Alex: Here is the budget update.",
+    "Sam: Here is the legal update.",
+    "Chris: Here is the event update.",
+    "Alex: Here is the travel update.",
+    "Sam: Here is the partner update.",
+    "Chris: We cannot start until the proposition is clear."
   ] }
 ];
 
