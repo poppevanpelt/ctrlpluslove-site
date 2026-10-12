@@ -54,3 +54,6 @@ Purpose: preserve ctrl+love and Savannah if any one hosting provider cannot acce
 
 ## Next action
 Turn this inventory into a repeatable health check and test matrix, then verify the alternative endpoint in a browser. Do not claim EXIT DOOR is production-ready until every critical path is independently checked.
+
+## Repeatable read-only HTTP checks
+Run `node scripts/exit-door-smoke.mjs` from any machine with external network/DNS access. Optional explicit HTTPS origins may be provided as positional arguments. This verifies basic page content and response codes on www and the Railway-generated host; it makes no state-changing requests and is not a substitute for browser voice/Stripe/backup tests. In the current execution environment, external DNS lookup was unavailable, so the script could not be executed against public hosts here. Railway's own recent HTTP logs independently show successful responses for both hostnames, including `GET /` on www and `GET /pricing/` on the Railway domain.
