@@ -2,8 +2,7 @@
 
 import { useMemo, useRef, useState } from "react";
 
-type FlagKind = "LOOP" | "CONTRADICTION" | "DECISION" | "EVIDENCE" | "PRODUCTIVE";
-type Flag = { kind: FlagKind; message: string; line: number };
+import { analyse, rank, type FlagKind, type Mode } from "./engine";
 const demo = [
   "Chris: We need to make the brand proposition clearer before we proceed.",
   "Julian: I agree but we should start building now.",
@@ -16,32 +15,6 @@ const demo = [
   "Sikko: Let us test that assumption with five customers before committing.",
   "Chris: Great, I can change my mind if we see that evidence.",
 ];
-
-function analyse(lines: string[]): Flag[] {
-  const result: Flag[] = [];
-  const seen = new Map<string, number>();
-  lines.forEach((original, index) => {
-    const line = original.replace(/^[^:]{1,30}:\s*/, "").toLowerCase().trim();
-    if (!line) return;
-    const clean = line.replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, " ").trim();
-    if (clean.length > 25 && seen.has(clean)) result.push({ kind: "LOOP", message: "This point has been made before. What new evidence would move it forward?", line: index });
-    else if (clean.length > 25) seen.set(clean, index);
-    if (/who (actually )?owns|who decides|not agreed on approval|who approves/i.test(line)) result.push({ kind: "DECISION", message: "Decision ownership or approval is unresolved. Name an owner and a deadline.", line: index });
-    if (/what evidence|where is the evidence|how do we know|what would change your mind/i.test(line)) result.push({ kind: "EVIDENCE", message: "An evidence question has been raised. Record what would count as proof.", line: index });
-  });
-  // An explicit test or willingness to revise indicates that disagreement may be
-  // productive. This is a heuristic, not reliable semantic understanding.
-  const together = lines.join(" ").toLowerCase();
-  const productive = /test (that|the|this) assumption|experiment|prototype and learn|change my mind if|what would change your mind|validate with (customers|users)/.test(together);
-  if (productive) {
-    const i = lines.findIndex(l => /test (that|the|this) assumption|experiment|change my mind if|validate with (customers|users)/i.test(l));
-    result.push({ kind: "PRODUCTIVE", message: "The room has proposed a test or evidence that could change a position. Protect this exploration rather than interrupting it.", line: Math.max(0, i) });
-  }
-  if (/start building now|start building|build the first version/.test(together) && /cannot start until|can't start until/.test(together)) {
-    result.push({ kind: "CONTRADICTION", message: productive ? "There is a disagreement, but a test has been proposed. Agree on its scope before escalating." : "The room is pulling in opposite directions: build now versus wait for clarity. Decide what can be tested without final approval.", line: lines.length - 1 });
-  }
-  return result.sort((a, b) => a.line - b.line);
-}
 
 export default function SavannahMeetingRadar() {
   const [lines, setLines] = useState<string[]>([]);
@@ -61,13 +34,7 @@ export default function SavannahMeetingRadar() {
   const flags = useMemo(() => analyse(visibleLines), [visibleLines]);
   const counts = (kind: FlagKind) => flags.filter(f => f.kind === kind).length;
   // Conservative, inspectable prioritisation. No autonomous microphone output.
-  const ranked = flags.map(f => {
-    const score = f.kind === "CONTRADICTION" ? (flags.some(x => x.kind === "PRODUCTIVE" && x.line >= 0 && x.line <= f.line) ? 1 : 3) : f.kind === "DECISION" ? 2 : f.kind === "PRODUCTIVE" ? 0 : 1;
-    const id = f.kind + ":" + f.line;
-    const threshold = interruptionMode === "quiet" ? 3 : interruptionMode === "balanced" ? 2 : 1;
-    const suppressed = dismissed.includes(id);
-    return { ...f, id, score, action: f.kind === "PRODUCTIVE" ? "PROTECT DISCUSSION" : suppressed ? "DISMISSED" : score >= threshold ? "SUGGEST INTERRUPTING" : "STAY SILENT" };
-  });
+  const ranked = rank(flags, interruptionMode, dismissed);
   const actionable = ranked.filter(f => f.action === "SUGGEST INTERRUPTING");
   const silent = ranked.filter(f => f.action === "STAY SILENT" || f.action === "PROTECT DISCUSSION");
   function speak(text: string, id: string) {
