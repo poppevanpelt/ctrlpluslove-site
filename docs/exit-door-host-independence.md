@@ -66,3 +66,10 @@ Run `node scripts/exit-door-smoke.mjs` from any machine with external network/DN
 - Stripe/Vapi names are absent from this specific Railway service; other integrations may be hosted elsewhere. Payment completion and webhook parity remain unverified. Never test with a live charge.
 - The last successful Railway deployment resolved to commit `ff4209f7ff675a8f6b601f8dbfcdad7a2c199034`, the same SHA used as the base of EXIT DOOR PR #161. The runbook changes do not deploy by themselves.
 - An authenticated encrypted backup-and-restore procedure remains **NOT IMPLEMENTED / NOT EXECUTED**. Do not export or copy the SQLite file until an approved, encryption-protected recovery destination and a verified consistent snapshot method are available. An attached volume is not a backup.
+
+## Offline encrypted recovery utility (2026-10-12)
+- Implemented `scripts/exit-door-sqlite-backup.mjs` and `tests/exit-door-sqlite-backup.mjs` on this PR branch.
+- Local synthetic SQLite test **PASSED**: WAL-backed data captured using `VACUUM INTO`, AES-256-GCM encrypted snapshot, valid restored row and integrity check, rejection of wrong passphrase. Node's SQLite support may show an experimental warning depending on runtime.
+- Operator-only commands: `node scripts/exit-door-sqlite-backup.mjs backup /path/to/source.sqlite /secure/location/snapshot.enc` and `node scripts/exit-door-sqlite-backup.mjs restore /secure/location/snapshot.enc /new/location/restored.sqlite`. Provide `EXIT_DOOR_BACKUP_PASSPHRASE` (24+ characters) through an approved secret mechanism; never commit it or paste it into logs.
+- Both output paths MUST be new; script refuses overwrite. Restores are deliberately never applied in place to production. Handle plaintext restored files carefully and delete them securely when no longer needed.
+- **Not yet performed:** any snapshot or restoration of the actual `/app/data` volume, offsite backup, scheduling, secret escrow, retention policy, recovery time measurement, or production failover. These require separate operational approval and secure storage.
