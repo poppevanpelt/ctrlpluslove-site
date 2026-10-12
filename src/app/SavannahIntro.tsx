@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./home-2026.module.css";
 import { clearSavannahPageLock } from "./savannah-runtime";
 
-const START_AT = 1.35;
+const START_AT = 0.15;
 const REGISTER_AT = 6.2;
 // The film freezes at the projected line; the mechanism then uses its own clock.
 const TIC_HOLD_MS = 290;
