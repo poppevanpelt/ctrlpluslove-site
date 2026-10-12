@@ -460,11 +460,11 @@ Status: UNSENT · no delivery channel connected.`;
       <style>{`\n        .savannah-portrait > .savannah-speech-mouth { display:none !important; }\n      `}</style>
       <div className={"savannah-portrait" + (presenceAssetsReady ? " has-presence-assets" : "") + (speaking ? " is-speaking" : listening ? " is-listening" : pending ? " is-thinking" : " is-waiting")}>
         <button type="button" className="savannah-face-tap" onClick={() => void tapSavannah()} aria-label={needsPlayback ? "Hear Savannah" : listening ? "Finish recording" : "Speak to Savannah"} />
-        <img className="savannah-original-avatar" src="/savannah-avatar.jpg" alt="Savannah" />
+        <img className="savannah-original-avatar" src="/savannah-live-face.jpg?v=20261012" alt="Savannah" />
         {presenceAssetsReady && SAVANNAH_CANONICAL_FRAMES.map(state => <img key={`${outfitAssetsReady ? outfit : "canonical"}-${state}`} src={savannahPortraitPath(outfit, state, outfitAssetsReady)} className={"savannah-state-frame" + (visualPresence === state ? " is-active" : "")} alt="" aria-hidden="true" />)}
         {!presenceAssetsReady && speaking && (
           <img
-            src="/savannah-avatar.jpg"
+            src="/savannah-live-face.jpg?v=20261012"
             alt=""
             aria-hidden="true"
             className="savannah-speech-mouth"

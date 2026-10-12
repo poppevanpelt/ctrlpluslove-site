@@ -20,7 +20,7 @@ import {
   type SavannahFieldNote,
 } from "./savannah-field-notes";
 
-const SAVANNAH_AVATAR = "/savannah-avatar.jpg?v=20261002-4";
+const SAVANNAH_AVATAR = "/savannah-live-face.jpg?v=20261012";
 // Host redeploy trigger: Savannah voice lifecycle fix - 2026-10-07
 
 type State = "idle" | "requesting" | "connecting" | "live" | "error";
@@ -875,7 +875,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
           boxShadow: "0 12px 30px rgba(0,0,0,.14)",
         }}
       >
-        <img src="/home/savannah.jpg" alt="" style={{width:28,height:28,objectFit:"cover",borderRadius:"50%",verticalAlign:"middle",marginRight:9}} />
+        <img src="/savannah-live-face.jpg" alt="" style={{width:28,height:28,objectFit:"cover",borderRadius:"50%",verticalAlign:"middle",marginRight:9}} />
         Savannah · Talk / Type
       </button>
     );
@@ -955,7 +955,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
             position: "relative",
             overflow: "hidden",
             borderRight: "1px solid rgba(21,21,21,.18)",
-            background: '#e9e4d8 url("/home/savannah.jpg?v=20261002-4") center/cover no-repeat',
+            background: '#e9e4d8 url("/savannah-live-face.jpg?v=20261012") center/cover no-repeat',
           }}
         >
           <img
@@ -964,7 +964,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
             alt="Savannah"
             onError={(event) => {
               const img = event.currentTarget;
-              if (!img.src.includes("/home/savannah.jpg")) img.src = "/home/savannah.jpg?v=20261002-fallback";
+              if (!img.src.includes("/home/savannah.jpg")) img.src = "/savannah-live-face.jpg?v=20261012";
             }}
             width={176}
             height={224}
