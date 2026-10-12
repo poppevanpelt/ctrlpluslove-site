@@ -40,3 +40,23 @@ test("ordinary positive conversation does not trigger an interruption", () => {
 test("discussion only becomes a contradiction when both opposing positions appear", () => {
   assert.equal(analyse(conflict.slice(0, 1)).some(f => f.kind === "CONTRADICTION"), false);
 });
+
+test("a productive idea before a later conflict does not erase the conflict", () => {
+  const flags = rank(analyse(["Sikko: Let's test that assumption with customers.", ...conflict]), "balanced");
+  assert.equal(flags.find(x => x.kind === "CONTRADICTION")?.action, "SUGGEST INTERRUPTING");
+});
+test("a distant unrelated experiment cannot silence an earlier contradiction", () => {
+  const gap = Array.from({length: 6}, (_,i) => `Participant: We are discussing topic ${i} in more detail.`);
+  const flags = rank(analyse([...conflict, ...gap, "Sikko: Let's test that assumption with customers."]), "balanced");
+  assert.equal(flags.find(x => x.kind === "CONTRADICTION")?.action, "SUGGEST INTERRUPTING");
+});
+test("a productive proposal alone is protected, not treated as a contradiction", () => {
+  const flags = rank(analyse(["Sikko: Let's test that assumption with customers."]), "active");
+  assert.equal(flags.length, 1);
+  assert.equal(flags[0].action, "PROTECT DISCUSSION");
+});
+test("silent signals remain visible for the human operator", () => {
+  const line = "Chris: We need to make the proposition clearer before proceeding.";
+  const flags = rank(analyse([line, line]), "balanced");
+  assert.equal(flags.find(x => x.kind === "LOOP")?.action, "STAY SILENT");
+});
