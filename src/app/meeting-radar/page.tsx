@@ -16,9 +16,32 @@ const demo = [
   "Chris: Great, I can change my mind if we see that evidence.",
 ];
 
+const rehearsals = [
+  { name: "BridgeFund-style / conflicting priorities", lines: demo },
+  { name: "Productive disagreement", lines: [
+    "Alex: I think customers want a simpler proposition.",
+    "Sam: I disagree, but I can change my mind if we see that evidence.",
+    "Alex: Let's test that assumption with customers."
+  ] },
+  { name: "Unowned decision", lines: [
+    "Alex: The design is ready for review.",
+    "Sam: Who actually owns this decision?",
+    "Alex: We have not agreed on approval."
+  ] },
+  { name: "Ordinary conversation", lines: [
+    "Alex: Thank you for bringing the notes.",
+    "Sam: You're welcome.",
+    "Alex: The next meeting is on Thursday."
+  ] }
+];
+
 export default function SavannahMeetingRadar() {
   const [lines, setLines] = useState<string[]>([]);
   const [note, setNote] = useState("");
+  const [scenario, setScenario] = useState(0);
+  const [reviews, setReviews] = useState<Record<string, "useful" | "unnecessary">>({});
+  const [missedNote, setMissedNote] = useState("");
+  const [missed, setMissed] = useState<string[]>([]);
   const [interruptionMode, setInterruptionMode] = useState<"quiet" | "balanced" | "active">("balanced");
   const [dismissed, setDismissed] = useState<string[]>([]);
   const [spoken, setSpoken] = useState<string[]>([]);
@@ -37,6 +60,33 @@ export default function SavannahMeetingRadar() {
   const ranked = rank(flags, interruptionMode, dismissed);
   const actionable = ranked.filter(f => f.action === "SUGGEST INTERRUPTING");
   const silent = ranked.filter(f => f.action === "STAY SILENT" || f.action === "PROTECT DISCUSSION");
+  const usefulCount = Object.values(reviews).filter(v => v === "useful").length;
+  const unnecessaryCount = Object.values(reviews).filter(v => v === "unnecessary").length;
+  function loadScenario(i: number) {
+    recognition.current?.stop();
+    setListening(false);
+    window.speechSynthesis?.cancel();
+    setScenario(i);
+    setLines(rehearsals[i].lines);
+    setReplayStep(1);
+    setDismissed([]);
+    setSpoken([]);
+    setReviews({});
+    setMissed([]);
+    setMissedNote("");
+    setMessage("Fictional rehearsal loaded. Step through and judge Savannah's interventions.");
+  }
+  function downloadReceipt() {
+    const blob = new Blob([receipt], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url; link.download = "savannah-meeting-receipt.txt";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1500);
+    setMessage("Text receipt prepared. If your browser blocks downloads, select the text below.");
+  }
   function speak(text: string, id: string) {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) {
       setMessage("Speech synthesis is unavailable in this browser."); return;
@@ -58,6 +108,10 @@ export default function SavannahMeetingRadar() {
     "SIGNALS LEFT SILENT: " + silent.length,
     "PRODUCTIVE DISCUSSION SIGNALS: " + ranked.filter(f => f.action === "PROTECT DISCUSSION").length,
     "HUMAN-DISMISSED: " + dismissed.length,
+    "HUMAN MARKED USEFUL: " + usefulCount,
+    "HUMAN MARKED UNNECESSARY: " + unnecessaryCount,
+    "HUMAN REPORTED MISSES: " + missed.length,
+    ...missed.map(m => "- MISSED: " + m),
     "OBSERVATIONS:",
     ...flags.map(f => "- " + f.kind + ": " + f.message),
     "", "Meeting notes:", ...lines
@@ -70,6 +124,7 @@ export default function SavannahMeetingRadar() {
   }
   function toggleMic() {
     if (listening) { recognition.current?.stop(); recognition.current = null; setListening(false); return; }
+    setReplayStep(null);
     type ResultEvent = { resultIndex: number; results: ArrayLike<{ isFinal: boolean; 0: { transcript: string } }> };
     type Rec = { continuous: boolean; interimResults: boolean; lang: string; onresult: ((e: ResultEvent) => void) | null; onend: (() => void) | null; onerror: (() => void) | null; start: () => void; stop: () => void };
     const w = window as Window & { SpeechRecognition?: new () => Rec; webkitSpeechRecognition?: new () => Rec };
@@ -80,7 +135,7 @@ export default function SavannahMeetingRadar() {
     rec.onresult = e => {
       const fresh: string[] = [];
       for (let i = e.resultIndex; i < e.results.length; i++) {
-        if (e.results[i].isFinal) fresh.push(e.results[i][0].transcript.trim());
+        if (e.results[i].isFinal && e.results[i][0].transcript.trim()) fresh.push(e.results[i][0].transcript.trim());
       }
       if (fresh.length) setLines(prev => [...prev, ...fresh]);
     };
@@ -97,10 +152,15 @@ export default function SavannahMeetingRadar() {
       <h1 style={{ fontSize: "clamp(36px,6vw,76px)", margin: "18px 0 8px", letterSpacing: -2 }}>SAVANNAH <span style={{ color: "#9c9c94" }}>/ MEETING RADAR</span></h1>
       <p style={{ color: "#bcbcb8", maxWidth: 700, lineHeight: 1.5 }}>A room that can notice when the conversation stops moving. Prototype detection is rule-based, not an AI judgement system.</p>
       <div style={{ display: "flex", gap: 10, flexWrap: "wrap", margin: "25px 0" }}>
-        <button style={button} onClick={() => { setLines(demo); setReplayStep(1); setDismissed([]); setSpoken([]); setMessage("Demo loaded. These lines are fictional test data."); }}>▶ Run simulated meeting</button>
+        <button style={button} onClick={() => loadScenario(scenario)}>▶ Run simulated meeting</button>
         <button style={{ ...button, background: listening ? "#e2a28e" : "#777", color: "#fff" }} onClick={toggleMic}>{listening ? "■ Stop microphone" : "◉ Use microphone"}</button>
-        <button style={{ ...button, background: "#333", color: "#eee" }} onClick={() => { recognition.current?.stop(); setLines([]); setReplayStep(null); setDismissed([]); setSpoken([]); window.speechSynthesis?.cancel(); setMessage("Session cleared."); }}>Clear session</button>
+        <button style={{ ...button, background: "#333", color: "#eee" }} onClick={() => { recognition.current?.stop(); setListening(false); setLines([]); setReplayStep(null); setDismissed([]); setSpoken([]); setReviews({}); setMissed([]); window.speechSynthesis?.cancel(); setMessage("Session cleared."); }}>Clear session</button>
       </div>
+      <label style={{ display: "block", maxWidth: 430, fontSize: 12, color: "#aaa" }}>Choose a fictional test scenario
+        <select value={scenario} onChange={e => loadScenario(Number(e.target.value))} style={{ ...input, marginTop: 8 }}>
+          {rehearsals.map((r, i) => <option key={r.name} value={i}>{r.name}</option>)}
+        </select>
+      </label>
       {replayStep !== null && <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap", padding: "15px 0" }}>
         <strong>REHEARSAL: {replayStep} / {lines.length} statements</strong>
         <button style={button} disabled={replayStep >= lines.length} onClick={() => setReplayStep(n => n === null ? null : Math.min(lines.length, n + 1))}>Next statement →</button>
@@ -135,18 +195,34 @@ export default function SavannahMeetingRadar() {
                 <button style={{ ...button, padding: "8px 12px" }} onClick={() => speak(f.message, f.id)}>{spoken.includes(f.id) ? "↻ Speak again" : "▷ Let Savannah speak"}</button>
                 <button style={{ ...button, padding: "8px 12px", background: "#333", color: "#eee" }} onClick={() => setDismissed(prev => [...prev, f.id])}>Not worth interrupting</button>
               </div>}
+              {f.action === "SUGGEST INTERRUPTING" && <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 9 }}>
+                <button aria-pressed={reviews[f.id] === "useful"} style={{ ...button, padding: "8px 12px", background: reviews[f.id] === "useful" ? "#a8c4a4" : "#333", color: reviews[f.id] === "useful" ? "#111" : "#eee" }} onClick={() => setReviews(prev => ({ ...prev, [f.id]: "useful" }))}>✓ Useful interruption</button>
+                <button aria-pressed={reviews[f.id] === "unnecessary"} style={{ ...button, padding: "8px 12px", background: reviews[f.id] === "unnecessary" ? "#e2a28e" : "#333", color: reviews[f.id] === "unnecessary" ? "#111" : "#eee" }} onClick={() => setReviews(prev => ({ ...prev, [f.id]: "unnecessary" }))}>× Unnecessary</button>
+              </div>}
               {f.action === "DISMISSED" && <button style={{ ...button, padding: "8px 12px", background: "#333", color: "#eee" }} onClick={() => setDismissed(prev => prev.filter(id => id !== f.id))}>Restore suggestion</button>}
             </div>) : <p style={{ color: "#888" }}>Nothing worth interrupting yet. A quiet Savannah is a feature.</p>}
           </div>
         </section>
       </div>
       <section style={{ marginTop: 42, borderTop: "1px solid #555", paddingTop: 22 }}>
-        <h2>03 / MAKE THE DECISION REAL</h2>
+        <h2>03 / HUMAN JUDGEMENT LAB</h2>
+        <p style={{ color: "#aaa" }}>The model proposes. You judge. These labels stay in this browser tab and are included in the receipt; they are not training data or uploaded anywhere.</p>
+        <p>{usefulCount} marked useful · {unnecessaryCount} marked unnecessary · {missed.length} missed opportunities reported</p>
+        <label style={{ display: "block", maxWidth: 700, fontSize: 12, color: "#aaa" }}>Did Savannah miss an intervention?
+          <textarea value={missedNote} onChange={e => setMissedNote(e.target.value)} placeholder="What should she have noticed, and at which statement?" style={{ ...input, marginTop: 8, minHeight: 85, resize: "vertical" }} />
+        </label>
+        <button style={{ ...button, marginTop: 10 }} disabled={!missedNote.trim()} onClick={() => { setMissed(prev => [...prev, missedNote.trim()]); setMissedNote(""); }}>Record missed opportunity</button>
+      </section>
+      <section style={{ marginTop: 42, borderTop: "1px solid #555", paddingTop: 22 }}>
+        <h2>04 / MAKE THE DECISION REAL</h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(225px,1fr))", gap: 12 }}>
           {([["Decision", decision, setDecision], ["Owner", owner, setOwner], ["Deadline", deadline, setDeadline], ["Evidence / next test", evidence, setEvidence]] as const).map(([label, value, setter]) => <label key={label} style={{ fontSize: 12, color: "#aaa" }}>{label}<input style={{ ...input, marginTop: 7 }} value={value} onChange={e => setter(e.target.value)} /></label>)}
         </div>
         <button style={{ ...button, marginTop: 20 }} onClick={async () => { try { await navigator.clipboard.writeText(receipt); setMessage("Receipt copied."); } catch { setMessage("Clipboard unavailable. Select and copy the receipt below."); } }}>Copy decision receipt</button>
-        <details style={{ marginTop: 18 }}><summary style={{ cursor: "pointer" }}>View receipt</summary><pre style={{ whiteSpace: "pre-wrap", overflowWrap: "anywhere", background: "#222", padding: 18 }}>{receipt}</pre></details>
+        <button style={{ ...button, marginTop: 20, marginLeft: 10, background: "#333", color: "#eee" }} onClick={downloadReceipt}>Download .txt</button>
+        <label style={{ display: "block", marginTop: 20, fontSize: 12, color: "#aaa" }}>Selectable receipt text — long-press to select on iPhone
+          <textarea readOnly aria-label="Selectable meeting receipt" value={receipt} onFocus={e => e.currentTarget.select()} style={{ ...input, marginTop: 8, minHeight: 220, resize: "vertical", fontFamily: "monospace", fontSize: 13 }} />
+        </label>
       </section>
       <footer style={{ marginTop: 50, fontSize: 12, color: "#888" }}>Prototype only • No server-side meeting storage • Obtain participant consent before recording • A human decides when to intervene.</footer>
     </div>
