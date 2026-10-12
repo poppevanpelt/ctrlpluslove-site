@@ -54,13 +54,15 @@ export default function SavannahMeetingRadar() {
   const [deadline, setDeadline] = useState("");
   const [evidence, setEvidence] = useState("");
   const [listening, setListening] = useState(false);
+  const [replayStep, setReplayStep] = useState<number | null>(null);
   const [message, setMessage] = useState("Ready for a simulated meeting or live notes.");
   const recognition = useRef<{ stop: () => void } | null>(null);
-  const flags = useMemo(() => analyse(lines), [lines]);
+  const visibleLines = replayStep === null ? lines : lines.slice(0, replayStep);
+  const flags = useMemo(() => analyse(visibleLines), [visibleLines]);
   const counts = (kind: FlagKind) => flags.filter(f => f.kind === kind).length;
   // Conservative, inspectable prioritisation. No autonomous microphone output.
   const ranked = flags.map(f => {
-    const score = f.kind === "CONTRADICTION" ? (flags.some(x => x.kind === "PRODUCTIVE") ? 1 : 3) : f.kind === "DECISION" ? 2 : f.kind === "PRODUCTIVE" ? 0 : 1;
+    const score = f.kind === "CONTRADICTION" ? (flags.some(x => x.kind === "PRODUCTIVE" && x.line >= 0 && x.line <= f.line) ? 1 : 3) : f.kind === "DECISION" ? 2 : f.kind === "PRODUCTIVE" ? 0 : 1;
     const id = f.kind + ":" + f.line;
     const threshold = interruptionMode === "quiet" ? 3 : interruptionMode === "balanced" ? 2 : 1;
     const suppressed = dismissed.includes(id);
@@ -95,6 +97,7 @@ export default function SavannahMeetingRadar() {
   ].join("\n");
   function addLine() {
     if (!note.trim()) return;
+    setReplayStep(null);
     setLines(prev => [...prev, note.trim()]);
     setNote("");
   }
@@ -127,10 +130,15 @@ export default function SavannahMeetingRadar() {
       <h1 style={{ fontSize: "clamp(36px,6vw,76px)", margin: "18px 0 8px", letterSpacing: -2 }}>SAVANNAH <span style={{ color: "#9c9c94" }}>/ MEETING RADAR</span></h1>
       <p style={{ color: "#bcbcb8", maxWidth: 700, lineHeight: 1.5 }}>A room that can notice when the conversation stops moving. Prototype detection is rule-based, not an AI judgement system.</p>
       <div style={{ display: "flex", gap: 10, flexWrap: "wrap", margin: "25px 0" }}>
-        <button style={button} onClick={() => { setLines(demo); setDismissed([]); setSpoken([]); setMessage("Demo loaded. These lines are fictional test data."); }}>▶ Run simulated meeting</button>
+        <button style={button} onClick={() => { setLines(demo); setReplayStep(1); setDismissed([]); setSpoken([]); setMessage("Demo loaded. These lines are fictional test data."); }}>▶ Run simulated meeting</button>
         <button style={{ ...button, background: listening ? "#e2a28e" : "#777", color: "#fff" }} onClick={toggleMic}>{listening ? "■ Stop microphone" : "◉ Use microphone"}</button>
-        <button style={{ ...button, background: "#333", color: "#eee" }} onClick={() => { recognition.current?.stop(); setLines([]); setDismissed([]); setSpoken([]); window.speechSynthesis?.cancel(); setMessage("Session cleared."); }}>Clear session</button>
+        <button style={{ ...button, background: "#333", color: "#eee" }} onClick={() => { recognition.current?.stop(); setLines([]); setReplayStep(null); setDismissed([]); setSpoken([]); window.speechSynthesis?.cancel(); setMessage("Session cleared."); }}>Clear session</button>
       </div>
+      {replayStep !== null && <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap", padding: "15px 0" }}>
+        <strong>REHEARSAL: {replayStep} / {lines.length} statements</strong>
+        <button style={button} disabled={replayStep >= lines.length} onClick={() => setReplayStep(n => n === null ? null : Math.min(lines.length, n + 1))}>Next statement →</button>
+        <button style={{ ...button, background: "#333", color: "#eee" }} onClick={() => setReplayStep(null)}>Show full meeting</button>
+      </div>}
       <p role="status" style={{ fontSize: 12, color: "#aaa" }}>{message} Session stays in page memory only; copying a receipt is optional.</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: 14, margin: "28px 0" }}>
         {([["LOOP", "Circular arguments"], ["CONTRADICTION", "Opposing directions"], ["DECISION", "Open ownership"], ["EVIDENCE", "Evidence questions"], ["PRODUCTIVE", "Productive signals"]] as const).map(([kind, label]) => <div key={kind} style={{ padding: 22, border: "1px solid #444" }}><div style={{ color: "#aaa", fontSize: 12 }}>{label}</div><div style={{ fontSize: 48, marginTop: 8 }}>{counts(kind)}</div></div>)}
@@ -138,7 +146,7 @@ export default function SavannahMeetingRadar() {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))", gap: 28 }}>
         <section><h2 style={{ fontSize: 23 }}>01 / THE ROOM</h2>
           <div style={{ height: 330, overflowY: "auto", border: "1px solid #444", padding: 18, lineHeight: 1.6 }}>
-            {lines.length === 0 ? <span style={{ color: "#888" }}>No observations yet. Run the demo or add a line.</span> : lines.map((l, i) => <p key={i} style={{ margin: "0 0 15px" }}><span style={{ color: "#888" }}>{String(i + 1).padStart(2, "0")} </span>{l}</p>)}
+            {lines.length === 0 ? <span style={{ color: "#888" }}>No observations yet. Run the demo or add a line.</span> : visibleLines.map((l, i) => <p key={i} style={{ margin: "0 0 15px" }}><span style={{ color: "#888" }}>{String(i + 1).padStart(2, "0")} </span>{l}</p>)}
           </div>
           <div style={{ display: "flex", gap: 8, marginTop: 10 }}><input aria-label="Meeting note" style={input} value={note} placeholder="Add a statement from the room…" onChange={e => setNote(e.target.value)} onKeyDown={e => { if (e.key === "Enter") addLine(); }} /><button style={button} onClick={addLine}>Add</button></div>
         </section>
