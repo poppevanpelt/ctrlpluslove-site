@@ -33,7 +33,7 @@ export function rank(flags: Flag[], mode: Mode, dismissed: string[] = []): Inter
     const id = f.kind + ":" + f.line;
     // Evidence proposed AFTER an earlier conflict does not erase its history;
     // it only de-escalates an as-yet-unresolved suggestion.
-    const hasProductiveFollowUp = flags.some(x => x.kind === "PRODUCTIVE" && x.line >= f.line);
+    const hasProductiveFollowUp = flags.some(x => x.kind === "PRODUCTIVE" && x.line >= f.line && x.line - f.line <= 5);
     const score = f.kind === "CONTRADICTION" ? (hasProductiveFollowUp ? 1 : 3) : f.kind === "DECISION" ? 2 : f.kind === "PRODUCTIVE" ? 0 : 1;
     const action: Intervention["action"] = f.kind === "PRODUCTIVE" ? "PROTECT DISCUSSION" : dismissed.includes(id) ? "DISMISSED" : score >= threshold ? "SUGGEST INTERRUPTING" : "STAY SILENT";
     return { ...f, id, score, action };
