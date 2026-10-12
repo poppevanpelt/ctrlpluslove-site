@@ -81,3 +81,31 @@ test("a later experiment is not suppressed by an earlier unrelated experiment", 
   const flags = rank(analyse(lines), "balanced");
   assert.equal(flags.find(x => x.kind === "CONTRADICTION")?.action, "SUGGEST INTERRUPTING");
 });
+
+test("same speaker revising their position is not a two-person contradiction", () => {
+  const flags = analyse([
+    "Alex: We should start building now.",
+    "Alex: Actually, we cannot start until approval is clear."
+  ]);
+  assert.equal(flags.some(x => x.kind === "CONTRADICTION"), false);
+});
+test("distant opposing proposals do not become a single false contradiction", () => {
+  const gap = Array.from({length: 7}, (_,i) => `Other: unrelated update ${i}.`);
+  const flags = analyse([
+    "Alex: We should start building now.",
+    ...gap,
+    "Sam: We cannot start until the proposition is clear."
+  ]);
+  assert.equal(flags.some(x => x.kind === "CONTRADICTION"), false);
+});
+test("a single speaker saying not to build is not treated as proposing both positions", () => {
+  const flags = analyse(["Alex: We should not start building now."]);
+  assert.equal(flags.some(x => x.kind === "CONTRADICTION"), false);
+});
+test("a speakerless transcription can still flag an explicit close-range conflict", () => {
+  const flags = analyse([
+    "We should start building now.",
+    "We cannot start until the proposition is clear."
+  ]);
+  assert.equal(flags.some(x => x.kind === "CONTRADICTION"), true);
+});
