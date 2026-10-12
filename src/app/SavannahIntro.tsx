@@ -19,6 +19,7 @@ export default function SavannahIntro() {
   const [ready, setReady] = useState(false);
   const [handoff, setHandoff] = useState(false);
   const [fallback, setFallback] = useState(false);
+  const [mediaIssue, setMediaIssue] = useState(false);
   const [stage, setStage] = useState<SceneStage>("film");
   const videoRef = useRef<HTMLVideoElement>(null);
   const wallContentRef = useRef<HTMLDivElement>(null);
@@ -176,7 +177,7 @@ export default function SavannahIntro() {
   useEffect(() => {
     const primeWatchdog = window.setTimeout(() => {
       if (!ready && !handoffStarted.current) completeHandoff(false);
-    }, 6500);
+    }, 4800);
     return () => window.clearTimeout(primeWatchdog);
   }, [ready]);
 
@@ -298,7 +299,8 @@ export default function SavannahIntro() {
       data-stage={stage}
     >
       <div className={styles.savannahFilm} aria-hidden="true">
-        <div className={styles.savannahIntroFallbackImage} />
+        {/* Never replace the entrance film with a full-screen static portrait. */}
+        <div className={styles.savannahIntroFallbackImage} style={{ display: "none" }} />
         <video
           ref={videoRef}
           className={styles.savannahIntroVideo}
@@ -323,7 +325,7 @@ export default function SavannahIntro() {
             trackHandoff();
           }}
           onEnded={() => completeHandoff(false)}
-          onError={() => completeHandoff(false)}
+          onError={() => { setMediaIssue(true); completeHandoff(false); }}
         >
           <source media="(max-width: 768px)" src="https://ctrl-love-media.floot.app/_cdn/static/savannah-intro-mobile-v2.mp4" type="video/mp4" />
           <source src="https://ctrl-love-media.floot.app/_cdn/static/savannah-intro.mp4" type="video/mp4" />
@@ -337,6 +339,8 @@ export default function SavannahIntro() {
         <div className={styles.savannahPivotWallEdge} />
       </div>
 
+      {/* When the external film fails, hand off to the working homepage. */}
+      {mediaIssue && <span className="sr-only">Intro video unavailable; opening the site instead.</span>}
       {/* The film is the entrance. No second manual "Come in" gate. */}
     </section>
   );
