@@ -16,8 +16,11 @@ export function analyse(lines: string[]): Flag[] {
     if (/what evidence|where is the evidence|how do we know|what would change your mind/i.test(line)) result.push({ kind: "EVIDENCE", message: "An evidence question has been raised. Record what would count as proof.", line: index });
   });
   const together = lines.join(" ").toLowerCase();
-  const productiveIndex = lines.findIndex(l => /test (that|the|this) assumption|experiment|change my mind if|validate with (customers|users)/i.test(l));
-  if (productiveIndex !== -1) result.push({ kind: "PRODUCTIVE", message: "The room has proposed a test or evidence that could change a position. Protect this exploration rather than interrupting it.", line: productiveIndex });
+  lines.forEach((l, index) => {
+    if (/test (that|the|this) assumption|experiment|change my mind if|validate with (customers|users)/i.test(l)) {
+      result.push({ kind: "PRODUCTIVE", message: "The room has proposed a test or evidence that could change a position. Protect this exploration rather than interrupting it.", line: index });
+    }
+  });
   const buildingIndex = lines.findIndex(l => /start building now|start building|build the first version/i.test(l));
   const blockingIndex = lines.findIndex(l => /cannot start until|can't start until/i.test(l));
   if (buildingIndex !== -1 && blockingIndex !== -1) {
