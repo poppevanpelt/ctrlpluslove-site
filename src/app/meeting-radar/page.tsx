@@ -2,7 +2,7 @@
 
 import { useMemo, useRef, useState } from "react";
 
-type FlagKind = "LOOP" | "CONTRADICTION" | "DECISION" | "EVIDENCE";
+type FlagKind = "LOOP" | "CONTRADICTION" | "DECISION" | "EVIDENCE" | "PRODUCTIVE";
 type Flag = { kind: FlagKind; message: string; line: number };
 const demo = [
   "Chris: We need to make the brand proposition clearer before we proceed.",
@@ -13,6 +13,8 @@ const demo = [
   "Chris: We need to make the brand proposition clearer before we proceed.",
   "Sikko: Who actually owns this decision?",
   "Julian: I will own the prototype, but we have not agreed on approval.",
+  "Sikko: Let us test that assumption with five customers before committing.",
+  "Chris: Great, I can change my mind if we see that evidence.",
 ];
 
 function analyse(lines: string[]): Flag[] {
@@ -27,7 +29,14 @@ function analyse(lines: string[]): Flag[] {
     if (/who (actually )?owns|who decides|not agreed on approval|who approves/i.test(line)) result.push({ kind: "DECISION", message: "Decision ownership or approval is unresolved. Name an owner and a deadline.", line: index });
     if (/what evidence|where is the evidence|how do we know|what would change your mind/i.test(line)) result.push({ kind: "EVIDENCE", message: "An evidence question has been raised. Record what would count as proof.", line: index });
   });
+  // An explicit test or willingness to revise indicates that disagreement may be
+  // productive. This is a heuristic, not reliable semantic understanding.
   const together = lines.join(" ").toLowerCase();
+  const productive = /test (that|the|this) assumption|experiment|prototype and learn|change my mind if|what would change your mind|validate with (customers|users)/.test(together);
+  if (productive) {
+    const i = lines.findIndex(l => /test (that|the|this) assumption|experiment|change my mind if|validate with (customers|users)/i.test(l));
+    result.push({ kind: "PRODUCTIVE", message: "The room has proposed a test or evidence that could change a position. Protect this exploration rather than interrupting it.", line: Math.max(0, i) });
+  }
   if (/start building now|start building|build the first version/.test(together) && /cannot start until|can't start until/.test(together)) {
     result.push({ kind: "CONTRADICTION", message: "The room is pulling in opposite directions: build now versus wait for clarity. Decide what can be tested without final approval.", line: lines.length - 1 });
   }
@@ -51,14 +60,14 @@ export default function SavannahMeetingRadar() {
   const counts = (kind: FlagKind) => flags.filter(f => f.kind === kind).length;
   // Conservative, inspectable prioritisation. No autonomous microphone output.
   const ranked = flags.map(f => {
-    const score = f.kind === "CONTRADICTION" ? 3 : f.kind === "DECISION" ? 2 : 1;
+    const score = f.kind === "CONTRADICTION" ? 3 : f.kind === "DECISION" ? 2 : f.kind === "PRODUCTIVE" ? 0 : 1;
     const id = f.kind + ":" + f.line;
     const threshold = interruptionMode === "quiet" ? 3 : interruptionMode === "balanced" ? 2 : 1;
     const suppressed = dismissed.includes(id);
-    return { ...f, id, score, action: suppressed ? "DISMISSED" : score >= threshold ? "SUGGEST INTERRUPTING" : "STAY SILENT" };
+    return { ...f, id, score, action: f.kind === "PRODUCTIVE" ? "PROTECT DISCUSSION" : suppressed ? "DISMISSED" : score >= threshold ? "SUGGEST INTERRUPTING" : "STAY SILENT" };
   });
   const actionable = ranked.filter(f => f.action === "SUGGEST INTERRUPTING");
-  const silent = ranked.filter(f => f.action === "STAY SILENT");
+  const silent = ranked.filter(f => f.action === "STAY SILENT" || f.action === "PROTECT DISCUSSION");
   function speak(text: string, id: string) {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) {
       setMessage("Speech synthesis is unavailable in this browser."); return;
@@ -78,6 +87,7 @@ export default function SavannahMeetingRadar() {
     "INTERVENTION MODE: " + interruptionMode,
     "INTERVENTIONS OFFERED: " + actionable.length,
     "SIGNALS LEFT SILENT: " + silent.length,
+    "PRODUCTIVE DISCUSSION SIGNALS: " + ranked.filter(f => f.action === "PROTECT DISCUSSION").length,
     "HUMAN-DISMISSED: " + dismissed.length,
     "OBSERVATIONS:",
     ...flags.map(f => "- " + f.kind + ": " + f.message),
@@ -123,7 +133,7 @@ export default function SavannahMeetingRadar() {
       </div>
       <p role="status" style={{ fontSize: 12, color: "#aaa" }}>{message} Session stays in page memory only; copying a receipt is optional.</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: 14, margin: "28px 0" }}>
-        {([["LOOP", "Circular arguments"], ["CONTRADICTION", "Opposing directions"], ["DECISION", "Open ownership"], ["EVIDENCE", "Evidence questions"]] as const).map(([kind, label]) => <div key={kind} style={{ padding: 22, border: "1px solid #444" }}><div style={{ color: "#aaa", fontSize: 12 }}>{label}</div><div style={{ fontSize: 48, marginTop: 8 }}>{counts(kind)}</div></div>)}
+        {([["LOOP", "Circular arguments"], ["CONTRADICTION", "Opposing directions"], ["DECISION", "Open ownership"], ["EVIDENCE", "Evidence questions"], ["PRODUCTIVE", "Productive signals"]] as const).map(([kind, label]) => <div key={kind} style={{ padding: 22, border: "1px solid #444" }}><div style={{ color: "#aaa", fontSize: 12 }}>{label}</div><div style={{ fontSize: 48, marginTop: 8 }}>{counts(kind)}</div></div>)}
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))", gap: 28 }}>
         <section><h2 style={{ fontSize: 23 }}>01 / THE ROOM</h2>
@@ -145,7 +155,7 @@ export default function SavannahMeetingRadar() {
             {ranked.length ? ranked.map(f => <div key={f.id} style={{ paddingBottom: 18, marginBottom: 18, borderBottom: "1px solid #333" }}>
               <div style={{ color: f.action === "SUGGEST INTERRUPTING" ? "#d4bb9d" : "#999", fontSize: 11, letterSpacing: 1.5 }}>{f.kind} / LINE {f.line + 1} / {f.action}</div>
               <p style={{ fontSize: 17, lineHeight: 1.45, margin: "8px 0" }}>“{f.message}”</p>
-              <p style={{ fontSize: 12, color: "#aaa" }}>{f.action === "STAY SILENT" ? "Not important enough to interrupt under this setting." : f.action === "DISMISSED" ? "Human chose not to interrupt." : "Candidate only: a human decides whether Savannah speaks."}</p>
+              <p style={{ fontSize: 12, color: "#aaa" }}>{f.action === "PROTECT DISCUSSION" ? "A falsifiable next step or openness to evidence was detected. Preserve the discussion." : f.action === "STAY SILENT" ? "Not important enough to interrupt under this setting." : f.action === "DISMISSED" ? "Human chose not to interrupt." : "Candidate only: a human decides whether Savannah speaks."}</p>
               {f.action === "SUGGEST INTERRUPTING" && <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                 <button style={{ ...button, padding: "8px 12px" }} onClick={() => speak(f.message, f.id)}>{spoken.includes(f.id) ? "↻ Speak again" : "▷ Let Savannah speak"}</button>
                 <button style={{ ...button, padding: "8px 12px", background: "#333", color: "#eee" }} onClick={() => setDismissed(prev => [...prev, f.id])}>Not worth interrupting</button>
