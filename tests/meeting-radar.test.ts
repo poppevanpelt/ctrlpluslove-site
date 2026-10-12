@@ -60,3 +60,24 @@ test("silent signals remain visible for the human operator", () => {
   const flags = rank(analyse([line, line]), "balanced");
   assert.equal(flags.find(x => x.kind === "LOOP")?.action, "STAY SILENT");
 });
+
+test("later productive proposals are still detected after an earlier proposal", () => {
+  const lines = [
+    "Sam: Let's test that assumption with customers.",
+    "Julian: We should start building now.",
+    "Chris: We cannot start until the proposition is clear.",
+    "Alex: Let's test that assumption with customers."
+  ];
+  const flags = rank(analyse(lines), "balanced");
+  assert.equal(flags.filter(x => x.kind === "PRODUCTIVE").length, 2);
+  assert.equal(flags.find(x => x.kind === "CONTRADICTION")?.action, "STAY SILENT");
+});
+test("a later experiment is not suppressed by an earlier unrelated experiment", () => {
+  const lines = [
+    "Sam: Let's test that assumption with customers.",
+    "Julian: We should start building now.",
+    "Chris: We cannot start until the proposition is clear."
+  ];
+  const flags = rank(analyse(lines), "balanced");
+  assert.equal(flags.find(x => x.kind === "CONTRADICTION")?.action, "SUGGEST INTERRUPTING");
+});
