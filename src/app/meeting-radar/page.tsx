@@ -38,7 +38,7 @@ function analyse(lines: string[]): Flag[] {
     result.push({ kind: "PRODUCTIVE", message: "The room has proposed a test or evidence that could change a position. Protect this exploration rather than interrupting it.", line: Math.max(0, i) });
   }
   if (/start building now|start building|build the first version/.test(together) && /cannot start until|can't start until/.test(together)) {
-    result.push({ kind: "CONTRADICTION", message: "The room is pulling in opposite directions: build now versus wait for clarity. Decide what can be tested without final approval.", line: lines.length - 1 });
+    result.push({ kind: "CONTRADICTION", message: productive ? "There is a disagreement, but a test has been proposed. Agree on its scope before escalating." : "The room is pulling in opposite directions: build now versus wait for clarity. Decide what can be tested without final approval.", line: lines.length - 1 });
   }
   return result.sort((a, b) => a.line - b.line);
 }
@@ -60,7 +60,7 @@ export default function SavannahMeetingRadar() {
   const counts = (kind: FlagKind) => flags.filter(f => f.kind === kind).length;
   // Conservative, inspectable prioritisation. No autonomous microphone output.
   const ranked = flags.map(f => {
-    const score = f.kind === "CONTRADICTION" ? 3 : f.kind === "DECISION" ? 2 : f.kind === "PRODUCTIVE" ? 0 : 1;
+    const score = f.kind === "CONTRADICTION" ? (flags.some(x => x.kind === "PRODUCTIVE") ? 1 : 3) : f.kind === "DECISION" ? 2 : f.kind === "PRODUCTIVE" ? 0 : 1;
     const id = f.kind + ":" + f.line;
     const threshold = interruptionMode === "quiet" ? 3 : interruptionMode === "balanced" ? 2 : 1;
     const suppressed = dismissed.includes(id);
@@ -100,7 +100,7 @@ export default function SavannahMeetingRadar() {
   }
   function toggleMic() {
     if (listening) { recognition.current?.stop(); recognition.current = null; setListening(false); return; }
-    type ResultEvent = { results: ArrayLike<{ isFinal: boolean; 0: { transcript: string } }> };
+    type ResultEvent = { resultIndex: number; results: ArrayLike<{ isFinal: boolean; 0: { transcript: string } }> };
     type Rec = { continuous: boolean; interimResults: boolean; lang: string; onresult: ((e: ResultEvent) => void) | null; onend: (() => void) | null; onerror: (() => void) | null; start: () => void; stop: () => void };
     const w = window as Window & { SpeechRecognition?: new () => Rec; webkitSpeechRecognition?: new () => Rec };
     const Speech = w.SpeechRecognition || w.webkitSpeechRecognition;
@@ -109,7 +109,7 @@ export default function SavannahMeetingRadar() {
     rec.continuous = true; rec.interimResults = false; rec.lang = "en-US";
     rec.onresult = e => {
       const fresh: string[] = [];
-      for (let i = 0; i < e.results.length; i++) {
+      for (let i = e.resultIndex; i < e.results.length; i++) {
         if (e.results[i].isFinal) fresh.push(e.results[i][0].transcript.trim());
       }
       if (fresh.length) setLines(prev => [...prev, ...fresh]);
