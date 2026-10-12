@@ -37,6 +37,9 @@ function analyse(lines: string[]): Flag[] {
 export default function SavannahMeetingRadar() {
   const [lines, setLines] = useState<string[]>([]);
   const [note, setNote] = useState("");
+  const [interruptionMode, setInterruptionMode] = useState<"quiet" | "balanced" | "active">("balanced");
+  const [dismissed, setDismissed] = useState<string[]>([]);
+  const [spoken, setSpoken] = useState<string[]>([]);
   const [owner, setOwner] = useState("");
   const [decision, setDecision] = useState("");
   const [deadline, setDeadline] = useState("");
@@ -46,12 +49,36 @@ export default function SavannahMeetingRadar() {
   const recognition = useRef<{ stop: () => void } | null>(null);
   const flags = useMemo(() => analyse(lines), [lines]);
   const counts = (kind: FlagKind) => flags.filter(f => f.kind === kind).length;
+  // Conservative, inspectable prioritisation. No autonomous microphone output.
+  const ranked = flags.map(f => {
+    const score = f.kind === "CONTRADICTION" ? 3 : f.kind === "DECISION" ? 2 : 1;
+    const id = f.kind + ":" + f.line;
+    const threshold = interruptionMode === "quiet" ? 3 : interruptionMode === "balanced" ? 2 : 1;
+    const suppressed = dismissed.includes(id);
+    return { ...f, id, score, action: suppressed ? "DISMISSED" : score >= threshold ? "SUGGEST INTERRUPTING" : "STAY SILENT" };
+  });
+  const actionable = ranked.filter(f => f.action === "SUGGEST INTERRUPTING");
+  const silent = ranked.filter(f => f.action === "STAY SILENT");
+  function speak(text: string, id: string) {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+      setMessage("Speech synthesis is unavailable in this browser."); return;
+    }
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "en-US"; utterance.rate = 0.92;
+    window.speechSynthesis.speak(utterance);
+    setSpoken(prev => [...prev, id]);
+  }
   const receipt = [
     "SAVANNAH / MEETING RECEIPT", "",
     "DECISION: " + (decision || "Not yet committed"),
     "OWNER: " + (owner || "Unassigned"),
     "DEADLINE: " + (deadline || "Unset"),
     "EVIDENCE / NEXT TEST: " + (evidence || "Not specified"), "",
+    "INTERVENTION MODE: " + interruptionMode,
+    "INTERVENTIONS OFFERED: " + actionable.length,
+    "SIGNALS LEFT SILENT: " + silent.length,
+    "HUMAN-DISMISSED: " + dismissed.length,
     "OBSERVATIONS:",
     ...flags.map(f => "- " + f.kind + ": " + f.message),
     "", "Meeting notes:", ...lines
@@ -90,9 +117,9 @@ export default function SavannahMeetingRadar() {
       <h1 style={{ fontSize: "clamp(36px,6vw,76px)", margin: "18px 0 8px", letterSpacing: -2 }}>SAVANNAH <span style={{ color: "#9c9c94" }}>/ MEETING RADAR</span></h1>
       <p style={{ color: "#bcbcb8", maxWidth: 700, lineHeight: 1.5 }}>A room that can notice when the conversation stops moving. Prototype detection is rule-based, not an AI judgement system.</p>
       <div style={{ display: "flex", gap: 10, flexWrap: "wrap", margin: "25px 0" }}>
-        <button style={button} onClick={() => { setLines(demo); setMessage("Demo loaded. These lines are fictional test data."); }}>▶ Run simulated meeting</button>
+        <button style={button} onClick={() => { setLines(demo); setDismissed([]); setSpoken([]); setMessage("Demo loaded. These lines are fictional test data."); }}>▶ Run simulated meeting</button>
         <button style={{ ...button, background: listening ? "#e2a28e" : "#777", color: "#fff" }} onClick={toggleMic}>{listening ? "■ Stop microphone" : "◉ Use microphone"}</button>
-        <button style={{ ...button, background: "#333", color: "#eee" }} onClick={() => { recognition.current?.stop(); setLines([]); setMessage("Session cleared."); }}>Clear session</button>
+        <button style={{ ...button, background: "#333", color: "#eee" }} onClick={() => { recognition.current?.stop(); setLines([]); setDismissed([]); setSpoken([]); window.speechSynthesis?.cancel(); setMessage("Session cleared."); }}>Clear session</button>
       </div>
       <p role="status" style={{ fontSize: 12, color: "#aaa" }}>{message} Session stays in page memory only; copying a receipt is optional.</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: 14, margin: "28px 0" }}>
@@ -105,9 +132,26 @@ export default function SavannahMeetingRadar() {
           </div>
           <div style={{ display: "flex", gap: 8, marginTop: 10 }}><input aria-label="Meeting note" style={input} value={note} placeholder="Add a statement from the room…" onChange={e => setNote(e.target.value)} onKeyDown={e => { if (e.key === "Enter") addLine(); }} /><button style={button} onClick={addLine}>Add</button></div>
         </section>
-        <section><h2 style={{ fontSize: 23 }}>02 / SAVANNAH INTERRUPTS</h2>
+        <section><h2 style={{ fontSize: 23 }}>02 / SAVANNAH JUDGES</h2>
+          <label style={{ display: "block", marginBottom: 14, color: "#aaa", fontSize: 12 }}>Interruption threshold
+            <select aria-label="Interruption threshold" value={interruptionMode} onChange={e => setInterruptionMode(e.target.value as "quiet" | "balanced" | "active")} style={{ ...input, marginTop: 7 }}>
+              <option value="quiet">Quiet — only contradictions</option>
+              <option value="balanced">Balanced — contradictions and unresolved decisions</option>
+              <option value="active">Active — all detected signals</option>
+            </select>
+          </label>
           <div aria-live="polite" style={{ border: "1px solid #555", padding: 22, minHeight: 330 }}>
-            {flags.length ? flags.map((f, i) => <div key={i} style={{ paddingBottom: 18, marginBottom: 18, borderBottom: "1px solid #333" }}><div style={{ color: "#b6a89c", fontSize: 11, letterSpacing: 2 }}>{f.kind} / LINE {f.line + 1}</div><p style={{ fontSize: 17, lineHeight: 1.45, margin: "8px 0" }}>“{f.message}”</p></div>) : <p style={{ color: "#888" }}>Nothing worth interrupting yet. A quiet Savannah is a feature.</p>}
+            <p style={{ fontSize: 12, color: "#aaa" }}>{actionable.length} interruption candidates · {silent.length} intentionally silent · {dismissed.length} dismissed</p>
+            {ranked.length ? ranked.map(f => <div key={f.id} style={{ paddingBottom: 18, marginBottom: 18, borderBottom: "1px solid #333" }}>
+              <div style={{ color: f.action === "SUGGEST INTERRUPTING" ? "#d4bb9d" : "#999", fontSize: 11, letterSpacing: 1.5 }}>{f.kind} / LINE {f.line + 1} / {f.action}</div>
+              <p style={{ fontSize: 17, lineHeight: 1.45, margin: "8px 0" }}>“{f.message}”</p>
+              <p style={{ fontSize: 12, color: "#aaa" }}>{f.action === "STAY SILENT" ? "Not important enough to interrupt under this setting." : f.action === "DISMISSED" ? "Human chose not to interrupt." : "Candidate only: a human decides whether Savannah speaks."}</p>
+              {f.action === "SUGGEST INTERRUPTING" && <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                <button style={{ ...button, padding: "8px 12px" }} onClick={() => speak(f.message, f.id)}>{spoken.includes(f.id) ? "↻ Speak again" : "▷ Let Savannah speak"}</button>
+                <button style={{ ...button, padding: "8px 12px", background: "#333", color: "#eee" }} onClick={() => setDismissed(prev => [...prev, f.id])}>Not worth interrupting</button>
+              </div>}
+              {f.action === "DISMISSED" && <button style={{ ...button, padding: "8px 12px", background: "#333", color: "#eee" }} onClick={() => setDismissed(prev => prev.filter(id => id !== f.id))}>Restore suggestion</button>}
+            </div>) : <p style={{ color: "#888" }}>Nothing worth interrupting yet. A quiet Savannah is a feature.</p>}
           </div>
         </section>
       </div>
