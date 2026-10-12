@@ -73,3 +73,15 @@ Run `node scripts/exit-door-smoke.mjs` from any machine with external network/DN
 - Operator-only commands: `node scripts/exit-door-sqlite-backup.mjs backup /path/to/source.sqlite /secure/location/snapshot.enc` and `node scripts/exit-door-sqlite-backup.mjs restore /secure/location/snapshot.enc /new/location/restored.sqlite`. Provide `EXIT_DOOR_BACKUP_PASSPHRASE` (24+ characters) through an approved secret mechanism; never commit it or paste it into logs.
 - Both output paths MUST be new; script refuses overwrite. Restores are deliberately never applied in place to production. Handle plaintext restored files carefully and delete them securely when no longer needed.
 - **Not yet performed:** any snapshot or restoration of the actual `/app/data` volume, offsite backup, scheduling, secret escrow, retention policy, recovery time measurement, or production failover. These require separate operational approval and secure storage.
+
+## Railway native volume backups — operator procedure
+Railway documents native manual and scheduled volume backups for SQLite-containing volumes. This connected Railway integration does not expose backup/schedule creation or listing, so **no native backup was created or verified by the agent**.
+
+1. Open Railway project `ctrlpluslove-site` → production service `ctrlpluslove-site` → **Backups** tab for attached `savannah-private-inbox` volume.
+2. Review current snapshots and current used volume space before proceeding. Railway limits manual backups to 50% of volume total capacity.
+3. Set **Daily** and **Weekly** schedules if available/appropriate, then trigger one **manual backup**. Note Railway documentation says daily retained 6 days and weekly 27 days; confirm UI before acceptance.
+4. Record backup timestamp and successful completion. Do **not** press Restore on production as a test: restoring stages a replacement mount and deployment would redeploy the live service.
+5. Treat a Railway snapshot as *same-provider disaster recovery only*. Railway states native backup restore is limited to the **same project and environment**, and wiping a volume deletes its backups. Keep the encrypted portable SQLite snapshot plan for genuine host independence.
+6. Do not claim production backup coverage until a completed snapshot is visible and a safe restore verification has been performed.
+
+Reference: https://docs.railway.com/volumes/backups
