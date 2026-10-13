@@ -194,34 +194,6 @@
 .savannahSceneNav .savannahNavGhost,
 .savannahSceneHeadline .savannahNavGhost,
 .savannahSceneRegister .savannahNavGhost{opacity:.93;transform:translateY(0)}
-/* Human timing: irregular link arrivals, not a mechanical stagger.
-   All delays are relative to the existing NAV cue. Savannah's film is unchanged. */
-.savannahNavGhost .logo,
-.savannahNavGhost .navlinks a{
-  opacity:0;transform:translateY(7px);
-  will-change:opacity,transform;
-}
-.savannahNavGhost .logo{transform:translateY(-5px)}
-.savannahSceneNav .savannahNavGhost .logo,
-.savannahSceneHeadline .savannahNavGhost .logo,
-.savannahSceneRegister .savannahNavGhost .logo{
-  animation:savannahNavAppear .42s .03s both cubic-bezier(.16,.72,.22,1);
-}
-.savannahSceneNav .savannahNavGhost .navlinks a,
-.savannahSceneHeadline .savannahNavGhost .navlinks a,
-.savannahSceneRegister .savannahNavGhost .navlinks a{
-  animation:savannahNavAppear .44s both cubic-bezier(.16,.72,.22,1);
-}
-.savannahIntro .savannahNavGhost .navlinks a:nth-child(1){animation-delay:.12s}
-.savannahIntro .savannahNavGhost .navlinks a:nth-child(2){animation-delay:.51s}
-.savannahIntro .savannahNavGhost .navlinks a:nth-child(3){animation-delay:.68s}
-.savannahIntro .savannahNavGhost .navlinks a:nth-child(4){animation-delay:1.12s}
-.savannahIntro .savannahNavGhost .navlinks a:nth-child(5){animation-delay:1.29s}
-.savannahIntro .savannahNavGhost .navlinks a:nth-child(6){animation-delay:2.03s}
-@keyframes savannahNavAppear{
-  from{opacity:0;transform:translateY(7px)}
-  to{opacity:1;transform:translateY(0)}
-}
 .savannahHeadlineGhost{
   position:absolute;z-index:4;margin:0;pointer-events:none;
   color:#fff;text-transform:uppercase;
@@ -246,5 +218,4 @@
 @media(prefers-reduced-motion:reduce){
   .savannahIntro,.savannahFilm,.savannahIntroVideo,
   .savannahNavGhost,.savannahHeadlineGhost{transition:none!important}
-  .savannahNavGhost .logo,.savannahNavGhost .navlinks a{animation:none!important;opacity:1!important;transform:none!important}
 }
