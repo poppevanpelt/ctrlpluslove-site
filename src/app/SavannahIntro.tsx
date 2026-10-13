@@ -131,15 +131,13 @@ export default function SavannahIntro() {
     if (!video || completed.current) return;
     const mobile = video.currentSrc.includes("savannah-intro-mobile-v2.mp4");
     const t = video.currentTime + (mobile ? START_AT : 0);
-    if (!readyRef.current && video.currentTime >= (mobile ? 0.02 : START_AT - 0.05)) {
+    if (!readyRef.current && !video.paused && video.currentTime >= (mobile ? 0.02 : START_AT - 0.05)) {
       readyRef.current = true;
       setReady(true);
-      setShowExit(false);
       if (retryTimer.current !== null) window.clearTimeout(retryTimer.current);
     }
     if (t > lastProgress.current + 0.05) {
       lastProgress.current = t;
-      setShowExit(false);
       if (bufferTimer.current !== null) window.clearTimeout(bufferTimer.current);
       bufferTimer.current = null;
     }
@@ -176,7 +174,7 @@ export default function SavannahIntro() {
         </video>
         <div className={styles.savannahIntroShade} />
       </div>
-      {showExit && !ready && (
+      {showExit && (
         <button type="button" onClick={finish} aria-label="Enter ctrl+love without the film"
           style={{position:"absolute",right:20,bottom:24,zIndex:8,padding:"12px 16px",background:"rgba(245,243,238,.94)",color:"#111",border:0,font:"inherit",cursor:"pointer"}}>
           Enter site →
