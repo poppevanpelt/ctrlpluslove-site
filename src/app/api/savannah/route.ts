@@ -1,5 +1,8 @@
-import { SAVANNAH_BRIEFING } from "../../savannah-briefing";
+import { applySavannahClientAvailability, HOLY_FOOLS_SAVANNAH_PAUSED, HOLY_FOOLS_PAUSE_MESSAGE, isHolyFoolsPath, isHolyFoolsConversation } from "../../savannah-client-availability";
+import { SAVANNAH_BRIEFING as BASE_SAVANNAH_BRIEFING } from "../../savannah-briefing";
 import { savannahRelevantKnowledge } from "../../savannah-knowledge";
+
+const SAVANNAH_BRIEFING = applySavannahClientAvailability(BASE_SAVANNAH_BRIEFING);
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -19,8 +22,6 @@ function extractText(payload: any) {
 }
 
 export async function POST(request: Request) {
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) return Response.json({ error: "Savannah is not connected yet. An API key is required." }, { status: 503, headers: { "Cache-Control": "no-store" } });
 
   const body = (await request.json().catch(() => ({}))) as RequestBody;
   const messages = (Array.isArray(body.messages) ? body.messages : [])
@@ -32,6 +33,14 @@ export async function POST(request: Request) {
   if (!messages.length) return Response.json({ error: "Say something first." }, { status: 400 });
 
   const context = typeof body.context === "string" ? body.context.slice(0, 8000).trim() : "";
+  let referringPath = "";
+  try { referringPath = new URL(request.headers.get("referer") || "").pathname; } catch {}
+  if (HOLY_FOOLS_SAVANNAH_PAUSED && (isHolyFoolsPath(referringPath) || isHolyFoolsConversation(context, messages))) {
+    return Response.json({text: HOLY_FOOLS_PAUSE_MESSAGE, paused: true}, {headers: {"Cache-Control":"no-store"}});
+  }
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) return Response.json({ error: "Savannah is not connected yet. An API key is required." }, { status: 503, headers: { "Cache-Control": "no-store" } });
+
   const instructions = [
     SAVANNAH_BRIEFING,
     savannahRelevantKnowledge(messages),

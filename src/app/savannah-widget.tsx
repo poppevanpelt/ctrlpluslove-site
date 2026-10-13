@@ -1,10 +1,12 @@
 "use client";
 
+import { applySavannahClientAvailability, HOLY_FOOLS_SAVANNAH_PAUSED, isHolyFoolsPath } from "./savannah-client-availability";
+import { SavannahPaused } from "./SavannahPaused";
 import Vapi from "@vapi-ai/web";
 import { SavannahPerformance } from "./SavannahPerformance";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { SAVANNAH_BRIEFING } from "./savannah-briefing";
+import { SAVANNAH_BRIEFING as BASE_SAVANNAH_BRIEFING } from "./savannah-briefing";
 import { primeSavannahAudio, resumeSavannahAudio, speakSavannahNeurally, stopSavannahLocalVoice } from "./savannah-local-voice";
 import {
   SAVANNAH_HIDDEN_TAB_GRACE_MS,
@@ -22,6 +24,8 @@ import {
 
 const SAVANNAH_AVATAR = "/savannah-avatar.jpg?v=20261002-4";
 // Host redeploy trigger: Savannah voice lifecycle fix - 2026-10-07
+
+const SAVANNAH_BRIEFING = applySavannahClientAvailability(BASE_SAVANNAH_BRIEFING);
 
 type State = "idle" | "requesting" | "connecting" | "live" | "error";
 type Mode = "voice" | "type";
@@ -71,6 +75,14 @@ function describeError(error: unknown) {
 }
 
 export function SavannahWidget() {
+  const pathname = usePathname();
+  if (HOLY_FOOLS_SAVANNAH_PAUSED && isHolyFoolsPath(pathname)) {
+    return pathname.startsWith("/savannah-room/") ? null : <SavannahPaused />;
+  }
+  return <ActiveSavannahWidget />;
+}
+
+function ActiveSavannahWidget() {
   const pathname = usePathname();
   const vapiRef = useRef<Vapi | null>(null);
   const openVoiceRef = useRef<() => void>(() => {});
