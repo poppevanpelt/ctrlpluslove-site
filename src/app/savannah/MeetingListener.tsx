@@ -17,16 +17,42 @@ export default function MeetingListener(props: Props) {
   const [finishing, setFinishing] = useState(false);
   const [status, setStatus] = useState("She listens until you end the meeting.");
   const [retry, setRetry] = useState(false);
+  const meetingWords = useRef<string[]>([]);
+  const [wordsReady, setWordsReady] = useState(false);
+  const [handoffStatus, setHandoffStatus] = useState("");
   const control = useRef<{ stop: () => void; retry: () => void; dispose: () => void } | null>(null);
   const generation = useRef(0);
   const mounted = useRef(true);
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; control.current?.dispose(); }; }, []);
+
+  function performAutopsy() {
+    if (active || finishing || !wordsReady) return;
+    const origin = "https://ctrl-love-meeting-autopsy.lovable.app";
+    const tab = window.open(origin + "/", "_blank");
+    if (!tab) { setHandoffStatus("Allow pop-ups and try again. Nothing sent."); return; }
+    const transcript = meetingWords.current.join("\n").slice(-90000);
+    let sent = false;
+    const receive = (event: MessageEvent) => {
+      if (sent || event.origin !== origin || event.source !== tab || event.data?.type !== "CTRL_LOVE_AUTOPSY_READY" || event.data?.version !== 1) return;
+      sent = true;
+      window.removeEventListener("message", receive);
+      window.clearTimeout(timeout);
+      tab.postMessage({ type: "CTRL_LOVE_AUTOPSY_TRANSCRIPT", version: 1, transcript, source: "Savannah meeting" }, origin);
+      setHandoffStatus("Transcript handed to Autopsy. Review it in the new tab.");
+    };
+    window.addEventListener("message", receive);
+    const timeout = window.setTimeout(() => { window.removeEventListener("message", receive); if (!sent) setHandoffStatus("No connection confirmation. Try again."); }, 60000);
+    setHandoffStatus("Waiting for the Autopsy to receive your transcript…");
+  }
 
   async function start() {
     if (opening || active || control.current || props.unavailable) return;
     setOpening(true);
     callbacks.current.onActive(true);
     setRetry(false);
+    meetingWords.current = [];
+    setWordsReady(false);
+    setHandoffStatus("");
     setStatus("Opening meeting microphone…");
     const token = ++generation.current;
     let stream: MediaStream | null = null;
@@ -114,6 +140,8 @@ export default function MeetingListener(props: Props) {
         if (!valid()) return;
         const text = result.text.trim();
         if (!text) return;
+        meetingWords.current.push(text);
+        setWordsReady(true);
         callbacks.current.onTranscript(text);
         accumulated += "\n" + text;
         // Keep a bounded working window; the visible transcript keeps all turns.
@@ -193,7 +221,9 @@ export default function MeetingListener(props: Props) {
 
   return <section className="meeting-listener" aria-label="Meeting listening">
     <div><button type="button" onClick={() => active ? control.current?.stop() : void start()} disabled={opening || (!active && (props.unavailable || finishing))}>{opening ? "OPENING…" : active ? "END MEETING" : "START MEETING"}</button>
-      {retry && <button type="button" onClick={() => control.current?.retry()}>RETRY CONNECTION</button>}</div>
+      {retry && <button type="button" onClick={() => control.current?.retry()}>RETRY CONNECTION</button>}
+      {!active && !finishing && wordsReady && <button type="button" onClick={performAutopsy}>PERFORM AUTOPSY ↗</button>}</div>
+    {handoffStatus && <p role="status">{handoffStatus}</p>}
     <p role="status">{status}</p>
     <small>{active ? "KEEP THIS PAGE OPEN AND SCREEN AWAKE · SHE FLAGS ONLY WHEN USEFUL" : "Let everyone know Savannah is listening. Audio is sent for transcription; the transcript stays on this page."}</small>
     <style jsx>{`
