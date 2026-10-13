@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import styles from "./decision-receipt.module.css";
+import SavannahReceiptReader from "./SavannahReceiptReader";
 
 type Inputs = {
   decision: string; move: string; control: string; owner: string;
@@ -231,6 +232,7 @@ export default function DecisionReceipt() {
             <div className={styles.receiptEnd}>THIS RECEIPT IS NOT PROOF<br/>YOU WERE RIGHT.<br/><br/>IT IS A RECORD OF<br/>WHAT YOU BELIEVED.</div>
             <div className={styles.receiptUrl}>CTRLPLUSLOVE.COM / DECISION-RECEIPT</div>
           </div>
+          {issued && <SavannahReceiptReader receipt={text} verdict={result.verdict}/>}
           {issued ? <div className={styles.actions}><button type="button" onClick={()=>window.print()}>PRINT / SAVE PDF ↗</button><button type="button" onClick={copy}>COPY RECEIPT ↗</button><button type="button" onClick={download}>DOWNLOAD .TXT ↗</button></div> : <p className={styles.previewNote}>LIVE PREVIEW. ENTER A DECISION AND ISSUE IT TO PRINT OR SHARE.</p>}
           <div className={styles.disclaimer}><b>READ THE FINE PRINT.</b><p>This is a transparent rule-based prompt for better judgment, not an AI fact-checker, financial forecast or verified recommendation. Numbers and evidence are supplied by you. A receipt records the argument; it doesn&apos;t validate it.</p></div>
         </aside>
