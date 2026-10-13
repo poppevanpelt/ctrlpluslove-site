@@ -18,7 +18,6 @@ export default function SavannahIntro() {
   const [visible, setVisible] = useState(true);
   const [ready, setReady] = useState(false);
   const [handoff, setHandoff] = useState(false);
-  const [fallback, setFallback] = useState(false);
   const [stage, setStage] = useState<SceneStage>("film");
   const videoRef = useRef<HTMLVideoElement>(null);
   const wallContentRef = useRef<HTMLDivElement>(null);
@@ -42,7 +41,7 @@ export default function SavannahIntro() {
     cancelBufferTimer();
     bufferTimerRef.current = window.setTimeout(() => {
       bufferTimerRef.current = null;
-      if (!handoffStarted.current && videoRef.current?.paused === false) completeHandoff(false);
+      if (!handoffStarted.current && videoRef.current?.paused === false) completeHandoff();
     }, 3500);
   };
 
@@ -163,7 +162,7 @@ export default function SavannahIntro() {
       if (video) video.pause();
       releasePageLock();
       // Reduced-motion visitors enter the site immediately; never park on a still portrait.
-      completeHandoff(false);
+      completeHandoff();
     };
 
     syncMotionPreference();
@@ -175,7 +174,7 @@ export default function SavannahIntro() {
   // The site underneath is the fallback; preserve it rather than displaying a static face.
   useEffect(() => {
     const primeWatchdog = window.setTimeout(() => {
-      if (!ready && !handoffStarted.current) completeHandoff(false);
+      if (!ready && !handoffStarted.current) completeHandoff();
     }, 6500);
     return () => window.clearTimeout(primeWatchdog);
   }, [ready]);
@@ -184,7 +183,7 @@ export default function SavannahIntro() {
   // visitors on a full-screen fallback portrait waiting for a manual click.
   useEffect(() => {
     const watchdog = window.setTimeout(() => {
-      if (!handoffStarted.current) completeHandoff(false);
+      if (!handoffStarted.current) completeHandoff();
     }, 12000);
     return () => window.clearTimeout(watchdog);
   }, []);
@@ -223,14 +222,14 @@ export default function SavannahIntro() {
     }, 100);
   };
 
-  const completeHandoff = (animateIntoPlace = false) => {
+  const completeHandoff = () => {
     if (handoffStarted.current) return;
     handoffStarted.current = true;
     cancelBufferTimer();
     setStage("locked");
     // Only an actual cinematic handoff gets the vault-lock treatment.
     // A failed, skipped or reduced-motion film must leave the site immediately usable.
-    const cinematic = ready && !fallback && pivotStartedRef.current;
+    const cinematic = ready && pivotStartedRef.current;
     if (cinematic) clickLock();
     else releasePageLock();
 
@@ -274,7 +273,7 @@ export default function SavannahIntro() {
 
       // CLUNC — hold the seated wall briefly, then one exact hard cut.
       pivotTimersRef.current.push(window.setTimeout(() => {
-        completeHandoff(true);
+        completeHandoff();
       }, TIC_HOLD_MS + TAC_SWING_MS + SEAT_MS + CLUNC_PAUSE_MS));
     }
   };
@@ -286,7 +285,6 @@ export default function SavannahIntro() {
       className={[
         styles.savannahIntro,
         ready ? styles.savannahIntroReady : "",
-        fallback ? styles.savannahIntroFallback : "",
         stage === "register" ? styles.savannahSceneRegister : "",
         stage === "daylight" ? styles.savannahSceneDaylight : "",
         stage === "seated" ? styles.savannahSceneSeated : "",
@@ -294,11 +292,10 @@ export default function SavannahIntro() {
         handoff ? styles.savannahHandoff : "",
       ].join(" ")}
       aria-label="Enter ctrl+love"
-      data-deploy="savannah-scene-match-handoff"
+      data-deploy="savannah-one-entrance"
       data-stage={stage}
     >
       <div className={styles.savannahFilm} aria-hidden="true">
-        <div className={styles.savannahIntroFallbackImage} />
         <video
           ref={videoRef}
           className={styles.savannahIntroVideo}
@@ -308,7 +305,7 @@ export default function SavannahIntro() {
           preload="auto"
           onLoadedMetadata={attemptPlayback}
           onCanPlay={attemptPlayback}
-          onPlaying={() => { cancelBufferTimer(); setFallback(false); }}
+          onPlaying={cancelBufferTimer}
           onWaiting={guardBuffering}
           onStalled={guardBuffering}
           onTimeUpdate={() => {
@@ -322,8 +319,8 @@ export default function SavannahIntro() {
             }
             trackHandoff();
           }}
-          onEnded={() => completeHandoff(false)}
-          onError={() => completeHandoff(false)}
+          onEnded={() => completeHandoff()}
+          onError={() => completeHandoff()}
         >
           <source media="(max-width: 768px)" src="https://ctrl-love-media.floot.app/_cdn/static/savannah-intro-mobile-v2.mp4" type="video/mp4" />
           <source src="https://ctrl-love-media.floot.app/_cdn/static/savannah-intro.mp4" type="video/mp4" />
