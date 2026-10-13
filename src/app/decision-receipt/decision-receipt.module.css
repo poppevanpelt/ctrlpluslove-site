@@ -55,8 +55,6 @@
 @media(max-width:550px){.header{height:64px}.brand{font-size:25px}.headerLink{font-size:9px}.intro{min-height:0}.introText{padding:46px 22px 26px}.intro h1{font-size:clamp(47px,12vw,74px);margin:43px 0 30px}.introFoot{padding-top:60px;gap:15px;font-size:8px}.art{min-height:340px}.printer{width:73%;transform:scale(.8) rotate(-8deg)}.artCaption{font-size:8px}.workspace{padding-bottom:65px}.sectionTop,.ruleTitle{font-size:8px}.formColumn{padding-top:37px}.formIntro h2{font-size:58px}.numbers{grid-template-columns:1fr 1fr}.numbers .fieldGroup:last-child{grid-column:span 2}.numbers .fieldGroup label{min-height:0}.rangeGroup>div{align-items:flex-start;flex-direction:column;gap:4px}.receipt{padding:34px 24px 45px}.footer{font-size:9px}.footer span:nth-child(2){display:none}}
 @media print{
 @page{size:A4;margin:16mm}
-body,html{background:#fff!important}
-body>*:not(main){display:none!important}
 .page{background:white!important}
 .header,.intro,.sectionTop,.formColumn,.previewHeading,.actions,.previewNote,.disclaimer,.footer{display:none!important}
 .workspace{padding:0!important}.workGrid{display:block!important}.previewColumn{display:block!important;padding:0!important}
