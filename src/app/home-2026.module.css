@@ -41,28 +41,6 @@
 @media(max-width:650px){.flowIntro{min-height:auto}.ballStage{min-height:300px}.flowCopy{padding:28px 22px}.stage{padding:22px}}
 
 
-.savannahIntro{position:fixed;inset:0;z-index:100;background:#0d0d0c;overflow:hidden;opacity:1;transition:opacity 2s cubic-bezier(.2,.7,.2,1),visibility 2s ease,clip-path 1.8s cubic-bezier(.7,0,.25,1);clip-path:inset(0 0 0 0)}
-.savannahIntroReady{background:#0d0d0c}
-.savannahIntroVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;opacity:0;transition:opacity .12s linear}
-.savannahIntroReady .savannahIntroVideo{opacity:1}
-.savannahIntroShade{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,.06),transparent 38%,rgba(0,0,0,.18));pointer-events:none}
-.savannahIntroFallbackImage{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.04),rgba(0,0,0,.24)),url("/savannah-avatar.jpg?v=20261002-4") center 22%/cover no-repeat;opacity:0;transition:opacity .35s ease}
-.savannahIntroFallback .savannahIntroFallbackImage{opacity:1}
-.savannahIntroControls{position:absolute;z-index:5;left:var(--pad);bottom:24px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.savannahIntroPlay,.savannahIntroEnter{padding:14px 20px;border:1px solid rgba(255,255,255,.6);background:rgba(0,0,0,.3);color:#fff;font:inherit;cursor:pointer}
-.savannahIntroPlay{background:rgba(255,255,255,.1)}
-
-.savannahSiteLayer{position:absolute;inset:0;z-index:3;color:#fff;opacity:0;transform-origin:100% 52%;transition:opacity .18s linear,transform .68s cubic-bezier(.7,-.02,.2,1),inset .68s cubic-bezier(.7,-.02,.2,1),box-shadow .68s ease;pointer-events:none;text-shadow:0 1px 16px rgba(0,0,0,.34);will-change:transform}
-.savannahSiteLayerVisible{opacity:1}
-.savannahSiteNav{position:absolute;left:clamp(20px,3.6vw,58px);right:clamp(20px,3.6vw,58px);top:26px;display:flex;align-items:center;justify-content:space-between;font-size:10px;letter-spacing:.11em;text-transform:uppercase}
-.savannahSiteNav strong{font-size:27px;letter-spacing:-1.6px;text-transform:none}
-.savannahSiteNote{position:absolute;right:clamp(20px,3.6vw,58px);bottom:clamp(28px,4vw,58px);width:min(380px,calc(100vw - 40px));padding-top:12px;border-top:1px solid rgba(255,255,255,.72)}
-.savannahSiteNote small{display:block;margin-bottom:9px;font-size:9px;letter-spacing:.14em;text-transform:uppercase}
-.savannahSiteNote strong{display:block;font-size:clamp(24px,2.55vw,38px);line-height:.92;letter-spacing:-.045em;text-transform:uppercase}
-.savannahHandoff{opacity:0;visibility:hidden;pointer-events:none;clip-path:inset(0 0 100% 0)}
-.savannahHandoff .savannahSiteLayer{opacity:0}
-@media(max-width:650px){.savannahIntroVideo{object-position:center center}.savannahSiteNav span{display:none}.savannahSiteNav strong{font-size:22px}.savannahSiteNote{left:20px;right:20px;width:auto;bottom:24px}}
-@media(prefers-reduced-motion:reduce){.savannahIntro{display:block}.savannahIntroVideo{opacity:0!important}.savannahIntroFallbackImage{opacity:1}.savannahIntro,.savannahIntroVideo,.savannahSiteLayer{transition:none!important}}
 
 .savannahExplainer{position:relative;max-width:var(--max);margin:-1px auto 0;padding:0 var(--pad);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);box-shadow:inset 0 10px 22px rgba(17,17,15,.035)}
 .savannahExplainer:before{content:"";position:absolute;top:-1px;left:var(--pad);right:var(--pad);height:3px;background:linear-gradient(90deg,transparent 0 4%,var(--ink) 4% 13%,transparent 13% 87%,var(--ink) 87% 96%,transparent 96%);opacity:.28;pointer-events:none}
@@ -79,34 +57,9 @@
 @media(max-width:650px){.savannahExplainerInner{padding:44px 0;gap:28px}.savannahExplainerCopy h2{font-size:clamp(48px,14vw,68px)}.savannahExplainerCopy p,.savannahExplainerCopy strong{font-size:21px}.savannahExplainerAction button{width:100%;min-height:50px}}
 
 
-/* Savannah handoff: the page seats itself into place like a precise mechanical latch. */
-:global(html.savannah-page-locking) .page{
-  transform:translateY(-2px) scale(1.0015);
-  transform-origin:50% 0;
-  transition:transform .16s cubic-bezier(.2,.8,.2,1);
-}
-:global(html.savannah-page-locked) .page{
-  transform:translateY(0) scale(1);
-  transform-origin:50% 0;
-  transition:transform .11s cubic-bezier(.15,.9,.2,1);
-}
-:global(html.savannah-page-locking) .nav{
-  box-shadow:0 1px 0 rgba(17,17,15,.28),0 3px 8px rgba(17,17,15,.035);
-}
-@media(prefers-reduced-motion:reduce){
-  :global(html.savannah-page-locking) .page,
-  :global(html.savannah-page-locked) .page{transform:none;transition:none}
-}
-
-/* A weighted entrance: travel, settle, then engage the latch. */
-:global(html.savannah-page-locking) .page{transform:translateY(12px) scale(.996);transition:transform .65s cubic-bezier(.65,0,.25,1)}
-:global(html.savannah-page-locked) .page{animation:vaultSeat .55s cubic-bezier(.2,.8,.2,1) both}
-@keyframes vaultSeat{0%{transform:translateY(12px) scale(.996)}75%{transform:translateY(-1px) scale(1)}100%{transform:translateY(0) scale(1)}}
 .section{scroll-margin-top:88px}
 .aboutProfile{min-width:0;max-width:100%}.aboutBio{overflow-wrap:anywhere}.flipInsert span{font-size:12px;line-height:1.4}
-.savannahIntroEnter{position:static}
-@media(max-width:650px){.aboutProfile{grid-template-columns:minmax(0,110px) minmax(0,1fr)}.savannahSiteNote{bottom:90px}}
-@media(prefers-reduced-motion:reduce){:global(html.savannah-page-locked) .page{animation:none}}
+@media(max-width:650px){.aboutProfile{grid-template-columns:minmax(0,110px) minmax(0,1fr)}}
 
 .cabinetPreview{display:block;margin:28px 0 36px;border:1px solid var(--ink);overflow:hidden;text-decoration:none;color:inherit}
 .cabinetPreview>img{display:block;width:100%;height:auto;max-height:460px;object-fit:cover;object-position:center;aspect-ratio:3/2}
@@ -119,245 +72,6 @@
 @media(max-width:650px){.cabinetCaption{align-items:flex-start;flex-direction:column;padding:20px;gap:20px}.cabinetPreview>img{aspect-ratio:3/2}.cabinetCaption p{font-size:16px}}
 
 
-/* Savannah dimensional handoff — film > 2.5D > 2.25D > 2D > vault lock. */
-.savannahIntro{
-  perspective:1600px;
-  perspective-origin:50% 48%;
-}
-.savannahIntroVideo{
-  transform:translate3d(0,0,0) scale(1);
-  transition:
-    opacity 2.75s cubic-bezier(.2,.7,.2,1),
-    transform .95s cubic-bezier(.2,.75,.2,1),
-    filter .95s ease;
-  will-change:transform,filter,opacity;
-}
-.savannahSiteLayer{
-  inset:clamp(14px,1.7vw,30px);
-  overflow:hidden;
-  color:#11110f;
-  text-shadow:none;
-  border:1px solid rgba(17,17,15,.22);
-  background:
-    linear-gradient(90deg,rgba(246,241,231,.86) 0%,rgba(246,241,231,.68) 48%,rgba(246,241,231,.32) 100%),
-    url("/home/sunnyvale-campus.webp") center/cover no-repeat;
-  transform-origin:0 50%;
-  transform-style:preserve-3d;
-  backface-visibility:hidden;
-  transform:perspective(1500px) rotateY(-10deg) rotateX(.65deg) translate3d(2.4vw,0,62px) scale(.952);
-  box-shadow:34px 8px 82px rgba(0,0,0,.34),8px 0 0 rgba(17,17,15,.08);
-  transition:
-    opacity .46s ease,
-    inset .78s cubic-bezier(.2,.78,.2,1),
-    transform .78s cubic-bezier(.2,.78,.2,1),
-    box-shadow .78s cubic-bezier(.2,.78,.2,1);
-  will-change:transform,opacity,inset;
-}
-.savannahSiteLayer::after{
-  content:"";
-  position:absolute;
-  top:0;
-  right:0;
-  bottom:0;
-  width:clamp(5px,.55vw,10px);
-  background:linear-gradient(90deg,rgba(17,17,15,.2),rgba(255,255,255,.22));
-  opacity:.72;
-  pointer-events:none;
-}
-.savannahSiteNav,
-.savannahSiteNote{z-index:2}
-.savannahSiteNote{
-  color:#11110f;
-  border-top-color:rgba(17,17,15,.58);
-  background:rgba(246,241,231,.72);
-  backdrop-filter:blur(5px);
-  -webkit-backdrop-filter:blur(5px);
-  padding:14px 16px 16px;
-}
-.savannahSiteLayerVisibleState .savannahIntroShade{opacity:.48}
-.savannahDepth25 .savannahSiteLayer{
-  opacity:1;
-  inset:clamp(12px,1.45vw,26px);
-  transform:perspective(1300px) rotateY(20deg) translate3d(-2.9vw,0,58px) scale(.952);
-  box-shadow:-46px 10px 92px rgba(0,0,0,.36),-10px 0 0 rgba(17,17,15,.095);
-}
-.savannahDepth25 .savannahIntroVideo{
-  transform:translate3d(1.3vw,0,0) scale(1.025);
-  filter:saturate(.96) brightness(.98);
-}
-.savannahDepth225 .savannahSiteLayer{
-  opacity:1;
-  inset:clamp(6px,.72vw,13px);
-  transform:perspective(1400px) rotateY(8deg) translate3d(-1.2vw,0,28px) scale(.982);
-  box-shadow:-30px 6px 62px rgba(0,0,0,.28),-6px 0 0 rgba(17,17,15,.07);
-}
-.savannahDepth225 .savannahIntroVideo{
-  transform:translate3d(.7vw,0,0) scale(1.017);
-  filter:saturate(.92) brightness(.96);
-}
-.savannahDepth2d .savannahSiteLayer{
-  opacity:1;
-  inset:0;
-  transform:perspective(1400px) rotateY(0deg) translate3d(0,0,0) scale(1);
-  box-shadow:0 0 0 rgba(0,0,0,0);
-}
-.savannahDepth2d .savannahSiteLayer::after{opacity:0}
-.savannahDepth2d .savannahIntroVideo{
-  transform:translate3d(0,0,0) scale(1.008);
-  filter:saturate(.9) brightness(.95);
-}
-.savannahHandoff{
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-  clip-path:inset(0 0 0 0);
-  transition:opacity .16s linear,visibility .16s linear;
-}
-.savannahHandoff .savannahSiteLayer{opacity:1}
-:global(html.savannah-page-locking) .page{
-  transform:translateY(10px) scale(.9965);
-  transform-origin:50% 0;
-  transition:transform .56s cubic-bezier(.65,0,.25,1);
-}
-:global(html.savannah-page-locked) .page{
-  animation:vaultClunkSeat .34s cubic-bezier(.18,.88,.2,1);
-}
-@keyframes vaultClunkSeat{
-  0%{transform:translateY(10px) scale(.9965)}
-  68%{transform:translateY(-1.5px) scale(1.0008)}
-  100%{transform:translateY(0) scale(1)}
-}
-@media(max-width:650px){
-  .savannahSiteLayer{
-    transform-origin:100% 52%;
-    inset:10px;
-  }
-  .savannahDepth25 .savannahSiteLayer{
-    inset:9px;
-    transform:perspective(1100px) rotateY(15deg) translate3d(-2vw,0,34px) scale(.968);
-  }
-  .savannahDepth225 .savannahSiteLayer{
-    inset:4px;
-    transform:perspective(1200px) rotateY(6deg) translate3d(-.8vw,0,16px) scale(.99);
-  }
-  .savannahDepth2d .savannahSiteLayer{inset:0;transform:none}
-}
-@media(prefers-reduced-motion:reduce){
-  .savannahSiteLayer,
-  .savannahIntroVideo{transform:none!important;transition:none!important}
-  :global(html.savannah-page-locked) .page{animation:none!important}
-}
-
-
-/* Savannah scene-match handoff — one sentence, one frame, no wipe. */
-.savannahIntro{
-  background:#0d0d0c;
-  transition:opacity .16s linear,visibility .16s linear,background-color .3s ease;
-  clip-path:none;
-}
-.savannahFilm{
-  position:absolute;
-  inset:0;
-  z-index:0;
-  overflow:hidden;
-  opacity:1;
-  filter:none;
-  transition:
-    opacity .48s cubic-bezier(.2,.7,.2,1),
-    filter .48s cubic-bezier(.2,.7,.2,1);
-  will-change:opacity,filter;
-}
-.savannahFilm .savannahIntroVideo{
-  z-index:0;
-  opacity:1;
-  transform:none;
-  transition:
-    opacity .48s cubic-bezier(.2,.7,.2,1),
-    filter .48s cubic-bezier(.2,.7,.2,1);
-}
-.savannahFilm .savannahIntroFallbackImage{z-index:0}
-.savannahFilm .savannahIntroShade{
-  z-index:1;
-  transition:opacity .42s ease;
-}
-.savannahProjectionHeadline{
-  position:absolute;
-  z-index:4;
-  margin:0;
-  max-width:none;
-  color:rgba(248,237,218,0);
-  text-transform:uppercase;
-  pointer-events:none;
-  transform-origin:left top;
-  transform:translate(16vw,-1.8vh) scale(.58) rotate(-1.4deg);
-  opacity:0;
-  text-shadow:0 0 10px rgba(255,238,210,.3);
-  transition:
-    transform .5s cubic-bezier(.66,0,.22,1),
-    color .38s linear,
-    opacity .16s linear,
-    text-shadow .38s linear;
-  will-change:transform,opacity;
-}
-.savannahSceneRegister .savannahProjectionHeadline{
-  opacity:.94;
-  color:rgba(248,237,218,.92);
-}
-.savannahSceneRegister .savannahIntroControls{
-  opacity:0;
-  pointer-events:none;
-}
-.savannahIntroControls{transition:opacity .18s linear}
-
-/* The room stays full-frame while the live homepage comes up underneath it. */
-.savannahSceneDaylight{
-  background:transparent;
-}
-.savannahSceneDaylight .savannahFilm{
-  opacity:.46;
-  filter:saturate(.88) brightness(1.06);
-}
-.savannahSceneDaylight .savannahFilm .savannahIntroShade{
-  opacity:.16;
-}
-.savannahSceneDaylight .savannahProjectionHeadline{
-  opacity:1;
-  color:rgba(45,41,35,.96);
-  transform:translate(7.5vw,-.8vh) scale(.79) rotate(-.35deg);
-  text-shadow:none;
-}
-
-.savannahSceneLocked{
-  background:transparent;
-}
-.savannahSceneLocked .savannahFilm{
-  opacity:0;
-  filter:saturate(.84) brightness(1.1);
-}
-.savannahSceneLocked .savannahProjectionHeadline{
-  opacity:1;
-  color:var(--ink);
-  transform:translate(0,0) scale(1) rotate(0);
-  text-shadow:none;
-}
-.savannahHandoff{
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-  clip-path:none;
-  transition:opacity .16s linear,visibility .16s linear;
-}
-@media(max-width:900px){
-  .savannahProjectionHeadline{transform:translate(10vw,-1vh) scale(.66) rotate(-1deg)}
-  .savannahSceneDaylight .savannahProjectionHeadline{transform:translate(4vw,-.4vh) scale(.84) rotate(-.25deg)}
-}
-@media(max-width:650px){
-  .savannahProjectionHeadline{transform:translate(4vw,-.5vh) scale(.76) rotate(-.6deg)}
-  .savannahSceneDaylight .savannahProjectionHeadline{transform:translate(1.5vw,0) scale(.9) rotate(0)}
-}
-@media(prefers-reduced-motion:reduce){
-  .savannahFilm,.savannahProjectionHeadline{transition:none!important;transform:none!important}
-}
 
 /* Each instrument gets an illustrated mechanism instead of a blank gradient. */
 .instrumentVisual:has(.artwork){height:220px;background:#d7c7aa}
@@ -375,28 +89,6 @@
 .art_chase{background:linear-gradient(145deg,#e6ddcd,#d0ba98)}
 .art_radar{background:linear-gradient(145deg,#c4bfb0,#e6dcc4)}
 @media(max-width:650px){.instrumentVisual:has(.artwork){height:210px}.instrument{min-height:0}.instrumentCopy{padding:20px}.instrumentCopy h3{font-size:25px}.instrumentCopy p{line-height:1.45}}
-
-/* 2026-10-09: replace the final dissolve with a registered physical cut.
-   The projected headline and live h1 occupy the identical measured rectangle. */
-.savannahIntro{perspective:1400px}
-.savannahFilm{transition:filter .22s linear,transform .46s cubic-bezier(.38,0,.18,1)!important;transform-origin:50% 50%}
-.savannahSceneDaylight .savannahFilm{opacity:1!important;filter:saturate(.95) brightness(1.04)}
-.savannahSceneLocked .savannahFilm{opacity:0!important;transition:opacity 0s step-end,filter 0s,transform .18s ease!important;transform:scale(1.006)}
-.savannahProjectionHeadline{transform:perspective(1000px) translate3d(11vw,-2vh,-120px) rotateY(-5deg) rotateZ(-1.4deg) scale(.7);transition:transform .64s cubic-bezier(.24,.74,.16,1),color .14s steps(1,end),opacity .12s linear,text-shadow .2s linear}
-.savannahSceneDaylight .savannahProjectionHeadline{transform:perspective(1000px) translate3d(2.5vw,-.3vh,-25px) rotateY(-1deg) rotateZ(-.2deg) scale(.94);color:var(--ink)}
-.savannahSceneLocked .savannahProjectionHeadline{transform:none;opacity:0;transition:transform .16s cubic-bezier(.15,.85,.2,1),opacity 0s step-end;color:var(--ink)}
-.savannahHandoff{opacity:0;transition:opacity 0s step-end,visibility 0s step-end}
-@media(max-width:650px){
- .savannahProjectionHeadline{transform:perspective(1000px) translate3d(3vw,-.8vh,-65px) rotateY(-3deg) rotateZ(-.6deg) scale(.82)}
- .savannahSceneDaylight .savannahProjectionHeadline{transform:perspective(1000px) translate3d(1vw,0,-12px) rotateY(-.5deg) scale(.97)}
-}
-@media(prefers-reduced-motion:reduce){.savannahFilm,.savannahProjectionHeadline{transition:none!important;transform:none!important}}
-
-/* Safari: never paint the unprimed t=0 film frame above the intro.
-   The image is only revealed after seeked(1.35s), avoiding the giant-face flash. */
-.savannahFilm .savannahIntroVideo { opacity:0; }
-.savannahIntroReady:not(.savannahIntroFallback) .savannahFilm .savannahIntroVideo { opacity:1; }
-.savannahIntroFallback .savannahFilm .savannahIntroVideo { opacity:0; }
 
 
 /* 2026-10-09: commercial journey and instrument-family colour grammar.
@@ -422,9 +114,6 @@
 .final a{position:relative;z-index:2;background:var(--paper)}
 .finalBall{position:absolute;z-index:1;right:5%;bottom:3%;width:clamp(170px,24vw,350px);height:auto;object-fit:contain;pointer-events:none;filter:drop-shadow(10px 28px 16px rgba(0,0,0,.14))}
 @media(max-width:900px){.offerStrip{grid-template-columns:1fr}.offerStrip a{min-height:115px;padding:20px}.final{min-height:470px}}
-@media(max-width:650px){
-  .savannahIntroVideo{object-fit:contain!important;object-position:center!important;background:#0d0d0c}
-  .savannahIntroFallbackImage{background-size:contain!important;background-position:center center!important;background-repeat:no-repeat!important}
   .offerStrip a{min-height:110px}
   .instrument[data-family] .instrumentCopy{padding:22px}
   .instrument[data-family] .instrumentCopy h3{font-size:26px}
@@ -471,252 +160,70 @@
 .instrumentQuickstart b{margin-top:auto;padding-top:14px;border-top:1px solid currentColor;font-size:13px}
 @media(max-width:900px){.instrumentQuickstart{grid-template-columns:1fr}.instrumentQuickstart a{min-height:160px;gap:15px}}
 
-/* Never leave a black loading stage when external film is not ready. */
-.savannahFilm .savannahIntroFallbackImage{opacity:1;background-image:linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.27)),url("/savannah-avatar.jpg?v=20261002-4");background-position:center 22%;background-size:cover}
-.savannahIntroReady:not(.savannahIntroFallback) .savannahFilm .savannahIntroFallbackImage{opacity:0;transition:opacity .32s ease .12s}
-
-/* Film loading state: no giant crop and no false invitation before playback. */
-.savannahFilm .savannahIntroFallbackImage{
-  background-size:contain!important;
-  background-position:center center!important;
-  background-repeat:no-repeat!important;
+/* Savannah entrance: the sole active choreography.
+   Film -> TIC (hold) -> TAC (pivot homepage wall) -> seat -> CLUNC (hard cut).
+   Legacy 2.5D, scene-match, opacity-dissolve and portrait fallbacks removed. */
+.savannahIntro{
+  position:fixed;inset:0;z-index:100;overflow:hidden;
+  background:#0d0d0c;opacity:1;isolation:isolate;
+  transition:none;
 }
-.savannahIntro:not(.savannahIntroReady) .savannahIntroControls{opacity:0;pointer-events:none}
-.savannahIntro.savannahIntroReady .savannahIntroControls{opacity:1}
-
-/* Intro is a film, never a full-screen Savannah portrait. */
-.savannahFilm .savannahIntroFallbackImage{opacity:0!important;background-image:none!important}
-
-/* Fail-open intro: never put a black loading layer in front of the actual site.
-   Keep the video mounted so mobile Safari can decode/play it, then reveal only
-   after its approved wide scene is genuinely running. */
-.savannahIntro:not(.savannahIntroReady):not(.savannahHandoff){
-  opacity:0.001!important;
-  background:transparent!important;
-  pointer-events:none!important;
+.savannahFilm{position:absolute;inset:0;z-index:0;overflow:hidden}
+.savannahIntroVideo{
+  display:block;position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center center;opacity:0;
+  transition:opacity .12s linear;
 }
-.savannahIntro.savannahIntroReady:not(.savannahHandoff){
-  opacity:1!important;
-  pointer-events:auto;
+.savannahIntroReady .savannahIntroVideo{opacity:1}
+.savannahIntroShade{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(0,0,0,.06),transparent 38%,rgba(0,0,0,.18));
 }
-
-
-/* Savannah -> real homepage: a timed, visible scene handoff.
-   The real hero is already underneath the film. Fade the filmed scene away
-   during its final 1.4 seconds, not in a single frame at "locked". */
-.savannahIntro.savannahSceneRegister,
-.savannahIntro.savannahSceneDaylight,
-.savannahIntro.savannahSceneLocked {
-  background:transparent!important;
-}
-.savannahIntro.savannahIntroReady .savannahFilm {
-  transition:opacity .7s cubic-bezier(.32,.05,.24,1),filter .7s ease,transform .7s ease!important;
-}
-.savannahIntro.savannahSceneRegister .savannahFilm {
-  opacity:.52!important;
-  filter:saturate(.94) brightness(1.03);
-  transform:scale(1.006);
-}
-.savannahIntro.savannahSceneDaylight .savannahFilm {
-  opacity:.06!important;
-  filter:saturate(.98) brightness(1.05);
-  transform:scale(1.013);
-}
-.savannahIntro.savannahSceneLocked .savannahFilm {
-  opacity:0!important;
-  filter:none;
-  transform:scale(1.013);
-  transition:opacity .12s linear,filter .12s linear,transform .12s linear!important;
-}
-.savannahIntro.savannahHandoff {
-  opacity:0!important;
-  visibility:hidden;
-  pointer-events:none;
-}
-/* No late-stage body nudge: the image match is the transition, not a
-   separate animation that moves the already visible homepage. */
-:global(html.savannah-page-locking) .page,
-:global(html.savannah-page-locked) .page {
-  transform:none!important;
-  animation:none!important;
-  transition:none!important;
-}
-@media(prefers-reduced-motion:reduce) {
-  .savannahIntro .savannahFilm{transition:none!important}
-}
-
-
-/* TIC / TAC / CLUNC — one physical wall, not a dissolve.
-   TIC: pause video on projected statement. TAC: rotate the entire filmed
-   surface towards the viewer. CLUNC: cut to the already-mounted homepage. */
-.savannahIntro.savannahSceneRegister,
-.savannahIntro.savannahSceneDaylight,
-.savannahIntro.savannahSceneLocked {
-  background:transparent!important;
-}
-.savannahIntro.savannahSceneRegister .savannahFilm,
-.savannahIntro.savannahSceneDaylight .savannahFilm {
-  opacity:1!important;
-  filter:none!important;
-  backface-visibility:hidden;
-  -webkit-backface-visibility:hidden;
-  transform-style:preserve-3d;
+.savannahPivotWall{
+  position:absolute;inset:0;z-index:5;overflow:hidden;
+  background:#fbf7f0;pointer-events:none;
   transform-origin:100% 50%;
-}
-.savannahIntro.savannahSceneRegister .savannahFilm {
-  transform:perspective(1200px) rotateY(-10deg) scale(.96)!important;
-  transition:transform .16s cubic-bezier(.15,.85,.2,1)!important;
-}
-.savannahIntro.savannahSceneDaylight .savannahFilm {
-  transform:perspective(1200px) rotateY(0deg) scale(1)!important;
-  transition:transform .78s cubic-bezier(.12,.72,.14,1)!important;
-}
-.savannahIntro.savannahSceneLocked .savannahFilm {
-  opacity:0!important;
-  transition:none!important;
-  transform:none!important;
-}
-.savannahIntro.savannahSceneRegister .savannahIntroVideo,
-.savannahIntro.savannahSceneDaylight .savannahIntroVideo {
-  opacity:1!important;
-}
-.savannahIntro.savannahSceneRegister .savannahIntroShade,
-.savannahIntro.savannahSceneDaylight .savannahIntroShade {
-  opacity:1!important;
-}
-@media(max-width:650px) {
-  .savannahIntro.savannahSceneRegister .savannahFilm {
-    transform:perspective(820px) rotateY(-8deg) scale(.95)!important;
-  }
-  .savannahIntro.savannahSceneDaylight .savannahFilm {
-    transform:perspective(820px) rotateY(0deg) scale(1)!important;
-  }
-}
-@media(prefers-reduced-motion:reduce) {
-  .savannahIntro.savannahSceneRegister .savannahFilm,
-  .savannahIntro.savannahSceneDaylight .savannahFilm {
-    transform:none!important;
-    transition:none!important;
-  }
-}
-
-
-/* Savannah remains in the room. A solid homepage wall hinges in FRONT of
-   her, progressively occluding the film; no video dissolve whatsoever. */
-.savannahIntro .savannahPivotWall{
-  position:absolute;
-  inset:0;
-  z-index:5;
-  overflow:hidden;
-  background:#fbf7f0;
-  transform-origin:100% 50%;
-  transform:perspective(1200px) rotateY(-88deg) scaleX(.08);
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-  backface-visibility:hidden;
-  -webkit-backface-visibility:hidden;
+  transform:perspective(1200px) rotateY(-86deg) scaleX(.12);
+  opacity:0;visibility:hidden;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
   box-shadow:-28px 0 45px rgba(0,0,0,.22);
 }
 .savannahPivotWallContent{position:absolute;inset:0;overflow:hidden}
-.savannahPivotWallContent>.page{
-  min-height:100%;
-  height:100%;
-  width:100%;
-  overflow:hidden;
-}
+.savannahPivotWallContent>.page{min-height:100%;height:100%;width:100%;overflow:hidden}
 .savannahPivotWallContent .nav{position:relative;top:auto}
 .savannahPivotWallContent .hero{min-height:calc(100vh - 74px)}
 .savannahPivotWallEdge{
-  position:absolute;
-  top:0;
-  bottom:0;
-  left:0;
-  width:7px;
-  background:linear-gradient(90deg,#171715,#7d776e 35%,#e3d8c7 100%);
+  position:absolute;top:0;bottom:0;left:0;width:7px;
+  background:linear-gradient(90deg,#171715,#7d776e 35%,#e3d8c7);
   box-shadow:4px 0 9px rgba(0,0,0,.24);
 }
-.savannahIntro.savannahSceneRegister .savannahPivotWall{
-  opacity:1;
-  visibility:visible;
-  transform:perspective(1200px) rotateY(-78deg) scaleX(.17);
-  transition:transform .16s cubic-bezier(.4,0,.6,1)!important;
+.savannahSceneRegister .savannahPivotWall{
+  opacity:0;visibility:hidden;transition:none;
 }
-.savannahIntro.savannahSceneDaylight .savannahPivotWall,
-.savannahIntro.savannahSceneLocked .savannahPivotWall{
-  opacity:1;
-  visibility:visible;
-  transform:perspective(1200px) rotateY(0deg) scaleX(1);
-  transition:transform .78s cubic-bezier(.16,.8,.18,1)!important;
+.savannahSceneDaylight .savannahPivotWall{
+  opacity:1;visibility:visible;
+  transform:perspective(1200px) rotateY(-3.5deg) scale(.988);
+  transition:transform .88s cubic-bezier(.15,.67,.3,.99);
 }
-.savannahIntro.savannahSceneRegister .savannahFilm,
-.savannahIntro.savannahSceneDaylight .savannahFilm{
-  opacity:1!important;
-  transform:none!important;
-  filter:none!important;
-  transition:none!important;
+.savannahSceneSeated .savannahPivotWall{
+  opacity:1;visibility:visible;
+  transform:perspective(1200px) rotateY(0deg) scale(1);
+  transition:transform .16s cubic-bezier(.14,.86,.18,1);
 }
-.savannahIntro.savannahSceneLocked .savannahFilm{
-  opacity:1!important;
-  transform:none!important;
-  transition:none!important;
+.savannahSceneLocked .savannahPivotWall{
+  opacity:1;visibility:visible;transform:none;transition:none;
 }
-.savannahIntro.savannahSceneLocked .savannahPivotWallEdge{opacity:0}
+.savannahSceneLocked .savannahPivotWallEdge{opacity:0}
+.savannahHandoff{opacity:0;visibility:hidden;pointer-events:none}
 @media(max-width:650px){
-  .savannahIntro.savannahSceneRegister .savannahPivotWall{
-    transform:perspective(700px) rotateY(-78deg) scaleX(.17);
+  .savannahIntroVideo{object-fit:contain;background:#0d0d0c}
+  .savannahSceneDaylight .savannahPivotWall{
+    transform:perspective(700px) rotateY(-3.5deg) scale(.988);
   }
-  .savannahIntro.savannahSceneDaylight .savannahPivotWall,
-  .savannahIntro.savannahSceneLocked .savannahPivotWall{
-    transform:perspective(700px) rotateY(0deg) scaleX(1);
+  .savannahSceneSeated .savannahPivotWall{
+    transform:perspective(700px) rotateY(0deg) scale(1);
   }
 }
-
-
-/* Mechanical choreography: TIC (hold), TAC (swing), seat (catch), CLUNC (cut).
-   These beats are timed separately in SavannahIntro.tsx. */
-.savannahIntro.savannahSceneRegister .savannahPivotWall{
-  opacity:0!important;
-  visibility:hidden!important;
-  transform:perspective(1200px) rotateY(-86deg) scaleX(.12)!important;
-  transition:none!important;
-}
-.savannahIntro.savannahSceneDaylight .savannahPivotWall{
-  opacity:1!important;
-  visibility:visible!important;
-  transform:perspective(1200px) rotateY(-3.5deg) scale(.988)!important;
-  transition:transform .88s cubic-bezier(.15,.67,.3,.99)!important;
-}
-.savannahIntro.savannahSceneSeated .savannahPivotWall{
-  opacity:1!important;
-  visibility:visible!important;
-  transform:perspective(1200px) rotateY(0deg) scale(1)!important;
-  transition:transform .16s cubic-bezier(.14,.86,.18,1)!important;
-}
-.savannahIntro.savannahSceneSeated{
-  background:transparent!important;
-}
-.savannahIntro.savannahSceneSeated .savannahFilm{
-  opacity:1!important;
-  filter:none!important;
-  transform:none!important;
-  transition:none!important;
-}
-.savannahIntro.savannahSceneSeated .savannahPivotWallEdge{opacity:1}
-.savannahIntro.savannahSceneLocked .savannahPivotWall{
-  opacity:1!important;
-  visibility:visible!important;
-  transform:none!important;
-  transition:none!important;
-}
-@media(max-width:650px){
-  .savannahIntro.savannahSceneRegister .savannahPivotWall{
-    transform:perspective(700px) rotateY(-86deg) scaleX(.12)!important;
-  }
-  .savannahIntro.savannahSceneDaylight .savannahPivotWall{
-    transform:perspective(700px) rotateY(-3.5deg) scale(.988)!important;
-  }
-  .savannahIntro.savannahSceneSeated .savannahPivotWall{
-    transform:perspective(700px) rotateY(0deg) scale(1)!important;
-  }
+@media(prefers-reduced-motion:reduce){
+  .savannahIntro,.savannahIntroVideo,.savannahPivotWall{transition:none!important}
 }
