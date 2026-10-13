@@ -114,6 +114,7 @@
 .final a{position:relative;z-index:2;background:var(--paper)}
 .finalBall{position:absolute;z-index:1;right:5%;bottom:3%;width:clamp(170px,24vw,350px);height:auto;object-fit:contain;pointer-events:none;filter:drop-shadow(10px 28px 16px rgba(0,0,0,.14))}
 @media(max-width:900px){.offerStrip{grid-template-columns:1fr}.offerStrip a{min-height:115px;padding:20px}.final{min-height:470px}}
+@media(max-width:650px){
   .offerStrip a{min-height:110px}
   .instrument[data-family] .instrumentCopy{padding:22px}
   .instrument[data-family] .instrumentCopy h3{font-size:26px}
@@ -160,70 +161,61 @@
 .instrumentQuickstart b{margin-top:auto;padding-top:14px;border-top:1px solid currentColor;font-size:13px}
 @media(max-width:900px){.instrumentQuickstart{grid-template-columns:1fr}.instrumentQuickstart a{min-height:160px;gap:15px}}
 
-/* Savannah entrance: the sole active choreography.
-   Film -> TIC (hold) -> TAC (pivot homepage wall) -> seat -> CLUNC (hard cut).
-   Legacy 2.5D, scene-match, opacity-dissolve and portrait fallbacks removed. */
+
+/* SINGLE SAVANNAH ENTRANCE: film -> nav -> headline -> registration -> daylight.
+   The homepage exists underneath throughout. No hinged wall, fake site or portrait. */
 .savannahIntro{
-  position:fixed;inset:0;z-index:100;overflow:hidden;
-  background:#0d0d0c;opacity:1;isolation:isolate;
-  transition:none;
+  position:fixed;inset:0;z-index:100;overflow:hidden;isolation:isolate;
+  background:#0d0d0c;opacity:1;pointer-events:auto;
 }
-.savannahFilm{position:absolute;inset:0;z-index:0;overflow:hidden}
+.savannahFilm{position:absolute;inset:0;z-index:0;opacity:1;transition:opacity .88s cubic-bezier(.2,.7,.2,1)}
 .savannahIntroVideo{
-  display:block;position:absolute;inset:0;width:100%;height:100%;
+  position:absolute;inset:0;width:100%;height:100%;display:block;
   object-fit:cover;object-position:center center;opacity:0;
-  transition:opacity .12s linear;
+  transition:opacity .16s linear;
 }
 .savannahIntroReady .savannahIntroVideo{opacity:1}
 .savannahIntroShade{
   position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:linear-gradient(180deg,rgba(0,0,0,.06),transparent 38%,rgba(0,0,0,.18));
+  background:linear-gradient(180deg,rgba(0,0,0,.1),transparent 38%,rgba(0,0,0,.2));
+  transition:opacity .75s ease;
 }
-.savannahPivotWall{
-  position:absolute;inset:0;z-index:5;overflow:hidden;
-  background:#fbf7f0;pointer-events:none;
-  transform-origin:100% 50%;
-  transform:perspective(1200px) rotateY(-86deg) scaleX(.12);
-  opacity:0;visibility:hidden;
-  backface-visibility:hidden;-webkit-backface-visibility:hidden;
-  box-shadow:-28px 0 45px rgba(0,0,0,.22);
+.savannahNavGhost{
+  position:absolute;z-index:3;left:0;right:0;top:0;
+  color:#fff;opacity:0;transform:translateY(-9px);
+  transition:opacity .55s ease,transform .65s cubic-bezier(.2,.7,.2,1);
+  pointer-events:none;
 }
-.savannahPivotWallContent{position:absolute;inset:0;overflow:hidden}
-.savannahPivotWallContent>.page{min-height:100%;height:100%;width:100%;overflow:hidden}
-.savannahPivotWallContent .nav{position:relative;top:auto}
-.savannahPivotWallContent .hero{min-height:calc(100vh - 74px)}
-.savannahPivotWallEdge{
-  position:absolute;top:0;bottom:0;left:0;width:7px;
-  background:linear-gradient(90deg,#171715,#7d776e 35%,#e3d8c7);
-  box-shadow:4px 0 9px rgba(0,0,0,.24);
+.savannahNavGhost .nav{
+  position:relative;top:auto;z-index:auto;
+  color:inherit;background:transparent;border-bottom-color:rgba(255,255,255,.6);
+  backdrop-filter:none;-webkit-backdrop-filter:none;
 }
-.savannahSceneRegister .savannahPivotWall{
-  opacity:0;visibility:hidden;transition:none;
+.savannahSceneNav .savannahNavGhost,
+.savannahSceneHeadline .savannahNavGhost,
+.savannahSceneRegister .savannahNavGhost{opacity:.93;transform:translateY(0)}
+.savannahHeadlineGhost{
+  position:absolute;z-index:4;margin:0;pointer-events:none;
+  color:#fff;text-transform:uppercase;
+  opacity:0;transform:translate(-2vw,-2vh) scale(.94) rotate(-.8deg);
+  transform-origin:left top;
+  transition:opacity .5s ease,transform .68s cubic-bezier(.22,.72,.18,1),color .55s ease;
 }
-.savannahSceneDaylight .savannahPivotWall{
-  opacity:1;visibility:visible;
-  transform:perspective(1200px) rotateY(-3.5deg) scale(.988);
-  transition:transform .88s cubic-bezier(.15,.67,.3,.99);
-}
-.savannahSceneSeated .savannahPivotWall{
-  opacity:1;visibility:visible;
-  transform:perspective(1200px) rotateY(0deg) scale(1);
-  transition:transform .16s cubic-bezier(.14,.86,.18,1);
-}
-.savannahSceneLocked .savannahPivotWall{
-  opacity:1;visibility:visible;transform:none;transition:none;
-}
-.savannahSceneLocked .savannahPivotWallEdge{opacity:0}
+.savannahSceneHeadline .savannahHeadlineGhost,
+.savannahSceneRegister .savannahHeadlineGhost{opacity:.96}
+.savannahSceneRegister .savannahHeadlineGhost{transform:none}
+.savannahSceneDaylight{background:transparent}
+.savannahSceneDaylight .savannahFilm{opacity:0}
+.savannahSceneDaylight .savannahIntroShade{opacity:0}
+.savannahSceneDaylight .savannahNavGhost,
+.savannahSceneDaylight .savannahHeadlineGhost{opacity:0;transform:none;transition:opacity .75s ease}
 .savannahHandoff{opacity:0;visibility:hidden;pointer-events:none}
 @media(max-width:650px){
-  .savannahIntroVideo{object-fit:contain;background:#0d0d0c}
-  .savannahSceneDaylight .savannahPivotWall{
-    transform:perspective(700px) rotateY(-3.5deg) scale(.988);
-  }
-  .savannahSceneSeated .savannahPivotWall{
-    transform:perspective(700px) rotateY(0deg) scale(1);
-  }
+  .savannahIntroVideo{object-fit:cover;object-position:center}
+  .savannahNavGhost .navlinks{display:none}
+  .savannahHeadlineGhost{transform:translate(-1vw,-1vh) scale(.98)}
 }
 @media(prefers-reduced-motion:reduce){
-  .savannahIntro,.savannahIntroVideo,.savannahPivotWall{transition:none!important}
+  .savannahIntro,.savannahFilm,.savannahIntroVideo,
+  .savannahNavGhost,.savannahHeadlineGhost{transition:none!important}
 }
