@@ -14,6 +14,8 @@ const DAYLIGHT_AT = 6.65;
 const EXIT_AT = 7.65;
 const LOAD_TIMEOUT_MS = 4500;
 const PLAY_TIMEOUT_MS = 12000;
+const MOBILE_FILM = "https://ctrl-love-media.floot.app/_cdn/static/savannah-intro-mobile-v2.mp4";
+const DESKTOP_FILM = "https://ctrl-love-media.floot.app/_cdn/static/savannah-intro.mp4";
 type Stage = "film" | "nav" | "headline" | "register" | "daylight";
 
 export default function SavannahIntro() {
@@ -22,6 +24,8 @@ export default function SavannahIntro() {
   const [stage, setStage] = useState<Stage>("film");
   const [handoff, setHandoff] = useState(false);
   const [showExit, setShowExit] = useState(false);
+  const [needsTap, setNeedsTap] = useState(false);
+  const [fallbackVideo, setFallbackVideo] = useState(false);
   const [headlineStyle, setHeadlineStyle] = useState<CSSProperties>();
   const videoRef = useRef<HTMLVideoElement>(null);
   const navGhostRef = useRef<HTMLDivElement>(null);
@@ -87,13 +91,17 @@ export default function SavannahIntro() {
     onReduce();
     reduce.addEventListener?.("change", onReduce);
     // Never strand a visitor behind the black film layer if media cannot load.
+    // A user gesture may be required on iOS (Low Power Mode and browser policies).
+    // Keep the film available instead of silently skipping it.
     const exitOffer = window.setTimeout(() => {
-      if (!readyRef.current && !completed.current) setShowExit(true);
-    }, 1200);
+      if (!readyRef.current && !completed.current) { setShowExit(true); setNeedsTap(true); }
+    }, 1000);
     const loading = window.setTimeout(() => {
-      if (!readyRef.current && !completed.current) finish();
+      if (!readyRef.current && !completed.current) setFallbackVideo(true);
     }, LOAD_TIMEOUT_MS);
-    const watchdog = window.setTimeout(() => finish(), PLAY_TIMEOUT_MS);
+    const watchdog = window.setTimeout(() => {
+      if (!completed.current && lastProgress.current < EXIT_AT) { setShowExit(true); setNeedsTap(true); }
+    }, PLAY_TIMEOUT_MS);
     return () => {
       window.clearTimeout(exitOffer);
       window.clearTimeout(loading);
@@ -111,7 +119,7 @@ export default function SavannahIntro() {
     if (!video || completed.current || video.seeking) return;
     video.muted = true;
     void video.play().catch(() => {
-      if (!completed.current) finish();
+      if (!completed.current) { setNeedsTap(true); setShowExit(true); }
     });
   };
   const onMetadata = () => {
@@ -134,6 +142,8 @@ export default function SavannahIntro() {
     if (!readyRef.current && !video.paused && video.currentTime >= (mobile ? 0.02 : START_AT - 0.05)) {
       readyRef.current = true;
       setReady(true);
+      setNeedsTap(false);
+      setShowExit(false);
       if (retryTimer.current !== null) window.clearTimeout(retryTimer.current);
     }
     if (t > lastProgress.current + 0.05) {
@@ -149,7 +159,21 @@ export default function SavannahIntro() {
   };
   const onWaiting = () => {
     if (completed.current || !readyRef.current || bufferTimer.current !== null) return;
-    bufferTimer.current = window.setTimeout(() => finish(), 3000);
+    bufferTimer.current = window.setTimeout(() => {
+      if (!completed.current) { setNeedsTap(true); setShowExit(true); }
+    }, 3000);
+  };
+  const playFromTap = () => {
+    const video = videoRef.current;
+    if (!video || completed.current) return;
+    video.muted = true;
+    video.setAttribute("playsinline", "");
+    // Must be called directly in the click handler for iOS autoplay restrictions.
+    void video.play().then(() => setNeedsTap(false)).catch(() => {
+      setFallbackVideo(true);
+      setNeedsTap(true);
+      setShowExit(true);
+    });
   };
   if (!visible) return null;
 
@@ -164,17 +188,26 @@ export default function SavannahIntro() {
       handoff ? styles.savannahHandoff : "",
     ].join(" ")} aria-label="Enter ctrl+love" data-deploy="savannah-one-film-choreography" data-stage={stage}>
       <div className={styles.savannahFilm} aria-hidden="true">
-        <video ref={videoRef} className={styles.savannahIntroVideo}
-          muted playsInline preload="auto"
+        <video key={fallbackVideo ? "wide" : "responsive"} ref={videoRef} className={styles.savannahIntroVideo}
+          muted playsInline autoPlay preload="auto"
           onLoadedMetadata={onMetadata} onLoadedData={tryPlay} onCanPlay={tryPlay} onSeeked={tryPlay} onPlaying={onProgress}
           onTimeUpdate={onProgress} onWaiting={onWaiting} onStalled={onWaiting}
-          onEnded={finish} onError={finish}>
-          <source media="(max-width: 768px)" src="https://ctrl-love-media.floot.app/_cdn/static/savannah-intro-mobile-v2.mp4" type="video/mp4" />
-          <source src="https://ctrl-love-media.floot.app/_cdn/static/savannah-intro.mp4" type="video/mp4" />
+          onEnded={finish} onError={() => { setFallbackVideo(true); setNeedsTap(true); setShowExit(true); }}>
+          {!fallbackVideo && <source media="(max-width: 768px)" src={MOBILE_FILM} type="video/mp4" />}
+          <source src={DESKTOP_FILM} type="video/mp4" />
         </video>
         <div className={styles.savannahIntroShade} />
       </div>
-      {showExit && (
+      {!ready && (
+        <div style={{position:"absolute",inset:0,zIndex:2,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:22,color:"#f3f1eb",textAlign:"center",pointerEvents:"none"}}>
+          <div style={{fontSize:"clamp(34px,7vw,88px)",fontWeight:700,letterSpacing:"-.06em"}}>SAVANNAH.</div>
+          <div style={{fontSize:11,letterSpacing:".25em"}}>CTRL+LOVE · EMPLOYEE #4</div>
+        </div>
+      )}
+      {needsTap && !ready && (
+        <button type="button" onClick={playFromTap} style={{position:"absolute",left:"50%",top:"64%",transform:"translate(-50%,-50%)",zIndex:8,padding:"15px 26px",background:"#f3f1eb",color:"#111",border:0,font:"inherit",fontWeight:600,cursor:"pointer"}}>▶ Play Savannah</button>
+      )}
+      {(showExit || needsTap) && (
         <button type="button" onClick={finish} aria-label="Enter ctrl+love without the film"
           style={{position:"absolute",right:20,bottom:24,zIndex:8,padding:"12px 16px",background:"rgba(245,243,238,.94)",color:"#111",border:0,font:"inherit",cursor:"pointer"}}>
           Enter site →
