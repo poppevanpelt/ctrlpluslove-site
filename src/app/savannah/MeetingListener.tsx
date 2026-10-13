@@ -11,9 +11,10 @@ type Props = { unavailable: boolean; speaking: boolean; onTranscript: (text: str
 
 export default function MeetingListener(props: Props) {
   const callbacks = useRef(props);
-  callbacks.current = props;
+  useEffect(() => { callbacks.current = props; });
   const [active, setActive] = useState(false);
   const [opening, setOpening] = useState(false);
+  const [finishing, setFinishing] = useState(false);
   const [status, setStatus] = useState("She listens until you end the meeting.");
   const [retry, setRetry] = useState(false);
   const control = useRef<{ stop: () => void; retry: () => void; dispose: () => void } | null>(null);
@@ -122,7 +123,7 @@ export default function MeetingListener(props: Props) {
         if (!valid()) return;
         setRetry(blocked);
         if (blocked) sayStatus("Connection interrupted. Audio is held on this page. Tap RETRY to continue.");
-        else if (ended && !pending) { sayStatus("Meeting ended. Transcript complete."); control.current = null; }
+        else if (ended && !pending) { sayStatus("Meeting ended. Transcript complete."); control.current = null; setFinishing(false); }
         else if (!ended) sayStatus(pending > 1 ? "Listening · catching up on the transcript…" : "Meeting listening is active.");
         if (!ended && !blocked && pending < MAX_PENDING && resumeRecording) { const resume = resumeRecording; resumeRecording = null; resume(); }
       });
@@ -146,7 +147,7 @@ export default function MeetingListener(props: Props) {
           // Start listening again before waiting for transcription or judgment.
           if (!ended && valid()) beginSegment();
           if (hadSpeech && blob.size && valid()) queue.add(blob);
-          if (ended && !queue.pending && valid()) { sayStatus("Meeting ended. Transcript complete."); control.current = null; }
+          if (ended && !queue.pending && valid()) { sayStatus("Meeting ended. Transcript complete."); control.current = null; setFinishing(false); }
         };
         segment.start();
         boundaryTimer = window.setTimeout(() => { if (segment.state === "recording") segment.stop(); }, SEGMENT_MS);
@@ -160,7 +161,7 @@ export default function MeetingListener(props: Props) {
         if (capture?.state === "recording") capture.stop();
         recordingStream.getTracks().forEach(t => t.stop());
         source.disconnect(); void audioContext.close();
-        if (valid()) { setActive(false); callbacks.current.onActive(false); sayStatus("Finishing the last transcript segment…"); }
+        if (valid()) { setActive(false); setFinishing(true); callbacks.current.onActive(false); sayStatus("Finishing the last transcript segment…"); }
       }
       function dispose() { disposed = true; stop(); queue.cancel(); requests.abort(); }
       control.current = { stop, dispose, retry: () => { setRetry(false); queue.retry(); } };
@@ -191,7 +192,7 @@ export default function MeetingListener(props: Props) {
   }
 
   return <section className="meeting-listener" aria-label="Meeting listening">
-    <div><button type="button" onClick={() => active ? control.current?.stop() : void start()} disabled={opening || (!active && (props.unavailable || Boolean(control.current)))}>{opening ? "OPENING…" : active ? "END MEETING" : "START MEETING"}</button>
+    <div><button type="button" onClick={() => active ? control.current?.stop() : void start()} disabled={opening || (!active && (props.unavailable || finishing))}>{opening ? "OPENING…" : active ? "END MEETING" : "START MEETING"}</button>
       {retry && <button type="button" onClick={() => control.current?.retry()}>RETRY CONNECTION</button>}</div>
     <p role="status">{status}</p>
     <small>{active ? "KEEP THIS PAGE OPEN AND SCREEN AWAKE · SHE FLAGS ONLY WHEN USEFUL" : "Let everyone know Savannah is listening. Audio is sent for transcription; the transcript stays on this page."}</small>
