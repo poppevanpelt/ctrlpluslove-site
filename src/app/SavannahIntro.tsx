@@ -14,8 +14,9 @@ const DAYLIGHT_AT = 6.65;
 const EXIT_AT = 7.65;
 const LOAD_TIMEOUT_MS = 4500;
 const PLAY_TIMEOUT_MS = 12000;
-const MOBILE_FILM = "https://ctrl-love-media.floot.app/_cdn/static/savannah-intro-mobile-v2.mp4";
-const DESKTOP_FILM = "https://ctrl-love-media.floot.app/_cdn/static/savannah-intro.mp4";
+const TITLE_HOLD_MS = 1100;
+const MOBILE_FILM = "/savannah-intro/entrance-mobile-v4.mp4";
+const DESKTOP_FILM = "/savannah-intro/entrance-desktop-v4.mp4";
 type Stage = "film" | "nav" | "headline" | "register" | "daylight";
 
 export default function SavannahIntro() {
@@ -32,6 +33,7 @@ export default function SavannahIntro() {
   const headlineGhostRef = useRef<HTMLHeadingElement>(null);
   const completed = useRef(false);
   const readyRef = useRef(false);
+  const titleDone = useRef(false);
   const bufferTimer = useRef<number | null>(null);
   const exitTimer = useRef<number | null>(null);
   const retryTimer = useRef<number | null>(null);
@@ -93,9 +95,14 @@ export default function SavannahIntro() {
     // Never strand a visitor behind the black film layer if media cannot load.
     // A user gesture may be required on iOS (Low Power Mode and browser policies).
     // Keep the film available instead of silently skipping it.
+    // The approved title is an intro beat, not a network-loading indicator.
+    const titleTimer = window.setTimeout(() => {
+      titleDone.current = true;
+      tryPlay();
+    }, TITLE_HOLD_MS);
     const exitOffer = window.setTimeout(() => {
       if (!readyRef.current && !completed.current) { setShowExit(true); setNeedsTap(true); }
-    }, 1000);
+    }, TITLE_HOLD_MS + 1000);
     const loading = window.setTimeout(() => {
       if (!readyRef.current && !completed.current) setFallbackVideo(true);
     }, LOAD_TIMEOUT_MS);
@@ -103,6 +110,7 @@ export default function SavannahIntro() {
       if (!completed.current && lastProgress.current < EXIT_AT) { setShowExit(true); setNeedsTap(true); }
     }, PLAY_TIMEOUT_MS);
     return () => {
+      window.clearTimeout(titleTimer);
       window.clearTimeout(exitOffer);
       window.clearTimeout(loading);
       window.clearTimeout(watchdog);
@@ -116,7 +124,7 @@ export default function SavannahIntro() {
 
   const tryPlay = () => {
     const video = videoRef.current;
-    if (!video || completed.current || video.seeking) return;
+    if (!video || completed.current || !titleDone.current) return;
     video.muted = true;
     void video.play().catch(() => {
       if (!completed.current) { setNeedsTap(true); setShowExit(true); }
@@ -125,21 +133,15 @@ export default function SavannahIntro() {
   const onMetadata = () => {
     const video = videoRef.current;
     if (!video) return;
-    const mobile = video.currentSrc.includes("savannah-intro-mobile-v2.mp4");
-    if (mobile) { tryPlay(); return; }
-    // Seek to the approved wide shot before starting playback: no giant-face flash.
-    try {
-      video.currentTime = START_AT;
-      // iOS/Safari can omit seeked for an early metadata seek.
-      window.setTimeout(() => { if (!completed.current) tryPlay(); }, 1200);
-    } catch { tryPlay(); }
+    // Both renditions are pretrimmed to the same approved wide frame.
+    // Safari starts at zero without a remote seek or a hidden-frame interval.
+    tryPlay();
   };
   const onProgress = () => {
     const video = videoRef.current;
     if (!video || completed.current) return;
-    const mobile = video.currentSrc.includes("savannah-intro-mobile-v2.mp4");
-    const t = video.currentTime + (mobile ? START_AT : 0);
-    if (!readyRef.current && !video.paused && video.currentTime >= (mobile ? 0.02 : START_AT - 0.05)) {
+    const t = video.currentTime + START_AT;
+    if (!readyRef.current && !video.paused && titleDone.current && video.currentTime >= 0.02) {
       readyRef.current = true;
       setReady(true);
       setNeedsTap(false);
@@ -167,6 +169,7 @@ export default function SavannahIntro() {
     const video = videoRef.current;
     if (!video || completed.current) return;
     video.muted = true;
+    titleDone.current = true;
     video.setAttribute("playsinline", "");
     // Must be called directly in the click handler for iOS autoplay restrictions.
     void video.play().then(() => setNeedsTap(false)).catch(() => {
@@ -186,10 +189,10 @@ export default function SavannahIntro() {
       stage === "register" ? styles.savannahSceneRegister : "",
       stage === "daylight" ? styles.savannahSceneDaylight : "",
       handoff ? styles.savannahHandoff : "",
-    ].join(" ")} aria-label="Enter ctrl+love" data-deploy="savannah-one-film-choreography" data-stage={stage}>
+    ].join(" ")} aria-label="Enter ctrl+love" data-deploy="savannah-canonical-title-v4" data-stage={stage}>
       <div className={styles.savannahFilm} aria-hidden="true">
         <video key={fallbackVideo ? "wide" : "responsive"} ref={videoRef} className={styles.savannahIntroVideo}
-          muted playsInline autoPlay preload="auto"
+          muted playsInline preload="auto" poster="/savannah-intro/entrance-poster-v4.jpg"
           onLoadedMetadata={onMetadata} onLoadedData={tryPlay} onCanPlay={tryPlay} onSeeked={tryPlay} onPlaying={onProgress}
           onTimeUpdate={onProgress} onWaiting={onWaiting} onStalled={onWaiting}
           onEnded={finish} onError={() => { setFallbackVideo(true); setNeedsTap(true); setShowExit(true); }}>
@@ -199,7 +202,7 @@ export default function SavannahIntro() {
         <div className={styles.savannahIntroShade} />
       </div>
       {!ready && (
-        <div style={{position:"absolute",inset:0,zIndex:2,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:22,color:"#f3f1eb",textAlign:"center",pointerEvents:"none"}}>
+        <div style={{position:"absolute",inset:0,zIndex:2,background:"#0d0d0c",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:22,color:"#f3f1eb",textAlign:"center",pointerEvents:"none"}}>
           <div style={{fontSize:"clamp(34px,7vw,88px)",fontWeight:700,letterSpacing:"-.06em"}}>SAVANNAH.</div>
           <div style={{fontSize:11,letterSpacing:".25em"}}>CTRL+LOVE · EMPLOYEE #4</div>
         </div>
