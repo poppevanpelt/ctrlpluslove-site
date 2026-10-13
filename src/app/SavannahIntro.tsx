@@ -12,8 +12,8 @@ const HEADLINE_AT = 4.75;
 const REGISTER_AT = 6.2;
 const DAYLIGHT_AT = 6.65;
 const EXIT_AT = 7.65;
-const LOAD_TIMEOUT_MS = 14000;
-const PLAY_TIMEOUT_MS = 30000;
+const LOAD_TIMEOUT_MS = 4500;
+const PLAY_TIMEOUT_MS = 12000;
 type Stage = "film" | "nav" | "headline" | "register" | "daylight";
 
 export default function SavannahIntro() {
@@ -21,7 +21,7 @@ export default function SavannahIntro() {
   const [ready, setReady] = useState(false);
   const [stage, setStage] = useState<Stage>("film");
   const [handoff, setHandoff] = useState(false);
-  const [playbackIssue, setPlaybackIssue] = useState(false);
+  const [showExit, setShowExit] = useState(false);
   const [headlineStyle, setHeadlineStyle] = useState<CSSProperties>();
   const videoRef = useRef<HTMLVideoElement>(null);
   const navGhostRef = useRef<HTMLDivElement>(null);
@@ -86,13 +86,16 @@ export default function SavannahIntro() {
     const onReduce = () => { if (reduce.matches) finish(); };
     onReduce();
     reduce.addEventListener?.("change", onReduce);
+    // Never strand a visitor behind the black film layer if media cannot load.
+    const exitOffer = window.setTimeout(() => {
+      if (!readyRef.current && !completed.current) setShowExit(true);
+    }, 1200);
     const loading = window.setTimeout(() => {
-      if (!readyRef.current && !completed.current) setPlaybackIssue(true);
+      if (!readyRef.current && !completed.current) finish();
     }, LOAD_TIMEOUT_MS);
-    const watchdog = window.setTimeout(() => {
-      if (!completed.current && lastProgress.current < EXIT_AT) setPlaybackIssue(true);
-    }, PLAY_TIMEOUT_MS);
+    const watchdog = window.setTimeout(() => finish(), PLAY_TIMEOUT_MS);
     return () => {
+      window.clearTimeout(exitOffer);
       window.clearTimeout(loading);
       window.clearTimeout(watchdog);
       if (bufferTimer.current !== null) window.clearTimeout(bufferTimer.current);
@@ -108,7 +111,7 @@ export default function SavannahIntro() {
     if (!video || completed.current || video.seeking) return;
     video.muted = true;
     void video.play().catch(() => {
-      if (!completed.current) setPlaybackIssue(true);
+      if (!completed.current) finish();
     });
   };
   const onMetadata = () => {
@@ -128,15 +131,13 @@ export default function SavannahIntro() {
     if (!video || completed.current) return;
     const mobile = video.currentSrc.includes("savannah-intro-mobile-v2.mp4");
     const t = video.currentTime + (mobile ? START_AT : 0);
-    if (!readyRef.current && video.currentTime >= (mobile ? 0.02 : START_AT - 0.05)) {
+    if (!readyRef.current && !video.paused && video.currentTime >= (mobile ? 0.02 : START_AT - 0.05)) {
       readyRef.current = true;
       setReady(true);
-      setPlaybackIssue(false);
       if (retryTimer.current !== null) window.clearTimeout(retryTimer.current);
     }
     if (t > lastProgress.current + 0.05) {
       lastProgress.current = t;
-      setPlaybackIssue(false);
       if (bufferTimer.current !== null) window.clearTimeout(bufferTimer.current);
       bufferTimer.current = null;
     }
@@ -148,26 +149,7 @@ export default function SavannahIntro() {
   };
   const onWaiting = () => {
     if (completed.current || !readyRef.current || bufferTimer.current !== null) return;
-    bufferTimer.current = window.setTimeout(() => {
-      if (!completed.current) setPlaybackIssue(true);
-    }, 5500);
-  };
-  const retryFilm = () => {
-    const video = videoRef.current;
-    if (!video || completed.current) return;
-    setPlaybackIssue(false);
-    setReady(false);
-    readyRef.current = false;
-    lastProgress.current = 0;
-    setStage("film");
-    if (bufferTimer.current !== null) window.clearTimeout(bufferTimer.current);
-    bufferTimer.current = null;
-    if (retryTimer.current !== null) window.clearTimeout(retryTimer.current);
-    retryTimer.current = window.setTimeout(() => {
-      if (!readyRef.current && !completed.current) setPlaybackIssue(true);
-    }, LOAD_TIMEOUT_MS);
-    video.pause();
-    video.load();
+    bufferTimer.current = window.setTimeout(() => finish(), 3000);
   };
   if (!visible) return null;
 
@@ -186,20 +168,17 @@ export default function SavannahIntro() {
           muted playsInline preload="auto"
           onLoadedMetadata={onMetadata} onLoadedData={tryPlay} onCanPlay={tryPlay} onSeeked={tryPlay} onPlaying={onProgress}
           onTimeUpdate={onProgress} onWaiting={onWaiting} onStalled={onWaiting}
-          onEnded={finish} onError={() => setPlaybackIssue(true)}>
+          onEnded={finish} onError={finish}>
           <source media="(max-width: 768px)" src="https://ctrl-love-media.floot.app/_cdn/static/savannah-intro-mobile-v2.mp4" type="video/mp4" />
           <source src="https://ctrl-love-media.floot.app/_cdn/static/savannah-intro.mp4" type="video/mp4" />
         </video>
         <div className={styles.savannahIntroShade} />
       </div>
-      {playbackIssue && (
-        <div role="status" style={{position:"absolute",inset:0,zIndex:8,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:18,padding:24,color:"#f3f1eb",background:"rgba(13,13,12,.94)",textAlign:"center"}}>
-          <p style={{fontSize:16,maxWidth:350,margin:0}}>Savannah’s film is taking longer than expected.</p>
-          <div style={{display:"flex",gap:12,flexWrap:"wrap",justifyContent:"center"}}>
-            <button type="button" onClick={retryFilm} style={{padding:"12px 18px",background:"#f3f1eb",color:"#111",border:0,cursor:"pointer",font:"inherit"}}>Play Savannah</button>
-            <button type="button" onClick={finish} style={{padding:"12px 18px",background:"transparent",color:"#f3f1eb",border:"1px solid #aaa",cursor:"pointer",font:"inherit"}}>Enter site</button>
-          </div>
-        </div>
+      {showExit && (
+        <button type="button" onClick={finish} aria-label="Enter ctrl+love without the film"
+          style={{position:"absolute",right:20,bottom:24,zIndex:8,padding:"12px 16px",background:"rgba(245,243,238,.94)",color:"#111",border:0,font:"inherit",cursor:"pointer"}}>
+          Enter site →
+        </button>
       )}
       <div ref={navGhostRef} className={styles.savannahNavGhost} aria-hidden="true" />
       <h2 ref={headlineGhostRef} className={styles.savannahHeadlineGhost} style={headlineStyle} aria-hidden="true" />
