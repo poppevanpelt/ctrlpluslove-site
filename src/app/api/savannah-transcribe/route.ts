@@ -12,7 +12,7 @@ export async function POST(request: Request) {
   const payload = new FormData();
   payload.append("file", audio, audio.name || "speech.webm");
   payload.append("model", "whisper-1");
-  payload.append("language", "en");
+  // Detect the spoken language, including bilingual Dutch/English meetings.
   const response = await fetch("https://api.openai.com/v1/audio/transcriptions", {
     method: "POST",
     headers: { Authorization: `Bearer ${key}` },
