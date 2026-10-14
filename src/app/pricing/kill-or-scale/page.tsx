@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { DocumentViewer } from "../../document-viewer";
 import { routeMetadata } from "../../seo";
+import OfferDetails from "../OfferDetails";
 
 export const metadata: Metadata = routeMetadata("/pricing/kill-or-scale/");
 
 export default function KillOrScalePricingPage() {
   return (
-    <DocumentViewer
+    <><DocumentViewer
       src="/pricing/kill-or-scale.webp"
       alt="Kill or Scale pricing document"
       width={1536}
@@ -14,6 +15,7 @@ export default function KillOrScalePricingPage() {
       initialScale={1}
       initialX={0}
       initialY={0}
-    />
+      flow
+    /><OfferDetails offer="kill" /></>
   );
 }
