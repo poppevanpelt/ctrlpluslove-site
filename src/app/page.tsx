@@ -3,6 +3,7 @@ import SavannahIntro from "./SavannahIntro";
 import SavannahExplainer from "./SavannahExplainer";
 import SavannahExit from "./SavannahExit";
 import HandoverNote from "./HandoverNote";
+import RefillClock from "./refill-clock/RefillClock";
 import followThrough from "./xray-follow-through.module.css";
 import { homepageRoomPersonas } from "./room-personas-data";
 import { confirmedAmbassadors } from "./ambassadors-data";
@@ -157,17 +158,7 @@ export default function Home() {
           <a href="/decision-accelerator/" data-family="accelerate"><span>02 / MAKE THE CALL</span><strong>What should we actually do?</strong><b>Run Decision Accelerator ↗</b></a>
           <a href="/radar/" data-family="observe"><span>03 / NOTICE SOMETHING</span><strong>What are we missing?</strong><b>Open Radar ↗</b></a>
         </div>
-        <a className={styles.cabinetPreview} href="/cabinet/" aria-label="Enter the instrument cabinet">
-          <img src="/cabinet/assets/instrument-family.webp" alt="A sunlit workshop filled with ctrl+love decision instruments" loading="lazy" width="1536" height="1024" />
-          <div className={styles.cabinetCaption}>
-            <div>
-              <span className={styles.kicker}>The instrument cabinet</span>
-              <h3>Ideas enter. Evidence leaves.</h3>
-              <p>Explore the instruments, their mechanisms and the work they leave behind.</p>
-            </div>
-            <strong>Enter the cabinet</strong>
-          </div>
-        </a>
+        <RefillClock compact />
         <div className={styles.instruments}>
           {instruments.map(([no,name,line,kind,href,action]) => (
             <a className={styles.instrument} href={href} key={no} data-family={instrumentFamilies[no]} aria-label={`${action}: ${name}`}>
