@@ -2,6 +2,8 @@ import styles from "./home-2026.module.css";
 import SavannahIntro from "./SavannahIntro";
 import SavannahExplainer from "./SavannahExplainer";
 import SavannahExit from "./SavannahExit";
+import HandoverNote from "./HandoverNote";
+import followThrough from "./xray-follow-through.module.css";
 import { homepageRoomPersonas } from "./room-personas-data";
 import { confirmedAmbassadors } from "./ambassadors-data";
 
@@ -139,9 +141,11 @@ export default function Home() {
         </div>
         <div className={styles.offerStrip} aria-label="Ways to work with ctrl+love">
           <a href="/pricing/decision-stress-test/"><span>01 / TEST A DECISION</span><strong>Decision Stress-Test™</strong><b>From €4,500 ↗</b></a>
-          <a href="/pricing/on-call-room/"><span>02 / KEEP A ROOM CLOSE</span><strong>On-Call Room™</strong><b>From €7,500 / month ↗</b></a>
-          <a href="/pricing/kill-or-scale/"><span>03 / MAKE THE CALL</span><strong>Kill or Scale™</strong><b>Explore the decision ↗</b></a>
+          <a href="/pricing/on-call-room/"><span>02 / ONGOING DECISIONS</span><strong>On-Call Room™</strong><b>From €7,500 / month ↗</b></a>
+          <a href="/pricing/kill-or-scale/"><span>03 / AN INITIATIVE ALREADY MOVING</span><strong>Kill or Scale™</strong><b>Stop, reshape or accelerate ↗</b></a>
         </div>
+        <div className={followThrough.actions}><a className={followThrough.action} href="https://ctrl-love-room-key.lovable.app/">Not sure which fits? Three questions. One suggested way in. ↗</a></div>
+        <HandoverNote />
       </section>
 
       <section className={styles.section} id="instruments">

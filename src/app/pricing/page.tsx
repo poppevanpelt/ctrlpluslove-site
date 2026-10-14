@@ -2,25 +2,27 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { routeMetadata } from "../seo";
+import ContactChoice from "../ContactChoice";
+import styles from "../xray-follow-through.module.css";
 
 const pricingDocuments = [
   {
     name: "Decision Stress-Test™",
     href: "/pricing/decision-stress-test/",
     src: "/pricing/decision-stress-test.webp",
-    line: "One live decision. Maximum useful pressure.",
+    line: "One important decision before you commit money, time or reputation.",
   },
   {
     name: "On-Call Room™",
     href: "/pricing/on-call-room/",
     src: "/pricing/on-call-room.webp",
-    line: "For teams who need a trusted outside Room on call.",
+    line: "Recurring support for teams and leaders making ongoing decisions.",
   },
   {
     name: "Kill or Scale™",
     href: "/pricing/kill-or-scale/",
     src: "/pricing/kill-or-scale.webp",
-    line: "Give the idea force, or stop feeding it.",
+    line: "An initiative already underway: decide whether to stop, reshape or accelerate.",
   },
 ];
 
@@ -51,6 +53,14 @@ export default function PricingPage() {
             </p>
           </div>
 
+          <section className={styles.panel} aria-labelledby="room-key-title">
+            <span className={styles.label}>THE ROOM KEY™</span>
+            <h2 id="room-key-title">Start with the decision. We will find the room.</h2>
+            <p>One decision before committing? Decision Stress-Test. Ongoing decisions? On-Call Room. Something already underway that needs a verdict? Kill or Scale.</p>
+            <p className={styles.note}>Not sure? Answer three questions for a suggested fit and the reason behind it. Mixed answers lead to a conversation.</p>
+            <a className={styles.action} href="https://ctrl-love-room-key.lovable.app/">Find a suggested fit ↗</a>
+          </section>
+
           <div className="pricing-document-grid" aria-label="Pricing documents">
             {pricingDocuments.map((document) => (
               <article className="pricing-document-card" key={document.name}>
@@ -74,12 +84,7 @@ export default function PricingPage() {
             ))}
           </div>
 
-          <a
-            className="text-link"
-            href="mailto:hello@ctrlpluslove.com?subject=Find%20the%20right%20room"
-          >
-            Bring us the decision →
-          </a>
+          <section className={styles.panel} aria-labelledby="contact-choice-title"><h2 id="contact-choice-title">Two ways to start.</h2><ContactChoice /></section>
         </div>
       </section>
     </main>

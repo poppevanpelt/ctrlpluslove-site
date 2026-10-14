@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import styles from "./two-go.module.css";
+import HandoverNote from "../HandoverNote";
 
 type Order = "DECIDE 2GO" | "WATCH 2GO" | "TEST 2GO" | "NO IDEA";
 type Extra = "NO THANKS" | "YES PLEASE" | "MAKE IT A MENU";
@@ -111,6 +112,8 @@ export default function TwoGoClient() {
         <p>CONSULTANCY THAT ENDS WITH LESS CONSULTANCY.</p>
         <h2>Thank you.<br/>Please keep the machine.</h2>
       </section>
+
+      <HandoverNote />
 
       <footer className={styles.footer}>
         <b>ctrl+2go</b>
