@@ -3,7 +3,7 @@ import SavannahIntro from "./SavannahIntro";
 import SavannahExplainer from "./SavannahExplainer";
 import SavannahExit from "./SavannahExit";
 import HandoverNote from "./HandoverNote";
-import RefillClock from "./refill-clock/RefillClock";
+import TastingWindow from "./TastingWindow";
 import followThrough from "./xray-follow-through.module.css";
 import { homepageRoomPersonas } from "./room-personas-data";
 import { confirmedAmbassadors } from "./ambassadors-data";
@@ -158,7 +158,7 @@ export default function Home() {
           <a href="/decision-accelerator/" data-family="accelerate"><span>02 / MAKE THE CALL</span><strong>What should we actually do?</strong><b>Run Decision Accelerator ↗</b></a>
           <a href="/radar/" data-family="observe"><span>03 / NOTICE SOMETHING</span><strong>What are we missing?</strong><b>Open Radar ↗</b></a>
         </div>
-        <RefillClock compact />
+        <TastingWindow />
         <div className={styles.instruments}>
           {instruments.map(([no,name,line,kind,href,action]) => (
             <a className={styles.instrument} href={href} key={no} data-family={instrumentFamilies[no]} aria-label={`${action}: ${name}`}>
