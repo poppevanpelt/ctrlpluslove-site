@@ -128,7 +128,7 @@ export async function speakSavannahNeurally(
     const epoch = ++neuralPlaybackEpoch;
     // Bound the wait: if synthesis stalls, return control to the caller.
     const controller = new AbortController();
-    const timeout = window.setTimeout(() => controller.abort(), 20000);
+    const timeout = window.setTimeout(() => controller.abort(), 45000);
     let response: Response;
     try {
       response = await fetch("/api/savannah-voice", {
@@ -144,7 +144,7 @@ export async function speakSavannahNeurally(
     // Protect against a stalled response body as well as delayed headers.
     const blob = await Promise.race([
       response.blob(),
-      new Promise<never>((_, reject) => window.setTimeout(() => reject(new Error("Savannah audio download timed out")), 20000)),
+      new Promise<never>((_, reject) => window.setTimeout(() => reject(new Error("Savannah audio download timed out")), 45000)),
     ]);
     if (epoch !== neuralPlaybackEpoch) return false;
     const url = URL.createObjectURL(blob);
