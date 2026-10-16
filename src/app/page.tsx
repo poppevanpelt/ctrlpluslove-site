@@ -2,6 +2,9 @@ import styles from "./home-2026.module.css";
 import SavannahIntro from "./SavannahIntro";
 import SavannahExplainer from "./SavannahExplainer";
 import SavannahExit from "./SavannahExit";
+import HandoverNote from "./HandoverNote";
+import TastingWindow from "./TastingWindow";
+import followThrough from "./xray-follow-through.module.css";
 import { homepageRoomPersonas } from "./room-personas-data";
 import { confirmedAmbassadors } from "./ambassadors-data";
 
@@ -139,9 +142,11 @@ export default function Home() {
         </div>
         <div className={styles.offerStrip} aria-label="Ways to work with ctrl+love">
           <a href="/pricing/decision-stress-test/"><span>01 / TEST A DECISION</span><strong>Decision Stress-Test™</strong><b>From €4,500 ↗</b></a>
-          <a href="/pricing/on-call-room/"><span>02 / KEEP A ROOM CLOSE</span><strong>On-Call Room™</strong><b>From €7,500 / month ↗</b></a>
-          <a href="/pricing/kill-or-scale/"><span>03 / MAKE THE CALL</span><strong>Kill or Scale™</strong><b>Explore the decision ↗</b></a>
+          <a href="/pricing/on-call-room/"><span>02 / ONGOING DECISIONS</span><strong>On-Call Room™</strong><b>From €7,500 / month ↗</b></a>
+          <a href="/pricing/kill-or-scale/"><span>03 / AN INITIATIVE ALREADY MOVING</span><strong>Kill or Scale™</strong><b>Stop, reshape or accelerate ↗</b></a>
         </div>
+        <div className={followThrough.actions}><a className={followThrough.action} href="https://ctrl-love-room-key.lovable.app/">Not sure which fits? Three questions. One suggested way in. ↗</a></div>
+        <HandoverNote />
       </section>
 
       <section className={styles.section} id="instruments">
@@ -153,17 +158,7 @@ export default function Home() {
           <a href="/decision-accelerator/" data-family="accelerate"><span>02 / MAKE THE CALL</span><strong>What should we actually do?</strong><b>Run Decision Accelerator ↗</b></a>
           <a href="/radar/" data-family="observe"><span>03 / NOTICE SOMETHING</span><strong>What are we missing?</strong><b>Open Radar ↗</b></a>
         </div>
-        <a className={styles.cabinetPreview} href="/cabinet/" aria-label="Enter the instrument cabinet">
-          <img src="/cabinet/assets/instrument-family.webp" alt="A sunlit workshop filled with ctrl+love decision instruments" loading="lazy" width="1536" height="1024" />
-          <div className={styles.cabinetCaption}>
-            <div>
-              <span className={styles.kicker}>The instrument cabinet</span>
-              <h3>Ideas enter. Evidence leaves.</h3>
-              <p>Explore the instruments, their mechanisms and the work they leave behind.</p>
-            </div>
-            <strong>Enter the cabinet</strong>
-          </div>
-        </a>
+        <TastingWindow />
         <div className={styles.instruments}>
           {instruments.map(([no,name,line,kind,href,action]) => (
             <a className={styles.instrument} href={href} key={no} data-family={instrumentFamilies[no]} aria-label={`${action}: ${name}`}>
@@ -284,8 +279,8 @@ export default function Home() {
               <p>The relationship was already there. <b>Then the object crossed over too.</b></p>
               <strong className={styles.impact}>Adoption, not applause.</strong>
               <div className={styles.fitzVisual}>
-                <video className={styles.fitzVideo} autoPlay loop muted playsInline preload="auto">
-                  <source src="/home/fitzroy-steel-ball.mp4" type="video/mp4" />
+                <video className={styles.fitzVideo} autoPlay loop muted playsInline controls preload="metadata">
+                  <source src="/home/fitzroy-steel-ball-clean.mp4" type="video/mp4" />
                 </video>
                 <span>FITZROY / STEEL BALL</span>
               </div>

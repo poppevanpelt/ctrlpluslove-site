@@ -1,3 +1,5 @@
+import { HOLY_FOOLS_SAVANNAH_PAUSED, isHolyFoolsPath } from "../../savannah-client-availability";
+import { SavannahPaused } from "../../SavannahPaused";
 import type { Metadata } from "next";
 import SavannahClientRoom from "./SavannahClientRoom";
 
@@ -25,5 +27,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function SavannahRoomPage({ params }: PageProps) {
   const { room } = await params;
+  if (HOLY_FOOLS_SAVANNAH_PAUSED && isHolyFoolsPath(`/savannah-room/${room}`)) return <SavannahPaused fullPage />;
   return <SavannahClientRoom roomSlug={room} roomName={roomLabel(room)} />;
 }

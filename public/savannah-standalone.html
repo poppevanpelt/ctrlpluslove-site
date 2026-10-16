@@ -73,7 +73,7 @@ import Vapi from "https://esm.sh/@vapi-ai/web@2.6.1?bundle";
 const GLOBAL = { publicKey:"12382a58-9f0f-41fe-ba94-257368be07cb", assistantId:"4289b114-3dca-4052-9684-13c3435bd0a4" };
 const ROOM = GLOBAL;
 const TEXT_BURST_TIMEOUT_MS = 45_000;
-const VOICE_MAX_DURATION_MS = 5 * 60_000;
+const VOICE_MAX_DURATION_MS = 10 * 60_000;
 const HIDDEN_TAB_GRACE_MS = 30_000;
 
 const BRIEFS = {
@@ -160,13 +160,13 @@ vapi.on("call-start",()=>{
   state="live"; mode="voice"; setStatus("I'm listening.",true); injectBrief(vapi,false);
   try{vapi.setMuted(false)}catch{}
 });
-vapi.on("call-end",()=>{clearVoiceTimer();state="idle";portrait.classList.remove("speaking");setStatus(voiceSafetyClosed?"Line closed. Tap to talk again.":"Call ended. Ready again.",false);voiceSafetyClosed=false});
+vapi.on("call-end",()=>{clearVoiceTimer();state="idle";portrait.classList.remove("speaking");setStatus(voiceSafetyClosed?"Ten-minute safety limit reached. Your transcript is saved on this page. Tap Talk for a new call.":"Call ended. Ready again.",false);voiceSafetyClosed=false});
 vapi.on("speech-start",()=>portrait.classList.add("speaking"));
 vapi.on("speech-end",()=>portrait.classList.remove("speaking"));
 vapi.on("message",(m)=>{
   if(m?.type==="transcript"&&m.transcript&&(!m.transcriptType||m.transcriptType==="final")&&(m.role==="user"||m.role==="assistant")) addLine(m.role,m.transcript);
 });
-vapi.on("error",(e)=>{clearVoiceTimer();console.error(e);state="idle";portrait.classList.remove("speaking");setStatus("The audio line did not open. Try again.",false)});
+vapi.on("error",(e)=>{clearVoiceTimer();console.error(e);try{vapi.stop()}catch{}state="idle";portrait.classList.remove("speaking");setStatus("The line dropped. Your transcript is still here. Tap Talk to reconnect, or type below.",false)});
 
 textVapi.on("call-start",()=>{
   mode="type"; armTextBurst(); injectBrief(textVapi,true);
@@ -192,7 +192,7 @@ talk.addEventListener("click",async()=>{
   try {
     await vapi.start(cfg.assistantId,{firstMessage:isRoom?"Hi. Savannah. I know which room I'm in. What's bothering you?":"Hi. Savannah at control love. What's up?",backgroundSound:"office"});
   } catch(e) {
-    console.error(e); state="idle"; setStatus("The audio line did not open. Check microphone permission and try again.",false);
+    console.error(e); state="idle"; setStatus("Could not connect. Check microphone permission, then tap Talk again. Your transcript remains here.",false);
   }
 });
 end.addEventListener("click",()=>{try{vapi.stop()}catch{}});

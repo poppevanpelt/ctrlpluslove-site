@@ -20,3 +20,4 @@ try {
  assert.notEqual(r.status,0);
  console.log('PASS: consistent snapshot, encrypted payload, restore, wrong-passphrase rejection');
 } finally {rmSync(folder,{recursive:true,force:true});}
+

@@ -85,3 +85,57 @@ Railway documents native manual and scheduled volume backups for SQLite-containi
 6. Do not claim production backup coverage until a completed snapshot is visible and a safe restore verification has been performed.
 
 Reference: https://docs.railway.com/volumes/backups
+
+
+## Operational exit gate — 2026-10-16
+
+**Decision: HOLD Vercel discontinuation.** The verified www service is independent compute; the complete service has not passed the exit gate. An October 17 payment retry is not a verified shutdown deadline. No payment, cancellation or DNS change is authorized by this record.
+
+### Current evidence (supersedes the October 12 status where different)
+- Main and the healthy primary Railway deployment both resolve to `9dc519c37d16aaeeb56c29a2a1078dc098a658c1`; one replica, no failures reported in the preceding 24 hours.
+- `www.ctrlpluslove.com` has propagated CNAME `8oal7ju0.up.railway.app`, verified ownership and valid Railway TLS. Browser navigation and the Meeting Filter's three-answer result were exercised.
+- WordPress is the authoritative DNS provider. Its apex ALIAS is `kzeegy3u.up.railway.app.` with TTL 300. That alias was not matched to a current connected Railway service. Browser reload left the apex URL unchanged and showed older copy; www showed newer copy. Do not infer that this is the current primary Railway deployment.
+- Vercel retains an apex-to-www 308 domain setting, but that setting is not proof of the effective live route. Vercel's last inspected production artifact is `9a1e25f15c7a719fcdcaaa991e3b3ae4fd98531b`, older than Railway.
+- The second successful check belongs to `brilliant-contentment`. Its service has only `SIMLI_API_KEY`, no live domains and no volume: it is not a verified standby for www.
+- Railway HTTP logs on October 16 show 200 responses for chat, speech generation and transcription. This is backend evidence, not proof of audible playback, microphone/device permissions or Vapi call completion.
+- Primary Railway variable names remain only `OPENAI_API_KEY` and `SAVANNAH_INBOX_DB`. Private inbox authentication is unconfigured. `NOTION_TOKEN` is absent, so Radar writes cannot be considered working. Room processing also needs `CRON_SECRET` and `NOTION_RUNS_DATA_SOURCE_ID` (or legacy `NOTION_PROJECT_DATABASE_ID`). No poller or cron service is present in this production environment.
+- Vercel's name-only inventory includes `NOTION_TOKEN`, `RADAR_SIGNALS_DATA_SOURCE_ID` and `CRON_SECRET`; it does not establish a complete or working room configuration. Existing sensitive values cannot be assumed exportable; enter credentials directly into the approved host secret store.
+- The inspected museum ordering path opens an email request and takes no payment. Stripe webhook targets, fulfillment and payment return URLs remain unverified.
+- Vercel analytics and speed insights are conditional on `VERCEL === "1"`. The retired redeploy route returns 410. No new Vercel deployment bridge is needed.
+- Volume backup completion, offsite recovery, actual data integrity, and rollback execution remain unverified. The presence of a rollback button or successful synthetic backup test is insufficient.
+
+### Prepared domain change — explicit approval required before applying
+1. Preserve this exact old apex record: ALIAS `ctrlpluslove.com.` → `kzeegy3u.up.railway.app.`, TTL 300. Preserve all mail, verification and unrelated DNS records.
+2. Register apex `ctrlpluslove.com` on primary Railway service `2053a1b5-3ce9-40ef-8dba-8f271d19e2e1` in production. This registration can change routing; do not perform it before the production approval.
+3. Read Railway's exact returned routing and verification requirements. Do not assume the apex uses the same target as www. If the hostname is owned by another service, investigate before removing or moving it.
+4. Prepare the WordPress ALIAS update and any exact ownership TXT required by Railway; review before applying. Keep www CNAME unchanged.
+5. Prefer a single public canonical origin, `https://www.ctrlpluslove.com`. This PR updates SEO metadata accordingly. Prepare an apex-to-www redirect preserving path/query and HTTP method, but do not enable a global redirect until payment/OAuth callbacks are reviewed. Redirects do not replace valid apex TLS.
+6. Verify both origins from independent networks, exact deployed SHA, critical APIs, media, OAuth callbacks and sandbox payments. Watch errors after the change.
+7. DNS rollback record is known, but the old alias is not a proven healthy recovery target. Verify the old destination before counting on it. Prefer the retained Railway deployment for code rollback; preserve the mounted volume. Never fall back to an unavailable Vercel account.
+
+### Prepared application safeguards (not deployed)
+- `GET /api/health`: lightweight liveness plus Railway git revision, no upstream calls or secret/configuration disclosure. It is not dependency readiness.
+- `scripts/exit-door-release-smoke.mjs --revision=<DEPLOYED_SHA>`: only public GETs, validates content, www canonical, manifest JSON and release identity; checks each redirect hop and rejects an unapproved/Vercel origin, loops, stale releases and stalled response bodies.
+- Existing basic smoke remains available for historical baseline checks. It does not enforce this release gate.
+- Validation: Node 24 local run of health, release-smoke and existing synthetic SQLite recovery tests: **8 tests passed**. A full Next build and external smoke run were not performed in the restricted local network.
+- Do not interpret this PR or its tests as a live health monitor. External uptime/alert delivery still requires configuration and validation.
+
+### Configuration and recovery work still required
+| Feature | Needed before go |
+| --- | --- |
+| Radar | Set NOTION_TOKEN securely on Railway; verify the intended data-source ID and submit one agreed non-sensitive test signal. |
+| Room processing | Supply Notion data-source ID, CRON_SECRET and token; verify one dry run before enabling a separate scheduler. |
+| Inbox | Configure Google OAuth client, secret, owner identity, session secret and approved client mapping. Register the www callback exactly; do not invent identities or allowlists. Verify DB path is beneath /app/data. |
+| Payments | Confirm the relevant Stripe account, inspect enabled webhook URLs and return URLs, then test signatures/retries/idempotency in sandbox. No live charges. |
+| Volume | Inspect Backups UI, verify a completed snapshot, then safe restore to an isolated destination; establish encrypted portable recovery, retention and key custody. Do not restore over production. |
+| Voice/media | Check desktop Chrome/Safari and iPhone Safari; verify actual audio, microphone and call completion, plus portrait/video delivery. |
+| Recovery | Rehearse code rollback using retained Railway artifacts without moving/wiping the volume; record RTO/RPO. |
+| Monitoring | Configure independent HTTPS and integration checks plus verified alert delivery. A deploy healthcheck only gates rollout. |
+
+**Exit acceptance:** resolve and prove apex routing; pass critical service tests; establish usable credentials outside Vercel; verify payment delivery and recoverable storage; prove rollback and alerting. Until then, www continuity is supported by evidence but full operational independence is not certified.
+
+### Follow-through in this session
+- Railway production now has a **pending, unapplied** patch setting deployment healthcheck path `/` and timeout 60 seconds. This works with the existing homepage and does not depend on the proposed health route. It is rollout gating, not continuous uptime monitoring. No deployment was triggered.
+- The Railway Backups UI was inspected using the current signed-in session. It states **Upgrade to Pro for backups and PITR**; new backups, automated schedules and PITR cannot be configured on the current plan. No upgrade was purchased and no actual snapshot/restore was performed. A portable encrypted backup remains an alternative, but volume access, approved secure destination and key custody must first be established.
+
+

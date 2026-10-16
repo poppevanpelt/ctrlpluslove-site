@@ -2,8 +2,10 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { SavannahPerformance, type SavannahPerformanceHandle } from "../SavannahPerformance";
-import { resumeSavannahAudio, speakSavannahNeurally, stopSavannahLocalVoice } from "../savannah-local-voice";
+import { primeSavannahAudio, resumeSavannahAudio, speakSavannahNeurally, stopSavannahLocalVoice } from "../savannah-local-voice";
 import { selectSavannahOutfit, savannahOutfitAssetsReady, savannahPortraitPath, SAVANNAH_CANONICAL_FRAMES } from "../savannah-wardrobe";
+
+import MeetingListener from "./MeetingListener";
 
 type Line = { role: "assistant" | "user"; text: string };
 const GREETING = "Oh. It’s you. I was just getting comfortable. What are we breaking today?";
@@ -11,6 +13,16 @@ const BORIS_GREETING = "Boris. I hear you take requests. So do I.";
 const INITIAL: Line[] = [{ role: "assistant", text: GREETING }];
 
 export default function SavannahPage() {
+  useEffect(() => {
+    // The apex domain may reach a different runtime. Keep voice and chat on
+    // the production origin, even when that runtime cannot apply redirects.
+    if (window.location.hostname === "ctrlpluslove.com") {
+      const url = new URL(window.location.href);
+      url.hostname = "www.ctrlpluslove.com";
+      window.location.replace(url.href);
+    }
+  }, []);
+
   const [outfit] = useState(() => selectSavannahOutfit(new Date()));
   const [outfitAssetsReady, setOutfitAssetsReady] = useState(false);
   const [lines, setLines] = useState<Line[]>(INITIAL);
@@ -33,6 +45,7 @@ export default function SavannahPage() {
   const [greetingActive, setGreetingActive] = useState(false);
   const [showTranscript, setShowTranscript] = useState(false);
   const [listening, setListening] = useState(false);
+  const [meetingActive, setMeetingActive] = useState(false);
   const [showTyping, setShowTyping] = useState(true);
   const micPhase = useRef<"idle" | "opening" | "recording" | "processing">("idle");
   const requestInFlight = useRef(false);
@@ -186,6 +199,14 @@ Status: UNSENT · no delivery channel connected.`;
 
   async function tapSavannah() {
     if (greetingActive) return;
+    if (needsPlayback) {
+      if (await resumeSavannahAudio()) { setNeedsPlayback(false); return; }
+      primeSavannahAudio();
+      await speak(lastReply.current);
+      return;
+    }
+    if (meetingActive) return;
+    primeSavannahAudio();
     if (!greeted.current && !started && audioEnabledRef.current) {
       greeted.current = true;
       if (borisVisitor.current || !returningVisitor.current) {
@@ -197,7 +218,6 @@ Status: UNSENT · no delivery channel connected.`;
       // Continue directly into the existing microphone flow after her hello.
     }
     steelHello();
-    if (needsPlayback) { const played = await resumeSavannahAudio(); if (played) { setNeedsPlayback(false); setMicStatus("TAP TO TALK"); return; } }
     if (micPhase.current === "recording") { voiceMonitor.current?.(); voiceMonitor.current = null; if (recorder.current?.state === "recording") recorder.current.stop(); return; }
     if (micPhase.current !== "idle" || requestInFlight.current || pending || audioBusy) return;
     if (speaking) { stopSavannahLocalVoice(); setSpeaking(false); }
@@ -314,6 +334,7 @@ Status: UNSENT · no delivery channel connected.`;
   }
 
   function replay() {
+    primeSavannahAudio();
     if (speaking || audioBusy) {
       stopSavannahLocalVoice();
       setSpeaking(false);
@@ -328,12 +349,13 @@ Status: UNSENT · no delivery channel connected.`;
 
   async function send(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    primeSavannahAudio();
     await ask(draft);
   }
 
   async function ask(question: string) {
     const value = question.trim();
-    if (!value || requestInFlight.current || pending) return;
+    if (!value || requestInFlight.current || pending || meetingActive) return;
     greeted.current = true;
     performanceRef.current?.stop();
     requestInFlight.current = true;
@@ -440,8 +462,8 @@ Status: UNSENT · no delivery channel connected.`;
         <div className="savannah-desk-list">{deskItems.length===0?<p>No saved entries yet.</p>:deskItems.map(item=><article key={item.id}><small>{item.type.toUpperCase()} · {item.date}</small><p>{item.text}</p><button type="button" onClick={() => {const keep=deskItems.filter(entry=>entry.id!==item.id);try{localStorage.setItem("savannah-desk-local-v1",JSON.stringify(keep));setDeskItems(keep)}catch{setDeskNotice("Could not remove entry.")}}}>DELETE</button></article>)}</div>
       </section>}
       <style>{`\n        .savannah-portrait > .savannah-speech-mouth { display:none !important; }\n      `}</style>
-      <div className={"savannah-portrait" + (presenceAssetsReady ? " has-presence-assets" : "") + (speaking ? " is-speaking" : listening ? " is-listening" : pending ? " is-thinking" : " is-waiting")}>
-        <button type="button" className="savannah-face-tap" onClick={() => void tapSavannah()} aria-label={needsPlayback ? "Hear Savannah" : listening ? "Finish recording" : "Speak to Savannah"} />
+      <div className={"savannah-portrait" + (presenceAssetsReady ? " has-presence-assets" : "") + (speaking ? " is-speaking" : (listening || meetingActive) ? " is-listening" : pending ? " is-thinking" : " is-waiting")}>
+        <button type="button" className="savannah-face-tap" onClick={() => void tapSavannah()} aria-label={needsPlayback ? "Hear Savannah" : meetingActive ? "Meeting listening active" : listening ? "Finish recording" : "Speak to Savannah"} />
         <img className="savannah-original-avatar" src="/savannah-avatar.jpg" alt="Savannah" />
         {presenceAssetsReady && SAVANNAH_CANONICAL_FRAMES.map(state => <img key={`${outfitAssetsReady ? outfit : "canonical"}-${state}`} src={savannahPortraitPath(outfit, state, outfitAssetsReady)} className={"savannah-state-frame" + (visualPresence === state ? " is-active" : "")} alt="" aria-hidden="true" />)}
         {!presenceAssetsReady && speaking && (
@@ -488,14 +510,31 @@ Status: UNSENT · no delivery channel connected.`;
         <div ref={bottom} />
       </section>}
       {false && !showTranscript && !started && <div className="savannah-quick-start"><button type="button" disabled={pending} onClick={() => void ask("What is ctrl+love, and why should I care?")}>INTRODUCE YOURSELF</button><button type="button" disabled={pending} onClick={() => void ask("Challenge my business idea. First ask me what it is.")}>CHALLENGE ME</button></div>}
-      <div className="savannah-mic-hint" aria-live="polite"><button type="button" className="savannah-talk-direct" onClick={() => void tapSavannah()} disabled={pending || audioBusy}>{greetingActive ? "SAVANNAH IS SAYING HELLO" : listening ? "DONE TALKING" : needsPlayback ? "HEAR SAVANNAH" : "TALK TO SAVANNAH"}</button><span>{micStatus}</span></div>
+      <MeetingListener
+        unavailable={listening || pending || speaking || audioBusy || greetingActive}
+        speaking={speaking}
+        onActive={active => {
+          setMeetingActive(active);
+          if (active) {
+            primeSavannahAudio(); greeted.current = true; performanceRef.current?.stop();
+            setShowTranscript(true); setStarted(true);
+          }
+        }}
+        onTranscript={text => setLines(previous => [...previous, { role: "user", text }])}
+        onFlag={text => {
+          lastReply.current = text;
+          setLines(previous => [...previous, { role: "assistant", text }]);
+          if (audioEnabledRef.current) void speak(text);
+        }}
+      />
+      <div className="savannah-mic-hint" aria-live="polite"><button type="button" className="savannah-talk-direct" onClick={() => void tapSavannah()} disabled={pending || audioBusy || (meetingActive && !needsPlayback)}>{meetingActive && !needsPlayback ? "MEETING ACTIVE" : greetingActive ? "SAVANNAH IS SAYING HELLO" : listening ? "DONE TALKING" : needsPlayback ? "HEAR SAVANNAH" : "TALK TO SAVANNAH"}</button><span>{meetingActive ? "LISTENING THROUGHOUT" : micStatus}</span></div>
       {!showTranscript && error && <p className="savannah-error-compact" role="alert">{error}</p>}
       {showTyping && <form className="savannah-compose" onSubmit={send}>
         <label className="savannah-input-wrap">
           <span className="sr-only">Message Savannah</span>
-          <input ref={input} autoComplete="off" aria-label="Message Savannah" value={draft} onChange={(event) => setDraft(event.target.value)} placeholder="Ask Savannah anything…" />
+          <input ref={input} autoComplete="off" aria-label="Message Savannah" value={draft} onChange={(event) => setDraft(event.target.value)} disabled={meetingActive} placeholder="Ask Savannah anything…" />
         </label>
-        <button type="submit" className="savannah-send" disabled={pending || !draft.trim()} aria-label="Send message">{pending ? "…" : "↑"}</button>
+        <button type="submit" className="savannah-send" disabled={pending || meetingActive || !draft.trim()} aria-label="Send message">{pending ? "…" : "↑"}</button>
       </form>}
       <style jsx>{`
         .savannah-lock-notice { position:absolute; top:74px; left:10px; right:10px; z-index:30; padding:13px; background:#26221e; color:#fff; text-align:center; font-size:12px; cursor:pointer; }

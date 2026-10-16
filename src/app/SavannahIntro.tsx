@@ -1,343 +1,223 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import styles from "./home-2026.module.css";
 import { clearSavannahPageLock } from "./savannah-runtime";
 
+// A single, explicit film clock. These are media timestamps, not CSS delays.
 const START_AT = 1.35;
+const NAV_AT = 3.65;
+const HEADLINE_AT = 4.75;
 const REGISTER_AT = 6.2;
-// The film freezes at the projected line; the mechanism then uses its own clock.
-const TIC_HOLD_MS = 290;
-const TAC_SWING_MS = 880;
-const SEAT_MS = 160;
-const CLUNC_PAUSE_MS = 90;
-
-type SceneStage = "film" | "register" | "daylight" | "seated" | "locked";
+const DAYLIGHT_AT = 6.65;
+const EXIT_AT = 7.65;
+const LOAD_TIMEOUT_MS = 4500;
+const PLAY_TIMEOUT_MS = 12000;
+const TITLE_HOLD_MS = 1100;
+const MOBILE_FILM = "/savannah-intro/entrance-mobile-v4.mp4";
+const DESKTOP_FILM = "/savannah-intro/entrance-desktop-v4.mp4";
+type Stage = "film" | "nav" | "headline" | "register" | "daylight";
 
 export default function SavannahIntro() {
   const [visible, setVisible] = useState(true);
   const [ready, setReady] = useState(false);
+  const [stage, setStage] = useState<Stage>("film");
   const [handoff, setHandoff] = useState(false);
-  const [fallback, setFallback] = useState(false);
-  const [stage, setStage] = useState<SceneStage>("film");
+  const [showExit, setShowExit] = useState(false);
+  const [needsTap, setNeedsTap] = useState(false);
+  const [fallbackVideo, setFallbackVideo] = useState(false);
+  const [headlineStyle, setHeadlineStyle] = useState<CSSProperties>();
   const videoRef = useRef<HTMLVideoElement>(null);
-  const wallContentRef = useRef<HTMLDivElement>(null);
-  const bufferTimerRef = useRef<number | null>(null);
-  const handoffStarted = useRef(false);
-  const lockStarted = useRef(false);
-  const audioRef = useRef<AudioContext | null>(null);
-  const lockSeatTimerRef = useRef<number | null>(null);
-  const lockReleaseTimerRef = useRef<number | null>(null);
-  const pivotStartedRef = useRef(false);
-  const pivotTimersRef = useRef<number[]>([]);
+  const navGhostRef = useRef<HTMLDivElement>(null);
+  const headlineGhostRef = useRef<HTMLHeadingElement>(null);
+  const completed = useRef(false);
+  const readyRef = useRef(false);
+  const titleDone = useRef(false);
+  const bufferTimer = useRef<number | null>(null);
+  const exitTimer = useRef<number | null>(null);
+  const retryTimer = useRef<number | null>(null);
+  const lastProgress = useRef(0);
 
-  const cancelBufferTimer = () => {
-    if (bufferTimerRef.current !== null) {
-      window.clearTimeout(bufferTimerRef.current);
-      bufferTimerRef.current = null;
-    }
-  };
-  const guardBuffering = () => {
-    if (handoffStarted.current || !videoRef.current || videoRef.current.paused) return;
-    cancelBufferTimer();
-    bufferTimerRef.current = window.setTimeout(() => {
-      bufferTimerRef.current = null;
-      if (!handoffStarted.current && videoRef.current?.paused === false) completeHandoff(false);
-    }, 3500);
-  };
-
-  const releasePageLock = () => {
-    if (lockSeatTimerRef.current !== null) {
-      window.clearTimeout(lockSeatTimerRef.current);
-      lockSeatTimerRef.current = null;
-    }
-    if (lockReleaseTimerRef.current !== null) {
-      window.clearTimeout(lockReleaseTimerRef.current);
-      lockReleaseTimerRef.current = null;
-    }
+  const finish = () => {
+    if (completed.current) return;
+    completed.current = true;
+    if (bufferTimer.current !== null) window.clearTimeout(bufferTimer.current);
+    if (exitTimer.current !== null) window.clearTimeout(exitTimer.current);
+    if (retryTimer.current !== null) window.clearTimeout(retryTimer.current);
+    videoRef.current?.pause();
     clearSavannahPageLock((...classes) => document.documentElement.classList.remove(...classes));
+    setHandoff(true);
+    window.setTimeout(() => {
+      setVisible(false);
+      document.documentElement.classList.remove("savannah-intro-running");
+      window.dispatchEvent(new Event("savannah-intro-complete"));
+    }, 50);
   };
 
-  const armVaultAudio = () => {
-    if (typeof window === "undefined") return;
-    const Context = window.AudioContext;
-    if (!Context) return;
-
-    if (!audioRef.current) audioRef.current = new Context();
-    if (audioRef.current.state === "suspended") void audioRef.current.resume();
-  };
-
-  const playVaultClunk = () => {
-    const context = audioRef.current;
-    if (!context || context.state !== "running") return;
-
-    const now = context.currentTime;
-    const master = context.createGain();
-    master.gain.setValueAtTime(0.0001, now);
-    master.gain.exponentialRampToValueAtTime(0.22, now + 0.008);
-    master.gain.exponentialRampToValueAtTime(0.0001, now + 0.34);
-    master.connect(context.destination);
-
-    const low = context.createOscillator();
-    low.type = "sine";
-    low.frequency.setValueAtTime(82, now);
-    low.frequency.exponentialRampToValueAtTime(46, now + 0.29);
-    low.connect(master);
-    low.start(now);
-    low.stop(now + 0.35);
-
-    const metalGain = context.createGain();
-    metalGain.gain.setValueAtTime(0.0001, now);
-    metalGain.gain.exponentialRampToValueAtTime(0.12, now + 0.003);
-    metalGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.095);
-    metalGain.connect(context.destination);
-
-    const metal = context.createOscillator();
-    metal.type = "triangle";
-    metal.frequency.setValueAtTime(188, now);
-    metal.frequency.exponentialRampToValueAtTime(74, now + 0.08);
-    metal.connect(metalGain);
-    metal.start(now);
-    metal.stop(now + 0.11);
-  };
-
-  const playMechanicalTick = (pitch: number, volume: number) => {
-    const context = audioRef.current;
-    if (!context || context.state !== "running") return;
-    const now = context.currentTime;
-    const oscillator = context.createOscillator();
-    const gain = context.createGain();
-    oscillator.type = "triangle";
-    oscillator.frequency.setValueAtTime(pitch, now);
-    oscillator.frequency.exponentialRampToValueAtTime(pitch * 0.57, now + 0.045);
-    gain.gain.setValueAtTime(volume, now);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.075);
-    oscillator.connect(gain);
-    gain.connect(context.destination);
-    oscillator.start(now);
-    oscillator.stop(now + 0.08);
-  };
-
-  // The pivoting wall carries the actual homepage composition. Clone the
-  // rendered nav and hero so the flattened wall matches the live site on
-  // this exact viewport; no hand-tuned fake headline to jump at CLUNC.
+  // Reuse the real nav and measure the real headline. No fake duplicate homepage.
   useEffect(() => {
-    const host = wallContentRef.current;
-    const nav = document.querySelector(`main .${styles.nav}`);
-    const hero = document.querySelector(`main .${styles.hero}`);
-    if (!host || !nav || !hero) return;
-    const page = document.createElement("div");
-    page.className = styles.page;
-    for (const node of [nav, hero]) {
-      const clone = node.cloneNode(true) as HTMLElement;
+    const nav = document.querySelector<HTMLElement>(`main .${styles.nav}`);
+    if (nav && navGhostRef.current) {
+      const clone = nav.cloneNode(true) as HTMLElement;
       clone.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
-      page.appendChild(clone);
+      clone.querySelectorAll("a,button").forEach(el => {
+        el.setAttribute("tabindex", "-1");
+        el.setAttribute("aria-hidden", "true");
+      });
+      navGhostRef.current.replaceChildren(clone);
     }
-    host.replaceChildren(page);
-    return () => host.replaceChildren();
+    const measure = () => {
+      const headline = document.querySelector<HTMLElement>('[data-savannah-handoff-headline="true"]');
+      if (!headline) return;
+      if (headlineGhostRef.current) headlineGhostRef.current.textContent = headline.textContent;
+      const rect = headline.getBoundingClientRect();
+      const computed = window.getComputedStyle(headline);
+      setHeadlineStyle({
+        left:rect.left,top:rect.top,width:rect.width,
+        fontFamily:computed.fontFamily,fontSize:computed.fontSize,
+        fontWeight:computed.fontWeight,lineHeight:computed.lineHeight,
+        letterSpacing:computed.letterSpacing,
+      });
+    };
+    measure();
+    window.addEventListener("resize", measure, { passive:true });
+    return () => window.removeEventListener("resize", measure);
   }, []);
 
   useEffect(() => {
     document.documentElement.classList.add("savannah-intro-running");
     window.dispatchEvent(new Event("savannah-intro-active"));
-    return () => {
-      document.documentElement.classList.remove("savannah-intro-running");
-    };
-  }, []);
-
-  useEffect(() => {
-    const arm = () => armVaultAudio();
-    window.addEventListener("pointerdown", arm, { once: true, passive: true });
-    window.addEventListener("keydown", arm, { once: true });
-    return () => {
-      window.removeEventListener("pointerdown", arm);
-      window.removeEventListener("keydown", arm);
-    };
-  }, []);
-
-  useEffect(() => {
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const syncMotionPreference = () => {
-      if (!media.matches) return;
-      const video = videoRef.current;
-      if (video) video.pause();
-      releasePageLock();
-      // Reduced-motion visitors enter the site immediately; never park on a still portrait.
-      completeHandoff(false);
-    };
-
-    syncMotionPreference();
-    media.addEventListener?.("change", syncMotionPreference);
-    return () => media.removeEventListener?.("change", syncMotionPreference);
-  }, []);
-
-  // A slow or blocked video must not trap a visitor behind the opening film.
-  // The site underneath is the fallback; preserve it rather than displaying a static face.
-  useEffect(() => {
-    const primeWatchdog = window.setTimeout(() => {
-      if (!ready && !handoffStarted.current) completeHandoff(false);
-    }, 6500);
-    return () => window.clearTimeout(primeWatchdog);
-  }, [ready]);
-
-  // If priming or playback stalls, proceed directly to the site; never hold
-  // visitors on a full-screen fallback portrait waiting for a manual click.
-  useEffect(() => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const onReduce = () => { if (reduce.matches) finish(); };
+    onReduce();
+    reduce.addEventListener?.("change", onReduce);
+    // Never strand a visitor behind the black film layer if media cannot load.
+    // A user gesture may be required on iOS (Low Power Mode and browser policies).
+    // Keep the film available instead of silently skipping it.
+    // The approved title is an intro beat, not a network-loading indicator.
+    const titleTimer = window.setTimeout(() => {
+      titleDone.current = true;
+      tryPlay();
+    }, TITLE_HOLD_MS);
+    const exitOffer = window.setTimeout(() => {
+      if (!readyRef.current && !completed.current) { setShowExit(true); setNeedsTap(true); }
+    }, TITLE_HOLD_MS + 1000);
+    const loading = window.setTimeout(() => {
+      if (!readyRef.current && !completed.current) setFallbackVideo(true);
+    }, LOAD_TIMEOUT_MS);
     const watchdog = window.setTimeout(() => {
-      if (!handoffStarted.current) completeHandoff(false);
-    }, 12000);
-    return () => window.clearTimeout(watchdog);
+      if (!completed.current && lastProgress.current < EXIT_AT) { setShowExit(true); setNeedsTap(true); }
+    }, PLAY_TIMEOUT_MS);
+    return () => {
+      window.clearTimeout(titleTimer);
+      window.clearTimeout(exitOffer);
+      window.clearTimeout(loading);
+      window.clearTimeout(watchdog);
+      if (bufferTimer.current !== null) window.clearTimeout(bufferTimer.current);
+      if (exitTimer.current !== null) window.clearTimeout(exitTimer.current);
+      reduce.removeEventListener?.("change", onReduce);
+      document.documentElement.classList.remove("savannah-intro-running");
+      clearSavannahPageLock((...classes) => document.documentElement.classList.remove(...classes));
+    };
   }, []);
 
-  useEffect(() => () => {
-    pivotTimersRef.current.forEach(id => window.clearTimeout(id));
-    releasePageLock();
-  }, []);
-
-  // Native muted inline autoplay is more reliable on iOS than pausing and
-  // seeking before the first play(). Keep the initial close-up concealed
-  // until the video naturally reaches the approved wide frame.
-  const attemptPlayback = () => {
+  const tryPlay = () => {
     const video = videoRef.current;
-    if (!video || handoffStarted.current || !video.paused) return;
+    if (!video || completed.current || !titleDone.current) return;
     video.muted = true;
     void video.play().catch(() => {
-      // Autoplay may be disallowed in embedded browsers; the homepage stays
-      // visible and the watchdog will remove this invisible intro.
+      if (!completed.current) { setNeedsTap(true); setShowExit(true); }
     });
   };
-
-  const clickLock = () => {
-    if (lockStarted.current) return;
-    lockStarted.current = true;
-
-    document.documentElement.classList.remove("savannah-page-locked");
-    document.documentElement.classList.add("savannah-page-locking");
-    // The latch fires on the exact frame the wall becomes the real site.
-    playVaultClunk();
-    lockSeatTimerRef.current = window.setTimeout(() => {
-      lockSeatTimerRef.current = null;
-      document.documentElement.classList.remove("savannah-page-locking");
-      document.documentElement.classList.add("savannah-page-locked");
-      lockReleaseTimerRef.current = window.setTimeout(() => releasePageLock(), 220);
-    }, 100);
-  };
-
-  const completeHandoff = (animateIntoPlace = false) => {
-    if (handoffStarted.current) return;
-    handoffStarted.current = true;
-    cancelBufferTimer();
-    setStage("locked");
-    // Only an actual cinematic handoff gets the vault-lock treatment.
-    // A failed, skipped or reduced-motion film must leave the site immediately usable.
-    const cinematic = ready && !fallback && pivotStartedRef.current;
-    if (cinematic) clickLock();
-    else releasePageLock();
-
-    const seatDelay = 0;
-    // Keep the projected heading on its measured DOM coordinates while seating.
-    // The final handoff is a cut, not an opacity dissolve.
-    window.setTimeout(() => setHandoff(true), seatDelay);
-    window.setTimeout(() => {
-      setVisible(false);
-      document.documentElement.classList.remove("savannah-intro-running");
-      releasePageLock();
-      window.dispatchEvent(new Event("savannah-intro-complete"));
-    }, seatDelay + 50);
-  };
-
-  const trackHandoff = () => {
+  const onMetadata = () => {
     const video = videoRef.current;
     if (!video) return;
-    // Mobile asset is already trimmed past the unwanted close-up.
-    const trimmed = video.currentSrc.includes("savannah-intro-mobile-v2.mp4");
-    const t = video.currentTime + (trimmed ? START_AT : 0);
-
-    if (t >= REGISTER_AT && !pivotStartedRef.current && !handoffStarted.current) {
-      // TIC — lock the projected words, hold the frame in silence.
-      pivotStartedRef.current = true;
-      video.pause();
-      cancelBufferTimer();
-      setStage("register");
-      playMechanicalTick(620, 0.065);
-
-      // TAC — after a real pause, the solid wall pivots in front of Savannah.
-      pivotTimersRef.current.push(window.setTimeout(() => {
-        playMechanicalTick(360, 0.08);
-        setStage("daylight");
-      }, TIC_HOLD_MS));
-
-      // The heavy wall slows just short of square, then seats with a tiny catch.
-      pivotTimersRef.current.push(window.setTimeout(() => {
-        setStage("seated");
-      }, TIC_HOLD_MS + TAC_SWING_MS));
-
-      // CLUNC — hold the seated wall briefly, then one exact hard cut.
-      pivotTimersRef.current.push(window.setTimeout(() => {
-        completeHandoff(true);
-      }, TIC_HOLD_MS + TAC_SWING_MS + SEAT_MS + CLUNC_PAUSE_MS));
-    }
+    // Both renditions are pretrimmed to the same approved wide frame.
+    // Safari starts at zero without a remote seek or a hidden-frame interval.
+    tryPlay();
   };
-
+  const onProgress = () => {
+    const video = videoRef.current;
+    if (!video || completed.current) return;
+    const t = video.currentTime + START_AT;
+    if (!readyRef.current && !video.paused && titleDone.current && video.currentTime >= 0.02) {
+      readyRef.current = true;
+      setReady(true);
+      setNeedsTap(false);
+      setShowExit(false);
+      if (retryTimer.current !== null) window.clearTimeout(retryTimer.current);
+    }
+    if (t > lastProgress.current + 0.05) {
+      lastProgress.current = t;
+      if (bufferTimer.current !== null) window.clearTimeout(bufferTimer.current);
+      bufferTimer.current = null;
+    }
+    if (t >= DAYLIGHT_AT) setStage("daylight");
+    else if (t >= REGISTER_AT) setStage("register");
+    else if (t >= HEADLINE_AT) setStage("headline");
+    else if (t >= NAV_AT) setStage("nav");
+    if (t >= EXIT_AT) finish();
+  };
+  const onWaiting = () => {
+    if (completed.current || !readyRef.current || bufferTimer.current !== null) return;
+    bufferTimer.current = window.setTimeout(() => {
+      if (!completed.current) { setNeedsTap(true); setShowExit(true); }
+    }, 3000);
+  };
+  const playFromTap = () => {
+    const video = videoRef.current;
+    if (!video || completed.current) return;
+    video.muted = true;
+    titleDone.current = true;
+    video.setAttribute("playsinline", "");
+    // Must be called directly in the click handler for iOS autoplay restrictions.
+    void video.play().then(() => setNeedsTap(false)).catch(() => {
+      setFallbackVideo(true);
+      setNeedsTap(true);
+      setShowExit(true);
+    });
+  };
   if (!visible) return null;
 
   return (
-    <section
-      className={[
-        styles.savannahIntro,
-        ready ? styles.savannahIntroReady : "",
-        fallback ? styles.savannahIntroFallback : "",
-        stage === "register" ? styles.savannahSceneRegister : "",
-        stage === "daylight" ? styles.savannahSceneDaylight : "",
-        stage === "seated" ? styles.savannahSceneSeated : "",
-        stage === "locked" ? styles.savannahSceneLocked : "",
-        handoff ? styles.savannahHandoff : "",
-      ].join(" ")}
-      aria-label="Enter ctrl+love"
-      data-deploy="savannah-scene-match-handoff"
-      data-stage={stage}
-    >
+    <section className={[
+      styles.savannahIntro,
+      ready ? styles.savannahIntroReady : "",
+      stage === "nav" ? styles.savannahSceneNav : "",
+      stage === "headline" ? styles.savannahSceneHeadline : "",
+      stage === "register" ? styles.savannahSceneRegister : "",
+      stage === "daylight" ? styles.savannahSceneDaylight : "",
+      handoff ? styles.savannahHandoff : "",
+    ].join(" ")} aria-label="Enter ctrl+love" data-deploy="savannah-canonical-title-v4" data-stage={stage}>
       <div className={styles.savannahFilm} aria-hidden="true">
-        <div className={styles.savannahIntroFallbackImage} />
-        <video
-          ref={videoRef}
-          className={styles.savannahIntroVideo}
-          autoPlay
-          muted
-          playsInline
-          preload="auto"
-          onLoadedMetadata={attemptPlayback}
-          onCanPlay={attemptPlayback}
-          onPlaying={() => { cancelBufferTimer(); setFallback(false); }}
-          onWaiting={guardBuffering}
-          onStalled={guardBuffering}
-          onTimeUpdate={() => {
-            cancelBufferTimer();
-            // If Safari starts at zero, keep the unwanted close-up hidden.
-            // Reveal only once the approved wide scene has been reached.
-            const video = videoRef.current;
-            const trimmed = video?.currentSrc.includes("savannah-intro-mobile-v2.mp4");
-            if (!handoffStarted.current && (video?.currentTime ?? 0) >= (trimmed ? 0.08 : START_AT - 0.08)) {
-              setReady(true);
-            }
-            trackHandoff();
-          }}
-          onEnded={() => completeHandoff(false)}
-          onError={() => completeHandoff(false)}
-        >
-          <source media="(max-width: 768px)" src="https://ctrl-love-media.floot.app/_cdn/static/savannah-intro-mobile-v2.mp4" type="video/mp4" />
-          <source src="https://ctrl-love-media.floot.app/_cdn/static/savannah-intro.mp4" type="video/mp4" />
+        <video key={fallbackVideo ? "wide" : "responsive"} ref={videoRef} className={styles.savannahIntroVideo}
+          muted playsInline preload="auto" poster="/savannah-intro/entrance-poster-v4.jpg"
+          onLoadedMetadata={onMetadata} onLoadedData={tryPlay} onCanPlay={tryPlay} onSeeked={tryPlay} onPlaying={onProgress}
+          onTimeUpdate={onProgress} onWaiting={onWaiting} onStalled={onWaiting}
+          onEnded={finish} onError={() => { setFallbackVideo(true); setNeedsTap(true); setShowExit(true); }}>
+          {!fallbackVideo && <source media="(max-width: 768px)" src={MOBILE_FILM} type="video/mp4" />}
+          <source src={DESKTOP_FILM} type="video/mp4" />
         </video>
         <div className={styles.savannahIntroShade} />
       </div>
-      {/* The solid wall is IN FRONT of Savannah. It hinges over her,
-          completely occluding the film before it seats as the real site. */}
-      <div className={styles.savannahPivotWall} aria-hidden="true">
-        <div ref={wallContentRef} className={styles.savannahPivotWallContent} />
-        <div className={styles.savannahPivotWallEdge} />
-      </div>
-
-      {/* The film is the entrance. No second manual "Come in" gate. */}
+      {!ready && (
+        <div style={{position:"absolute",inset:0,zIndex:2,background:"#0d0d0c",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:22,color:"#f3f1eb",textAlign:"center",pointerEvents:"none"}}>
+          <div style={{fontSize:"clamp(34px,7vw,88px)",fontWeight:700,letterSpacing:"-.06em"}}>SAVANNAH.</div>
+          <div style={{fontSize:11,letterSpacing:".25em"}}>CTRL+LOVE · EMPLOYEE #4</div>
+        </div>
+      )}
+      {needsTap && !ready && (
+        <button type="button" onClick={playFromTap} style={{position:"absolute",left:"50%",top:"64%",transform:"translate(-50%,-50%)",zIndex:8,padding:"15px 26px",background:"#f3f1eb",color:"#111",border:0,font:"inherit",fontWeight:600,cursor:"pointer"}}>▶ Play Savannah</button>
+      )}
+      {(showExit || needsTap) && (
+        <button type="button" onClick={finish} aria-label="Enter ctrl+love without the film"
+          style={{position:"absolute",right:20,bottom:24,zIndex:8,padding:"12px 16px",background:"rgba(245,243,238,.94)",color:"#111",border:0,font:"inherit",cursor:"pointer"}}>
+          Enter site →
+        </button>
+      )}
+      <div ref={navGhostRef} className={styles.savannahNavGhost} aria-hidden="true" />
+      <h2 ref={headlineGhostRef} className={styles.savannahHeadlineGhost} style={headlineStyle} aria-hidden="true" />
     </section>
   );
 }

@@ -48,3 +48,4 @@ for (const target of targets) {
 }
 console.log(errors ? `EXIT DOOR HTTP smoke failed (${errors} checks)` : "EXIT DOOR HTTP smoke passed. Voice, login, payments and data restore NOT tested.");
 process.exitCode = errors ? 1 : 0;
+

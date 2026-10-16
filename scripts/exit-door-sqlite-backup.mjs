@@ -39,3 +39,4 @@ try {
   console.log('Restore successful, SQLite integrity verified.');
  }
 } finally {rmSync(temp,{recursive:true,force:true});}
+

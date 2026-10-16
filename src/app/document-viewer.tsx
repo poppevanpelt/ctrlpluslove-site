@@ -12,6 +12,7 @@ type DocumentViewerProps = {
   initialY: number;
   src: string;
   width: number;
+  flow?: boolean;
 };
 
 export function DocumentViewer({
@@ -22,6 +23,7 @@ export function DocumentViewer({
   initialY,
   src,
   width,
+  flow = false,
 }: DocumentViewerProps) {
   const frameRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef({
@@ -181,12 +183,13 @@ export function DocumentViewer({
   }, [setInitialScroll]);
 
   return (
-    <main className="document-page">
+    <main className="document-page" style={flow ? { minHeight: "auto" } : undefined}>
       <Link className="document-back" href="/">
         ctrl+love
       </Link>
       <div
         className={`document-frame${isDragging ? " is-dragging" : ""}`}
+        style={flow ? { position: "relative", height: "min(80vh, 900px)" } : undefined}
         ref={frameRef}
         onDoubleClick={handleDoubleClick}
         onLostPointerCapture={stopDragging}

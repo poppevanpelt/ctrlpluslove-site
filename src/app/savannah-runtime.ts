@@ -4,7 +4,7 @@ export const SAVANNAH_VAPI = {
 } as const;
 
 export const SAVANNAH_TEXT_BURST_TIMEOUT_MS = 45_000;
-export const SAVANNAH_VOICE_MAX_DURATION_MS = 5 * 60_000;
+export const SAVANNAH_VOICE_MAX_DURATION_MS = 10 * 60_000;
 export const SAVANNAH_HIDDEN_TAB_GRACE_MS = 30_000;
 
 export const SAVANNAH_PAGE_LOCK_CLASSES = [
