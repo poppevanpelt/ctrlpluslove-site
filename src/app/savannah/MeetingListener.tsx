@@ -7,6 +7,7 @@ import { MeetingQueue } from "./meeting-queue";
 // cannot reliably be decoded on their own, particularly on Safari.
 const SEGMENT_MS = 20000;
 const MAX_PENDING = 6;
+const MEETING_DRAFT_KEY = 'savannah-meeting-transcript-v1';
 type Props = { unavailable: boolean; speaking: boolean; onTranscript: (text: string) => void; onFlag: (text: string) => void; onActive: (active: boolean) => void };
 
 export default function MeetingListener(props: Props) {
@@ -20,6 +21,34 @@ export default function MeetingListener(props: Props) {
   const meetingWords = useRef<string[]>([]);
   const [wordsReady, setWordsReady] = useState(false);
   const [handoffStatus, setHandoffStatus] = useState("");
+  const [saveStatus, setSaveStatus] = useState("Transcript not yet saved.");
+  useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem(MEETING_DRAFT_KEY);
+      if (!saved) return;
+      const data = JSON.parse(saved) as { words?: unknown };
+      if (!Array.isArray(data.words)) return;
+      const words = data.words.filter((word): word is string => typeof word === "string");
+      meetingWords.current = words;
+      setWordsReady(words.length > 0);
+      if (words.length) setSaveStatus("Recovered transcript from this device.");
+    } catch { setSaveStatus("Saved transcript could not be read. Do not clear browser data."); }
+  }, []);
+  function saveTranscript(words: string[]) {
+    try {
+      window.localStorage.setItem(MEETING_DRAFT_KEY, JSON.stringify({ words, savedAt: new Date().toISOString() }));
+      setSaveStatus("Transcript saved on this device.");
+    } catch { setSaveStatus("SAVE FAILED. Download the transcript before leaving."); }
+  }
+  function downloadTranscript() {
+    const blob = new Blob([meetingWords.current.join("\n")], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "savannah-meeting-transcript.txt";
+    link.click();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
   const control = useRef<{ stop: () => void; retry: () => void; dispose: () => void } | null>(null);
   const generation = useRef(0);
   const mounted = useRef(true);
@@ -50,8 +79,7 @@ export default function MeetingListener(props: Props) {
     setOpening(true);
     callbacks.current.onActive(true);
     setRetry(false);
-    meetingWords.current = [];
-    setWordsReady(false);
+    // Keep the saved transcript on restart; clearing requires an explicit action.
     setHandoffStatus("");
     setStatus("Opening meeting microphone…");
     const token = ++generation.current;
@@ -141,6 +169,7 @@ export default function MeetingListener(props: Props) {
         const text = result.text.trim();
         if (!text) return;
         meetingWords.current.push(text);
+        saveTranscript(meetingWords.current);
         setWordsReady(true);
         callbacks.current.onTranscript(text);
         accumulated += "\n" + text;
@@ -222,9 +251,17 @@ export default function MeetingListener(props: Props) {
   return <section className="meeting-listener" aria-label="Meeting listening">
     <div><button type="button" onClick={() => active ? control.current?.stop() : void start()} disabled={opening || (!active && (props.unavailable || finishing))}>{opening ? "OPENING…" : active ? "END MEETING" : "START MEETING"}</button>
       {retry && <button type="button" onClick={() => control.current?.retry()}>RETRY CONNECTION</button>}
-      {!active && !finishing && wordsReady && <button type="button" onClick={performAutopsy}>PERFORM AUTOPSY ↗</button>}</div>
+      {wordsReady && <button type="button" onClick={downloadTranscript}>DOWNLOAD TRANSCRIPT</button>}
+      {!active && !finishing && wordsReady && <button type="button" onClick={performAutopsy}>PERFORM AUTOPSY ↗</button>}
+      {!active && !finishing && wordsReady && <button type="button" onClick={() => {
+        if (!window.confirm("Delete the recovered meeting transcript from this device? Download it first.")) return;
+        meetingWords.current = []; setWordsReady(false);
+        window.localStorage.removeItem(MEETING_DRAFT_KEY);
+        setSaveStatus("Previous transcript cleared.");
+      }}>CLEAR TRANSCRIPT</button></div>
     {handoffStatus && <p role="status">{handoffStatus}</p>}
     <p role="status">{status}</p>
+    <p role="status">{saveStatus}</p>
     <small>{active ? "KEEP THIS PAGE OPEN AND SCREEN AWAKE · SHE FLAGS ONLY WHEN USEFUL" : "Let everyone know Savannah is listening. Audio is sent for transcription; the transcript stays on this page."}</small>
     <style jsx>{`
       .meeting-listener { flex-shrink:0; padding:9px 14px; background:#eeeae1; border-top:1px solid #c9c2b9; color:#292521; }
