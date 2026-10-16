@@ -258,7 +258,7 @@ export default function MeetingListener(props: Props) {
         meetingWords.current = []; setWordsReady(false);
         window.localStorage.removeItem(MEETING_DRAFT_KEY);
         setSaveStatus("Previous transcript cleared.");
-      }}>CLEAR TRANSCRIPT</button></div>
+      }}>CLEAR TRANSCRIPT</button>}</div>
     {handoffStatus && <p role="status">{handoffStatus}</p>}
     <p role="status">{status}</p>
     <p role="status">{saveStatus}</p>
