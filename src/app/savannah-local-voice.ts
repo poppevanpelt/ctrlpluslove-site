@@ -126,15 +126,26 @@ export async function speakSavannahNeurally(
     }
 
     const epoch = ++neuralPlaybackEpoch;
-    const response = await fetch("/api/savannah-voice", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text }),
-    });
+    // Bound the wait: if synthesis stalls, return control to the caller.
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 20000);
+    let response: Response;
+    try {
+      response = await fetch("/api/savannah-voice", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+        signal: controller.signal,
+      });
+    } finally { window.clearTimeout(timeout); }
 
     if (!response.ok) throw new Error("neural voice unavailable");
 
-    const blob = await response.blob();
+    // Protect against a stalled response body as well as delayed headers.
+    const blob = await Promise.race([
+      response.blob(),
+      new Promise<never>((_, reject) => window.setTimeout(() => reject(new Error("Savannah audio download timed out")), 20000)),
+    ]);
     if (epoch !== neuralPlaybackEpoch) return false;
     const url = URL.createObjectURL(blob);
     // Reuse the same media element for every turn. iOS can drop the
