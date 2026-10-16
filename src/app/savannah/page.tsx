@@ -486,10 +486,10 @@ Status: UNSENT · no delivery channel connected.`;
         </div>
       </div>
 
-      {false && <section className="savannah-controls" aria-label="Savannah voice controls">
-        <button className="savannah-listen" type="button" onClick={replay} aria-label={speaking ? "Stop Savannah speaking" : "Hear Savannah"}>
+      {(needsPlayback || started) && <section className="savannah-controls" aria-label="Savannah voice controls">
+        <button className="savannah-listen" type="button" onClick={() => { if (needsPlayback) void tapSavannah(); else replay(); }} aria-label={speaking ? "Stop Savannah speaking" : "Hear Savannah"}>
           <span className="savannah-play">{speaking ? "■" : "▶"}</span>
-          <span>{voiceMessage}</span>
+          <span>{needsPlayback ? "TAP TO PLAY AUDIO" : speaking ? "STOP SAVANNAH" : "PLAY SAVANNAH AUDIO"}</span>
         </button>
         <button className="savannah-sound" type="button" onClick={() => setAudioEnabled((current) => !current)} aria-label={audioEnabled ? "Mute automatic voice replies" : "Enable automatic voice replies"} aria-pressed={audioEnabled}>
           {audioEnabled ? "SOUND ON" : "SOUND OFF"}
