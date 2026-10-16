@@ -139,3 +139,8 @@ Reference: https://docs.railway.com/volumes/backups
 - The Railway Backups UI was inspected using the current signed-in session. It states **Upgrade to Pro for backups and PITR**; new backups, automated schedules and PITR cannot be configured on the current plan. No upgrade was purchased and no actual snapshot/restore was performed. A portable encrypted backup remains an alternative, but volume access, approved secure destination and key custody must first be established.
 
 
+
+### Approved follow-through — 2026-10-16 08:48 CEST
+- User explicitly approved attaching apex to the verified Railway service and correcting its DNS, plus inspecting Van Pelt Beheer BV Stripe account.
+- Railway custom-domain creation was attempted on primary production service, then retried with explicit target port 3000. Both attempts returned "Failed to create custom domain, please try again" / INVALID_ARGUMENT without diagnostic detail. No successful apex attachment was observed; no DNS mutation was made. Domain-status lookup on primary also failed. Dashboard inspection is the next diagnostic path; browser fallback approval is pending.
+- Read-only live Stripe account audit completed for Van Pelt Beheer BV. Both complete listings returned empty, has_more=false: /v1/webhook_endpoints and /v1/payment_links. Therefore no live webhook endpoint or Stripe Payment Link in this account points to Vercel. This does not prove absence of API-created Checkout sessions, other accounts or external fulfillment dependencies. No charge, webhook change, billing change or cancellation was performed.
