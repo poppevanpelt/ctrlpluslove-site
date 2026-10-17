@@ -3,12 +3,43 @@ const page = "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><me
 const safe = v=>String(v||'').slice(0,800);
 const allowed=['NO AD','EVIDENCE FIRST','QUALIFIED INTRODUCTION'];
 async function ask(system,user){
- const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+Bun.env.OPENAI_API_KEY,'Content-Type':'application/json'},body:JSON.stringify({model:'gpt-4.1-mini',temperature:0.45,max_tokens:500,messages:[{role:'system',content:system},{role:'user',content:user}]})});
+ const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+Bun.env.OPENAI_API_KEY,'Content-Type':'application/json'},body:JSON.stringify({model:'gpt-4.1-mini',temperature:0.45,max_tokens:500,messages:[{role:'system',content:system},{role:'user',content:user}]}),signal:AbortSignal.timeout(20000)});
  if(!r.ok)throw new Error('Model request failed ('+r.status+')');
  const d=await r.json();return (d.choices?.[0]?.message?.content||'').slice(0,2200);
 }
+// In-process limits protect one Bun replica. For multiple replicas, move counters
+// to a shared store; these limits are not a distributed abuse-control solution.
+const WINDOW_MS = 60_000;
+const PER_CLIENT_LIMIT = 6;
+const GLOBAL_LIMIT = 30;
+const MAX_CONCURRENT_AI = 3;
+const clientWindows = new Map();
+let globalWindow = { start: Date.now(), count: 0 };
+let activeAi = 0;
+function allowAi(req) {
+  const now = Date.now();
+  if (now - globalWindow.start >= WINDOW_MS) globalWindow = { start: now, count: 0 };
+  // Railway supplies a forwarding chain. Use the rightmost proxy-adjacent address,
+  // not the first element, which can be client-controlled.
+  const forwarded = req.headers.get("x-forwarded-for") || "";
+  const client = (forwarded.split(",").map(v => v.trim()).filter(Boolean).pop()
+    || req.headers.get("cf-connecting-ip") || "unknown").slice(0, 128);
+  let entry = clientWindows.get(client);
+  if (!entry || now - entry.start >= WINDOW_MS) entry = { start: now, count: 0 };
+  if (clientWindows.size > 10000) clientWindows.clear();
+  if (entry.count >= PER_CLIENT_LIMIT || globalWindow.count >= GLOBAL_LIMIT || activeAi >= MAX_CONCURRENT_AI) return false;
+  entry.count++; globalWindow.count++; clientWindows.set(client, entry);
+  activeAi++;
+  return true;
+}
 Bun.serve({port:Number(Bun.env.PORT||3000),async fetch(req){
 const u=new URL(req.url);
+const aiRoute = req.method === "POST" && (u.pathname === "/api/control" || u.pathname === "/api/live");
+if (aiRoute && !allowAi(req)) return Response.json(
+  { error: "Too many AI requests. Please try again shortly." },
+  { status: 429, headers: { "Retry-After": "60", "Cache-Control": "no-store" } }
+);
+try {
 if(u.pathname==='/health')return new Response('ok');
 
 if(u.pathname==='/api/control'&&req.method==='POST'){try{
@@ -37,4 +68,5 @@ if(u.pathname==='/api/live'&&req.method==='POST'){
  }catch(e){return Response.json({error:e.message||'Negotiation failed'},{status:502})}
 }
 return new Response(page,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache'}});
+} finally { if (aiRoute) activeAi--; }
 }});
