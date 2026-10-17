@@ -1,0 +1,26 @@
+name: Savannah Car Mode build validation
+on:
+  push:
+    branches:
+      - feat/savannah-car-mode-safe-20261016
+  pull_request:
+    paths:
+      - 'src/app/savannah/car/**'
+      - 'src/app/savannah-local-voice.ts'
+      - 'src/app/savannah/MeetingListener.tsx'
+      - '.github/workflows/savannah-car-mode-ci.yml'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run build
+      - run: npm run typecheck
