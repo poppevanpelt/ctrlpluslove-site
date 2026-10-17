@@ -7,38 +7,46 @@ async function ask(system,user){
  if(!r.ok)throw new Error('Model request failed ('+r.status+')');
  const d=await r.json();return (d.choices?.[0]?.message?.content||'').slice(0,2200);
 }
-// In-process limits protect one Bun replica. For multiple replicas, move counters
-// to a shared store; these limits are not a distributed abuse-control solution.
-const WINDOW_MS = 60_000;
-const PER_CLIENT_LIMIT = 6;
-const GLOBAL_LIMIT = 30;
-const MAX_CONCURRENT_AI = 3;
-const clientWindows = new Map();
-let globalWindow = { start: Date.now(), count: 0 };
-let activeAi = 0;
-function allowAi(req) {
+import { createClient } from "redis";
+const redis = createClient({ url: Bun.env.REDIS_URL, socket: { connectTimeout: 2500, reconnectStrategy: false } });
+const redisReady = redis.connect().catch(error => { console.error("Rate limiter Redis unavailable", String(error)); });
+const LIMIT_SCRIPT = `
+local clientKey=KEYS[1]; local globalKey=KEYS[2]; local slotsKey=KEYS[3]
+local per=tonumber(ARGV[1]); local overall=tonumber(ARGV[2]); local maxSlots=tonumber(ARGV[3])
+local expiry=tonumber(ARGV[4]); local nonce=ARGV[5]; local now=tonumber(ARGV[6])
+redis.call('ZREMRANGEBYSCORE',slotsKey,'-inf',now)
+if tonumber(redis.call('GET',clientKey) or '0')>=per or tonumber(redis.call('GET',globalKey) or '0')>=overall or redis.call('ZCARD',slotsKey)>=maxSlots then return 0 end
+redis.call('INCR',clientKey); redis.call('PEXPIRE',clientKey,expiry)
+redis.call('INCR',globalKey); redis.call('PEXPIRE',globalKey,expiry)
+redis.call('ZADD',slotsKey,now+45000,nonce); redis.call('PEXPIRE',slotsKey,45000)
+return 1
+`;
+async function reserveAi(req) {
+  await redisReady;
+  if (!redis.isReady) throw new Error("Rate limiter unavailable");
   const now = Date.now();
-  if (now - globalWindow.start >= WINDOW_MS) globalWindow = { start: now, count: 0 };
-  // Railway supplies a forwarding chain. Use the rightmost proxy-adjacent address,
-  // not the first element, which can be client-controlled.
-  const forwarded = req.headers.get("x-forwarded-for") || "";
-  const client = (forwarded.split(",").map(v => v.trim()).filter(Boolean).pop()
-    || req.headers.get("cf-connecting-ip") || "unknown").slice(0, 128);
-  let entry = clientWindows.get(client);
-  if (!entry || now - entry.start >= WINDOW_MS) entry = { start: now, count: 0 };
-  if (clientWindows.size > 10000) clientWindows.clear();
-  if (entry.count >= PER_CLIENT_LIMIT || globalWindow.count >= GLOBAL_LIMIT || activeAi >= MAX_CONCURRENT_AI) return false;
-  entry.count++; globalWindow.count++; clientWindows.set(client, entry);
-  activeAi++;
-  return true;
+  const rawIp = req.headers.get("x-forwarded-for") || "";
+  const clientIp = rawIp.split(",").map(v=>v.trim()).filter(Boolean).pop() || "unknown";
+  const client = Bun.hash(clientIp).toString(16);
+  const nonce = crypto.randomUUID();
+  const window = Math.floor(now / 60000);
+  const keys = ["lastad:client:"+client+":"+window, "lastad:global:"+window, "lastad:slots"];
+  const result = await redis.eval(LIMIT_SCRIPT,{keys,arguments:["6","30","3",String(60000),nonce,String(now)]});
+  return result === 1 ? nonce : null;
+}
+async function releaseAi(nonce) {
+  if (!nonce || !redis.isReady) return;
+  try { await redis.zRem("lastad:slots",nonce); } catch(error) { console.warn("Limiter slot release failed",String(error)); }
 }
 Bun.serve({port:Number(Bun.env.PORT||3000),async fetch(req){
 const u=new URL(req.url);
 const aiRoute = req.method === "POST" && (u.pathname === "/api/control" || u.pathname === "/api/live");
-if (aiRoute && !allowAi(req)) return Response.json(
-  { error: "Too many AI requests. Please try again shortly." },
-  { status: 429, headers: { "Retry-After": "60", "Cache-Control": "no-store" } }
-);
+let reservation = null;
+if (aiRoute) {
+  try { reservation = await reserveAi(req); }
+  catch (error) { console.error("Shared limiter failed closed",String(error)); return Response.json({error:"AI service temporarily unavailable."},{status:503,headers:{"Retry-After":"15","Cache-Control":"no-store"}}); }
+  if (!reservation) return Response.json({error:"Too many AI requests. Try again shortly."},{status:429,headers:{"Retry-After":"60","Cache-Control":"no-store"}});
+}
 try {
 if(u.pathname==='/health')return new Response('ok');
 
@@ -68,5 +76,5 @@ if(u.pathname==='/api/live'&&req.method==='POST'){
  }catch(e){return Response.json({error:e.message||'Negotiation failed'},{status:502})}
 }
 return new Response(page,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache'}});
-} finally { if (aiRoute) activeAi--; }
+} finally { if (reservation) await releaseAi(reservation); }
 }});
