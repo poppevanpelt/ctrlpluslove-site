@@ -8,6 +8,16 @@ import { MeetingQueue } from "./meeting-queue";
 const SEGMENT_MS = 20000;
 const MAX_PENDING = 6;
 const MEETING_DRAFT_KEY = 'savannah-meeting-transcript-v1';
+const ARCHIVE_KEY = 'savannah-meeting-archive-v2';
+type SavedMeeting = { id: string; createdAt: string; words: string[] };
+function getArchive(): SavedMeeting[] {
+  try {
+    const value: unknown = JSON.parse(localStorage.getItem(ARCHIVE_KEY) || "[]");
+    return Array.isArray(value) ? value.filter((x): x is SavedMeeting =>
+      typeof x?.id === "string" && typeof x?.createdAt === "string" &&
+      Array.isArray(x?.words) && x.words.every((w: unknown) => typeof w === "string")) : [];
+  } catch { return []; }
+}
 type Props = { unavailable: boolean; speaking: boolean; onTranscript: (text: string) => void; onFlag: (text: string) => void; onActive: (active: boolean) => void };
 
 export default function MeetingListener(props: Props) {
@@ -19,26 +29,47 @@ export default function MeetingListener(props: Props) {
   const [status, setStatus] = useState("She listens until you end the meeting.");
   const [retry, setRetry] = useState(false);
   const meetingWords = useRef<string[]>([]);
+  const meetingId = useRef<string | null>(null);
+  const [archive, setArchive] = useState<SavedMeeting[]>([]);
   const [wordsReady, setWordsReady] = useState(false);
   const [handoffStatus, setHandoffStatus] = useState("");
   const [saveStatus, setSaveStatus] = useState("Transcript not yet saved.");
   useEffect(() => {
     try {
-      const saved = window.localStorage.getItem(MEETING_DRAFT_KEY);
-      if (!saved) return;
-      const data = JSON.parse(saved) as { words?: unknown };
-      if (!Array.isArray(data.words)) return;
-      const words = data.words.filter((word): word is string => typeof word === "string");
-      meetingWords.current = words;
-      setWordsReady(words.length > 0);
-      if (words.length) setSaveStatus("Recovered transcript from this device.");
-    } catch { setSaveStatus("Saved transcript could not be read. Do not clear browser data."); }
+      let meetings = getArchive();
+      const legacy = localStorage.getItem(MEETING_DRAFT_KEY);
+      if (legacy && !localStorage.getItem(ARCHIVE_KEY)) {
+        const data = JSON.parse(legacy) as { words?: unknown; savedAt?: unknown };
+        const words = Array.isArray(data.words) ? data.words.filter((w): w is string => typeof w === "string") : [];
+        if (words.length) {
+          const createdAt = typeof data.savedAt === "string" ? data.savedAt : new Date().toISOString();
+          meetings = [{ id: "legacy-" + createdAt, createdAt, words }];
+          localStorage.setItem(ARCHIVE_KEY, JSON.stringify(meetings));
+        }
+      }
+      setArchive(meetings);
+      if (meetings.length) setSaveStatus("Saved meetings found on this device. Choose one in the archive.");
+    } catch { setSaveStatus("Saved archive unreadable. Do not clear browser data."); }
   }, []);
   function saveTranscript(words: string[]) {
     try {
-      window.localStorage.setItem(MEETING_DRAFT_KEY, JSON.stringify({ words, savedAt: new Date().toISOString() }));
-      setSaveStatus("Transcript saved on this device.");
-    } catch { setSaveStatus("SAVE FAILED. Download the transcript before leaving."); }
+      const id = meetingId.current;
+      if (!id) throw new Error("No meeting selected");
+      const meetings = getArchive();
+      const previous = meetings.find(m => m.id === id);
+      const record = { id, createdAt: previous?.createdAt || new Date().toISOString(), words: [...words] };
+      const updated = [record, ...meetings.filter(m => m.id !== id)];
+      localStorage.setItem(ARCHIVE_KEY, JSON.stringify(updated));
+      setArchive(updated);
+      setSaveStatus("Meeting saved on this device (not synced across devices).");
+    } catch { setSaveStatus("SAVE FAILED. Download transcript before leaving."); }
+  }
+  function selectMeeting(meeting: SavedMeeting) {
+    if (active || finishing) return;
+    meetingId.current = meeting.id;
+    meetingWords.current = [...meeting.words];
+    setWordsReady(meeting.words.length > 0);
+    setSaveStatus("Recovered meeting from " + new Date(meeting.createdAt).toLocaleString());
   }
   function downloadTranscript() {
     const blob = new Blob([meetingWords.current.join("\n")], { type: "text/plain;charset=utf-8" });
@@ -79,7 +110,11 @@ export default function MeetingListener(props: Props) {
     setOpening(true);
     callbacks.current.onActive(true);
     setRetry(false);
-    // Keep the saved transcript on restart; clearing requires an explicit action.
+    // Each new meeting receives its own durable identity, independent of rooms.
+    meetingId.current = crypto.randomUUID();
+    meetingWords.current = [];
+    setWordsReady(false);
+    saveTranscript([]);
     setHandoffStatus("");
     setStatus("Opening meeting microphone…");
     const token = ++generation.current;
@@ -255,10 +290,23 @@ export default function MeetingListener(props: Props) {
       {!active && !finishing && wordsReady && <button type="button" onClick={performAutopsy}>PERFORM AUTOPSY ↗</button>}
       {!active && !finishing && wordsReady && <button type="button" onClick={() => {
         if (!window.confirm("Delete the recovered meeting transcript from this device? Download it first.")) return;
+        const remaining = getArchive().filter(m => m.id !== meetingId.current);
+        localStorage.setItem(ARCHIVE_KEY, JSON.stringify(remaining));
+        setArchive(remaining);
+        meetingId.current = null;
         meetingWords.current = []; setWordsReady(false);
-        window.localStorage.removeItem(MEETING_DRAFT_KEY);
-        setSaveStatus("Previous transcript cleared.");
+        setSaveStatus("Selected meeting cleared from this device.");
       }}>CLEAR TRANSCRIPT</button>}</div>
+    {archive.length > 0 && <div>
+      <label htmlFor="meeting-archive">MEETING ARCHIVE</label>
+      <select id="meeting-archive" disabled={active || finishing} value={meetingId.current || ""} onChange={event => {
+        const found = archive.find(m => m.id === event.target.value);
+        if (found) selectMeeting(found);
+      }}>
+        <option value="">Select a saved meeting</option>
+        {archive.map(m => <option key={m.id} value={m.id}>{new Date(m.createdAt).toLocaleString()} · {m.words.length} segments · Unassigned</option>)}
+      </select>
+    </div>}
     {handoffStatus && <p role="status">{handoffStatus}</p>}
     <p role="status">{status}</p>
     <p role="status">{saveStatus}</p>
