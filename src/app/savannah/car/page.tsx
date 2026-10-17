@@ -70,7 +70,7 @@ export default function SavannahCarMode() {
       const transcriptionData = await transcription.json().catch(() => ({}));
       if (!transcription.ok || !transcriptionData.text) throw new Error(transcriptionData.error || "Could not hear that.");
       const userText = String(transcriptionData.text).trim();
-      const next: Turn[] = [...latestTurns.current, { role: "user", text: userText }].slice(-16);
+      const next: Turn[] = [...latestTurns.current, { role: "user" as const, text: userText }].slice(-16);
       setConversation(next);
       setPhase("thinking");
       setStatus("SAVANNAH IS THINKING");
