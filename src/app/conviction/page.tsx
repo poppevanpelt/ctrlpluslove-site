@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styles from "./conviction.module.css";
 
 const criteria = [
@@ -24,6 +24,21 @@ export default function ConvictionPage(){
  const [entries,setEntries]=useState<Entry[]>(initial);
  const [gates,setGates]=useState([false,false,false]);
  const [active,setActive]=useState(0);
+ useEffect(()=>{
+  const onInput=(event:Event)=>{
+   const detail=(event as CustomEvent<{instrument?:string;text?:string}>).detail;
+   if(detail?.instrument!=="conviction"||typeof detail.text!=="string")return;
+   const text=detail.text.trim().slice(0,2000);
+   if(!text)return;
+   // The visitor's own spoken words may prefill context, never infer evidence grades or approval gates.
+   if(/^(?:the (?:pilot|proposal|idea) is|i(?:'m| am) proposing)\s+/i.test(text))setPromise(old=>old||text);
+   else if(/^(?:the (?:pilot )?price is|(?:it )?costs)\s+/i.test(text))setPrice(old=>old||text);
+   else if(/^(?:the alternative is|instead of)\s+/i.test(text))setAlternative(text);
+  };
+  window.addEventListener("savannah-instrument-input",onInput);
+  return ()=>window.removeEventListener("savannah-instrument-input",onInput);
+ },[]);
+
  const score=useMemo(()=>Math.round(criteria.reduce((a,c,i)=>a+c.weight*entries[i].grade/5,0)),[entries]);
  const blockers=gates.filter(x=>!x).length;
  const verdict=blockers?"NOT READY TO APPROVE":score>=85?"READY FOR A DECISION":score>=70?"REPAIRS REQUIRED":score>=50?"NOT YET FUNDABLE":"REBUILD THE CASE";
