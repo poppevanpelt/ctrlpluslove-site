@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { primeSavannahAudio, speakSavannahNeurally, stopSavannahLocalVoice } from "../savannah-local-voice";
+import { primeSavannahAudio, speakSavannahNeurally, stopSavannahLocalVoice } from "../../savannah-local-voice";
 
 type Turn = { role: "assistant" | "user"; text: string };
 type Phase = "ready" | "opening" | "listening" | "transcribing" | "thinking" | "speaking" | "error";
