@@ -1,5 +1,6 @@
 import styles from "./home-2026.module.css";
 import SavannahIntro from "./SavannahIntro";
+import HeroMnemonic from "./HeroMnemonic";
 import SavannahExplainer from "./SavannahExplainer";
 import SavannahExit from "./SavannahExit";
 import HandoverNote from "./HandoverNote";
@@ -95,7 +96,7 @@ export default function Home() {
         <div className={styles.heroVeil} />
         <div className={styles.heroCopyLeft}>
           <div className={styles.eyebrow}>Applied AI for human judgment</div>
-          <h1 data-savannah-handoff-headline="true">We build instruments for human judgment.</h1>
+          <HeroMnemonic />
         </div>
         <div className={styles.heroCopyRight} data-savannah-handoff-panel="true">
           <p>AI can generate more answers than we will ever need.</p>
