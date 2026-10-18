@@ -361,6 +361,8 @@ Status: UNSENT · no delivery channel connected.`;
     performanceRef.current?.stop();
     requestInFlight.current = true;
     setStarted(true);
+    // Text replies must remain visible even when the portrait-first view starts collapsed.
+    setShowTranscript(true);
     const next: Line[] = [...lines, { role: "user", text: value }];
     setLines(next);
     setDraft("");
