@@ -53,7 +53,7 @@ export default function SavannahPage() {
   const micStream = useRef<MediaStream | null>(null);
   const micChunks = useRef<Blob[]>([]);
   const voiceMonitor = useRef<(() => void) | null>(null);
-  const [micStatus, setMicStatus] = useState("TAP TO TALK");
+  const [micStatus, setMicStatus] = useState("READY");
   const [needsPlayback, setNeedsPlayback] = useState(false);
   const [videoReady, setVideoReady] = useState(true);
   const [arrivalReady, setArrivalReady] = useState(false);
@@ -214,7 +214,7 @@ Status: UNSENT · no delivery channel connected.`;
         await speak(borisVisitor.current ? BORIS_GREETING : GREETING, () => { if (!requestInFlight.current) void tapSavannah(); });
         return;
       }
-      if (await performanceRef.current?.greet() === false) return;
+      await speak(GREETING);\n      return;
       // Continue directly into the existing microphone flow after her hello.
     }
     steelHello();
@@ -477,7 +477,7 @@ Status: UNSENT · no delivery channel connected.`;
             }}
           />
         )}
-        <SavannahPerformance ref={performanceRef} phase={speaking ? "speaking" : listening ? "listening" : pending ? "thinking" : "waiting"} onGreetingChange={setGreetingActive} />
+        {/* The unstable embedded video is withheld until its source can be verified.\n            Existing portrait frames remain visible and voice works independently. */}
         <div className={"savannah-shade" + (speaking ? " is-speaking" : "")} />
         <div className={"savannah-presence" + (listening ? " is-listening" : speaking ? " is-speaking" : pending ? " is-thinking" : "")} aria-hidden="true"><span /><span /><span /></div>
         <div className={"savannah-intro" + (arrivalReady ? " is-ready" : "")} aria-hidden="true">
@@ -517,7 +517,7 @@ Status: UNSENT · no delivery channel connected.`;
           if (audioEnabledRef.current) void speak(text);
         }}
       />
-      <div className="savannah-mic-hint" aria-live="polite"><button type="button" className="savannah-talk-direct" onClick={() => void tapSavannah()} disabled={pending || audioBusy || (meetingActive && !needsPlayback)}>{meetingActive && !needsPlayback ? "MEETING ACTIVE" : greetingActive ? "SAVANNAH IS SAYING HELLO" : listening ? "DONE TALKING" : needsPlayback ? "HEAR SAVANNAH" : "TALK TO SAVANNAH"}</button><span>{meetingActive ? "LISTENING THROUGHOUT" : micStatus}</span></div>
+      <div className="savannah-mic-hint" aria-live="polite"><button type="button" className="savannah-talk-direct" onClick={() => void tapSavannah()} disabled={pending || audioBusy || (meetingActive && !needsPlayback)}>{meetingActive && !needsPlayback ? "MEETING ACTIVE" : greetingActive ? "SAVANNAH IS SAYING HELLO" : listening ? "DONE TALKING" : needsPlayback ? "HEAR SAVANNAH" : "TALK TO SAVANNAH"}</button><span>{meetingActive ? "LISTENING THROUGHOUT" : (micStatus === "TAP TO TALK" ? "READY" : micStatus)}</span></div>
       {!showTranscript && error && <p className="savannah-error-compact" role="alert">{error}</p>}
       {showTyping && <form className="savannah-compose" onSubmit={send}>
         <label className="savannah-input-wrap">
