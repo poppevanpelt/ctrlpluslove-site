@@ -486,16 +486,6 @@ Status: UNSENT · no delivery channel connected.`;
         </div>
       </div>
 
-      {(needsPlayback || started) && <section className="savannah-controls" aria-label="Savannah voice controls">
-        <button className="savannah-listen" type="button" onClick={() => { if (needsPlayback) void tapSavannah(); else replay(); }} aria-label={speaking ? "Stop Savannah speaking" : "Hear Savannah"}>
-          <span className="savannah-play">{speaking ? "■" : "▶"}</span>
-          <span>{needsPlayback ? "TAP TO PLAY AUDIO" : speaking ? "STOP SAVANNAH" : "PLAY SAVANNAH AUDIO"}</span>
-        </button>
-        <button className="savannah-sound" type="button" onClick={() => setAudioEnabled((current) => !current)} aria-label={audioEnabled ? "Mute automatic voice replies" : "Enable automatic voice replies"} aria-pressed={audioEnabled}>
-          {audioEnabled ? "SOUND ON" : "SOUND OFF"}
-        </button>
-      </section>}
-
       {false && <div className="savannah-utility"><span>{pending ? "SAVANNAH IS THINKING" : speaking ? "SAVANNAH IS SPEAKING" : "SAVANNAH IS HERE"}</span><button type="button" onClick={() => setShowTranscript(current => !current)} aria-expanded={showTranscript}>{showTranscript ? "HIDE WORDS" : "SHOW WORDS"}</button></div>}
       {showTranscript && <section className="savannah-thread" aria-label="Conversation" aria-live="polite">
         {!started && <div className="savannah-first-contact"><p className="savannah-hint">She&apos;s here. Ask her something worthwhile.</p><div className="savannah-starters"><button type="button" onClick={() => void ask("What is ctrl+love, and why should I care?")} disabled={pending}>What is ctrl+love?</button><button type="button" onClick={() => void ask("Challenge a business idea with me. Start by asking for the idea.")} disabled={pending}>Challenge my idea</button><button type="button" onClick={() => void ask("What can you actually help me do right now?")} disabled={pending}>What can you do?</button></div></div>}
