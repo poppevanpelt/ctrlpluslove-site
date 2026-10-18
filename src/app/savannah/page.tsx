@@ -214,7 +214,8 @@ Status: UNSENT · no delivery channel connected.`;
         await speak(borisVisitor.current ? BORIS_GREETING : GREETING, () => { if (!requestInFlight.current) void tapSavannah(); });
         return;
       }
-      await speak(GREETING);\n      return;
+      await speak(GREETING);
+      return;
       // Continue directly into the existing microphone flow after her hello.
     }
     steelHello();
