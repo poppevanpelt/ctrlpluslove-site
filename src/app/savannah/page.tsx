@@ -518,7 +518,7 @@ Status: UNSENT · no delivery channel connected.`;
           if (audioEnabledRef.current) void speak(text);
         }}
       />
-      <div className="savannah-mic-hint" aria-live="polite"><button type="button" className="savannah-talk-direct" onClick={() => void tapSavannah()} disabled={pending || audioBusy || (meetingActive && !needsPlayback)}>{meetingActive && !needsPlayback ? "MEETING ACTIVE" : greetingActive ? "SAVANNAH IS SAYING HELLO" : listening ? "DONE TALKING" : needsPlayback ? "HEAR SAVANNAH" : "TALK TO SAVANNAH"}</button><span>{meetingActive ? "LISTENING THROUGHOUT" : (micStatus === "TAP TO TALK" ? "READY" : micStatus)}</span></div>
+      <div className="savannah-mic-hint" aria-live="polite"><button type="button" className="savannah-talk-direct" onClick={() => void tapSavannah()} disabled={pending || audioBusy || (meetingActive && !needsPlayback)}>{meetingActive && !needsPlayback ? "MEETING ACTIVE" : greetingActive ? "SAVANNAH IS SAYING HELLO" : listening ? "DONE TALKING" : needsPlayback ? "HEAR SAVANNAH" : "TALK TO SAVANNAH"}</button>{(pending || speaking || listening || audioBusy || meetingActive) && <span>{meetingActive ? "LISTENING THROUGHOUT" : pending ? "THINKING…" : speaking ? "SPEAKING…" : listening ? "LISTENING…" : "CONNECTING…"}</span>}</div>
       {!showTranscript && error && <p className="savannah-error-compact" role="alert">{error}</p>}
       {showTyping && <form className="savannah-compose" onSubmit={send}>
         <label className="savannah-input-wrap">
