@@ -852,6 +852,22 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
 
   const busy = state === "requesting" || state === "connecting";
 
+  if (pathname === "/") {
+    // The homepage has a single front door. The standalone Savannah room owns
+    // the canonical mic, text and spoken-reply lifecycle.
+    if (introActive) return null;
+    return (
+      <a href="/savannah" aria-label="Talk to Savannah"
+        style={{position:"fixed",right:14,bottom:"max(16px, env(safe-area-inset-bottom))",
+          zIndex:2147483001,display:"flex",alignItems:"center",gap:10,
+          background:"#151515",color:"#f5f1e7",padding:"9px 15px 9px 9px",
+          borderRadius:32,textDecoration:"none",fontSize:13,fontWeight:700,
+          boxShadow:"0 8px 28px rgba(0,0,0,.22)"}}>
+        <img src="/home/savannah.jpg" alt="" style={{width:34,height:34,borderRadius:"50%",objectFit:"cover"}} />
+        Talk to Savannah <span aria-hidden="true">↗</span>
+      </a>
+    );
+  }
   if (introActive) return null;
 
   // The secluded /savannah-room/* surfaces render their own full-room Savannah.
