@@ -12,7 +12,7 @@ const HEADLINE_AT = 4.75;
 const REGISTER_AT = 6.2;
 const DAYLIGHT_AT = 6.65;
 const EXIT_AT = 7.65;
-const LOAD_TIMEOUT_MS = 4500;
+const LOAD_TIMEOUT_MS = 3500;
 const PLAY_TIMEOUT_MS = 12000;
 const TITLE_HOLD_MS = 1100;
 const MOBILE_FILM = "/savannah-intro/entrance-mobile-v4.mp4";
@@ -104,10 +104,10 @@ export default function SavannahIntro() {
       if (!readyRef.current && !completed.current) { setShowExit(true); setNeedsTap(true); }
     }, TITLE_HOLD_MS + 1000);
     const loading = window.setTimeout(() => {
-      if (!readyRef.current && !completed.current) setFallbackVideo(true);
+      if (!readyRef.current && !completed.current) finish();
     }, LOAD_TIMEOUT_MS);
     const watchdog = window.setTimeout(() => {
-      if (!completed.current && lastProgress.current < EXIT_AT) { setShowExit(true); setNeedsTap(true); }
+      if (!completed.current && lastProgress.current < EXIT_AT) finish();
     }, PLAY_TIMEOUT_MS);
     return () => {
       window.clearTimeout(titleTimer);
@@ -195,18 +195,13 @@ export default function SavannahIntro() {
           muted playsInline preload="auto" poster="/savannah-intro/entrance-poster-v4.jpg"
           onLoadedMetadata={onMetadata} onLoadedData={tryPlay} onCanPlay={tryPlay} onSeeked={tryPlay} onPlaying={onProgress}
           onTimeUpdate={onProgress} onWaiting={onWaiting} onStalled={onWaiting}
-          onEnded={finish} onError={() => { setFallbackVideo(true); setNeedsTap(true); setShowExit(true); }}>
+          onEnded={finish} onError={finish}>
           {!fallbackVideo && <source media="(max-width: 768px)" src={MOBILE_FILM} type="video/mp4" />}
           <source src={DESKTOP_FILM} type="video/mp4" />
         </video>
         <div className={styles.savannahIntroShade} />
       </div>
-      {!ready && (
-        <div style={{position:"absolute",inset:0,zIndex:2,background:"#0d0d0c",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:22,color:"#f3f1eb",textAlign:"center",pointerEvents:"none"}}>
-          <div style={{fontSize:"clamp(34px,7vw,88px)",fontWeight:700,letterSpacing:"-.06em"}}>SAVANNAH.</div>
-          <div style={{fontSize:11,letterSpacing:".25em"}}>CTRL+LOVE · EMPLOYEE #4</div>
-        </div>
-      )}
+
       {needsTap && !ready && (
         <button type="button" onClick={playFromTap} style={{position:"absolute",left:"50%",top:"64%",transform:"translate(-50%,-50%)",zIndex:8,padding:"15px 26px",background:"#f3f1eb",color:"#111",border:0,font:"inherit",fontWeight:600,cursor:"pointer"}}>▶ Play Savannah</button>
       )}
