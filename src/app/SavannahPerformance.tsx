@@ -106,7 +106,7 @@ export const SavannahPerformance = forwardRef<SavannahPerformanceHandle, Props>(
   useEffect(() => () => { video.current?.pause(); presence.current?.pause(); finish.current?.(false); }, []);
 
   if (failed && presenceFailed) return null;
-  const style: CSSProperties = { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain", background: "#272421", zIndex: 3, pointerEvents: "none" };
+  const style: CSSProperties = { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 3, pointerEvents: "none" };
   function startMovement() {
     manualMotion.current = true;
     setReducedMotion(false);
