@@ -117,11 +117,10 @@ export async function speakSavannahNeurally(
 
   try {
     if (options.interrupt !== false) {
-      stopSavannahLocalVoice();
-      const current = (window as typeof window & { __savannahAudio?: HTMLAudioElement }).__savannahAudio;
-      if (current) {
-        current.pause();
-        current.src = "";
+      // Preserve the already-unlocked audio element through the network round trip.
+      // Clearing its source here discards Safari's gesture-granted playback session.
+      if (canSpeakSavannahLocally()) {
+        try { window.speechSynthesis.cancel(); } catch {}
       }
     }
 
