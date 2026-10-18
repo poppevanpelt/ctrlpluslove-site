@@ -101,7 +101,7 @@ export default function SavannahIntro() {
       tryPlay();
     }, TITLE_HOLD_MS);
     const exitOffer = window.setTimeout(() => {
-      if (!readyRef.current && !completed.current) { setShowExit(true); setNeedsTap(true); }
+      if (!readyRef.current && !completed.current) finish();
     }, TITLE_HOLD_MS + 1000);
     const loading = window.setTimeout(() => {
       if (!readyRef.current && !completed.current) finish();
@@ -127,7 +127,7 @@ export default function SavannahIntro() {
     if (!video || completed.current || !titleDone.current) return;
     video.muted = true;
     void video.play().catch(() => {
-      if (!completed.current) { setNeedsTap(true); setShowExit(true); }
+      if (!completed.current) finish();
     });
   };
   const onMetadata = () => {
@@ -162,7 +162,7 @@ export default function SavannahIntro() {
   const onWaiting = () => {
     if (completed.current || !readyRef.current || bufferTimer.current !== null) return;
     bufferTimer.current = window.setTimeout(() => {
-      if (!completed.current) { setNeedsTap(true); setShowExit(true); }
+      if (!completed.current) finish();
     }, 3000);
   };
   const playFromTap = () => {
@@ -202,15 +202,14 @@ export default function SavannahIntro() {
         <div className={styles.savannahIntroShade} />
       </div>
 
-      {needsTap && !ready && (
-        <button type="button" onClick={playFromTap} style={{position:"absolute",left:"50%",top:"64%",transform:"translate(-50%,-50%)",zIndex:8,padding:"15px 26px",background:"#f3f1eb",color:"#111",border:0,font:"inherit",fontWeight:600,cursor:"pointer"}}>▶ Play Savannah</button>
-      )}
-      {(showExit || needsTap) && (
+
+      {showExit && (
         <button type="button" onClick={finish} aria-label="Enter ctrl+love without the film"
           style={{position:"absolute",right:20,bottom:24,zIndex:8,padding:"12px 16px",background:"rgba(245,243,238,.94)",color:"#111",border:0,font:"inherit",cursor:"pointer"}}>
           Enter site →
         </button>
       )}
+      {!ready && <div style={{position:"absolute",inset:0,zIndex:2,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:10,color:"#f3f1eb",textAlign:"center",pointerEvents:"none"}}><div style={{fontSize:"clamp(27px,6vw,68px)",fontWeight:700,letterSpacing:"-.045em"}}>TALK TO SAVANNAH</div><div style={{fontSize:11,letterSpacing:".23em"}}>CTRL+LOVE · EMPLOYEE #4</div></div>}
       <div ref={navGhostRef} className={styles.savannahNavGhost} aria-hidden="true" />
       <h2 ref={headlineGhostRef} className={styles.savannahHeadlineGhost} style={headlineStyle} aria-hidden="true" />
     </section>
