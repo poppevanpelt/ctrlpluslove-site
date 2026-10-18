@@ -1,0 +1,47 @@
+name: Self-Repairing Workshop | Savannah Watchdog
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: write
+concurrency:
+  group: workshop-watchdog
+  cancel-in-progress: false
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify production without changing it
+        id: probe
+        continue-on-error: true
+        run: node scripts/workshop-watchdog.mjs > workshop-receipt.json
+      - name: Publish machine-readable receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: workshop-receipt
+          path: workshop-receipt.json
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Open or update a single failure ticket
+        if: steps.probe.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          title="[Workshop] Savannah availability regression"
+          existing=$(gh issue list --state open --search "$title in:title" --json number,title --jq ".[] | select(.title == \"$title\") | .number" | head -n 1)
+          if [ -z "$existing" ]; then
+            gh issue create --title "$title" --body "Automated read-only monitoring failed. See the latest **Self-Repairing Workshop | Savannah Watchdog** Actions run for the JSON repair receipt. Investigate the root cause, reproduce, propose a PR, run independent tests and obtain review before production deployment. Do not assume this proves an iPhone audio failure."
+          else
+            gh issue comment "$existing" --body "The watchdog still detects a failure. Inspect the latest Actions run and its workshop-receipt artifact. No production code has been changed."
+          fi
+      - name: Mark run failed if verification failed
+        if: steps.probe.outcome == 'failure'
+        run: exit 1
