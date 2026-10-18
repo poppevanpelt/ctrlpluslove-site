@@ -49,7 +49,7 @@ export default function BotWhispererPage() {
       </div>
       <textarea id="case" value={scenario} onChange={e=>setScenario(e.target.value.slice(0,1400))} maxLength={1400} rows={5} style={{width:"100%",boxSizing:"border-box",background:"#141411",color:"#f1eee6",border:"1px solid #625d54",borderRadius:5,padding:14,fontFamily:"inherit",fontSize:16,resize:"vertical"}}/>
       <p style={{fontSize:12,color:"#aaa394"}}>Fictional cases only. No client-confidential information. No purchases, outbound messages, account access or other external actions.</p>
-      <button onClick={run} disabled={pending || scenario.trim().length < 20} style={{...button,opacity:pending || scenario.trim().length<20?.5:1,marginTop:8}}>{pending?"THE ROOM IS DEBATING…":"CONVENE THE ROOM →"}</button>
+      <button onClick={run} disabled={pending || scenario.trim().length < 20} style={{...button,opacity:pending || scenario.trim().length < 20 ? 0.5 : 1,marginTop:8}}>{pending?"THE ROOM IS DEBATING…":"CONVENE THE ROOM →"}</button>
       {pending && <p role="status" style={{fontSize:13,color:"#c4bbaa"}}>Four bounded model calls, one after another. Each participant has a different job.</p>}
       {error && <p role="alert" style={{color:"#ffb0a0"}}>{error}</p>}
     </section>
