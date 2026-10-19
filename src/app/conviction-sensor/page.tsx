@@ -4,6 +4,15 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./conviction.module.css";
 import LearningLab from "./LearningLab";
 
+type Intent = "decide" | "persuade" | "account" | "inspire" | "explain" | "custom";
+const INTENTS: Record<Intent,{name:string;test:string;signals:RegExp}> = {
+ decide:{name:"Get a decision",test:"Is there a clear choice and a consequence?",signals:/\\b(choose|decide|approve|reject|stop|instead|option|risk|owner)\\b/gi},
+ persuade:{name:"Change a mind",test:"Is the claim backed by a reason someone could challenge?",signals:/\\b(because|proof|evidence|why|instead|therefore|example|tested|compared)\\b/gi},
+ account:{name:"Own the results",test:"What happened, what missed, and what will change?",signals:/\\b(missed|below|above|target|versus|because|responsible|fix|by|result)\\b/gi},
+ inspire:{name:"Move an audience",test:"Is there a memorable, concrete human stake?",signals:/\\b(you|we|imagine|today|remember|never|stand|together|refuse)\\b/gi},
+ explain:{name:"Make it understandable",test:"Can someone follow the reason and the consequence?",signals:/\\b(means|because|for example|therefore|if|then|first|next|result)\\b/gi},
+ custom:{name:"Something else",test:"Does the text deliver the outcome you described?",signals:/\\b(because|will|if|then|for example|evidence|choose|decide)\\b/gi}
+};
 type HistoryItem = { id: number; time: string; score: number; text: string; note: string };
 type Observation = { label: string; detail: string; count: number; kind: "risk" | "good" };
 const HEDGES = /\b(may|might|could|perhaps|potentially|possibly|explore|consider|opportunity|alignment|somewhat|hopefully|aim to|seek to|we believe|subject to|in due course|going forward|leverage|synergies)\b/gi;
@@ -42,6 +51,8 @@ function highlight(text: string) {
 }
 export default function ConvictionSensor() {
   const [draft,setDraft] = useState(EXAMPLES.soft);
+  const [intent,setIntent] = useState<Intent>("decide");
+  const [purpose,setPurpose] = useState("");
   const [history,setHistory] = useState<HistoryItem[]>([]);
   const [showHistory,setShowHistory] = useState(true);
   const nextId = useRef(1);
@@ -51,10 +62,15 @@ export default function ConvictionSensor() {
     setReady(true);
   },[]);
   useEffect(() => {if(ready){try{window.localStorage.setItem("ctrl-love-conviction-v1",JSON.stringify({draft,history}));}catch{}}},[draft,history,ready]);
-  const analysis = useMemo(() => evaluate(draft),[draft]);
+  const baseline = useMemo(() => evaluate(draft),[draft]);
+  const intentCues = count(draft,INTENTS[intent].signals);
+  const purposeTerms = purpose.toLowerCase().match(/\\b[a-z]{5,}\\b/g)?.filter(x=>!["should","would","could","therefore","people","something"].includes(x)).slice(0,12) || [];
+  const goalHits = purposeTerms.filter(term=>draft.toLowerCase().includes(term)).length;
+  const contextualScore = !baseline.words ? 0 : Math.max(0,Math.min(100,baseline.score + Math.min(intentCues,5)*3 + Math.min(goalHits,3)*2 - (intentCues===0?12:0)));
+  const analysis = {...baseline,score:contextualScore};
   const last = history.length ? history[history.length-1] : null;
   const delta = last ? analysis.score-last.score : 0;
-  const weakest = useMemo(()=>sentences(draft).map(s=>({text:s,score:evaluate(s).score})).sort((a,b)=>a.score-b.score)[0],[draft]);
+  const weakest = useMemo(()=>sentences(draft).map(s=>({text:s,score:evaluate(s).score + Math.min(count(s,INTENTS[intent].signals),3)*3})).sort((a,b)=>a.score-b.score)[0],[draft,intent]);
   function capture() {
     const score = analysis.score;
     const previous = history[history.length-1];
@@ -66,12 +82,22 @@ export default function ConvictionSensor() {
   function loadExample(which: keyof typeof EXAMPLES) { setDraft(EXAMPLES[which]); }
   function reset() {setHistory([]);setDraft("");try{window.localStorage.removeItem("ctrl-love-conviction-v1");}catch{}}
   function exportReceipt() {
-    const report = ["THE CONVICTION SENSOR — EDITORIAL RECEIPT","ctrl+love · prototype, heuristic not fact","", "Current language score: "+analysis.score+"/100","Hedges: "+analysis.hedges+" | decisive cues: "+analysis.actions+" | evidence cues: "+analysis.evidence,"","EDIT HISTORY",...history.map(h=>h.time+" | "+h.score+"/100 | "+h.note),"","DOCUMENT",draft].join("\n");
+    const report = ["THE CONVICTION SENSOR — EDITORIAL RECEIPT","ctrl+love · prototype, heuristic not fact","", "Context: "+INTENTS[intent].name+" | Intended outcome: "+purpose,"Contextual language score: "+analysis.score+"/100","Hedges: "+analysis.hedges+" | decisive cues: "+analysis.actions+" | evidence cues: "+analysis.evidence,"","EDIT HISTORY",...history.map(h=>h.time+" | "+h.score+"/100 | "+h.note),"","DOCUMENT",draft].join("\n");
     const blob=new Blob([report],{type:"text/plain;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="conviction-receipt.txt";a.click();URL.revokeObjectURL(url);
   }
   return <main className={styles.page}>
     <header className={styles.header}><a href="/" className={styles.brand}>ctrl<span>+</span>love</a><span className={styles.eyebrow}>THE DEPARTMENT OF EDITORIAL COURAGE · 001</span><span className={styles.live}><i/> LIVE / LOCAL</span></header>
     <section className={styles.intro}><div><p className={styles.kicker}>INSTRUMENT 001 / OBSERVE</p><h1>THE CONVICTION<br/><em>SENSOR™</em></h1><p className={styles.subtitle}>Find the sentence where a good idea started dying.</p></div><div className={styles.note}>This sensor measures <strong>language</strong>, not beliefs, integrity, or the quality of a decision. A confident mistake is still a mistake.</div></section>
+    <section className={styles.context}>
+      <div className={styles.panelhead}><span>00 / DEFINE THE ASSIGNMENT</span><span>CONTEXT BEFORE CONVICTION</span></div>
+      <div className={styles.contextInner}>
+        <label htmlFor="intent">WHAT MUST THIS DOCUMENT DO?</label>
+        <select id="intent" value={intent} onChange={e=>setIntent(e.target.value as Intent)}>{(Object.keys(INTENTS) as Intent[]).map(k=><option key={k} value={k}>{INTENTS[k].name}</option>)}</select>
+        <label htmlFor="purpose">WHAT WOULD SUCCESS LOOK LIKE? (YOUR WORDS)</label>
+        <input id="purpose" value={purpose} onChange={e=>setPurpose(e.target.value)} placeholder="e.g. Help the board decide whether to stop Project X" />
+        <p><strong>THE TEST:</strong> {INTENTS[intent].test} <span>Signals are illustrative; this prototype cannot verify whether the intended outcome actually happened.</span></p>
+      </div>
+    </section>
     <section className={styles.workspace}>
       <div className={styles.editor}>
         <div className={styles.panelhead}><span>01 / LIVING DOCUMENT</span><span>{analysis.words} WORDS</span></div>
@@ -83,7 +109,7 @@ export default function ConvictionSensor() {
       </div>
       <aside className={styles.sensor}>
         <div className={styles.panelhead}><span>02 / CONVICTION ANALYSIS</span><span className={styles.pulse}>● LIVE</span></div>
-        <div className={styles.meterLabel}>LANGUAGE CONVICTION / HEURISTIC</div><div className={styles.score}>{analysis.score}<small>/100</small></div>
+        <div className={styles.meterLabel}>CONTEXTUAL LANGUAGE SIGNAL / HEURISTIC</div><div className={styles.score}>{analysis.score}<small>/100</small></div>
         <div className={styles.track}><div style={{width:analysis.score+"%",background:analysis.score<40?"#e96b54":analysis.score<70?"#d8ab5d":"#9ebea5"}}/></div>
         <p className={styles.verdict}>{analysis.score<40?"A lot of language. Not much at stake.":analysis.score<70?"Some movement. Who is actually committing?":"The language takes a position. Now test whether it is right."}</p>
         <div className={styles.observations}>{analysis.observations.map(o=><div key={o.label} className={styles.observation}><span>{o.label}<small>{o.detail}</small></span><strong>{o.count}</strong></div>)}</div>
