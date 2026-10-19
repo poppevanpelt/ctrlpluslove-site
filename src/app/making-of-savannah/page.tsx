@@ -31,6 +31,52 @@ export default function MakingOfSavannah() {
           <span style={{fontSize:12,color:"#a9a59b"}}>Authentic archive in assembly — not yet a finished film</span>
         </div>
       </header>
+
+      <section aria-label="Actual production tests" style={{padding:"70px 0 35px",borderBottom:"1px solid #4b4945"}}>
+        <p style={{fontSize:11,letterSpacing:".22em",color:"#a9a59b"}}>FOUND IN THE ARCHIVE / 01</p>
+        <h2 style={{fontSize:"clamp(36px,7vw,72px)",fontWeight:500,letterSpacing:"-.06em",lineHeight:1,margin:"18px 0"}}>The rough stuff.</h2>
+        <p style={{color:"#aaa69e",lineHeight:1.6,maxWidth:620,fontSize:15}}>Three genuine motion experiments from Savannah's development. Unretouched, in chronological order. These are working studies — not finished film scenes. Sound may be absent. Archival playback links can expire.</p>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(min(100%,260px),1fr))",gap:18,marginTop:35}}>
+          <figure style={{margin:0,background:"#1a1917",border:"1px solid #393834",padding:12}}>
+            <video controls playsInline preload="metadata" style={{display:"block",width:"100%",aspectRatio:"4/5",objectFit:"contain",background:"#090909"}} src={"https://dnznrvs05pmza.cloudfront.net/seedance_2/cgt-20261005074458-xwnbt/Preserve_this_exact_woman_s_identity__face__long_wavy_brown_hair__caramel_toned_styling__age__wardro.mp4?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiNTdkMTQxMmY4MzUwMGM2NyIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MjU3OTUwM30.NB-E7thuAh1iOZGD67T4NkzqwwfwREKHY_Ho6fZBq78"} aria-label={"Early identity and motion"} />
+            <figcaption style={{padding:"17px 4px 8px"}}>
+              <p style={{fontSize:10,letterSpacing:".17em",color:"#aba59c",margin:"0 0 10px"}}>01 / 04 OCT 2026</p>
+              <h3 style={{fontSize:19,fontWeight:500,letterSpacing:"-.025em",margin:"0 0 10px"}}>Early identity and motion</h3>
+              <p style={{fontSize:13,color:"#aaa69e",lineHeight:1.5,margin:0}}>Early attempt to preserve Savannah's face, hair and proportions as she moves.</p>
+            </figcaption>
+          </figure>
+<figure style={{margin:0,background:"#1a1917",border:"1px solid #393834",padding:12}}>
+            <video controls playsInline preload="metadata" style={{display:"block",width:"100%",aspectRatio:"4/5",objectFit:"contain",background:"#090909"}} src={"https://dnznrvs05pmza.cloudfront.net/seedance_2_mini/cgt-20261010110908-p8m76/A_fixed_camera_cinematic_close_portrait_of_precisely_the_same_woman__clothing__face_and_neutral_back.mp4?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiNzJiYTEwZDIyMjM0ZTBkOSIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MjYwNDYyNn0.HEWTnPPNrYcPDqlOdA700FL_qafdr0jsHr66tcOTvdc"} aria-label={"The close-up experiment"} />
+            <figcaption style={{padding:"17px 4px 8px"}}>
+              <p style={{fontSize:10,letterSpacing:".17em",color:"#aba59c",margin:"0 0 10px"}}>02 / 10 OCT 2026</p>
+              <h3 style={{fontSize:19,fontWeight:500,letterSpacing:"-.025em",margin:"0 0 10px"}}>The close-up experiment</h3>
+              <p style={{fontSize:13,color:"#aaa69e",lineHeight:1.5,margin:0}}>A fixed-camera portrait test: a small movement can change everything.</p>
+            </figcaption>
+          </figure>
+<figure style={{margin:0,background:"#1a1917",border:"1px solid #393834",padding:12}}>
+            <video controls playsInline preload="metadata" style={{display:"block",width:"100%",aspectRatio:"4/5",objectFit:"contain",background:"#090909"}} src={"https://dnznrvs05pmza.cloudfront.net/kling-o3-pro/938228634135957573/Preserve_Savannah_exactly__same_face__hair__age__wardrobe__lighting_and_ctrl_love_office_world__Stat.mp4?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiNThkNTQzMGFlOWMyYjhhYyIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MjU5ODUzOH0.QctwhSaRiEUQW6gC88HuNzWkt7T3H1AKGemS34l7r_4"} aria-label={"Keeping Savannah Savannah"} />
+            <figcaption style={{padding:"17px 4px 8px"}}>
+              <p style={{fontSize:10,letterSpacing:".17em",color:"#aba59c",margin:"0 0 10px"}}>03 / 11 OCT 2026</p>
+              <h3 style={{fontSize:19,fontWeight:500,letterSpacing:"-.025em",margin:"0 0 10px"}}>Keeping Savannah Savannah</h3>
+              <p style={{fontSize:13,color:"#aaa69e",lineHeight:1.5,margin:0}}>Later identity-consistency test, trying to preserve her appearance throughout a shot.</p>
+            </figcaption>
+          </figure>
+        </div>
+        <p style={{fontSize:12,color:"#807b73",marginTop:18}}>These are archived generation outputs, not fabricated reconstructions. Exact original prompts and rejected stills are being recovered separately.</p>
+      </section>
+      <section aria-label="Expression contact sheet" style={{padding:"65px 0 15px"}}>
+        <p style={{fontSize:11,letterSpacing:".22em",color:"#a9a59b"}}>PRODUCTION FRAMES / TODAY</p>
+        <h2 style={{fontSize:"clamp(29px,5vw,55px)",letterSpacing:"-.045em",fontWeight:500,margin:"18px 0 20px"}}>One face. Six states.</h2>
+        <p style={{fontSize:14,color:"#aaa69e",maxWidth:600,lineHeight:1.6}}>These are current working expression assets, not early casting roughs. They show the practical problem of making one synthetic person listen, think, react and wait.</p>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,minmax(0,1fr))",gap:8,marginTop:28}}>
+          <figure style={{margin:0,background:"#23211f",padding:5}}><img src="/savannah-presence/waiting.webp" alt="Savannah production expression: waiting" loading="lazy" style={{width:"100%",aspectRatio:"4/5",objectFit:"cover",display:"block"}}/><figcaption style={{fontSize:10,letterSpacing:".1em",padding:"9px 3px",color:"#b2aea5"}}>01 / WAITING</figcaption></figure>
+<figure style={{margin:0,background:"#23211f",padding:5}}><img src="/savannah-presence/listening.webp" alt="Savannah production expression: listening" loading="lazy" style={{width:"100%",aspectRatio:"4/5",objectFit:"cover",display:"block"}}/><figcaption style={{fontSize:10,letterSpacing:".1em",padding:"9px 3px",color:"#b2aea5"}}>02 / LISTENING</figcaption></figure>
+<figure style={{margin:0,background:"#23211f",padding:5}}><img src="/savannah-presence/thinking-1.webp" alt="Savannah production expression: thinking-1" loading="lazy" style={{width:"100%",aspectRatio:"4/5",objectFit:"cover",display:"block"}}/><figcaption style={{fontSize:10,letterSpacing:".1em",padding:"9px 3px",color:"#b2aea5"}}>03 / THINKING-1</figcaption></figure>
+<figure style={{margin:0,background:"#23211f",padding:5}}><img src="/savannah-presence/thinking-2.webp" alt="Savannah production expression: thinking-2" loading="lazy" style={{width:"100%",aspectRatio:"4/5",objectFit:"cover",display:"block"}}/><figcaption style={{fontSize:10,letterSpacing:".1em",padding:"9px 3px",color:"#b2aea5"}}>04 / THINKING-2</figcaption></figure>
+<figure style={{margin:0,background:"#23211f",padding:5}}><img src="/savannah-presence/bridge.webp" alt="Savannah production expression: bridge" loading="lazy" style={{width:"100%",aspectRatio:"4/5",objectFit:"cover",display:"block"}}/><figcaption style={{fontSize:10,letterSpacing:".1em",padding:"9px 3px",color:"#b2aea5"}}>05 / BRIDGE</figcaption></figure>
+<figure style={{margin:0,background:"#23211f",padding:5}}><img src="/savannah-presence/reaction.webp" alt="Savannah production expression: reaction" loading="lazy" style={{width:"100%",aspectRatio:"4/5",objectFit:"cover",display:"block"}}/><figcaption style={{fontSize:10,letterSpacing:".1em",padding:"9px 3px",color:"#b2aea5"}}>06 / REACTION</figcaption></figure>
+        </div>
+      </section>
       <section aria-label="Production cut" style={{paddingTop:44}}>
         {scenes.map((scene,i)=><article key={scene.mark} style={{display:"grid",gridTemplateColumns:"minmax(62px,100px) 1fr",gap:24,padding:"28px 0",borderBottom:"1px solid #393834"}}>
           <div style={{fontSize:12,color:"#b3afa6",fontVariantNumeric:"tabular-nums"}}>{scene.time}<span style={{display:"block",color:"#77736c",marginTop:5}}>SEC</span></div>
