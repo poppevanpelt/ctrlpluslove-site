@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./conviction.module.css";
+import LearningLab from "./LearningLab";
 
 type HistoryItem = { id: number; time: string; score: number; text: string; note: string };
 type Observation = { label: string; detail: string; count: number; kind: "risk" | "good" };
@@ -91,6 +92,7 @@ export default function ConvictionSensor() {
       </aside>
     </section>
     <section className={styles.timeline}><button className={styles.timelineHead} onClick={()=>setShowHistory(!showHistory)}><span>03 / THE COURAGE LEAK™ · EDIT HISTORY</span><span>{history.length} SNAPSHOTS {showHistory?"−":"+"}</span></button>{showHistory&&<div className={styles.events}>{history.length===0?<p className={styles.muted}>Record two versions to reveal the first editorial retreat. Edits are never attributed to people.</p>:history.slice().reverse().map(h=><button key={h.id} className={styles.event} onClick={()=>setDraft(h.text)}><time>{h.time}</time><strong>{h.score}/100</strong><span>{h.note}</span><span>RESTORE ↗</span></button>)}</div>}</section>
+    <LearningLab history={history} draft={draft} currentScore={analysis.score}/>
     <footer>ctrl+love · We build instruments for human judgement. <span>LOCAL BROWSER STORAGE · NO AI CALLS · NO UPLOADS</span></footer>
   </main>;
 }
