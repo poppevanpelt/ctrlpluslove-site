@@ -138,6 +138,10 @@ function ActiveSavannahWidget() {
 
     conversationRef.current = [...conversationRef.current.slice(-23), { role, text }];
 
+    if (role === "user" && typeof window !== "undefined" && pathname?.startsWith("/conviction")) {
+      window.dispatchEvent(new CustomEvent("savannah-instrument-input", { detail: { instrument: "conviction", text } }));
+    }
+
     if (surface) {
       lineIdRef.current += 1;
       const id = lineIdRef.current;
