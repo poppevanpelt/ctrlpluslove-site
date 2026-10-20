@@ -1,0 +1,43 @@
+name: Savannah turn-taking isolated smoke test
+on:
+  push:
+    branches:
+      - experiment/savannah-turn-taking-20261020
+    paths:
+      - '.github/workflows/savannah-turn-taking.yml'
+      - 'experiments/turn-taking/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require test secret
+        env:
+          TEST_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+        run: |
+          if [ -z "$TEST_KEY" ]; then
+            echo "::notice::Add ELEVENLABS_API_KEY as a GitHub Actions repository secret, then rerun on the experiment branch."
+            exit 1
+          fi
+      - name: Install audio generation tools
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq espeak-ng ffmpeg
+      - name: Generate fictional hesitation dialogue
+        run: |
+          mkdir -p /tmp/savannah-turn
+          espeak-ng -v en-us -s 135 -w /tmp/savannah-turn/a.wav "I think the answer is... well, I'm not quite finished yet."
+          espeak-ng -v en-us -s 135 -w /tmp/savannah-turn/b.wav "Actually, no. Now I'm finished."
+          ffmpeg -hide_banner -loglevel error -y -i /tmp/savannah-turn/a.wav -ar 16000 -ac 1 /tmp/savannah-turn/a16.wav
+          ffmpeg -hide_banner -loglevel error -y -i /tmp/savannah-turn/b.wav -ar 16000 -ac 1 /tmp/savannah-turn/b16.wav
+          ffmpeg -hide_banner -loglevel error -y -f lavfi -i anullsrc=r=16000:cl=mono -t 1.5 /tmp/savannah-turn/pause.wav
+          printf "file '/tmp/savannah-turn/a16.wav'\nfile '/tmp/savannah-turn/pause.wav'\nfile '/tmp/savannah-turn/b16.wav'\n" > /tmp/savannah-turn/list.txt
+          ffmpeg -hide_banner -loglevel error -y -f concat -safe 0 -i /tmp/savannah-turn/list.txt -ac 1 -ar 16000 -c:a pcm_s16le /tmp/savannah-turn/test.wav
+      - name: Execute comparison
+        env:
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+        run: |
+          npm install --no-save --no-package-lock ws
+          node experiments/turn-taking/compare.mjs /tmp/savannah-turn/test.wav > /tmp/savannah-turn/result.json
+          node -e "const fs=require('fs'); const d=JSON.parse(fs.readFileSync('/tmp/savannah-turn/result.json')); for(const r of d.results) console.log(r.strategy, 'commits:',r.events.filter(e=>e.type==='committed_transcript').length, 'transcripts:',r.events.filter(e=>e.type==='committed_transcript').map(e=>e.text).join(' | '))"
