@@ -76,6 +76,33 @@ export default function MeetingListener(props: Props) {
 
   async function start() {
     if (opening || active || control.current || props.unavailable) return;
+
+    // A new meeting must never inherit words from the previous one. Archive
+    // the old transcript first; if archiving fails, preserve it and refuse to
+    // start rather than silently mixing or discarding meeting records.
+    if (meetingWords.current.length) {
+      const archivedAt = new Date().toISOString();
+      const archiveKey = `savannah-meeting-transcript-archive-${Date.now()}`;
+      try {
+        window.localStorage.setItem(archiveKey, JSON.stringify({
+          words: meetingWords.current,
+          archivedAt,
+          source: "Savannah meeting transcript",
+        }));
+        window.localStorage.setItem(MEETING_DRAFT_KEY, JSON.stringify({
+          words: [],
+          savedAt: archivedAt,
+        }));
+      } catch {
+        setStatus("Could not safely archive the previous transcript. It has been preserved; export or clear storage space before starting another meeting.");
+        return;
+      }
+      meetingWords.current = [];
+      setWordsReady(false);
+      setSaveStatus("Previous transcript archived on this device. New meeting starts clean.");
+      setHandoffStatus("");
+    }
+
     setOpening(true);
     callbacks.current.onActive(true);
     setRetry(false);
