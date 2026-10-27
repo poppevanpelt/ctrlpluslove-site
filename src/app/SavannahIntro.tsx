@@ -24,7 +24,6 @@ export default function SavannahIntro() {
   const [ready, setReady] = useState(false);
   const [stage, setStage] = useState<Stage>("film");
   const [handoff, setHandoff] = useState(false);
-  const [showExit, setShowExit] = useState(false);
   const [needsTap, setNeedsTap] = useState(false);
   const [fallbackVideo, setFallbackVideo] = useState(false);
   const [headlineStyle, setHeadlineStyle] = useState<CSSProperties>();
@@ -145,7 +144,6 @@ export default function SavannahIntro() {
       readyRef.current = true;
       setReady(true);
       setNeedsTap(false);
-      setShowExit(false);
       if (retryTimer.current !== null) window.clearTimeout(retryTimer.current);
     }
     if (t > lastProgress.current + 0.05) {
@@ -175,7 +173,6 @@ export default function SavannahIntro() {
     void video.play().then(() => setNeedsTap(false)).catch(() => {
       setFallbackVideo(true);
       setNeedsTap(true);
-      setShowExit(true);
     });
   };
   if (!visible) return null;
