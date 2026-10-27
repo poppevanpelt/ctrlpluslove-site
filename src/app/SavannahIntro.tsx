@@ -24,7 +24,6 @@ export default function SavannahIntro() {
   const [ready, setReady] = useState(false);
   const [stage, setStage] = useState<Stage>("film");
   const [handoff, setHandoff] = useState(false);
-  const [showExit, setShowExit] = useState(false);
   const [needsTap, setNeedsTap] = useState(false);
   const [fallbackVideo, setFallbackVideo] = useState(false);
   const [headlineStyle, setHeadlineStyle] = useState<CSSProperties>();
@@ -145,7 +144,6 @@ export default function SavannahIntro() {
       readyRef.current = true;
       setReady(true);
       setNeedsTap(false);
-      setShowExit(false);
       if (retryTimer.current !== null) window.clearTimeout(retryTimer.current);
     }
     if (t > lastProgress.current + 0.05) {
@@ -175,7 +173,6 @@ export default function SavannahIntro() {
     void video.play().then(() => setNeedsTap(false)).catch(() => {
       setFallbackVideo(true);
       setNeedsTap(true);
-      setShowExit(true);
     });
   };
   if (!visible) return null;
@@ -203,12 +200,10 @@ export default function SavannahIntro() {
       </div>
 
 
-      {showExit && (
-        <button type="button" onClick={finish} aria-label="Enter ctrl+love without the film"
-          style={{position:"absolute",right:20,bottom:24,zIndex:8,padding:"12px 16px",background:"rgba(245,243,238,.94)",color:"#111",border:0,font:"inherit",cursor:"pointer"}}>
-          Enter site →
-        </button>
-      )}
+      <button type="button" onClick={finish} aria-label="Skip the introduction and enter ctrl+love"
+        style={{position:"absolute",right:20,bottom:24,zIndex:8,padding:"12px 16px",background:"rgba(245,243,238,.94)",color:"#111",border:0,font:"inherit",cursor:"pointer"}}>
+        Skip intro · enter site →
+      </button>
       {!ready && <div style={{position:"absolute",inset:0,zIndex:2,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:10,color:"#f3f1eb",textAlign:"center",pointerEvents:"none"}}><div style={{fontSize:"clamp(27px,6vw,68px)",fontWeight:700,letterSpacing:"-.045em"}}>TALK TO SAVANNAH</div><div style={{fontSize:11,letterSpacing:".23em"}}>CTRL+LOVE · EMPLOYEE #4</div></div>}
       <div ref={navGhostRef} className={styles.savannahNavGhost} aria-hidden="true" />
       <h2 ref={headlineGhostRef} className={styles.savannahHeadlineGhost} style={headlineStyle} aria-hidden="true" />

@@ -514,6 +514,11 @@ Status: UNSENT · no delivery channel connected.`;
           }
         }}
         onTranscript={text => setLines(previous => [...previous, { role: "user", text }])}
+        onComplete={text => {
+          setLines(previous => [...previous, { role: "assistant", text: `MEETING DEBRIEF\\n\\n${text}` }]);
+          setShowTranscript(true);
+          setStarted(true);
+        }}
         onFlag={text => {
           lastReply.current = text;
           setLines(previous => [...previous, { role: "assistant", text }]);

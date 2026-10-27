@@ -8,7 +8,7 @@ import { MeetingQueue } from "./meeting-queue";
 const SEGMENT_MS = 20000;
 const MAX_PENDING = 6;
 const MEETING_DRAFT_KEY = 'savannah-meeting-transcript-v1';
-type Props = { unavailable: boolean; speaking: boolean; onTranscript: (text: string) => void; onFlag: (text: string) => void; onActive: (active: boolean) => void };
+type Props = { unavailable: boolean; speaking: boolean; onTranscript: (text: string) => void; onFlag: (text: string) => void; onComplete: (text: string) => void; onActive: (active: boolean) => void };
 
 export default function MeetingListener(props: Props) {
   const callbacks = useRef(props);
@@ -20,7 +20,6 @@ export default function MeetingListener(props: Props) {
   const [retry, setRetry] = useState(false);
   const meetingWords = useRef<string[]>([]);
   const [wordsReady, setWordsReady] = useState(false);
-  const [handoffStatus, setHandoffStatus] = useState("");
   const [saveStatus, setSaveStatus] = useState("Transcript not yet saved.");
   useEffect(() => {
     try {
@@ -52,35 +51,75 @@ export default function MeetingListener(props: Props) {
   const control = useRef<{ stop: () => void; retry: () => void; dispose: () => void } | null>(null);
   const generation = useRef(0);
   const mounted = useRef(true);
+  const debriefStarted = useRef(false);
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; control.current?.dispose(); }; }, []);
 
-  function performAutopsy() {
-    if (active || finishing || !wordsReady) return;
-    const origin = "https://ctrl-love-meeting-autopsy.lovable.app";
-    const tab = window.open(origin + "/", "_blank");
-    if (!tab) { setHandoffStatus("Allow pop-ups and try again. Nothing sent."); return; }
-    const transcript = meetingWords.current.join("\n").slice(-90000);
-    let sent = false;
-    const receive = (event: MessageEvent) => {
-      if (sent || event.origin !== origin || event.source !== tab || event.data?.type !== "CTRL_LOVE_AUTOPSY_READY" || event.data?.version !== 1) return;
-      sent = true;
-      window.removeEventListener("message", receive);
-      window.clearTimeout(timeout);
-      tab.postMessage({ type: "CTRL_LOVE_AUTOPSY_TRANSCRIPT", version: 1, transcript, source: "Savannah meeting" }, origin);
-      setHandoffStatus("Transcript handed to Autopsy. Review it in the new tab.");
-    };
-    window.addEventListener("message", receive);
-    const timeout = window.setTimeout(() => { window.removeEventListener("message", receive); if (!sent) setHandoffStatus("No connection confirmation. Try again."); }, 60000);
-    setHandoffStatus("Waiting for the Autopsy to receive your transcript…");
+  async function finishMeeting() {
+    if (debriefStarted.current) return;
+    debriefStarted.current = true;
+    const transcript = meetingWords.current.join("\n").trim();
+    if (!transcript) {
+      setStatus("Meeting ended. No speech was transcribed.");
+      control.current = null;
+      setFinishing(false);
+      callbacks.current.onActive(false);
+      return;
+    }
+    setStatus("Transcript complete. Preparing your debrief…");
+    try {
+      const response = await fetch("/api/savannah-meeting-debrief", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ transcript }),
+        signal: AbortSignal.timeout(50000),
+      });
+      const result = await response.json().catch(() => null);
+      if (!response.ok || typeof result?.text !== "string" || !result.text.trim()) {
+        throw new Error(result?.error || "Debrief unavailable.");
+      }
+      callbacks.current.onComplete(result.text.trim());
+      setStatus("Meeting debrief ready.");
+    } catch {
+      setStatus("Transcript saved on this device, but the debrief could not be generated. The transcript is still available to export.");
+    } finally {
+      control.current = null;
+      setFinishing(false);
+      callbacks.current.onActive(false);
+    }
   }
 
   async function start() {
     if (opening || active || control.current || props.unavailable) return;
+
+    // A new meeting must never inherit words from the previous one. Archive
+    // the old transcript first; if archiving fails, preserve it and refuse to
+    // start rather than silently mixing or discarding meeting records.
+    if (meetingWords.current.length) {
+      const archivedAt = new Date().toISOString();
+      const archiveKey = `savannah-meeting-transcript-archive-${Date.now()}`;
+      try {
+        window.localStorage.setItem(archiveKey, JSON.stringify({
+          words: meetingWords.current,
+          archivedAt,
+          source: "Savannah meeting transcript",
+        }));
+        window.localStorage.setItem(MEETING_DRAFT_KEY, JSON.stringify({
+          words: [],
+          savedAt: archivedAt,
+        }));
+      } catch {
+        setStatus("Could not safely archive the previous transcript. It has been preserved; export or clear storage space before starting another meeting.");
+        return;
+      }
+      meetingWords.current = [];
+      setWordsReady(false);
+      setSaveStatus("Previous transcript archived on this device. New meeting starts clean.");
+    }
+
+    debriefStarted.current = false;
     setOpening(true);
     callbacks.current.onActive(true);
     setRetry(false);
-    // Keep the saved transcript on restart; clearing requires an explicit action.
-    setHandoffStatus("");
+    // The previous transcript has been archived above; this meeting starts empty.
     setStatus("Opening meeting microphone…");
     const token = ++generation.current;
     let stream: MediaStream | null = null;
@@ -180,7 +219,7 @@ export default function MeetingListener(props: Props) {
         if (!valid()) return;
         setRetry(blocked);
         if (blocked) sayStatus("Connection interrupted. Audio is held on this page. Tap RETRY to continue.");
-        else if (ended && !pending) { sayStatus("Meeting ended. Transcript complete."); control.current = null; setFinishing(false); }
+        else if (ended && !pending) { void finishMeeting(); }
         else if (!ended) sayStatus(pending > 1 ? "Listening · catching up on the transcript…" : "Meeting listening is active.");
         if (!ended && !blocked && pending < MAX_PENDING && resumeRecording) { const resume = resumeRecording; resumeRecording = null; resume(); }
       });
@@ -204,7 +243,7 @@ export default function MeetingListener(props: Props) {
           // Start listening again before waiting for transcription or judgment.
           if (!ended && valid()) beginSegment();
           if (hadSpeech && blob.size && valid()) queue.add(blob);
-          if (ended && !queue.pending && valid()) { sayStatus("Meeting ended. Transcript complete."); control.current = null; setFinishing(false); }
+          if (ended && !queue.pending && valid()) { void finishMeeting(); }
         };
         segment.start();
         boundaryTimer = window.setTimeout(() => { if (segment.state === "recording") segment.stop(); }, SEGMENT_MS);
@@ -251,15 +290,10 @@ export default function MeetingListener(props: Props) {
   return <section className="meeting-listener" aria-label="Meeting listening">
     <div><button type="button" onClick={() => active ? control.current?.stop() : void start()} disabled={opening || (!active && (props.unavailable || finishing))}>{opening ? "OPENING…" : active ? "END MEETING" : "START MEETING"}</button>
       {retry && <button type="button" onClick={() => control.current?.retry()}>RETRY CONNECTION</button>}
-      {wordsReady && <button type="button" onClick={downloadTranscript}>DOWNLOAD TRANSCRIPT</button>}
-      {!active && !finishing && wordsReady && <button type="button" onClick={performAutopsy}>PERFORM AUTOPSY ↗</button>}
-      {!active && !finishing && wordsReady && <button type="button" onClick={() => {
-        if (!window.confirm("Delete the recovered meeting transcript from this device? Download it first.")) return;
-        meetingWords.current = []; setWordsReady(false);
-        window.localStorage.removeItem(MEETING_DRAFT_KEY);
-        setSaveStatus("Previous transcript cleared.");
-      }}>CLEAR TRANSCRIPT</button>}</div>
-    {handoffStatus && <p role="status">{handoffStatus}</p>}
+      {!active && !finishing && wordsReady && <details>
+        <summary>Transcript options</summary>
+        <button type="button" onClick={downloadTranscript}>DOWNLOAD TRANSCRIPT</button>
+      </details>}</div>
     <p role="status">{status}</p>
     <p role="status">{saveStatus}</p>
     <small>{active ? "KEEP THIS PAGE OPEN AND SCREEN AWAKE · SHE FLAGS ONLY WHEN USEFUL" : "Let everyone know Savannah is listening. Audio is sent for transcription; the transcript stays on this page."}</small>
