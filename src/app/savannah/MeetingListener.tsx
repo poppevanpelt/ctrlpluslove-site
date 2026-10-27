@@ -106,7 +106,7 @@ export default function MeetingListener(props: Props) {
     setOpening(true);
     callbacks.current.onActive(true);
     setRetry(false);
-    // Keep the saved transcript on restart; clearing requires an explicit action.
+    // The previous transcript has been archived above; this meeting starts empty.
     setHandoffStatus("");
     setStatus("Opening meeting microphone…");
     const token = ++generation.current;
