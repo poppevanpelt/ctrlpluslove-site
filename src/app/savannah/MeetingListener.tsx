@@ -20,7 +20,6 @@ export default function MeetingListener(props: Props) {
   const [retry, setRetry] = useState(false);
   const meetingWords = useRef<string[]>([]);
   const [wordsReady, setWordsReady] = useState(false);
-  const [handoffStatus, setHandoffStatus] = useState("");
   const [saveStatus, setSaveStatus] = useState("Transcript not yet saved.");
   useEffect(() => {
     try {
@@ -88,26 +87,6 @@ export default function MeetingListener(props: Props) {
     }
   }
 
-  function performAutopsy() {
-    if (active || finishing || !wordsReady) return;
-    const origin = "https://ctrl-love-meeting-autopsy.lovable.app";
-    const tab = window.open(origin + "/", "_blank");
-    if (!tab) { setHandoffStatus("Allow pop-ups and try again. Nothing sent."); return; }
-    const transcript = meetingWords.current.join("\n").slice(-90000);
-    let sent = false;
-    const receive = (event: MessageEvent) => {
-      if (sent || event.origin !== origin || event.source !== tab || event.data?.type !== "CTRL_LOVE_AUTOPSY_READY" || event.data?.version !== 1) return;
-      sent = true;
-      window.removeEventListener("message", receive);
-      window.clearTimeout(timeout);
-      tab.postMessage({ type: "CTRL_LOVE_AUTOPSY_TRANSCRIPT", version: 1, transcript, source: "Savannah meeting" }, origin);
-      setHandoffStatus("Transcript handed to Autopsy. Review it in the new tab.");
-    };
-    window.addEventListener("message", receive);
-    const timeout = window.setTimeout(() => { window.removeEventListener("message", receive); if (!sent) setHandoffStatus("No connection confirmation. Try again."); }, 60000);
-    setHandoffStatus("Waiting for the Autopsy to receive your transcript…");
-  }
-
   async function start() {
     if (opening || active || control.current || props.unavailable) return;
 
@@ -134,7 +113,6 @@ export default function MeetingListener(props: Props) {
       meetingWords.current = [];
       setWordsReady(false);
       setSaveStatus("Previous transcript archived on this device. New meeting starts clean.");
-      setHandoffStatus("");
     }
 
     debriefStarted.current = false;
@@ -142,7 +120,6 @@ export default function MeetingListener(props: Props) {
     callbacks.current.onActive(true);
     setRetry(false);
     // The previous transcript has been archived above; this meeting starts empty.
-    setHandoffStatus("");
     setStatus("Opening meeting microphone…");
     const token = ++generation.current;
     let stream: MediaStream | null = null;
@@ -313,15 +290,10 @@ export default function MeetingListener(props: Props) {
   return <section className="meeting-listener" aria-label="Meeting listening">
     <div><button type="button" onClick={() => active ? control.current?.stop() : void start()} disabled={opening || (!active && (props.unavailable || finishing))}>{opening ? "OPENING…" : active ? "END MEETING" : "START MEETING"}</button>
       {retry && <button type="button" onClick={() => control.current?.retry()}>RETRY CONNECTION</button>}
-      {wordsReady && <button type="button" onClick={downloadTranscript}>DOWNLOAD TRANSCRIPT</button>}
-      {!active && !finishing && wordsReady && <button type="button" onClick={performAutopsy}>PERFORM AUTOPSY ↗</button>}
-      {!active && !finishing && wordsReady && <button type="button" onClick={() => {
-        if (!window.confirm("Delete the recovered meeting transcript from this device? Download it first.")) return;
-        meetingWords.current = []; setWordsReady(false);
-        window.localStorage.removeItem(MEETING_DRAFT_KEY);
-        setSaveStatus("Previous transcript cleared.");
-      }}>CLEAR TRANSCRIPT</button>}</div>
-    {handoffStatus && <p role="status">{handoffStatus}</p>}
+      {!active && !finishing && wordsReady && <details>
+        <summary>Transcript options</summary>
+        <button type="button" onClick={downloadTranscript}>DOWNLOAD TRANSCRIPT</button>
+      </details>}</div>
     <p role="status">{status}</p>
     <p role="status">{saveStatus}</p>
     <small>{active ? "KEEP THIS PAGE OPEN AND SCREEN AWAKE · SHE FLAGS ONLY WHEN USEFUL" : "Let everyone know Savannah is listening. Audio is sent for transcription; the transcript stays on this page."}</small>
