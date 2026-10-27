@@ -8,7 +8,7 @@ import { MeetingQueue } from "./meeting-queue";
 const SEGMENT_MS = 20000;
 const MAX_PENDING = 6;
 const MEETING_DRAFT_KEY = 'savannah-meeting-transcript-v1';
-type Props = { unavailable: boolean; speaking: boolean; onTranscript: (text: string) => void; onFlag: (text: string) => void; onActive: (active: boolean) => void };
+type Props = { unavailable: boolean; speaking: boolean; onTranscript: (text: string) => void; onFlag: (text: string) => void; onComplete: (text: string) => void; onActive: (active: boolean) => void };
 
 export default function MeetingListener(props: Props) {
   const callbacks = useRef(props);
@@ -52,7 +52,41 @@ export default function MeetingListener(props: Props) {
   const control = useRef<{ stop: () => void; retry: () => void; dispose: () => void } | null>(null);
   const generation = useRef(0);
   const mounted = useRef(true);
+  const debriefStarted = useRef(false);
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; control.current?.dispose(); }; }, []);
+
+  async function finishMeeting() {
+    if (debriefStarted.current) return;
+    debriefStarted.current = true;
+    const transcript = meetingWords.current.join("\n").trim();
+    if (!transcript) {
+      setStatus("Meeting ended. No speech was transcribed.");
+      control.current = null;
+      setFinishing(false);
+      callbacks.current.onActive(false);
+      return;
+    }
+    setStatus("Transcript complete. Preparing your debrief…");
+    try {
+      const response = await fetch("/api/savannah-meeting-debrief", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ transcript }),
+        signal: AbortSignal.timeout(50000),
+      });
+      const result = await response.json().catch(() => null);
+      if (!response.ok || typeof result?.text !== "string" || !result.text.trim()) {
+        throw new Error(result?.error || "Debrief unavailable.");
+      }
+      callbacks.current.onComplete(result.text.trim());
+      setStatus("Meeting debrief ready.");
+    } catch {
+      setStatus("Transcript saved on this device, but the debrief could not be generated. The transcript is still available to export.");
+    } finally {
+      control.current = null;
+      setFinishing(false);
+      callbacks.current.onActive(false);
+    }
+  }
 
   function performAutopsy() {
     if (active || finishing || !wordsReady) return;
@@ -103,6 +137,7 @@ export default function MeetingListener(props: Props) {
       setHandoffStatus("");
     }
 
+    debriefStarted.current = false;
     setOpening(true);
     callbacks.current.onActive(true);
     setRetry(false);
@@ -207,7 +242,7 @@ export default function MeetingListener(props: Props) {
         if (!valid()) return;
         setRetry(blocked);
         if (blocked) sayStatus("Connection interrupted. Audio is held on this page. Tap RETRY to continue.");
-        else if (ended && !pending) { sayStatus("Meeting ended. Transcript complete."); control.current = null; setFinishing(false); }
+        else if (ended && !pending) { void finishMeeting(); }
         else if (!ended) sayStatus(pending > 1 ? "Listening · catching up on the transcript…" : "Meeting listening is active.");
         if (!ended && !blocked && pending < MAX_PENDING && resumeRecording) { const resume = resumeRecording; resumeRecording = null; resume(); }
       });
@@ -231,7 +266,7 @@ export default function MeetingListener(props: Props) {
           // Start listening again before waiting for transcription or judgment.
           if (!ended && valid()) beginSegment();
           if (hadSpeech && blob.size && valid()) queue.add(blob);
-          if (ended && !queue.pending && valid()) { sayStatus("Meeting ended. Transcript complete."); control.current = null; setFinishing(false); }
+          if (ended && !queue.pending && valid()) { void finishMeeting(); }
         };
         segment.start();
         boundaryTimer = window.setTimeout(() => { if (segment.state === "recording") segment.stop(); }, SEGMENT_MS);
