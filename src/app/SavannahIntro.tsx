@@ -7,17 +7,17 @@ import { clearSavannahPageLock } from "./savannah-runtime";
 
 // A single, explicit film clock. These are media timestamps, not CSS delays.
 const START_AT = 1.35;
-const NAV_AT = 3.65;
-const HEADLINE_AT = 4.75;
-const REGISTER_AT = 6.2;
-const DAYLIGHT_AT = 6.65;
+const DEPTH_275_AT = 3.65;
+const DEPTH_25_AT = 4.75;
+const DEPTH_2D_AT = 6.2;
+const CLUNK_AT = 6.65;
 const EXIT_AT = 7.65;
 const LOAD_TIMEOUT_MS = 3500;
 const PLAY_TIMEOUT_MS = 12000;
 const TITLE_HOLD_MS = 1100;
 const MOBILE_FILM = "/savannah-intro/entrance-mobile-v4.mp4";
 const DESKTOP_FILM = "/savannah-intro/entrance-desktop-v4.mp4";
-type Stage = "film" | "nav" | "headline" | "register" | "daylight";
+type Stage = "film" | "twoSevenFive" | "twoFive" | "twoD" | "clunk";
 
 export default function SavannahIntro() {
   const [visible, setVisible] = useState(true);
@@ -38,6 +38,8 @@ export default function SavannahIntro() {
   const exitTimer = useRef<number | null>(null);
   const retryTimer = useRef<number | null>(null);
   const lastProgress = useRef(0);
+  const audioContext = useRef<AudioContext | null>(null);
+  const clunkPlayed = useRef(false);
 
   const finish = () => {
     if (completed.current) return;
@@ -122,6 +124,54 @@ export default function SavannahIntro() {
     };
   }, []);
 
+  const armClunkAudio = () => {
+    if (typeof window === "undefined"") return;
+    const AudioContextConstructor = window.AudioContext;
+    if (!AudioContextConstructor) return;
+    if (!audioContext.current) audioContext.current = new AudioContextConstructor();
+    if (audioContext.current.state === "suspended") void audioContext.current.resume();
+  };
+  const playClunk = () => {
+    if (clunkPlayed.current) return;
+    clunkPlayed.current = true;
+    const context = audioContext.current;
+    if (!context || context.state !== "running") return;
+    const now = context.currentTime;
+    const gain = context.createGain();
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.18, now + 0.008);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.28);
+    gain.connect(context.destination);
+    const low = context.createOscillator();
+    low.type = "sine";
+    low.frequency.setValueAtTime(76, now);
+    low.frequency.exponentialRampToValueAtTime(43, now + 0.26);
+    low.connect(gain);
+    low.start(now);
+    low.stop(now + 0.29);
+    const metalGain = context.createGain();
+    metalGain.gain.setValueAtTime(0.0001, now);
+    metalGain.gain.exponentialRampToValueAtTime(0.09, now + 0.004);
+    metalGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.085);
+    metalGain.connect(context.destination);
+    const metal = context.createOscillator();
+    metal.type = "triangle";
+    metal.frequency.setValueAtTime(184, now);
+    metal.frequency.exponentialRampToValueAtTime(72, now + 0.075);
+    metal.connect(metalGain);
+    metal.start(now);
+    metal.stop(now + 0.1);
+  };
+  useEffect(() => {
+    const arm = () => armClunkAudio();
+    window.addEventListener("pointerdown", arm, { once: true, passive: true });
+    window.addEventListener("keydown", arm, { once: true });
+    return () => {
+      window.removeEventListener("pointerdown", arm);
+      window.removeEventListener("keydown", arm);
+    };
+  }, []);
+
   const tryPlay = () => {
     const video = videoRef.current;
     if (!video || completed.current || !titleDone.current) return;
@@ -153,10 +203,12 @@ export default function SavannahIntro() {
       if (bufferTimer.current !== null) window.clearTimeout(bufferTimer.current);
       bufferTimer.current = null;
     }
-    if (t >= DAYLIGHT_AT) setStage("daylight");
-    else if (t >= REGISTER_AT) setStage("register");
-    else if (t >= HEADLINE_AT) setStage("headline");
-    else if (t >= NAV_AT) setStage("nav");
+    if (t >= CLUNK_AT) {
+      setStage("clunk");
+      playClunk();
+    } else if (t >= DEPTH_2D_AT) setStage("twoD");
+    else if (t >= DEPTH_25_AT) setStage("twoFive");
+    else if (t >= DEPTH_275_AT) setStage("twoSevenFive");
     if (t >= EXIT_AT) finish();
   };
   const onWaiting = () => {
@@ -184,10 +236,10 @@ export default function SavannahIntro() {
     <section className={[
       styles.savannahIntro,
       ready ? styles.savannahIntroReady : "",
-      stage === "nav" ? styles.savannahSceneNav : "",
-      stage === "headline" ? styles.savannahSceneHeadline : "",
-      stage === "register" ? styles.savannahSceneRegister : "",
-      stage === "daylight" ? styles.savannahSceneDaylight : "",
+      stage === "twoSevenFive" ? styles.savannahScene275 : "",
+      stage === "twoFive" ? styles.savannahScene25 : "",
+      stage === "twoD" ? styles.savannahScene2d : "",
+      stage === "clunk" ? styles.savannahSceneClunk : "",
       handoff ? styles.savannahHandoff : "",
     ].join(" ")} aria-label="Enter ctrl+love" data-deploy="savannah-canonical-title-v4" data-stage={stage}>
       <div className={styles.savannahFilm} aria-hidden="true">
@@ -204,12 +256,12 @@ export default function SavannahIntro() {
 
 
       {showExit && (
-        <button type="button" onClick={finish} aria-label="Enter ctrl+love without the film"
+        <button type="button" onClick={() => { armClunkAudio(); finish(); }} aria-label="Enter ctrl+love without the film"
           style={{position:"absolute",right:20,bottom:24,zIndex:8,padding:"12px 16px",background:"rgba(245,243,238,.94)",color:"#111",border:0,font:"inherit",cursor:"pointer"}}>
           Enter site →
         </button>
       )}
-      {!ready && <div style={{position:"absolute",inset:0,zIndex:2,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:10,color:"#f3f1eb",textAlign:"center",pointerEvents:"none"}}><div style={{fontSize:"clamp(27px,6vw,68px)",fontWeight:700,letterSpacing:"-.045em"}}>TALK TO SAVANNAH</div><div style={{fontSize:11,letterSpacing:".23em"}}>CTRL+LOVE · EMPLOYEE #4</div></div>}
+      {!ready && <div style={{position:"absolute",inset:0,zIndex:2,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:10,color:"#f3f1eb",textAlign:"center",pointerEvents:"none"}}><div style={{fontSize:"clamp(30px,6.8vw,82px)",fontWeight:900,letterSpacing:"-.065em",lineHeight:.9,maxWidth:1100,padding:"0 6vw"}}>WE BUILD INSTRUMENTS FOR HUMAN JUDGMENT.</div></div>}
       <div ref={navGhostRef} className={styles.savannahNavGhost} aria-hidden="true" />
       <h2 ref={headlineGhostRef} className={styles.savannahHeadlineGhost} style={headlineStyle} aria-hidden="true" />
     </section>
