@@ -238,7 +238,9 @@ export default function SavannahIntro() {
     // Must be called directly in the click handler for iOS autoplay restrictions.
     void video.play().then(() => setNeedsTap(false)).catch(() => {
       setFallbackVideo(true);
-      setNeedsTap(true);
+      // Keep one opening action visible at a time: after an explicit play
+      // attempt fails, offer the single escape hatch instead of two CTAs.
+      setNeedsTap(false);
       setShowExit(true);
     });
   };
@@ -279,7 +281,7 @@ export default function SavannahIntro() {
           Play entrance film →
         </button>
       )}
-      {showExit && (
+      {showExit && !needsTap && (
         <button type="button" onClick={() => { armClunkAudio(); finish(); }} aria-label="Enter ctrl+love without the film"
           style={{position:"absolute",right:20,bottom:24,zIndex:8,padding:"12px 16px",background:"rgba(245,243,238,.94)",color:"#111",border:0,font:"inherit",cursor:"pointer"}}>
           Skip film and enter →
