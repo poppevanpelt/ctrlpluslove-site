@@ -253,3 +253,9 @@
   .savannahIntro,.savannahFilm,.savannahIntroVideo,
   .savannahNavGhost,.savannahHeadlineGhost{transition:none!important}
 }
+
+/* Mobile hero: keep the outlined copy panel inside the viewport. */
+@media(max-width:650px){.hero,.heroCopyLeft,.heroCopyRight{min-width:0;max-width:100%;width:100%}.hero{grid-template-columns:minmax(0,1fr)}.heroCopyRight{box-sizing:border-box;overflow-wrap:anywhere}}
+/* Let the human-judgment line land during the final clunk before handoff. */
+.savannahSceneClunk .savannahNavGhost{opacity:0;transform:none;transition:opacity .18s ease}
+.savannahSceneClunk .savannahHeadlineGhost{opacity:1;transform:none;color:var(--ink);transition:opacity .32s ease,color .32s ease}

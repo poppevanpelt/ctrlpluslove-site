@@ -12,7 +12,7 @@ const DEPTH_25_AT = 4.75;
 const DEPTH_2D_AT = 6.2;
 const CLUNK_AT = 6.65;
 const EXIT_AT = 7.65;
-const LOAD_TIMEOUT_MS = 3500;
+const LOAD_TIMEOUT_MS = 9000;
 const PLAY_TIMEOUT_MS = 12000;
 const TITLE_HOLD_MS = 1100;
 const MOBILE_FILM = "/savannah-intro/entrance-mobile-v4.mp4";
@@ -104,7 +104,7 @@ export default function SavannahIntro() {
     }, TITLE_HOLD_MS);
     const exitOffer = window.setTimeout(() => {
       if (!readyRef.current && !completed.current) finish();
-    }, TITLE_HOLD_MS + 1000);
+    }, TITLE_HOLD_MS + 6500);
     const loading = window.setTimeout(() => {
       if (!readyRef.current && !completed.current) finish();
     }, LOAD_TIMEOUT_MS);
