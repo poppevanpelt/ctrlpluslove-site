@@ -125,7 +125,7 @@ export default function SavannahIntro() {
   }, []);
 
   const armClunkAudio = () => {
-    if (typeof window === "undefined"") return;
+    if (typeof window === "undefined") return;
     const AudioContextConstructor = window.AudioContext;
     if (!AudioContextConstructor) return;
     if (!audioContext.current) audioContext.current = new AudioContextConstructor();
