@@ -90,10 +90,8 @@ export default function SavannahIntro() {
   useEffect(() => {
     document.documentElement.classList.add("savannah-intro-running");
     window.dispatchEvent(new Event("savannah-intro-active"));
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const onReduce = () => { if (reduce.matches) finish(); };
-    onReduce();
-    reduce.addEventListener?.("change", onReduce);
+    // The entrance film is a required beat. Reduced-motion preferences may
+    // remove transitions in CSS, but must not silently bypass the film.
     // Never strand a visitor behind the black film layer if media cannot load.
     // A user gesture may be required on iOS (Low Power Mode and browser policies).
     // Keep the film available instead of silently skipping it.
@@ -103,13 +101,22 @@ export default function SavannahIntro() {
       tryPlay();
     }, TITLE_HOLD_MS);
     const exitOffer = window.setTimeout(() => {
-      if (!readyRef.current && !completed.current) finish();
+      if (!readyRef.current && !completed.current) {
+        setNeedsTap(true);
+        setShowExit(true);
+      }
     }, TITLE_HOLD_MS + 6500);
     const loading = window.setTimeout(() => {
-      if (!readyRef.current && !completed.current) finish();
+      if (!readyRef.current && !completed.current) {
+        setNeedsTap(true);
+        setShowExit(true);
+      }
     }, LOAD_TIMEOUT_MS);
     const watchdog = window.setTimeout(() => {
-      if (!completed.current && lastProgress.current < EXIT_AT) finish();
+      if (!completed.current && lastProgress.current < EXIT_AT) {
+        setNeedsTap(true);
+        setShowExit(true);
+      }
     }, PLAY_TIMEOUT_MS);
     return () => {
       window.clearTimeout(titleTimer);
@@ -118,7 +125,6 @@ export default function SavannahIntro() {
       window.clearTimeout(watchdog);
       if (bufferTimer.current !== null) window.clearTimeout(bufferTimer.current);
       if (exitTimer.current !== null) window.clearTimeout(exitTimer.current);
-      reduce.removeEventListener?.("change", onReduce);
       document.documentElement.classList.remove("savannah-intro-running");
       clearSavannahPageLock((...classes) => document.documentElement.classList.remove(...classes));
     };
@@ -177,7 +183,10 @@ export default function SavannahIntro() {
     if (!video || completed.current || !titleDone.current) return;
     video.muted = true;
     void video.play().catch(() => {
-      if (!completed.current) finish();
+      if (!completed.current) {
+        setNeedsTap(true);
+        setShowExit(true);
+      }
     });
   };
   const onMetadata = () => {
@@ -214,7 +223,10 @@ export default function SavannahIntro() {
   const onWaiting = () => {
     if (completed.current || !readyRef.current || bufferTimer.current !== null) return;
     bufferTimer.current = window.setTimeout(() => {
-      if (!completed.current) finish();
+      if (!completed.current) {
+        setNeedsTap(true);
+        setShowExit(true);
+      }
     }, 3000);
   };
   const playFromTap = () => {
@@ -247,7 +259,13 @@ export default function SavannahIntro() {
           muted playsInline preload="auto" poster="/savannah-intro/entrance-poster-v4.jpg"
           onLoadedMetadata={onMetadata} onLoadedData={tryPlay} onCanPlay={tryPlay} onSeeked={tryPlay} onPlaying={onProgress}
           onTimeUpdate={onProgress} onWaiting={onWaiting} onStalled={onWaiting}
-          onEnded={finish} onError={finish}>
+          onEnded={finish} onError={() => {
+            if (!completed.current) {
+              setFallbackVideo(true);
+              setNeedsTap(true);
+              setShowExit(true);
+            }
+          }}>
           {!fallbackVideo && <source media="(max-width: 768px)" src={MOBILE_FILM} type="video/mp4" />}
           <source src={DESKTOP_FILM} type="video/mp4" />
         </video>
@@ -255,13 +273,19 @@ export default function SavannahIntro() {
       </div>
 
 
+      {needsTap && !ready && (
+        <button type="button" onClick={playFromTap} aria-label="Play Savannah entrance film"
+          style={{position:"absolute",left:"50%",bottom:82,transform:"translateX(-50%)",zIndex:8,padding:"14px 20px",background:"rgba(245,243,238,.96)",color:"#111",border:0,font:"inherit",fontWeight:700,cursor:"pointer",whiteSpace:"nowrap"}}>
+          Play entrance film →
+        </button>
+      )}
       {showExit && (
         <button type="button" onClick={() => { armClunkAudio(); finish(); }} aria-label="Enter ctrl+love without the film"
           style={{position:"absolute",right:20,bottom:24,zIndex:8,padding:"12px 16px",background:"rgba(245,243,238,.94)",color:"#111",border:0,font:"inherit",cursor:"pointer"}}>
-          Enter site →
+          Skip film and enter →
         </button>
       )}
-      {!ready && <div style={{position:"absolute",inset:0,zIndex:2,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:10,color:"#f3f1eb",textAlign:"center",pointerEvents:"none"}}><div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:16,padding:"0 6vw"}}><div style={{fontSize:"clamp(30px,6.8vw,82px)",fontWeight:900,letterSpacing:"-.065em",lineHeight:.9,maxWidth:1100}}>SAVANNAH, EMPLOYEE #4.</div><div style={{fontSize:"clamp(14px,2vw,22px)",fontWeight:500,letterSpacing:".08em",textTransform:"uppercase"}}>COME IN.</div></div></div>}
+      {!ready && <div style={{position:"absolute",inset:0,zIndex:2,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:10,color:"#f3f1eb",textAlign:"center",pointerEvents:"none"}}><div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:16,padding:"0 6vw"}}><div style={{fontSize:"clamp(30px,6.8vw,82px)",fontWeight:900,letterSpacing:"-.065em",lineHeight:.9,maxWidth:1100}}>TALK TO SAVANNAH</div><div style={{fontSize:"clamp(14px,2vw,22px)",fontWeight:500,letterSpacing:".08em",textTransform:"uppercase"}}>CTRL+LOVE · EMPLOYEE #4</div></div></div>}
       <div ref={navGhostRef} className={styles.savannahNavGhost} aria-hidden="true" />
       <h2 ref={headlineGhostRef} className={styles.savannahHeadlineGhost} style={headlineStyle} aria-hidden="true" />
     </section>
