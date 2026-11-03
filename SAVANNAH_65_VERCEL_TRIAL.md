@@ -8,6 +8,14 @@
 
 Pursue the user's existing Vercel refund request to a verified outcome, without requiring the user to keep personally carrying the case. The exact refund amount, invoice, and underlying charge rationale must be taken from the existing case and billing evidence; do not infer them.
 
+## Known account context from prior work
+
+- Vercel team/account: **Poppe's projects**.
+- Reported status: suspended for non-payment.
+- Affected project: `ctrlpluslove-site`.
+- Domains mentioned in that context: `ctrlpluslove.com` and `www.ctrlpluslove.com`; the main `.com` site was noted as hosted on Netlify.
+- This context may affect urgency and remedy, but does **not** by itself establish what charge is disputed, whether a refund is eligible, or whether the suspension and refund request are the same issue.
+
 ## Evidence currently available
 
 - Vercel's response says most refund requests may be self-resolved at `https://vercel.com/help`, and that a live support response may take 1–2 weeks.
