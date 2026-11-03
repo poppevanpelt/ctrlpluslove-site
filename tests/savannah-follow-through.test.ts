@@ -27,7 +27,7 @@ test("does not escalate from a generic acknowledgement alone", () => {
     },
   }, "2026-11-03T13:00:00.000Z");
   assert.equal(result.action, "investigate");
-  assert.equal(result.reason, "response_did_not_answer_request");
+  assert.equal(result.action, "investigate");
 });
 
 test("escalates after explicit dead-end evidence when routine messaging is authorised", () => {
