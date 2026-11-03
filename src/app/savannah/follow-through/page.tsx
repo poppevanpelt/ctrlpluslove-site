@@ -1,12 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useState, type FormEvent, type CSSProperties } from "react";
 
 type CaseItem = { id: string; objective: string; successCriteria: string[]; status: string; integrationReady: boolean };
 type EventItem = { id: string; event_type: string; summary: string; created_at: string };
 type DecisionItem = { action: string; reason: string; rationale: string[]; requiresHuman: boolean };
 
-const panel: React.CSSProperties = { border: "1px solid #303830", borderRadius: 12, padding: 18, background: "#121713" };
+const panel: CSSProperties = { border: "1px solid #303830", borderRadius: 12, padding: 18, background: "#121713" };
 const field: React.CSSProperties = { width: "100%", padding: 11, borderRadius: 8, border: "1px solid #485148", background: "#0c100d", color: "#f1f3ef", font: "inherit" };
 const button: React.CSSProperties = { border: 0, borderRadius: 8, padding: "10px 13px", background: "#d9ff72", color: "#111", fontWeight: 700, cursor: "pointer" };
 
