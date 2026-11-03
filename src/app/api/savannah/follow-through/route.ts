@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
-import { authorizeAction, decideNextMove, type FollowThroughCase } from "../../../../savannah-follow-through";
+import { authorizeAction, decideNextMove, type FollowThroughCase } from "../../../savannah-follow-through";
 import { database, isOwner } from "../inbox/shared";
 
 export const runtime = "nodejs";
