@@ -10,7 +10,9 @@ Keep delegated objectives moving toward a verified outcome, even when the human 
 - Case model tracks objective, observable success criteria, attempts, response signals, deadline/review point, outcome evidence, granted authority and integration health.
 - Decisions include investigate, follow up, escalate, wait, verify, close, or request human judgment.
 - Tests cover generic acknowledgements, evidence-driven escalation, repeated no-progress, unverified resolution, waiting, authority limits and incomplete objectives.
-- No external messages are sent by this module.
+- Protected owner-only API at `/api/savannah/follow-through` supports case creation, case listing and explicit decision evaluation.
+- Cases and an append-only decision event log use the existing private Savannah inbox database configuration.
+- No external messages are sent by this module; integration readiness is false by default.
 
 ## Decision principles
 
