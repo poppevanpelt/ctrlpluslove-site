@@ -13,6 +13,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const twoGoLastModified = new Date("2026-09-20");
 
   return [
+    {
+      url: absoluteUrl("/dispatches/"),
+      lastModified: new Date("2026-11-07"),
+      changeFrequency: "weekly" as const,
+      priority: 0.82,
+    },
     ...publicRoutes.map((route) => ({
       url: absoluteUrl(route.path),
       lastModified: route.path === "/" ? homeLastModified : lastModified,
