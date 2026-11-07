@@ -4,42 +4,51 @@ import styles from "./dispatches.module.css";
 const dispatches = [
   {
     number: "01",
-    label: "THE SIGNAL",
-    title: "The Accidental Enter Economy™",
-    dek: "What happens when a tiny interface decision becomes a way of working, thinking and doing business?",
-    body: "A small observation with a much larger shadow. The tools we use do not merely carry our intentions. Sometimes they quietly shape them.",
-    note: "A live idea. Still developing.",
+    label: "THE COMMERCIAL PROPOSITION",
+    title: "CULTURAL BRAND VAULT™",
+    dek: "Archaeology while civilisation is still happening.",
+    body: "Not another archive of campaigns and logos. A living collection of the strange customer comment, the meme, the misused product, the borrowed language and the small cultural signals that might matter before anyone in the boardroom notices.",
+    note: "The proposition",
     className: "lead",
   },
   {
     number: "02",
-    label: "THE PROVOCATION",
-    title: "THE LAST AD AGENCY™",
-    dek: "An AI seller. An AI buyer. An independent auditor.",
-    body: "What if the system's most valuable recommendation were not another advertisement, but a reason not to run one? A proposition worth testing, not just applauding.",
-    note: "A decision experiment.",
+    label: "THE ORIGIN STORY",
+    title: "Just killed it for Nike",
+    dek: "A provocation that opened a bigger question: what happens when a brand loses something that made it matter?",
+    body: "The Nike experiment belongs here as the creative spark behind the Cultural Brand Vault. The connection is intentional: first the provocation, then the possibility of turning cultural memory into a living strategic asset.",
+    note: "The question that led to the vault",
     className: "agency",
   },
   {
     number: "03",
-    label: "THE OPEN QUESTION",
-    title: "When agents become a commodity",
-    dek: "If everyone can deploy an army of temporary bots, where does the advantage move?",
-    body: "Perhaps away from the number of agents and towards the quality of the judgment that directs them. This is a question, not a conclusion.",
-    note: "An unfinished thought.",
+    label: "THE SIGNAL",
+    title: "The Accidental Enter Economy™",
+    dek: "What happens when a tiny interface decision becomes a way of working, thinking and doing business?",
+    body: "The tools we use do not merely carry our intentions. Sometimes they quietly shape them. A small observation with a much larger shadow.",
+    note: "A field observation",
     className: "open",
+  },
+  {
+    number: "04",
+    label: "THE PROVOCATION",
+    title: "THE LAST AD AGENCY™",
+    dek: "An AI seller. An AI buyer. An independent auditor.",
+    body: "What if the system's most valuable recommendation were not another advertisement, but a reason not to run one? A proposition worth testing, not just applauding.",
+    note: "A decision experiment",
+    className: "agency",
   },
 ];
 
 export const metadata = {
   title: "Dispatches — ctrl+love",
   description:
-    "Ideas tested in public. Dispatches from ctrl+love on AI, human judgment, creative work and the questions still worth asking.",
+    "Ideas tested in public. Dispatches from ctrl+love on cultural memory, AI, human judgment, creative work and the questions still worth asking.",
   alternates: { canonical: "https://ctrlpluslove.com/dispatches/" },
   openGraph: {
     title: "Dispatches — ctrl+love",
     description:
-      "Ideas tested in public. Dispatches from ctrl+love on AI, human judgment, creative work and the questions still worth asking.",
+      "Ideas tested in public. Dispatches from ctrl+love on cultural memory, AI, human judgment, creative work and the questions still worth asking.",
     url: "https://ctrlpluslove.com/dispatches/",
     siteName: "ctrl+love",
     type: "website",
@@ -51,7 +60,7 @@ export default function DispatchesPage() {
     <main className={styles.page} id="main-content">
       <header className={styles.topline}>
         <Link href="/" className={styles.wordmark}>ctrl+love</Link>
-        <span>FIELD NOTES / 001—003</span>
+        <span>FIELD NOTES / 001—004</span>
       </header>
 
       <section className={styles.intro}>
