@@ -15,6 +15,18 @@
   overflow: hidden;
 }
 
+.panel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -35%;
+  width: 24%;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgb(238 233 222 / 10%), transparent);
+  animation: instrument-scan 8s ease-in-out infinite;
+}
+
 .rail {
   display: flex;
   align-items: center;
@@ -83,6 +95,13 @@
 .controlHold span { color: #aaa39a; }
 .controlHold b { color: #e7e0d6; }
 
+@keyframes instrument-scan {
+  0%, 12% { transform: translateX(0); opacity: 0; }
+  20% { opacity: 1; }
+  54% { transform: translateX(620%); opacity: 0.8; }
+  62%, 100% { transform: translateX(620%); opacity: 0; }
+}
+
 @keyframes lamp-breathe {
   0%, 76%, 100% { opacity: 0.62; filter: brightness(0.8); }
   82%, 90% { opacity: 1; filter: brightness(1.28); }
@@ -95,6 +114,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .panel::after,
   .lamp,
   .waveform i {
     animation: none !important;
