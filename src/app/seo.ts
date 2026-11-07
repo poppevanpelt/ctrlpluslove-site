@@ -75,6 +75,13 @@ export function createPageMetadata({
 
 export const publicRoutes: PublicRoute[] = [
   {
+    path: "/dispatches/",
+    title: "Dispatches — ctrl+love",
+    description: "Ideas tested in public. Dispatches from ctrl+love on AI, human judgment, creative work and the questions still worth asking.",
+    changeFrequency: "weekly",
+    priority: 0.82,
+  },
+  {
     path: "/",
     title: "ctrl+love — Instruments for human judgment",
     description:
