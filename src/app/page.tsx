@@ -304,6 +304,13 @@ export default function Home() {
         </div>
       </section>
 
+      <section className={styles.section} id="dispatches">
+        <div className={styles.kicker}>Ideas tested in public</div>
+        <h2>Dispatches.</h2>
+        <p className={styles.instrumentInvite}>The ideas worth following, connected to the questions that made them matter.</p>
+        <a className={styles.cabinetLink} href="/dispatches/">Explore the four dispatches ↗</a>
+      </section>
+
       <section className={styles.final}>
         <div className={styles.kicker}>Enough explaining</div>
         <h2>Bring us something that matters.</h2>
