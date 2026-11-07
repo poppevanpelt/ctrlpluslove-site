@@ -863,7 +863,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
           background:"#151515",color:"#f5f1e7",padding:"9px 15px 9px 9px",
           borderRadius:32,textDecoration:"none",fontSize:13,fontWeight:700,
           boxShadow:"0 8px 28px rgba(0,0,0,.22)"}}>
-        <img src="/home/savannah.jpg" alt="" style={{width:34,height:34,borderRadius:"50%",objectFit:"cover"}} />
+        <img src="/home/savannah.jpg?v=20261107" alt="" style={{width:34,height:34,borderRadius:"50%",objectFit:"cover"}} />
         Talk to Savannah <span aria-hidden="true">↗</span>
       </a>
     );
@@ -903,7 +903,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
           boxShadow: "0 12px 30px rgba(0,0,0,.14)",
         }}
       >
-        <img src="/home/savannah.jpg" alt="" style={{width:28,height:28,objectFit:"cover",borderRadius:"50%",verticalAlign:"middle",marginRight:9}} />
+        <img src="/home/savannah.jpg?v=20261107" alt="" style={{width:28,height:28,objectFit:"cover",borderRadius:"50%",verticalAlign:"middle",marginRight:9}} />
         Savannah · Talk / Type
       </button>
     );
