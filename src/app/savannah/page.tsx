@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { SavannahPerformance, type SavannahPerformanceHandle } from "../SavannahPerformance";
-import { primeSavannahAudio, resumeSavannahAudio, speakSavannahNeurally, stopSavannahLocalVoice } from "../savannah-local-voice";
+import { primeSavannahAudio, resumeSavannahAudio, speakSavannahLocally, speakSavannahNeurally, stopSavannahLocalVoice } from "../savannah-local-voice";
 import { selectSavannahOutfit, savannahOutfitAssetsReady, savannahPortraitPath, SAVANNAH_CANONICAL_FRAMES } from "../savannah-wardrobe";
 
 import MeetingListener from "./MeetingListener";
@@ -321,16 +321,21 @@ Status: UNSENT · no delivery channel connected.`;
     setNeedsPlayback(false);
     setMicStatus("SAVANNAH IS ANSWERING");
     setVoiceMessage("CONNECTING VOICE…");
-    const ok = await speakSavannahNeurally(text, {
-      onStart: () => { setReaction(false); setSpeaking(true); setAudioBusy(false); setVoiceMessage("SAVANNAH IS SPEAKING"); setMicStatus("SAVANNAH IS SPEAKING"); },
+    const playbackCallbacks = {
+      onStart: () => { setReaction(false); setSpeaking(true); setAudioBusy(false); setNeedsPlayback(false); setVoiceMessage("SAVANNAH IS SPEAKING"); setMicStatus("SAVANNAH IS SPEAKING"); },
       onEnd: () => { setReaction(true); window.setTimeout(() => setReaction(false), 1600); setSpeaking(false); setAudioBusy(false); setVoiceMessage("HEAR THAT AGAIN"); setMicStatus("TAP TO TALK"); afterSpeaking?.(); },
-    });
+    };
+    const ok = await speakSavannahNeurally(text, playbackCallbacks);
     if (!ok) {
+      // If iOS rejects or cannot decode the remote MP3, try Savannah's
+      // explicitly selected local voice rather than leaving a text-only reply.
+      const localOk = speakSavannahLocally(text, playbackCallbacks);
+      if (localOk) return;
       setSpeaking(false);
       setAudioBusy(false);
       setNeedsPlayback(true);
       setMicStatus("TAP TO HEAR SAVANNAH");
-      setVoiceMessage("AUDIO UNAVAILABLE — RETRY");
+      setVoiceMessage("AUDIO UNAVAILABLE — TAP TO RETRY");
     }
   }
 
