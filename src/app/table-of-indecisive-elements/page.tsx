@@ -175,7 +175,7 @@ export default function IndecisiveElementsMotionStudy() {
           <button onClick={() => setPaused((value) => !value)} aria-pressed={paused}>
             <span aria-hidden="true">{paused ? "▶" : "Ⅱ"}</span> {paused ? "Resume" : "Pause"}
           </button>
-          <button onClick={() => { setSelected(["doubt", "curiosity"]); setActive(false); setPaused(false); }}>
+          <button onClick={() => { setSelected(["doubt", "curiosity"]); setCuriosity(65); setDoubt(55); setConviction(45); setActive(false); setPaused(false); }}>
             <span aria-hidden="true">↺</span> Reset
           </button>
         </div>
