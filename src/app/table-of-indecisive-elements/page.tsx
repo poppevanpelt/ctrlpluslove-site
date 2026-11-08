@@ -9,6 +9,9 @@ export default function IndecisiveElementsMotionStudy() {
   const [curiosity, setCuriosity] = useState(65);
   const [doubt, setDoubt] = useState(55);
   const [conviction, setConviction] = useState(45);
+  const [trust, setTrust] = useState(65);
+  const [fear, setFear] = useState(35);
+  const [sourceReliability, setSourceReliability] = useState(70);
   const [showInfo, setShowInfo] = useState(false);
 
   useEffect(() => {
@@ -40,6 +43,18 @@ export default function IndecisiveElementsMotionStudy() {
   const openness = Math.max(0, Math.min(100, Math.round(12 + 0.55 * curiosity + 0.45 * doubt - 0.25 * conviction)));
   const commitment = Math.max(0, Math.min(100, Math.round(15 + 0.65 * conviction + 0.2 * curiosity - 0.3 * doubt)));
   const tension = Math.round(0.65 * Math.min(curiosity, doubt) + 0.35 * Math.min(doubt, conviction));
+  // Explicitly illustrative relationships: not fitted to psychological data.
+  const reliance = Math.max(0, Math.min(100, Math.round(0.45 * trust + 0.4 * sourceReliability - 0.25 * fear + 0.15 * trust * sourceReliability / 100)));
+  const verification = Math.max(0, Math.min(100, Math.round(0.35 * fear + 0.3 * (100 - trust) + 0.35 * (100 - sourceReliability))));
+  const relianceHigh = reliance >= 55;
+  const verificationHigh = verification >= 55;
+  const interactionPattern = relianceHigh && verificationHigh
+    ? "Trust, with active verification"
+    : relianceHigh && !verificationHigh
+      ? "High reliance, limited checking"
+      : !relianceHigh && verificationHigh
+        ? "Cautious, actively checking"
+        : "Low reliance, low verification";
 
   return (
     <main className={`study ${paused ? "is-paused" : ""} ${active ? "is-reacting" : ""}`}>
@@ -166,6 +181,62 @@ export default function IndecisiveElementsMotionStudy() {
         </aside>
       </section>
 
+      <section className="trust-lab" aria-labelledby="trust-lab-title">
+        <div className="trust-lab-intro">
+          <p className="eyebrow">INTERACTION STUDY · 003</p>
+          <h2 id="trust-lab-title">Trust × Fear</h2>
+          <p>Does trust soften threat, encourage reliance, or change how much we verify? Separate the internal state from the behaviour it may produce.</p>
+        </div>
+        <div className="trust-lab-grid">
+          <div className="trust-controls">
+            <label className="range-row">
+              <span><b>Trust in the source</b><output>{trust}</output></span>
+              <input aria-label="Trust in the source" type="range" min="0" max="100" value={trust} onChange={(event) => setTrust(Number(event.target.value))} />
+            </label>
+            <label className="range-row">
+              <span><b>Perceived Fear / Threat</b><output>{fear}</output></span>
+              <input aria-label="Perceived Fear or Threat" type="range" min="0" max="100" value={fear} onChange={(event) => setFear(Number(event.target.value))} />
+            </label>
+            <label className="range-row">
+              <span><b>Source reliability</b><output>{sourceReliability}</output></span>
+              <input aria-label="Actual or known source reliability" type="range" min="0" max="100" value={sourceReliability} onChange={(event) => setSourceReliability(Number(event.target.value))} />
+            </label>
+            <p className="model-caveat">Reliability is separate from trust: a source can be trusted and still be unreliable.</p>
+          </div>
+          <div className="trust-results">
+            <div className="trust-result">
+              <div><span>Willingness to rely</span><b>{reliance}</b></div>
+              <i><span style={{ width: `${reliance}%` }} /></i>
+            </div>
+            <div className="trust-result">
+              <div><span>Willingness to verify</span><b>{verification}</b></div>
+              <i><span style={{ width: `${verification}%` }} /></i>
+            </div>
+            <div className="pattern-card">
+              <span className="pattern-label">CURRENT PATTERN</span>
+              <strong>{interactionPattern}</strong>
+              <p>{relianceHigh && verificationHigh
+                ? "The person may rely on the source while still checking its recommendation."
+                : relianceHigh
+                  ? "The person may accept the recommendation with relatively little independent checking."
+                  : verificationHigh
+                    ? "The person may remain cautious and seek independent evidence before relying."
+                    : "Neither reliance nor checking is strongly predicted by this illustrative model."}</p>
+            </div>
+            <div className="quadrant" role="img" aria-label={`Reliance ${reliance}, verification ${verification}. ${interactionPattern}.`}>
+              <span className="quad-label quad-top">HIGH VERIFICATION</span>
+              <span className="quad-label quad-bottom">LOW VERIFICATION</span>
+              <span className="quad-label quad-left">LOW RELIANCE</span>
+              <span className="quad-label quad-right">HIGH RELIANCE</span>
+              <span className="quad-cross-v" />
+              <span className="quad-cross-h" />
+              <span className="quad-point" style={{ left: `${reliance}%`, bottom: `${verification}%` }} />
+            </div>
+          </div>
+        </div>
+        <p className="trust-footnote">MODEL 0.2 · The outputs are transparent toy equations for exploring assumptions, not validated psychological measurements or predictions. Change source reliability independently of trust to see why the distinction matters.</p>
+      </section>
+
       <footer className="bottom-bar">
         <button className="info-button" onClick={() => setShowInfo((value) => !value)} aria-expanded={showInfo}>
           <span className="info-icon">i</span> {showInfo ? "Hide the idea" : "Discover the human chemistry"}
@@ -175,7 +246,7 @@ export default function IndecisiveElementsMotionStudy() {
           <button onClick={() => setPaused((value) => !value)} aria-pressed={paused}>
             <span aria-hidden="true">{paused ? "▶" : "Ⅱ"}</span> {paused ? "Resume" : "Pause"}
           </button>
-          <button onClick={() => { setSelected(["doubt", "curiosity"]); setCuriosity(65); setDoubt(55); setConviction(45); setActive(false); setPaused(false); }}>
+          <button onClick={() => { setSelected(["doubt", "curiosity"]); setCuriosity(65); setDoubt(55); setConviction(45); setTrust(65); setFear(35); setSourceReliability(70); setActive(false); setPaused(false); }}>
             <span aria-hidden="true">↺</span> Reset
           </button>
         </div>
@@ -304,8 +375,38 @@ export default function IndecisiveElementsMotionStudy() {
         .model-output i { grid-column:1 / -1; height:4px; border-radius:99px; background:rgba(255,255,255,.12); overflow:hidden; }
         .model-output i span { display:block; height:100%; background:#c6a66f; border-radius:99px; transition:width .2s ease; }
         .model-caveat { color:#988d80; font-size:9px; line-height:1.5; margin:14px 0 0; }
+        .trust-lab { position:relative; z-index:1; max-width:1500px; margin:38px auto 28px; padding:clamp(22px,3vw,38px); border:1px solid rgba(230,217,199,.25); border-radius:10px; background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.018)); }
+        .trust-lab-intro { max-width:720px; }
+        .trust-lab-intro .eyebrow { margin-bottom:10px; }
+        .trust-lab-intro h2 { font-size:clamp(30px,3vw,44px); margin:0 0 12px; }
+        .trust-lab-intro > p:last-child { max-width:620px; color:#cfc4b8; font-size:13px; line-height:1.75; margin:0; }
+        .trust-lab-grid { display:grid; grid-template-columns:minmax(220px,.8fr) minmax(0,1.2fr); gap:clamp(24px,5vw,72px); margin-top:28px; }
+        .trust-controls { padding:18px; border:1px solid rgba(255,255,255,.12); border-radius:8px; background:rgba(0,0,0,.12); }
+        .trust-controls .range-row { margin:5px 0 22px; }
+        .trust-controls .range-row:last-of-type { margin-bottom:12px; }
+        .trust-results { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; align-content:start; }
+        .trust-result { padding:15px; border:1px solid rgba(255,255,255,.12); border-radius:8px; background:rgba(255,255,255,.025); }
+        .trust-result > div { display:flex; justify-content:space-between; gap:8px; color:#d4c9bd; font-size:11px; }
+        .trust-result b { color:#e4bd69; font-variant-numeric:tabular-nums; }
+        .trust-result > i { display:block; height:5px; margin-top:14px; background:rgba(255,255,255,.12); border-radius:99px; overflow:hidden; }
+        .trust-result > i span { display:block; height:100%; border-radius:99px; background:#c6a66f; transition:width .2s ease; }
+        .pattern-card { grid-column:1 / -1; padding:17px 18px; border:1px solid rgba(214,174,92,.35); border-radius:8px; background:rgba(214,174,92,.055); }
+        .pattern-label { display:block; color:#c6a66f; font-size:8px; letter-spacing:.16em; margin-bottom:10px; }
+        .pattern-card strong { font-size:17px; font-weight:500; }
+        .pattern-card p { margin:8px 0 0; color:#cfc4b8; font-size:11px; line-height:1.65; }
+        .quadrant { grid-column:1 / -1; position:relative; height:210px; margin:8px 16px 20px 58px; border-left:1px solid rgba(255,255,255,.35); border-bottom:1px solid rgba(255,255,255,.35); background:linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px); background-size:25% 25%; }
+        .quad-cross-v { position:absolute; left:50%; top:0; bottom:0; border-left:1px dashed rgba(255,255,255,.18); }
+        .quad-cross-h { position:absolute; top:50%; left:0; right:0; border-top:1px dashed rgba(255,255,255,.18); }
+        .quad-point { position:absolute; width:14px; height:14px; transform:translate(-50%,50%); border:2px solid #fff0cc; border-radius:50%; background:#d5a95e; box-shadow:0 0 18px rgba(213,169,94,.6); transition:left .2s ease,bottom .2s ease; }
+        .quad-label { position:absolute; color:#a99d8d; font-size:8px; letter-spacing:.1em; }
+        .quad-top { left:0; top:-15px; }
+        .quad-bottom { left:0; bottom:-16px; }
+        .quad-left { left:-58px; top:50%; transform:translateY(-50%) rotate(-90deg); transform-origin:center; }
+        .quad-right { right:-2px; top:50%; transform:translate(100%,-50%) rotate(90deg); transform-origin:center; }
+        .trust-footnote { margin:22px 0 0; color:#988d80; font-size:9px; line-height:1.6; max-width:900px; }
         @media (min-width:1100px) { .workspace { grid-template-columns:minmax(0,1.7fr) minmax(220px,.7fr); } .element-rail { grid-column:1; grid-row:1; } .instrument { grid-column:1; grid-row:2; } }
         @media (max-width:900px) { .workspace { grid-template-columns:1fr; gap:16px; } .element-rail { grid-row:1; } .instrument { grid-row:2; margin:0; } .reaction-panel { grid-row:3; grid-column:1; max-width:none; } .intro { margin-top:34px; } .element-card { min-height:245px; } .instrument { height:330px; } }
+        @media (max-width:760px) { .trust-lab-grid { grid-template-columns:1fr; gap:18px; } .trust-results { grid-template-columns:1fr; } .trust-result { min-width:0; } .quadrant { grid-column:1; margin-right:20px; } .pattern-card { grid-column:1; } }
         @media (max-width:560px) { .study { padding:20px 16px 18px; } .topbar { align-items:flex-start; } .wordmark { font-size:18px; } nav { gap:12px; font-size:10px; flex-wrap:wrap; justify-content:flex-end; max-width:64%; } .intro { margin-top:32px; } h1 { font-size:39px; } .subhead { margin-top:13px; } .workspace { margin-top:25px; } .element-rail { gap:8px; } .element-card { min-height:202px; padding:10px 5px 8px; border-radius:6px; } .crystal { width:56px; height:56px; margin:17px auto 5px; } .crystal-curiosity { border-width:5px; } .letter { font-size:24px; margin:5px 0 4px; } .element-card strong { font-size:9px; } .element-card small { font-size:8px; line-height:1.35; } .select-note { font-size:7px; margin-top:9px; } .instrument { height:260px; min-height:240px; } .reaction-panel { padding:19px 17px; } .bottom-bar { align-items:flex-start; flex-direction:column; margin-top:18px; } .motion-controls { width:100%; justify-content:space-between; gap:12px; } .motion-label { display:none; } .info-button { padding:0; } }
         @media (prefers-reduced-motion: reduce) { *, *:before, *:after { animation-duration:.01ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; transition-duration:.01ms !important; } }
       `}</style>
