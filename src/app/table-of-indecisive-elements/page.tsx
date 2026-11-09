@@ -73,10 +73,10 @@ export default function IndecisiveElementsMotionStudy() {
         <h1>The Table of<br />Indecisive Elements<span>™</span></h1>
         <p className="subhead">Mix. Explore. <em>Discover.</em></p>
         <div className="case-switch" aria-label="Choose a decision case">
-          <button className={scenario === "dinner" ? "case-option active" : "case-option"} onClick={() => setScenario("dinner")} aria-pressed={scenario === "dinner"}><span>CASE 001</span><strong>The Dinner Decision</strong><small>Chicken pot pie or couscous salad?</small></button>
-          <button className={scenario === "business" ? "case-option active" : "case-option"} onClick={() => setScenario("business")} aria-pressed={scenario === "business"}><span>CASE 002</span><strong>The Business Decision</strong><small>Launch now, or wait for more evidence?</small></button>
+          <button className={scenario === "dinner" ? "case-option active" : "case-option"} onClick={() => setScenario("dinner")} aria-pressed={scenario === "dinner"}><span>CASE 001</span><strong>The Absurd Decision</strong><small>Chicken pot pie for dinner or buy the competition?</small></button>
+          <button className={scenario === "business" ? "case-option active" : "case-option"} onClick={() => setScenario("business")} aria-pressed={scenario === "business"}><span>CASE 002</span><strong>The Business Decision</strong><small>Buy the competition or grow your own?</small></button>
         </div>
-        <p className="case-context">{scenario === "dinner" ? "A familiar, low-stakes choice. How do curiosity about the alternatives, doubt about what sounds right, and conviction in a preference interact?" : "The same core elements, now in a business context. Curiosity becomes appetite for learning, doubt becomes uncertainty about the evidence, and conviction becomes belief in the launch."}</p>
+        <p className="case-context">{scenario === "dinner" ? "A dinner choice and a corporate takeover, placed side by side. What changes when the stakes shift wildly but the human decision-maker stays the same?" : "A proper strategic dilemma: acquire growth or build it yourself. Curiosity becomes appetite for learning, doubt becomes uncertainty about the path, and conviction becomes belief in a strategy."}</p>
       </section>
 
       <section className="workspace" aria-label="Interactive element experiment">
@@ -161,7 +161,7 @@ export default function IndecisiveElementsMotionStudy() {
               <strong>THE DECISION FIELD</strong>
               <span>MODEL 0.1</span>
             </div>
-            <p className="model-intro">{scenario === "dinner" ? "Change the intensity of each element. Watch openness, commitment and tension shift around an everyday choice." : "Same elements, same illustrative equations. Read curiosity as appetite for learning, doubt as unresolved uncertainty, and conviction as belief in the launch. The model shows how assumptions interact, not whether the business should launch."}</p>
+            <p className="model-intro">{scenario === "dinner" ? "Change the intensity of each element. Watch openness, commitment and tension shift around this deliberately absurd pairing." : "Same elements, same illustrative equations. Read curiosity as appetite for learning, doubt as uncertainty about the path, and conviction as belief in a strategy. The model shows how assumptions interact, not whether to acquire or grow organically."}</p>
             <label className="range-row">
               <span><b>Curiosity</b><output>{curiosity}</output></span>
               <input aria-label="Curiosity intensity" type="range" min="0" max="100" value={curiosity} onChange={(event) => setCuriosity(Number(event.target.value))} />
@@ -176,10 +176,10 @@ export default function IndecisiveElementsMotionStudy() {
             </label>
             <div className="model-output">
               <div><span>{scenario === "dinner" ? "Openness" : "Openness to learn"}</span><b>{openness}</b><i><span style={{ width: `${openness}%` }} /></i></div>
-              <div><span>{scenario === "dinner" ? "Commitment" : "Launch commitment"}</span><b>{commitment}</b><i><span style={{ width: `${commitment}%` }} /></i></div>
+              <div><span>{scenario === "dinner" ? "Commitment" : "Strategic commitment"}</span><b>{commitment}</b><i><span style={{ width: `${commitment}%` }} /></i></div>
               <div><span>{scenario === "dinner" ? "Coexisting tension" : "Decision tension"}</span><b>{tension}</b><i><span style={{ width: `${tension}%` }} /></i></div>
             </div>
-            <p className="model-caveat">{scenario === "dinner" ? "Case 001 is a thought experiment about a dinner choice, not a validated account of what anyone should eat." : "Case 002 changes the decision context, not the underlying elements. These illustrative equations do not predict business outcomes."} The equations are not validated psychological measurements or predictions.</p>
+            <p className="model-caveat">{scenario === "dinner" ? "Case 001 deliberately puts a dinner choice beside a corporate takeover. It is a thought experiment, not advice about dinner or acquisitions." : "Case 002 explores acquisition versus organic growth using the same decision elements. These illustrative equations do not predict business outcomes."} The equations are not validated psychological measurements or predictions.</p>
           </section>
           <button className="explore-button" onClick={() => setActive(true)} disabled={selected.length < 2}>
             Run the reaction <span aria-hidden="true">↗</span>
