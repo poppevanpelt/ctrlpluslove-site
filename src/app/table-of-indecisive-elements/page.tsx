@@ -76,7 +76,7 @@ export default function IndecisiveElementsMotionStudy() {
           <button className={scenario === "dinner" ? "case-option active" : "case-option"} onClick={() => setScenario("dinner")} aria-pressed={scenario === "dinner"}><span>CASE 001</span><strong>The Dinner Decision</strong><small>Chicken pot pie or couscous salad?</small></button>
           <button className={scenario === "business" ? "case-option active" : "case-option"} onClick={() => setScenario("business")} aria-pressed={scenario === "business"}><span>CASE 002</span><strong>The Business Decision</strong><small>Launch now, or wait for more evidence?</small></button>
         </div>
-        <p className="case-context">{scenario === "dinner" ? "A familiar, low-stakes choice. What happens when warmth, hunger, novelty and hesitation pull in different directions?" : "The same core elements, now in a business context. What changes when doubt concerns evidence, fear concerns downside, and conviction carries consequences?"}</p>
+        <p className="case-context">{scenario === "dinner" ? "A familiar, low-stakes choice. How do curiosity about the alternatives, doubt about what sounds right, and conviction in a preference interact?" : "The same core elements, now in a business context. Curiosity becomes appetite for learning, doubt becomes uncertainty about the evidence, and conviction becomes belief in the launch."}</p>
       </section>
 
       <section className="workspace" aria-label="Interactive element experiment">
@@ -161,7 +161,7 @@ export default function IndecisiveElementsMotionStudy() {
               <strong>THE DECISION FIELD</strong>
               <span>MODEL 0.1</span>
             </div>
-            <p className="model-intro">{scenario === "dinner" ? "Change the intensity of each element. Watch openness, commitment and tension shift around an everyday choice." : "Keep the same elements and mechanics. Reinterpret them in context: curiosity becomes learning potential, doubt becomes unresolved uncertainty, and conviction becomes belief in the launch."}</p>
+            <p className="model-intro">{scenario === "dinner" ? "Change the intensity of each element. Watch openness, commitment and tension shift around an everyday choice." : "Same elements, same illustrative equations. Read curiosity as appetite for learning, doubt as unresolved uncertainty, and conviction as belief in the launch. The model shows how assumptions interact, not whether the business should launch."}</p>
             <label className="range-row">
               <span><b>Curiosity</b><output>{curiosity}</output></span>
               <input aria-label="Curiosity intensity" type="range" min="0" max="100" value={curiosity} onChange={(event) => setCuriosity(Number(event.target.value))} />
@@ -179,7 +179,7 @@ export default function IndecisiveElementsMotionStudy() {
               <div><span>{scenario === "dinner" ? "Commitment" : "Launch commitment"}</span><b>{commitment}</b><i><span style={{ width: `${commitment}%` }} /></i></div>
               <div><span>{scenario === "dinner" ? "Coexisting tension" : "Decision tension"}</span><b>{tension}</b><i><span style={{ width: `${tension}%` }} /></i></div>
             </div>
-            <p className="model-caveat">{scenario === "dinner" ? "Case 001 is a thought experiment, not a validated account of what anyone should eat." : "Case 002 changes the decision context, not the underlying elements. These illustrative equations do not predict business outcomes."} The equations are not validated psychological measurements or predictions.</p>
+            <p className="model-caveat">{scenario === "dinner" ? "Case 001 is a thought experiment about a dinner choice, not a validated account of what anyone should eat." : "Case 002 changes the decision context, not the underlying elements. These illustrative equations do not predict business outcomes."} The equations are not validated psychological measurements or predictions.</p>
           </section>
           <button className="explore-button" onClick={() => setActive(true)} disabled={selected.length < 2}>
             Run the reaction <span aria-hidden="true">↗</span>
