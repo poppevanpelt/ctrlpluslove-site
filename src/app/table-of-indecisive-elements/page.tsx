@@ -237,6 +237,44 @@ export default function IndecisiveElementsMotionStudy() {
         <p className="trust-footnote">MODEL 0.2 · The outputs are transparent toy equations for exploring assumptions, not validated psychological measurements or predictions. Change source reliability independently of trust to see why the distinction matters.</p>
       </section>
 
+
+      <section className="research-notes" aria-labelledby="research-notes-title">
+        <p className="eyebrow">RESEARCH NOTES · STARTING POINTS</p>
+        <h2 id="research-notes-title">Grounded in research. Open to testing.</h2>
+        <p className="research-lede">These papers inform the questions behind the experiments. They do not validate the equations or numerical outputs shown here.</p>
+        <div className="research-list">
+          <article className="research-item">
+            <span className="research-tag">CURIOSITY · UNCERTAINTY</span>
+            <h3>Curiosity and the dynamics of optimal exploration</h3>
+            <p>Reviews how uncertainty, information gain and learning progress can shape curiosity over time, while noting that no single account explains every form of curiosity.</p>
+            <p className="research-citation">Gottlieb, Oudeyer, Lopes & Baranes (2024) · <em>Trends in Cognitive Sciences</em></p>
+            <a href="https://doi.org/10.1016/j.tics.2024.02.001" target="_blank" rel="noreferrer">Read paper ↗</a>
+          </article>
+          <article className="research-item">
+            <span className="research-tag">INFORMATION SEEKING</span>
+            <h3>Curiosity: primate neural circuits for novelty and information seeking</h3>
+            <p>Reviews evidence that novelty and uncertainty can motivate information seeking, including when information has no immediate practical reward.</p>
+            <p className="research-citation">Monosov (2024) · <em>Nature Reviews Neuroscience</em></p>
+            <a href="https://doi.org/10.1038/s41583-023-00784-9" target="_blank" rel="noreferrer">Read paper ↗</a>
+          </article>
+          <article className="research-item">
+            <span className="research-tag">TRUST · RELIANCE</span>
+            <h3>Trust in automation: designing for appropriate reliance</h3>
+            <p>Explains why trust influences reliance, and why the goal is calibrated trust rather than simply maximising trust.</p>
+            <p className="research-citation">Lee & See (2004) · <em>Human Factors</em></p>
+            <a href="https://doi.org/10.1518/hfes.46.1.50_30392" target="_blank" rel="noreferrer">Read paper ↗</a>
+          </article>
+          <article className="research-item">
+            <span className="research-tag">TRUST · CONTEXT</span>
+            <h3>Trust in automation: integrating empirical evidence on factors that influence trust</h3>
+            <p>A systematic review of human-subject studies describes dispositional, situational and learned influences on trust in automation.</p>
+            <p className="research-citation">Hoff & Bashir (2015) · <em>Human Factors</em></p>
+            <a href="https://doi.org/10.1177/0018720814547570" target="_blank" rel="noreferrer">Read paper ↗</a>
+          </article>
+        </div>
+        <p className="research-boundary"><strong>What this does not claim:</strong> these studies do not establish the model’s formulas, thresholds, or a universal causal relationship between fear and curiosity. Those are hypotheses to test, not findings to borrow authority from.</p>
+      </section>
+
       <footer className="bottom-bar">
         <button className="info-button" onClick={() => setShowInfo((value) => !value)} aria-expanded={showInfo}>
           <span className="info-icon">i</span> {showInfo ? "Hide the idea" : "Discover the human chemistry"}
@@ -409,6 +447,21 @@ export default function IndecisiveElementsMotionStudy() {
         @media (max-width:760px) { .trust-lab-grid { grid-template-columns:1fr; gap:18px; } .trust-results { grid-template-columns:1fr; } .trust-result { min-width:0; } .quadrant { grid-column:1; margin-right:20px; } .pattern-card { grid-column:1; } }
         @media (max-width:560px) { .study { padding:20px 16px 18px; } .topbar { align-items:flex-start; } .wordmark { font-size:18px; } nav { gap:12px; font-size:10px; flex-wrap:wrap; justify-content:flex-end; max-width:64%; } .intro { margin-top:32px; } h1 { font-size:39px; } .subhead { margin-top:13px; } .workspace { margin-top:25px; } .element-rail { gap:8px; } .element-card { min-height:202px; padding:10px 5px 8px; border-radius:6px; } .crystal { width:56px; height:56px; margin:17px auto 5px; } .crystal-curiosity { border-width:5px; } .letter { font-size:24px; margin:5px 0 4px; } .element-card strong { font-size:9px; } .element-card small { font-size:8px; line-height:1.35; } .select-note { font-size:7px; margin-top:9px; } .instrument { height:260px; min-height:240px; } .reaction-panel { padding:19px 17px; } .bottom-bar { align-items:flex-start; flex-direction:column; margin-top:18px; } .motion-controls { width:100%; justify-content:space-between; gap:12px; } .motion-label { display:none; } .info-button { padding:0; } }
         @media (prefers-reduced-motion: reduce) { *, *:before, *:after { animation-duration:.01ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; transition-duration:.01ms !important; } }
+
+        .research-notes { position:relative; z-index:1; max-width:1500px; margin:72px auto 38px; padding:32px 0 10px; border-top:1px solid rgba(255,255,255,.18); }
+        .research-notes h2 { max-width:760px; margin:0; font-size:clamp(28px,3.2vw,42px); line-height:1.05; font-weight:400; letter-spacing:-.035em; }
+        .research-lede { max-width:760px; color:#c8bfb5; font-size:14px; line-height:1.7; margin:14px 0 28px; }
+        .research-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+        .research-item { padding:20px; border:1px solid rgba(255,255,255,.14); border-radius:7px; background:rgba(255,255,255,.025); }
+        .research-tag { color:#d5b16f; font-size:9px; letter-spacing:.15em; }
+        .research-item h3 { margin:12px 0 8px; font-size:17px; font-weight:500; line-height:1.3; }
+        .research-item p { color:#c8bfb5; font-size:12px; line-height:1.65; }
+        .research-item .research-citation { color:#9f978e; font-size:11px; }
+        .research-item a { display:inline-block; margin-top:4px; color:#e2bb62; font-size:12px; }
+        .research-item a:hover { color:#fff; }
+        .research-boundary { max-width:980px; margin:22px 0 0; color:#c8bfb5; font-size:12px; line-height:1.7; }
+        .research-boundary strong { color:#f2eee8; }
+        @media (max-width:700px) { .research-list { grid-template-columns:minmax(0,1fr); } .research-notes { margin-top:52px; } .research-item { padding:17px; } }
       `}</style>
     </main>
   );
