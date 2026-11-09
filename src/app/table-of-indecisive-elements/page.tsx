@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 export default function IndecisiveElementsMotionStudy() {
+  const [scenario, setScenario] = useState<"dinner" | "business">("dinner");
   const [active, setActive] = useState(false);
   const [paused, setPaused] = useState(false);
   const [selected, setSelected] = useState<string[]>(["doubt", "curiosity"]);
@@ -71,6 +72,11 @@ export default function IndecisiveElementsMotionStudy() {
         <p className="eyebrow">HUMAN CHEMISTRY · MOTION STUDY 001</p>
         <h1>The Table of<br />Indecisive Elements<span>™</span></h1>
         <p className="subhead">Mix. Explore. <em>Discover.</em></p>
+        <div className="case-switch" aria-label="Choose a decision case">
+          <button className={scenario === "dinner" ? "case-option active" : "case-option"} onClick={() => setScenario("dinner")} aria-pressed={scenario === "dinner"}><span>CASE 001</span><strong>The Dinner Decision</strong><small>Chicken pot pie or couscous salad?</small></button>
+          <button className={scenario === "business" ? "case-option active" : "case-option"} onClick={() => setScenario("business")} aria-pressed={scenario === "business"}><span>CASE 002</span><strong>The Business Decision</strong><small>Launch now, or wait for more evidence?</small></button>
+        </div>
+        <p className="case-context">{scenario === "dinner" ? "A familiar, low-stakes choice. How do curiosity about the alternatives, doubt about what sounds right, and conviction in a preference interact?" : "The same core elements, now in a business context. Curiosity becomes appetite for learning, doubt becomes uncertainty about the evidence, and conviction becomes belief in the launch."}</p>
       </section>
 
       <section className="workspace" aria-label="Interactive element experiment">
@@ -155,7 +161,7 @@ export default function IndecisiveElementsMotionStudy() {
               <strong>THE DECISION FIELD</strong>
               <span>MODEL 0.1</span>
             </div>
-            <p className="model-intro">Change the intensity of each element. Watch the balance shift.</p>
+            <p className="model-intro">{scenario === "dinner" ? "Change the intensity of each element. Watch openness, commitment and tension shift around an everyday choice." : "Same elements, same illustrative equations. Read curiosity as appetite for learning, doubt as unresolved uncertainty, and conviction as belief in the launch. The model shows how assumptions interact, not whether the business should launch."}</p>
             <label className="range-row">
               <span><b>Curiosity</b><output>{curiosity}</output></span>
               <input aria-label="Curiosity intensity" type="range" min="0" max="100" value={curiosity} onChange={(event) => setCuriosity(Number(event.target.value))} />
@@ -169,11 +175,11 @@ export default function IndecisiveElementsMotionStudy() {
               <input aria-label="Conviction intensity" type="range" min="0" max="100" value={conviction} onChange={(event) => setConviction(Number(event.target.value))} />
             </label>
             <div className="model-output">
-              <div><span>Openness</span><b>{openness}</b><i><span style={{ width: `${openness}%` }} /></i></div>
-              <div><span>Commitment</span><b>{commitment}</b><i><span style={{ width: `${commitment}%` }} /></i></div>
-              <div><span>Coexisting tension</span><b>{tension}</b><i><span style={{ width: `${tension}%` }} /></i></div>
+              <div><span>{scenario === "dinner" ? "Openness" : "Openness to learn"}</span><b>{openness}</b><i><span style={{ width: `${openness}%` }} /></i></div>
+              <div><span>{scenario === "dinner" ? "Commitment" : "Launch commitment"}</span><b>{commitment}</b><i><span style={{ width: `${commitment}%` }} /></i></div>
+              <div><span>{scenario === "dinner" ? "Coexisting tension" : "Decision tension"}</span><b>{tension}</b><i><span style={{ width: `${tension}%` }} /></i></div>
             </div>
-            <p className="model-caveat">Illustrative equations, not validated psychological measurements or predictions.</p>
+            <p className="model-caveat">{scenario === "dinner" ? "Case 001 is a thought experiment about a dinner choice, not a validated account of what anyone should eat." : "Case 002 changes the decision context, not the underlying elements. These illustrative equations do not predict business outcomes."} The equations are not validated psychological measurements or predictions.</p>
           </section>
           <button className="explore-button" onClick={() => setActive(true)} disabled={selected.length < 2}>
             Run the reaction <span aria-hidden="true">↗</span>
@@ -314,6 +320,13 @@ export default function IndecisiveElementsMotionStudy() {
         h1 span { font-size:.24em; vertical-align:top; letter-spacing:0; margin-left:6px; }
         .subhead { font-size:clamp(17px,1.7vw,23px); color:#d2c8be; margin:17px 0 0; }
         .subhead em { font-style:normal; color:#e2bb62; }
+        .case-switch { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; max-width:760px; margin-top:28px; }
+        .case-option { display:flex; flex-direction:column; align-items:flex-start; gap:7px; text-align:left; padding:17px 18px; border:1px solid rgba(255,255,255,.15); border-radius:7px; color:#f2eee8; background:rgba(255,255,255,.025); cursor:pointer; transition:border-color .2s,background .2s; }
+        .case-option.active { border-color:rgba(213,169,94,.75); background:rgba(213,169,94,.09); }
+        .case-option span { color:#d5a95e; font-size:8px; letter-spacing:.16em; }
+        .case-option strong { font-size:13px; font-weight:500; }
+        .case-option small { color:#b8ada1; font-size:10px; line-height:1.5; }
+        .case-context { max-width:760px; margin:13px 0 0; color:#c8bfb5; font-size:12px; line-height:1.7; }
         .workspace { display:grid; grid-template-columns:minmax(0,1.7fr) minmax(210px,.7fr); gap:clamp(24px,4vw,66px); align-items:center; max-width:1500px; margin: 26px auto 0; }
         .element-rail { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(10px,2vw,26px); align-self:start; }
         .element-card { position:relative; overflow:hidden; min-width:0; min-height:270px; border:1px solid rgba(255,255,255,.28); border-radius:8px; color:#f4f0ea; background:linear-gradient(155deg,rgba(255,255,255,.12),rgba(255,255,255,.025) 50%,rgba(0,0,0,.25)),rgba(28,26,25,.54); box-shadow:0 14px 36px rgba(0,0,0,.2), inset 0 0 20px rgba(255,255,255,.025); padding:14px 12px 12px; display:flex; align-items:center; flex-direction:column; cursor:pointer; transition:border-color .3s, transform .3s, box-shadow .3s; text-align:center; }
@@ -445,7 +458,7 @@ export default function IndecisiveElementsMotionStudy() {
         @media (min-width:1100px) { .workspace { grid-template-columns:minmax(0,1.7fr) minmax(220px,.7fr); } .element-rail { grid-column:1; grid-row:1; } .instrument { grid-column:1; grid-row:2; } }
         @media (max-width:900px) { .workspace { grid-template-columns:1fr; gap:16px; } .element-rail { grid-row:1; } .instrument { grid-row:2; margin:0; } .reaction-panel { grid-row:3; grid-column:1; max-width:none; } .intro { margin-top:34px; } .element-card { min-height:245px; } .instrument { height:330px; } }
         @media (max-width:760px) { .trust-lab-grid { grid-template-columns:1fr; gap:18px; } .trust-results { grid-template-columns:1fr; } .trust-result { min-width:0; } .quadrant { grid-column:1; margin-right:20px; } .pattern-card { grid-column:1; } }
-        @media (max-width:560px) { .study { padding:20px 16px 18px; } .topbar { align-items:flex-start; } .wordmark { font-size:18px; } nav { gap:12px; font-size:10px; flex-wrap:wrap; justify-content:flex-end; max-width:64%; } .intro { margin-top:32px; } h1 { font-size:39px; } .subhead { margin-top:13px; } .workspace { margin-top:25px; } .element-rail { gap:8px; } .element-card { min-height:202px; padding:10px 5px 8px; border-radius:6px; } .crystal { width:56px; height:56px; margin:17px auto 5px; } .crystal-curiosity { border-width:5px; } .letter { font-size:24px; margin:5px 0 4px; } .element-card strong { font-size:9px; } .element-card small { font-size:8px; line-height:1.35; } .select-note { font-size:7px; margin-top:9px; } .instrument { height:260px; min-height:240px; } .reaction-panel { padding:19px 17px; } .bottom-bar { align-items:flex-start; flex-direction:column; margin-top:18px; } .motion-controls { width:100%; justify-content:space-between; gap:12px; } .motion-label { display:none; } .info-button { padding:0; } }
+        @media (max-width:560px) { .case-switch { grid-template-columns:1fr; gap:8px; } .case-option { padding:13px 14px; } .study { padding:20px 16px 18px; } .topbar { align-items:flex-start; } .wordmark { font-size:18px; } nav { gap:12px; font-size:10px; flex-wrap:wrap; justify-content:flex-end; max-width:64%; } .intro { margin-top:32px; } h1 { font-size:39px; } .subhead { margin-top:13px; } .workspace { margin-top:25px; } .element-rail { gap:8px; } .element-card { min-height:202px; padding:10px 5px 8px; border-radius:6px; } .crystal { width:56px; height:56px; margin:17px auto 5px; } .crystal-curiosity { border-width:5px; } .letter { font-size:24px; margin:5px 0 4px; } .element-card strong { font-size:9px; } .element-card small { font-size:8px; line-height:1.35; } .select-note { font-size:7px; margin-top:9px; } .instrument { height:260px; min-height:240px; } .reaction-panel { padding:19px 17px; } .bottom-bar { align-items:flex-start; flex-direction:column; margin-top:18px; } .motion-controls { width:100%; justify-content:space-between; gap:12px; } .motion-label { display:none; } .info-button { padding:0; } }
         @media (prefers-reduced-motion: reduce) { *, *:before, *:after { animation-duration:.01ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; transition-duration:.01ms !important; } }
 
         .research-notes { position:relative; z-index:1; max-width:1500px; margin:72px auto 38px; padding:32px 0 10px; border-top:1px solid rgba(255,255,255,.18); }
