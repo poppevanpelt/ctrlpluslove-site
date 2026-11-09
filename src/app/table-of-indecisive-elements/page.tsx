@@ -175,9 +175,9 @@ export default function IndecisiveElementsMotionStudy() {
               <input aria-label="Conviction intensity" type="range" min="0" max="100" value={conviction} onChange={(event) => setConviction(Number(event.target.value))} />
             </label>
             <div className="model-output">
-              <div><span>Openness</span><b>{openness}</b><i><span style={{ width: `${openness}%` }} /></i></div>
-              <div><span>Commitment</span><b>{commitment}</b><i><span style={{ width: `${commitment}%` }} /></i></div>
-              <div><span>Coexisting tension</span><b>{tension}</b><i><span style={{ width: `${tension}%` }} /></i></div>
+              <div><span>{scenario === "dinner" ? "Openness" : "Openness to learn"}</span><b>{openness}</b><i><span style={{ width: `${openness}%` }} /></i></div>
+              <div><span>{scenario === "dinner" ? "Commitment" : "Launch commitment"}</span><b>{commitment}</b><i><span style={{ width: `${commitment}%` }} /></i></div>
+              <div><span>{scenario === "dinner" ? "Coexisting tension" : "Decision tension"}</span><b>{tension}</b><i><span style={{ width: `${tension}%` }} /></i></div>
             </div>
             <p className="model-caveat">{scenario === "dinner" ? "Case 001 is a thought experiment, not a validated account of what anyone should eat." : "Case 002 changes the decision context, not the underlying elements. These illustrative equations do not predict business outcomes."} The equations are not validated psychological measurements or predictions.</p>
           </section>
