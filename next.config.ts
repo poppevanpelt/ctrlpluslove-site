@@ -75,6 +75,8 @@ const nextConfig: NextConfig = {
   async redirects() {
     // Keep the standalone app and its voice requests on the configured runtime.
     return [
+      { source: "/ambassadors/:path*", destination: "/", permanent: false },
+      { source: "/embassies/:path*", destination: "/", permanent: false },
       ...["/savannah/:path*", "/api/savannah-voice", "/api/savannah-transcribe"].map((source) => ({
         source,
         has: [{ type: "host" as const, value: "ctrlpluslove.com" }],

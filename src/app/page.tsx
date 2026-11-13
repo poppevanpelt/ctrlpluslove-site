@@ -7,9 +7,7 @@ import HandoverNote from "./HandoverNote";
 import TastingWindow from "./TastingWindow";
 import followThrough from "./xray-follow-through.module.css";
 import { homepageRoomPersonas } from "./room-personas-data";
-import { confirmedAmbassadors } from "./ambassadors-data";
 
-const publicWorkingCircle = confirmedAmbassadors.filter(person => person.status === "ambassador" && person.id !== "flip").slice(0, 6);
 
 const stages = [
   { no:"01", verb:"OBSERVE.", name:"ctrl+live", line:"Watch what is actually changing before deciding what it means.", detail:"Signals, movement, patterns and anomalies — kept alive instead of frozen into another report.", price:"Ongoing watch", href:"mailto:poppevanpelt@gmail.com?subject=Show%20me%20ctrl%2Blive", kind:"observe" },
@@ -200,8 +198,8 @@ export default function Home() {
 
       <section className={`${styles.section} ${styles.peopleSection}`} id="people">
         <div className={styles.kicker}>The intelligence behind the instruments</div>
-        <h2>Some are designed. Some have been there.</h2>
-        <div className={styles.peopleColumns}>
+        <h2>Perspectives designed to challenge the obvious.</h2>
+        <div className={styles.peopleColumns} style={{gridTemplateColumns:"1fr"}}>
           <div className={styles.peoplePanel}>
             <div className={styles.peoplePanelHeading}>
               <span>01 / OBSERVED INTELLIGENCE</span>
@@ -218,24 +216,8 @@ export default function Home() {
             </div>
             <a className={styles.peopleAction} href="/room/">Meet the perspectives ↗</a>
           </div>
-          <div className={styles.peoplePanel}>
-            <div className={styles.peoplePanelHeading}>
-              <span>02 / LIVED INTELLIGENCE</span>
-              <h3>A circle, not a club.</h3>
-              <p>Rooted in people who have worked shoulder to shoulder at Apple and beyond. Open to new minds, different disciplines and unexpected collaborators. Curiosity matters more than credentials.</p>
-            </div>
-            <div className={styles.peoplePortraits}>
-              {publicWorkingCircle.map((person) => (
-                <div className={styles.peoplePortrait} key={person.id}>
-                  {person.image && <img src={person.image} alt={person.name} loading="lazy" />}
-                  <div><strong>{person.name}</strong><span>{person.city}</span></div>
-                </div>
-              ))}
-            </div>
-            <a className={styles.peopleAction} href="/ambassadors/">Meet the circle — and see how it grows ↗</a>
-          </div>
         </div>
-        <p className={styles.peopleClosing}>Designed perspectives to challenge the obvious. Real relationships to take the work further. Human judgment stays in charge.</p>
+        <p className={styles.peopleClosing}>Designed perspectives to challenge the obvious. Human judgment stays in charge.</p>
       </section>
 
       <section className={styles.section} id="cases">
@@ -298,7 +280,7 @@ export default function Home() {
             <div className={styles.aboutBio}>
               <p><b>Poppe van Pelt</b><br/>Founder, ctrl+love</p>
               <p>Built after decades of watching good ideas get improved to death in rooms full of smart people.</p>
-              <p className={styles.circle}>Built on observation, collaboration and the people who have been in the room. <a href="#people">Meet the working circle ↗</a></p>
+              <p className={styles.circle}>Built on observation, collaboration and the people who have been in the room. <a href="#people">Meet the perspectives ↗</a></p>
             </div>
           </div>
         </div>

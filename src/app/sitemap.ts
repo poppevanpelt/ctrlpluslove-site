@@ -1,10 +1,8 @@
 import type { MetadataRoute } from "next";
 
-import { ambassadorProfiles } from "./ambassador-profiles-data";
 import { allRoomPersonas } from "./room-personas-data";
 import { absoluteUrl, publicRoutes } from "./seo";
 import { swatMissions } from "./swat/missions-data";
-import { embassies } from "@/content/embassies";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date("2026-09-15");
@@ -19,7 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       priority: 0.82,
     },
-    ...publicRoutes.map((route) => ({
+    ...publicRoutes.filter(route => !["/ambassadors/", "/embassies/"].includes(route.path)).map((route) => ({
       url: absoluteUrl(route.path),
       lastModified: route.path === "/" ? homeLastModified : lastModified,
       changeFrequency: route.changeFrequency ?? "monthly",
@@ -60,18 +58,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: swatLastModified,
       changeFrequency: "monthly" as const,
       priority: 0.74,
-    })),
-    ...ambassadorProfiles.map((profile) => ({
-      url: absoluteUrl(`/ambassadors/${profile.slug}/`),
-      lastModified,
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    })),
-    ...embassies.map((embassy) => ({
-      url: absoluteUrl(`/embassies/${embassy.slug}/`),
-      lastModified,
-      changeFrequency: "monthly" as const,
-      priority: 0.72,
     })),
     ...allRoomPersonas.map((persona) => ({
       url: absoluteUrl(`/room/${persona.id}/`),

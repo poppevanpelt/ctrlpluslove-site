@@ -11,7 +11,6 @@ const projectLinks = [
   { href: "/ai-y-fier/", label: "AI-Y-fier" },
   { href: "/radar/", label: "Radar" },
   { href: "/museum/", label: "Museum" },
-  { href: "/ambassadors/", label: "Network" },
   { href: "/inside-ctrl-love/", label: "Inside" },
   { href: "/pricing/", label: "Pricing" },
   { href: "mailto:hello@ctrlpluslove.com", label: "Admission" },
