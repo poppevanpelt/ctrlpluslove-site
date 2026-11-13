@@ -59,7 +59,7 @@ function InstrumentArtwork({ no }: { no: string }) {
   if (!art) return null;
   return (
     <div className={`${styles.artwork} ${styles[`art_${art.motif}`]}`}>
-      <span className={styles.artworkIndex}>ctrl+love / {no}</span>
+      <span className={styles.artworkIndex}>ctrl+love / CL–{no}</span><span className={styles.instrumentFastener} aria-hidden="true" /><span className={styles.instrumentPilot} aria-hidden="true" />
       <svg className={styles.artworkDiagram} viewBox="0 0 480 260" aria-hidden="true">
         {no === "01" && <><circle cx="120" cy="130" r="61" fill="none" stroke="currentColor" strokeWidth="3"/><circle cx="120" cy="130" r="23" fill="#171717"/><path d="M191 130H357" stroke="currentColor" strokeWidth="10" strokeLinecap="square"/><path d="M316 86L365 130 316 174" stroke="currentColor" strokeWidth="10" fill="none"/><circle cx="411" cy="130" r="27" fill="#171717"/></>}
         {no === "02" && <><path d="M55 55H425M55 128H425M55 201H425M112 24V236M240 24V236M368 24V236" stroke="currentColor" strokeWidth="1.5" opacity=".3"/><circle cx="240" cy="128" r="67" fill="#151515"/><path d="M205 127l24 24 46-51" stroke="#f4ead8" strokeWidth="10" strokeLinecap="square" fill="none"/><path d="M63 43h96" stroke="currentColor" strokeWidth="5"/></>}
@@ -73,7 +73,7 @@ function InstrumentArtwork({ no }: { no: string }) {
         {no === "11" && <><path d="M60 190C130 190 122 68 202 68S283 205 350 205 404 110 418 64" stroke="currentColor" strokeWidth="9" fill="none" strokeLinecap="round"/><circle cx="60" cy="190" r="18" fill="#171717"/><circle cx="418" cy="64" r="21" fill="#171717"/><path d="M375 37L419 64 390 106" stroke="#f9f3e5" strokeWidth="5" fill="none"/></>}
         {no === "12" && <><circle cx="240" cy="130" r="112" stroke="currentColor" strokeWidth="2" fill="none"/><circle cx="240" cy="130" r="77" stroke="currentColor" strokeWidth="2" opacity=".7" fill="none"/><circle cx="240" cy="130" r="42" stroke="currentColor" strokeWidth="2" opacity=".5" fill="none"/><path d="M240 18V242M128 130H352" stroke="currentColor" strokeWidth="2"/><path d="M240 130L323 53A112 112 0 0 1 351 115Z" fill="#171717" opacity=".85"/><circle cx="318" cy="97" r="9" fill="#f9f3e5"/></>}
       </svg>
-      <span className={styles.artworkLabel}>{art.label}</span>
+      <span className={styles.artworkLabel}>{art.label}</span><span className={styles.instrumentPlate}>INSTRUMENT DIVISION · {no}</span>
     </div>
   );
 }
