@@ -19,6 +19,8 @@ export default function MeetingListener(props: Props) {
   const [status, setStatus] = useState("She listens until you end the meeting.");
   const [retry, setRetry] = useState(false);
   const meetingWords = useRef<string[]>([]);
+  const meetingId = useRef<string>("");
+  const startedAt = useRef<string>("");
   const [wordsReady, setWordsReady] = useState(false);
   const [handoffStatus, setHandoffStatus] = useState("");
   const [saveStatus, setSaveStatus] = useState("Transcript not yet saved.");
@@ -26,17 +28,19 @@ export default function MeetingListener(props: Props) {
     try {
       const saved = window.localStorage.getItem(MEETING_DRAFT_KEY);
       if (!saved) return;
-      const data = JSON.parse(saved) as { words?: unknown };
+      const data = JSON.parse(saved) as { words?: unknown; id?: string; startedAt?: string };
       if (!Array.isArray(data.words)) return;
       const words = data.words.filter((word): word is string => typeof word === "string");
       meetingWords.current = words;
+      meetingId.current = data.id || "legacy";
+      startedAt.current = data.startedAt || "";
       setWordsReady(words.length > 0);
       if (words.length) setSaveStatus("Recovered transcript from this device.");
     } catch { setSaveStatus("Saved transcript could not be read. Do not clear browser data."); }
   }, []);
   function saveTranscript(words: string[]) {
     try {
-      window.localStorage.setItem(MEETING_DRAFT_KEY, JSON.stringify({ words, savedAt: new Date().toISOString() }));
+      window.localStorage.setItem(MEETING_DRAFT_KEY, JSON.stringify({ id: meetingId.current, startedAt: startedAt.current, words, savedAt: new Date().toISOString() }));
       setSaveStatus("Transcript saved on this device.");
     } catch { setSaveStatus("SAVE FAILED. Download the transcript before leaving."); }
   }
@@ -45,7 +49,7 @@ export default function MeetingListener(props: Props) {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "savannah-meeting-transcript.txt";
+    link.download = `savannah-meeting-${meetingId.current || "legacy"}.txt`;
     link.click();
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
@@ -75,11 +79,11 @@ export default function MeetingListener(props: Props) {
   }
 
   async function start() {
-    if (opening || active || control.current || props.unavailable) return;
+    if (opening || active || finishing || control.current || props.unavailable) return;
     setOpening(true);
     callbacks.current.onActive(true);
     setRetry(false);
-    // Keep the saved transcript on restart; clearing requires an explicit action.
+    // Preserve the previous session before starting a separate recording.
     setHandoffStatus("");
     setStatus("Opening meeting microphone…");
     const token = ++generation.current;
@@ -223,6 +227,19 @@ export default function MeetingListener(props: Props) {
       function dispose() { disposed = true; stop(); queue.cancel(); requests.abort(); }
       control.current = { stop, dispose, retry: () => { setRetry(false); queue.retry(); } };
       recordingStream.getTracks().forEach(track => { track.onended = () => { if (!ended) { stop(); sayStatus("Microphone disconnected. Start the meeting again."); } }; });
+      // Archive the previous transcript before replacing the current draft.
+      // If storage fails, refuse to start rather than lose the previous meeting.
+      const previous = window.localStorage.getItem(MEETING_DRAFT_KEY);
+      if (previous) {
+        const archiveId = meetingId.current && meetingId.current !== "legacy" ? meetingId.current : "legacy-" + crypto.randomUUID();
+        window.localStorage.setItem("savannah-meeting-archive-" + archiveId, previous);
+      }
+      meetingId.current = crypto.randomUUID();
+      startedAt.current = new Date().toISOString();
+      window.localStorage.setItem(MEETING_DRAFT_KEY, JSON.stringify({ id: meetingId.current, startedAt: startedAt.current, words: [] }));
+      meetingWords.current = [];
+      setWordsReady(false);
+      setSaveStatus("New meeting · empty transcript.");
       beginSegment();
       interval = window.setInterval(() => {
         if (ended || !valid()) return;
@@ -243,6 +260,7 @@ export default function MeetingListener(props: Props) {
       setActive(true);
       sayStatus("Meeting listening is active.");
     } catch (error) {
+      control.current?.dispose(); control.current = null;
       stream?.getTracks().forEach(t => t.stop()); void context?.close();
       if (mounted.current) { callbacks.current.onActive(false); setStatus(error instanceof Error ? error.message : "Could not open the meeting microphone."); }
     } finally { if (mounted.current) setOpening(false); }
@@ -251,9 +269,9 @@ export default function MeetingListener(props: Props) {
   return <section className="meeting-listener" aria-label="Meeting listening">
     <div><button type="button" onClick={() => active ? control.current?.stop() : void start()} disabled={opening || (!active && (props.unavailable || finishing))}>{opening ? "OPENING…" : active ? "END MEETING" : "START MEETING"}</button>
       {retry && <button type="button" onClick={() => control.current?.retry()}>RETRY CONNECTION</button>}
-      {wordsReady && <button type="button" onClick={downloadTranscript}>DOWNLOAD TRANSCRIPT</button>}
-      {!active && !finishing && wordsReady && <button type="button" onClick={performAutopsy}>PERFORM AUTOPSY ↗</button>}
-      {!active && !finishing && wordsReady && <button type="button" onClick={() => {
+      {!opening && !active && !finishing && wordsReady && <button type="button" onClick={downloadTranscript}>DOWNLOAD TRANSCRIPT</button>}
+      {!opening && !active && !finishing && wordsReady && <button type="button" onClick={performAutopsy}>PERFORM AUTOPSY ↗</button>}
+      {!opening && !active && !finishing && wordsReady && <button type="button" onClick={() => {
         if (!window.confirm("Delete the recovered meeting transcript from this device? Download it first.")) return;
         meetingWords.current = []; setWordsReady(false);
         window.localStorage.removeItem(MEETING_DRAFT_KEY);
