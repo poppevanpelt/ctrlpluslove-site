@@ -417,3 +417,13 @@
 @media (prefers-reduced-motion:reduce) {
   .particle,.transformation,.collisionRipple,.force { transition:none; }
 }
+
+/* DC-001: industrial chamber, shared by standalone and embedded instruments. */
+.chamber { border-radius:12px; border:1px solid #555d58; background:linear-gradient(145deg,#252a29,#111515); box-shadow:inset 0 0 0 5px #303735,0 1.6rem 3rem #17161326; padding:1.5rem .25rem; aspect-ratio:auto; }
+.chamber::before { color:#c6ccc3; top:.65rem; }
+.chamber::after { display:none; }
+.machine { display:block; width:100%; height:auto; overflow:visible; }
+.actuator,.actuatorEngaged { transition:transform 650ms cubic-bezier(.16,1,.3,1); }
+.actuatorEngaged { transform:translateY(13px); }
+.specimen { transform-origin:200px 200px; transition:transform 550ms ease; }
+@media(prefers-reduced-motion:reduce){.actuator,.actuatorEngaged,.specimen{transition:none;}}

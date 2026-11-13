@@ -115,9 +115,7 @@ export function DecisionColliderInstrument({
 }) {
   const [activeStage, setActiveStage] = useState(0);
   const stage = stages[activeStage];
-  const chamberClass = `${styles.chamber} ${
-    styles[`stage${stage.name[0]}${stage.name.slice(1).toLowerCase()}`]
-  }`;
+  const chamberClass = styles.chamber;
 
   return (
     <main
@@ -134,6 +132,7 @@ export function DecisionColliderInstrument({
         <p className={styles.kicker}>Instrument No. 001</p>
         <h1 id="decision-collider-title">Decision Collider</h1>
         <p className={styles.decision}>Should we launch this product now?</p>
+        <p className={styles.kicker}>Illustrative scenario / not a live measurement</p>
       </header>
 
       <section className={styles.stage} aria-live="polite">
@@ -146,15 +145,34 @@ export function DecisionColliderInstrument({
         </div>
 
         <div className={chamberClass} aria-label="Decision transformation">
-          <div className={styles.transformation} aria-hidden="true" />
-          <div className={`${styles.force} ${styles.forceCustomer}`}><span>CUSTOMER</span></div>
-          <div className={`${styles.force} ${styles.forceFinance}`}><span>FINANCE</span></div>
-          <div className={`${styles.force} ${styles.forceLegal}`}><span>LEGAL</span></div>
-          <div className={`${styles.force} ${styles.forceBrand}`}><span>BRAND</span></div>
-          <div className={`${styles.force} ${styles.forceOperations}`}><span>OPERATIONS</span></div>
-          <div className={`${styles.force} ${styles.forceMissing}`}><span>THE MISSING SEAT</span></div>
-          <div className={styles.particle}><span className={styles.particleLabel}>Decision</span></div>
-          <div className={styles.collisionRipple} aria-hidden="true" />
+          <svg className={styles.machine} viewBox="0 0 400 400" role="img" aria-label={`Illustrative decision specimen, stage ${stage.name}. Five perspectives and one missing seat.`}>
+            <defs>
+              <radialGradient id="dc-metal"><stop stopColor="#d9d5c7"/><stop offset=".45" stopColor="#8c928d"/><stop offset="1" stopColor="#333a39"/></radialGradient>
+              <radialGradient id="dc-core"><stop stopColor="#f7e8c7"/><stop offset="1" stopColor="#b98b49"/></radialGradient>
+            </defs>
+            <circle cx="200" cy="200" r="157" fill="#292e2d" stroke="#757c76" strokeWidth="2"/>
+            <circle cx="200" cy="200" r="140" fill="#111515" stroke="#464e49" strokeWidth="9"/>
+            {Array.from({length:60},(_,i)=><line key={i} x1="200" y1="59" x2="200" y2={i%5===0?72:65} stroke="#8b9389" strokeWidth={i%5===0?1.6:.7} transform={`rotate(${i*6} 200 200)`}/>)}
+            {["CUSTOMER","FINANCE","LEGAL","BRAND","OPERATIONS","MISSING SEAT"].map((label,i)=>{
+              const a=i*Math.PI/3, missing=i===5;
+              return <g key={label}>
+                <g transform={`rotate(${i*60} 200 200)`}>
+                  <g className={activeStage>=3&&!missing?styles.actuatorEngaged:styles.actuator}>
+                    <rect x="183" y="76" width="34" height="49" rx="3" fill={missing?"none":"url(#dc-metal)"} stroke={missing?"#d9aa6b":"#929b91"} strokeDasharray={missing?"4 3":undefined}/>
+                    <path d="M193 125 V148 H207 V125" fill={missing?"none":"#a8aea6"} stroke="#929b91"/>
+                    <path d="M200 148 V159" stroke="#e7a46b" strokeDasharray={missing?"3 3":undefined} strokeWidth="2"/>
+                  </g>
+                </g>
+                <text x={200+174*Math.sin(a)} y={203-174*Math.cos(a)} textAnchor="middle" fill={missing?"#e4bd81":"#c6ccc3"} fontSize="9" fontFamily="monospace">{label}</text>
+              </g>;
+            })}
+            <circle cx="200" cy="200" r="52" fill="none" stroke="#bb7645" strokeDasharray="3 5" opacity={activeStage>=3?1:.25}/>
+            <g className={styles.specimen} style={{transform:`rotate(${activeStage===1?45:0}deg) scale(${activeStage===3?.85:activeStage===4?1.15:1})`}}>
+              <rect x={activeStage===2?158:166} y={activeStage===2?177:166} width={activeStage===2?84:68} height={activeStage===2?46:68} rx={activeStage===2?7:activeStage===1?13:34} fill={activeStage===4?"#333b39":activeStage===5?"#91b59b":"url(#dc-core)"} stroke="#f5d9a5" strokeWidth="1.5"/>
+            </g>
+            <text x="200" y="198" textAnchor="middle" fill={activeStage===4?"#f7e8c7":"#24221d"} fontSize="9" fontWeight="bold">DECISION</text>
+            <text x="200" y="211" textAnchor="middle" fill={activeStage===4?"#f7e8c7":"#423629"} fontSize="7">SPECIMEN 01</text>
+          </svg>
         </div>
 
         <div className={styles.output}><StageOutputView output={stage.output} /></div>
