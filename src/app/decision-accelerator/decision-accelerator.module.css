@@ -71,3 +71,6 @@
   .footer{flex-direction:column;gap:8px}
 }
 @media(prefers-reduced-motion:reduce){.ball{animation:none;left:62%}}
+
+/* Circa 1964 second pass */
+.machine{background:linear-gradient(145deg,#e9e2d3,#a9aba7);min-height:0;aspect-ratio:4/3}.primary,.close a{background:#d94b26;color:white!important}.tool{background:#e9e2d3;min-width:0;min-height:0}.heroCopy{min-width:0;overflow-wrap:break-word}@media(prefers-reduced-motion:reduce){.ball{animation:none}}
