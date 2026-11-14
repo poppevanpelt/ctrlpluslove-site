@@ -297,3 +297,6 @@
 .instrument:hover .artworkDiagram{transform:translateY(-2px)}
 @keyframes exhibitShimmer{0%,65%{background-position:150% 0}100%{background-position:-100% 0}}
 @media(prefers-reduced-motion:reduce){.instrumentVisual:after,.artworkDiagram{animation:none!important;transition:none!important}}
+
+/* Circa 1964 second pass */
+.instrumentVisual.photographicInstrument{border-bottom-color:#a9aba7}.instrumentCopy{background:#e9e2d3}.instrumentCopy strong{color:#202221}.instrument:hover .instrumentCopy strong{color:#b83b1c}.instrument[data-family] .artwork{border:0}.instrumentVisual:has(.artwork){height:auto;aspect-ratio:4/3}
