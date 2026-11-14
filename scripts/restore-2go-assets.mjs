@@ -32,3 +32,30 @@ for (const asset of assets) {
   await writeFile(path.join(assetsDir, `${asset.name}.webp`), bytes);
   console.log(`Restored ${asset.name}.webp (${bytes.length} bytes)`);
 }
+
+// Restore the approved faculty and instrument photographs from the checked-in archive.
+const { mkdir } = await import("node:fs/promises");
+const { inflateRawSync } = await import("node:zlib");
+const archive = await readFile(path.join(process.cwd(), "ctrl-love-final-assets.zip"));
+let offset = 0, restored = 0;
+while (offset + 30 <= archive.length && archive.readUInt32LE(offset) === 0x04034b50) {
+  const flags = archive.readUInt16LE(offset + 6);
+  const method = archive.readUInt16LE(offset + 8);
+  const compressed = archive.readUInt32LE(offset + 18);
+  const size = archive.readUInt32LE(offset + 22);
+  const nameLength = archive.readUInt16LE(offset + 26);
+  const extraLength = archive.readUInt16LE(offset + 28);
+  const name = archive.subarray(offset + 30, offset + 30 + nameLength).toString("utf8");
+  const start = offset + 30 + nameLength + extraLength;
+  if (flags & 9 || !/^public\\/(?:room\\/personas\\/[a-z-]+|(?:purge|chase|ai-y-fier|fizz|swat)-1964)\\.webp$/.test(name)) throw new Error("Unexpected archive entry: " + name);
+  const raw = archive.subarray(start, start + compressed);
+  const bytes = method === 8 ? inflateRawSync(raw) : method === 0 ? raw : null;
+  if (!bytes || bytes.length !== size || bytes.toString("ascii",0,4) !== "RIFF" || bytes.toString("ascii",8,12) !== "WEBP" || bytes.readUInt32LE(4)+8 !== bytes.length) throw new Error("Invalid WebP: " + name);
+  const target = path.join(process.cwd(), name);
+  await mkdir(path.dirname(target), { recursive: true });
+  await writeFile(target, bytes);
+  restored++;
+  offset = start + compressed;
+}
+if (restored !== 23) throw new Error("Expected 23 faculty and instrument assets, restored " + restored);
+console.log("Restored all 23 faculty and instrument photographs");
