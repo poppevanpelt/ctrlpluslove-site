@@ -188,6 +188,7 @@ export const supportingRoomPersonas: RoomPersona[] = [
 export const researchAssociates: RoomPersona[] = [
   {
     "id": "ines-valera",
+    "portrait": "/room/personas/ines-valera.webp",
     "name": "Inés Valera",
     "role": "Anthropology",
     "line": "The unofficial rules explain more than the official ones.",
@@ -195,6 +196,7 @@ export const researchAssociates: RoomPersona[] = [
   },
   {
     "id": "otto-rehm",
+    "portrait": "/room/personas/otto-rehm.webp",
     "name": "Otto Rehm",
     "role": "Maintenance Engineering",
     "line": "Everything works until someone stops maintaining it.",
@@ -202,6 +204,7 @@ export const researchAssociates: RoomPersona[] = [
   },
   {
     "id": "nina-bell",
+    "portrait": "/room/personas/nina-bell.webp",
     "name": "Nina Bell",
     "role": "Musical Chemistry",
     "line": "The timing changed before the conversation did.",
@@ -209,6 +212,7 @@ export const researchAssociates: RoomPersona[] = [
   },
   {
     "id": "arthur-pike",
+    "portrait": "/room/personas/arthur-pike.webp",
     "name": "Arthur Pike",
     "role": "Archival Science",
     "line": "The missing record is often the most interesting one.",
@@ -216,6 +220,7 @@ export const researchAssociates: RoomPersona[] = [
   },
   {
     "id": "miriam-finch",
+    "portrait": "/room/personas/miriam-finch.webp",
     "name": "Miriam Finch",
     "role": "Attention Research",
     "line": "Interest left the room three minutes ago.",
@@ -223,6 +228,7 @@ export const researchAssociates: RoomPersona[] = [
   },
   {
     "id": "elias-stern",
+    "portrait": "/room/personas/elias-stern.webp",
     "name": "Elias Stern",
     "role": "Experimental Physics",
     "line": "The control condition is missing.",
@@ -230,6 +236,7 @@ export const researchAssociates: RoomPersona[] = [
   },
   {
     "id": "noor-haddad",
+    "portrait": "/room/personas/noor-haddad.webp",
     "name": "Noor Haddad",
     "role": "Cartography",
     "line": "The map ends before the territory does.",
@@ -237,6 +244,7 @@ export const researchAssociates: RoomPersona[] = [
   },
   {
     "id": "greta-lund",
+    "portrait": "/room/personas/greta-lund.webp",
     "name": "Greta Lund",
     "role": "Industrial Design",
     "line": "The extra part is doing no useful work.",
@@ -244,6 +252,7 @@ export const researchAssociates: RoomPersona[] = [
   },
   {
     "id": "mateo-rivas",
+    "portrait": "/room/personas/mateo-rivas.webp",
     "name": "Mateo Rivas",
     "role": "Ecology",
     "line": "Nothing changes in isolation.",
@@ -251,6 +260,7 @@ export const researchAssociates: RoomPersona[] = [
   },
   {
     "id": "celine-morin",
+    "portrait": "/room/personas/celine-morin.webp",
     "name": "Céline Morin",
     "role": "Linguistics",
     "line": "Everyone used the same word for a different thing.",
@@ -258,6 +268,7 @@ export const researchAssociates: RoomPersona[] = [
   },
   {
     "id": "felix-owusu",
+    "portrait": "/room/personas/felix-owusu.webp",
     "name": "Felix Owusu",
     "role": "Theatre Direction",
     "line": "The scene changed when the quiet person spoke.",
@@ -265,6 +276,7 @@ export const researchAssociates: RoomPersona[] = [
   },
   {
     "id": "beatrice-shaw",
+    "portrait": "/room/personas/beatrice-shaw.webp",
     "name": "Beatrice Shaw",
     "role": "Statistics",
     "line": "Precision is not the same as certainty.",
@@ -272,6 +284,7 @@ export const researchAssociates: RoomPersona[] = [
   },
   {
     "id": "kenji-sato",
+    "portrait": "/room/personas/kenji-sato.webp",
     "name": "Kenji Sato",
     "role": "Logistics",
     "line": "The delay is hiding between two successful steps.",
@@ -279,6 +292,7 @@ export const researchAssociates: RoomPersona[] = [
   },
   {
     "id": "ada-kessler",
+    "portrait": "/room/personas/ada-kessler.webp",
     "name": "Ada Kessler",
     "role": "Material Science",
     "line": "The stress concentrates at the joint.",
@@ -286,6 +300,7 @@ export const researchAssociates: RoomPersona[] = [
   },
   {
     "id": "rosa-bakker",
+    "portrait": "/room/personas/rosa-bakker.webp",
     "name": "Rosa Bakker",
     "role": "Field Observation",
     "line": "The ordinary detail is the clue.",
@@ -293,6 +308,7 @@ export const researchAssociates: RoomPersona[] = [
   },
   {
     "id": "samir-desai",
+    "portrait": "/room/personas/samir-desai.webp",
     "name": "Samir Desai",
     "role": "Economics",
     "line": "The incentive rewards the opposite behaviour.",
@@ -300,6 +316,7 @@ export const researchAssociates: RoomPersona[] = [
   },
   {
     "id": "edith-cole",
+    "portrait": "/room/personas/edith-cole.webp",
     "name": "Edith Cole",
     "role": "Restoration",
     "line": "Not everything old needs replacing.",
@@ -307,6 +324,7 @@ export const researchAssociates: RoomPersona[] = [
   },
   {
     "id": "hugo-march",
+    "portrait": "/room/personas/hugo-march.webp",
     "name": "Hugo March",
     "role": "Serendipity Research",
     "line": "The accident produced a better experiment.",
