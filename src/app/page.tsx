@@ -6,7 +6,7 @@ import SavannahExit from "./SavannahExit";
 import HandoverNote from "./HandoverNote";
 import TastingWindow from "./TastingWindow";
 import followThrough from "./xray-follow-through.module.css";
-import { homepageRoomPersonas } from "./room-personas-data";
+import { homepageRoomPersonas, allRoomPersonas } from "./room-personas-data";
 
 
 const stages = [
@@ -29,12 +29,13 @@ const instruments = [
   ["11","ctrl+CHASE","Keep a question moving until it produces evidence or earns its death.","nothing","/chase/","START CHASE"],
   ["12","Radar","Watch signals, pressure and movement before the market names them.","signal","/radar/","OPEN RADAR"],
   ["13","Table of Indecisive Elements","Explore the forces shaping a human decision.","signal","/table-of-indecisive-elements/","EXPLORE TABLE"],
+  ["14","ctrl+DOSE","Makes the difference between useful enthusiasm and overload visible.","signal","/dose/","EXPLORE DOSE"],
 ] as const;
 
 const instrumentFamilies: Record<string, "observe" | "analyse" | "accelerate"> = {
   "01":"accelerate", "02":"analyse", "03":"observe", "04":"analyse",
   "05":"accelerate", "06":"analyse", "07":"analyse", "08":"analyse",
-  "09":"accelerate", "10":"accelerate", "11":"observe", "12":"observe", "13":"analyse",
+  "09":"accelerate", "10":"accelerate", "11":"observe", "12":"observe", "13":"analyse", "14":"observe",
 };
 
 const instrumentImages: Record<string, string> = {
@@ -60,6 +61,7 @@ const missingInstrumentArt: Record<string, {label:string; motif:string}> = {
   "10": { label:"CTRL / FIZZ", motif:"fizz" },
   "11": { label:"CTRL / CHASE", motif:"chase" },
   "12": { label:"LIVE / RADAR", motif:"radar" },
+  "14": { label:"CTRL / DOSE", motif:"radar" },
 };
 
 function InstrumentArtwork({ no }: { no: string }) {
@@ -79,7 +81,7 @@ function InstrumentArtwork({ no }: { no: string }) {
         {no === "09" && <><path d="M54 200H426" stroke="currentColor" strokeWidth="2"/><rect x="74" y="72" width="75" height="112" fill="#171717"/><rect x="160" y="48" width="75" height="136" fill="#171717" opacity=".72"/><rect x="246" y="95" width="75" height="89" fill="#171717" opacity=".46"/><path d="M335 169L393 65" stroke="currentColor" strokeWidth="12" strokeLinecap="square"/><path d="M367 65H396V94" stroke="currentColor" strokeWidth="9" fill="none"/></>}
         {no === "10" && <><path d="M170 214L214 51H273L314 214Z" stroke="currentColor" strokeWidth="4" fill="none"/><path d="M187 155Q242 139 297 155L314 214H170Z" fill="#171717" opacity=".8"/>{[[155,56,10],[287,44,17],[334,98,9],[234,17,8],[356,35,5],[114,118,6]].map(([x,y,r],i)=><circle key={i} cx={x} cy={y} r={r} fill="none" stroke="currentColor" strokeWidth="3"/>)}</>}
         {no === "11" && <><path d="M60 190C130 190 122 68 202 68S283 205 350 205 404 110 418 64" stroke="currentColor" strokeWidth="9" fill="none" strokeLinecap="round"/><circle cx="60" cy="190" r="18" fill="#171717"/><circle cx="418" cy="64" r="21" fill="#171717"/><path d="M375 37L419 64 390 106" stroke="#f9f3e5" strokeWidth="5" fill="none"/></>}
-        {no === "12" && <><circle cx="240" cy="130" r="112" stroke="currentColor" strokeWidth="2" fill="none"/><circle cx="240" cy="130" r="77" stroke="currentColor" strokeWidth="2" opacity=".7" fill="none"/><circle cx="240" cy="130" r="42" stroke="currentColor" strokeWidth="2" opacity=".5" fill="none"/><path d="M240 18V242M128 130H352" stroke="currentColor" strokeWidth="2"/><path d="M240 130L323 53A112 112 0 0 1 351 115Z" fill="#171717" opacity=".85"/><circle cx="318" cy="97" r="9" fill="#f9f3e5"/></>}
+        {(no === "12" || no === "14") && <><circle cx="240" cy="130" r="112" stroke="currentColor" strokeWidth="2" fill="none"/><circle cx="240" cy="130" r="77" stroke="currentColor" strokeWidth="2" opacity=".7" fill="none"/><circle cx="240" cy="130" r="42" stroke="currentColor" strokeWidth="2" opacity=".5" fill="none"/><path d="M240 18V242M128 130H352" stroke="currentColor" strokeWidth="2"/><path d="M240 130L323 53A112 112 0 0 1 351 115Z" fill="#171717" opacity=".85"/><circle cx="318" cy="97" r="9" fill="#f9f3e5"/></>}
       </svg>
       <span className={styles.artworkLabel}>{art.label}</span><span className={styles.instrumentPlate}>INSTRUMENT DIVISION · {no}</span>
     </div>
@@ -152,18 +154,18 @@ export default function Home() {
           <a href="/pricing/on-call-room/"><span>02 / ONGOING DECISIONS</span><strong>On-Call Room™</strong><b>From €7,500 / month ↗</b></a>
           <a href="/pricing/kill-or-scale/"><span>03 / AN INITIATIVE ALREADY MOVING</span><strong>Kill or Scale™</strong><b>Stop, reshape or accelerate ↗</b></a>
         </div>
-        <div className={followThrough.actions}><a className={followThrough.action} href="https://ctrl-love-room-key.lovable.app/">Not sure which fits? Three questions. One suggested way in. ↗</a></div>
+        <div className={followThrough.actions}><a className={followThrough.action} href="https://ctrl-love-room-key.lovable.app/">Explore the different ways in. ↗</a></div>
         <HandoverNote />
       </section>
 
       <section className={styles.section} id="instruments">
         <div className={styles.kicker}>A few instruments inside the machine</div>
         <h2>Pressure, not prompts.</h2>
-        <p className={styles.instrumentInvite}>No presentation needed. Choose a problem and try the mechanism.</p>
+        <p className={styles.instrumentInvite}>See the mechanisms at work. Explore at your own pace.</p>
         <div className={styles.instrumentQuickstart} aria-label="Start with a working instrument">
-          <a href="/meeting-filter/" data-family="analyse"><span>01 / SAVE AN HOUR</span><strong>Should this meeting exist?</strong><b>Run Meeting Filter ↗</b></a>
-          <a href="/decision-accelerator/" data-family="accelerate"><span>02 / MAKE THE CALL</span><strong>What should we actually do?</strong><b>Run Decision Accelerator ↗</b></a>
-          <a href="/radar/" data-family="observe"><span>03 / NOTICE SOMETHING</span><strong>What are we missing?</strong><b>Open Radar ↗</b></a>
+          <a href="/meeting-filter/" data-family="analyse"><span>01 / SAVE AN HOUR</span><strong>An hour saved before it begins.</strong><b>Run Meeting Filter ↗</b></a>
+          <a href="/decision-accelerator/" data-family="accelerate"><span>02 / MAKE THE CALL</span><strong>From hesitation to a useful move.</strong><b>Run Decision Accelerator ↗</b></a>
+          <a href="/radar/" data-family="observe"><span>03 / NOTICE SOMETHING</span><strong>Weak signals become visible.</strong><b>Open Radar ↗</b></a>
         </div>
         <TastingWindow />
         <div className={styles.instruments}>
@@ -206,7 +208,7 @@ export default function Home() {
 
       <section className={`${styles.section} ${styles.peopleSection}`} id="people">
         <div className={styles.kicker}>The intelligence behind the instruments</div>
-        <h2>Perspectives designed to challenge the obvious.</h2>
+        <h2>A room full of different ways to see.</h2>
         <div className={styles.peopleColumns} style={{gridTemplateColumns:"1fr"}}>
           <div className={styles.peoplePanel}>
             <div className={styles.peoplePanelHeading}>
@@ -215,7 +217,7 @@ export default function Home() {
               <p>Built from observation, not a demographic dropdown. Each has a particular memory, bias, instinct and something worth challenging.</p>
             </div>
             <div className={styles.peoplePortraits}>
-              {homepageRoomPersonas.slice(0, 6).map((person) => (
+              {[...homepageRoomPersonas, ...allRoomPersonas.filter(person => !homepageRoomPersonas.some(featured => featured.id === person.id))].slice(0, 12).map((person) => (
                 <div className={styles.peoplePortrait} key={person.id}>
                   {person.portrait && <img src={person.portrait} alt={person.name} loading="lazy" style={{objectPosition: person.portraitPosition || "center"}} />}
                   <div><strong>{person.name}</strong><span>{person.role}</span></div>
