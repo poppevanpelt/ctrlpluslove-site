@@ -184,8 +184,138 @@ export const supportingRoomPersonas: RoomPersona[] = [
   },
 ];
 
+// Fictional research associates, second intake.
+export const researchAssociates: RoomPersona[] = [
+  {
+    "id": "ines-valera",
+    "name": "Inés Valera",
+    "role": "Anthropology",
+    "line": "The unofficial rules explain more than the official ones.",
+    "contribution": "Observes rituals, workarounds and discrepancies between stated values and everyday practice."
+  },
+  {
+    "id": "otto-rehm",
+    "name": "Otto Rehm",
+    "role": "Maintenance Engineering",
+    "line": "Everything works until someone stops maintaining it.",
+    "contribution": "Identifies maintenance burdens, dependencies and neglected failure modes."
+  },
+  {
+    "id": "nina-bell",
+    "name": "Nina Bell",
+    "role": "Musical Chemistry",
+    "line": "The timing changed before the conversation did.",
+    "contribution": "Notices coordination, listening, timing and recovery after mistakes."
+  },
+  {
+    "id": "arthur-pike",
+    "name": "Arthur Pike",
+    "role": "Archival Science",
+    "line": "The missing record is often the most interesting one.",
+    "contribution": "Tracks lost context and distinguishes absent evidence from evidence of absence."
+  },
+  {
+    "id": "miriam-finch",
+    "name": "Miriam Finch",
+    "role": "Attention Research",
+    "line": "Interest left the room three minutes ago.",
+    "contribution": "Observes repetition, disengagement and avoidable cognitive load."
+  },
+  {
+    "id": "elias-stern",
+    "name": "Elias Stern",
+    "role": "Experimental Physics",
+    "line": "The control condition is missing.",
+    "contribution": "Proposes comparisons that separate effects from coincidence."
+  },
+  {
+    "id": "noor-haddad",
+    "name": "Noor Haddad",
+    "role": "Cartography",
+    "line": "The map ends before the territory does.",
+    "contribution": "Maps unexplored alternatives and boundaries of current knowledge."
+  },
+  {
+    "id": "greta-lund",
+    "name": "Greta Lund",
+    "role": "Industrial Design",
+    "line": "The extra part is doing no useful work.",
+    "contribution": "Finds unnecessary complexity and opportunities for simpler interfaces."
+  },
+  {
+    "id": "mateo-rivas",
+    "name": "Mateo Rivas",
+    "role": "Ecology",
+    "line": "Nothing changes in isolation.",
+    "contribution": "Traces interdependence, feedback loops and downstream effects."
+  },
+  {
+    "id": "celine-morin",
+    "name": "Céline Morin",
+    "role": "Linguistics",
+    "line": "Everyone used the same word for a different thing.",
+    "contribution": "Identifies semantic ambiguity and incompatible definitions."
+  },
+  {
+    "id": "felix-owusu",
+    "name": "Felix Owusu",
+    "role": "Theatre Direction",
+    "line": "The scene changed when the quiet person spoke.",
+    "contribution": "Observes turn-taking, status and shifts in group dynamics."
+  },
+  {
+    "id": "beatrice-shaw",
+    "name": "Beatrice Shaw",
+    "role": "Statistics",
+    "line": "Precision is not the same as certainty.",
+    "contribution": "Distinguishes measurement, uncertainty and unsupported inference."
+  },
+  {
+    "id": "kenji-sato",
+    "name": "Kenji Sato",
+    "role": "Logistics",
+    "line": "The delay is hiding between two successful steps.",
+    "contribution": "Finds handoff friction, queues and bottlenecks."
+  },
+  {
+    "id": "ada-kessler",
+    "name": "Ada Kessler",
+    "role": "Material Science",
+    "line": "The stress concentrates at the joint.",
+    "contribution": "Identifies weak interfaces and conditions under which systems fail."
+  },
+  {
+    "id": "rosa-bakker",
+    "name": "Rosa Bakker",
+    "role": "Field Observation",
+    "line": "The ordinary detail is the clue.",
+    "contribution": "Records concrete anomalies before offering interpretations."
+  },
+  {
+    "id": "samir-desai",
+    "name": "Samir Desai",
+    "role": "Economics",
+    "line": "The incentive rewards the opposite behaviour.",
+    "contribution": "Examines tradeoffs and unintended incentives."
+  },
+  {
+    "id": "edith-cole",
+    "name": "Edith Cole",
+    "role": "Restoration",
+    "line": "Not everything old needs replacing.",
+    "contribution": "Distinguishes valuable inherited qualities from accumulated damage."
+  },
+  {
+    "id": "hugo-march",
+    "name": "Hugo March",
+    "role": "Serendipity Research",
+    "line": "The accident produced a better experiment.",
+    "contribution": "Recognizes unexpected results worth investigating without mistaking coincidence for proof."
+  }
+];
+
 export const roomPersonas = coreRoomPersonas;
-export const allRoomPersonas = [...coreRoomPersonas, ...supportingRoomPersonas];
+export const allRoomPersonas = [...coreRoomPersonas, ...supportingRoomPersonas, ...researchAssociates];
 
 export const homepagePersonaIds = [
   "lexi-arden",
