@@ -213,15 +213,15 @@ export default function Home() {
           <div className={styles.peoplePanel}>
             <div className={styles.peoplePanelHeading}>
               <span>01 / OBSERVED INTELLIGENCE</span>
-              <h3>Handcrafted personas.</h3>
+              <h3>36 distinct perspectives.</h3>
               <p>Built from observation, not a demographic dropdown. Each has a particular memory, bias, instinct and something worth challenging.</p>
             </div>
             <div className={styles.peoplePortraits}>
-              {[...homepageRoomPersonas, ...allRoomPersonas.filter(person => !homepageRoomPersonas.some(featured => featured.id === person.id))].slice(0, 12).map((person) => (
-                <div className={styles.peoplePortrait} key={person.id}>
-                  {person.portrait && <img src={person.portrait} alt={person.name} loading="lazy" style={{objectPosition: person.portraitPosition || "center"}} />}
+              {[...homepageRoomPersonas, ...allRoomPersonas.filter(person => !homepageRoomPersonas.some(featured => featured.id === person.id))].map((person) => (
+                <a className={styles.peoplePortrait} key={person.id} href={`/room/${person.id}/`} style={{textDecoration:"none",color:"inherit"}}>
+                  {person.portrait ? <img src={person.portrait} alt={person.name} loading="lazy" style={{objectPosition: person.portraitPosition || "center"}} /> : <span style={{display:"grid",placeItems:"center",aspectRatio:"4 / 5",background:"#e9e2d3",color:"#202221",fontSize:"2rem",fontFamily:"monospace"}} aria-label="Portrait pending">{person.name.split(" ").map(part => part[0]).join("")}</span>}
                   <div><strong>{person.name}</strong><span>{person.role}</span></div>
-                </div>
+                </a>
               ))}
             </div>
             <a className={styles.peopleAction} href="/room/">Meet the perspectives ↗</a>
