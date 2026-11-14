@@ -427,3 +427,6 @@
 .actuatorEngaged { transform:translateY(13px); }
 .specimen { transform-origin:200px 200px; transition:transform 550ms ease; }
 @media(prefers-reduced-motion:reduce){.actuator,.actuatorEngaged,.specimen{transition:none;}}
+
+/* Circa 1964 second pass */
+.page{--lab-ivory:#e9e2d3;--lab-metal:#a9aba7;--lab-red:#d94b26;background:var(--lab-ivory);color:#202221}.stage{min-width:0}.stageCopy,.output{min-width:0;overflow-wrap:break-word}.machine{filter:drop-shadow(0 8px 12px #20222122)}.next{background:#d94b26;color:#fff}.controls button:focus-visible{outline:3px solid #d94b26;outline-offset:3px}
