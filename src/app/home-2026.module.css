@@ -313,3 +313,7 @@
 @media(max-width:1050px){.peoplePortraits{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:650px){.peoplePortraits{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;padding:6px}.peoplePortrait>div{padding:7px 5px;min-height:72px}.peoplePortrait strong{font-size:12px}.peoplePortrait div span{font-size:11px}}
 @media(max-width:360px){.peoplePortraits{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Preserve full portrait framing rather than cutting off faces. */
+.peoplePortrait img,.peoplePortrait>.facultyPending{aspect-ratio:1/1;background:#d8d0c1}
+.peoplePortrait img{object-fit:contain;object-position:center!important;filter:saturate(.82)}
