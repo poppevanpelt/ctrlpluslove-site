@@ -7,7 +7,7 @@ import {
   getRoomPersonaPortraitSrc,
   homepagePersonaIds,
   homepageRoomPersonas,
-  supportingRoomPersonas,
+  allRoomPersonas,
 } from "../room-personas-data";
 import { routeMetadata } from "../seo";
 import showcase from "./room-showcase.module.css";
@@ -15,7 +15,7 @@ import showcase from "./room-showcase.module.css";
 export const metadata: Metadata = routeMetadata("/room/");
 
 const homepagePersonaIdSet = new Set<string>(homepagePersonaIds);
-const additionalRoomPersonas = supportingRoomPersonas.filter(
+const additionalRoomPersonas = allRoomPersonas.filter(
   (persona) => !homepagePersonaIdSet.has(persona.id),
 );
 
@@ -89,7 +89,7 @@ export default function RoomPage() {
           <h1 id="meet-the-room">Meet the Room</h1>
           <strong>Not one AI pretending to be certain.</strong>
           <span>
-            A deliberately small group of distinct perspectives — with memories,
+            A faculty of 36 synthetic perspectives — with distinct
             biases and reasons to disagree before your decision hardens.
           </span>
         </div>
@@ -115,7 +115,7 @@ export default function RoomPage() {
         </div>
 
         <div className={showcase.signalBar} aria-label="Room system">
-          <span><b>10 core lenses</b>Small enough to know them.</span>
+          <span><b>36 faculty perspectives</b>Small teams, selected for each decision.</span>
           <span><b>Designed opposition</b>Agreement is not the default.</span>
           <span><b>Evidence first</b>Observed ≠ assumed.</span>
           <span><b>One decision</b>Then the Room changes.</span>
@@ -182,9 +182,9 @@ export default function RoomPage() {
           >
             <div className="section-heading quiet-heading">
               <div>
-                <p className="section-kicker">Supporting perspectives</p>
+                <p className="section-kicker">Research faculty / additional perspectives</p>
                 <h2 id="supporting-room-title">
-                  They enter only when the decision earns them.
+                  Different disciplines. Different things to notice.
                 </h2>
               </div>
             </div>
