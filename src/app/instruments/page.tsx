@@ -52,6 +52,10 @@ const instruments: readonly Instrument[] = [
 ];
 
 const specimenPhotos: Record<string, string> = {
+  "005": "/swat-1964.webp",
+  "006": "/fizz-1964.webp",
+  "020": "/purge-1964.webp",
+  "023": "/chase-1964.webp",
   "001": "/decision-collider.webp",
   "002": "/judgment-analyser-017.webp",
   "007": "/pattern-detector.webp",
