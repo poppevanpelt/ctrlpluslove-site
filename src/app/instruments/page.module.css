@@ -422,3 +422,12 @@
 
 .specimenPhoto{height:clamp(190px,22vw,300px);background:#dce5e8;overflow:hidden;border:1px solid #a7b3b6;}
 .specimenPhoto img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;}
+
+
+/* Preserve original specimen photography and readable copy */
+.specimenWall{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+.specimenPhoto{height:auto;min-height:0;overflow:hidden;background:#dce5e8}
+.specimenPhoto img{width:100%;height:auto;max-height:none;object-fit:contain;display:block}
+.specimen summary,.specimen summary>* ,.drawer,.drawer>* ,.arrivalCopy,.artifact summary{min-width:0;writing-mode:horizontal-tb;word-break:normal;overflow-wrap:break-word}
+.specimen summary>p{max-width:60ch}
+@media(max-width:850px){.specimenWall,.artifactBench{grid-template-columns:minmax(0,1fr)}.arrival{grid-template-columns:minmax(0,1fr)}}
