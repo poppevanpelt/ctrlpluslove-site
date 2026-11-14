@@ -39,6 +39,11 @@ const instrumentFamilies: Record<string, "observe" | "analyse" | "accelerate"> =
 };
 
 const instrumentImages: Record<string, string> = {
+  "05": "/purge-1964.webp",
+  "08": "/ai-y-fier-1964.webp",
+  "09": "/swat-1964.webp",
+  "10": "/fizz-1964.webp",
+  "11": "/chase-1964.webp",
   "01": "/decision-engine.webp",
   "02": "/judgment-analyser-017.webp",
   "03": "/experimental-decision-analyzer.webp",
