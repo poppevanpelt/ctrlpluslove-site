@@ -863,7 +863,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
           background:"#151515",color:"#f5f1e7",padding:"9px 15px 9px 9px",
           borderRadius:32,textDecoration:"none",fontSize:13,fontWeight:700,
           boxShadow:"0 8px 28px rgba(0,0,0,.22)"}}>
-        <img src="/home/savannah.jpg?v=20261107" alt="" style={{width:34,height:34,borderRadius:"50%",objectFit:"cover"}} />
+        <img src={SAVANNAH_AVATAR} onError={(event) => { const img = event.currentTarget; if (!img.src.includes("/home/savannah.jpg")) img.src = "/home/savannah.jpg?v=20261114"; }} alt="" style={{width:34,height:34,borderRadius:"50%",objectFit:"cover"}} />
         Talk to Savannah <span aria-hidden="true">↗</span>
       </a>
     );
@@ -903,7 +903,7 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
           boxShadow: "0 12px 30px rgba(0,0,0,.14)",
         }}
       >
-        <img src="/home/savannah.jpg?v=20261107" alt="" style={{width:28,height:28,objectFit:"cover",borderRadius:"50%",verticalAlign:"middle",marginRight:9}} />
+        <img src={SAVANNAH_AVATAR} onError={(event) => { const img = event.currentTarget; if (!img.src.includes("/home/savannah.jpg")) img.src = "/home/savannah.jpg?v=20261114"; }} alt="" style={{width:28,height:28,objectFit:"cover",borderRadius:"50%",verticalAlign:"middle",marginRight:9}} />
         Savannah · Talk / Type
       </button>
     );
@@ -1056,11 +1056,11 @@ Text delivery: this visitor is typing. Reply as Savannah in short, natural writt
 
         <div style={{ display: "flex", minWidth: 0, flexDirection: "column", justifyContent: "space-between", padding: "13px 14px 12px" }}>
           <div>
-            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12 }}>
+            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 6, flexWrap: "wrap" }}>
               <div style={{ fontSize: 15, fontWeight: 700, lineHeight: 1 }}>Savannah</div>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace", fontSize: 8, fontWeight: 700, letterSpacing: ".13em", textTransform: "uppercase", opacity: 0.48, whiteSpace: "nowrap" }}>
-                  employee #4
+                <div style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace", fontSize: 8, fontWeight: 700, letterSpacing: ".13em", textTransform: "uppercase", opacity: 0.48, whiteSpace: "nowrap", flexShrink: 0, wordBreak: "normal", overflowWrap: "normal" }}>
+                  employee #4
                 </div>
                 <button
                   type="button"
