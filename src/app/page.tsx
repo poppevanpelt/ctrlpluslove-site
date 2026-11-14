@@ -28,16 +28,24 @@ const instruments = [
   ["10","ctrl+FIZZ","Carbonated judgment for meetings that have gone flat.","opposition","/fizz/","OPEN BOTTLE"],
   ["11","ctrl+CHASE","Keep a question moving until it produces evidence or earns its death.","nothing","/chase/","START CHASE"],
   ["12","Radar","Watch signals, pressure and movement before the market names them.","signal","/radar/","OPEN RADAR"],
+  ["13","Table of Indecisive Elements","Explore the forces shaping a human decision.","signal","/table-of-indecisive-elements/","EXPLORE TABLE"],
 ] as const;
 
 const instrumentFamilies: Record<string, "observe" | "analyse" | "accelerate"> = {
   "01":"accelerate", "02":"analyse", "03":"observe", "04":"analyse",
   "05":"accelerate", "06":"analyse", "07":"analyse", "08":"analyse",
-  "09":"accelerate", "10":"accelerate", "11":"observe", "12":"observe",
+  "09":"accelerate", "10":"accelerate", "11":"observe", "12":"observe", "13":"analyse",
 };
 
 const instrumentImages: Record<string, string> = {
+  "01": "/decision-engine.webp",
+  "02": "/judgment-analyser-017.webp",
+  "03": "/experimental-decision-analyzer.webp",
   "04": "/shoppe/poppes-prompt-shoppe.webp",
+  "06": "/judgment-analyser-042.webp",
+  "07": "/decision-collider.webp",
+  "12": "/pattern-detector.webp",
+  "13": "/table-of-indecisive-elements.webp",
 };
 
 const missingInstrumentArt: Record<string, {label:string; motif:string}> = {
@@ -161,7 +169,7 @@ export default function Home() {
         <div className={styles.instruments}>
           {instruments.map(([no,name,line,kind,href,action]) => (
             <a className={styles.instrument} href={href} key={no} data-family={instrumentFamilies[no]} aria-label={`${action}: ${name}`}>
-              <div className={`${styles.instrumentVisual} ${styles[kind]}`} aria-hidden="true">
+              <div className={`${styles.instrumentVisual} ${styles[kind]} ${instrumentImages[no] && no !== "04" ? styles.photographicInstrument : ""}`} aria-hidden="true">
                 {instrumentImages[no] ? <img src={instrumentImages[no]} alt="" loading="lazy" /> : <InstrumentArtwork no={no} />}
               </div>
               <div className={styles.instrumentCopy}>

@@ -47,7 +47,18 @@ const instruments: readonly Instrument[] = [
   { no: "023", name: "CTRL+CHASE", state: "PROTOTYPE", family: "MOVE", line: "A question either produces evidence or earns its death.", why: "Keeps unresolved signals moving until they become evidence, a next move, or a justified stop.", href: "/chase/", action: "START CHASE" },
   { no: "024", name: "BRAND SURVIVAL", state: "PROTOTYPE", family: "TEST", line: "How much can we take away before it stops being you?", why: "Built to make distinctiveness visible as a survival curve instead of collapsing it into a score.", href: "/brand-survival/", action: "RUN BATCH 001" },
   { no: "025", name: "CTRL+DOSE", state: "FIELD TEST", family: "SEE", line: "The right amount of you for this particular human.", why: "Built because useful enthusiasm can still become overload when production velocity outruns someone else’s processing velocity.", href: "/dose/", action: "RUN DOSE CHECK" },
+  { no: "026", name: "DECISION ACCELERATOR", state: "WORKING", family: "MOVE", line: "Puts better judgment into motion.", why: "Turns a decision into a useful next move.", href: "/decision-accelerator/", action: "RUN INSTRUMENT" },
+  { no: "027", name: "TABLE OF INDECISIVE ELEMENTS", state: "PROTOTYPE", family: "TEST", line: "Explore the forces shaping a human decision.", why: "Makes competing decision forces visible.", href: "/table-of-indecisive-elements/", action: "EXPLORE TABLE" },
 ];
+
+const specimenPhotos: Record<string, string> = {
+  "001": "/decision-collider.webp",
+  "002": "/judgment-analyser-017.webp",
+  "007": "/pattern-detector.webp",
+  "024": "/judgment-analyser-042.webp",
+  "026": "/decision-engine.webp",
+  "027": "/table-of-indecisive-elements.webp",
+};
 
 const stateClass: Record<State, string> = {
   WORKING: styles.stateWorking,
@@ -103,13 +114,13 @@ export default function InstrumentRoomPage() {
                   <span className={styles.number}>{instrument.no}</span>
                   <span className={`${styles.state} ${stateClass[instrument.state]}`}>{instrument.state}</span>
                 </div>
-                <div className={styles.device} data-family={instrument.family}>
+                {specimenPhotos[instrument.no] ? <div className={styles.specimenPhoto}><img src={specimenPhotos[instrument.no]} alt="" loading="lazy" /></div> : <div className={styles.device} data-family={instrument.family}>
                   <span className={styles.deviceScreen}>{instrument.family}</span>
                   <span className={styles.dial} />
                   <span className={styles.switch} />
                   <span className={styles.slot} />
                   <LivingInstrumentState no={instrument.no} state={instrument.state} family={instrument.family} />
-                </div>
+                </div>}
                 <h2>{instrument.name}</h2>
                 <p>{instrument.line}</p>
                 <span className={styles.pull}>PULL TO INSPECT</span>
