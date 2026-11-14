@@ -282,3 +282,18 @@
 .aboutProfile{grid-template-columns:minmax(0,150px) minmax(0,1fr)}
 @media(max-width:850px){.aboutProfile{grid-template-columns:1fr}.aboutPortrait{max-width:190px}.instruments{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:650px){.hero h1,.section h2,.final h2{overflow-wrap:break-word;word-break:normal}.instrumentVisual.photographicInstrument{height:auto}.peoplePortraits{grid-template-columns:repeat(2,minmax(0,1fr))}.peoplePortrait>div{overflow-wrap:break-word}.card,.stage,.caseCopy,.caseSmall{min-width:0}}
+
+
+/* Circa 1964: shared exhibit finish and restrained mechanical motion */
+.instrumentVisual.photographicInstrument{background:#e9e2d3}
+.instrumentVisual.photographicInstrument img{filter:saturate(.72) sepia(.13)}
+.instrument[data-family] .artwork{background:#e9e2d3;color:#202221;border:1px solid #a9aba7;box-shadow:none}
+.artwork:before{background:repeating-linear-gradient(0deg,transparent 0 19px,#2022210b 20px),repeating-linear-gradient(90deg,transparent 0 19px,#2022210b 20px);border-color:#a9aba7}
+.artworkDiagram{filter:grayscale(.8) sepia(.12);opacity:.88}
+.instrumentPlate{background:linear-gradient(110deg,#a9aba7,#e9e2d3,#a9aba7);color:#202221}
+.instrumentVisual{position:relative}
+.instrumentVisual.photographicInstrument:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 35%,#ffffff16 49%,transparent 63%);background-size:250% 100%;animation:exhibitShimmer 14s ease-in-out infinite}
+.artworkDiagram{transition:transform .45s ease}
+.instrument:hover .artworkDiagram{transform:translateY(-2px)}
+@keyframes exhibitShimmer{0%,65%{background-position:150% 0}100%{background-position:-100% 0}}
+@media(prefers-reduced-motion:reduce){.instrumentVisual:after,.artworkDiagram{animation:none!important;transition:none!important}}
