@@ -269,3 +269,16 @@
 .instrumentVisual.photographicInstrument{height:clamp(210px,23vw,320px);background:#dce5e8;padding:0;box-shadow:none;}
 .instrumentVisual.photographicInstrument img{width:100%;height:100%;object-fit:contain;object-position:center;}
 @media(max-width:600px){.instrumentVisual.photographicInstrument{height:250px;}}
+
+
+/* Photography-led responsive layout */
+.instruments{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:1px}
+.instrument{min-width:0;align-self:stretch}
+.instrumentVisual.photographicInstrument{height:auto;min-height:0;aspect-ratio:auto;background:#dce5e8}
+.instrumentVisual.photographicInstrument img{width:100%;height:auto;max-height:none;object-fit:contain;display:block}
+.instrumentCopy{min-width:0;writing-mode:horizontal-tb;word-break:normal;overflow-wrap:break-word}
+.instrumentCopy p{max-width:60ch}
+.heroCopyLeft,.heroCopyRight,.aboutBio,.caseCopy,.caseSmall,.stage,.peoplePanelHeading,.savannahExplainerInner>*{min-width:0;writing-mode:horizontal-tb;word-break:normal;overflow-wrap:break-word}
+.aboutProfile{grid-template-columns:minmax(0,150px) minmax(0,1fr)}
+@media(max-width:850px){.aboutProfile{grid-template-columns:1fr}.aboutPortrait{max-width:190px}.instruments{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:650px){.hero h1,.section h2,.final h2{overflow-wrap:break-word;word-break:normal}.instrumentVisual.photographicInstrument{height:auto}.peoplePortraits{grid-template-columns:repeat(2,minmax(0,1fr))}.peoplePortrait>div{overflow-wrap:break-word}.card,.stage,.caseCopy,.caseSmall{min-width:0}}
