@@ -264,3 +264,8 @@
 
 /* Editorial layout pass: keep each explanation attached to its instrument. */
 .instrumentVisual,.instrumentVisual:has(.artwork){height:clamp(180px,18vw,240px)}.instrument{min-height:0}.instrumentCopy{padding:clamp(16px,2vw,24px);gap:8px}.instrumentCopy h3{margin:0;font-size:clamp(21px,2vw,28px);line-height:1.12;text-wrap:balance;overflow-wrap:break-word}.instrumentCopy p{max-width:36ch;line-height:1.45;text-wrap:pretty}.instrumentCopy strong{margin-top:0;padding-top:8px;line-height:1.3}.instrumentInvite{max-width:62ch;text-wrap:pretty}.section h2{line-height:.95;text-wrap:balance}.stage{min-height:0;gap:12px}.stageVerb{margin:12px 0 0}.stageProduct,.stage p{margin:0}.stagePrice{margin-top:8px;padding-top:12px}.compare article{min-height:0}.compare h3{line-height:1.05;text-wrap:balance}.caseCopy p,.caseSmall p{max-width:65ch}.caseSmall{min-height:0}.caseCopy h3,.caseSmall h3{line-height:1;text-wrap:balance}.impact{margin-top:16px}.final h2{overflow-wrap:normal;text-wrap:balance;line-height:.95}@media(max-width:650px){.instrumentVisual,.instrumentVisual:has(.artwork){height:200px}.section h2{font-size:clamp(36px,10vw,54px);margin-bottom:24px}.final h2{font-size:clamp(38px,11vw,70px)}.stage{min-height:0}.instrumentCopy{gap:7px}}
+
+/* Circa 1964: photographs are the apparatus, not illustrations inside apparatus. */
+.instrumentVisual.photographicInstrument{height:clamp(210px,23vw,320px);background:#dce5e8;padding:0;box-shadow:none;}
+.instrumentVisual.photographicInstrument img{width:100%;height:100%;object-fit:contain;object-position:center;}
+@media(max-width:600px){.instrumentVisual.photographicInstrument{height:250px;}}
