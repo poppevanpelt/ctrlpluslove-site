@@ -37,6 +37,7 @@ for (const asset of assets) {
 const { mkdir } = await import("node:fs/promises");
 const { inflateRawSync } = await import("node:zlib");
 const archive = await readFile(path.join(process.cwd(), "ctrl-love-final-assets.zip"));
+const approvedNames = new Set(["public/room/personas/ines-valera.webp","public/room/personas/otto-rehm.webp","public/room/personas/nina-bell.webp","public/room/personas/arthur-pike.webp","public/room/personas/miriam-finch.webp","public/room/personas/elias-stern.webp","public/room/personas/noor-haddad.webp","public/room/personas/greta-lund.webp","public/room/personas/mateo-rivas.webp","public/room/personas/celine-morin.webp","public/room/personas/felix-owusu.webp","public/room/personas/beatrice-shaw.webp","public/room/personas/kenji-sato.webp","public/room/personas/ada-kessler.webp","public/room/personas/rosa-bakker.webp","public/room/personas/samir-desai.webp","public/room/personas/edith-cole.webp","public/room/personas/hugo-march.webp","public/purge-1964.webp","public/chase-1964.webp","public/ai-y-fier-1964.webp","public/fizz-1964.webp","public/swat-1964.webp"]);
 let offset = 0, restored = 0;
 while (offset + 30 <= archive.length && archive.readUInt32LE(offset) === 0x04034b50) {
   const flags = archive.readUInt16LE(offset + 6);
@@ -47,7 +48,7 @@ while (offset + 30 <= archive.length && archive.readUInt32LE(offset) === 0x04034
   const extraLength = archive.readUInt16LE(offset + 28);
   const name = archive.subarray(offset + 30, offset + 30 + nameLength).toString("utf8");
   const start = offset + 30 + nameLength + extraLength;
-  if (flags & 9 || !/^public\\/(?:room\\/personas\\/[a-z-]+|(?:purge|chase|ai-y-fier|fizz|swat)-1964)\\.webp$/.test(name)) throw new Error("Unexpected archive entry: " + name);
+  if ((flags & 9) || !approvedNames.has(name)) throw new Error("Unexpected archive entry: " + name);
   const raw = archive.subarray(start, start + compressed);
   const bytes = method === 8 ? inflateRawSync(raw) : method === 0 ? raw : null;
   if (!bytes || bytes.length !== size || bytes.toString("ascii",0,4) !== "RIFF" || bytes.toString("ascii",8,12) !== "WEBP" || bytes.readUInt32LE(4)+8 !== bytes.length) throw new Error("Invalid WebP: " + name);
