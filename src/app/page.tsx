@@ -219,7 +219,7 @@ export default function Home() {
             <div className={styles.peoplePortraits}>
               {[...homepageRoomPersonas, ...allRoomPersonas.filter(person => !homepageRoomPersonas.some(featured => featured.id === person.id))].map((person) => (
                 <a className={styles.peoplePortrait} key={person.id} href={`/room/${person.id}/`} style={{textDecoration:"none",color:"inherit"}}>
-                  {person.portrait ? <img src={person.portrait} alt={person.name} loading="lazy" style={{objectPosition: person.portraitPosition || "center"}} /> : <span style={{display:"grid",placeItems:"center",aspectRatio:"4 / 5",background:"#e9e2d3",color:"#202221",fontSize:"2rem",fontFamily:"monospace"}} aria-label="Portrait pending">{person.name.split(" ").map(part => part[0]).join("")}</span>}
+                  {person.portrait ? <img src={person.portrait} alt={person.name} loading="lazy" style={{objectPosition: person.portraitPosition || "center"}} /> : <span className={styles.facultyPending} aria-label="Portrait pending">{person.name.split(" ").map(part => part[0]).join("")}</span>}
                   <div><strong>{person.name}</strong><span>{person.role}</span></div>
                 </a>
               ))}
