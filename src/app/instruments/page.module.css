@@ -431,3 +431,15 @@
 .specimen summary,.specimen summary>* ,.drawer,.drawer>* ,.arrivalCopy,.artifact summary{min-width:0;writing-mode:horizontal-tb;word-break:normal;overflow-wrap:break-word}
 .specimen summary>p{max-width:60ch}
 @media(max-width:850px){.specimenWall,.artifactBench{grid-template-columns:minmax(0,1fr)}.arrival{grid-template-columns:minmax(0,1fr)}}
+
+
+/* Circa 1964 exhibit finish */
+.specimenPhoto{background:#e9e2d3;position:relative;border-color:#a9aba7}
+.specimenPhoto img{filter:saturate(.72) sepia(.13)}
+.device{background:#e9e2d3;border-color:#a9aba7}
+.deviceScreen{position:relative;overflow:hidden}
+.deviceScreen:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(transparent 45%,#e9e2d322 50%,transparent 55%);background-size:100% 220%;animation:labScan 8s linear infinite}
+.specimenPhoto:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 35%,#ffffff16 49%,transparent 63%);background-size:250% 100%;animation:labShimmer 14s ease-in-out infinite}
+@keyframes labScan{from{background-position:0 100%}to{background-position:0 -100%}}
+@keyframes labShimmer{0%,65%{background-position:150% 0}100%{background-position:-100% 0}}
+@media(prefers-reduced-motion:reduce){.deviceScreen:after,.specimenPhoto:after{animation:none!important}}
