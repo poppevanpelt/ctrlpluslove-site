@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import styles from "./HeroMnemonic.module.css";
 
 const words = [
@@ -45,7 +45,7 @@ export default function HeroMnemonic() {
   const current = stage >= 0 ? stage : selected;
   return <div className={styles.root} ref={root}>
     <h1 className={styles.title} data-savannah-handoff-headline="true" aria-label="We build instruments for human judgment.">
-      {words.map(([word], i) => <span key={word} className={styles.wrap}><button type="button" ref={el => { refs.current[i] = el; }} className={styles.word} data-active={current === i} aria-label={`${word}: ${words[i][1]}`} aria-pressed={current === i} onClick={() => { setStage(-1); setPlayed(true); setSelected(selected === i ? null : i); }} onMouseEnter={() => { if(stage < 0) setSelected(i); }} onMouseLeave={() => { if(stage < 0) setSelected(null); }}>{word}</button>{i < 5 ? " " : ""}</span>)}
+      {words.map(([word], i) => <Fragment key={word}><span className={styles.wrap}><button type="button" ref={el => { refs.current[i] = el; }} className={styles.word} data-active={current === i} aria-label={`${word}: ${words[i][1]}`} aria-pressed={current === i} onClick={() => { setStage(-1); setPlayed(true); setSelected(selected === i ? null : i); }} onMouseEnter={() => { if(stage < 0) setSelected(i); }} onMouseLeave={() => { if(stage < 0) setSelected(null); }}>{word}</button></span>{i < 5 ? " " : ""}</Fragment>)}
     </h1>
     <div className={styles.rail} aria-hidden="true"><span className={styles.ball} data-visible={stage >= 0} style={{left:ball}} /></div>
     <div className={styles.explain} aria-live="polite">{current === null ? <span className={styles.quiet}>{played ? "Every word has a job." : "Touch a word. Discover its purpose."}</span> : <><span className={styles.number}>0{current + 1} / 06</span>{words[current][1]}</>}</div>
