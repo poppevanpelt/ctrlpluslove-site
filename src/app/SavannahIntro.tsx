@@ -275,19 +275,19 @@ export default function SavannahIntro() {
       </div>
 
 
-      {needsTap && !ready && (
+      {needsTap && !ready && !fallbackVideo && (
         <button type="button" onClick={playFromTap} aria-label="Play Savannah entrance film"
           style={{position:"absolute",left:"50%",bottom:82,transform:"translateX(-50%)",zIndex:8,padding:"14px 20px",background:"rgba(245,243,238,.96)",color:"#111",border:0,font:"inherit",fontWeight:700,cursor:"pointer",whiteSpace:"nowrap"}}>
           Play entrance film →
         </button>
       )}
-      {showExit && !needsTap && (
+      {showExit && (!needsTap || ready || fallbackVideo) && (
         <button type="button" onClick={() => { armClunkAudio(); finish(); }} aria-label="Enter ctrl+love without the film"
           style={{position:"absolute",right:20,bottom:24,zIndex:8,padding:"12px 16px",background:"rgba(245,243,238,.94)",color:"#111",border:0,font:"inherit",cursor:"pointer"}}>
           Skip film and enter →
         </button>
       )}
-      {!ready && <div style={{position:"absolute",inset:0,zIndex:2,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:10,color:"#f3f1eb",textAlign:"center",pointerEvents:"none"}}><div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:16,padding:"0 6vw"}}><div style={{fontSize:"clamp(30px,6.8vw,82px)",fontWeight:900,letterSpacing:"-.065em",lineHeight:.9,maxWidth:1100}}>SAVANNAH, EMPLOYEE #4.</div><div style={{fontSize:"clamp(14px,2vw,22px)",fontWeight:500,letterSpacing:".08em",textTransform:"uppercase"}}>COME IN.</div></div></div>}
+      {!ready && <div style={{position:"absolute",inset:0,zIndex:2,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:10,color:"#f3f1eb",textAlign:"center",pointerEvents:"none"}}><div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:16,padding:"0 6vw"}}><div style={{fontSize:"clamp(30px,6.8vw,82px)",fontWeight:900,letterSpacing:"-.065em",lineHeight:.9,maxWidth:1100}}>SAVANNAH, <span style={{whiteSpace:"nowrap"}}>EMPLOYEE{"\u00a0"}#4.</span></div><div style={{fontSize:"clamp(14px,2vw,22px)",fontWeight:500,letterSpacing:".08em",textTransform:"uppercase"}}>COME IN.</div></div></div>}
       <div ref={navGhostRef} className={styles.savannahNavGhost} aria-hidden="true" />
       <h2 ref={headlineGhostRef} className={styles.savannahHeadlineGhost} style={headlineStyle} aria-hidden="true" />
     </section>

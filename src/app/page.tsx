@@ -4,7 +4,6 @@ import HeroMnemonic from "./HeroMnemonic";
 import SavannahExplainer from "./SavannahExplainer";
 import SavannahExit from "./SavannahExit";
 import HandoverNote from "./HandoverNote";
-import TastingWindow from "./TastingWindow";
 import followThrough from "./xray-follow-through.module.css";
 import { homepageRoomPersonas, allRoomPersonas } from "./room-personas-data";
 
@@ -166,15 +165,9 @@ export default function Home() {
       <section className={styles.section} id="instruments">
         <div className={styles.kicker}>A few instruments inside the machine</div>
         <h2>Pressure, not prompts.</h2>
-        <p className={styles.instrumentInvite}>See the mechanisms at work. Explore at your own pace.</p>
-        <div className={styles.instrumentQuickstart} aria-label="Start with a working instrument">
-          <a href="/meeting-filter/" data-family="analyse"><span>01 / SAVE AN HOUR</span><strong>An hour saved before it begins.</strong><b>Run Meeting Filter ↗</b></a>
-          <a href="/decision-accelerator/" data-family="accelerate"><span>02 / MAKE THE CALL</span><strong>From hesitation to a useful move.</strong><b>Run Decision Accelerator ↗</b></a>
-          <a href="/radar/" data-family="observe"><span>03 / NOTICE SOMETHING</span><strong>Weak signals become visible.</strong><b>Open Radar ↗</b></a>
-        </div>
-        <TastingWindow />
+        <p className={styles.instrumentInvite}>Three ways in: save time, explore a decision, or notice a signal.</p>
         <div className={styles.instruments}>
-          {instruments.map(([no,name,line,kind,href,action]) => (
+          {instruments.filter(([no]) => ["02", "13", "12"].includes(no)).map(([no,name,line,kind,href,action]) => (
             <a className={styles.instrument} href={href} key={no} data-family={instrumentFamilies[no]} aria-label={`${action}: ${name}`}>
               <div className={`${styles.instrumentVisual} ${styles[kind]} ${instrumentImages[no] && no !== "04" ? styles.photographicInstrument : ""}`} aria-hidden="true">
                 {instrumentImages[no] ? <img src={instrumentImages[no]} alt="" loading="lazy" /> : <InstrumentArtwork no={no} />}
