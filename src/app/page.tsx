@@ -5,7 +5,7 @@ import SavannahExplainer from "./SavannahExplainer";
 import SavannahExit from "./SavannahExit";
 import HandoverNote from "./HandoverNote";
 import followThrough from "./xray-follow-through.module.css";
-import { homepageRoomPersonas, allRoomPersonas } from "./room-personas-data";
+import { homepageRoomPersonas } from "./room-personas-data";
 
 
 const stages = [
@@ -211,18 +211,18 @@ export default function Home() {
           <div className={styles.peoplePanel}>
             <div className={styles.peoplePanelHeading}>
               <span>01 / OBSERVED INTELLIGENCE</span>
-              <h3>36 distinct perspectives.</h3>
+              <h3>36 perspectives. Meet six.</h3>
               <p>Built from observation, not a demographic dropdown. Each has a particular memory, bias, instinct and something worth challenging.</p>
             </div>
             <div className={styles.peoplePortraits}>
-              {[...homepageRoomPersonas, ...allRoomPersonas.filter(person => !homepageRoomPersonas.some(featured => featured.id === person.id))].map((person) => (
+              {homepageRoomPersonas.slice(0, 6).map((person) => (
                 <a className={styles.peoplePortrait} key={person.id} href={`/room/${person.id}/`} style={{textDecoration:"none",color:"inherit"}}>
                   {person.portrait ? <img src={person.portrait} alt={person.name} loading="lazy" style={{objectPosition: person.portraitPosition || "center"}} /> : <span className={styles.facultyPending} aria-label="Portrait pending">{person.name.split(" ").map(part => part[0]).join("")}</span>}
                   <div><strong>{person.name}</strong><span>{person.role}</span></div>
                 </a>
               ))}
             </div>
-            <a className={styles.peopleAction} href="/room/">Meet the perspectives ↗</a>
+            <a className={styles.peopleAction} href="/room/">Meet all 36 perspectives ↗</a>
           </div>
         </div>
         <p className={styles.peopleClosing}>Designed perspectives to challenge the obvious. Human judgment stays in charge.</p>
