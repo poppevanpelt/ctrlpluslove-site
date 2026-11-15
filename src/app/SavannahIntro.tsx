@@ -24,8 +24,6 @@ export default function SavannahIntro() {
   const [ready, setReady] = useState(false);
   const [stage, setStage] = useState<Stage>("film");
   const [handoff, setHandoff] = useState(false);
-  const [showExit, setShowExit] = useState(false);
-  const [needsTap, setNeedsTap] = useState(false);
   const [fallbackVideo, setFallbackVideo] = useState(false);
   const [headlineStyle, setHeadlineStyle] = useState<CSSProperties>();
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -93,8 +91,7 @@ export default function SavannahIntro() {
     // The entrance film is a required beat. Reduced-motion preferences may
     // remove transitions in CSS, but must not silently bypass the film.
     // Never strand a visitor behind the black film layer if media cannot load.
-    // A user gesture may be required on iOS (Low Power Mode and browser policies).
-    // Keep the film available instead of silently skipping it.
+    // If browser policy blocks muted playback, reveal the homepage automatically.
     // The approved title is an intro beat, not a network-loading indicator.
     const titleTimer = window.setTimeout(() => {
       titleDone.current = true;
@@ -102,20 +99,17 @@ export default function SavannahIntro() {
     }, TITLE_HOLD_MS);
     const exitOffer = window.setTimeout(() => {
       if (!readyRef.current && !completed.current) {
-        setNeedsTap(true);
-        setShowExit(true);
+        finish();
       }
     }, TITLE_HOLD_MS + 6500);
     const loading = window.setTimeout(() => {
       if (!readyRef.current && !completed.current) {
-        setNeedsTap(true);
-        setShowExit(true);
+        finish();
       }
     }, LOAD_TIMEOUT_MS);
     const watchdog = window.setTimeout(() => {
       if (!completed.current && lastProgress.current < EXIT_AT) {
-        setNeedsTap(true);
-        setShowExit(true);
+        finish();
       }
     }, PLAY_TIMEOUT_MS);
     return () => {
@@ -184,8 +178,7 @@ export default function SavannahIntro() {
     video.muted = true;
     void video.play().catch(() => {
       if (!completed.current) {
-        setNeedsTap(true);
-        setShowExit(true);
+        finish();
       }
     });
   };
@@ -203,8 +196,6 @@ export default function SavannahIntro() {
     if (!readyRef.current && !video.paused && titleDone.current && video.currentTime >= 0.02) {
       readyRef.current = true;
       setReady(true);
-      setNeedsTap(false);
-      setShowExit(false);
       if (retryTimer.current !== null) window.clearTimeout(retryTimer.current);
     }
     if (t > lastProgress.current + 0.05) {
@@ -224,25 +215,9 @@ export default function SavannahIntro() {
     if (completed.current || !readyRef.current || bufferTimer.current !== null) return;
     bufferTimer.current = window.setTimeout(() => {
       if (!completed.current) {
-        setNeedsTap(true);
-        setShowExit(true);
+        finish();
       }
     }, 3000);
-  };
-  const playFromTap = () => {
-    const video = videoRef.current;
-    if (!video || completed.current) return;
-    video.muted = true;
-    titleDone.current = true;
-    video.setAttribute("playsinline", "");
-    // Must be called directly in the click handler for iOS autoplay restrictions.
-    void video.play().then(() => setNeedsTap(false)).catch(() => {
-      setFallbackVideo(true);
-      // Keep one opening action visible at a time: after an explicit play
-      // attempt fails, offer the single escape hatch instead of two CTAs.
-      setNeedsTap(false);
-      setShowExit(true);
-    });
   };
   if (!visible) return null;
 
@@ -264,8 +239,7 @@ export default function SavannahIntro() {
           onEnded={finish} onError={() => {
             if (!completed.current) {
               setFallbackVideo(true);
-              setNeedsTap(true);
-              setShowExit(true);
+              if (fallbackVideo) finish();
             }
           }}>
           {!fallbackVideo && <source media="(max-width: 768px)" src={MOBILE_FILM} type="video/mp4" />}
@@ -275,18 +249,6 @@ export default function SavannahIntro() {
       </div>
 
 
-      {needsTap && !ready && !fallbackVideo && (
-        <button type="button" onClick={playFromTap} aria-label="Play Savannah entrance film"
-          style={{position:"absolute",left:"50%",bottom:82,transform:"translateX(-50%)",zIndex:8,padding:"14px 20px",background:"rgba(245,243,238,.96)",color:"#111",border:0,font:"inherit",fontWeight:700,cursor:"pointer",whiteSpace:"nowrap"}}>
-          Play entrance film →
-        </button>
-      )}
-      {showExit && (!needsTap || ready || fallbackVideo) && (
-        <button type="button" onClick={() => { armClunkAudio(); finish(); }} aria-label="Enter ctrl+love without the film"
-          style={{position:"absolute",right:20,bottom:24,zIndex:8,padding:"12px 16px",background:"rgba(245,243,238,.94)",color:"#111",border:0,font:"inherit",cursor:"pointer"}}>
-          Skip film and enter →
-        </button>
-      )}
       {!ready && <div style={{position:"absolute",inset:0,zIndex:2,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:10,color:"#f3f1eb",textAlign:"center",pointerEvents:"none"}}><div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:16,padding:"0 6vw"}}><div style={{fontSize:"clamp(30px,6.8vw,82px)",fontWeight:900,letterSpacing:"-.065em",lineHeight:.9,maxWidth:1100}}>SAVANNAH, <span style={{whiteSpace:"nowrap"}}>EMPLOYEE{"\u00a0"}#4.</span></div><div style={{fontSize:"clamp(14px,2vw,22px)",fontWeight:500,letterSpacing:".08em",textTransform:"uppercase"}}>COME IN.</div></div></div>}
       <div ref={navGhostRef} className={styles.savannahNavGhost} aria-hidden="true" />
       <h2 ref={headlineGhostRef} className={styles.savannahHeadlineGhost} style={headlineStyle} aria-hidden="true" />
