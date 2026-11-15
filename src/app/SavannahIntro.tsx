@@ -249,6 +249,10 @@ export default function SavannahIntro() {
       </div>
 
 
+      <button type="button" onClick={finish} aria-label="Skip intro"
+        style={{position:"absolute",right:20,bottom:24,zIndex:8,padding:"12px 0",background:"transparent",color:"#f3f1eb",border:0,font:"inherit",fontSize:12,textDecoration:"underline",textUnderlineOffset:4,cursor:"pointer"}}>
+        Skip intro ↗
+      </button>
       {!ready && <div style={{position:"absolute",inset:0,zIndex:2,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:10,color:"#f3f1eb",textAlign:"center",pointerEvents:"none"}}><div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:16,padding:"0 6vw"}}><div style={{fontSize:"clamp(30px,6.8vw,82px)",fontWeight:900,letterSpacing:"-.065em",lineHeight:.9,maxWidth:1100}}>SAVANNAH, <span style={{whiteSpace:"nowrap"}}>EMPLOYEE{"\u00a0"}#4.</span></div><div style={{fontSize:"clamp(14px,2vw,22px)",fontWeight:500,letterSpacing:".08em",textTransform:"uppercase"}}>COME IN.</div></div></div>}
       <div ref={navGhostRef} className={styles.savannahNavGhost} aria-hidden="true" />
       <h2 ref={headlineGhostRef} className={styles.savannahHeadlineGhost} style={headlineStyle} aria-hidden="true" />
