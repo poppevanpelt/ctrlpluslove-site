@@ -66,7 +66,18 @@ export async function POST(request: Request) {
     }),
   });
 
-  if (!response.ok) return Response.json({ error: "Savannah lost her train of thought." }, { status: 502 });
+  if (!response.ok) {
+    // Log only provider status and stable error identifiers, never credentials,
+    // conversation contents, or the provider's free-form error message.
+    const failure = await response.json().catch(() => null);
+    console.error("[savannah] provider request failed", {
+      status: response.status,
+      code: typeof failure?.error?.code === "string" ? failure.error.code : null,
+      type: typeof failure?.error?.type === "string" ? failure.error.type : null,
+      requestId: response.headers.get("x-request-id"),
+    });
+    return Response.json({ error: "Savannah lost her train of thought." }, { status: 502 });
+  }
 
   const payload = await response.json();
   const text = extractText(payload);
