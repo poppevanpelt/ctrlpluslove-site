@@ -231,6 +231,7 @@ export default function Home() {
       <section className={styles.section} id="cases">
         <div className={styles.kicker}>Field work</div>
         <h2>The instruments have left the lab.</h2>
+        <p className={styles.instrumentInvite}><strong>Clients</strong> · Comfora · Suki · <span style={{ whiteSpace: "nowrap" }}>Luther Museum</span> · Impala · SIRE</p>
         <div className={styles.cases}>
           <article className={styles.caseHero}>
             <div className={styles.caseCopy}>
